@@ -129,8 +129,10 @@
         this.$el.on('change.queryBuilder', '.rules-group-header input[name$=_cond]', function() {
             var $this = $(this);
             
-            $this.parent().addClass('active');
-            $this.parent().siblings().removeClass('active');
+            if ($this.is(':checked')) {
+                $this.parent().addClass('active');
+                $this.parent().siblings().removeClass('active');
+            }
         });
         
         // rule filter change
@@ -351,11 +353,12 @@
         (function add(data, $container){
             var group_id = that.addGroup($container, false),
                 $group = $('#'+ group_id),
-                $ul = $group.find('>dd>ul');
+                $ul = $group.find('>dd>ul'),
+                $buttons = $group.find('>dt input[name$=_cond]');
 
-            if (data.operator.toUpperCase() == 'OR') {
-                $group.find('>dt [data-toggle=buttons] label').button('toggle');
-            }
+            $buttons.filter('[value=AND]').prop('checked', data.condition.toUpperCase() == 'AND');
+            $buttons.filter('[value=OR]').prop('checked', data.condition.toUpperCase() == 'OR');
+            $buttons.trigger('change');
 
             $.each(data.rules, function(i, rule) {
                 if (rule.rules) {
