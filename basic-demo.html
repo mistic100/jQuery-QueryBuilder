@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Basic demo / QueryBuilder</title>
+
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet">
+  <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet">
+  <link href="../jquery-querybuilder/query-builder.css" rel="stylesheet">
+  <link href="assets/css/docs.css" rel="stylesheet">
+  
+  <!--[if lt IE 9]>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+  <![endif]-->
+  
+  <style>
+  .jumbotron {
+    margin-top:30px;
+    background:#3A1B43;
+    background:linear-gradient(to right, #080331, #673051);
+    color:white;
+    position:relative;
+  }
+  .jumbotron:after {
+    content:'';
+    background:url('assets/img/bs-docs-masthead-pattern.png');
+    position:absolute;
+    width:100%; height:100%;
+    top:0; left:0;
+    opacity:0.5;
+  }
+  .highlight {
+    padding-top:0;
+    padding-bottom:0;
+  }
+  div.syntaxhighlighter .container:before,div.syntaxhighlighter .container:after {
+    content:none;
+  }
+  </style>
+</head>
+
+<body>
+  <!-- nav -->
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <div class="navbar-header pull-right">
+        <a class="navbar-brand" href="https://github.com/mistic100/jQuery-QueryBuilder">@Github</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- header -->
+  <header class="jumbotron subhead">
+    <div class="container">
+      <h1>QueryBuilder</h1>
+      <p>Basic demonstration</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+      <p>
+        This demo shows the basic features of the QueryBuilder. Click <code>Parse</code> to trigger the input validation and display the output JSON.
+      </p>
+      
+      <div id="builder"></div>
+
+      <div class="btn-group">
+        <button class="btn btn-warning" id="reset">Reset</button>
+        <button class="btn btn-success" id="set">Set rules</button>
+        <button class="btn btn-primary" id="parse">Parse</button>
+      </div>
+      
+      <div id="result" class="hide">
+        <h3>Output</h3>
+        <pre></pre>
+      </div>
+    
+      <h3>Source</h3>
+      <div class="highlight">
+        <pre id="display_source" class="brush: js; gutter: false; toolbar: false"></pre>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bs-docs-footer">
+    <div class="container">
+      <p>
+        Licensed under <a href="http://opensource.org/licenses/MIT" target="_blank">MIT License</a>,
+        documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+      </p>
+      <p>
+        Documentation template by <a href="http://getbootstrap.com">Bootstrap team</a>.
+      </p>
+      <ul class="bs-docs-footer-links">
+        <li>Currently v1.0.0</li>
+        <li><a href="https://github.com/mistic100/jQuery-QueryBuilder">Homepage</a></li>
+        <li>&middot;</li>
+        <li><a href="https://github.com/mistic100/jQuery-QueryBuilder/issues?state=open">Issues</a></li>
+      </ul>
+    </div>
+  </footer>
+
+
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+  <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js"></script>
+  <script src="../jquery-querybuilder/query-builder.js"></script>
+  
+  <script id="source">
+// define filters
+$('#builder').queryBuilder({
+  filters: [{
+    field: 'name',
+    label: 'Name',
+    type: 'string'
+  }, {
+    field: 'category',
+    label: 'Category',
+    type: 'number',
+    input: 'select',
+    values: {
+      1: 'Books',
+      2: 'Movies',
+      3: 'Music',
+      4: 'Tools',
+      5: 'Goodies',
+      6: 'Clothes'
+    },
+    excludedOperators: ['less', 'less_or_equal', 'greater', 'greater_or_equal']
+  }, {
+    field: 'in_stock',
+    label: 'In stock',
+    type: 'number',
+    input: 'radio',
+    values: {
+      1: 'Yes',
+      0: 'No'
+    },
+    excludedOperators: [
+      'not_equal', 'in', 'not_in', 'less', 'less_or_equal',
+      'greater', 'greater_or_equal', 'is_null', 'is_not_null'
+    ]
+  }, {
+    field: 'price',
+    label: 'Price',
+    type: 'number',
+    numberType: 'double',
+    validation: {
+      min: 0
+    }
+  }]
+});
+
+// set rules
+$('#set').on('click', function() {
+  $('#builder').queryBuilder('setRules', {
+    condition: 'AND',
+    rules: [{
+      field: 'price',
+      operator: 'less',
+      value: 10.25
+    }, {
+      condition: 'OR',
+      rules: [{
+        field: 'category',
+        operator: 'equal',
+        value: 2
+      }, {
+        field: 'category',
+        operator: 'equal',
+        value: 1
+      }]
+    }]
+  });
+});
+
+// reset builder
+$('#reset').on('click', function() {
+  $('#builder').queryBuilder('reset');
+});
+
+// get rules
+$('#parse').on('click', function() {
+  $('#result').removeClass('hide')
+    .find('pre').html(JSON.stringify(
+      $('#builder').queryBuilder('getRules'),
+      undefined, 2
+    ));
+});
+  </script>
+  
+  <script>
+    $('#display_source').text($('#source').text());
+    SyntaxHighlighter.all();
+  </script>
+
+</body>
+</html>
