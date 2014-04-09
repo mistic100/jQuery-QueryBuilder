@@ -5,6 +5,7 @@
  */
  /*
   * Dependencies :
+  *   - jQuery
   *   - Bootstrap CSS
   *   - MomentJS (optional)
   */
@@ -169,7 +170,7 @@
         });
 
         // delete rule button
-        this.$el.on('click', '[data-delete=rule]', function() {
+        this.$el.on('click.queryBuilder', '[data-delete=rule]', function() {
             var $this = $(this),
                 $rule = $this.closest('li');
 
@@ -206,6 +207,8 @@
 
             and_condition: 'AND',
             or_condition: 'OR',
+            
+            filter_select_placeholder: '------',
 
             operator_equal: 'equal',
             operator_not_equal: 'not equal',
@@ -358,6 +361,10 @@
             var $group = that.addGroup($container, false),
                 $ul = $group.find('>dd>ul'),
                 $buttons = $group.find('>dt input[name$=_cond]');
+                
+            if (!data.condition) {
+                data.condition = 'AND';
+            }
 
             $buttons.filter('[value=AND]').prop('checked', data.condition.toUpperCase() == 'AND');
             $buttons.filter('[value=OR]').prop('checked', data.condition.toUpperCase() == 'OR');
@@ -372,7 +379,7 @@
                         $.error('Missing rule field');
                     }
                     if (!rule.value) {
-                        $.error('Missing rule value');
+                        rule.value = '';
                     }
                     if (!rule.operator) {
                         rule.operator = 'equal';
@@ -674,7 +681,7 @@
     QueryBuilder.prototype.getRuleFilterSelect = function(rule_id) {
         var h = '';
         h+= '<select name="'+ rule_id +'_filter">';
-        h+= '<option value="-1">------</option>';
+        h+= '<option value="-1">'+ this.lang.filter_select_placeholder +'</option>';
 
         $.each(this.filters, function(i, filter) {
             h+= '<option value="'+ filter.field +'">'+ filter.label +'</option>';

@@ -1,5 +1,5 @@
 /*!
- * QueryBuilder v0.0.1
+ * QueryBuilder v1.0.0-SNAPSHOT
  * Copyright 2014 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -9,7 +9,8 @@
   padding:10px;
   margin:4px 0;
   border:1px solid #DCC896;
-  background:#FCF8E3;
+  background:#FCF9ED;
+  background:rgba(250, 240, 210, 0.5);
   border-radius:5px;
 }
   .rules-group-header {
@@ -35,6 +36,7 @@
     padding:5px;
     border:1px solid #eee;
     background:#fff;
+    background:rgba(255, 255, 255, 0.9);
     border-radius:5px;
   }
     .rule-container.has-error {
@@ -83,7 +85,7 @@
   }
   .rules-list>*:after {
     top:50%;
-    border-width:2px 0 0 2px;
+    border-width:0 0 0 2px;
   }
 
   .rules-list>*:first-child:before {
