@@ -149,7 +149,7 @@
             var $this = $(this),
                 $rule = $this.closest('li');
 
-            that.updateRuleInput($rule, $this.val());
+            that.updateRuleOperator($rule, $this.val());
         });
 
         // add rule button
@@ -190,6 +190,10 @@
     };
 
     QueryBuilder.DEFAULTS = {
+        onValidationError: null,
+        onAfterAddGroup: null,
+        onAfterAddRule: null,
+        
         filters: [],
         
         excludedOperators: [],
@@ -351,8 +355,7 @@
             that = this;
 
         (function add(data, $container){
-            var group_id = that.addGroup($container, false),
-                $group = $('#'+ group_id),
+            var $group = that.addGroup($container, false),
                 $ul = $group.find('>dd>ul'),
                 $buttons = $group.find('>dt input[name$=_cond]');
 
@@ -375,8 +378,7 @@
                         rule.operator = 'equal';
                     }
 
-                    var rule_id = that.addRule($ul),
-                        $rule = $('#'+ rule_id),
+                    var $rule = that.addRule($ul),
                         filter = that.getFilterByField(rule.field),
                         $value = $rule.find('.rule-value-container');
 
@@ -418,7 +420,7 @@
      * Add a new rules group
      * @param container {jQuery} (parent <li>)
      * @param addRule {bool} (optional - add a default empty rule)
-     * @return group_id {string}
+     * @return $group {jQuery}
      */
     QueryBuilder.prototype.addGroup = function(container, addRule) {
         addRule = (addRule == null) ? true : addRule;
@@ -435,19 +437,21 @@
 
         var $group = container.find('#'+ group_id);
 
-        //$group.find('>dt [data-toggle=buttons]').button();
+        if (this.settings.onAfterAddGroup) {
+            this.settings.onAfterAddGroup.call(this, $group);
+        }
 
         if (addRule) {
             this.addRule($group.find('>dd>ul'));
         }
 
-        return group_id;
+        return $group;
     };
 
     /**
      * Add a new rule
      * @param container {jQuery} (parent <ul>)
-     * @return rule_id {string}
+     * @return $rule {jQuery}
      */
     QueryBuilder.prototype.addRule = function(container) {
         var h = '',
@@ -461,8 +465,14 @@
         h+= '</li>';
 
         container.append(h);
+        
+        var $rule = container.find('#'+ rule_id);
+        
+        if (this.settings.onAfterAddRule) {
+            this.settings.onAfterAddRule.call(this, $rule);
+        }
 
-        return rule_id;
+        return $rule;
     };
 
     /**
@@ -556,30 +566,38 @@
 
         // init external jquery plugin
         if (filter.plugin) {
-            $value_container.find('input')[filter.plugin](filter.plugin_config || {});
+            $value_container.find(filter.input=='select' ? 'select' : 'input')[filter.plugin](filter.plugin_config || {});
+        }
+        
+        if (filter.onAfterCreateRuleInput) {
+            filter.onAfterCreateRuleInput.call(this, $rule, $value_container, filter);
         }
     };
 
     /**
-     * Update main <input> for a rule
+     * Update main <input> visibility when rule operator changes
      * @param $rule {jQuery} (<li> element)
      * @param operatorType {string}
      */
-    QueryBuilder.prototype.updateRuleInput = function($rule, operatorType) {
+    QueryBuilder.prototype.updateRuleOperator = function($rule, operatorType) {
         var $value_container = $rule.find('.rule-value-container'),
-            rule_id = $rule.attr('id');
+            filter = this.getFilterByField(this.getRuleFilter($rule));
 
         var operator = this.getOperator(operatorType);
 
         if (!operator.accept_values) {
             $value_container.hide();
-            return;
         }
+        else {
+            $value_container.show();
 
-        $value_container.show();
-
-        if ($value_container.is(':empty')) {
-            this.createRuleInput($rule, this.getRulefilter($rule));
+            if ($value_container.is(':empty')) {
+                this.createRuleInput($rule, this.getRulefilter($rule));
+            }
+        }
+        
+        if (filter.onAfterChangeOperator) {
+            filter.onAfterChangeOperator.call(this, $rule, operator, filter);
         }
     };
 
@@ -670,6 +688,13 @@
      * Trigger a validation error event with custom params
      */
     QueryBuilder.prototype.triggerValidationError = function(error, filter, operator, value, $rule) {
+        if (filter.onValidationError) {
+            filter.onValidationError.call(this, error, filter, operator, value, $rule);
+        }
+        if (this.settings.onValidationError) {
+            this.settings.onValidationError.call(this, error, filter, operator, value, $rule);
+        }
+        
         var e = jQuery.Event('validationError.queryBuilder', {
             error: error,
             filter: filter,
