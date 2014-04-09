@@ -1,5 +1,5 @@
 QueryBuilder.setDefaults({ lang: {
-    add_rule: 'Ajouter un règle',
+    add_rule: 'Ajouter une règle',
     add_group: 'Ajouter un groupe',
     delete_rule: 'Supprimer',
     delete_group: 'Supprimer',
