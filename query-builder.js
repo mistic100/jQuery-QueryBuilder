@@ -117,7 +117,7 @@
             }
 
             switch (filter.input) {
-                case 'radio': case 'checkbox': case 'select':
+                case 'radio': case 'checkbox':
                     if (!filter.values || filter.values.length < 1) {
                         $.error('Missing values for filter: '+ filter.field);
                     }
@@ -315,6 +315,10 @@
                             that.triggerValidationError(valid, filter, operator, value, $rule);
                             return {};
                         }
+                    
+                        if (filter.valueParser) {
+                            value = filter.valueParser.call(this, value, filter, operator);
+                        }
                     }
 
                     var rule = {
@@ -371,7 +375,7 @@
             $buttons.trigger('change');
 
             $.each(data.rules, function(i, rule) {
-                if (rule.rules) {
+                if (rule.rules && rule.rules.length>0) {
                     add(rule, $ul);
                 }
                 else {
@@ -413,6 +417,10 @@
                         case 'text': default:
                             $value.find('input[name$=_value]').val(rule.value).trigger('change');
                             break;
+                    }
+                    
+                    if (filter.onAfterSetValue) {
+                        filter.onAfterSetValue.call(this, $rule, $value, rule.value, filter, rule.operator);
                     }
                 }
             });
@@ -545,10 +553,16 @@
                 break;
 
             case 'select':
-                h+= '<select name="'+ rule_id +'_value">';
-                $.each(filter.values, function(key, val) {
-                    h+= '<option value="'+ key +'"> '+ val +'</option> ';
-                });
+                h+= '<select name="'+ rule_id +'_value"';
+                if (filter.multiple) {
+                    h+= ' multiple';
+                }
+                h+= '>';
+                if (filter.values) {
+                    $.each(filter.values, function(key, val) {
+                        h+= '<option value="'+ key +'"> '+ val +'</option> ';
+                    });
+                }
                 h+= '</select>';
                 break;
 
@@ -570,14 +584,14 @@
         }
 
         $value_container.html(h).show();
+        
+        if (filter.onAfterCreateRuleInput) {
+            filter.onAfterCreateRuleInput.call(this, $rule, $value_container, filter);
+        }
 
         // init external jquery plugin
         if (filter.plugin) {
             $value_container.find(filter.input=='select' ? 'select' : 'input')[filter.plugin](filter.plugin_config || {});
-        }
-        
-        if (filter.onAfterCreateRuleInput) {
-            filter.onAfterCreateRuleInput.call(this, $rule, $value_container, filter);
         }
     };
 
@@ -604,7 +618,7 @@
         }
         
         if (filter.onAfterChangeOperator) {
-            filter.onAfterChangeOperator.call(this, $rule, operator, filter);
+            filter.onAfterChangeOperator.call(this, $rule, filter, operator.type);
         }
     };
 
@@ -696,10 +710,10 @@
      */
     QueryBuilder.prototype.triggerValidationError = function(error, filter, operator, value, $rule) {
         if (filter.onValidationError) {
-            filter.onValidationError.call(this, error, filter, operator, value, $rule);
+            filter.onValidationError.call(this, $rule, error, value, filter, operator);
         }
         if (this.settings.onValidationError) {
-            this.settings.onValidationError.call(this, error, filter, operator, value, $rule);
+            this.settings.onValidationError.call(this, $rule, value, error, filter, operator);
         }
         
         var e = jQuery.Event('validationError.queryBuilder', {
@@ -731,13 +745,20 @@
             excludedOperators = filter.excludedOperators || [];
 
         for (var i=0, l=operators.length; i<l; i++) {
-            if (
-              this.settings.excludedOperators.indexOf(operators[i].type) != -1
-              || excludedOperators.indexOf(operators[i].type) != -1
-              || operators[i].apply_to.indexOf(filter.type) == -1
-            ) {
+            if (operators[i].apply_to.indexOf(filter.type) == -1) {
                 continue;
             }
+            
+            if (filter.operators) {
+                if (filter.operators.indexOf(operators[i].type) == -1) {
+                    continue;
+                }
+            }
+            else if (excludedOperators.indexOf(operators[i].type) != -1 ||
+              this.settings.excludedOperators.indexOf(operators[i].type) != -1) {
+                continue;
+            }
+            
 
             res.push({
                 type: operators[i].type,
@@ -805,33 +826,42 @@
     QueryBuilder.prototype.getRuleValue = function($rule, filter) {
         filter = filter || this.getFilterByType(this.getRulefilter($rule));
 
-        var out;
+        var out,
+            $value = $rule.find('.rule-value-container');
 
         switch (filter.input) {
             case 'radio':
-                out = $rule.find('.rule-value-container input[name$=_value]:checked').val();
+                out = $value.find('input[name$=_value]:checked').val();
                 break;
 
             case 'checkbox':
                 out = [];
-                $rule.find('.rule-value-container input[name$=_value]:checked').each(function() {
+                $value.find('input[name$=_value]:checked').each(function() {
                     out.push($(this).val());
                 });
                 break;
 
             case 'select':
-                out = $rule.find('.rule-value-container select[name$=_value] option:selected').val();
+                if (filter.multiple) {
+                    out = [];
+                    $value.find('select[name$=_value] option:selected').each(function() {
+                        out.push($(this).val());
+                    });
+                }
+                else {
+                    out = $value.find('select[name$=_value] option:selected').val();
+                }
                 break;
 
             case 'text': default:
-                out = $.trim($rule.find('.rule-value-container input[name$=_value]').val());
+                out = $value.find('input[name$=_value]').val();
         }
 
         return out;
     };
 
     /**
-     * Check if a valu is correct for a filter
+     * Check if a value is correct for a filter
      * @param value {string|string[]|undefined}
      * @param filter {object}
      * @return {string|true}
@@ -857,6 +887,16 @@
                 break;
 
             case 'select':
+                if (filter.multiple) {
+                    if (value.length == 0) {
+                        return 'select_empty';
+                    }
+                }
+                else {
+                    if (value == undefined) {
+                        return 'select_empty';
+                    }
+                }
                 break;
 
             case 'text': default:
