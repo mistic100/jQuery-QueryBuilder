@@ -16,7 +16,10 @@
     // ===============================
     var types = [
             'string',
-            'number',
+            'integer',
+            'double',
+            'date',
+            'time',
             'datetime'
         ],
         inputs = [
@@ -24,30 +27,6 @@
             'radio',
             'checkbox',
             'select'
-        ],
-        numberTypes = [
-            'integer',
-            'double'
-        ],
-        operators = [
-            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'begins_with',      accept_values: true,  apply_to: ['string']},
-            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string']},
-            {type: 'contains',         accept_values: true,  apply_to: ['string']},
-            {type: 'not_contains',     accept_values: true,  apply_to: ['string']},
-            {type: 'ends_with',        accept_values: true,  apply_to: ['string']},
-            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string']},
-            {type: 'is_empty',         accept_values: false, apply_to: ['string']},
-            {type: 'is_not_empty',     accept_values: false, apply_to: ['string']},
-            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime']},
-            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime']}
         ];
 
 
@@ -61,6 +40,7 @@
         this.settings = $.extend(true, {}, QueryBuilder.DEFAULTS, options);
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
+        this.operators = this.settings.operators;
         this.status = { group_id: 0, rule_id: 0, generatedId: false };
 
         // ensure we have an container id
@@ -81,6 +61,10 @@
             if (!filter.field) {
                 $.error('Missing filter field: '+ i);
             }
+            if (definedFilters.indexOf(filter.field) != -1) {
+                $.error('Filter already defined: '+ filter.field);
+            }
+            definedFilters.push(filter.field);
             
             if (!filter.type) {
                 $.error('Missing filter type: '+ filter.field);
@@ -100,20 +84,16 @@
                 filter.label = filter.field;
             }
 
-            if (definedFilters.indexOf(filter.field) != -1) {
-                $.error('Filter already defined: '+ filter.field);
-            }
-            definedFilters.push(filter.field);
-
             switch (filter.type) {
-                case 'number':
-                    if (!filter.numberType) {
-                        filter.numberType = 'integer';
-                    }
-                    else if (numberTypes.indexOf(filter.numberType) == -1) {
-                        $.error('Invalid numberType: '+ filter.numberType);
-                    }
-                    break;
+              case 'string':
+                filter.internalType = 'string';
+                break;
+              case 'integer': case 'double':
+                filter.internalType = 'number';
+                break;
+              case 'date': case 'time': case 'datetime':
+                filter.internalType = 'datetime';
+                break;
             }
 
             switch (filter.input) {
@@ -196,8 +176,6 @@
         onAfterAddRule: null,
         
         filters: [],
-        
-        excludedOperators: [],
 
         lang: {
             add_rule: 'Add rule',
@@ -228,7 +206,28 @@
             operator_is_not_empty: 'is not empty',
             operator_is_null: 'is null',
             operator_is_not_null: 'is not null'
-        }
+        },
+        
+        operators: [
+            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'begins_with',      accept_values: true,  apply_to: ['string']},
+            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string']},
+            {type: 'contains',         accept_values: true,  apply_to: ['string']},
+            {type: 'not_contains',     accept_values: true,  apply_to: ['string']},
+            {type: 'ends_with',        accept_values: true,  apply_to: ['string']},
+            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string']},
+            {type: 'is_empty',         accept_values: false, apply_to: ['string']},
+            {type: 'is_not_empty',     accept_values: false, apply_to: ['string']},
+            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime']},
+            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime']}
+        ]
     };
 
     // expose setDefaults static method
@@ -329,10 +328,6 @@
                         value: value
                     };
 
-                    if (filter.type == 'number') {
-                        rule.numberType = filter.numberType;
-                    }
-
                     out.rules.push(rule);
                 }
                 else {
@@ -420,7 +415,7 @@
                     }
                     
                     if (filter.onAfterSetValue) {
-                        filter.onAfterSetValue.call(this, $rule, $value, rule.value, filter, rule.operator);
+                        filter.onAfterSetValue.call(this, $rule, rule.value, filter, rule.operator);
                     }
                 }
             });
@@ -567,18 +562,19 @@
                 break;
 
             case 'text': default:
-                switch (filter.type) {
+                switch (filter.internalType) {
                     case 'number':
                         h+= '<input type="number" name="'+ rule_id +'_value"';
                         if (validation.step) h+= ' step="'+ validation.step +'"';
                         if (validation.min) h+= ' min="'+ validation.min +'"';
                         if (validation.max) h+= ' max="'+ validation.max +'"';
+                        if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
                         h+= '>';
                         break;
 
                     case 'datetime': case 'text': default:
                         h+= '<input type="text" name="'+ rule_id +'_value"';
-                        if (validation.format) h+= ' placeholder="'+ validation.format +'"';
+                        if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
                         h+= '>';
                 }
         }
@@ -586,7 +582,7 @@
         $value_container.html(h).show();
         
         if (filter.onAfterCreateRuleInput) {
-            filter.onAfterCreateRuleInput.call(this, $rule, $value_container, filter);
+            filter.onAfterCreateRuleInput.call(this, $rule, filter);
         }
 
         // init external jquery plugin
@@ -741,28 +737,22 @@
             filter = this.getFilterByField(filter);
         }
 
-        var res = [],
-            excludedOperators = filter.excludedOperators || [];
+        var res = [];
 
-        for (var i=0, l=operators.length; i<l; i++) {
-            if (operators[i].apply_to.indexOf(filter.type) == -1) {
+        for (var i=0, l=this.operators.length; i<l; i++) {
+            if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
                 continue;
             }
             
             if (filter.operators) {
-                if (filter.operators.indexOf(operators[i].type) == -1) {
+                if (filter.operators.indexOf(this.operators[i].type) == -1) {
                     continue;
                 }
             }
-            else if (excludedOperators.indexOf(operators[i].type) != -1 ||
-              this.settings.excludedOperators.indexOf(operators[i].type) != -1) {
-                continue;
-            }
-            
 
             res.push({
-                type: operators[i].type,
-                label: this.lang['operator_'+operators[i].type]
+                type: this.operators[i].type,
+                label: this.lang['operator_'+this.operators[i].type]
             });
         }
 
@@ -790,9 +780,9 @@
      * @return {object}
      */
     QueryBuilder.prototype.getOperator = function(type) {
-        for (var i=0, l=operators.length; i<l; i++) {
-            if (operators[i].type == type) {
-                return operators[i];
+        for (var i=0, l=this.operators.length; i<l; i++) {
+            if (this.operators[i].type == type) {
+                return this.operators[i];
             }
         }
 
@@ -900,16 +890,33 @@
                 break;
 
             case 'text': default:
-                if (value.length == 0) {
-                    return 'text_empty';
-                }
-
-                switch (filter.type) {
+                switch (filter.internalType) {
+                    case 'string':
+                        if (validation.min != undefined) {
+                            if (value.length < validation.min) {
+                                return 'string_exceed_min_length';
+                            }
+                        }
+                        else if (value.length == 0) {
+                            return 'string_empty';
+                        }
+                        if (validation.max != undefined) {
+                            if (value.length > validation.max) {
+                                return 'string_exceed_max_length';
+                            }
+                        }
+                        if (validation.format) {
+                            if (!(validation.format.test(value))) {
+                                return 'string_invalid_format';
+                            }
+                        }
+                        break;
+                        
                     case 'number':
                         if (isNaN(value)) {
                             return 'number_nan';
                         }
-                        if (filter.numberType == 'integer') {
+                        if (filter.type == 'integer') {
                             if (parseInt(value) != value) {
                                 return 'number_not_integer';
                             }
@@ -932,6 +939,7 @@
                         break;
 
                     case 'datetime':
+                        // we need MomentJS
                         if (window.moment) {
                             if (validation.format) {
                                 var datetime = moment(value, validation.format);
