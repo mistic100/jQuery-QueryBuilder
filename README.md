@@ -3,7 +3,8 @@ jQuery QueryBuilder
 
 jQuery plugin offering an interface to create complex queries.
 
-**Still in developpement**
+## Documentation
+http://mistic100.github.io/jQuery-QueryBuilder
 
 ### Requirements
  * Bootstrap 3.x CSS
