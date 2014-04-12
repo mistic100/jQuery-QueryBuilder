@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Basic demo / QueryBuilder</title>
+  <title>Basic demo / jQuery QueryBuilder</title>
 
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet">
-  <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet">
+  <link href="assets/css/shThemeGitHub.css" rel="stylesheet">
   <link href="assets/css/docs.css" rel="stylesheet">
   <link href="query-builder.css" rel="stylesheet">
   
@@ -56,6 +56,9 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
+          <li><a href="index.html#top">Introduce</a></li>
+          <li><a href="index.html#install">Installation</a></li>
+          <li><a href="index.html#usage">Usage</a></li>
         </ul>
       </div>
     </div>
@@ -64,7 +67,7 @@
   <!-- header -->
   <header class="jumbotron subhead">
     <div class="container">
-      <h1>QueryBuilder</h1>
+      <h1>jQuery QueryBuilder</h1>
       <p>Basic demonstration</p>
     </div>
   </header>
@@ -130,8 +133,9 @@ $('#builder').queryBuilder({
   }, {
     field: 'category',
     label: 'Category',
-    type: 'number',
+    type: 'integer',
     input: 'select',
+    multiple: true,
     values: {
       1: 'Books',
       2: 'Movies',
@@ -140,27 +144,32 @@ $('#builder').queryBuilder({
       5: 'Goodies',
       6: 'Clothes'
     },
-    excludedOperators: ['less', 'less_or_equal', 'greater', 'greater_or_equal']
+    operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
   }, {
     field: 'in_stock',
     label: 'In stock',
-    type: 'number',
+    type: 'integer',
     input: 'radio',
     values: {
       1: 'Yes',
       0: 'No'
     },
-    excludedOperators: [
-      'not_equal', 'in', 'not_in', 'less', 'less_or_equal',
-      'greater', 'greater_or_equal', 'is_null', 'is_not_null'
-    ]
+    operators: ['equal']
   }, {
     field: 'price',
     label: 'Price',
-    type: 'number',
-    numberType: 'double',
+    type: 'double',
     validation: {
       min: 0
+    }
+  }, {
+    field: 'id',
+    label: 'Identifier',
+    type: 'string',
+    placeholder: '____-____-____',
+    operators: ['equal', 'not_equal'],
+    validation: {
+      format: /^.{4}-.{4}-.{4}$/
     }
   }]
 });

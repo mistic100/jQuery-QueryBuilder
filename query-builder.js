@@ -5,6 +5,7 @@
  */
  /*
   * Dependencies :
+  *   - jQuery
   *   - Bootstrap CSS
   *   - MomentJS (optional)
   */
@@ -15,7 +16,10 @@
     // ===============================
     var types = [
             'string',
-            'number',
+            'integer',
+            'double',
+            'date',
+            'time',
             'datetime'
         ],
         inputs = [
@@ -23,30 +27,6 @@
             'radio',
             'checkbox',
             'select'
-        ],
-        numberTypes = [
-            'integer',
-            'double'
-        ],
-        operators = [
-            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'begins_with',      accept_values: true,  apply_to: ['string']},
-            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string']},
-            {type: 'contains',         accept_values: true,  apply_to: ['string']},
-            {type: 'not_contains',     accept_values: true,  apply_to: ['string']},
-            {type: 'ends_with',        accept_values: true,  apply_to: ['string']},
-            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string']},
-            {type: 'is_empty',         accept_values: false, apply_to: ['string']},
-            {type: 'is_not_empty',     accept_values: false, apply_to: ['string']},
-            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime']},
-            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime']}
         ];
 
 
@@ -60,6 +40,7 @@
         this.settings = $.extend(true, {}, QueryBuilder.DEFAULTS, options);
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
+        this.operators = this.settings.operators;
         this.status = { group_id: 0, rule_id: 0, generatedId: false };
 
         // ensure we have an container id
@@ -80,6 +61,10 @@
             if (!filter.field) {
                 $.error('Missing filter field: '+ i);
             }
+            if (definedFilters.indexOf(filter.field) != -1) {
+                $.error('Filter already defined: '+ filter.field);
+            }
+            definedFilters.push(filter.field);
             
             if (!filter.type) {
                 $.error('Missing filter type: '+ filter.field);
@@ -99,24 +84,20 @@
                 filter.label = filter.field;
             }
 
-            if (definedFilters.indexOf(filter.field) != -1) {
-                $.error('Filter already defined: '+ filter.field);
-            }
-            definedFilters.push(filter.field);
-
             switch (filter.type) {
-                case 'number':
-                    if (!filter.numberType) {
-                        filter.numberType = 'integer';
-                    }
-                    else if (numberTypes.indexOf(filter.numberType) == -1) {
-                        $.error('Invalid numberType: '+ filter.numberType);
-                    }
-                    break;
+              case 'string':
+                filter.internalType = 'string';
+                break;
+              case 'integer': case 'double':
+                filter.internalType = 'number';
+                break;
+              case 'date': case 'time': case 'datetime':
+                filter.internalType = 'datetime';
+                break;
             }
 
             switch (filter.input) {
-                case 'radio': case 'checkbox': case 'select':
+                case 'radio': case 'checkbox':
                     if (!filter.values || filter.values.length < 1) {
                         $.error('Missing values for filter: '+ filter.field);
                     }
@@ -149,7 +130,7 @@
             var $this = $(this),
                 $rule = $this.closest('li');
 
-            that.updateRuleInput($rule, $this.val());
+            that.updateRuleOperator($rule, $this.val());
         });
 
         // add rule button
@@ -169,7 +150,7 @@
         });
 
         // delete rule button
-        this.$el.on('click', '[data-delete=rule]', function() {
+        this.$el.on('click.queryBuilder', '[data-delete=rule]', function() {
             var $this = $(this),
                 $rule = $this.closest('li');
 
@@ -190,9 +171,11 @@
     };
 
     QueryBuilder.DEFAULTS = {
-        filters: [],
+        onValidationError: null,
+        onAfterAddGroup: null,
+        onAfterAddRule: null,
         
-        excludedOperators: [],
+        filters: [],
 
         lang: {
             add_rule: 'Add rule',
@@ -202,6 +185,8 @@
 
             and_condition: 'AND',
             or_condition: 'OR',
+            
+            filter_select_placeholder: '------',
 
             operator_equal: 'equal',
             operator_not_equal: 'not equal',
@@ -221,7 +206,28 @@
             operator_is_not_empty: 'is not empty',
             operator_is_null: 'is null',
             operator_is_not_null: 'is not null'
-        }
+        },
+        
+        operators: [
+            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'begins_with',      accept_values: true,  apply_to: ['string']},
+            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string']},
+            {type: 'contains',         accept_values: true,  apply_to: ['string']},
+            {type: 'not_contains',     accept_values: true,  apply_to: ['string']},
+            {type: 'ends_with',        accept_values: true,  apply_to: ['string']},
+            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string']},
+            {type: 'is_empty',         accept_values: false, apply_to: ['string']},
+            {type: 'is_not_empty',     accept_values: false, apply_to: ['string']},
+            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime']},
+            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime']}
+        ]
     };
 
     // expose setDefaults static method
@@ -308,6 +314,10 @@
                             that.triggerValidationError(valid, filter, operator, value, $rule);
                             return {};
                         }
+                    
+                        if (filter.valueParser) {
+                            value = filter.valueParser.call(this, value, filter, operator);
+                        }
                     }
 
                     var rule = {
@@ -317,10 +327,6 @@
                         operator: operator.type,
                         value: value
                     };
-
-                    if (filter.type == 'number') {
-                        rule.numberType = filter.numberType;
-                    }
 
                     out.rules.push(rule);
                 }
@@ -351,17 +357,20 @@
             that = this;
 
         (function add(data, $container){
-            var group_id = that.addGroup($container, false),
-                $group = $('#'+ group_id),
+            var $group = that.addGroup($container, false),
                 $ul = $group.find('>dd>ul'),
                 $buttons = $group.find('>dt input[name$=_cond]');
+                
+            if (!data.condition) {
+                data.condition = 'AND';
+            }
 
             $buttons.filter('[value=AND]').prop('checked', data.condition.toUpperCase() == 'AND');
             $buttons.filter('[value=OR]').prop('checked', data.condition.toUpperCase() == 'OR');
             $buttons.trigger('change');
 
             $.each(data.rules, function(i, rule) {
-                if (rule.rules) {
+                if (rule.rules && rule.rules.length>0) {
                     add(rule, $ul);
                 }
                 else {
@@ -369,14 +378,13 @@
                         $.error('Missing rule field');
                     }
                     if (!rule.value) {
-                        $.error('Missing rule value');
+                        rule.value = '';
                     }
                     if (!rule.operator) {
                         rule.operator = 'equal';
                     }
 
-                    var rule_id = that.addRule($ul),
-                        $rule = $('#'+ rule_id),
+                    var $rule = that.addRule($ul),
                         filter = that.getFilterByField(rule.field),
                         $value = $rule.find('.rule-value-container');
 
@@ -405,6 +413,10 @@
                             $value.find('input[name$=_value]').val(rule.value).trigger('change');
                             break;
                     }
+                    
+                    if (filter.onAfterSetValue) {
+                        filter.onAfterSetValue.call(this, $rule, rule.value, filter, rule.operator);
+                    }
                 }
             });
 
@@ -418,7 +430,7 @@
      * Add a new rules group
      * @param container {jQuery} (parent <li>)
      * @param addRule {bool} (optional - add a default empty rule)
-     * @return group_id {string}
+     * @return $group {jQuery}
      */
     QueryBuilder.prototype.addGroup = function(container, addRule) {
         addRule = (addRule == null) ? true : addRule;
@@ -435,19 +447,21 @@
 
         var $group = container.find('#'+ group_id);
 
-        //$group.find('>dt [data-toggle=buttons]').button();
+        if (this.settings.onAfterAddGroup) {
+            this.settings.onAfterAddGroup.call(this, $group);
+        }
 
         if (addRule) {
             this.addRule($group.find('>dd>ul'));
         }
 
-        return group_id;
+        return $group;
     };
 
     /**
      * Add a new rule
      * @param container {jQuery} (parent <ul>)
-     * @return rule_id {string}
+     * @return $rule {jQuery}
      */
     QueryBuilder.prototype.addRule = function(container) {
         var h = '',
@@ -461,8 +475,14 @@
         h+= '</li>';
 
         container.append(h);
+        
+        var $rule = container.find('#'+ rule_id);
+        
+        if (this.settings.onAfterAddRule) {
+            this.settings.onAfterAddRule.call(this, $rule);
+        }
 
-        return rule_id;
+        return $rule;
     };
 
     /**
@@ -528,58 +548,73 @@
                 break;
 
             case 'select':
-                h+= '<select name="'+ rule_id +'_value">';
-                $.each(filter.values, function(key, val) {
-                    h+= '<option value="'+ key +'"> '+ val +'</option> ';
-                });
+                h+= '<select name="'+ rule_id +'_value"';
+                if (filter.multiple) {
+                    h+= ' multiple';
+                }
+                h+= '>';
+                if (filter.values) {
+                    $.each(filter.values, function(key, val) {
+                        h+= '<option value="'+ key +'"> '+ val +'</option> ';
+                    });
+                }
                 h+= '</select>';
                 break;
 
             case 'text': default:
-                switch (filter.type) {
+                switch (filter.internalType) {
                     case 'number':
                         h+= '<input type="number" name="'+ rule_id +'_value"';
                         if (validation.step) h+= ' step="'+ validation.step +'"';
                         if (validation.min) h+= ' min="'+ validation.min +'"';
                         if (validation.max) h+= ' max="'+ validation.max +'"';
+                        if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
                         h+= '>';
                         break;
 
                     case 'datetime': case 'text': default:
                         h+= '<input type="text" name="'+ rule_id +'_value"';
-                        if (validation.format) h+= ' placeholder="'+ validation.format +'"';
+                        if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
                         h+= '>';
                 }
         }
 
         $value_container.html(h).show();
+        
+        if (filter.onAfterCreateRuleInput) {
+            filter.onAfterCreateRuleInput.call(this, $rule, filter);
+        }
 
         // init external jquery plugin
         if (filter.plugin) {
-            $value_container.find('input')[filter.plugin](filter.plugin_config || {});
+            $value_container.find(filter.input=='select' ? 'select' : 'input')[filter.plugin](filter.plugin_config || {});
         }
     };
 
     /**
-     * Update main <input> for a rule
+     * Update main <input> visibility when rule operator changes
      * @param $rule {jQuery} (<li> element)
      * @param operatorType {string}
      */
-    QueryBuilder.prototype.updateRuleInput = function($rule, operatorType) {
+    QueryBuilder.prototype.updateRuleOperator = function($rule, operatorType) {
         var $value_container = $rule.find('.rule-value-container'),
-            rule_id = $rule.attr('id');
+            filter = this.getFilterByField(this.getRuleFilter($rule));
 
         var operator = this.getOperator(operatorType);
 
         if (!operator.accept_values) {
             $value_container.hide();
-            return;
         }
+        else {
+            $value_container.show();
 
-        $value_container.show();
-
-        if ($value_container.is(':empty')) {
-            this.createRuleInput($rule, this.getRulefilter($rule));
+            if ($value_container.is(':empty')) {
+                this.createRuleInput($rule, this.getRulefilter($rule));
+            }
+        }
+        
+        if (filter.onAfterChangeOperator) {
+            filter.onAfterChangeOperator.call(this, $rule, filter, operator.type);
         }
     };
 
@@ -656,7 +691,7 @@
     QueryBuilder.prototype.getRuleFilterSelect = function(rule_id) {
         var h = '';
         h+= '<select name="'+ rule_id +'_filter">';
-        h+= '<option value="-1">------</option>';
+        h+= '<option value="-1">'+ this.lang.filter_select_placeholder +'</option>';
 
         $.each(this.filters, function(i, filter) {
             h+= '<option value="'+ filter.field +'">'+ filter.label +'</option>';
@@ -670,6 +705,13 @@
      * Trigger a validation error event with custom params
      */
     QueryBuilder.prototype.triggerValidationError = function(error, filter, operator, value, $rule) {
+        if (filter.onValidationError) {
+            filter.onValidationError.call(this, $rule, error, value, filter, operator);
+        }
+        if (this.settings.onValidationError) {
+            this.settings.onValidationError.call(this, $rule, value, error, filter, operator);
+        }
+        
         var e = jQuery.Event('validationError.queryBuilder', {
             error: error,
             filter: filter,
@@ -695,21 +737,22 @@
             filter = this.getFilterByField(filter);
         }
 
-        var res = [],
-            excludedOperators = filter.excludedOperators || [];
+        var res = [];
 
-        for (var i=0, l=operators.length; i<l; i++) {
-            if (
-              this.settings.excludedOperators.indexOf(operators[i].type) != -1
-              || excludedOperators.indexOf(operators[i].type) != -1
-              || operators[i].apply_to.indexOf(filter.type) == -1
-            ) {
+        for (var i=0, l=this.operators.length; i<l; i++) {
+            if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
                 continue;
+            }
+            
+            if (filter.operators) {
+                if (filter.operators.indexOf(this.operators[i].type) == -1) {
+                    continue;
+                }
             }
 
             res.push({
-                type: operators[i].type,
-                label: this.lang['operator_'+operators[i].type]
+                type: this.operators[i].type,
+                label: this.lang['operator_'+this.operators[i].type]
             });
         }
 
@@ -737,9 +780,9 @@
      * @return {object}
      */
     QueryBuilder.prototype.getOperator = function(type) {
-        for (var i=0, l=operators.length; i<l; i++) {
-            if (operators[i].type == type) {
-                return operators[i];
+        for (var i=0, l=this.operators.length; i<l; i++) {
+            if (this.operators[i].type == type) {
+                return this.operators[i];
             }
         }
 
@@ -773,33 +816,42 @@
     QueryBuilder.prototype.getRuleValue = function($rule, filter) {
         filter = filter || this.getFilterByType(this.getRulefilter($rule));
 
-        var out;
+        var out,
+            $value = $rule.find('.rule-value-container');
 
         switch (filter.input) {
             case 'radio':
-                out = $rule.find('.rule-value-container input[name$=_value]:checked').val();
+                out = $value.find('input[name$=_value]:checked').val();
                 break;
 
             case 'checkbox':
                 out = [];
-                $rule.find('.rule-value-container input[name$=_value]:checked').each(function() {
+                $value.find('input[name$=_value]:checked').each(function() {
                     out.push($(this).val());
                 });
                 break;
 
             case 'select':
-                out = $rule.find('.rule-value-container select[name$=_value] option:selected').val();
+                if (filter.multiple) {
+                    out = [];
+                    $value.find('select[name$=_value] option:selected').each(function() {
+                        out.push($(this).val());
+                    });
+                }
+                else {
+                    out = $value.find('select[name$=_value] option:selected').val();
+                }
                 break;
 
             case 'text': default:
-                out = $.trim($rule.find('.rule-value-container input[name$=_value]').val());
+                out = $value.find('input[name$=_value]').val();
         }
 
         return out;
     };
 
     /**
-     * Check if a valu is correct for a filter
+     * Check if a value is correct for a filter
      * @param value {string|string[]|undefined}
      * @param filter {object}
      * @return {string|true}
@@ -825,19 +877,46 @@
                 break;
 
             case 'select':
+                if (filter.multiple) {
+                    if (value.length == 0) {
+                        return 'select_empty';
+                    }
+                }
+                else {
+                    if (value == undefined) {
+                        return 'select_empty';
+                    }
+                }
                 break;
 
             case 'text': default:
-                if (value.length == 0) {
-                    return 'text_empty';
-                }
-
-                switch (filter.type) {
+                switch (filter.internalType) {
+                    case 'string':
+                        if (validation.min != undefined) {
+                            if (value.length < validation.min) {
+                                return 'string_exceed_min_length';
+                            }
+                        }
+                        else if (value.length == 0) {
+                            return 'string_empty';
+                        }
+                        if (validation.max != undefined) {
+                            if (value.length > validation.max) {
+                                return 'string_exceed_max_length';
+                            }
+                        }
+                        if (validation.format) {
+                            if (!(validation.format.test(value))) {
+                                return 'string_invalid_format';
+                            }
+                        }
+                        break;
+                        
                     case 'number':
                         if (isNaN(value)) {
                             return 'number_nan';
                         }
-                        if (filter.numberType == 'integer') {
+                        if (filter.type == 'integer') {
                             if (parseInt(value) != value) {
                                 return 'number_not_integer';
                             }
@@ -860,6 +939,7 @@
                         break;
 
                     case 'datetime':
+                        // we need MomentJS
                         if (window.moment) {
                             if (validation.format) {
                                 var datetime = moment(value, validation.format);
