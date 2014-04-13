@@ -282,7 +282,7 @@
               <td>operators</td>
               <td>array</td>
               <td>[]</td>
-              <td>Array of operators to use for this filter. If empty the filter will use all operators.</td>
+              <td>Array of operators types to use for this filter. If empty the filter will use all applicable operators.</td>
             </tr>
             <tr>
               <td>plugin</td>
@@ -324,7 +324,6 @@
                   <li><code>filter</code></li>
                   <li><code>operator</code></li>
                 </ul>
-                If a plugin is active on the filter, it is applied after this callback.
               </td>
             </tr>
             <tr>
@@ -430,7 +429,7 @@
           <tbody>
             <tr>
               <td>format</td>
-              <td>string</td>
+              <td>string|object</td>
               <td>
                 <ul>
                   <li>For <code>date</code>, <code>time</code>, <code>datetime</code>: a valid <a href="http://momentjs.com/docs/#/parsing/string-format/">MomentJS string format</a></li>
