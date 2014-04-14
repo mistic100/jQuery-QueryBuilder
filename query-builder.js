@@ -37,7 +37,12 @@
 
         // global variables
         this.$el = $el;
+
         this.settings = $.extend(true, {}, QueryBuilder.DEFAULTS, options);
+        if (options.operators) { // force array overwrite
+            this.settings.operators = options.operators.slice();
+        }
+
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
         this.operators = this.settings.operators;
