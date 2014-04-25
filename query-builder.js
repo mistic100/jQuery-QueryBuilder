@@ -37,12 +37,7 @@
 
         // global variables
         this.$el = $el;
-
         this.settings = $.extend(true, {}, QueryBuilder.DEFAULTS, options);
-        if (options.operators) { // force array overwrite
-            this.settings.operators = options.operators.slice();
-        }
-
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
         this.operators = this.settings.operators;
@@ -60,67 +55,19 @@
             $.error('Missing filters list');
         }
 
-        var definedFilters = [];
-
-        $.each(this.filters, function(i, filter) {
-            if (!filter.field) {
-                $.error('Missing filter field: '+ i);
-            }
-            if (definedFilters.indexOf(filter.field) != -1) {
-                $.error('Filter already defined: '+ filter.field);
-            }
-            definedFilters.push(filter.field);
-            
-            if (!filter.type) {
-                $.error('Missing filter type: '+ filter.field);
-            }
-            if (types.indexOf(filter.type) == -1) {
-                $.error('Invalid type: '+ filter.type);
-            }
-            
-            if (!filter.input) {
-                filter.input = 'text';
-            }
-            else if (inputs.indexOf(filter.input) == -1) {
-                $.error('Invalid input: '+ filter.input);
-            }
-            
-            if (!filter.label) {
-                filter.label = filter.field;
-            }
-
-            switch (filter.type) {
-              case 'string':
-                filter.internalType = 'string';
-                break;
-              case 'integer': case 'double':
-                filter.internalType = 'number';
-                break;
-              case 'date': case 'time': case 'datetime':
-                filter.internalType = 'datetime';
-                break;
-            }
-
-            switch (filter.input) {
-                case 'radio': case 'checkbox':
-                    if (!filter.values || filter.values.length < 1) {
-                        $.error('Missing values for filter: '+ filter.field);
-                    }
-                    break;
-            }
-        });
+        this.checkFilters();
 
         // EVENTS
         // group condition change
         this.$el.on('change.queryBuilder', '.rules-group-header input[name$=_cond]', function() {
             var $this = $(this);
-            
+
             if ($this.is(':checked')) {
                 $this.parent().addClass('active');
                 $this.parent().siblings().removeClass('active');
             }
         });
-        
+
         // rule filter change
         this.$el.on('change.queryBuilder', '.rule-filter-container select[name$=_filter]', function() {
             var $this = $(this),
@@ -179,7 +126,7 @@
         onValidationError: null,
         onAfterAddGroup: null,
         onAfterAddRule: null,
-        
+
         filters: [],
 
         lang: {
@@ -190,7 +137,7 @@
 
             and_condition: 'AND',
             or_condition: 'OR',
-            
+
             filter_select_placeholder: '------',
 
             operator_equal: 'equal',
@@ -212,7 +159,7 @@
             operator_is_null: 'is null',
             operator_is_not_null: 'is not null'
         },
-        
+
         operators: [
             {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime']},
             {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime']},
@@ -309,7 +256,7 @@
                     var filter = that.getFilterByField(filterField),
                         operator = that.getOperator(that.getRuleOperator($rule)),
                         value = null;
-                        
+
                     if (operator.accept_values) {
                         value = that.getRuleValue($rule, filter);
                         var valid = that.validateValue(value, filter);
@@ -319,7 +266,7 @@
                             that.triggerValidationError(valid, filter, operator, value, $rule);
                             return {};
                         }
-                    
+
                         if (filter.valueParser) {
                             value = filter.valueParser.call(this, value, filter, operator);
                         }
@@ -340,9 +287,12 @@
                     if (!$.isEmptyObject(rule)) {
                         out.rules.push(rule);
                     }
+                    else {
+                        return {};
+                    }
                 }
             }
-            
+
             if (out.rules.length == 0) {
                 return {};
             }
@@ -365,7 +315,7 @@
             var $group = that.addGroup($container, false),
                 $ul = $group.find('>dd>ul'),
                 $buttons = $group.find('>dt input[name$=_cond]');
-                
+
             if (!data.condition) {
                 data.condition = 'AND';
             }
@@ -418,7 +368,7 @@
                             $value.find('input[name$=_value]').val(rule.value).trigger('change');
                             break;
                     }
-                    
+
                     if (filter.onAfterSetValue) {
                         filter.onAfterSetValue.call(this, $rule, rule.value, filter, rule.operator);
                     }
@@ -431,6 +381,61 @@
 
     // MAIN METHODS
     // ===============================
+    /**
+     * Checks the configuration of each filter
+     */
+    QueryBuilder.prototype.checkFilters = function() {
+        var definedFilters = [];
+
+        $.each(this.filters, function(i, filter) {
+            if (!filter.field) {
+                $.error('Missing filter field: '+ i);
+            }
+            if (definedFilters.indexOf(filter.field) != -1) {
+                $.error('Filter already defined: '+ filter.field);
+            }
+            definedFilters.push(filter.field);
+
+            if (!filter.type) {
+                $.error('Missing filter type: '+ filter.field);
+            }
+            if (types.indexOf(filter.type) == -1) {
+                $.error('Invalid type: '+ filter.type);
+            }
+
+            if (!filter.input) {
+                filter.input = 'text';
+            }
+            else if (inputs.indexOf(filter.input) == -1) {
+                $.error('Invalid input: '+ filter.input);
+            }
+
+            if (!filter.label) {
+                filter.label = filter.field;
+            }
+
+            switch (filter.type) {
+                case 'string':
+                    filter.internalType = 'string';
+                    break;
+                case 'integer': case 'double':
+                    filter.internalType = 'number';
+                    break;
+                case 'date': case 'time': case 'datetime':
+                    filter.internalType = 'datetime';
+                    break;
+            }
+
+            switch (filter.input) {
+                case 'radio': case 'checkbox':
+                    if (!filter.values || filter.values.length < 1) {
+                        $.error('Missing values for filter: '+ filter.field);
+                    }
+                    break;
+            }
+        });
+    };
+
     /**
      * Add a new rules group
      * @param container {jQuery} (parent <li>)
@@ -480,9 +485,9 @@
         h+= '</li>';
 
         container.append(h);
-        
+
         var $rule = container.find('#'+ rule_id);
-        
+
         if (this.settings.onAfterAddRule) {
             this.settings.onAfterAddRule.call(this, $rule);
         }
@@ -585,7 +590,7 @@
         }
 
         $value_container.html(h).show();
-        
+
         if (filter.onAfterCreateRuleInput) {
             filter.onAfterCreateRuleInput.call(this, $rule, filter);
         }
@@ -617,7 +622,7 @@
                 this.createRuleInput($rule, this.getRulefilter($rule));
             }
         }
-        
+
         if (filter.onAfterChangeOperator) {
             filter.onAfterChangeOperator.call(this, $rule, filter, operator.type);
         }
@@ -705,7 +710,7 @@
         h+= '</select>';
         return h;
     };
-    
+
     /**
      * Trigger a validation error event with custom params
      */
@@ -716,7 +721,7 @@
         if (this.settings.onValidationError) {
             this.settings.onValidationError.call(this, $rule, value, error, filter, operator);
         }
-        
+
         var e = jQuery.Event('validationError.queryBuilder', {
             error: error,
             filter: filter,
@@ -725,7 +730,7 @@
             targetRule: $rule[0],
             builder: this
         });
-        
+
         this.$el.trigger(e);
     };
 
@@ -748,7 +753,7 @@
             if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
                 continue;
             }
-            
+
             if (filter.operators) {
                 if (filter.operators.indexOf(this.operators[i].type) == -1) {
                     continue;
@@ -863,11 +868,11 @@
      */
     QueryBuilder.prototype.validateValue = function(value, filter) {
         var validation = filter.validation || {};
-        
+
         if (validation.callback) {
             return validation.callback.call(this, value, filter);
         }
-        
+
         switch (filter.input) {
             case 'radio':
                 if (value == undefined) {
@@ -916,7 +921,7 @@
                             }
                         }
                         break;
-                        
+
                     case 'number':
                         if (isNaN(value)) {
                             return 'number_nan';
