@@ -32,7 +32,8 @@ $('#demo-builder').queryBuilder({
     label: 'Price',
     type: 'double',
     validation: {
-      min: 0
+      min: 0,
+      step: 0.01
     }
   }, {
     field: 'id',
