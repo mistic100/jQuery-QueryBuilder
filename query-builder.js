@@ -128,7 +128,6 @@
         onAfterAddRule: null,
 
         filters: [],
-        uniqueFields: true,
 
         lang: {
             add_rule: 'Add rule',
@@ -248,13 +247,13 @@
                 var $rule = $elements.eq(i);
 
                 if ($rule.hasClass('rule-container')) {
-                    var filterField = that.getRuleFilter($rule);
+                    var filterId = that.getRuleFilter($rule);
 
-                    if (filterField == '-1') {
+                    if (filterId == '-1') {
                         continue;
                     }
 
-                    var filter = that.getFilterByField(filterField),
+                    var filter = that.getFilterById(filterId),
                         operator = that.getOperator(that.getRuleOperator($rule)),
                         value = null;
 
@@ -274,6 +273,7 @@
                     }
 
                     var rule = {
+                        id: filter.id,
                         field: filter.field,
                         type: filter.type,
                         input: filter.input,
@@ -330,8 +330,8 @@
                     add(rule, $ul);
                 }
                 else {
-                    if (!rule.field) {
-                        $.error('Missing rule field');
+                    if (!rule.id) {
+                        $.error('Missing rule field id');
                     }
                     if (!rule.value) {
                         rule.value = '';
@@ -341,10 +341,10 @@
                     }
 
                     var $rule = that.addRule($ul),
-                        filter = that.getFilterByField(rule.field),
+                        filter = that.getFilterById(rule.id),
                         $value = $rule.find('.rule-value-container');
 
-                    $rule.find('.rule-filter-container select[name$=_filter]').val(rule.field).trigger('change');
+                    $rule.find('.rule-filter-container select[name$=_filter]').val(rule.id).trigger('change');
                     $rule.find('.rule-operator-container select[name$=_operator]').val(rule.operator).trigger('change');
 
                     switch (filter.input) {
@@ -390,19 +390,16 @@
             that = this;
 
         $.each(this.filters, function(i, filter) {
-            if (!filter.field) {
-                $.error('Missing filter field: '+ i);
+            if (!filter.id) {
+                $.error('Missing filter id: '+ i);
             }
-
-            if (that.settings.uniqueField) {
-                if (definedFilters.indexOf(filter.field) != -1) {
-                    $.error('Filter already defined: '+ filter.field);
-                }
-                definedFilters.push(filter.field);
+            if (definedFilters.indexOf(filter.id) != -1) {
+                $.error('Filter already defined: '+ filter.id);
             }
+            definedFilters.push(filter.id);
 
             if (!filter.type) {
-                $.error('Missing filter type: '+ filter.field);
+                $.error('Missing filter type: '+ filter.id);
             }
             if (types.indexOf(filter.type) == -1) {
                 $.error('Invalid type: '+ filter.type);
@@ -415,6 +412,9 @@
                 $.error('Invalid input: '+ filter.input);
             }
 
+            if (!filter.field) {
+                filter.field = filter.id;
+            }
             if (!filter.label) {
                 filter.label = filter.field;
             }
@@ -434,7 +434,7 @@
             switch (filter.input) {
                 case 'radio': case 'checkbox':
                     if (!filter.values || filter.values.length < 1) {
-                        $.error('Missing values for filter: '+ filter.field);
+                        $.error('Missing values for filter: '+ filter.id);
                     }
                     break;
             }
@@ -489,17 +489,17 @@
     /**
      * Create operators <select> for a rule
      * @param $rule {jQuery} (<li> element)
-     * @param filterField {string}
+     * @param filterId {string}
      */
-    QueryBuilder.prototype.createRuleOperators = function($rule, filterField) {
+    QueryBuilder.prototype.createRuleOperators = function($rule, filterId) {
         var $operator_container = $rule.find('.rule-operator-container').empty(),
             rule_id = $rule.attr('id');
 
-        if (filterField == '-1') {
+        if (filterId == '-1') {
             return;
         }
 
-        var operators = this.getOperators(filterField),
+        var operators = this.getOperators(filterId),
             h = this.getRuleOperatorSelect(rule_id, operators);
 
         $rule.find('.rule-operator-container').html(h);
@@ -508,10 +508,10 @@
     /**
      * Create main <input> for a rule
      * @param $rule {jQuery} (<li> element)
-     * @param filterField {string}
+     * @param filterId {string}
      */
-    QueryBuilder.prototype.createRuleInput = function($rule, filterField) {
-        if (filterField == '-1') {
+    QueryBuilder.prototype.createRuleInput = function($rule, filterId) {
+        if (filterId == '-1') {
             return;
         }
 
@@ -523,7 +523,7 @@
             return;
         }
 
-        var filter = this.getFilterByField(filterField),
+        var filter = this.getFilterById(filterId),
             h = this.getRuleInput(rule_id, filter);
 
         $value_container.html(h).show();
@@ -545,7 +545,7 @@
      */
     QueryBuilder.prototype.updateRuleOperator = function($rule, operatorType) {
         var $value_container = $rule.find('.rule-value-container'),
-            filter = this.getFilterByField(this.getRuleFilter($rule));
+            filter = this.getFilterById(this.getRuleFilter($rule));
 
         var operator = this.getOperator(operatorType);
 
@@ -651,6 +651,12 @@
                                 return 'number_exceed_max';
                             }
                         }
+                        if (validation.step) {
+                            var v = value/validation.step;
+                            if (parseInt(v) != v) {
+                                return 'number_wrong_step';
+                            }
+                        }
                         break;
 
                     case 'datetime':
@@ -744,12 +750,12 @@
 
     /**
      * Returns the operators for a filter
-     * @param filter {string|object} (filter field name or filter object)
+     * @param filter {string|object} (filter id name or filter object)
      * @return {object[]}
      */
     QueryBuilder.prototype.getOperators = function(filter) {
         if (typeof filter == 'string') {
-            filter = this.getFilterByField(filter);
+            filter = this.getFilterById(filter);
         }
 
         var res = [];
@@ -775,18 +781,18 @@
     };
 
     /**
-     * Returns a particular filter by its field name
-     * @param filterField {string}
+     * Returns a particular filter by its id
+     * @param filterId {string}
      * @return {object}
      */
-    QueryBuilder.prototype.getFilterByField = function(filterField) {
+    QueryBuilder.prototype.getFilterById = function(filterId) {
         for (var i=0, l=this.filters.length; i<l; i++) {
-            if (this.filters[i].field == filterField) {
+            if (this.filters[i].id == filterId) {
                 return this.filters[i];
             }
         }
 
-        throw 'Undefined filter: '+ filterField;
+        throw 'Undefined filter: '+ filterId;
     };
 
     /**
@@ -922,7 +928,7 @@
         h+= '<option value="-1">'+ this.lang.filter_select_placeholder +'</option>';
 
         $.each(this.filters, function(i, filter) {
-            h+= '<option value="'+ filter.field +'">'+ filter.label +'</option>';
+            h+= '<option value="'+ filter.id +'">'+ filter.label +'</option>';
         });
 
         h+= '</select>';
