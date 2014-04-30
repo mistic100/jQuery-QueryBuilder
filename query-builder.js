@@ -128,6 +128,7 @@
         onAfterAddRule: null,
 
         filters: [],
+        uniqueFields: true,
 
         lang: {
             add_rule: 'Add rule',
@@ -385,16 +386,20 @@
      * Checks the configuration of each filter
      */
     QueryBuilder.prototype.checkFilters = function() {
-        var definedFilters = [];
+        var definedFilters = [],
+            that = this;
 
         $.each(this.filters, function(i, filter) {
             if (!filter.field) {
                 $.error('Missing filter field: '+ i);
             }
-            if (definedFilters.indexOf(filter.field) != -1) {
-                $.error('Filter already defined: '+ filter.field);
+
+            if (that.settings.uniqueField) {
+                if (definedFilters.indexOf(filter.field) != -1) {
+                    $.error('Filter already defined: '+ filter.field);
+                }
+                definedFilters.push(filter.field);
             }
-            definedFilters.push(filter.field);
 
             if (!filter.type) {
                 $.error('Missing filter type: '+ filter.field);
@@ -445,15 +450,9 @@
     QueryBuilder.prototype.addGroup = function(container, addRule) {
         addRule = (addRule == null) ? true : addRule;
 
-        var h = '',
-            group_id = this.nextGroupId();
+        var group_id = this.nextGroupId();
 
-        h+= '<dl id='+ group_id +' class="rules-group-container">';
-          h+= '<dt class="rules-group-header">'+ this.getGroupHeader(group_id) +'</dt>';
-          h+= '<dd class=rules-group-body><ul class=rules-list></ul></dd>';
-        h+= '</dl>';
-
-        container.append(h);
+        container.append(this.getGroupTemplate(group_id));
 
         var $group = container.find('#'+ group_id);
 
@@ -474,17 +473,9 @@
      * @return $rule {jQuery}
      */
     QueryBuilder.prototype.addRule = function(container) {
-        var h = '',
-            rule_id = this.nextRuleId();
+        var rule_id = this.nextRuleId();
 
-        h+= '<li id='+ rule_id +' class="rule-container">';
-          h+= '<div class="rule-header">'+ this.getRuleHeader(rule_id) +'</div>';
-          h+= '<div class="rule-filter-container">'+ this.getRuleFilterSelect(rule_id) +'</div>';
-          h+= '<div class="rule-operator-container"></div>';
-          h+= '<div class="rule-value-container"></div>';
-        h+= '</li>';
-
-        container.append(h);
+        container.append(this.getRuleTemplate(rule_id));
 
         var $rule = container.find('#'+ rule_id);
 
@@ -508,14 +499,8 @@
             return;
         }
 
-        var h = '',
-            operators = this.getOperators(filterField);
-
-        h+= '<select name="'+ rule_id +'_operator">';
-        for (var i=0, l=operators.length; i<l; i++) {
-            h+= '<option value="'+ operators[i].type +'">'+ operators[i].label +'</option>';
-        }
-        h+= '</select>';
+        var operators = this.getOperators(filterField),
+            h = this.getRuleOperatorSelect(rule_id, operators);
 
         $rule.find('.rule-operator-container').html(h);
     };
@@ -526,68 +511,20 @@
      * @param filterField {string}
      */
     QueryBuilder.prototype.createRuleInput = function($rule, filterField) {
-        var $value_container = $rule.find('.rule-value-container').empty(),
-            rule_id = $rule.attr('id');
-
         if (filterField == '-1') {
             return;
         }
 
-        var filter = this.getFilterByField(filterField),
-            operator = this.getOperator(this.getRuleOperator($rule)),
-            validation = filter.validation || {},
-            h = '';
+        var $value_container = $rule.find('.rule-value-container').empty(),
+            rule_id = $rule.attr('id'),
+            operator = this.getOperator(this.getRuleOperator($rule));
 
         if (!operator.accept_values) {
             return;
         }
 
-        switch (filter.input) {
-            case 'radio':
-                var c = filter.vertical ? ' class=block' : '';
-                $.each(filter.values, function(key, val) {
-                    h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
-                });
-                break;
-
-            case 'checkbox':
-                var c = filter.vertical ? ' class=block' : '';
-                $.each(filter.values, function(key, val) {
-                    h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
-                });
-                break;
-
-            case 'select':
-                h+= '<select name="'+ rule_id +'_value"';
-                if (filter.multiple) {
-                    h+= ' multiple';
-                }
-                h+= '>';
-                if (filter.values) {
-                    $.each(filter.values, function(key, val) {
-                        h+= '<option value="'+ key +'"> '+ val +'</option> ';
-                    });
-                }
-                h+= '</select>';
-                break;
-
-            case 'text': default:
-                switch (filter.internalType) {
-                    case 'number':
-                        h+= '<input type="number" name="'+ rule_id +'_value"';
-                        if (validation.step) h+= ' step="'+ validation.step +'"';
-                        if (validation.min) h+= ' min="'+ validation.min +'"';
-                        if (validation.max) h+= ' max="'+ validation.max +'"';
-                        if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
-                        h+= '>';
-                        break;
-
-                    case 'datetime': case 'text': default:
-                        h+= '<input type="text" name="'+ rule_id +'_value"';
-                        if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
-                        h+= '>';
-                }
-        }
+        var filter = this.getFilterByField(filterField),
+            h = this.getRuleInput(rule_id, filter);
 
         $value_container.html(h).show();
 
@@ -629,6 +566,123 @@
     };
 
     /**
+     * Check if a value is correct for a filter
+     * @param value {string|string[]|undefined}
+     * @param filter {object}
+     * @return {string|true}
+     */
+    QueryBuilder.prototype.validateValue = function(value, filter) {
+        var validation = filter.validation || {};
+
+        if (validation.callback) {
+            return validation.callback.call(this, value, filter);
+        }
+
+        switch (filter.input) {
+            case 'radio':
+                if (value == undefined) {
+                    return 'radio_empty';
+                }
+                break;
+
+            case 'checkbox':
+                if (value.length == 0) {
+                    return 'checkbox_empty';
+                }
+                break;
+
+            case 'select':
+                if (filter.multiple) {
+                    if (value.length == 0) {
+                        return 'select_empty';
+                    }
+                }
+                else {
+                    if (value == undefined) {
+                        return 'select_empty';
+                    }
+                }
+                break;
+
+            case 'text': default:
+                switch (filter.internalType) {
+                    case 'string':
+                        if (validation.min != undefined) {
+                            if (value.length < validation.min) {
+                                return 'string_exceed_min_length';
+                            }
+                        }
+                        else if (value.length == 0) {
+                            return 'string_empty';
+                        }
+                        if (validation.max != undefined) {
+                            if (value.length > validation.max) {
+                                return 'string_exceed_max_length';
+                            }
+                        }
+                        if (validation.format) {
+                            if (!(validation.format.test(value))) {
+                                return 'string_invalid_format';
+                            }
+                        }
+                        break;
+
+                    case 'number':
+                        if (isNaN(value)) {
+                            return 'number_nan';
+                        }
+                        if (filter.type == 'integer') {
+                            if (parseInt(value) != value) {
+                                return 'number_not_integer';
+                            }
+                        }
+                        else {
+                            if (parseFloat(value) != value) {
+                                return 'number_not_double';
+                            }
+                        }
+                        if (validation.min != undefined) {
+                            if (value < validation.min) {
+                                return 'number_exceed_min';
+                            }
+                        }
+                        if (validation.max != undefined) {
+                            if (value > validation.max) {
+                                return 'number_exceed_max';
+                            }
+                        }
+                        break;
+
+                    case 'datetime':
+                        // we need MomentJS
+                        if (window.moment) {
+                            if (validation.format) {
+                                var datetime = moment(value, validation.format);
+                                if (!datetime.isValid()) {
+                                    return 'datetime_invalid';
+                                }
+                                else {
+                                    if (validation.min) {
+                                        if (datetime < moment(validation.min, validation.format)) {
+                                            return 'datetime_exceed_min';
+                                        }
+                                    }
+                                    if (validation.max) {
+                                        if (datetime > moment(validation.max, validation.format)) {
+                                            return 'datetime_exceed_max';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                }
+        }
+
+        return true;
+    };
+
+    /**
      * Add CSS for rule error
      * @param $rule {jQuery} (<li> element)
      * @param status {bool}
@@ -640,75 +694,6 @@
         else {
             $rule.removeClass('has-error');
         }
-    };
-
-
-    // HELPERS
-    // ===============================
-    /**
-     * Returns an incremented group ID
-     * @return {string}
-     */
-    QueryBuilder.prototype.nextGroupId = function() {
-        var ret = this.$el_id + '_group_' + this.status.group_id;
-        this.status.group_id++;
-        return ret;
-    };
-
-    /**
-     * Returns an incremented rule ID
-     * @return {string}
-     */
-    QueryBuilder.prototype.nextRuleId = function() {
-        var ret = this.$el_id + '_rule_' + this.status.rule_id;
-        this.status.rule_id++;
-        return ret;
-    };
-
-    /**
-     * Returns group header HTML
-     * @param group_id {string}
-     * @return {string}
-     */
-    QueryBuilder.prototype.getGroupHeader = function(group_id) {
-        return '<div class="btn-group"> \
-          <label class="btn btn-xs btn-primary active"><input type="radio" name="'+ group_id +'_cond" value="AND" checked> '+ this.lang.and_condition +'</label> \
-          <label class="btn btn-xs btn-primary"><input type="radio" name="'+ group_id +'_cond" value="OR"> '+ this.lang.or_condition +'</label> \
-        </div> \
-        <div class="btn-group pull-right"> \
-          <button class="btn btn-xs btn-success" data-add="rule"><i class="glyphicon glyphicon-plus"></i> '+ this.lang.add_rule +'</button> \
-          <button class="btn btn-xs btn-success" data-add="group"><i class="glyphicon glyphicon-plus-sign"></i> '+ this.lang.add_group +'</button> \
-          <button class="btn btn-xs btn-danger" data-delete="group"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_group +'</button> \
-        </div>';
-    };
-
-    /**
-     * Returns rule header HTML
-     * @param rule_id {string}
-     * @return {string}
-     */
-    QueryBuilder.prototype.getRuleHeader = function(rule_id) {
-        return '<div class="btn-group pull-right"> \
-          <button class="btn btn-xs btn-danger" data-delete="rule"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_rule +'</button> \
-        </div>';
-    };
-
-    /**
-     * Returns rule filter <select> HTML
-     * @param rule_id {string}
-     * @return {string}
-     */
-    QueryBuilder.prototype.getRuleFilterSelect = function(rule_id) {
-        var h = '';
-        h+= '<select name="'+ rule_id +'_filter">';
-        h+= '<option value="-1">'+ this.lang.filter_select_placeholder +'</option>';
-
-        $.each(this.filters, function(i, filter) {
-            h+= '<option value="'+ filter.field +'">'+ filter.label +'</option>';
-        });
-
-        h+= '</select>';
-        return h;
     };
 
     /**
@@ -735,8 +720,28 @@
     };
 
 
-    // VARIOUS DATA ACCESS
+    // DATA ACCESS
     // ===============================
+    /**
+     * Returns an incremented group ID
+     * @return {string}
+     */
+    QueryBuilder.prototype.nextGroupId = function() {
+        var ret = this.$el_id + '_group_' + this.status.group_id;
+        this.status.group_id++;
+        return ret;
+    };
+
+    /**
+     * Returns an incremented rule ID
+     * @return {string}
+     */
+    QueryBuilder.prototype.nextRuleId = function() {
+        var ret = this.$el_id + '_rule_' + this.status.rule_id;
+        this.status.rule_id++;
+        return ret;
+    };
+
     /**
      * Returns the operators for a filter
      * @param filter {string|object} (filter field name or filter object)
@@ -860,121 +865,141 @@
         return out;
     };
 
-    /**
-     * Check if a value is correct for a filter
-     * @param value {string|string[]|undefined}
-     * @param filter {object}
-     * @return {string|true}
-     */
-    QueryBuilder.prototype.validateValue = function(value, filter) {
-        var validation = filter.validation || {};
 
-        if (validation.callback) {
-            return validation.callback.call(this, value, filter);
+    // TEMPLATES
+    // ===============================
+    /**
+     * Returns group HTML
+     * @param group_id {string}
+     * @return {string}
+     */
+    QueryBuilder.prototype.getGroupTemplate = function(group_id) {
+        return '\
+<dl id='+ group_id +' class="rules-group-container"> \
+  <dt class="rules-group-header"> \
+    <div class="btn-group"> \
+      <label class="btn btn-xs btn-primary active"><input type="radio" name="'+ group_id +'_cond" value="AND" checked> '+ this.lang.and_condition +'</label> \
+      <label class="btn btn-xs btn-primary"><input type="radio" name="'+ group_id +'_cond" value="OR"> '+ this.lang.or_condition +'</label> \
+    </div> \
+    <div class="btn-group pull-right"> \
+      <button class="btn btn-xs btn-success" data-add="rule"><i class="glyphicon glyphicon-plus"></i> '+ this.lang.add_rule +'</button> \
+      <button class="btn btn-xs btn-success" data-add="group"><i class="glyphicon glyphicon-plus-sign"></i> '+ this.lang.add_group +'</button> \
+      <button class="btn btn-xs btn-danger" data-delete="group"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_group +'</button> \
+    </div> \
+  </dt> \
+  <dd class=rules-group-body> \
+    <ul class=rules-list></ul> \
+  </dd> \
+</dl>';
+    };
+
+    /**
+     * Returns rule HTML
+     * @param rule_id {string}
+     * @return {string}
+     */
+    QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
+        return '\
+<li id='+ rule_id +' class="rule-container"> \
+  <div class="rule-header"> \
+    <div class="btn-group pull-right"> \
+      <button class="btn btn-xs btn-danger" data-delete="rule"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_rule +'</button> \
+    </div> \
+  </div> \
+  <div class="rule-filter-container">'+ this.getRuleFilterSelect(rule_id) +'</div> \
+  <div class="rule-operator-container"></div> \
+  <div class="rule-value-container"></div> \
+</li>';
+    };
+
+    /**
+     * Returns rule filter <select> HTML
+     * @param rule_id {string}
+     * @return {string}
+     */
+    QueryBuilder.prototype.getRuleFilterSelect = function(rule_id) {
+        var h = '<select name="'+ rule_id +'_filter">';
+        h+= '<option value="-1">'+ this.lang.filter_select_placeholder +'</option>';
+
+        $.each(this.filters, function(i, filter) {
+            h+= '<option value="'+ filter.field +'">'+ filter.label +'</option>';
+        });
+
+        h+= '</select>';
+        return h;
+    };
+
+    /**
+     * Returns rule operator <select> HTML
+     * @param rule_id {string}
+     * @param operators {object}
+     * @return {string}
+     */
+    QueryBuilder.prototype.getRuleOperatorSelect = function(rule_id, operators) {
+        var h = '<select name="'+ rule_id +'_operator">';
+
+        for (var i=0, l=operators.length; i<l; i++) {
+            h+= '<option value="'+ operators[i].type +'">'+ operators[i].label +'</option>';
         }
+
+        h+= '</select>';
+        return h;
+    };
+
+    /**
+     * Return the rule value HTML
+     * @param rule_id {string}
+     * @param filter {object}
+     * @return {string}
+     */
+    QueryBuilder.prototype.getRuleInput = function(rule_id, filter) {
+        var validation = filter.validation || {},
+            h = '';
 
         switch (filter.input) {
             case 'radio':
-                if (value == undefined) {
-                    return 'radio_empty';
-                }
+                var c = filter.vertical ? ' class=block' : '';
+                $.each(filter.values, function(key, val) {
+                    h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
+                });
                 break;
 
             case 'checkbox':
-                if (value.length == 0) {
-                    return 'checkbox_empty';
-                }
+                var c = filter.vertical ? ' class=block' : '';
+                $.each(filter.values, function(key, val) {
+                    h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
+                });
                 break;
 
             case 'select':
-                if (filter.multiple) {
-                    if (value.length == 0) {
-                        return 'select_empty';
-                    }
+                h+= '<select name="'+ rule_id +'_value"'+ (filter.multiple ? ' multiple' : '') +'>';
+                if (filter.values) {
+                    $.each(filter.values, function(key, val) {
+                        h+= '<option value="'+ key +'"> '+ val +'</option> ';
+                    });
                 }
-                else {
-                    if (value == undefined) {
-                        return 'select_empty';
-                    }
-                }
+                h+= '</select>';
                 break;
 
             case 'text': default:
                 switch (filter.internalType) {
-                    case 'string':
-                        if (validation.min != undefined) {
-                            if (value.length < validation.min) {
-                                return 'string_exceed_min_length';
-                            }
-                        }
-                        else if (value.length == 0) {
-                            return 'string_empty';
-                        }
-                        if (validation.max != undefined) {
-                            if (value.length > validation.max) {
-                                return 'string_exceed_max_length';
-                            }
-                        }
-                        if (validation.format) {
-                            if (!(validation.format.test(value))) {
-                                return 'string_invalid_format';
-                            }
-                        }
-                        break;
-
                     case 'number':
-                        if (isNaN(value)) {
-                            return 'number_nan';
-                        }
-                        if (filter.type == 'integer') {
-                            if (parseInt(value) != value) {
-                                return 'number_not_integer';
-                            }
-                        }
-                        else {
-                            if (parseFloat(value) != value) {
-                                return 'number_not_double';
-                            }
-                        }
-                        if (validation.min != undefined) {
-                            if (value < validation.min) {
-                                return 'number_exceed_min';
-                            }
-                        }
-                        if (validation.max != undefined) {
-                            if (value > validation.max) {
-                                return 'number_exceed_max';
-                            }
-                        }
+                        h+= '<input type="number" name="'+ rule_id +'_value"';
+                        if (validation.step) h+= ' step="'+ validation.step +'"';
+                        if (validation.min) h+= ' min="'+ validation.min +'"';
+                        if (validation.max) h+= ' max="'+ validation.max +'"';
+                        if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
+                        h+= '>';
                         break;
 
-                    case 'datetime':
-                        // we need MomentJS
-                        if (window.moment) {
-                            if (validation.format) {
-                                var datetime = moment(value, validation.format);
-                                if (!datetime.isValid()) {
-                                    return 'datetime_invalid';
-                                }
-                                else {
-                                    if (validation.min) {
-                                        if (datetime < moment(validation.min, validation.format)) {
-                                            return 'datetime_exceed_min';
-                                        }
-                                    }
-                                    if (validation.max) {
-                                        if (datetime > moment(validation.max, validation.format)) {
-                                            return 'datetime_exceed_max';
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        break;
+                    case 'datetime': case 'text': default:
+                        h+= '<input type="text" name="'+ rule_id +'_value"';
+                        if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
+                        h+= '>';
                 }
         }
 
-        return true;
+        return h;
     };
 
 
