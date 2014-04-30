@@ -206,12 +206,6 @@
                 </ul>
               </td>
             </tr>
-            <tr>
-              <td>uniqueFields</td>
-              <td>boolean</td>
-              <td>true</td>
-              <td>By default QueryBuilder throws an error if multiple filters act on the same field, set this option to <code>false</code> to deactivate this behavior.</td>
-            </tr>
           </tbody>
         </table>
       </div>
@@ -236,16 +230,22 @@
           </thead>
           <tbody>
             <tr>
-              <td>field</td>
+              <td>id</td>
               <td>string</td>
               <td><span class="label label-danger">required</span></td>
-              <td>Name of the field</td>
+              <td>Unique identifier of the filter</td>
+            </tr>
+            <tr>
+              <td>field</td>
+              <td>string</td>
+              <td><code>id</code></td>
+              <td>Field used by the filter, multiple filters can use the same field</td>
             </tr>
             <tr>
               <td>label</td>
               <td>string</td>
               <td><code>field</code></td>
-              <td>Label used to represent the filter</td>
+              <td>Label used to display the filter</td>
             </tr>
             <tr>
               <td>type</td>
@@ -472,6 +472,15 @@
               </td>
             </tr>
             <tr>
+              <td>step</td>
+              <td>integer|double</td>
+              <td>
+                <ul>
+                  <li>For <code>integer</code>, <code>double</code>: step value (for <code>double</code> you should always provide this value in order to pass the browser validation on <code>number</code> inputs)</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
               <td>callback</td>
               <td>function</td>
               <td>A function used to perform the validation. If provided, the default validation will not be performed. It must returns <code>true</code> if the value is valid or a string otherwise. It takes 2 parameters:
@@ -489,19 +498,35 @@
       <h3>Methods</h3>
       <h4>getRules</h4>
       <p>Performs de validation and returns the rules as a plain object. See the <a href="basic-demo.html">basic demo</a> for output example.</p>
-      <pre>$('#builder').queryBuilder('getRules')</pre>
+      <div class="highlight">
+        <pre class="brush: js; gutter: false; toolbar: false">
+$('#builder').queryBuilder('getRules')
+        </pre>
+      </div>
       
       <h4>setRules</h4>
       <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>.</p>
-      <pre>$('#builder').queryBuilder('setRules', { ... })</pre>
+      <div class="highlight">
+        <pre class="brush: js; gutter: false; toolbar: false">
+$('#builder').queryBuilder('setRules', { ... })
+        </pre>
+      </div>
       
       <h4>reset</h4>
       <p>Removes all rules.</p>
-      <pre>$('#builder').queryBuilder('reset')</pre>
+      <div class="highlight">
+        <pre class="brush: js; gutter: false; toolbar: false">
+$('#builder').queryBuilder('reset')
+        </pre>
+      </div>
       
       <h4>destroy</h4>
       <p>Completely destroy the builder and it's data.</p>
-      <pre>$('#builder').queryBuilder('destroy')</pre>
+      <div class="highlight">
+        <pre class="brush: js; gutter: false; toolbar: false">
+$('#builder').queryBuilder('destroy')
+        </pre>
+      </div>
       
       <a name="events" class="anchor"></a>
       <h3>Events</h3>

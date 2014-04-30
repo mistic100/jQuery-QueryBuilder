@@ -1,10 +1,10 @@
 $('#demo-builder').queryBuilder({
   filters: [{
-    field: 'name',
+    id: 'name',
     label: 'Name',
     type: 'string'
   }, {
-    field: 'category',
+    id: 'category',
     label: 'Category',
     type: 'integer',
     input: 'select',
@@ -18,7 +18,7 @@ $('#demo-builder').queryBuilder({
     },
     operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
   }, {
-    field: 'in_stock',
+    id: 'in_stock',
     label: 'In stock',
     type: 'integer',
     input: 'radio',
@@ -28,7 +28,7 @@ $('#demo-builder').queryBuilder({
     },
     operators: ['equal']
   }, {
-    field: 'price',
+    id: 'price',
     label: 'Price',
     type: 'double',
     validation: {
@@ -36,7 +36,7 @@ $('#demo-builder').queryBuilder({
       step: 0.01
     }
   }, {
-    field: 'id',
+    id: 'id',
     label: 'Identifier',
     type: 'string',
     placeholder: '____-____-____',
@@ -51,17 +51,17 @@ $('#demo-builder').queryBuilder({
 $('#demo-builder').queryBuilder('setRules', {
   condition: 'AND',
   rules: [{
-    field: 'price',
+    id: 'price',
     operator: 'less',
     value: 10.25
   }, {
     condition: 'OR',
     rules: [{
-      field: 'category',
+      id: 'category',
       operator: 'equal',
       value: 2
     }, {
-      field: 'category',
+      id: 'category',
       operator: 'equal',
       value: 1
     }]
