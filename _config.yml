@@ -1,11 +1,12 @@
+# base url used to resolved all internal links with pages and resources
+baseurl: &url https://mistic100.github.io/jQuery-QueryBuilder
+
 # name of the software
 name: jQuery QueryBuilder
 # description of the software
 description: jQuery plugin for user friendly query/filter creator
 # current version of the software
 version: 1.0.0
-# url of the software (used on the link on the left of the top menu)
-url: &url https://mistic100.github.io/jQuery-QueryBuilder
 # url of the download button
 downloadUrl: https://github.com/mistic100/jQuery-QueryBuilder
 # licence of the software

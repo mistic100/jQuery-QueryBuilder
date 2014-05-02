@@ -12,8 +12,8 @@
   <![endif]-->
 
   <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/docs.min.css" rel="stylesheet">
-  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="{{site.baseurl}}/assets/css/docs.min.css" rel="stylesheet">
+  <link href="{{site.baseurl}}/assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -28,13 +28,13 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{site.url}}">{{site.name}}</a>
+        <a class="navbar-brand" href="{{site.baseurl}}">{{site.name}}</a>
       </div>
       <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
         <ul class="nav navbar-nav">
         {% for p in site.pages %}
           <li {% if page.title == p.title %}class="active"{% endif %}>
-            <a href="..{{p.url}}">{{p.title}}</a>
+            <a href="{{site.baseurl}}{{p.url}}">{{p.title}}</a>
           </li>
         {% endfor %}
         </ul>
@@ -145,7 +145,7 @@
   =========================================== -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-  <script src="assets/js/docs.min.js"></script>
+  <script src="{{site.baseurl}}/assets/js/docs.min.js"></script>
 
   {{page.footer}}
 
