@@ -1,0 +1,31 @@
+---
+layout: default
+title: Basic Demo
+
+footer: >
+  <link href="../dist/query-builder.css" rel="stylesheet">
+  <script src="../dist/query-builder.js"></script>
+  <script src="../dist/basic-demo.js"></script>
+---
+
+<div class="col-md-10 col-md-offset-1">
+  <p>
+    This demo shows the basic features of the QueryBuilder. Click <code>Parse</code> to trigger the input validation and display the output JSON.
+  </p>
+
+  <div id="builder"></div>
+
+  <div class="btn-group">
+    <button class="btn btn-warning" id="reset">Reset</button>
+    <button class="btn btn-success" id="set">Set rules</button>
+    <button class="btn btn-primary" id="parse">Parse</button>
+  </div>
+
+  <div id="result" class="hide">
+    <h3>Output</h3>
+    <pre></pre>
+  </div>
+
+  <h3>Source</h3>
+  {% highlightFile /dist/basic-demo.js javascript %}
+</div>

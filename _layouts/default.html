@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{{site.name}}</title>
+
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/css/docs.min.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Main navigation
+  =========================================== -->
+  <header class="navbar navbar-static-top bs-docs-nav" id="top">
+    <div class="container">
+      <div class="navbar-header" role="banner">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{site.url}}">{{site.name}}</a>
+      </div>
+      <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav">
+        {% for p in site.pages %}
+          <li {% if page.title == p.title %}class="active"{% endif %}>
+            <a href="{{p.url}}">{{p.title}}</a>
+          </li>
+        {% endfor %}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+        {% for p in site.headerLinks %}
+          <li>
+            <a href="{{p.url}}">{{p.title}}</a>
+          </li>
+        {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+
+  <!-- Header
+  =========================================== -->
+  {% if page.isHome %}
+  <div class="bs-docs-masthead" id="content">
+    <div class="container">
+      <h1 class="home-title">{{site.name}}</h1>
+      <p class="lead">{{site.description}}</p>
+      <p class="lead">
+        <a href="{{site.downloadUrl}}" class="btn btn-outline-inverse btn-lg">Download</a>
+      </p>
+      <p class="version">Currently v{{site.version}}</p>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="bs-docs-header" id="content">
+    <div class="container">
+      <h1>{{page.title}}</h1>
+      <p>{{page.description}}</p>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="container bs-docs-container">
+    <div class="row">
+      <!-- Content
+      =========================================== -->
+      <div class="col-md-9" role="main">
+        {{content}}
+      </div>
+
+      <!-- Page navigation
+      =========================================== -->
+      <div class="col-md-3" role="complementary">
+        <div class="bs-docs-sidebar hidden-print">
+          <ul class="nav bs-docs-sidenav">
+          </ul>
+          <a class="back-to-top" href="#top">
+            <i class="glyphicon glyphicon-chevron-up"></i> Back to top
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer
+  =========================================== -->
+  <footer class="bs-docs-footer" role="contentinfo">
+    <div class="container">
+      <div class="bs-docs-social">
+        <ul class="bs-docs-social-buttons">
+        {% if site.githubButton && site.githubButton.user && site.githubButton.repo %}
+          <li>
+            <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user={{site.githubButton.user}}&amp;repo={{site.githubButton.repo}}&amp;type=watch&amp;count=true" width="90" height="20" title="Star on GitHub"></iframe>
+          </li>
+          <li>
+            <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user={{site.githubButton.user}}&amp;repo={{site.githubButton.repo}}&amp;type=fork&amp;count=true" width="90" height="20" title="Fork on GitHub"></iframe>
+          </li>
+        {% endif %}
+        {% if site.twitterAccount %}
+          <li class="follow-btn">
+            <a href="https://twitter.com/{{site.twitterAccount}}" class="twitter-follow-button" data-link-color="#0069D6" data-show-count="true">Follow @{{site.twitterAccount}}</a>
+          </li>
+        {% endif %}
+        {% if site.shareUrl %}
+          <li class="tweet-btn">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-url="{{site.shareUrl}}" data-count="horizontal" data-via="{{site.twitterAccount}}" data-text="{{site.name}}">Tweet</a>
+          </li>
+        {% endif %}
+        </ul>
+      </div>
+
+      <p>
+        Licensed under <a href="{{site.licenseUrl}}" target="_blank">{{site.license}}</a>,
+        documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+      </p>
+      <p>
+        Documentation template by <a href="http://getbootstrap.com">Bootstrap team</a>,
+        generated with <a href="https://github.com/mistic100/jekyll-bootstrap-doc">Jekyll Bootstrap Doc</a>
+      </p>
+
+      <ul class="bs-docs-footer-links muted">
+        <li>Currently v{{site.version}}</li>
+      {% for l in site.footerLinks %}
+        <li>&middot;</li>
+        <li><a href="{{l.url}}">{{l.title}}</a></li>
+      {% endfor %}
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Scripts
+  =========================================== -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="/assets/js/docs.min.js"></script>
+
+  {{page.footer}}
+
+  {% if site.twitterAccount || site.shareUrl %}
+  <script>
+    window.twttr = (function (d,s,id) {
+      var t, js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return; js=d.createElement(s); js.id=id; js.async=1;
+      js.src="https://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
+      return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
+    }(document, "script", "twitter-wjs"));
+  </script>
+  {% endif %}
+
+  {% if site.analytics && site.analytics.account %}
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', '{{site.analytics.account}}', '{{site.analytics.domain}}');
+    ga('send', 'pageview');
+  </script>
+  {% endif %}
+
+</body>
+</html>

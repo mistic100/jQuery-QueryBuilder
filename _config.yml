@@ -1,0 +1,48 @@
+# name of the software
+name: jQuery QueryBuilder
+# description of the software
+description: jQuery plugin for user friendly query/filter creator
+# current version of the software
+version: 1.0.0
+# url of the software (used on the link on the left of the top menu)
+url: &url https://mistic100.github.io/jQuery-QueryBuilder
+# url of the download button
+downloadUrl: https://github.com/mistic100/jQuery-QueryBuilder
+# licence of the software
+license: MIT License
+licenseUrl: http://opensource.org/licenses/MIT
+
+# list of additional links on the right of the top menu
+headerLinks:
+  - title: StrangePlanet
+    url: http://www.strangeplanet.fr
+
+# list if additional links on the footer
+footerLinks:
+  - title: GitHub
+    url: https://github.com/mistic100/jQuery-QueryBuilder
+  - title: Issues
+    url: https://github.com/mistic100/jQuery-QueryBuilder/issues?state=open
+
+# github button
+githubButton:
+  user: mistic100
+  repo: jQuery-QueryBuilder
+
+# twitter follow button
+twitterAccount: mistic100
+
+# url for tweet button
+shareUrl: *url
+
+# google analytics
+analytics:
+  account:
+  domain:
+
+
+# DON'T MODIFY
+pygments: true
+highlight: pygments
+
+exclude: ['README.md', 'Gemfile.lock', 'Gemfile']
