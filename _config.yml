@@ -37,8 +37,8 @@ shareUrl: *url
 
 # google analytics
 analytics:
-  account:
-  domain:
+  account: UA-28192323-1
+  domain: strangeplanet.fr
 
 
 # DON'T MODIFY
