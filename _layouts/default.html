@@ -32,14 +32,16 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{site.baseurl}}">{{site.name}}</a>
+        <a class="navbar-brand" href="{{site.baseurl}}/index.html">{{site.name}}</a>
       </div>
       <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
         <ul class="nav navbar-nav">
         {% for p in site.pages %}
+          {% if p.isHome != true %}
           <li {% if page.title == p.title %}class="active"{% endif %}>
             <a href="{{site.baseurl}}{{p.url}}">{{p.title}}</a>
           </li>
+          {% endif %}
         {% endfor %}
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -60,7 +62,7 @@
   <div class="bs-docs-masthead" id="content">
     <div class="container">
       <h1 class="home-title">{{site.name}}</h1>
-      <p class="lead">{{site.description}}</p>
+      <p class="lead">{{page.description}}</p>
       <p class="lead">
         <a href="{{site.downloadUrl}}" class="btn btn-outline-inverse btn-lg">Download</a>
       </p>
@@ -158,7 +160,7 @@
   </script>
   {% endif %}
 
-  {% if site.analytics && site.analytics.account %}
+  {% if site.analytics.account %}
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

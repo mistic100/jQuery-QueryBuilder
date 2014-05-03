@@ -1,10 +1,10 @@
 # base url used to resolved all internal links with pages and resources
-baseurl: &baseurl https://mistic100.github.io/jQuery-QueryBuilder
+# set it empty when testing on local
+# set it to https://user.github.io/project before publishing
+baseurl: https://mistic100.github.io/jQuery-QueryBuilder
 
 # name of the software
 name: jQuery QueryBuilder
-# description of the software
-description: jQuery plugin for user friendly query/filter creator
 # current version of the software
 version: 1.0.0
 # url of the download button
