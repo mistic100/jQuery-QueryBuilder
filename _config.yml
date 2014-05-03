@@ -31,15 +31,15 @@ githubButton:
   repo: jQuery-QueryBuilder
 
 # twitter follow button
-twitterAccount: mistic100
+twitterAccount:
 
 # url for tweet button
-shareUrl: *baseurl
+shareUrl:
 
 # google analytics
 analytics:
-  account: UA-28192323-1
-  domain: strangeplanet.fr
+  account: UA-28192323-3
+  domain: mistic100.github.io
 
 
 # DON'T MODIFY
