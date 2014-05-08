@@ -710,7 +710,7 @@
             filter.onValidationError.call(this, $rule, error, value, filter, operator);
         }
         if (this.settings.onValidationError) {
-            this.settings.onValidationError.call(this, $rule, value, error, filter, operator);
+            this.settings.onValidationError.call(this, $rule, error, value, filter, operator);
         }
 
         var e = jQuery.Event('validationError.queryBuilder', {
