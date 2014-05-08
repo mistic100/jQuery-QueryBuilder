@@ -1,0 +1,11 @@
+{
+  "name": "jquery-querybuilder-doc",
+  "version": "0.0.0",
+
+  "dependencies": {
+    "momentjs": "latest",
+    "bootstrap-datepicker": "latest",
+    "selectize": "latest",
+    "seiyria-bootstrap-slider": "latest"
+  }
+}

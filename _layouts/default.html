@@ -36,7 +36,8 @@
       </div>
       <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
         <ul class="nav navbar-nav">
-        {% for p in site.pages %}
+        {% assign sorted_pages = site.pages | sort:"name" %}
+        {% for p in sorted_pages %}
           {% if p.isHome != true %}
           <li {% if page.title == p.title %}class="active"{% endif %}>
             <a href="{{site.baseurl}}{{p.url}}">{{p.title}}</a>

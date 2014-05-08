@@ -1,0 +1,154 @@
+---
+layout: default
+title: Widgets Demo
+---
+
+<div class="col-md-10 col-md-offset-1">
+  <p>
+    This demo shows how to integrates widgets into QueryBuilder rules. Widgets used are <a href="https://github.com/eternicode/bootstrap-datepicker">Bootstrap Datepicker</a>, <a href="https://github.com/seiyria/bootstrap-slider">Bootstrap Slider</a> and <a href="https://github.com/brianreavis/selectize.js">Selectize</a>.
+  </p>
+
+  <div id="builder"></div>
+
+  <div class="btn-group">
+    <button class="btn btn-warning" id="reset">Reset</button>
+    <button class="btn btn-success" id="set">Set rules</button>
+    <button class="btn btn-primary" id="parse">Parse</button>
+  </div>
+
+  <div id="result" class="hide">
+    <h3>Output</h3>
+    <pre></pre>
+  </div>
+
+  <h3>Source</h3>
+{% highlight javascript %}
+// load data
+if (localStorage.demoData == undefined) {
+  $.getJSON(baseurl + '/dist/demo-data.json', function(data) {
+    localStorage.demoData = JSON.stringify(data);
+  });
+}
+
+// define filters
+$('#builder').queryBuilder({
+  filters: [{
+    id: 'date',
+    label: 'Datepicker',
+    type: 'date',
+    validation: {
+      format: 'YYYY/MM/DD'
+    },
+    plugin: 'datepicker',
+    plugin_config: {
+      format: 'yyyy/mm/dd',
+      todayBtn: 'linked',
+      todayHighlight: true,
+      autoclose: true
+    }
+  }, {
+    id: 'rate',
+    label: 'Slider',
+    type: 'integer',
+    validation: {
+      min: 0,
+      max: 100
+    },
+    plugin: 'slider',
+    plugin_config: {
+      min: 0,
+      max: 100,
+      value: 0
+    },
+    onAfterSetValue: function($rule, value) {
+      var input = $rule.find('.rule-value-container input');
+      input.slider('setValue', value);
+      input.val(value); // don't know why I need it
+    }
+  }, {
+    id: 'category',
+    label: 'Selectize',
+    type: 'string',
+    plugin: 'selectize',
+    plugin_config: {
+      valueField: 'id',
+      labelField: 'name',
+      searchField: 'name',
+      sortField: 'name',
+      create: true,
+      maxItems: 1,
+      plugins: ['remove_button'],
+      onInitialize: function() {
+        var that = this,
+            data = JSON.parse(localStorage.demoData);
+
+        data.forEach(function(item) {
+          that.addOption(item);
+        });
+
+        that.refreshOptions();
+      }
+    },
+    onAfterCreateRuleInput: function($rule) {
+      $rule.find('.rule-value-container').css('min-width', '200px');
+    },
+    onAfterSetValue: function($rule, value) {
+      var selectize = $rule.find('.rule-value-container input')[0].selectize;
+      selectize.setValue(value);
+    }
+  }]
+});
+
+// set rules
+$('#set').on('click', function() {
+  $('#builder').queryBuilder('setRules', {
+    condition: 'OR',
+    rules: [{
+      id: 'date',
+      operator: 'equal',
+      value: '1991/11/17'
+    }, {
+      id: 'rate',
+      operator: 'equal',
+      value: 22
+    }, {
+      id: 'category',
+      operator: 'equal',
+      value: '38'
+    }]
+  });
+
+  $('#parse').trigger('click');
+});
+
+// reset builder
+$('#reset').on('click', function() {
+  $('#builder').queryBuilder('reset');
+  $('#result').empty().addClass('hide');
+});
+
+// get rules
+$('#parse').on('click', function() {
+  $('#result').removeClass('hide')
+    .find('pre').html(JSON.stringify(
+      $('#builder').queryBuilder('getRules'),
+      undefined, 2
+    ));
+});
+{% endhighlight %}
+</div>
+
+
+<link href="{{site.baseurl}}/dist/query-builder.css" rel="stylesheet">
+<link href="{{site.baseurl}}/dist/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet">
+<link href="{{site.baseurl}}/dist/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
+<link href="{{site.baseurl}}/dist/selectize/dist/css/selectize.default.css" rel="stylesheet">
+
+<script src="{{site.baseurl}}/dist/query-builder.js"></script>
+<script src="{{site.baseurl}}/dist/momentjs/min/moment.min.js"></script>
+<script src="{{site.baseurl}}/dist/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{site.baseurl}}/dist/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+<script src="{{site.baseurl}}/dist/selectize/dist/js/standalone/selectize.min.js"></script>
+
+<script>var baseurl = '{{site.baseurl}}';</script>
+<script src="{{site.baseurl}}/dist/demo-widgets.js"></script>

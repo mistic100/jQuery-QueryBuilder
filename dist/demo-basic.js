@@ -70,6 +70,8 @@ $('#set').on('click', function() {
       }]
     }]
   });
+
+  $('#parse').trigger('click');
 });
 
 // reset builder

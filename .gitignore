@@ -1,2 +1,21 @@
 /_site
 Gemfile.lock
+
+# commit minimum dependencies
+/dist/bootstrap
+/dist/bootstrap-datepicker/*
+!/dist/bootstrap-datepicker/css
+!/dist/bootstrap-datepicker/js
+/dist/jquery
+/dist/microplugin
+/dist/modernizr
+/dist/momentjs/*
+!/dist/momentjs/min
+/dist/momentjs/min/*
+!/dist/momentjs/min/moment.min.js
+/dist/seiyria-bootstrap-slider/*
+!/dist/seiyria-bootstrap-slider/dist
+/dist/selectize/*
+!/dist/selectize/dist
+/dist/selectize/dist/less
+/dist/sifter
