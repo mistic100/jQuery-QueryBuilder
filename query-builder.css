@@ -4,14 +4,23 @@
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
+.rule-container,
+.rules-group-container,
+.rule-placeholder {
+  margin:4px 0;
+  border-radius:5px;
+  padding:5px;
+  border:1px solid #eee;
+  background:#fff;
+  background:rgba(255, 255, 255, 0.9);
+}
+
 /* GROUPS */
 .rules-group-container {
-  padding:10px;
-  margin:4px 0;
+  padding:10px 10px 5px 10px;
   border:1px solid #DCC896;
   background:#FCF9ED;
   background:rgba(250, 240, 210, 0.5);
-  border-radius:5px;
 }
   .rules-group-header {
     margin-bottom:10px;
@@ -20,25 +29,13 @@
       display:none;
     }
 
-/* hide first delete button */
-.query-builder>.rules-group-container>.rules-group-header [data-delete] {
-  display:none;
-}
-
 /* RULES */
 .rules-list {
   list-style:none;
   padding:0 0 0 20px;
   margin:0;
 }
-  .rule-container  {
-    margin:4px 0;
-    padding:5px;
-    border:1px solid #eee;
-    background:#fff;
-    background:rgba(255, 255, 255, 0.9);
-    border-radius:5px;
-  }
+  .rule-container  {}
     .rule-container.has-error {
       background:#fdd;
       border-color:#f99;
@@ -98,3 +95,26 @@
   .rules-list>*:last-child:after {
     display:none;
   }
+
+/* DRAG & DROP */
+.rule-container .drag-handle,
+.rules-group-container .drag-handle {
+  cursor:move;
+  display:inline-block;
+}
+
+.rule-container .dragged,
+.rules-group-container .dragged {
+  opacity:0.5;
+}
+
+.rule-placeholder {
+  border:1px dashed #bbb;
+  opacity:0.7;
+}
+
+/* hide first delete button and drag handle */
+.query-builder>.rules-group-container>.rules-group-header [data-delete],
+.query-builder>.rules-group-container>.rules-group-header .drag-handle {
+  display:none;
+}

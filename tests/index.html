@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../query-builder.css">
+</head>
+
+<body>
+
+<div class="container">
+  <div class="col-md-12 col-lg-10 col-lg-offset-1">
+    <div id="builder"></div>
+    
+    <div class="btn-group">
+      <button class="btn btn-warning" id="reset">Reset</button>
+      <button class="btn btn-success" id="set">Set rules</button>
+      <button class="btn btn-primary" id="parse">Parse</button>
+    </div>
+
+    <div id="result" class="hide">
+      <h3>Output</h3>
+      <pre></pre>
+    </div>
+  </div>
+</div>
+
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../query-builder.js"></script>
+
+<script>
+// define filters
+$('#builder').queryBuilder({
+  sortable: true,
+  
+  filters: [{
+    id: 'name',
+    label: 'Name',
+    type: 'string'
+  }, {
+    id: 'category',
+    label: 'Category',
+    type: 'integer',
+    input: 'select',
+    values: {
+      1: 'Books',
+      2: 'Movies',
+      3: 'Music',
+      4: 'Tools',
+      5: 'Goodies',
+      6: 'Clothes'
+    },
+    operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
+  }, {
+    id: 'in_stock',
+    label: 'In stock',
+    type: 'integer',
+    input: 'radio',
+    values: {
+      1: 'Yes',
+      0: 'No'
+    },
+    operators: ['equal']
+  }, {
+    id: 'price',
+    label: 'Price',
+    type: 'double',
+    validation: {
+      min: 0,
+      step: 0.01
+    }
+  }, {
+    id: 'id',
+    label: 'Identifier',
+    type: 'string',
+    placeholder: '____-____-____',
+    operators: ['equal', 'not_equal'],
+    validation: {
+      format: /^.{4}-.{4}-.{4}$/
+    }
+  }]
+});
+
+// set rules
+$('#set').on('click', function() {
+  $('#builder').queryBuilder('setRules', {
+    condition: 'AND',
+    rules: [{
+      id: 'price',
+      operator: 'less',
+      value: 10.25
+    }, {
+      condition: 'OR',
+      rules: [{
+        id: 'category',
+        operator: 'equal',
+        value: 2
+      }, {
+        id: 'category',
+        operator: 'equal',
+        value: 1
+      }]
+    }]
+  });
+
+  $('#parse').trigger('click');
+})
+.trigger('click');
+
+// reset builder
+$('#reset').on('click', function() {
+  $('#builder').queryBuilder('reset');
+  $('#result').empty().addClass('hide');
+});
+
+// get rules
+$('#parse').on('click', function() {
+  $('#result').removeClass('hide')
+    .find('pre').html(JSON.stringify(
+      $('#builder').queryBuilder('getRules'),
+      undefined, 2
+    ));
+});
+</script>
+
+</body>
+</html>
