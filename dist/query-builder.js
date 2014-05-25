@@ -118,6 +118,10 @@
         });
 
         // INIT
+        if (this.settings.sortable) {
+          this.initSortable();
+        }
+
         this.$el.addClass('query-builder');
         this.addGroup(this.$el);
     };
@@ -127,6 +131,7 @@
         onAfterAddGroup: null,
         onAfterAddRule: null,
 
+        sortable: false,
         filters: [],
 
         lang: {
@@ -725,6 +730,92 @@
         this.$el.trigger(e);
     };
 
+    /**
+     * Init HTML5 drag and drop
+     */
+    QueryBuilder.prototype.initSortable = function() {
+        $.event.props.push('dataTransfer');
+
+        var placeholder, isHandle = false;
+
+        this.$el.on('mousedown', '.drag-handle', function(e) {
+            isHandle = true;
+        });
+        this.$el.on('mouseup', '.drag-handle', function(e) {
+            isHandle = false;
+        });
+
+        this.$el.on('dragstart', '[draggable]', function(e) {
+            e.stopPropagation();
+
+            if (isHandle) {
+                e.dataTransfer.setData('id', e.target.id);
+
+                placeholder = $('<div class="rule-placeholder">&nbsp;</div>');
+                placeholder.height($(e.target).height());
+                placeholder.insertAfter(e.target);
+
+                $(e.target).hide();
+
+                isHandle = false;
+            }
+            else {
+                e.preventDefault();
+            }
+        });
+
+        this.$el.on('dragenter', '[draggable]', function(e) {
+            e.stopPropagation();
+
+            var target = $(e.target), parent;
+
+            parent = target.closest('.rule-container');
+            if (parent.length) {
+                placeholder.detach().insertAfter(parent);
+                return;
+            }
+
+            parent = target.closest('.rules-group-container');
+            if (parent.length) {
+                placeholder.detach().appendTo(parent.find('.rules-list').eq(0));
+                return;
+            }
+        });
+
+        this.$el.on('dragover', '[draggable]', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        this.$el.on('drop', function(e) {
+            e.stopPropagation();
+
+            var src = $('#'+ e.dataTransfer.getData('id')),
+                target = $(e.target), parent;
+
+            parent = target.closest('.rule-container');
+            if (parent.length) {
+                src.detach().insertAfter(parent);
+                return;
+            }
+
+            parent = target.closest('.rules-group-container');
+            if (parent.length) {
+                src.detach().appendTo(parent.find('.rules-list').eq(0));
+                return;
+            }
+        });
+
+        this.$el.on('dragend', '[draggable]', function(e) {
+            e.stopPropagation();
+
+            var src = $('#'+ e.dataTransfer.getData('id'));
+
+            src.show();
+            placeholder.remove();
+        });
+    };
+
 
     // DATA ACCESS
     // ===============================
@@ -881,17 +972,18 @@
      */
     QueryBuilder.prototype.getGroupTemplate = function(group_id) {
         return '\
-<dl id='+ group_id +' class="rules-group-container"> \
+<dl id='+ group_id +' class="rules-group-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <dt class="rules-group-header"> \
+    <div class="btn-group pull-right"> \
+      <button type="button" class="btn btn-xs btn-success" data-add="rule"><i class="glyphicon glyphicon-plus"></i> '+ this.lang.add_rule +'</button> \
+      <button type="button" class="btn btn-xs btn-success" data-add="group"><i class="glyphicon glyphicon-plus-sign"></i> '+ this.lang.add_group +'</button> \
+      <button type="button" class="btn btn-xs btn-danger" data-delete="group"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_group +'</button> \
+    </div> \
     <div class="btn-group"> \
       <label class="btn btn-xs btn-primary active"><input type="radio" name="'+ group_id +'_cond" value="AND" checked> '+ this.lang.and_condition +'</label> \
       <label class="btn btn-xs btn-primary"><input type="radio" name="'+ group_id +'_cond" value="OR"> '+ this.lang.or_condition +'</label> \
     </div> \
-    <div class="btn-group pull-right"> \
-      <button class="btn btn-xs btn-success" data-add="rule"><i class="glyphicon glyphicon-plus"></i> '+ this.lang.add_rule +'</button> \
-      <button class="btn btn-xs btn-success" data-add="group"><i class="glyphicon glyphicon-plus-sign"></i> '+ this.lang.add_group +'</button> \
-      <button class="btn btn-xs btn-danger" data-delete="group"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_group +'</button> \
-    </div> \
+    '+ (this.settings.sortable ? '<div class="drag-handle"><i class="glyphicon glyphicon-sort"></i></div>' : '') +' \
   </dt> \
   <dd class=rules-group-body> \
     <ul class=rules-list></ul> \
@@ -906,12 +998,13 @@
      */
     QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
         return '\
-<li id='+ rule_id +' class="rule-container"> \
+<li id='+ rule_id +' class="rule-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <div class="rule-header"> \
     <div class="btn-group pull-right"> \
-      <button class="btn btn-xs btn-danger" data-delete="rule"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_rule +'</button> \
+      <button type="button" class="btn btn-xs btn-danger" data-delete="rule"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_rule +'</button> \
     </div> \
   </div> \
+  '+ (this.settings.sortable ? '<div class="drag-handle"><i class="glyphicon glyphicon-sort"></i></div>' : '') +' \
   <div class="rule-filter-container">'+ this.getRuleFilterSelect(rule_id) +'</div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
