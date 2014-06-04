@@ -7,11 +7,14 @@
   },
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": [
-    "./query-builder.js",
-    "./query-builder.css"
+    "dist/query-builder.min.js",
+    "dist/query-builder.min.css"
   ],
-  "dependencies" : {
-    "bootstrap":  "3.x.x"
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-cssmin": "~0.9.0",
+    "grunt-contrib-copy": "~0.5.0"
   },
   "keywords": [
     "jquery",
