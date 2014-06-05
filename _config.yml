@@ -1,8 +1,3 @@
-# base url used to resolved all internal links with pages and resources
-# set it empty when testing on local
-# set it to https://user.github.io/project before publishing
-baseurl: https://mistic100.github.io/jQuery-QueryBuilder
-
 # name of the software
 name: jQuery QueryBuilder
 # current version of the software
@@ -24,6 +19,12 @@ footerLinks:
     url: https://github.com/mistic100/jQuery-QueryBuilder
   - title: Issues
     url: https://github.com/mistic100/jQuery-QueryBuilder/issues?state=open
+
+# header
+header:
+  color1: "#0074d9"
+  color2: "#001f3f"
+  trianglify: true
 
 # github button
 githubButton:

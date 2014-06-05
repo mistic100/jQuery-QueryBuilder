@@ -25,6 +25,8 @@ title: Basic Demo
 {% highlight javascript %}
 // define filters
 $('#builder').queryBuilder({
+  sortable: true,
+  
   filters: [{
     id: 'name',
     label: 'Name',
@@ -117,6 +119,6 @@ $('#parse').on('click', function() {
 </div>
 
 
-<link href="{{site.baseurl}}/dist/query-builder.css" rel="stylesheet">
-<script src="{{site.baseurl}}/dist/query-builder.js"></script>
-<script src="{{site.baseurl}}/dist/demo-basic.js"></script>
+<link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.min.css" rel="stylesheet">
+<script src="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.min.js"></script>
+<script src="{{site.github.url}}/dist/demo-basic.js"></script>

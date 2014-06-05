@@ -18,7 +18,7 @@ isHome: true
   
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
     <div id="demo-builder"></div>
-    <p class="text-center">The full code of this example can be found <a href="{{site.baseurl}}/demo-basic.html">here</a>.</p>
+    <p class="text-center">The full code of this example can be found <a href="{{site.github.url}}/demo-basic.html">here</a>.</p>
   </div>
 </section>
 
@@ -36,7 +36,7 @@ isHome: true
   </ul>
 
   <h3 id="letsgo">Let's go!</h3>
-  <p>Include <a href="https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/query-builder.css" target="_blank">query-builder.css</a> in your page head and <a href="https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/query-builder.js" target="_blank">query-builder.js</a> after <code>jquery.js</code>. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
+  <p>Include <a href="https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/dist/query-builder.min.css" target="_blank">query-builder.css</a> in your page head and <a href="https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/dist/query-builder.min.js" target="_blank">query-builder.js</a> after <code>jquery.js</code>. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
   
 {% highlight html %}
 <div id="builder"></div>
@@ -476,7 +476,7 @@ $('#builder').queryBuilder('destroy')
   </div>
   
   <h3 id="lang">Translation</h3>
-  <p>Some default translation files are available in the <a href="https://github.com/mistic100/jQuery-QueryBuilder/tree/master/i18n" target="_blank">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<br>
+  <p>Some default translation files are available in the <a href="https://github.com/mistic100/jQuery-QueryBuilder/tree/master/dist/i18n" target="_blank">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<br>
   Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators.<br>
   Default strings are:</p>
   
@@ -512,6 +512,6 @@ operator_is_not_null: 'is not null'
 {% endhighlight %}
 </section>
 
-<link href="{{site.baseurl}}/dist/query-builder.css" rel="stylesheet">
-<script src="{{site.baseurl}}/dist/query-builder.js"></script>
-<script src="{{site.baseurl}}/dist/demo-index.js"></script>
+<link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.min.css" rel="stylesheet">
+<script src="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.min.js"></script>
+<script src="{{site.github.url}}/dist/demo-index.js"></script>

@@ -60,8 +60,6 @@ $('#builder').queryBuilder({
         data.forEach(function(item) {
           that.addOption(item);
         });
-
-        that.refreshOptions();
       }
     },
     onAfterCreateRuleInput: function($rule) {
@@ -70,6 +68,58 @@ $('#builder').queryBuilder({
     onAfterSetValue: function($rule, value) {
       var selectize = $rule.find('.rule-value-container input')[0].selectize;
       selectize.setValue(value);
+    }
+  }, {
+    id: 'coord',
+    label: 'Coordinates',
+    type: 'string',
+    validation: {
+      format: /^[A-C]{1}.[1-6]{1}$/
+    },
+    input: function($rule, filter) {
+      var $container = $rule.find('.rule-value-container');
+      
+      $container.on('change', '[name=coord_1]', function(){
+        var h = '';
+        
+        switch ($(this).val()) {
+          case 'A':
+            h = '\
+            <option value="-1">-</option> \
+            <option value="1">1</option> \
+            <option value="2">2</option>';
+            break;
+          case 'B': case 'C':
+            h = '\
+            <option value="-1">-</option> \
+            <option value="3">3</option> \
+            <option value="4">4</option>';
+            break;
+        }
+        
+        $container.find('[name=coord_2]').html(h).toggle(h!='');
+      });
+      
+      return '\
+      <select name="coord_1"> \
+        <option value="-1">-</option> \
+        <option value="A">A</option> \
+        <option value="B">B</option> \
+        <option value="C">C</option> \
+      </select> \
+      <select name="coord_2" style="display:none;"></select>';
+    },
+    valueParser: function($rule, value, filter, operator) {
+      return $rule.find('[name=coord_1]').val()
+        +'.'+$rule.find('[name=coord_2]').val();
+    },
+    onAfterSetValue: function($rule, value, filter, operator) {
+      if (operator.accept_values) {
+        var val = value.split('.');
+        
+        $rule.find('[name=coord_1]').val(val[0]).trigger('change');
+        $rule.find('[name=coord_2]').val(val[1]);
+      }
     }
   }]
 });
@@ -90,6 +140,13 @@ $('#set').on('click', function() {
       id: 'category',
       operator: 'equal',
       value: '38'
+    }, {
+      condition: 'AND',
+      rules: [{
+        id: 'coord',
+        operator: 'equal',
+        value: 'B.3'
+      }]
     }]
   });
 

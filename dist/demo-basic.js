@@ -1,5 +1,7 @@
 // define filters
 $('#builder').queryBuilder({
+  sortable: true,
+  
   filters: [{
     id: 'name',
     label: 'Name',

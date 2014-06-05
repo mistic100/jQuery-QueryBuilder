@@ -12,12 +12,19 @@
   <![endif]-->
 
   <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-  <link href="{{site.baseurl}}/assets/css/docs.min.css" rel="stylesheet">
-  <link href="{{site.baseurl}}/assets/css/style.css" rel="stylesheet">
+  <link href="{{site.github.url}}/assets/css/docs.min.css" rel="stylesheet">
+  <link href="{{site.github.url}}/assets/css/style.css" rel="stylesheet">
+
+  <style>
+    #content {
+      background:{{site.header.color1}};
+      background:linear-gradient(135deg, {{site.header.color1}}, {{site.header.color2}});
+    }
+  </style>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-  <script src="{{site.baseurl}}/assets/js/docs.min.js"></script>
+  <script src="{{site.github.url}}/assets/js/docs.min.js"></script>
 </head>
 
 <body>
@@ -32,15 +39,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{site.baseurl}}/index.html">{{site.name}}</a>
+        <a class="navbar-brand" href="{{site.github.url}}/index.html">{{site.name}}</a>
       </div>
       <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
         <ul class="nav navbar-nav">
-        {% assign sorted_pages = site.pages | sort:"name" %}
-        {% for p in sorted_pages %}
+        {% for p in site.pages %}
           {% if p.isHome != true %}
           <li {% if page.title == p.title %}class="active"{% endif %}>
-            <a href="{{site.baseurl}}{{p.url}}">{{p.title}}</a>
+            <a href="{{site.github.url}}{{p.url}}">{{p.title}}</a>
           </li>
           {% endif %}
         {% endfor %}
@@ -102,13 +108,14 @@
     </div>
   </div>
 
+
   <!-- Footer
   =========================================== -->
   <footer class="bs-docs-footer" role="contentinfo">
     <div class="container">
       <div class="bs-docs-social">
         <ul class="bs-docs-social-buttons">
-        {% if site.githubButton && site.githubButton.user && site.githubButton.repo %}
+        {% if site.githubButton.user && site.githubButton.repo %}
           <li>
             <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user={{site.githubButton.user}}&amp;repo={{site.githubButton.repo}}&amp;type=watch&amp;count=true" width="90" height="20" title="Star on GitHub"></iframe>
           </li>
@@ -148,8 +155,15 @@
     </div>
   </footer>
 
+
   <!-- Async scripts
   =========================================== -->
+  {% if site.header.trianglify %}
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/trianglify/0.1.2/trianglify.min.js"></script>
+  <script>trianglify('{{site.header.color1}}', '{{site.header.color2}}');</script>
+  {% endif %}
+
   {% if site.twitterAccount || site.shareUrl %}
   <script>
     window.twttr = (function (d,s,id) {
@@ -161,7 +175,7 @@
   </script>
   {% endif %}
 
-  {% if site.analytics.account %}
+  {% if site.analytics.account && site.analytics.domain %}
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

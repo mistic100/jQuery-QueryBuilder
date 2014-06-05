@@ -7,6 +7,8 @@ Gemfile.lock
 !/dist/bootstrap-datepicker/css
 !/dist/bootstrap-datepicker/js
 /dist/jquery
+/dist/jQuery-QueryBuilder/*
+!/dist/jQuery-QueryBuilder/dist
 /dist/microplugin
 /dist/modernizr
 /dist/momentjs/*

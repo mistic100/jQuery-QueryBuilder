@@ -20,9 +20,6 @@
 
 #content {
   position:relative;
-  background:#3A1B43;
-  background:linear-gradient(135deg, #080331, #673051);
-  background:url('../images/bs-docs-masthead-pattern.png'), linear-gradient(135deg, #080331, #673051);
 }
 #content:after {
   content:"";

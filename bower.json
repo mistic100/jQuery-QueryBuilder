@@ -3,7 +3,7 @@
   "version": "0.0.0",
 
   "dependencies": {
-    "momentjs": "latest",
+    "jQuery-QueryBuilder": "git://github.com/mistic100/jQuery-QueryBuilder.git#master",
     "bootstrap-datepicker": "latest",
     "selectize": "latest",
     "seiyria-bootstrap-slider": "latest"
