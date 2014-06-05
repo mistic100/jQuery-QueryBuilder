@@ -34,11 +34,19 @@
 $('#builder').queryBuilder({
   sortable: true,
   
-  filters: [{
+  filters: [
+  /*
+   * basic
+   */
+  {
     id: 'name',
     label: 'Name',
     type: 'string'
-  }, {
+  },
+  /*
+   * select
+   */
+  {
     id: 'category',
     label: 'Category',
     type: 'integer',
@@ -52,7 +60,11 @@ $('#builder').queryBuilder({
       6: 'Clothes'
     },
     operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
-  }, {
+  },
+  /*
+   * radio
+   */
+  {
     id: 'in_stock',
     label: 'In stock',
     type: 'integer',
@@ -62,7 +74,11 @@ $('#builder').queryBuilder({
       0: 'No'
     },
     operators: ['equal']
-  }, {
+  },
+  /*
+   * double
+   */
+  {
     id: 'price',
     label: 'Price',
     type: 'double',
@@ -70,7 +86,11 @@ $('#builder').queryBuilder({
       min: 0,
       step: 0.01
     }
-  }, {
+  }, 
+  /*
+   * placeholder and regex validation
+   */
+  {
     id: 'id',
     label: 'Identifier',
     type: 'string',
@@ -78,6 +98,59 @@ $('#builder').queryBuilder({
     operators: ['equal', 'not_equal'],
     validation: {
       format: /^.{4}-.{4}-.{4}$/
+    }
+  },
+  /*
+   * custom input
+   */
+  {
+    id: 'coord',
+    label: 'Coordinates',
+    type: 'string',
+    validation: {
+      format: /^[A-C]{1}.[1-6]{1}$/
+    },
+    input: function($rule, filter) {
+      var $container = $rule.find('.rule-value-container');
+      
+      $container.on('change', '[name=coord_1]', function(){
+        var h = '';
+        
+        switch ($(this).val()) {
+          case 'A':
+            h = '<option value="-1">-</option> <option value="1">1</option> <option value="2">2</option>';
+            break;
+          case 'B':
+            h = '<option value="-1">-</option> <option value="3">3</option> <option value="4">4</option>';
+            break;
+          case 'C':
+            h = '<option value="-1">-</option> <option value="5">5</option> <option value="6">6</option>';
+            break;
+        }
+        
+        $container.find('[name=coord_2]').html(h).toggle(h!='');
+      });
+      
+      return '\
+      <select name="coord_1"> \
+        <option value="-1">-</option> \
+        <option value="A">A</option> \
+        <option value="B">B</option> \
+        <option value="C">C</option> \
+      </select> \
+      <select name="coord_2" style="display:none;"></select>';
+    },
+    valueParser: function(value, filter, operator, $rule) {
+      return $rule.find('[name=coord_1]').val()
+        +'.'+$rule.find('[name=coord_2]').val();
+    },
+    onAfterSetValue: function($rule, value, filter, operator) {
+      if (operator.accept_values) {
+        var val = value.split('.');
+        
+        $rule.find('[name=coord_1]').val(val[0]).trigger('change');
+        $rule.find('[name=coord_2]').val(val[1]);
+      }
     }
   }]
 });
@@ -97,9 +170,9 @@ $('#set').on('click', function() {
         operator: 'equal',
         value: 2
       }, {
-        id: 'category',
+        id: 'coord',
         operator: 'equal',
-        value: 1
+        value: 'B.3'
       }]
     }]
   });

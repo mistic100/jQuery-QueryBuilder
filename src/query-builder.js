@@ -259,21 +259,20 @@
                     }
 
                     var filter = that.getFilterById(filterId),
-                        operator = that.getOperator(that.getRuleOperator($rule)),
+                        operator = that.getOperatorByType(that.getRuleOperator($rule)),
                         value = null;
 
                     if (operator.accept_values) {
                         value = that.getRuleValue($rule, filter);
+                        if (filter.valueParser) {
+                            value = filter.valueParser.call(this, value, filter, operator, $rule);
+                        }
+                        
                         var valid = that.validateValue(value, filter);
-
                         if (valid !== true) {
                             that.markRuleAsError($rule, true);
                             that.triggerValidationError(valid, filter, operator, value, $rule);
                             return {};
-                        }
-
-                        if (filter.valueParser) {
-                            value = filter.valueParser.call(this, value, filter, operator);
                         }
                     }
 
@@ -347,36 +346,39 @@
 
                     var $rule = that.addRule($ul),
                         filter = that.getFilterById(rule.id),
+                        operator = that.getOperatorByType(rule.operator),
                         $value = $rule.find('.rule-value-container');
 
                     $rule.find('.rule-filter-container select[name$=_filter]').val(rule.id).trigger('change');
                     $rule.find('.rule-operator-container select[name$=_operator]').val(rule.operator).trigger('change');
 
-                    switch (filter.input) {
-                        case 'radio':
-                            $value.find('input[name$=_value][value="'+ rule.value +'"]').prop('checked', true).trigger('change');
-                            break;
+                    if (operator.accept_values) {
+                      switch (filter.input) {
+                          case 'radio':
+                              $value.find('input[name$=_value][value="'+ rule.value +'"]').prop('checked', true).trigger('change');
+                              break;
 
-                        case 'checkbox':
-                            if (!$.isArray(rule.value)) {
-                                rule.value = [rule.value];
-                            }
-                            $.each(rule.value, function(i, value) {
-                                $value.find('input[name$=_value][value="'+ value +'"]').prop('checked', true).trigger('change');
-                            });
-                            break;
+                          case 'checkbox':
+                              if (!$.isArray(rule.value)) {
+                                  rule.value = [rule.value];
+                              }
+                              $.each(rule.value, function(i, value) {
+                                  $value.find('input[name$=_value][value="'+ value +'"]').prop('checked', true).trigger('change');
+                              });
+                              break;
 
-                        case 'select':
-                            $value.find('select[name$=_value]').val(rule.value).trigger('change');
-                            break;
+                          case 'select':
+                              $value.find('select[name$=_value]').val(rule.value).trigger('change');
+                              break;
 
-                        case 'text': default:
-                            $value.find('input[name$=_value]').val(rule.value).trigger('change');
-                            break;
+                          case 'text': default:
+                              $value.find('input[name$=_value]').val(rule.value).trigger('change');
+                              break;
+                      }
                     }
-
+                    
                     if (filter.onAfterSetValue) {
-                        filter.onAfterSetValue.call(this, $rule, rule.value, filter, rule.operator);
+                        filter.onAfterSetValue.call(this, $rule, rule.value, filter, operator);
                     }
                 }
             });
@@ -413,7 +415,7 @@
             if (!filter.input) {
                 filter.input = 'text';
             }
-            else if (inputs.indexOf(filter.input) == -1) {
+            else if (typeof filter.input != 'function' && inputs.indexOf(filter.input) == -1) {
                 $.error('Invalid input: '+ filter.input);
             }
 
@@ -507,7 +509,7 @@
         var operators = this.getOperators(filterId),
             h = this.getRuleOperatorSelect(rule_id, operators);
 
-        $rule.find('.rule-operator-container').html(h);
+        $operator_container.html(h);
     };
 
     /**
@@ -522,7 +524,7 @@
 
         var $value_container = $rule.find('.rule-value-container').empty(),
             rule_id = $rule.attr('id'),
-            operator = this.getOperator(this.getRuleOperator($rule));
+            operator = this.getOperatorByType(this.getRuleOperator($rule));
 
         if (!operator.accept_values) {
             return;
@@ -552,7 +554,7 @@
         var $value_container = $rule.find('.rule-value-container'),
             filter = this.getFilterById(this.getRuleFilter($rule));
 
-        var operator = this.getOperator(operatorType);
+        var operator = this.getOperatorByType(operatorType);
 
         if (!operator.accept_values) {
             $value_container.hide();
@@ -561,7 +563,7 @@
             $value_container.show();
 
             if ($value_container.is(':empty')) {
-                this.createRuleInput($rule, this.getRulefilter($rule));
+                this.createRuleInput($rule, filter.id);
             }
         }
 
@@ -824,9 +826,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.nextGroupId = function() {
-        var ret = this.$el_id + '_group_' + this.status.group_id;
-        this.status.group_id++;
-        return ret;
+        return this.$el_id + '_group_' + (this.status.group_id++);
     };
 
     /**
@@ -834,9 +834,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.nextRuleId = function() {
-        var ret = this.$el_id + '_rule_' + this.status.rule_id;
-        this.status.rule_id++;
-        return ret;
+        return this.$el_id + '_rule_' + (this.status.rule_id++);
     };
 
     /**
@@ -891,7 +889,7 @@
      * @param type {string}
      * @return {object}
      */
-    QueryBuilder.prototype.getOperator = function(type) {
+    QueryBuilder.prototype.getOperatorByType = function(type) {
         for (var i=0, l=this.operators.length; i<l; i++) {
             if (this.operators[i].type == type) {
                 return this.operators[i];
@@ -1052,6 +1050,11 @@
      * @return {string}
      */
     QueryBuilder.prototype.getRuleInput = function(rule_id, filter) {
+        if (typeof filter.input == 'function') {
+          var $rule = this.$el.find('#'+ rule_id);
+          return filter.input.call(this, $rule, filter);
+        }
+        
         var validation = filter.validation || {},
             h = '';
 
