@@ -173,9 +173,15 @@ isHome: true
         </tr>
         <tr>
           <td>input</td>
-          <td>string</td>
+          <td>string|function</td>
           <td>'text'</td>
-          <td>Type of input used. Available types are <code>text</code>, <code>radio</code>, <code>checkbox</code>, <code>select</code></td>
+          <td>Type of input used. Available types are <code>text</code>, <code>radio</code>, <code>checkbox</code>, <code>select</code>.
+            It can also be a function which returns the HTML of the said input, this function takes 2 parameters:
+            <ul>
+              <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
+              <li><code>filter</code></li>
+            </ul>
+          </td>
         </tr>
         <tr>
           <td>multiple</td>
@@ -273,8 +279,9 @@ isHome: true
           <td>valueParser</td>
           <td>function</td>
           <td>null</td>
-          <td>Modifier applied to each value in <code>getRules</code> function. It takes 3 parameters:
+          <td>Modifier applied to each value in <code>getRules</code> function. It takes 4 parameters:
             <ul>
+              <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
               <li><code>value</code></li>
               <li><code>filter</code></li>
               <li><code>operator</code></li>
@@ -452,7 +459,7 @@ $('#builder').queryBuilder('destroy')
       <tbody>
        <tr>
          <td>validationError.queryBuilder</td>
-         <td>Fired when a validation error occured. The Event object contains the following attributes:
+         <td>Fired when a validation error occurred. The Event object contains the following attributes:
             <ul>
               <li><code>targetRule</code> DOM <code>&lt;li></code> element of the rule throwing the error</li>
               <li><code>error</code> a String containing an error code</li>
