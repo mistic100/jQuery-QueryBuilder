@@ -265,13 +265,13 @@
                     if (operator.accept_values) {
                         value = that.getRuleValue($rule, filter);
                         if (filter.valueParser) {
-                            value = filter.valueParser.call(this, value, filter, operator, $rule);
+                            value = filter.valueParser.call(this, $rule, value, filter, operator);
                         }
-                        
+
                         var valid = that.validateValue(value, filter);
                         if (valid !== true) {
                             that.markRuleAsError($rule, true);
-                            that.triggerValidationError(valid, filter, operator, value, $rule);
+                            that.triggerValidationError(valid, $rule, value, filter, operator);
                             return {};
                         }
                     }
@@ -376,7 +376,7 @@
                               break;
                       }
                     }
-                    
+
                     if (filter.onAfterSetValue) {
                         filter.onAfterSetValue.call(this, $rule, rule.value, filter, operator);
                     }
@@ -552,9 +552,8 @@
      */
     QueryBuilder.prototype.updateRuleOperator = function($rule, operatorType) {
         var $value_container = $rule.find('.rule-value-container'),
-            filter = this.getFilterById(this.getRuleFilter($rule));
-
-        var operator = this.getOperatorByType(operatorType);
+            filter = this.getFilterById(this.getRuleFilter($rule)),
+            operator = this.getOperatorByType(operatorType);
 
         if (!operator.accept_values) {
             $value_container.hide();
@@ -568,7 +567,7 @@
         }
 
         if (filter.onAfterChangeOperator) {
-            filter.onAfterChangeOperator.call(this, $rule, filter, operator.type);
+            filter.onAfterChangeOperator.call(this, $rule, filter, operator);
         }
     };
 
@@ -712,7 +711,7 @@
     /**
      * Trigger a validation error event with custom params
      */
-    QueryBuilder.prototype.triggerValidationError = function(error, filter, operator, value, $rule) {
+    QueryBuilder.prototype.triggerValidationError = function(error, $rule, value, filter, operator) {
         if (filter.onValidationError) {
             filter.onValidationError.call(this, $rule, error, value, filter, operator);
         }
@@ -1054,7 +1053,7 @@
           var $rule = this.$el.find('#'+ rule_id);
           return filter.input.call(this, $rule, filter);
         }
-        
+
         var validation = filter.validation || {},
             h = '';
 
