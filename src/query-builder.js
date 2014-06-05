@@ -735,9 +735,10 @@
      * Init HTML5 drag and drop
      */
     QueryBuilder.prototype.initSortable = function() {
+        // configure jQuery to use dataTransfer
         $.event.props.push('dataTransfer');
 
-        var placeholder, isHandle = false;
+        var placeholder, src, isHandle = false;
 
         this.$el.on('mousedown', '.drag-handle', function(e) {
             isHandle = true;
@@ -750,13 +751,19 @@
             e.stopPropagation();
 
             if (isHandle) {
-                e.dataTransfer.setData('id', e.target.id);
+                // notify drag and drop
+                e.dataTransfer.setData('drag', true);
+
+                src = $(e.target);
 
                 placeholder = $('<div class="rule-placeholder">&nbsp;</div>');
-                placeholder.height($(e.target).height());
-                placeholder.insertAfter(e.target);
+                placeholder.css('min-height', src.height());
+                placeholder.insertAfter(src);
 
-                $(e.target).hide();
+                // Chrome glitch (helper invisible if hidden immediately)
+                setTimeout(function() {
+                  src.hide();
+                }, 0);
 
                 isHandle = false;
             }
@@ -791,8 +798,7 @@
         this.$el.on('drop', function(e) {
             e.stopPropagation();
 
-            var src = $('#'+ e.dataTransfer.getData('id')),
-                target = $(e.target), parent;
+            var target = $(e.target), parent;
 
             parent = target.closest('.rule-container');
             if (parent.length) {
@@ -809,8 +815,6 @@
 
         this.$el.on('dragend', '[draggable]', function(e) {
             e.stopPropagation();
-
-            var src = $('#'+ e.dataTransfer.getData('id'));
 
             src.show();
             placeholder.remove();
