@@ -140,7 +140,7 @@ $('#builder').queryBuilder({
       </select> \
       <select name="coord_2" style="display:none;"></select>';
     },
-    valueParser: function(value, filter, operator, $rule) {
+    valueParser: function($rule, value, filter, operator) {
       return $rule.find('[name=coord_1]').val()
         +'.'+$rule.find('[name=coord_2]').val();
     },
