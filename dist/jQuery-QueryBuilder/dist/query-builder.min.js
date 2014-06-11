@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 1.0.0
+ * jQuery QueryBuilder 1.1.0
  * Copyright 2014 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */

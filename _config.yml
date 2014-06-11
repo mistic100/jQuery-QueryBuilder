@@ -1,7 +1,7 @@
 # name of the software
 name: jQuery QueryBuilder
 # current version of the software
-version: 1.0.0
+version: 1.1.0
 # url of the download button
 downloadUrl: https://github.com/mistic100/jQuery-QueryBuilder
 # licence of the software
@@ -31,11 +31,17 @@ githubButton:
   user: mistic100
   repo: jQuery-QueryBuilder
 
-# twitter follow button
-twitterAccount:
+# twitter buttons
+twitter:
+  enabled: true
+  via: mistic100
+  hash:
+  account:
 
-# url for tweet button
-shareUrl:
+# facebook buttons
+facebook:
+  enabled: true
+  profileUrl:
 
 # google analytics
 analytics:
