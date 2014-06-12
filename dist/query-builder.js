@@ -3,12 +3,6 @@
  * Copyright 2014 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
- /*
-  * Dependencies :
-  *   - jQuery
-  *   - Bootstrap CSS
-  *   - MomentJS (optional)
-  */
 (function($){
     "use strict";
 
