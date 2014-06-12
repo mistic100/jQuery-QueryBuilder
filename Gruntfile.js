@@ -1,6 +1,4 @@
 module.exports = function(grunt) {
-    var lang = grunt.option('lang') || 'en';
-
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -11,27 +9,7 @@ module.exports = function(grunt) {
             ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n'+
             ' */',
 
-        // compress js
-        uglify: {
-            options: {
-                banner: '<%= banner %>\n'
-            },
-            nolang: {
-                files: {
-                    'dist/query-builder.min.js': ['src/query-builder.js']
-                }
-            },
-            lang: {
-                files: {
-                    'dist/query-builder.min.js': [
-                        'src/query-builder.js',
-                        'src/i18n/'+ lang +'.js'
-                    ]
-                }
-            }
-        },
-
-        // copy i18n
+        // copy i18n & src
         copy: {
             i18n: {
                 files: [{
@@ -40,6 +18,31 @@ module.exports = function(grunt) {
                     src: ['src/i18n/*.js'],
                     dest: 'dist/i18n'
                 }]
+            },
+            src: {
+                options: {
+                    process: function(content, srcpath) {
+                        return grunt.template.process(content);
+                    }
+                },
+                files: [{
+                    expand: true,
+                    flatten: true,
+                    src: ['src/query-builder.*'],
+                    dest: 'dist'
+                }]
+            }
+        },
+
+        // compress js
+        uglify: {
+            options: {
+                banner: '<%= banner %>\n'
+            },
+            dist: {
+                files: {
+                    'dist/query-builder.min.js': ['src/query-builder.js']
+                }
             }
         },
 
@@ -64,13 +67,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     grunt.registerTask('default', [
-        'uglify:nolang',
         'copy',
-        'cssmin'
-    ]);
-
-    grunt.registerTask('onelang', [
-        'uglify:lang',
+        'uglify',
         'cssmin'
     ]);
 };

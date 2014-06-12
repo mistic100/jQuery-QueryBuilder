@@ -6,10 +6,7 @@
     "homepage": "http://www.strangeplanet.fr"
   },
   "description": "jQuery plugin for user friendly query/filter creator",
-  "main": [
-    "dist/query-builder.min.js",
-    "dist/query-builder.min.css"
-  ],
+  "main": "dist/query-builder.js",
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-contrib-uglify": "~0.4.0",

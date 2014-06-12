@@ -7,8 +7,8 @@
   }],
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": [
-    "dist/query-builder.min.js",
-    "dist/query-builder.min.css"
+    "dist/query-builder.js",
+    "dist/query-builder.css"
   ],
   "dependencies" : {
     "jquery": ">= 1.9.0",
