@@ -8,7 +8,9 @@
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": [
     "dist/query-builder.min.js",
-    "dist/query-builder.min.css"
+    "dist/query-builder.min.css",
+	"src/query-builder.js",
+	"src/query-builder.css"
   ],
   "dependencies" : {
     "jquery": ">= 1.9.0",
@@ -25,7 +27,7 @@
   "homepage": "https://github.com/mistic100/jQuery-QueryBuilder",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mistic100/jQuery-QueryBuilder.git"
+    "url": "git://github.com/romanchyla/jQuery-QueryBuilder.git"
   },
   "ignore": [
     "**/.*",
