@@ -745,8 +745,10 @@
             e.stopPropagation();
 
             if (isHandle) {
-                // notify drag and drop
-                e.dataTransfer.setData('drag', true);
+                isHandle = false;
+
+                // notify drag and drop (only dummy text)
+                e.dataTransfer.setData('text', 'drag');
 
                 src = $(e.target);
 
@@ -758,8 +760,6 @@
                 setTimeout(function() {
                   src.hide();
                 }, 0);
-
-                isHandle = false;
             }
             else {
                 e.preventDefault();
@@ -767,6 +767,7 @@
         });
 
         this.$el.on('dragenter', '[draggable]', function(e) {
+            e.preventDefault();
             e.stopPropagation();
 
             var target = $(e.target), parent;
@@ -790,6 +791,7 @@
         });
 
         this.$el.on('drop', function(e) {
+            e.preventDefault();
             e.stopPropagation();
 
             var target = $(e.target), parent;
@@ -808,6 +810,7 @@
         });
 
         this.$el.on('dragend', '[draggable]', function(e) {
+            e.preventDefault();
             e.stopPropagation();
 
             src.show();
