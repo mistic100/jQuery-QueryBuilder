@@ -1135,7 +1135,7 @@
           config = config.key;
         }
         // equivalent to a clone
-        return JSON.parse(JSON.stringify(config));
+        return $.extend(true, {}, config);
       }
     };
 
