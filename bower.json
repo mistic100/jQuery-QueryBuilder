@@ -27,7 +27,7 @@
   "homepage": "https://github.com/mistic100/jQuery-QueryBuilder",
   "repository": {
     "type": "git",
-    "url": "git://github.com/romanchyla/jQuery-QueryBuilder.git"
+    "url": "git://github.com/mistic100/jQuery-QueryBuilder.git"
   },
   "ignore": [
     "**/.*",
@@ -35,5 +35,10 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "devDependencies": {
+    "chai": "~1.8.0",
+    "mocha": "~1.20.0",
+    "sinon": "http://sinonjs.org/releases/sinon-1.9.0.js"
+  }
 }

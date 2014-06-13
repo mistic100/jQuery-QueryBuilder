@@ -187,13 +187,6 @@
         ]
     };
 
-    // expose setDefaults static method
-    window.QueryBuilder = {
-        setDefaults: function(config) {
-            $.extend(true, QueryBuilder.DEFAULTS, config);
-        }
-    };
-
 
     // PUBLIC METHODS
     // ===============================
@@ -1112,7 +1105,7 @@
     // ===============================
     $.fn.queryBuilder = function(option) {
         if (this.length > 1) {
-            $.error('Unable to initialize on multiple target');
+            $.error('Unable to initialize multiple instances on the same target');
         }
 
         var data = this.data('queryBuilder'),
@@ -1129,6 +1122,21 @@
         }
 
         return this;
+    };
+
+    // expose setDefaults static method
+    $.fn.queryBuilder.defaults = {
+      set: function(config) {
+        $.extend(true, QueryBuilder.DEFAULTS, config);
+      },
+      get: function(key) {
+        var config = QueryBuilder.DEFAULTS;
+        if (key) {
+          config = config.key;
+        }
+        // equivalent to a clone
+        return JSON.parse(JSON.stringify(config));
+      }
     };
 
 }(jQuery));
