@@ -68,6 +68,11 @@ module.exports = function(grunt) {
                     ]
                 }
             }
+        },
+        
+        // qunit test suite
+        qunit: {
+            all: ['tests/*.html']
         }
     });
 
@@ -75,11 +80,16 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-qunit');
 
     grunt.registerTask('default', [
         'copy',
         'concat',
         'uglify',
         'cssmin'
+    ]);
+    
+    grunt.registerTask('test', [
+        'qunit'
     ]);
 };

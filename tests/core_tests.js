@@ -45,6 +45,10 @@ $(function(){
 
 function rulesMatch(a, b) {
   if (a.hasOwnProperty('rules')) {
+    if (!b.rules) {
+      return false;
+    }
+    
     for (var i=0, l=a.rules.length; i<l; i++) {
       if (!b.rules[i] || !rulesMatch(a.rules[i], b.rules[i])) {
         return false;
