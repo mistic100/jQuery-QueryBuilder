@@ -1,201 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>QUnit Test Suite</title>
   <meta charset="utf-8">
-
+  
+  <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../dist/query-builder.min.css">
+  
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+  <script src="../dist/query-builder.min.js"></script>
+  <script src="data.js"></script>
+  <script src="core_tests.js"></script>
 </head>
 
-<body>
-
-<div class="container">
-  <div class="col-md-12 col-lg-10 col-lg-offset-1">
-    <div id="builder"></div>
-    
-    <div class="btn-group">
-      <button class="btn btn-warning" id="reset">Reset</button>
-      <button class="btn btn-success" id="set">Set rules</button>
-      <button class="btn btn-primary" id="parse">Parse</button>
-    </div>
-
-    <div id="result" class="hide">
-      <h3>Output</h3>
-      <pre></pre>
-    </div>
-  </div>
-</div>
-
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="../dist/query-builder.min.js"></script>
-
-<script>
-// define filters
-$('#builder').queryBuilder({
-  sortable: true,
+<body class="container" style="padding:15px;">
   
-  filters: [
-  /*
-   * basic
-   */
-  {
-    id: 'name',
-    label: 'Name',
-    type: 'string'
-  },
-  /*
-   * select
-   */
-  {
-    id: 'category',
-    label: 'Category',
-    type: 'integer',
-    input: 'select',
-    values: {
-      1: 'Books',
-      2: 'Movies',
-      3: 'Music',
-      4: 'Tools',
-      5: 'Goodies',
-      6: 'Clothes'
-    },
-    operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
-  },
-  /*
-   * radio
-   */
-  {
-    id: 'in_stock',
-    label: 'In stock',
-    type: 'integer',
-    input: 'radio',
-    values: {
-      1: 'Yes',
-      0: 'No'
-    },
-    operators: ['equal']
-  },
-  /*
-   * double
-   */
-  {
-    id: 'price',
-    label: 'Price',
-    type: 'double',
-    validation: {
-      min: 0,
-      step: 0.01
-    }
-  }, 
-  /*
-   * placeholder and regex validation
-   */
-  {
-    id: 'id',
-    label: 'Identifier',
-    type: 'string',
-    placeholder: '____-____-____',
-    operators: ['equal', 'not_equal'],
-    validation: {
-      format: /^.{4}-.{4}-.{4}$/
-    }
-  },
-  /*
-   * custom input
-   */
-  {
-    id: 'coord',
-    label: 'Coordinates',
-    type: 'string',
-    validation: {
-      format: /^[A-C]{1}.[1-6]{1}$/
-    },
-    input: function($rule, filter) {
-      var $container = $rule.find('.rule-value-container');
-      
-      $container.on('change', '[name=coord_1]', function(){
-        var h = '';
-        
-        switch ($(this).val()) {
-          case 'A':
-            h = '<option value="-1">-</option> <option value="1">1</option> <option value="2">2</option>';
-            break;
-          case 'B':
-            h = '<option value="-1">-</option> <option value="3">3</option> <option value="4">4</option>';
-            break;
-          case 'C':
-            h = '<option value="-1">-</option> <option value="5">5</option> <option value="6">6</option>';
-            break;
-        }
-        
-        $container.find('[name=coord_2]').html(h).toggle(h!='');
-      });
-      
-      return '\
-      <select name="coord_1"> \
-        <option value="-1">-</option> \
-        <option value="A">A</option> \
-        <option value="B">B</option> \
-        <option value="C">C</option> \
-      </select> \
-      <select name="coord_2" style="display:none;"></select>';
-    },
-    valueParser: function($rule, value, filter, operator) {
-      return $rule.find('[name=coord_1]').val()
-        +'.'+$rule.find('[name=coord_2]').val();
-    },
-    onAfterSetValue: function($rule, value, filter, operator) {
-      if (operator.accept_values) {
-        var val = value.split('.');
-        
-        $rule.find('[name=coord_1]').val(val[0]).trigger('change');
-        $rule.find('[name=coord_2]').val(val[1]);
-      }
-    }
-  }]
-});
-
-// set rules
-$('#set').on('click', function() {
-  $('#builder').queryBuilder('setRules', {
-    condition: 'AND',
-    rules: [{
-      id: 'price',
-      operator: 'less',
-      value: 10.25
-    }, {
-      condition: 'OR',
-      rules: [{
-        id: 'category',
-        operator: 'equal',
-        value: 2
-      }, {
-        id: 'coord',
-        operator: 'equal',
-        value: 'B.3'
-      }]
-    }]
-  });
-
-  $('#parse').trigger('click');
-})
-.trigger('click');
-
-// reset builder
-$('#reset').on('click', function() {
-  $('#builder').queryBuilder('reset');
-  $('#result').empty().addClass('hide');
-});
-
-// get rules
-$('#parse').on('click', function() {
-  $('#result').removeClass('hide')
-    .find('pre').html(JSON.stringify(
-      $('#builder').queryBuilder('getRules'),
-      undefined, 2
-    ));
-});
-</script>
-
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  
+  <div class="col-md-8">
+    <div id="container1"></div>
+    <div id="container2"></div>
+    <div id="container3"></div>
+  </div>
 </body>
 </html>

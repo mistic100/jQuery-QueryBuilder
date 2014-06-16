@@ -8,6 +8,7 @@
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": "dist/query-builder.js",
   "devDependencies": {
+    "qunitjs": "~1.14.0",
     "grunt": "~0.4.5",
     "grunt-contrib-uglify": "~0.4.0",
     "grunt-contrib-cssmin": "~0.9.0",
