@@ -28,6 +28,18 @@ $(function(){
     assert.ok(rulesMatch($('#container3').queryBuilder('getRules'), {}), 'Should return empty object');
     assert.equal(error_str, 'string_empty', 'Should throw "string_empty" error');
   });
+  
+  QUnit.asyncTest('Language change', function(assert) {
+    expect(2);
+    var original = $.fn.queryBuilder.defaults.get('lang');
+    
+    $.getScript('../dist/i18n/fr.js', function() {
+      assert.equal($.fn.queryBuilder.defaults.get('lang').delete_rule, 'Supprimer', 'Should be in french');
+      $.fn.queryBuilder.defaults.set({ lang: original });
+      assert.equal($.fn.queryBuilder.defaults.get('lang').delete_rule, 'Delete', 'Should be in english');
+      QUnit.start();
+    });
+  });
 
 });
 

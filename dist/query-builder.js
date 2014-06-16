@@ -181,13 +181,6 @@
         ]
     };
 
-    // expose setDefaults static method
-    window.QueryBuilder = {
-        setDefaults: function(config) {
-            $.extend(true, QueryBuilder.DEFAULTS, config);
-        }
-    };
-
 
     // PUBLIC METHODS
     // ===============================
@@ -1126,6 +1119,19 @@
         }
 
         return this;
+    };
+    
+    $.fn.queryBuilder.defaults = {
+        set: function(options) {
+            $.extend(true, QueryBuilder.DEFAULTS, options);
+        },
+        get: function(key) {
+            var options = QueryBuilder.DEFAULTS;
+            if (key) {
+                options = options[key];
+            }
+            return $.extend(true, {}, options);
+        }
     };
 
 }(jQuery));

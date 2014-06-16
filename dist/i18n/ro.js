@@ -1,4 +1,4 @@
-QueryBuilder.setDefaults({ lang: {
+jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Adaugă regulă",
   "add_group": "Adaugă grup",
   "delete_rule": "Şterge",
