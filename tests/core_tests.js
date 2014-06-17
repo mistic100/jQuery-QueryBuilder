@@ -12,6 +12,12 @@ $(function(){
     $('#container2').queryBuilder({ filters: basic_filters });
     $('#container2').queryBuilder('setRules', basic_rules);
     assert.ok(rulesMatch($('#container2').queryBuilder('getRules'), basic_rules), 'Should return object with rules');
+    
+    var operators = [];
+    $('[name=container2_rule_1_operator] option').each(function() {
+      operators.push($(this).attr('value'));
+    });
+    assert.deepEqual(operators, basic_filters[1].operators, 'Should respect the order of operators');
   });
   
   QUnit.test('Empty value check', function(assert) {

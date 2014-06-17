@@ -23,7 +23,7 @@ var basic_filters = [
     5: 'Goodies',
     6: 'Clothes'
   },
-  operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
+  operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
 },
 /*
  * radio

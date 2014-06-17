@@ -860,6 +860,13 @@
             });
         }
 
+        // keep sort order defined for the filter
+        if (filter.operators) {
+            res.sort(function(a, b) {
+                return filter.operators.indexOf(a.type) - filter.operators.indexOf(b.type);
+            });
+        }
+
         return res;
     };
 
