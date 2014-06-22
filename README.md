@@ -1,5 +1,6 @@
-jQuery QueryBuilder
-===================
+# jQuery QueryBuilder
+
+[![Bower version](https://badge.fury.io/bo/jQuery-QueryBuilder.svg)](http://badge.fury.io/bo/jQuery-QueryBuilder)
 
 jQuery plugin offering an interface to create complex queries.
 
