@@ -4,6 +4,8 @@
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
+/*jshint multistr:true */
+
 (function($){
     "use strict";
 
@@ -237,7 +239,8 @@
             out.rules = [];
 
             for (var i=0, l=$elements.length; i<l; i++) {
-                var $rule = $elements.eq(i);
+                var $rule = $elements.eq(i),
+                    rule;
 
                 if ($rule.hasClass('rule-container')) {
                     var filterId = that.getRuleFilter($rule);
@@ -264,7 +267,7 @@
                         }
                     }
 
-                    var rule = {
+                    rule = {
                         id: filter.id,
                         field: filter.field,
                         type: filter.type,
@@ -276,7 +279,7 @@
                     out.rules.push(rule);
                 }
                 else {
-                    var rule = parse($rule);
+                    rule = parse($rule);
                     if (!$.isEmptyObject(rule)) {
                         out.rules.push(rule);
                     }
@@ -286,7 +289,7 @@
                 }
             }
 
-            if (out.rules.length == 0) {
+            if (out.rules.length === 0) {
                 return {};
             }
 
@@ -443,7 +446,7 @@
      * @return $group {jQuery}
      */
     QueryBuilder.prototype.addGroup = function(container, addRule) {
-        addRule = (addRule == null) ? true : addRule;
+        addRule = (addRule === null) ? true : addRule;
 
         var group_id = this.nextGroupId();
 
@@ -574,25 +577,25 @@
 
         switch (filter.input) {
             case 'radio':
-                if (value == undefined) {
+                if (value === undefined) {
                     return 'radio_empty';
                 }
                 break;
 
             case 'checkbox':
-                if (value.length == 0) {
+                if (value.length === 0) {
                     return 'checkbox_empty';
                 }
                 break;
 
             case 'select':
                 if (filter.multiple) {
-                    if (value.length == 0) {
+                    if (value.length === 0) {
                         return 'select_empty';
                     }
                 }
                 else {
-                    if (value == undefined) {
+                    if (value === undefined) {
                         return 'select_empty';
                     }
                 }
@@ -601,15 +604,15 @@
             case 'text': default:
                 switch (filter.internalType) {
                     case 'string':
-                        if (validation.min != undefined) {
+                        if (validation.min !== undefined) {
                             if (value.length < validation.min) {
                                 return 'string_exceed_min_length';
                             }
                         }
-                        else if (value.length == 0) {
+                        else if (value.length === 0) {
                             return 'string_empty';
                         }
-                        if (validation.max != undefined) {
+                        if (validation.max !== undefined) {
                             if (value.length > validation.max) {
                                 return 'string_exceed_max_length';
                             }
@@ -635,12 +638,12 @@
                                 return 'number_not_double';
                             }
                         }
-                        if (validation.min != undefined) {
+                        if (validation.min !== undefined) {
                             if (value < validation.min) {
                                 return 'number_exceed_min';
                             }
                         }
-                        if (validation.max != undefined) {
+                        if (validation.max !== undefined) {
                             if (value > validation.max) {
                                 return 'number_exceed_max';
                             }
@@ -970,7 +973,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getGroupTemplate = function(group_id) {
-        return '\
+        var h = '\
 <dl id='+ group_id +' class="rules-group-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right"> \
@@ -988,6 +991,8 @@
     <ul class=rules-list></ul> \
   </dd> \
 </dl>';
+
+        return h;
     };
 
     /**
@@ -996,7 +1001,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
-        return '\
+        var h = '\
 <li id='+ rule_id +' class="rule-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <div class="rule-header"> \
     <div class="btn-group pull-right"> \
@@ -1008,6 +1013,8 @@
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
 </li>';
+
+        return h;
     };
 
     /**
@@ -1057,18 +1064,18 @@
         }
 
         var validation = filter.validation || {},
-            h = '';
+            h = '', c;
 
         switch (filter.input) {
             case 'radio':
-                var c = filter.vertical ? ' class=block' : '';
+                c = filter.vertical ? ' class=block' : '';
                 $.each(filter.values, function(key, val) {
                     h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
                 });
                 break;
 
             case 'checkbox':
-                var c = filter.vertical ? ' class=block' : '';
+                c = filter.vertical ? ' class=block' : '';
                 $.each(filter.values, function(key, val) {
                     h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
                 });
@@ -1128,7 +1135,7 @@
 
         return this;
     };
-    
+
     $.fn.queryBuilder.defaults = {
         set: function(options) {
             $.extend(true, QueryBuilder.DEFAULTS, options);
