@@ -37,7 +37,15 @@
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
         this.operators = this.settings.operators;
+        this.template = this.settings.template;
         this.status = { group_id: 0, rule_id: 0, generatedId: false };
+
+        if (this.template.group === null) {
+            this.template.group = this.getGroupTemplate;
+        }
+        if (this.template.rule === null) {
+            this.template.rule = this.getRuleTemplate;
+        }
 
         // ensure we have an container id
         if (!this.$el.attr('id')) {
@@ -67,7 +75,7 @@
         // rule filter change
         this.$el.on('change.queryBuilder', '.rule-filter-container select[name$=_filter]', function() {
             var $this = $(this),
-                $rule = $this.closest('li');
+                $rule = $this.closest('.rule-container');
 
             that.createRuleOperators($rule, $this.val());
             that.createRuleInput($rule, $this.val());
@@ -76,7 +84,7 @@
         // rule operator change
         this.$el.on('change.queryBuilder', '.rule-operator-container select[name$=_operator]', function() {
             var $this = $(this),
-                $rule = $this.closest('li');
+                $rule = $this.closest('.rule-container');
 
             that.updateRuleOperator($rule, $this.val());
         });
@@ -84,7 +92,7 @@
         // add rule button
         this.$el.on('click.queryBuilder', '[data-add=rule]', function() {
             var $this = $(this),
-                $ul = $this.closest('dl').find('>dd>ul');
+                $ul = $this.closest('.rules-group-container').find('>.rules-group-body>.rules-list');
 
             that.addRule($ul);
         });
@@ -92,7 +100,7 @@
         // add group button
         this.$el.on('click.queryBuilder', '[data-add=group]', function() {
             var $this = $(this),
-                $ul = $this.closest('dl').find('>dd>ul');
+                $ul = $this.closest('.rules-group-container').find('>.rules-group-body>.rules-list');
 
             that.addGroup($ul);
         });
@@ -100,7 +108,7 @@
         // delete rule button
         this.$el.on('click.queryBuilder', '[data-delete=rule]', function() {
             var $this = $(this),
-                $rule = $this.closest('li');
+                $rule = $this.closest('.rule-container');
 
             $rule.remove();
         });
@@ -108,9 +116,11 @@
         // delete group button
         this.$el.on('click.queryBuilder', '[data-delete=group]', function() {
             var $this = $(this),
-                $group = $this.closest('dl');
+                $group = $this.closest('.rules-group-container');
 
-            $group.remove();
+            if ($this[0].id != that.$el_id + '_group_0') {
+                $group.remove();
+            }
         });
 
         // INIT
@@ -129,6 +139,11 @@
 
         sortable: false,
         filters: [],
+
+        template: {
+            group: null,
+            rule: null
+        },
 
         lang: {
             add_rule: 'Add rule',
@@ -207,7 +222,7 @@
         this.status.group_id = 1;
         this.status.rule_id = 0;
 
-        this.addRule(this.$el.find('>dl>dd>ul').empty());
+        this.addRule(this.$el.find('>.rules-group-container>.rules-group-body>.rules-list').empty());
     };
 
     /**
@@ -225,16 +240,16 @@
      * @return {object}
      */
     QueryBuilder.prototype.getRules = function() {
-        this.markRuleAsError(this.$el.find('li'), false);
+        this.markRuleAsError(this.$el.find('.rule-container'), false);
 
-        var $group = this.$el.find('>dl'),
+        var $group = this.$el.find('>.rules-group-container'),
             that = this;
 
         return (function parse($group) {
             var out = {},
-                $elements = $group.find('>dd>ul>*');
+                $elements = $group.find('>.rules-group-body>.rules-list>*');
 
-            out.condition = $group.find('>dt input[name$=_cond]:checked').val();
+            out.condition = $group.find('>.rules-group-header input[name$=_cond]:checked').val();
             out.rules = [];
 
             for (var i=0, l=$elements.length; i<l; i++) {
@@ -308,8 +323,8 @@
 
         (function add(data, $container){
             var $group = that.addGroup($container, false),
-                $ul = $group.find('>dd>ul'),
-                $buttons = $group.find('>dt input[name$=_cond]');
+                $ul = $group.find('>.rules-group-body>.rules-list'),
+                $buttons = $group.find('>.rules-group-header input[name$=_cond]');
 
             if (!data.condition) {
                 data.condition = 'AND';
@@ -445,20 +460,17 @@
      * @return $group {jQuery}
      */
     QueryBuilder.prototype.addGroup = function(container, addRule) {
-        addRule = (addRule === null) ? true : addRule;
+        var group_id = this.nextGroupId(),
+            $group = $(this.template.group.call(this, group_id));
 
-        var group_id = this.nextGroupId();
-
-        container.append(this.getGroupTemplate(group_id));
-
-        var $group = container.find('#'+ group_id);
+        container.append($group);
 
         if (this.settings.onAfterAddGroup) {
             this.settings.onAfterAddGroup.call(this, $group);
         }
 
-        if (addRule) {
-            this.addRule($group.find('>dd>ul'));
+        if (addRule === undefined || addRule === true) {
+            this.addRule($group.find('>.rules-group-body>.rules-list'));
         }
 
         return $group;
@@ -470,11 +482,12 @@
      * @return $rule {jQuery}
      */
     QueryBuilder.prototype.addRule = function(container) {
-        var rule_id = this.nextRuleId();
+        var rule_id = this.nextRuleId(),
+            $rule = $(this.template.rule.call(this, rule_id)),
+            $filterSelect = $(this.getRuleFilterSelect(rule_id));
 
-        container.append(this.getRuleTemplate(rule_id));
-
-        var $rule = container.find('#'+ rule_id);
+        container.append($rule);
+        $rule.find('.rule-filter-container').append($filterSelect);
 
         if (this.settings.onAfterAddRule) {
             this.settings.onAfterAddRule.call(this, $rule);
@@ -489,17 +502,16 @@
      * @param filterId {string}
      */
     QueryBuilder.prototype.createRuleOperators = function($rule, filterId) {
-        var $operator_container = $rule.find('.rule-operator-container').empty(),
-            rule_id = $rule.attr('id');
+        var $operatorContainer = $rule.find('.rule-operator-container').empty();
 
         if (filterId == '-1') {
             return;
         }
 
         var operators = this.getOperators(filterId),
-            h = this.getRuleOperatorSelect(rule_id, operators);
+            $operatorSelect = $(this.getRuleOperatorSelect($rule.attr('id'), operators));
 
-        $operator_container.html(h);
+        $operatorContainer.html($operatorSelect);
     };
 
     /**
@@ -508,22 +520,22 @@
      * @param filterId {string}
      */
     QueryBuilder.prototype.createRuleInput = function($rule, filterId) {
+        var $valueContainer = $rule.find('.rule-value-container').empty();
+
         if (filterId == '-1') {
             return;
         }
 
-        var $value_container = $rule.find('.rule-value-container').empty(),
-            rule_id = $rule.attr('id'),
-            operator = this.getOperatorByType(this.getRuleOperator($rule));
+        var operator = this.getOperatorByType(this.getRuleOperator($rule));
 
         if (!operator.accept_values) {
             return;
         }
 
         var filter = this.getFilterById(filterId),
-            h = this.getRuleInput(rule_id, filter);
+            $ruleInput = $(this.getRuleInput($rule.attr('id'), filter));
 
-        $value_container.html(h).show();
+        $valueContainer.append($ruleInput).show();
 
         if (filter.onAfterCreateRuleInput) {
             filter.onAfterCreateRuleInput.call(this, $rule, filter);
@@ -531,7 +543,7 @@
 
         // init external jquery plugin
         if (filter.plugin) {
-            $value_container.find(filter.input=='select' ? 'select' : 'input')[filter.plugin](filter.plugin_config || {});
+            $ruleInput[filter.plugin](filter.plugin_config || {});
         }
     };
 
@@ -541,17 +553,17 @@
      * @param operatorType {string}
      */
     QueryBuilder.prototype.updateRuleOperator = function($rule, operatorType) {
-        var $value_container = $rule.find('.rule-value-container'),
+        var $valueContainer = $rule.find('.rule-value-container'),
             filter = this.getFilterById(this.getRuleFilter($rule)),
             operator = this.getOperatorByType(operatorType);
 
         if (!operator.accept_values) {
-            $value_container.hide();
+            $valueContainer.hide();
         }
         else {
-            $value_container.show();
+            $valueContainer.show();
 
-            if ($value_container.is(':empty')) {
+            if ($valueContainer.is(':empty')) {
                 this.createRuleInput($rule, filter.id);
             }
         }
@@ -973,7 +985,7 @@
      */
     QueryBuilder.prototype.getGroupTemplate = function(group_id) {
         var h = '\
-<dl id='+ group_id +' class="rules-group-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
+<dl id="'+ group_id +'" class="rules-group-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right"> \
       <button type="button" class="btn btn-xs btn-success" data-add="rule"><i class="glyphicon glyphicon-plus"></i> '+ this.lang.add_rule +'</button> \
@@ -1001,14 +1013,14 @@
      */
     QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
         var h = '\
-<li id='+ rule_id +' class="rule-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
+<li id="'+ rule_id +'" class="rule-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <div class="rule-header"> \
     <div class="btn-group pull-right"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_rule +'</button> \
     </div> \
   </div> \
   '+ (this.settings.sortable ? '<div class="drag-handle"><i class="glyphicon glyphicon-sort"></i></div>' : '') +' \
-  <div class="rule-filter-container">'+ this.getRuleFilterSelect(rule_id) +'</div> \
+  <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
 </li>';
