@@ -104,6 +104,18 @@ isHome: true
           <td>Default active operator.</td>
         </tr>
         <tr>
+          <td>readonly_behavior.delete_group</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Allow to delete a group containing a readonly rule.</td>
+        </tr>
+        <tr>
+          <td>readonly_behavior.sortable</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>Allow to move a readonly rule when <code>sortable</code> is true.</td>
+        </tr>
+        <tr>
           <td>lang</td>
           <td>object</td>
           <td></td>
@@ -322,6 +334,8 @@ $('#builder').queryBuilder('getRules')
 {% highlight javascript %}
 $('#builder').queryBuilder('setRules', { ... })
 {% endhighlight %}
+
+  <p>Each rule can have an additional <code>readonly</code> parameter which will prevent rule edition/deletion if <code>true</code>.</p>
   
   <h4>reset</h4>
   <p>Removes all rules.</p>
