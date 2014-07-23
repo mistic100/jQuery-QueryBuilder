@@ -86,8 +86,14 @@ isHome: true
           <td>Array of operators. <a href="#operators">See bellow</a>.</td>
         </tr>
         <tr>
-          <td>lang</td>
+          <td>conditions</td>
           <td>array</td>
+          <td>['AND', 'OR']</td>
+          <td>Array of available group conditions. Change the label with the lang option (the keyword is always lower-cased before lookup in <code>lang</code> array.</td>
+        </tr>
+        <tr>
+          <td>lang</td>
+          <td>object</td>
           <td></td>
           <td>Array of translatable strings. <a href="#lang">See bellow</a>.</td>
         </tr>
@@ -486,8 +492,8 @@ add_group: 'Add group',
 delete_rule: 'Delete',
 delete_group: 'Delete',
 
-and_condition: 'AND',
-or_condition: 'OR',
+condition_and: 'AND',
+condition_or: 'OR',
 
 filter_select_placeholder: '------',
 
