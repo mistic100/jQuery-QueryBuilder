@@ -124,9 +124,7 @@
             var $this = $(this),
                 $group = $this.closest('.rules-group-container');
 
-            if ($this[0].id != that.$el_id + '_group_0') {
-                $group.remove();
-            }
+            that.deleteGroup($group);
         });
 
         // INIT
@@ -135,7 +133,13 @@
         }
 
         this.$el.addClass('query-builder');
-        this.addGroup(this.$el);
+
+        if (options.rules) {
+            this.setRules(options.rules);
+        }
+        else {
+            this.addGroup(this.$el);
+        }
     };
 
     QueryBuilder.DEFAULTS = {
@@ -148,6 +152,10 @@
         filters: [],
         conditions: ['AND', 'OR'],
         default_condition: 'AND',
+        readonly_behavior: {
+            delete_group: false,
+            sortable: true
+        },
 
         template: {
             group: null,
@@ -340,8 +348,8 @@
             }
 
             for (var i=0, l=that.settings.conditions.length; i<l; i++) {
-              var cond = that.settings.conditions[i];
-              $buttons.filter('[value='+ cond +']').prop('checked', data.condition.toUpperCase() == cond.toUpperCase());
+                var cond = that.settings.conditions[i];
+                $buttons.filter('[value='+ cond +']').prop('checked', data.condition.toUpperCase() == cond.toUpperCase());
             }
             $buttons.trigger('change');
 
@@ -351,7 +359,7 @@
                         $.error('Groups are disabled');
                     }
                     else {
-                      add(rule, $ul);
+                        add(rule, $ul);
                     }
                 }
                 else {
@@ -374,32 +382,42 @@
                     $rule.find('.rule-operator-container select[name$=_operator]').val(rule.operator).trigger('change');
 
                     if (operator.accept_values) {
-                      switch (filter.input) {
-                          case 'radio':
-                              $value.find('input[name$=_value][value="'+ rule.value +'"]').prop('checked', true).trigger('change');
-                              break;
+                        switch (filter.input) {
+                            case 'radio':
+                                $value.find('input[name$=_value][value="'+ rule.value +'"]').prop('checked', true).trigger('change');
+                                break;
 
-                          case 'checkbox':
-                              if (!$.isArray(rule.value)) {
-                                  rule.value = [rule.value];
-                              }
-                              $.each(rule.value, function(i, value) {
-                                  $value.find('input[name$=_value][value="'+ value +'"]').prop('checked', true).trigger('change');
-                              });
-                              break;
+                            case 'checkbox':
+                                if (!$.isArray(rule.value)) {
+                                    rule.value = [rule.value];
+                                }
+                                $.each(rule.value, function(i, value) {
+                                    $value.find('input[name$=_value][value="'+ value +'"]').prop('checked', true).trigger('change');
+                                });
+                                break;
 
-                          case 'select':
-                              $value.find('select[name$=_value]').val(rule.value).trigger('change');
-                              break;
+                            case 'select':
+                                $value.find('select[name$=_value]').val(rule.value).trigger('change');
+                                break;
 
-                          case 'text': default:
-                              $value.find('input[name$=_value]').val(rule.value).trigger('change');
-                              break;
-                      }
+                            /* falls through */
+                            case 'text': default:
+                                $value.find('input[name$=_value]').val(rule.value).trigger('change');
+                                break;
+                        }
+
+                        if (rule.readonly) {
+                            $rule.find('input, select').prop('disabled', true);
+                            $rule.addClass('disabled').find('[data-delete=rule]').remove();
+
+                            if (that.settings.sortable && !that.settings.readonly_behavior.sortable) {
+                                $rule.find('.drag-handle').remove();
+                            }
+                        }
                     }
 
                     if (filter.onAfterSetValue) {
-                        filter.onAfterSetValue.call(this, $rule, rule.value, filter, operator);
+                        filter.onAfterSetValue.call(that, $rule, rule.value, filter, operator);
                     }
                 }
             });
@@ -491,6 +509,43 @@
         }
 
         return $group;
+    };
+
+    /**
+     * Tries to delete a group after checks
+     * @param $group {jQuery}
+     */
+    QueryBuilder.prototype.deleteGroup = function($group) {
+        if ($group[0].id == this.$el_id + '_group_0') {
+            return;
+        }
+
+        if (this.settings.readonly_behavior.delete_group) {
+            $group.remove();
+        }
+
+        var that = this,
+            keepGroup = false;
+
+        $group.find('>.rules-group-body>.rules-list>*').each(function() {
+            var $element = $(this);
+
+            if ($element.hasClass('rule-container')) {
+                if ($element.hasClass('disabled')) {
+                    keepGroup = true;
+                }
+                else {
+                    $element.remove();
+                }
+            }
+            else {
+                that.deleteGroup($element);
+            }
+        });
+
+        if (!keepGroup) {
+            $group.remove();
+        }
     };
 
     /**
@@ -629,6 +684,7 @@
                 }
                 break;
 
+            /* falls through */
             case 'text': default:
                 switch (filter.internalType) {
                     case 'string':
@@ -985,6 +1041,7 @@
                 }
                 break;
 
+            /* falls through */
             case 'text': default:
                 out = $value.find('input[name$=_value]').val();
         }
@@ -1138,6 +1195,7 @@
                 h+= '</select>';
                 break;
 
+            /* falls through */
             case 'text': default:
                 switch (filter.internalType) {
                     case 'number':
@@ -1149,6 +1207,7 @@
                         h+= '>';
                         break;
 
+                    /* falls through */
                     case 'datetime': case 'text': default:
                         h+= '<input type="text" name="'+ rule_id +'_value"';
                         if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';

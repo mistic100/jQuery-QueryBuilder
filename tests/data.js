@@ -157,3 +157,48 @@ var rules_for_custom_conditions = {
     }]
   }]
 };
+
+var readonly_rules = {
+  condition: 'AND',
+  rules: [{
+    id: 'price',
+    operator: 'less',
+    value: 10.25
+  }, {
+    condition: 'OR',
+    rules: [{
+      id: 'category',
+      operator: 'equal',
+      value: 2
+    }, {
+      id: 'id',
+      operator: 'not_equal',
+      value: '1234-azer-5678',
+      readonly: true
+    }, {
+      condition: 'AND',
+      rules: [{
+        id: 'name',
+        operator: 'equal',
+        value: 'bar'
+      }]
+    }]
+  }]
+};
+
+var readonly_rules_after = {
+  condition: 'AND',
+  rules: [{
+    id: 'price',
+    operator: 'less',
+    value: 10.25
+  }, {
+    condition: 'OR',
+    rules: [{
+      id: 'id',
+      operator: 'not_equal',
+      value: '1234-azer-5678',
+      readonly: true
+    }]
+  }]
+};

@@ -6,8 +6,10 @@ $(function(){
   });
   
   QUnit.test('Set/get rules', function(assert) {
-    $('#container2').queryBuilder({ filters: basic_filters });
-    $('#container2').queryBuilder('setRules', basic_rules);
+    $('#container2').queryBuilder({
+      filters: basic_filters,
+      rules: basic_rules
+    });
     
     assert.ok(rulesMatch($('#container2').queryBuilder('getRules'), basic_rules), 'Should return object with rules');
     assert.deepEqual(getOptions($('#container2_rule_1 [name$=_operator] option')), basic_filters[1].operators, 'Should respect the order of operators');
@@ -17,11 +19,11 @@ $(function(){
     var error_str;
     $('#container3').queryBuilder({
       filters: basic_filters,
+      rules: invalid_rules,
       onValidationError: function($rule, error, value, filter, operator) {
         error_str = error;
       }
     });
-    $('#container3').queryBuilder('setRules', invalid_rules);
     
     assert.ok(rulesMatch($('#container3').queryBuilder('getRules'), {}), 'Should return empty object');
     assert.equal(error_str, 'string_empty', 'Should throw "string_empty" error');
@@ -42,10 +44,9 @@ $(function(){
   QUnit.test('Delete/add operators', function(assert) {
     $('#container4').queryBuilder({
       filters: filters_for_custom_operators,
+      rules: rules_for_custom_operators,
       operators: custom_operators
     });
-    
-    $('#container4').queryBuilder('setRules', rules_for_custom_operators);
 
     assert.deepEqual(getOptions($('#container4_rule_0 [name$=_operator] option')), ['equal', 'not_equal'], 'String type should have equal & not_equal operators');
     assert.deepEqual(getOptions($('#container4_rule_1 [name$=_operator] option')), ['less', 'greater'], 'Number type should have less & greater operators');
@@ -55,11 +56,10 @@ $(function(){
   QUnit.test('Change conditions', function(assert) {
     $('#container5').queryBuilder({
       filters: basic_filters,
+      rules: rules_for_custom_conditions,
       conditions: ['NAND', 'XOR'],
       default_condition: 'NAND'
     });
-    
-    $('#container5').queryBuilder('setRules', rules_for_custom_conditions);
   
     assert.ok(rulesMatch($('#container5').queryBuilder('getRules'), rules_for_custom_conditions), 'Should return correct rules');
 
@@ -74,6 +74,21 @@ $(function(){
     
     assert.equal($('#container6_group_0>.rules-group-header [data-add=group]').length, 0, 'Should not contain group add button');
     assert.throws(function(){ $('#container6').queryBuilder('setRules', basic_rules); }, /Groups are disabled/, 'Should throw "Groups are disabled" error');
+  });
+  
+  QUnit.test('Readonly', function(assert) {
+    $('#container7').queryBuilder({
+      filters: basic_filters,
+      rules: readonly_rules,
+      sortable: true,
+      readonly_behavior: {
+        sortable: false
+      }
+    });
+    
+    assert.equal($('#container7_rule_2').find('.drag-handle, [data-delete=rule]').length, 0, 'Should hide drag handle and delete button of readonly rule');
+    $('#container7_group_1>.rules-group-header [data-delete=group]').trigger('click');
+    assert.ok(rulesMatch($('#container7').queryBuilder('getRules'), readonly_rules_after), 'Should not delete group with readonly rule');
   });
 
 });
@@ -96,6 +111,12 @@ function rulesMatch(a, b) {
     
     for (var i=0, l=a.rules.length; i<l; i++) {
       if (!b.rules[i] || !rulesMatch(a.rules[i], b.rules[i])) {
+        return false;
+      }
+    }
+    
+    for (var i=0, l=b.rules.length; i<l; i++) {
+      if (!a.rules[i] || !rulesMatch(a.rules[i], b.rules[i])) {
         return false;
       }
     }
