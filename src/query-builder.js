@@ -41,6 +41,10 @@
         this.template = this.settings.template;
         this.status = { group_id: 0, rule_id: 0, generatedId: false };
 
+        if (options.operators) {
+          this.operators = $.extend(true, [], options.operators);
+        }
+
         if (this.template.group === null) {
             this.template.group = this.getGroupTemplate;
         }
@@ -871,7 +875,7 @@
 
             res.push({
                 type: this.operators[i].type,
-                label: this.lang['operator_'+this.operators[i].type]
+                label: this.lang['operator_'+this.operators[i].type] || this.operators[i].type
             });
         }
 

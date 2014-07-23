@@ -93,3 +93,51 @@ var invalid_rules = {
     value: ''
   }]
 };
+
+var filters_for_custom_operators = [
+{
+  id: 'name',
+  label: 'Name',
+  type: 'string'
+},
+{
+  id: 'price',
+  label: 'Price',
+  type: 'double',
+  validation: {
+    min: 0,
+    step: 0.01
+  }
+}, 
+{
+  id: 'release',
+  label: 'Release date',
+  type: 'date'
+}
+];
+
+var rules_for_custom_operators = {
+  condition: 'AND',
+  rules: [{
+    id: 'name',
+    operator: 'equal',
+    value: 'foo'
+  }, {
+    id: 'price',
+    operator: 'less',
+    value: 10
+  }, {
+    id: 'release',
+    operator: 'before',
+    value: '1995-5-1'
+  }]
+};
+
+var custom_operators = [
+  {type: 'equal',     accept_values: true,  apply_to: ['string']},
+  {type: 'not_equal', accept_values: true,  apply_to: ['string']},
+  {type: 'less',      accept_values: true,  apply_to: ['number']},
+  {type: 'greater',   accept_values: true,  apply_to: ['number']},
+  {type: 'before',    accept_values: true,  apply_to: ['datetime']},
+  {type: 'after',     accept_values: true,  apply_to: ['datetime']}
+];
