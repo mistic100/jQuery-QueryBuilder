@@ -144,6 +144,9 @@
         sortable: false,
         filters: [],
 
+        conditions: ['AND', 'OR'],
+        default_condition: 'AND',
+
         template: {
             group: null,
             rule: null
@@ -155,8 +158,8 @@
             delete_rule: 'Delete',
             delete_group: 'Delete',
 
-            and_condition: 'AND',
-            or_condition: 'OR',
+            condition_and: 'AND',
+            condition_or: 'OR',
 
             filter_select_placeholder: '------',
 
@@ -331,11 +334,13 @@
                 $buttons = $group.find('>.rules-group-header input[name$=_cond]');
 
             if (!data.condition) {
-                data.condition = 'AND';
+                data.condition = that.settings.default_condition;
             }
 
-            $buttons.filter('[value=AND]').prop('checked', data.condition.toUpperCase() == 'AND');
-            $buttons.filter('[value=OR]').prop('checked', data.condition.toUpperCase() == 'OR');
+            for (var i=0, l=that.settings.conditions.length; i<l; i++) {
+              var cond = that.settings.conditions[i];
+              $buttons.filter('[value='+ cond +']').prop('checked', data.condition.toUpperCase() == cond.toUpperCase());
+            }
             $buttons.trigger('change');
 
             $.each(data.rules, function(i, rule) {
@@ -996,9 +1001,17 @@
       <button type="button" class="btn btn-xs btn-success" data-add="group"><i class="glyphicon glyphicon-plus-sign"></i> '+ this.lang.add_group +'</button> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="group"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_group +'</button> \
     </div> \
-    <div class="btn-group"> \
-      <label class="btn btn-xs btn-primary active"><input type="radio" name="'+ group_id +'_cond" value="AND" checked> '+ this.lang.and_condition +'</label> \
-      <label class="btn btn-xs btn-primary"><input type="radio" name="'+ group_id +'_cond" value="OR"> '+ this.lang.or_condition +'</label> \
+    <div class="btn-group">';
+    
+      for (var i=0, l=this.settings.conditions.length; i<l; i++) {
+          var cond = this.settings.conditions[i],
+              active = cond == this.settings.default_condition,
+              label = this.lang['condition_'+ cond.toLowerCase()] || cond;
+
+          h+= '<label class="btn btn-xs btn-primary '+ (active?'active':'') +'"><input type="radio" name="'+ group_id +'_cond" value="'+ cond +'" '+ (active?'checked':'') +'> '+ label +'</label>';
+      }
+
+        h+= '\
     </div> \
     '+ (this.settings.sortable ? '<div class="drag-handle"><i class="glyphicon glyphicon-sort"></i></div>' : '') +' \
   </dt> \

@@ -141,3 +141,19 @@ var custom_operators = [
   {type: 'before',    accept_values: true,  apply_to: ['datetime']},
   {type: 'after',     accept_values: true,  apply_to: ['datetime']}
 ];
+
+var rules_for_custom_conditions = {
+  condition: 'NAND',
+  rules: [{
+    id: 'name',
+    operator: 'equal',
+    value: 'foo'
+  }, {
+    condition: 'XOR',
+    rules: [{
+      id: 'name',
+      operator: 'equal',
+      value: 'bar'
+    }]
+  }]
+};

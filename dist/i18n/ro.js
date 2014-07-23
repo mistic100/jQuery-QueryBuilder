@@ -4,8 +4,8 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
   "delete_rule": "Şterge",
   "delete_group": "Şterge",
 
-  "and_condition": "ŞI",
-  "or_condition": "SAU",
+  "condition_and": "ŞI",
+  "condition_or": "SAU",
 
   "filter_select_placeholder": "------",
 

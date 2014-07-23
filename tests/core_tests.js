@@ -13,7 +13,7 @@ $(function(){
     $('#container2').queryBuilder('setRules', basic_rules);
     
     assert.ok(rulesMatch($('#container2').queryBuilder('getRules'), basic_rules), 'Should return object with rules');
-    assert.deepEqual(getSelectOptions($('#container2_rule_1 [name$=_operator]')), basic_filters[1].operators, 'Should respect the order of operators');
+    assert.deepEqual(getOptions($('#container2_rule_1 [name$=_operator] option')), basic_filters[1].operators, 'Should respect the order of operators');
   });
   
   QUnit.test('Empty value check', function(assert) {
@@ -42,7 +42,7 @@ $(function(){
     });
   });
   
-  QUnit.test('Operators', function(assert) {
+  QUnit.test('Delete/add operators', function(assert) {
     $('#container4').queryBuilder({
       filters: filters_for_custom_operators,
       operators: custom_operators
@@ -50,17 +50,31 @@ $(function(){
     
     $('#container4').queryBuilder('setRules', rules_for_custom_operators);
 
-    assert.deepEqual(getSelectOptions($('#container4_rule_0 [name$=_operator]')), ['equal', 'not_equal'], 'String type should have equal & not_equal operators');
-    assert.deepEqual(getSelectOptions($('#container4_rule_1 [name$=_operator]')), ['less', 'greater'], 'Number type should have less & greater operators');
-    assert.deepEqual(getSelectOptions($('#container4_rule_2 [name$=_operator]')), ['before', 'after'], 'Datetime type should have before & after operators');
+    assert.deepEqual(getOptions($('#container4_rule_0 [name$=_operator] option')), ['equal', 'not_equal'], 'String type should have equal & not_equal operators');
+    assert.deepEqual(getOptions($('#container4_rule_1 [name$=_operator] option')), ['less', 'greater'], 'Number type should have less & greater operators');
+    assert.deepEqual(getOptions($('#container4_rule_2 [name$=_operator] option')), ['before', 'after'], 'Datetime type should have before & after operators');
+  });
+  
+  QUnit.test('Change conditions', function(assert) {
+    $('#container5').queryBuilder({
+      filters: basic_filters,
+      conditions: ['NAND', 'XOR'],
+      default_condition: 'NAND'
+    });
+    
+    $('#container5').queryBuilder('setRules', rules_for_custom_conditions);
+  
+    assert.ok(rulesMatch($('#container5').queryBuilder('getRules'), rules_for_custom_conditions), 'Should return correct rules');
+
+    assert.deepEqual(getOptions($('#container5_group_0>.rules-group-header [name$=_cond]')), ['NAND', 'XOR'], 'Conditions should be NAND & XOR');
   });
 
 });
 
-function getSelectOptions($target) {
+function getOptions($target) {
   var options = [];
   
-  $target.find('option').each(function(){
+  $target.each(function(){
     options.push($(this).val());
   });
   

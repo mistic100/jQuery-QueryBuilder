@@ -4,8 +4,8 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
   "delete_rule": "Supprimer",
   "delete_group": "Supprimer",
 
-  "and_condition": "ET",
-  "or_condition": "OU",
+  "condition_and": "ET",
+  "condition_or": "OU",
 
   "filter_select_placeholder": "------",
 
