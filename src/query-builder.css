@@ -112,9 +112,3 @@
   border:1px dashed #bbb;
   opacity:0.7;
 }
-
-/* hide first delete button and drag handle */
-.query-builder>.rules-group-container>.rules-group-header [data-delete],
-.query-builder>.rules-group-container>.rules-group-header .drag-handle {
-  display:none;
-}

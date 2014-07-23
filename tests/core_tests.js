@@ -1,8 +1,5 @@
 $(function(){
 
-  /*
-   * BASIC TESTS
-   */
   QUnit.test('Empty builder', function(assert) {
     $('#container1').queryBuilder({ filters: basic_filters });
     assert.ok(rulesMatch($('#container1').queryBuilder('getRules'), {}), 'Should return empty object');
@@ -67,6 +64,16 @@ $(function(){
     assert.ok(rulesMatch($('#container5').queryBuilder('getRules'), rules_for_custom_conditions), 'Should return correct rules');
 
     assert.deepEqual(getOptions($('#container5_group_0>.rules-group-header [name$=_cond]')), ['NAND', 'XOR'], 'Conditions should be NAND & XOR');
+  });
+  
+  QUnit.test('No groups', function(assert) {
+    $('#container6').queryBuilder({
+      filters: basic_filters,
+      allow_groups: false
+    });
+    
+    assert.equal($('#container6_group_0>.rules-group-header [data-add=group]').length, 0, 'Should not contain group add button');
+    assert.throws(function(){ $('#container6').queryBuilder('setRules', basic_rules); }, /Groups are disabled/, 'Should throw "Groups are disabled" error');
   });
 
 });

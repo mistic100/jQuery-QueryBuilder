@@ -103,12 +103,14 @@
         });
 
         // add group button
-        this.$el.on('click.queryBuilder', '[data-add=group]', function() {
-            var $this = $(this),
-                $ul = $this.closest('.rules-group-container').find('>.rules-group-body>.rules-list');
+        if (this.settings.allow_groups) {
+            this.$el.on('click.queryBuilder', '[data-add=group]', function() {
+                var $this = $(this),
+                    $ul = $this.closest('.rules-group-container').find('>.rules-group-body>.rules-list');
 
-            that.addGroup($ul);
-        });
+                that.addGroup($ul);
+            });
+        }
 
         // delete rule button
         this.$el.on('click.queryBuilder', '[data-delete=rule]', function() {
@@ -142,9 +144,9 @@
         onAfterAddGroup: null,
         onAfterAddRule: null,
 
+        allow_groups: true,
         sortable: false,
         filters: [],
-
         conditions: ['AND', 'OR'],
         default_condition: 'AND',
 
@@ -346,7 +348,12 @@
 
             $.each(data.rules, function(i, rule) {
                 if (rule.rules && rule.rules.length>0) {
-                    add(rule, $ul);
+                    if (!that.settings.allow_groups) {
+                        $.error('Groups are disabled');
+                    }
+                    else {
+                      add(rule, $ul);
+                    }
                 }
                 else {
                     if (!rule.id) {
@@ -471,7 +478,8 @@
      */
     QueryBuilder.prototype.addGroup = function(container, addRule) {
         var group_id = this.nextGroupId(),
-            $group = $(this.template.group.call(this, group_id));
+            first = group_id == this.$el_id + '_group_0',
+            $group = $(this.template.group.call(this, group_id, first));
 
         container.append($group);
 
@@ -991,35 +999,46 @@
     /**
      * Returns group HTML
      * @param group_id {string}
+     * @param main {boolean}
      * @return {string}
      */
-    QueryBuilder.prototype.getGroupTemplate = function(group_id) {
+    QueryBuilder.prototype.getGroupTemplate = function(group_id, main) {
         var h = '\
 <dl id="'+ group_id +'" class="rules-group-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right"> \
       <button type="button" class="btn btn-xs btn-success" data-add="rule"><i class="glyphicon glyphicon-plus"></i> '+ this.lang.add_rule +'</button> \
-      <button type="button" class="btn btn-xs btn-success" data-add="group"><i class="glyphicon glyphicon-plus-sign"></i> '+ this.lang.add_group +'</button> \
-      <button type="button" class="btn btn-xs btn-danger" data-delete="group"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_group +'</button> \
+      '+ (this.settings.allow_groups ? '<button type="button" class="btn btn-xs btn-success" data-add="group"><i class="glyphicon glyphicon-plus-sign"></i> '+ this.lang.add_group +'</button>' : '') +' \
+      '+ (!main ? '<button type="button" class="btn btn-xs btn-danger" data-delete="group"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_group +'</button>' : '') +' \
     </div> \
-    <div class="btn-group">';
-    
-      for (var i=0, l=this.settings.conditions.length; i<l; i++) {
-          var cond = this.settings.conditions[i],
-              active = cond == this.settings.default_condition,
-              label = this.lang['condition_'+ cond.toLowerCase()] || cond;
-
-          h+= '<label class="btn btn-xs btn-primary '+ (active?'active':'') +'"><input type="radio" name="'+ group_id +'_cond" value="'+ cond +'" '+ (active?'checked':'') +'> '+ label +'</label>';
-      }
-
-        h+= '\
+    <div class="btn-group"> \
+      '+ this.getGroupConditions(group_id) +' \
     </div> \
-    '+ (this.settings.sortable ? '<div class="drag-handle"><i class="glyphicon glyphicon-sort"></i></div>' : '') +' \
+    '+ (this.settings.sortable && !main ? '<div class="drag-handle"><i class="glyphicon glyphicon-sort"></i></div>' : '') +' \
   </dt> \
   <dd class=rules-group-body> \
     <ul class=rules-list></ul> \
   </dd> \
 </dl>';
+
+        return h;
+    };
+
+    /**
+     * Returns group conditions HTML
+     * @param group_id {string}
+     * @return {string}
+     */
+    QueryBuilder.prototype.getGroupConditions = function(group_id) {
+        var h = '';
+
+        for (var i=0, l=this.settings.conditions.length; i<l; i++) {
+            var cond = this.settings.conditions[i],
+                active = cond == this.settings.default_condition,
+                label = this.lang['condition_'+ cond.toLowerCase()] || cond;
+
+            h+= '<label class="btn btn-xs btn-primary '+ (active?'active':'') +'"><input type="radio" name="'+ group_id +'_cond" value="'+ cond +'" '+ (active?'checked':'') +'> '+ label +'</label>';
+        }
 
         return h;
     };
