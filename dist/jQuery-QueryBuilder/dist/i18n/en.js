@@ -1,11 +1,11 @@
-QueryBuilder.setDefaults({ lang: {
+jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Add rule",
   "add_group": "Add group",
   "delete_rule": "Delete",
   "delete_group": "Delete",
 
-  "and_condition": "AND",
-  "or_condition": "OR",
+  "condition_and": "AND",
+  "condition_or": "OR",
 
   "filter_select_placeholder": "------",
 

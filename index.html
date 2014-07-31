@@ -328,6 +328,19 @@ isHome: true
 {% highlight javascript %}
 $('#builder').queryBuilder('getRules')
 {% endhighlight %}
+
+  <h4>getSQL</h4>
+  <p>Get the rules as a valid SQL WHERE statement. The first parameter can be:</p>
+  <ul>
+    <li><code>false</code> to output plain SQL</li>
+    <li><code>'question_mark'</code> to output prepared statement with <code>?</code> placeholders</li>
+    <li><code>'numbered'</code> to output prepared statement with numbered (<code>$1</code>, <code>$2</code>, ...) placeholders</li>
+  </ul>
+  <p>Set the second parameter to <code>false</code> to disable new lines in output.</p>
+{% highlight javascript %}
+$('#builder').queryBuilder('getSQL')
+$('#builder').queryBuilder('getSQL', false, false)
+{% endhighlight %}
   
   <h4>setRules</h4>
   <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>.</p>
@@ -383,31 +396,21 @@ $('#builder').queryBuilder('destroy')
           <td>array</td>
           <td>An array containing <code>string</code>, <code>number</code>, <code>datetime</code></td>
         </tr>
+        <tr>
+          <td>sql</td>
+          <td>string | object</td>
+          <td>Configuration object for SQL output, can be a simple operator string or an object with:
+            <ul>
+              <li><code>op</code> operator string</li>
+              <li><code>fn</code> callback to apply to the value</li>
+              <li><code>list</code> if the operator accept multiple values (like <code>IN</code> function)</li>
+            </ul>
+          </td>
       </tbody>
     </table>
   </div>
   
-  <p>The default operators are:</p>
-{% highlight javascript %}
-{type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-{type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-{type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-{type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-{type: 'less',             accept_values: true,  apply_to: ['number', 'datetime']},
-{type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime']},
-{type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime']},
-{type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime']},
-{type: 'begins_with',      accept_values: true,  apply_to: ['string']},
-{type: 'not_begins_with',  accept_values: true,  apply_to: ['string']},
-{type: 'contains',         accept_values: true,  apply_to: ['string']},
-{type: 'not_contains',     accept_values: true,  apply_to: ['string']},
-{type: 'ends_with',        accept_values: true,  apply_to: ['string']},
-{type: 'not_ends_with',    accept_values: true,  apply_to: ['string']},
-{type: 'is_empty',         accept_values: false, apply_to: ['string']},
-{type: 'is_not_empty',     accept_values: false, apply_to: ['string']},
-{type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime']},
-{type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime']}
-{% endhighlight %}
+  <p>The default operators are available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L127">in the source code</a>.</p>
   
   <h3 id="validation">Validation</h3>
   <p>QueryBuilder integrates a configurable validation system triggered when <code>getRules</code> method is called. The default validator checks for emptyness and can be extended with format check an bounds.<br>
@@ -510,38 +513,7 @@ $('#builder').queryBuilder('destroy')
   <h3 id="lang">Translation</h3>
   <p>Some default translation files are available in the <a href="https://github.com/mistic100/jQuery-QueryBuilder/tree/master/dist/i18n" target="_blank">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<br>
   Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators.<br>
-  Default strings are:</p>
-  
-{% highlight javascript %}
-add_rule: 'Add rule',
-add_group: 'Add group',
-delete_rule: 'Delete',
-delete_group: 'Delete',
-
-condition_and: 'AND',
-condition_or: 'OR',
-
-filter_select_placeholder: '------',
-
-operator_equal: 'equal',
-operator_not_equal: 'not equal',
-operator_in: 'in',
-operator_not_in: 'not in',
-operator_less: 'less',
-operator_less_or_equal: 'less or equal',
-operator_greater: 'greater',
-operator_greater_or_equal: 'greater or equal',
-operator_begins_with: 'begins with',
-operator_not_begins_with: 'doesn\'t begin with',
-operator_contains: 'contains',
-operator_not_contains: 'doesn\'t contain',
-operator_ends_with: 'ends with',
-operator_not_ends_with: 'doesn\'t end with',
-operator_is_empty: 'is empty',
-operator_is_not_empty: 'is not empty',
-operator_is_null: 'is null',
-operator_is_not_null: 'is not null'
-{% endhighlight %}
+  Default strings <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L96">in the source code</a>.</p>
 </section>
 
 <link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.min.css" rel="stylesheet">

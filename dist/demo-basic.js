@@ -20,7 +20,7 @@ $('#builder').queryBuilder({
       5: 'Goodies',
       6: 'Clothes'
     },
-    operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
+    operators: ['in', 'not_in', 'is_null', 'is_not_null']
   }, {
     id: 'in_stock',
     label: 'In stock',
@@ -52,7 +52,7 @@ $('#builder').queryBuilder({
 });
 
 // set rules
-$('#set').on('click', function() {
+$('.set').on('click', function() {
   $('#builder').queryBuilder('setRules', {
     condition: 'AND',
     rules: [{
@@ -63,30 +63,36 @@ $('#set').on('click', function() {
       condition: 'OR',
       rules: [{
         id: 'category',
-        operator: 'equal',
-        value: 2
+        operator: 'in',
+        value: [1, 2]
       }, {
-        id: 'category',
+        id: 'name',
         operator: 'equal',
-        value: 1
+        value: "John Doe"
       }]
     }]
   });
-
-  $('#parse').trigger('click');
 });
 
 // reset builder
-$('#reset').on('click', function() {
+$('.reset').on('click', function() {
   $('#builder').queryBuilder('reset');
   $('#result').empty().addClass('hide');
 });
 
 // get rules
-$('#parse').on('click', function() {
+$('.parse-json').on('click', function() {
+  var res = $('#builder').queryBuilder('getRules');
   $('#result').removeClass('hide')
-    .find('pre').html(JSON.stringify(
-      $('#builder').queryBuilder('getRules'),
-      undefined, 2
-    ));
+    .find('pre').html(
+      JSON.stringify(res, null, 2)
+    );
+});
+
+$('.parse-sql').on('click', function() {
+  var res = $('#builder').queryBuilder('getSQL', $(this).data('stmt'));
+  $('#result').removeClass('hide')
+    .find('pre').html(
+      res.sql + (res.params ? '\n\n' + JSON.stringify(res.params, null, 2) : '')
+    );
 });

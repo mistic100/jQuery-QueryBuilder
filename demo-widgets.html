@@ -12,9 +12,14 @@ title: Widgets Demo
   <div id="builder"></div>
 
   <div class="btn-group">
-    <button class="btn btn-warning" id="reset">Reset</button>
-    <button class="btn btn-success" id="set">Set rules</button>
-    <button class="btn btn-primary" id="parse">Parse</button>
+    <button class="btn btn-warning reset">Reset</button>
+    <button class="btn btn-success set">Set rules</button>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-primary parse-json">JSON</button>
+    <button class="btn btn-primary parse-sql" data-stmt="question_mark">SQL (prepared statement)</button>
+    <button class="btn btn-primary parse-sql" data-stmt="false">SQL (raw)</button>
   </div>
 
   <div id="result" class="hide">

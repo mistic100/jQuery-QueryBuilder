@@ -66,8 +66,7 @@ $('#builder').queryBuilder({
       $rule.find('.rule-value-container').css('min-width', '200px');
     },
     onAfterSetValue: function($rule, value) {
-      var selectize = $rule.find('.rule-value-container input')[0].selectize;
-      selectize.setValue(value);
+      $rule.find('.rule-value-container input')[0].selectize.setValue(value);
     }
   }, {
     id: 'coord',
@@ -125,7 +124,7 @@ $('#builder').queryBuilder({
 });
 
 // set rules
-$('#set').on('click', function() {
+$('.set').on('click', function() {
   $('#builder').queryBuilder('setRules', {
     condition: 'OR',
     rules: [{
@@ -149,21 +148,27 @@ $('#set').on('click', function() {
       }]
     }]
   });
-
-  $('#parse').trigger('click');
 });
 
 // reset builder
-$('#reset').on('click', function() {
+$('.reset').on('click', function() {
   $('#builder').queryBuilder('reset');
   $('#result').empty().addClass('hide');
 });
 
 // get rules
-$('#parse').on('click', function() {
+$('.parse-json').on('click', function() {
+  var res = $('#builder').queryBuilder('getRules');
   $('#result').removeClass('hide')
-    .find('pre').html(JSON.stringify(
-      $('#builder').queryBuilder('getRules'),
-      undefined, 2
-    ));
+    .find('pre').html(
+      JSON.stringify(res, null, 2)
+    );
+});
+
+$('.parse-sql').on('click', function() {
+  var res = $('#builder').queryBuilder('getSQL', $(this).data('stmt'));
+  $('#result').removeClass('hide')
+    .find('pre').html(
+      res.sql + (res.params ? '\n\n' + JSON.stringify(res.params, null, 2) : '')
+    );
 });
