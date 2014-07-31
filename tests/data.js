@@ -85,6 +85,11 @@ var basic_rules = {
   }]
 };
 
+var basic_rules_sql = {
+  sql: 'price < ? AND ( category == ? OR id != ? ) ',
+  params: [10.25, 2, '1234-azer-5678']
+};
+
 var invalid_rules = {
   condition: 'AND',
   rules: [{

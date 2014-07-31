@@ -13,6 +13,7 @@ $(function(){
     
     assert.ok(rulesMatch($('#container2').queryBuilder('getRules'), basic_rules), 'Should return object with rules');
     assert.deepEqual(getOptions($('#container2_rule_1 [name$=_operator] option')), basic_filters[1].operators, 'Should respect the order of operators');
+    assert.deepEqual($('#container2').queryBuilder('getSQL', true, false), basic_rules_sql, 'Should create SQL query with statements');
   });
   
   QUnit.test('Empty value check', function(assert) {

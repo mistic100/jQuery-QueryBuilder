@@ -24,25 +24,26 @@
             'radio',
             'checkbox',
             'select'
-        ];
+        ],
+        passthru = function(v) { return v; };
 
 
     // CLASS DEFINITION
     // ===============================
     var QueryBuilder = function($el, options) {
-        var that = this;
-
-        // global variables
+        // variables
         this.$el = $el;
+
         this.settings = $.extend(true, {}, QueryBuilder.DEFAULTS, options);
+        this.status = { group_id: 0, rule_id: 0, generatedId: false };
+
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
         this.operators = this.settings.operators;
         this.template = this.settings.template;
-        this.status = { group_id: 0, rule_id: 0, generatedId: false };
 
         if (options.operators) {
-          this.operators = $.extend(true, [], options.operators);
+            this.operators = $.extend(true, [], options.operators);
         }
 
         if (this.template.group === null) {
@@ -52,19 +53,107 @@
             this.template.rule = this.getRuleTemplate;
         }
 
-        // ensure we have an container id
+        // ensure we have a container id
         if (!this.$el.attr('id')) {
             this.$el.attr('id', 'qb_'+Math.floor(Math.random()*99999));
             this.status.generatedId = true;
         }
         this.$el_id = this.$el.attr('id');
 
-        // CHECK FILTERS
+        // check filters
         if (!this.filters || this.filters.length < 1) {
             $.error('Missing filters list');
         }
-
         this.checkFilters();
+
+        // init
+        this.init(options);
+    };
+
+
+    // DEFAULT CONFIG
+    // ===============================
+    QueryBuilder.DEFAULTS = {
+        onValidationError: null,
+        onAfterAddGroup: null,
+        onAfterAddRule: null,
+
+        allow_groups: true,
+        sortable: false,
+        filters: [],
+        conditions: ['AND', 'OR'],
+        default_condition: 'AND',
+        readonly_behavior: {
+            delete_group: false,
+            sortable: true
+        },
+
+        template: {
+            group: null,
+            rule: null
+        },
+
+        lang: {
+            add_rule: 'Add rule',
+            add_group: 'Add group',
+            delete_rule: 'Delete',
+            delete_group: 'Delete',
+
+            condition_and: 'AND',
+            condition_or: 'OR',
+
+            filter_select_placeholder: '------',
+
+            operator_equal: 'equal',
+            operator_not_equal: 'not equal',
+            operator_in: 'in',
+            operator_not_in: 'not in',
+            operator_less: 'less',
+            operator_less_or_equal: 'less or equal',
+            operator_greater: 'greater',
+            operator_greater_or_equal: 'greater or equal',
+            operator_begins_with: 'begins with',
+            operator_not_begins_with: 'doesn\'t begin with',
+            operator_contains: 'contains',
+            operator_not_contains: 'doesn\'t contain',
+            operator_ends_with: 'ends with',
+            operator_not_ends_with: 'doesn\'t end with',
+            operator_is_empty: 'is empty',
+            operator_is_not_empty: 'is not empty',
+            operator_is_null: 'is null',
+            operator_is_not_null: 'is not null'
+        },
+
+        operators: [
+            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '== ?'},
+            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '!= ?'},
+            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: { op: 'IN(?)', list: true }},
+            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: { op: 'NOT IN(?)', list: true }},
+            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime'], sql: '< ?'},
+            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime'], sql: '<= ?'},
+            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime'], sql: '> ?'},
+            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime'], sql: '>= ?'},
+            {type: 'begins_with',      accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } }},
+            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string'], sql: { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } }},
+            {type: 'contains',         accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } }},
+            {type: 'not_contains',     accept_values: true,  apply_to: ['string'], sql: { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v+'%'; } }},
+            {type: 'ends_with',        accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return '%'+v; } }},
+            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string'], sql: { op: 'NOTLIKE(?)',  fn: function(v){ return '%'+v; } }},
+            {type: 'is_empty',         accept_values: false, apply_to: ['string'], sql: '== ""'},
+            {type: 'is_not_empty',     accept_values: false, apply_to: ['string'], sql: '!= ""'},
+            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime'], sql: 'IS NULL'},
+            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime'], sql: 'IS NOT NULL'}
+        ]
+    };
+
+
+    // PUBLIC METHODS
+    // ===============================
+    /**
+     * Init event handlers and default display
+     */
+    QueryBuilder.prototype.init = function(options) {
+        var that = this;
 
         // EVENTS
         // group condition change
@@ -130,7 +219,7 @@
 
         // INIT
         if (this.settings.sortable) {
-          this.initSortable();
+            this.initSortable();
         }
 
         this.$el.addClass('query-builder');
@@ -143,82 +232,6 @@
         }
     };
 
-    QueryBuilder.DEFAULTS = {
-        onValidationError: null,
-        onAfterAddGroup: null,
-        onAfterAddRule: null,
-
-        allow_groups: true,
-        sortable: false,
-        filters: [],
-        conditions: ['AND', 'OR'],
-        default_condition: 'AND',
-        readonly_behavior: {
-            delete_group: false,
-            sortable: true
-        },
-
-        template: {
-            group: null,
-            rule: null
-        },
-
-        lang: {
-            add_rule: 'Add rule',
-            add_group: 'Add group',
-            delete_rule: 'Delete',
-            delete_group: 'Delete',
-
-            condition_and: 'AND',
-            condition_or: 'OR',
-
-            filter_select_placeholder: '------',
-
-            operator_equal: 'equal',
-            operator_not_equal: 'not equal',
-            operator_in: 'in',
-            operator_not_in: 'not in',
-            operator_less: 'less',
-            operator_less_or_equal: 'less or equal',
-            operator_greater: 'greater',
-            operator_greater_or_equal: 'greater or equal',
-            operator_begins_with: 'begins with',
-            operator_not_begins_with: 'doesn\'t begin with',
-            operator_contains: 'contains',
-            operator_not_contains: 'doesn\'t contain',
-            operator_ends_with: 'ends with',
-            operator_not_ends_with: 'doesn\'t end with',
-            operator_is_empty: 'is empty',
-            operator_is_not_empty: 'is not empty',
-            operator_is_null: 'is null',
-            operator_is_not_null: 'is not null'
-        },
-
-        operators: [
-            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'begins_with',      accept_values: true,  apply_to: ['string']},
-            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string']},
-            {type: 'contains',         accept_values: true,  apply_to: ['string']},
-            {type: 'not_contains',     accept_values: true,  apply_to: ['string']},
-            {type: 'ends_with',        accept_values: true,  apply_to: ['string']},
-            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string']},
-            {type: 'is_empty',         accept_values: false, apply_to: ['string']},
-            {type: 'is_not_empty',     accept_values: false, apply_to: ['string']},
-            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime']},
-            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime']}
-        ]
-    };
-
-
-    // PUBLIC METHODS
-    // ===============================
     /**
      * Destroy the plugin
      */
@@ -327,6 +340,102 @@
 
             return out;
         }($group));
+    };
+
+    /**
+     * Get rules as SQL query
+     * @param stmt {false|string} use prepared statements - false, 'question_mark' or 'numbered'
+     * @param nl {bool} output with new lines
+     * @param data {object} (optional) rules
+     * @return {object}
+     */
+    QueryBuilder.prototype.getSQL = function(stmt, nl, data) {
+        data = (data===undefined) ? this.getRules() : data;
+        stmt = (stmt===true || stmt===undefined) ? 'question_mark' : stmt;
+        nl = (nl || nl===undefined) ? '\n' : ' ';
+
+        var that = this,
+            bind_index = 1,
+            bind_params = [];
+
+        var sql = (function parse(data) {
+            if (!data.condition) {
+                data.condition = that.settings.default_condition;
+            }
+            if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
+                $.error('Unable to build SQL query with '+ data.condition +' condition');
+            }
+
+            var parts = [];
+
+            $.each(data.rules, function(i, rule) {
+                if (rule.rules && rule.rules.length>0) {
+                    parts.push('('+ nl + parse(rule) + nl +')'+ nl);
+                }
+                else {
+                    var operator = that.getOperatorByType(rule.operator),
+                        sql = that.parseOperatorSql(operator.sql),
+                        value = '';
+
+                    if (!(rule.value instanceof Array)) {
+                        rule.value = [rule.value];
+                    }
+                    else if (!sql.list && rule.value.length>1) {
+                        $.error('Operator '+ rule.operator +' cannot accept multiple values');
+                    }
+
+                    rule.value.forEach(function(v, i) {
+                        if (i>0) {
+                            value+= ', ';
+                        }
+
+                        if (rule.type=='integer' || rule.type=='double') {
+                            v = that.changeType(v, rule.type);
+                        }
+                        else if (!stmt) {
+                            v = that.escapeString(v);
+                        }
+
+                        v = sql.fn(v);
+
+                        if (stmt) {
+                            if (stmt == 'question_mark') {
+                                value+= '?';
+                            }
+                            else {
+                                value+= '$'+bind_index;
+                            }
+
+                            bind_params.push(v);
+                            bind_index++;
+                        }
+                        else {
+                            if (typeof v === 'string') {
+                                v = '\''+ v +'\'';
+                            }
+
+                            value+= v;
+                        }
+                    });
+
+                    parts.push(rule.field +' '+ sql.op.replace(/\?/, value));
+                }
+            });
+
+            return parts.join(' '+ data.condition + nl);
+        }(data));
+
+        if (stmt) {
+            return {
+                sql: sql,
+                params: bind_params
+            };
+        }
+        else {
+            return {
+                sql: sql
+            };
+        }
     };
 
     /**
@@ -932,10 +1041,12 @@
         var res = [];
 
         for (var i=0, l=this.operators.length; i<l; i++) {
+            // type check
             if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
                 continue;
             }
 
+            // filter operators check
             if (filter.operators) {
                 if (filter.operators.indexOf(this.operators[i].type) == -1) {
                     continue;
@@ -1048,6 +1159,65 @@
         }
 
         return out;
+    };
+
+    /**
+     * Sanitize the "sql" field of an operator
+     * @param sql {string|object}
+     * @return {object}
+     */
+    QueryBuilder.prototype.parseOperatorSql = function(sql) {
+        if (typeof sql === 'string') {
+            sql = { op: sql };
+        }
+        if (!sql.fn) {
+            sql.fn = passthru;
+        }
+        if (!sql.list) {
+            sql.list = false;
+        }
+
+        return sql;
+    };
+
+    /**
+     * Change type of a value to int or float
+     * @param value {mixed}
+     * @param type {string}
+     * @return {mixed}
+     */
+    QueryBuilder.prototype.changeType = function(value, type) {
+        switch (type) {
+            case 'integer': return parseInt(value);
+            case 'double': return parseFloat(value);
+            default: return value;
+        }
+    };
+
+    /**
+     * Escape SQL value
+     * @param value {string}
+     * @return {string}
+     */
+    QueryBuilder.prototype.escapeString = function(value) {
+        return value.replace(/[\0\n\r\b\t\\\'\"\x1a]/g, function(s) {
+            switch(s) {
+                case '\0':
+                    return '\\0';
+                case '\n':
+                    return '\\n';
+                case '\r':
+                    return '\\r';
+                case '\b':
+                    return '\\b';
+                case '\t':
+                    return '\\t';
+                case '\x1a':
+                    return '\\Z';
+                default:
+                    return '\\' + s;
+            }
+        });
     };
 
 
