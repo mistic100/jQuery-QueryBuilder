@@ -366,6 +366,10 @@
                 $.error('Unable to build SQL query with '+ data.condition +' condition');
             }
 
+            if (!data.rules) {
+                return '';
+            }
+
             var parts = [];
 
             $.each(data.rules, function(i, rule) {
