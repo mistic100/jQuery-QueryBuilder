@@ -12,6 +12,7 @@ isHome: true
   <blockquote>
     QueryBuilder can be used on advanced search engine pages, administration backends, etc. to build complex queries or filters. It is highly customisable and can be used with many jQuery widgets like autocompleters and sliders.<br>
     It outputs a structured JSON of rules which can be easily parsed to create SQL/NoSQL/whatever queries.<br>
+    It can also directly create a SQL WHERE statement.<br>
     <br>
     But let's look at an example !
   </blockquote>
@@ -95,13 +96,14 @@ isHome: true
           <td>conditions</td>
           <td>string[]</td>
           <td>['AND', 'OR']</td>
-          <td>Array of available group conditions. Change the label with the lang option (the keyword is always lower-cased before lookup in <code>lang</code> array).</td>
+          <td>Array of available group conditions. Use the <a href="#lang">lang</a> option to change the label
+            (the keyword is always lower-cased before lookup in <code>lang</code> array).</td>
         </tr>
         <tr>
           <td>default_condition</td>
           <td>string</td>
           <td>'AND'</td>
-          <td>Default active operator.</td>
+          <td>Default active condition.</td>
         </tr>
         <tr>
           <td>readonly_behavior.delete_group</td>
@@ -181,31 +183,31 @@ isHome: true
           <td>id</td>
           <td>string</td>
           <td><span class="label label-danger">required</span></td>
-          <td>Unique identifier of the filter</td>
+          <td>Unique identifier of the filter.</td>
         </tr>
         <tr>
           <td>field</td>
           <td>string</td>
           <td><code>id</code></td>
-          <td>Field used by the filter, multiple filters can use the same field</td>
+          <td>Field used by the filter, multiple filters can use the same field.</td>
         </tr>
         <tr>
           <td>label</td>
           <td>string</td>
           <td><code>field</code></td>
-          <td>Label used to display the filter</td>
+          <td>Label used to display the filter.</td>
         </tr>
         <tr>
           <td>type</td>
           <td>string</td>
           <td><span class="label label-danger">required</span></td>
-          <td>Type of the field. Available types are <code>string</code>, <code>integer</code>, <code>double</code>, <code>date</code>, <code>time</code>, <code>datetime</code></td>
+          <td>Type of the field. Available types are <code>string</code>, <code>integer</code>, <code>double</code>, <code>date</code>, <code>time</code> and <code>datetime</code>.</td>
         </tr>
         <tr>
           <td>input</td>
           <td>string|function</td>
           <td>'text'</td>
-          <td>Type of input used. Available types are <code>text</code>, <code>radio</code>, <code>checkbox</code>, <code>select</code>.
+          <td>Type of input used. Available types are <code>text</code>, <code>radio</code>, <code>checkbox</code> and <code>select</code>.
             It can also be a function which returns the HTML of the said input, this function takes 2 parameters:
             <ul>
               <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
@@ -217,25 +219,25 @@ isHome: true
           <td>multiple</td>
           <td>boolean</td>
           <td>false</td>
-          <td><i>Only for <code>select</code> inputs:</i> accept multiple values</td>
+          <td><i>Only for <code>select</code> inputs:</i> accept multiple values.</td>
         </tr>
         <tr>
           <td>placeholder</td>
           <td>string</td>
           <td>''</td>
-          <td><i>Only for <code>text</code> inputs:</i> placeholder to display (uses HTML5 feature)</td>
+          <td><i>Only for <code>text</code> inputs:</i> placeholder to display (uses HTML5 feature).</td>
         </tr>
         <tr>
           <td>vertical</td>
           <td>boolean</td>
           <td>false</td>
-          <td><i>Only for <code>radio</code> and <code>checkbox</code> inputs:</i> display inputs vertically on not horizontally</td>
+          <td><i>Only for <code>radio</code> and <code>checkbox</code> inputs:</i> display inputs vertically on not horizontally.</td>
         </tr>
         <tr>
           <td>values</td>
           <td>array</td>
           <td><span class="label label-warning">required*</span></td>
-          <td><i>Required for radios and checkboxes. Generally needed for selects.</i><br>
+          <td><i>Required for <code>radio</code> and <code>checkboxe</code> inputs. Generally needed for <code>select</code> inputs.</i><br>
             Hashmap of options available. Keys are used as values and values are used as labels.</td>
         </tr>
         <tr>
@@ -254,13 +256,13 @@ isHome: true
           <td>plugin</td>
           <td>string</td>
           <td>null</td>
-          <td>Name of a jquery plugin to apply on the input.</td>
+          <td>Name of a jQuery plugin to apply on the input.</td>
         </tr>
         <tr>
           <td>plugin_config</td>
           <td>object</td>
           <td>{}</td>
-          <td>Object of parameters to pass to the the plugin.</td>
+          <td>Object of parameters to pass to the plugin.</td>
         </tr>
         <tr>
           <td>onValidationError</td>
@@ -324,13 +326,13 @@ isHome: true
   
   <h3 id="methods">Methods</h3>
   <h4>getRules</h4>
-  <p>Performs de validation and returns the rules as a plain object. See the <a href="basic-demo.html">basic demo</a> for output example.</p>
+  <p>Performs validation and returns the rules as a plain object. See the <a href="basic-demo.html">basic demo</a> for output example.</p>
 {% highlight javascript %}
 $('#builder').queryBuilder('getRules')
 {% endhighlight %}
 
   <h4>getSQL</h4>
-  <p>Get the rules as a valid SQL WHERE statement. The first parameter can be:</p>
+  <p>Performs validation and get the rules as a valid SQL WHERE statement. See the <a href="basic-demo.html">basic demo</a> for output example. The first parameter can be:</p>
   <ul>
     <li><code>false</code> to output plain SQL</li>
     <li><code>'question_mark'</code> to output prepared statement with <code>?</code> placeholders</li>
@@ -384,17 +386,17 @@ $('#builder').queryBuilder('destroy')
         <tr>
           <td>type</td>
           <td>string</td>
-          <td>Identifier of the operator</td>
+          <td>Identifier of the operator.</td>
         </tr>
         <tr>
           <td>accept_values</td>
           <td>boolean</td>
-          <td><code>true</code> if the user can enter a value when this operator is selected</td>
+          <td><code>true</code> if the user can enter a value when this operator is selected.</td>
         </tr>
         <tr>
           <td>apply_to</td>
           <td>array</td>
-          <td>An array containing <code>string</code>, <code>number</code>, <code>datetime</code></td>
+          <td>An array containing <code>string</code>, <code>number</code>, <code>datetime</code>.</td>
         </tr>
         <tr>
           <td>sql</td>
@@ -413,7 +415,7 @@ $('#builder').queryBuilder('destroy')
   <p>The default operators are available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L127">in the source code</a>.</p>
   
   <h3 id="validation">Validation</h3>
-  <p>QueryBuilder integrates a configurable validation system triggered when <code>getRules</code> method is called. The default validator checks for emptyness and can be extended with format check an bounds.<br>
+  <p>QueryBuilder integrates a configurable validation system triggered when <code>getRules</code> and <code>getSQL</code> methods are called. The default validator checks for emptyness and can be extended with format check an bounds.<br>
   Optionally you can define a custom validation callback.<br>
   Here are the available attributes of the <code>validation</code> field of each filter:</p>
   
@@ -471,7 +473,7 @@ $('#builder').queryBuilder('destroy')
         <tr>
           <td>callback</td>
           <td>function</td>
-          <td>A function used to perform the validation. If provided, the default validation will not be performed. It must returns <code>true</code> if the value is valid or a string otherwise. It takes 2 parameters:
+          <td>A function used to perform the validation. If provided, the default validation will not be performed. It must returns <code>true</code> if the value is valid or an error string otherwise. It takes 2 parameters:
             <ul>
               <li><code>value</code></li>
               <li><code>filter</code></li>
@@ -512,7 +514,7 @@ $('#builder').queryBuilder('destroy')
   
   <h3 id="lang">Translation</h3>
   <p>Some default translation files are available in the <a href="https://github.com/mistic100/jQuery-QueryBuilder/tree/master/dist/i18n" target="_blank">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<br>
-  Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators.<br>
+  Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators and conditions.<br>
   Default strings <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L96">in the source code</a>.</p>
 </section>
 
