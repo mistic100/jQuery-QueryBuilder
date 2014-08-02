@@ -1,7 +1,7 @@
 # name of the software
 name: jQuery QueryBuilder
 # current version of the software
-version: 1.1.0
+version: 1.2.0
 # url of the download button
 downloadUrl: https://github.com/mistic100/jQuery-QueryBuilder
 # licence of the software
@@ -10,6 +10,8 @@ licenseUrl: http://opensource.org/licenses/MIT
 
 # list of additional links on the right of the top menu
 headerLinks:
+  - title: GitHub
+    url: https://github.com/mistic100/jQuery-QueryBuilder
   - title: StrangePlanet
     url: http://www.strangeplanet.fr
 

@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 1.1.0
+ * jQuery QueryBuilder 1.2.0
  * Copyright 2014 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -124,7 +124,7 @@
         },
 
         operators: [
-            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '== ?'},
+            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '= ?'},
             {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '!= ?'},
             {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: { op: 'IN(?)', list: true }},
             {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: { op: 'NOT IN(?)', list: true }},
