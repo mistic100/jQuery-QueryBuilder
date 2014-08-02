@@ -124,7 +124,7 @@
         },
 
         operators: [
-            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '== ?'},
+            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '= ?'},
             {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '!= ?'},
             {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: { op: 'IN(?)', list: true }},
             {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: { op: 'NOT IN(?)', list: true }},
