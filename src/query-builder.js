@@ -26,6 +26,7 @@
             'select'
         ],
         passthru = function(v) { return v; };
+        // merge - defined at end of file
 
 
     // CLASS DEFINITION
@@ -34,17 +35,13 @@
         // variables
         this.$el = $el;
 
-        this.settings = $.extend(true, {}, QueryBuilder.DEFAULTS, options);
+        this.settings = merge(QueryBuilder.DEFAULTS, options);
         this.status = { group_id: 0, rule_id: 0, generatedId: false };
 
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
         this.operators = this.settings.operators;
         this.template = this.settings.template;
-
-        if (options.operators) {
-            this.operators = $.extend(true, [], options.operators);
-        }
 
         if (this.template.group === null) {
             this.template.group = this.getGroupTemplate;
@@ -1429,5 +1426,62 @@
             return $.extend(true, {}, options);
         }
     };
+    
+    /**
+     * From Highcharts library
+     * -----------------------
+     * Deep merge two or more objects and return a third object. If the first argument is
+     * true, the contents of the second object is copied into the first object.
+     * Previously this function redirected to jQuery.extend(true), but this had two limitations.
+     * First, it deep merged arrays, which lead to workarounds in Highcharts. Second,
+     * it copied properties from extended prototypes.
+     */
+    function merge() {
+        var i,
+          args = arguments,
+          len,
+          ret = {};
+
+        function doCopy(copy, original) {
+            var value, key;
+
+            // An object is replacing a primitive
+            if (typeof copy !== 'object') {
+                copy = {};
+            }
+
+            for (key in original) {
+                if (original.hasOwnProperty(key)) {
+                    value = original[key];
+
+                    // Copy the contents of objects, but not arrays or DOM nodes
+                    if (value && key !== 'renderTo' && typeof value.nodeType !== 'number' &&
+                        typeof value === 'object' && Object.prototype.toString.call(value) !== '[object Array]') {
+                        copy[key] = doCopy(copy[key] || {}, value);
+                    }
+                    // Primitives and arrays are copied over directly
+                    else {
+                        copy[key] = original[key];
+                    }
+                }
+            }
+            
+            return copy;
+        }
+
+        // If first argument is true, copy into the existing object. Used in setOptions.
+        if (args[0] === true) {
+            ret = args[1];
+            args = Array.prototype.slice.call(args, 2);
+        }
+
+        // For each argument, extend the return
+        len = args.length;
+        for (i = 0; i < len; i++) {
+            ret = doCopy(ret, args[i]);
+        }
+
+        return ret;
+    }
 
 }(jQuery));

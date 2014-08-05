@@ -55,16 +55,22 @@ $(function(){
   });
   
   QUnit.test('Change conditions', function(assert) {
-    $('#container5').queryBuilder({
+    $('#container5-1').queryBuilder({
       filters: basic_filters,
       rules: rules_for_custom_conditions,
       conditions: ['NAND', 'XOR'],
       default_condition: 'NAND'
     });
   
-    assert.ok(rulesMatch($('#container5').queryBuilder('getRules'), rules_for_custom_conditions), 'Should return correct rules');
-
-    assert.deepEqual(getOptions($('#container5_group_0>.rules-group-header [name$=_cond]')), ['NAND', 'XOR'], 'Conditions should be NAND & XOR');
+    assert.ok(rulesMatch($('#container5-1').queryBuilder('getRules'), rules_for_custom_conditions), 'Should return correct rules');
+    assert.deepEqual(getOptions($('#container5-1_group_0>.rules-group-header [name$=_cond]')), ['NAND', 'XOR'], 'Conditions should be NAND & XOR');
+    
+    $('#container5-2').queryBuilder({
+      filters: basic_filters,
+      conditions: ['AND']
+    });
+  
+    assert.deepEqual(getOptions($('#container5-2_group_0>.rules-group-header [name$=_cond]')), ['AND'], 'Condition should be AND');
   });
   
   QUnit.test('No groups', function(assert) {
