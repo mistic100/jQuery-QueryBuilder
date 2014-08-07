@@ -446,6 +446,10 @@
     QueryBuilder.prototype.setRules = function(data) {
         this.clear();
 
+        if (!data || !data.rules || data.rules.length==0) {
+            $.error('Incorrect data object passed');
+        }
+
         var $container = this.$el,
             that = this;
 
@@ -453,10 +457,6 @@
             var $group = that.addGroup($container, false),
                 $ul = $group.find('>.rules-group-body>.rules-list'),
                 $buttons = $group.find('>.rules-group-header input[name$=_cond]');
-
-            if (typeof data === 'undefined' || (!data || !data.rules)) {
-                return false;
-            }
 
             if (!data.condition) {
                 data.condition = that.settings.default_condition;
