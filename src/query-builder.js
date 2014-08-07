@@ -454,6 +454,10 @@
                 $ul = $group.find('>.rules-group-body>.rules-list'),
                 $buttons = $group.find('>.rules-group-header input[name$=_cond]');
 
+            if (typeof data === 'undefined' || (!data || !data.rules)) {
+                return false;
+            }
+
             if (!data.condition) {
                 data.condition = that.settings.default_condition;
             }
