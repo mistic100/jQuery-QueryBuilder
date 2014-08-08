@@ -446,6 +446,10 @@
     QueryBuilder.prototype.setRules = function(data) {
         this.clear();
 
+        if (!data || !data.rules || data.rules.length==0) {
+            $.error('Incorrect data object passed');
+        }
+
         var $container = this.$el,
             that = this;
 
