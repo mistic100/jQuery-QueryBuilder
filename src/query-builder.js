@@ -135,7 +135,7 @@
             {type: 'contains',         accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } }},
             {type: 'not_contains',     accept_values: true,  apply_to: ['string'], sql: { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v+'%'; } }},
             {type: 'ends_with',        accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return '%'+v; } }},
-            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string'], sql: { op: 'NOTLIKE(?)',  fn: function(v){ return '%'+v; } }},
+            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string'], sql: { op: 'NOT LIKE(?)',  fn: function(v){ return '%'+v; } }},
             {type: 'is_empty',         accept_values: false, apply_to: ['string'], sql: '== ""'},
             {type: 'is_not_empty',     accept_values: false, apply_to: ['string'], sql: '!= ""'},
             {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime'], sql: 'IS NULL'},
