@@ -35,7 +35,8 @@ module.exports = function(grunt) {
                         'src/query-builder.css'
                     ],
                     'dist/query-builder.js': [
-                        'src/query-builder.js'
+                        'src/query-builder.js',
+                        'src/query-builder-sql-support.js'
                     ]
                 }
             }
@@ -75,7 +76,8 @@ module.exports = function(grunt) {
             lib: {
                 files: {
                     src: [
-                        'src/query-builder.js'
+                        'src/query-builder.js',
+                        'src/query-builder-sql-support.js'
                     ]
                 }
             }

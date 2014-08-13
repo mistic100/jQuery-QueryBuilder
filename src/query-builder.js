@@ -24,9 +24,7 @@
             'radio',
             'checkbox',
             'select'
-        ],
-        passthru = function(v) { return v; };
-        // merge - defined at end of file
+        ];
 
 
     // CLASS DEFINITION
@@ -122,24 +120,24 @@
         },
 
         operators: [
-            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '= ?'},
-            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '!= ?'},
-            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: { op: 'IN(?)', list: true }},
-            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: { op: 'NOT IN(?)', list: true }},
-            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime'], sql: '< ?'},
-            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime'], sql: '<= ?'},
-            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime'], sql: '> ?'},
-            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime'], sql: '>= ?'},
-            {type: 'begins_with',      accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } }},
-            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string'], sql: { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } }},
-            {type: 'contains',         accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } }},
-            {type: 'not_contains',     accept_values: true,  apply_to: ['string'], sql: { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v+'%'; } }},
-            {type: 'ends_with',        accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return '%'+v; } }},
-            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string'], sql: { op: 'NOT LIKE(?)',  fn: function(v){ return '%'+v; } }},
-            {type: 'is_empty',         accept_values: false, apply_to: ['string'], sql: '== ""'},
-            {type: 'is_not_empty',     accept_values: false, apply_to: ['string'], sql: '!= ""'},
-            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime'], sql: 'IS NULL'},
-            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime'], sql: 'IS NOT NULL'}
+            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'begins_with',      accept_values: true,  apply_to: ['string']},
+            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string']},
+            {type: 'contains',         accept_values: true,  apply_to: ['string']},
+            {type: 'not_contains',     accept_values: true,  apply_to: ['string']},
+            {type: 'ends_with',        accept_values: true,  apply_to: ['string']},
+            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string']},
+            {type: 'is_empty',         accept_values: false, apply_to: ['string']},
+            {type: 'is_not_empty',     accept_values: false, apply_to: ['string']},
+            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime']},
+            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime']}
         ]
     };
 
@@ -340,113 +338,13 @@
     };
 
     /**
-     * Get rules as SQL query
-     * @param stmt {false|string} use prepared statements - false, 'question_mark' or 'numbered'
-     * @param nl {bool} output with new lines
-     * @param data {object} (optional) rules
-     * @return {object}
-     */
-    QueryBuilder.prototype.getSQL = function(stmt, nl, data) {
-        data = (data===undefined) ? this.getRules() : data;
-        stmt = (stmt===true || stmt===undefined) ? 'question_mark' : stmt;
-        nl = (nl || nl===undefined) ? '\n' : ' ';
-
-        var that = this,
-            bind_index = 1,
-            bind_params = [];
-
-        var sql = (function parse(data) {
-            if (!data.condition) {
-                data.condition = that.settings.default_condition;
-            }
-            if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                $.error('Unable to build SQL query with '+ data.condition +' condition');
-            }
-
-            if (!data.rules) {
-                return '';
-            }
-
-            var parts = [];
-
-            $.each(data.rules, function(i, rule) {
-                if (rule.rules && rule.rules.length>0) {
-                    parts.push('('+ nl + parse(rule) + nl +')'+ nl);
-                }
-                else {
-                    var operator = that.getOperatorByType(rule.operator),
-                        sql = that.parseOperatorSql(operator.sql),
-                        value = '';
-
-                    if (!(rule.value instanceof Array)) {
-                        rule.value = [rule.value];
-                    }
-                    else if (!sql.list && rule.value.length>1) {
-                        $.error('Operator '+ rule.operator +' cannot accept multiple values');
-                    }
-
-                    rule.value.forEach(function(v, i) {
-                        if (i>0) {
-                            value+= ', ';
-                        }
-
-                        if (rule.type=='integer' || rule.type=='double') {
-                            v = that.changeType(v, rule.type);
-                        }
-                        else if (!stmt) {
-                            v = that.escapeString(v);
-                        }
-
-                        v = sql.fn(v);
-
-                        if (stmt) {
-                            if (stmt == 'question_mark') {
-                                value+= '?';
-                            }
-                            else {
-                                value+= '$'+bind_index;
-                            }
-
-                            bind_params.push(v);
-                            bind_index++;
-                        }
-                        else {
-                            if (typeof v === 'string') {
-                                v = '\''+ v +'\'';
-                            }
-
-                            value+= v;
-                        }
-                    });
-
-                    parts.push(rule.field +' '+ sql.op.replace(/\?/, value));
-                }
-            });
-
-            return parts.join(' '+ data.condition + nl);
-        }(data));
-
-        if (stmt) {
-            return {
-                sql: sql,
-                params: bind_params
-            };
-        }
-        else {
-            return {
-                sql: sql
-            };
-        }
-    };
-
-    /**
      * Set rules from object
      * @param data {object}
      */
     QueryBuilder.prototype.setRules = function(data) {
         this.clear();
 
-        if (!data || !data.rules || data.rules.length==0) {
+        if (!data || !data.rules || data.rules.length===0) {
             $.error('Incorrect data object passed');
         }
 
@@ -1166,65 +1064,6 @@
         return out;
     };
 
-    /**
-     * Sanitize the "sql" field of an operator
-     * @param sql {string|object}
-     * @return {object}
-     */
-    QueryBuilder.prototype.parseOperatorSql = function(sql) {
-        if (typeof sql === 'string') {
-            sql = { op: sql };
-        }
-        if (!sql.fn) {
-            sql.fn = passthru;
-        }
-        if (!sql.list) {
-            sql.list = false;
-        }
-
-        return sql;
-    };
-
-    /**
-     * Change type of a value to int or float
-     * @param value {mixed}
-     * @param type {string}
-     * @return {mixed}
-     */
-    QueryBuilder.prototype.changeType = function(value, type) {
-        switch (type) {
-            case 'integer': return parseInt(value);
-            case 'double': return parseFloat(value);
-            default: return value;
-        }
-    };
-
-    /**
-     * Escape SQL value
-     * @param value {string}
-     * @return {string}
-     */
-    QueryBuilder.prototype.escapeString = function(value) {
-        return value.replace(/[\0\n\r\b\t\\\'\"\x1a]/g, function(s) {
-            switch(s) {
-                case '\0':
-                    return '\\0';
-                case '\n':
-                    return '\\n';
-                case '\r':
-                    return '\\r';
-                case '\b':
-                    return '\\b';
-                case '\t':
-                    return '\\t';
-                case '\x1a':
-                    return '\\Z';
-                default:
-                    return '\\' + s;
-            }
-        });
-    };
-
 
     // TEMPLATES
     // ===============================
@@ -1420,7 +1259,7 @@
 
     $.fn.queryBuilder.defaults = {
         set: function(options) {
-            $.extend(true, QueryBuilder.DEFAULTS, options);
+            merge(true, QueryBuilder.DEFAULTS, options);
         },
         get: function(key) {
             var options = QueryBuilder.DEFAULTS;
@@ -1430,7 +1269,9 @@
             return $.extend(true, {}, options);
         }
     };
-    
+
+    $.fn.queryBuilder.constructor = QueryBuilder;
+
     /**
      * From Highcharts library
      * -----------------------
@@ -1469,7 +1310,7 @@
                     }
                 }
             }
-            
+
             return copy;
         }
 
