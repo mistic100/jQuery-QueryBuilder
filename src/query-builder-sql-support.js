@@ -185,24 +185,19 @@
      * @return {string}
      */
     function escapeString(value) {
-        return value.replace(/[\0\n\r\b\t\\\'\"\x1a]/g, function(s) {
-            switch(s) {
-                case '\0':
-                    return '\\0';
-                case '\n':
-                    return '\\n';
-                case '\r':
-                    return '\\r';
-                case '\b':
-                    return '\\b';
-                case '\t':
-                    return '\\t';
-                case '\x1a':
-                    return '\\Z';
-                default:
-                    return '\\' + s;
-            }
-        });
+        return value
+          .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
+              switch(s) {
+                  case '\0': return '\\0';
+                  case '\n': return '\\n';
+                  case '\r': return '\\r';
+                  case '\b': return '\\b';
+                  default:   return '\\' + s;
+              }
+          })
+          // uglify compliant
+          .replace(/\t/g, '\\t')
+          .replace(/\x1a/g, '\\Z');
     }
 
 }(jQuery));

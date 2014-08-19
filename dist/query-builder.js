@@ -943,16 +943,15 @@
         var res = [];
 
         for (var i=0, l=this.operators.length; i<l; i++) {
-            // type check
-            if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
-                continue;
-            }
-
             // filter operators check
             if (filter.operators) {
                 if (filter.operators.indexOf(this.operators[i].type) == -1) {
                     continue;
                 }
+            }
+            // type check
+            else if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
+                continue;
             }
 
             res.push({
@@ -1511,24 +1510,19 @@
      * @return {string}
      */
     function escapeString(value) {
-        return value.replace(/[\0\n\r\b\t\\\'\"\x1a]/g, function(s) {
-            switch(s) {
-                case '\0':
-                    return '\\0';
-                case '\n':
-                    return '\\n';
-                case '\r':
-                    return '\\r';
-                case '\b':
-                    return '\\b';
-                case '\t':
-                    return '\\t';
-                case '\x1a':
-                    return '\\Z';
-                default:
-                    return '\\' + s;
-            }
-        });
+        return value
+          .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
+              switch(s) {
+                  case '\0': return '\\0';
+                  case '\n': return '\\n';
+                  case '\r': return '\\r';
+                  case '\b': return '\\b';
+                  default:   return '\\' + s;
+              }
+          })
+          // uglify compliant
+          .replace(/\t/g, '\\t')
+          .replace(/\x1a/g, '\\Z');
     }
 
 }(jQuery));

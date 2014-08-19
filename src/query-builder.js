@@ -944,16 +944,15 @@
         var res = [];
 
         for (var i=0, l=this.operators.length; i<l; i++) {
-            // type check
-            if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
-                continue;
-            }
-
             // filter operators check
             if (filter.operators) {
                 if (filter.operators.indexOf(this.operators[i].type) == -1) {
                     continue;
                 }
+            }
+            // type check
+            else if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
+                continue;
             }
 
             res.push({
