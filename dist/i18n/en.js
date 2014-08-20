@@ -1,3 +1,8 @@
+/*!
+ * jQuery QueryBuilder
+ * Reference language file
+ */
+
 jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Add rule",
   "add_group": "Add group",

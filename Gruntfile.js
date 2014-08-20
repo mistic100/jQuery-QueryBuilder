@@ -1,4 +1,53 @@
 module.exports = function(grunt) {
+    // list available modules and languages
+    var modules = {
+            'sql': 'src/query-builder-sql-support.js'
+        },
+    
+        langs = {},
+        files = [];
+        
+    grunt.file.expandMapping('src/i18n/*.js', '', {
+        flatten: true, ext: ''
+    })
+    .forEach(function(f) {
+        langs[f.dest] = f.src[0];
+    });
+    
+    // parse 'modules' parameter
+    var arg_modules = grunt.option('modules');
+    if (typeof arg_modules === 'string') {
+        arg_modules.split(',').forEach(function(m) {
+            if (modules[m]) {
+                files.push(modules[m]);
+            }
+            else {
+                grunt.fail.warn('Module '+ m +' unknown');
+            }
+        });
+    }
+    else if (arg_modules === undefined) {
+        for (var m in modules) {
+            files.push(modules[m]);
+        }
+    }
+    
+    // parse 'lang' parameter
+    var arg_lang = grunt.option('lang');
+    if (typeof arg_lang === 'string') {
+        if (langs[arg_lang]) {
+            if (arg_lang != 'en') {
+                files.push(langs[arg_lang]);
+            }
+        }
+        else {
+            grunt.fail.warn('Lang '+ arg_lang +' unknown');
+        }
+    }
+    
+    grunt.log.writeln('Merged files: ['+ files.join(', ') +']');
+
+    
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -35,9 +84,8 @@ module.exports = function(grunt) {
                         'src/query-builder.css'
                     ],
                     'dist/query-builder.js': [
-                        'src/query-builder.js',
-                        'src/query-builder-sql-support.js'
-                    ]
+                        'src/query-builder.js'
+                    ].concat(files)
                 }
             }
         },

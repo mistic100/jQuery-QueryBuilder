@@ -1,3 +1,8 @@
+/*!
+ * jQuery QueryBuilder
+ * Romanian translation by ArianServ
+ */
+
 jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Adaugă regulă",
   "add_group": "Adaugă grup",

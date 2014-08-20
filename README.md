@@ -20,6 +20,27 @@ http://mistic100.github.io/jQuery-QueryBuilder
  * Opera ??
  * Safari ??
 
+### Build
+Run `grunt` in root directory to generate minified files inside `dist`.
+
+You can choose which modules to include with `--modules`
+```bash
+# include "sql" module
+grunt --modules=sql
+
+# disable all modules
+grunt --modules=false
+```
+All modules are included by default.
+
+You can also include ONE language with `--lang`
+```bash
+# include French translation
+grunt --lang=fr
+```
+
+Run `grunt test` to run jsHint and the Mocha test suite.
+
 ### Inspiration
  * [Knockout Query Builder](http://kindohm.com/posts/2013/09/25/knockout-query-builder/)
  * [jui_filter_rules](http://www.pontikis.net/labs/jui_filter_rules/)
