@@ -356,7 +356,7 @@
                 $ul = $group.find('>.rules-group-body>.rules-list'),
                 $buttons = $group.find('>.rules-group-header input[name$=_cond]');
 
-            if (!data.condition) {
+            if (data.condition === undefined) {
                 data.condition = that.settings.default_condition;
             }
 
@@ -376,13 +376,13 @@
                     }
                 }
                 else {
-                    if (!rule.id) {
+                    if (rule.id === undefined) {
                         $.error('Missing rule field id');
                     }
-                    if (!rule.value) {
+                    if (rule.value === undefined) {
                         rule.value = '';
                     }
-                    if (!rule.operator) {
+                    if (rule.operator === undefined) {
                         rule.operator = 'equal';
                     }
 

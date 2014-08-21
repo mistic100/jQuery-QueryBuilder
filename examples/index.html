@@ -34,6 +34,7 @@
 
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <script src="../src/query-builder.js"></script>
+<script src="../src/query-builder-sql-support.js"></script>
 
 <script>
 // define filters
@@ -56,7 +57,7 @@ $('#builder').queryBuilder({
     id: 'category',
     label: 'Category',
     type: 'integer',
-    input: 'select',
+    input: 'checkbox',
     values: {
       1: 'Books',
       2: 'Movies',

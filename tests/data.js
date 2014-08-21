@@ -72,6 +72,10 @@ var basic_rules = {
     operator: 'less',
     value: 10.25
   }, {
+    id: 'name',
+    operator: 'is_null',
+    value: null
+  }, {
     condition: 'OR',
     rules: [{
       id: 'category',
@@ -86,7 +90,7 @@ var basic_rules = {
 };
 
 var basic_rules_sql = {
-  sql: 'price < ? AND ( category = ? OR id != ? ) ',
+  sql: 'price < ? AND name IS NULL AND ( category = ? OR id != ? ) ',
   params: [10.25, 2, '1234-azer-5678']
 };
 

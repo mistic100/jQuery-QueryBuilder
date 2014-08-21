@@ -355,7 +355,7 @@
                 $ul = $group.find('>.rules-group-body>.rules-list'),
                 $buttons = $group.find('>.rules-group-header input[name$=_cond]');
 
-            if (!data.condition) {
+            if (data.condition === undefined) {
                 data.condition = that.settings.default_condition;
             }
 
@@ -375,13 +375,13 @@
                     }
                 }
                 else {
-                    if (!rule.id) {
+                    if (rule.id === undefined) {
                         $.error('Missing rule field id');
                     }
-                    if (!rule.value) {
+                    if (rule.value === undefined) {
                         rule.value = '';
                     }
-                    if (!rule.operator) {
+                    if (rule.operator === undefined) {
                         rule.operator = 'equal';
                     }
 
@@ -1391,52 +1391,56 @@
                         parts.push('('+ nl + parse(rule) + nl +')'+ nl);
                     }
                     else {
-                        var sql = parseSqlOperator(that.settings.sqlOperators[rule.operator]),
+                        var sql = that.getSqlOperator(rule.operator),
+                            ope = that.getOperatorByType(rule.operator),
                             value = '';
 
                         if (sql === false) {
                             $.error('SQL operation unknown for operator '+ rule.operator);
                         }
-                        if (!(rule.value instanceof Array)) {
-                            rule.value = [rule.value];
-                        }
-                        else if (!sql.list && rule.value.length>1) {
-                            $.error('Operator '+ rule.operator +' cannot accept multiple values');
-                        }
-
-                        rule.value.forEach(function(v, i) {
-                            if (i>0) {
-                                value+= ', ';
+                        
+                        if (ope.accept_values) {
+                            if (!(rule.value instanceof Array)) {
+                                rule.value = [rule.value];
+                            }
+                            else if (!sql.list && rule.value.length>1) {
+                                $.error('Operator '+ rule.operator +' cannot accept multiple values');
                             }
 
-                            if (rule.type=='integer' || rule.type=='double') {
-                                v = changeType(v, rule.type);
-                            }
-                            else if (!stmt) {
-                                v = escapeString(v);
-                            }
+                            rule.value.forEach(function(v, i) {
+                                if (i>0) {
+                                    value+= ', ';
+                                }
 
-                            v = sql.fn(v);
+                                if (rule.type=='integer' || rule.type=='double') {
+                                    v = changeType(v, rule.type);
+                                }
+                                else if (!stmt) {
+                                    v = escapeString(v);
+                                }
 
-                            if (stmt) {
-                                if (stmt == 'question_mark') {
-                                    value+= '?';
+                                v = sql.fn(v);
+
+                                if (stmt) {
+                                    if (stmt == 'question_mark') {
+                                        value+= '?';
+                                    }
+                                    else {
+                                        value+= '$'+bind_index;
+                                    }
+
+                                    bind_params.push(v);
+                                    bind_index++;
                                 }
                                 else {
-                                    value+= '$'+bind_index;
-                                }
+                                    if (typeof v === 'string') {
+                                        v = '\''+ v +'\'';
+                                    }
 
-                                bind_params.push(v);
-                                bind_index++;
-                            }
-                            else {
-                                if (typeof v === 'string') {
-                                    v = '\''+ v +'\'';
+                                    value+= v;
                                 }
-
-                                value+= v;
-                            }
-                        });
+                            });
+                        }
 
                         parts.push(rule.field +' '+ sql.op.replace(/\?/, value));
                     }
@@ -1456,6 +1460,31 @@
                     sql: sql
                 };
             }
+        },
+        
+        /**
+         * Sanitize the "sql" field of an operator
+         * @param sql {string|object}
+         * @return {object}
+         */
+        getSqlOperator: function(type) {
+            var sql = this.settings.sqlOperators[type];
+            
+            if (sql === undefined) {
+                return false;
+            }
+
+            if (typeof sql === 'string') {
+                sql = { op: sql };
+            }
+            if (!sql.fn) {
+                sql.fn = passthru;
+            }
+            if (!sql.list) {
+                sql.list = false;
+            }
+
+            return sql;
         }
     });
 
@@ -1465,29 +1494,6 @@
      */
     function passthru(v) {
         return v;
-    }
-
-    /**
-     * Sanitize the "sql" field of an operator
-     * @param sql {string|object}
-     * @return {object}
-     */
-    function parseSqlOperator(sql) {
-        if (sql === undefined) {
-            return false;
-        }
-
-        if (typeof sql === 'string') {
-            sql = { op: sql };
-        }
-        if (!sql.fn) {
-            sql.fn = passthru;
-        }
-        if (!sql.list) {
-            sql.list = false;
-        }
-
-        return sql;
     }
 
     /**
@@ -1510,6 +1516,10 @@
      * @return {string}
      */
     function escapeString(value) {
+        if (typeof value !== 'string') {
+            return value;
+        }
+
         return value
           .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
               switch(s) {
