@@ -13,7 +13,7 @@
         "issues": "https://github.com/mistic100/jQuery-QueryBuilder/issues"
     },
     "require": {
-        "yiisoft/jquery": "2.*",
+        "yiisoft/jquery": "2.* | 1.9.*",
         "moment/moment": "dev-master",
         "twbs/bootstrap": "3.2.*@dev"
     },
