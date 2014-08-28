@@ -12,8 +12,8 @@
   ],
   "dependencies" : {
     "jquery": ">= 1.9.0",
-    "bootstrap": "3.x.x",
-    "momentjs": "2.x.x"
+    "bootstrap": "^3.1.0",
+    "momentjs": "^2.6.0"
   },
   "keywords": [
     "jquery",
