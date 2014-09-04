@@ -1,3 +1,8 @@
+/*!
+ * jQuery QueryBuilder
+ * French translation by Damien "Mistic" Sorel
+ */
+
 jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Ajouter une règle",
   "add_group": "Ajouter un groupe",

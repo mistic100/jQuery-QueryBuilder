@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 1.2.0
+ * jQuery QueryBuilder 1.3.0-SNAPSHOT
  * Copyright 2014 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -23,8 +23,7 @@
             'radio',
             'checkbox',
             'select'
-        ],
-        passthru = function(v) { return v; };
+        ];
 
 
     // CLASS DEFINITION
@@ -33,17 +32,13 @@
         // variables
         this.$el = $el;
 
-        this.settings = $.extend(true, {}, QueryBuilder.DEFAULTS, options);
+        this.settings = merge(QueryBuilder.DEFAULTS, options);
         this.status = { group_id: 0, rule_id: 0, generatedId: false };
 
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
         this.operators = this.settings.operators;
         this.template = this.settings.template;
-
-        if (options.operators) {
-            this.operators = $.extend(true, [], options.operators);
-        }
 
         if (this.template.group === null) {
             this.template.group = this.getGroupTemplate;
@@ -124,24 +119,24 @@
         },
 
         operators: [
-            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '= ?'},
-            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: '!= ?'},
-            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: { op: 'IN(?)', list: true }},
-            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime'], sql: { op: 'NOT IN(?)', list: true }},
-            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime'], sql: '< ?'},
-            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime'], sql: '<= ?'},
-            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime'], sql: '> ?'},
-            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime'], sql: '>= ?'},
-            {type: 'begins_with',      accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } }},
-            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string'], sql: { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } }},
-            {type: 'contains',         accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } }},
-            {type: 'not_contains',     accept_values: true,  apply_to: ['string'], sql: { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v+'%'; } }},
-            {type: 'ends_with',        accept_values: true,  apply_to: ['string'], sql: { op: 'LIKE(?)',     fn: function(v){ return '%'+v; } }},
-            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string'], sql: { op: 'NOTLIKE(?)',  fn: function(v){ return '%'+v; } }},
-            {type: 'is_empty',         accept_values: false, apply_to: ['string'], sql: '== ""'},
-            {type: 'is_not_empty',     accept_values: false, apply_to: ['string'], sql: '!= ""'},
-            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime'], sql: 'IS NULL'},
-            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime'], sql: 'IS NOT NULL'}
+            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime']},
+            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime']},
+            {type: 'begins_with',      accept_values: true,  apply_to: ['string']},
+            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string']},
+            {type: 'contains',         accept_values: true,  apply_to: ['string']},
+            {type: 'not_contains',     accept_values: true,  apply_to: ['string']},
+            {type: 'ends_with',        accept_values: true,  apply_to: ['string']},
+            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string']},
+            {type: 'is_empty',         accept_values: false, apply_to: ['string']},
+            {type: 'is_not_empty',     accept_values: false, apply_to: ['string']},
+            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime']},
+            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime']}
         ]
     };
 
@@ -342,111 +337,15 @@
     };
 
     /**
-     * Get rules as SQL query
-     * @param stmt {false|string} use prepared statements - false, 'question_mark' or 'numbered'
-     * @param nl {bool} output with new lines
-     * @param data {object} (optional) rules
-     * @return {object}
-     */
-    QueryBuilder.prototype.getSQL = function(stmt, nl, data) {
-        data = (data===undefined) ? this.getRules() : data;
-        stmt = (stmt===true || stmt===undefined) ? 'question_mark' : stmt;
-        nl = (nl || nl===undefined) ? '\n' : ' ';
-
-        var that = this,
-            bind_index = 1,
-            bind_params = [];
-
-        var sql = (function parse(data) {
-            if (!data.condition) {
-                data.condition = that.settings.default_condition;
-            }
-            if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                $.error('Unable to build SQL query with '+ data.condition +' condition');
-            }
-
-            if (!data.rules) {
-                return '';
-            }
-
-            var parts = [];
-
-            $.each(data.rules, function(i, rule) {
-                if (rule.rules && rule.rules.length>0) {
-                    parts.push('('+ nl + parse(rule) + nl +')'+ nl);
-                }
-                else {
-                    var operator = that.getOperatorByType(rule.operator),
-                        sql = that.parseOperatorSql(operator.sql),
-                        value = '';
-
-                    if (!(rule.value instanceof Array)) {
-                        rule.value = [rule.value];
-                    }
-                    else if (!sql.list && rule.value.length>1) {
-                        $.error('Operator '+ rule.operator +' cannot accept multiple values');
-                    }
-
-                    rule.value.forEach(function(v, i) {
-                        if (i>0) {
-                            value+= ', ';
-                        }
-
-                        if (rule.type=='integer' || rule.type=='double') {
-                            v = that.changeType(v, rule.type);
-                        }
-                        else if (!stmt) {
-                            v = that.escapeString(v);
-                        }
-
-                        v = sql.fn(v);
-
-                        if (stmt) {
-                            if (stmt == 'question_mark') {
-                                value+= '?';
-                            }
-                            else {
-                                value+= '$'+bind_index;
-                            }
-
-                            bind_params.push(v);
-                            bind_index++;
-                        }
-                        else {
-                            if (typeof v === 'string') {
-                                v = '\''+ v +'\'';
-                            }
-
-                            value+= v;
-                        }
-                    });
-
-                    parts.push(rule.field +' '+ sql.op.replace(/\?/, value));
-                }
-            });
-
-            return parts.join(' '+ data.condition + nl);
-        }(data));
-
-        if (stmt) {
-            return {
-                sql: sql,
-                params: bind_params
-            };
-        }
-        else {
-            return {
-                sql: sql
-            };
-        }
-    };
-
-    /**
      * Set rules from object
      * @param data {object}
      */
     QueryBuilder.prototype.setRules = function(data) {
         this.clear();
+
+        if (!data || !data.rules || data.rules.length===0) {
+            $.error('Incorrect data object passed');
+        }
 
         var $container = this.$el,
             that = this;
@@ -456,7 +355,7 @@
                 $ul = $group.find('>.rules-group-body>.rules-list'),
                 $buttons = $group.find('>.rules-group-header input[name$=_cond]');
 
-            if (!data.condition) {
+            if (data.condition === undefined) {
                 data.condition = that.settings.default_condition;
             }
 
@@ -476,13 +375,13 @@
                     }
                 }
                 else {
-                    if (!rule.id) {
+                    if (rule.id === undefined) {
                         $.error('Missing rule field id');
                     }
-                    if (!rule.value) {
+                    if (rule.value === undefined) {
                         rule.value = '';
                     }
-                    if (!rule.operator) {
+                    if (rule.operator === undefined) {
                         rule.operator = 'equal';
                     }
 
@@ -1044,16 +943,15 @@
         var res = [];
 
         for (var i=0, l=this.operators.length; i<l; i++) {
-            // type check
-            if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
-                continue;
-            }
-
             // filter operators check
             if (filter.operators) {
                 if (filter.operators.indexOf(this.operators[i].type) == -1) {
                     continue;
                 }
+            }
+            // type check
+            else if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
+                continue;
             }
 
             res.push({
@@ -1162,65 +1060,6 @@
         }
 
         return out;
-    };
-
-    /**
-     * Sanitize the "sql" field of an operator
-     * @param sql {string|object}
-     * @return {object}
-     */
-    QueryBuilder.prototype.parseOperatorSql = function(sql) {
-        if (typeof sql === 'string') {
-            sql = { op: sql };
-        }
-        if (!sql.fn) {
-            sql.fn = passthru;
-        }
-        if (!sql.list) {
-            sql.list = false;
-        }
-
-        return sql;
-    };
-
-    /**
-     * Change type of a value to int or float
-     * @param value {mixed}
-     * @param type {string}
-     * @return {mixed}
-     */
-    QueryBuilder.prototype.changeType = function(value, type) {
-        switch (type) {
-            case 'integer': return parseInt(value);
-            case 'double': return parseFloat(value);
-            default: return value;
-        }
-    };
-
-    /**
-     * Escape SQL value
-     * @param value {string}
-     * @return {string}
-     */
-    QueryBuilder.prototype.escapeString = function(value) {
-        return value.replace(/[\0\n\r\b\t\\\'\"\x1a]/g, function(s) {
-            switch(s) {
-                case '\0':
-                    return '\\0';
-                case '\n':
-                    return '\\n';
-                case '\r':
-                    return '\\r';
-                case '\b':
-                    return '\\b';
-                case '\t':
-                    return '\\t';
-                case '\x1a':
-                    return '\\Z';
-                default:
-                    return '\\' + s;
-            }
-        });
     };
 
 
@@ -1418,7 +1257,7 @@
 
     $.fn.queryBuilder.defaults = {
         set: function(options) {
-            $.extend(true, QueryBuilder.DEFAULTS, options);
+            merge(true, QueryBuilder.DEFAULTS, options);
         },
         get: function(key) {
             var options = QueryBuilder.DEFAULTS;
@@ -1428,5 +1267,272 @@
             return $.extend(true, {}, options);
         }
     };
+
+    $.fn.queryBuilder.constructor = QueryBuilder;
+
+    /**
+     * From Highcharts library
+     * -----------------------
+     * Deep merge two or more objects and return a third object. If the first argument is
+     * true, the contents of the second object is copied into the first object.
+     * Previously this function redirected to jQuery.extend(true), but this had two limitations.
+     * First, it deep merged arrays, which lead to workarounds in Highcharts. Second,
+     * it copied properties from extended prototypes.
+     */
+    function merge() {
+        var i,
+          args = arguments,
+          len,
+          ret = {};
+
+        function doCopy(copy, original) {
+            var value, key;
+
+            // An object is replacing a primitive
+            if (typeof copy !== 'object') {
+                copy = {};
+            }
+
+            for (key in original) {
+                if (original.hasOwnProperty(key)) {
+                    value = original[key];
+
+                    // Copy the contents of objects, but not arrays or DOM nodes
+                    if (value && key !== 'renderTo' && typeof value.nodeType !== 'number' &&
+                        typeof value === 'object' && Object.prototype.toString.call(value) !== '[object Array]') {
+                        copy[key] = doCopy(copy[key] || {}, value);
+                    }
+                    // Primitives and arrays are copied over directly
+                    else {
+                        copy[key] = original[key];
+                    }
+                }
+            }
+
+            return copy;
+        }
+
+        // If first argument is true, copy into the existing object. Used in setOptions.
+        if (args[0] === true) {
+            ret = args[1];
+            args = Array.prototype.slice.call(args, 2);
+        }
+
+        // For each argument, extend the return
+        len = args.length;
+        for (i = 0; i < len; i++) {
+            ret = doCopy(ret, args[i]);
+        }
+
+        return ret;
+    }
+
+}(jQuery));
+
+(function($){
+
+    $.fn.queryBuilder.defaults.set({
+        sqlOperators: {
+            equal:            '= ?',
+            not_equal:        '!= ?',
+            in:               { op: 'IN(?)',     list: true },
+            not_in:           { op: 'NOT IN(?)', list: true },
+            less:             '< ?',
+            less_or_equal:    '<= ?',
+            greater:          '> ?',
+            greater_or_equal: '>= ?',
+            begins_with:      { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } },
+            not_begins_with:  { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } },
+            contains:         { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } },
+            not_contains:     { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v+'%'; } },
+            ends_with:        { op: 'LIKE(?)',     fn: function(v){ return '%'+v; } },
+            not_ends_with:    { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v; } },
+            is_empty:         '== ""',
+            is_not_empty:     '!= ""',
+            is_null:          'IS NULL',
+            is_not_null:      'IS NOT NULL'
+        }
+    });
+
+    $.extend($.fn.queryBuilder.constructor.prototype, {
+
+        /**
+         * Get rules as SQL query
+         * @param stmt {false|string} use prepared statements - false, 'question_mark' or 'numbered'
+         * @param nl {bool} output with new lines
+         * @param data {object} (optional) rules
+         * @return {object}
+         */
+        getSQL: function(stmt, nl, data) {
+            data = (data===undefined) ? this.getRules() : data;
+            stmt = (stmt===true || stmt===undefined) ? 'question_mark' : stmt;
+            nl =   (nl || nl===undefined) ? '\n' : ' ';
+
+            var that = this,
+                bind_index = 1,
+                bind_params = [];
+
+            var sql = (function parse(data) {
+                if (!data.condition) {
+                    data.condition = that.settings.default_condition;
+                }
+                if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
+                    $.error('Unable to build SQL query with '+ data.condition +' condition');
+                }
+
+                if (!data.rules) {
+                    return '';
+                }
+
+                var parts = [];
+
+                $.each(data.rules, function(i, rule) {
+                    if (rule.rules && rule.rules.length>0) {
+                        parts.push('('+ nl + parse(rule) + nl +')'+ nl);
+                    }
+                    else {
+                        var sql = that.getSqlOperator(rule.operator),
+                            ope = that.getOperatorByType(rule.operator),
+                            value = '';
+
+                        if (sql === false) {
+                            $.error('SQL operation unknown for operator '+ rule.operator);
+                        }
+                        
+                        if (ope.accept_values) {
+                            if (!(rule.value instanceof Array)) {
+                                rule.value = [rule.value];
+                            }
+                            else if (!sql.list && rule.value.length>1) {
+                                $.error('Operator '+ rule.operator +' cannot accept multiple values');
+                            }
+
+                            rule.value.forEach(function(v, i) {
+                                if (i>0) {
+                                    value+= ', ';
+                                }
+
+                                if (rule.type=='integer' || rule.type=='double') {
+                                    v = changeType(v, rule.type);
+                                }
+                                else if (!stmt) {
+                                    v = escapeString(v);
+                                }
+
+                                v = sql.fn(v);
+
+                                if (stmt) {
+                                    if (stmt == 'question_mark') {
+                                        value+= '?';
+                                    }
+                                    else {
+                                        value+= '$'+bind_index;
+                                    }
+
+                                    bind_params.push(v);
+                                    bind_index++;
+                                }
+                                else {
+                                    if (typeof v === 'string') {
+                                        v = '\''+ v +'\'';
+                                    }
+
+                                    value+= v;
+                                }
+                            });
+                        }
+
+                        parts.push(rule.field +' '+ sql.op.replace(/\?/, value));
+                    }
+                });
+
+                return parts.join(' '+ data.condition + nl);
+            }(data));
+
+            if (stmt) {
+                return {
+                    sql: sql,
+                    params: bind_params
+                };
+            }
+            else {
+                return {
+                    sql: sql
+                };
+            }
+        },
+        
+        /**
+         * Sanitize the "sql" field of an operator
+         * @param sql {string|object}
+         * @return {object}
+         */
+        getSqlOperator: function(type) {
+            var sql = this.settings.sqlOperators[type];
+            
+            if (sql === undefined) {
+                return false;
+            }
+
+            if (typeof sql === 'string') {
+                sql = { op: sql };
+            }
+            if (!sql.fn) {
+                sql.fn = passthru;
+            }
+            if (!sql.list) {
+                sql.list = false;
+            }
+
+            return sql;
+        }
+    });
+
+
+    /**
+     * Does nothing !
+     */
+    function passthru(v) {
+        return v;
+    }
+
+    /**
+     * Change type of a value to int or float
+     * @param value {mixed}
+     * @param type {string}
+     * @return {mixed}
+     */
+    function changeType(value, type) {
+        switch (type) {
+            case 'integer': return parseInt(value);
+            case 'double': return parseFloat(value);
+            default: return value;
+        }
+    }
+
+    /**
+     * Escape SQL value
+     * @param value {string}
+     * @return {string}
+     */
+    function escapeString(value) {
+        if (typeof value !== 'string') {
+            return value;
+        }
+
+        return value
+          .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
+              switch(s) {
+                  case '\0': return '\\0';
+                  case '\n': return '\\n';
+                  case '\r': return '\\r';
+                  case '\b': return '\\b';
+                  default:   return '\\' + s;
+              }
+          })
+          // uglify compliant
+          .replace(/\t/g, '\\t')
+          .replace(/\x1a/g, '\\Z');
+    }
 
 }(jQuery));
