@@ -211,3 +211,10 @@ var readonly_rules_after = {
     }]
   }]
 };
+
+var icons = {
+  add_group: 'fa fa-plus-circle',
+  add_rule: 'fa fa-plus',
+  remove: 'fa fa-times',
+  sort: 'fa fa-sort'
+};

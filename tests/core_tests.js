@@ -100,6 +100,16 @@ $(function(){
 
 });
 
+QUnit.test('Icons', function(assert) {
+    $('#container8').queryBuilder({
+      filters: basic_filters,
+      rules: basic_rules,
+      icons: icons
+    });
+
+    assert.equal($('#container8_group_0.rules-group-container [data-add=rule] i').attr('class'), "fa fa-plus", 'Icons should have been replaced');
+  });
+
 function getOptions($target) {
   var options = [];
   

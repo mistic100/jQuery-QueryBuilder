@@ -138,7 +138,14 @@
             {type: 'is_not_empty',     accept_values: false, apply_to: ['string']},
             {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime']},
             {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime']}
-        ]
+        ],
+
+        icons: {
+            add_group: 'glyphicon glyphicon-plus-sign',
+            add_rule: 'glyphicon glyphicon-plus',
+            remove: 'glyphicon glyphicon-remove',
+            sort: 'glyphicon glyphicon-sort'
+        }
     };
 
 
@@ -1096,19 +1103,19 @@
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right"> \
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
-        <i class="glyphicon glyphicon-plus"></i> '+ this.lang.add_rule +' \
+        <i class="' + this.settings.icons.add_rule + '"></i> '+ this.lang.add_rule +' \
       </button> \
       '+ (this.settings.allow_groups ? '<button type="button" class="btn btn-xs btn-success" data-add="group"> \
-        <i class="glyphicon glyphicon-plus-sign"></i> '+ this.lang.add_group +' \
+        <i class="' + this.settings.icons.add_group + '"></i> '+ this.lang.add_group +' \
       </button>' : '') +' \
       '+ (!main ? '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
-        <i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_group +' \
+        <i class="' + this.settings.icons.remove + '"></i> '+ this.lang.delete_group +' \
       </button>' : '') +' \
     </div> \
     <div class="btn-group"> \
       '+ this.getGroupConditions(group_id) +' \
     </div> \
-    '+ (this.settings.sortable && !main ? '<div class="drag-handle"><i class="glyphicon glyphicon-sort"></i></div>' : '') +' \
+    '+ (this.settings.sortable && !main ? '<div class="drag-handle"><i class="' + this.settings.icons.sort + '"></i></div>' : '') +' \
   </dt> \
   <dd class=rules-group-body> \
     <ul class=rules-list></ul> \
@@ -1151,11 +1158,11 @@
   <div class="rule-header"> \
     <div class="btn-group pull-right"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
-        <i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_rule +' \
+        <i class="' + this.settings.icons.remove + '"></i> '+ this.lang.delete_rule +' \
       </button> \
     </div> \
   </div> \
-  '+ (this.settings.sortable ? '<div class="drag-handle"><i class="glyphicon glyphicon-sort"></i></div>' : '') +' \
+  '+ (this.settings.sortable ? '<div class="drag-handle"><i class="' + this.settings.icons.sort + '"></i></div>' : '') +' \
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
