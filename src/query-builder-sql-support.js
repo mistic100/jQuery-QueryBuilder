@@ -51,7 +51,7 @@
                 if (!data.condition) {
                     data.condition = that.settings.default_condition;
                 }
-                if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
+                if (that.settings.conditions.indexOf(data.condition.toUpperCase()) === -1) {
                     $.error('Unable to build SQL query with '+ data.condition +' condition');
                 }
 
