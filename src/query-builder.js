@@ -143,7 +143,8 @@
         icons: {
             add_group: 'glyphicon glyphicon-plus-sign',
             add_rule: 'glyphicon glyphicon-plus',
-            remove: 'glyphicon glyphicon-remove',
+            remove_group: 'glyphicon glyphicon-remove',
+            remove_rule: 'glyphicon glyphicon-remove',
             sort: 'glyphicon glyphicon-sort'
         }
     };
@@ -1109,7 +1110,7 @@
         <i class="' + this.settings.icons.add_group + '"></i> '+ this.lang.add_group +' \
       </button>' : '') +' \
       '+ (!main ? '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
-        <i class="' + this.settings.icons.remove + '"></i> '+ this.lang.delete_group +' \
+        <i class="' + this.settings.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
       </button>' : '') +' \
     </div> \
     <div class="btn-group"> \
@@ -1158,7 +1159,7 @@
   <div class="rule-header"> \
     <div class="btn-group pull-right"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
-        <i class="' + this.settings.icons.remove + '"></i> '+ this.lang.delete_rule +' \
+        <i class="' + this.settings.icons.remove_rule + '"></i> '+ this.lang.delete_rule +' \
       </button> \
     </div> \
   </div> \
