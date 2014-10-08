@@ -98,6 +98,17 @@ $(function(){
     assert.ok(rulesMatch($('#container7').queryBuilder('getRules'), readonly_rules_after), 'Should not delete group with readonly rule');
   });
 
+  QUnit.test('Icons', function(assert) {
+    $('#container8').queryBuilder({
+      filters: basic_filters,
+      rules: basic_rules,
+      icons: icons
+    });
+
+    assert.equal($('#container8_group_0.rules-group-container [data-add=rule] i').attr('class'), "fa fa-plus", 'Rule add icon should have been replaced');
+    assert.equal($('#container8_group_1.rules-group-container [data-delete=group] i').attr('class'), "fa fa-times", 'Group delete icon should have been replaced');
+  });
+
 });
 
 function getOptions($target) {
