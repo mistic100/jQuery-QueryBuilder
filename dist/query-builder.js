@@ -337,6 +337,8 @@
             }
 
             if (out.rules.length === 0) {
+                that.triggerValidationError('empty_group', $group, null, null, null);
+
                 return {};
             }
 
@@ -583,10 +585,10 @@
 
         if ($.fn.selectpicker) {
             $filterSelect.selectpicker({
-              container: 'body',
-              style: 'btn-inverse btn-xs',
-              width: 'auto',
-              showIcon: false
+                container: 'body',
+                style: 'btn-inverse btn-xs',
+                width: 'auto',
+                showIcon: false
             });
         }
 
@@ -824,12 +826,12 @@
     /**
      * Trigger a validation error event with custom params
      */
-    QueryBuilder.prototype.triggerValidationError = function(error, $rule, value, filter, operator) {
-        if (filter.onValidationError) {
-            filter.onValidationError.call(this, $rule, error, value, filter, operator);
+    QueryBuilder.prototype.triggerValidationError = function(error, $target, value, filter, operator) {
+        if (filter && filter.onValidationError) {
+            filter.onValidationError.call(this, $target, error, value, filter, operator);
         }
         if (this.settings.onValidationError) {
-            this.settings.onValidationError.call(this, $rule, error, value, filter, operator);
+            this.settings.onValidationError.call(this, $target, error, value, filter, operator);
         }
 
         var e = jQuery.Event('validationError.queryBuilder', {
@@ -837,7 +839,7 @@
             filter: filter,
             operator: operator,
             value: value,
-            targetRule: $rule[0],
+            targetRule: $target[0],
             builder: this
         });
 

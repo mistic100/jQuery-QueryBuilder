@@ -42,6 +42,10 @@
 $('#builder').queryBuilder({
   sortable: true,
   
+  onValidationError: function($target, err) {
+      console.error(err, $target);
+  },
+  
   filters: [
   /*
    * basic
