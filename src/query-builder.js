@@ -1089,6 +1089,39 @@
         return out;
     };
 
+    /**
+     * Utility to iterate over radio/checkbox/selection options.
+     * it accept three formats: array of values, map, array of 1-element maps
+     *
+     * @param object|array options
+     * @param callable tpl (takes key and text)
+     */
+    QueryBuilder.prototype.iterateOptions = function(options, tpl) {
+        if (options) {
+            if ($.isArray(options)) {
+                $.each(options, function(index, entry) {
+                    // array of one-element maps
+                    if ($.isObject(entry)) {
+                        $.each(entry, function(key, val) {
+                            tpl(key, val);
+                            return false; // break after first entry
+                        });
+                    }
+                    // array of values
+                    else {
+                        tpl(index, entry);
+                    }
+                });
+            }
+            // unordered map
+            else {
+                $.each(options, function(key, val) {
+                    tpl(key, val);
+                });
+            }
+        }
+    };
+
 
     // TEMPLATES
     // ===============================
@@ -1223,80 +1256,24 @@
 
         switch (filter.input) {
             case 'radio':
-            	c = filter.vertical ? ' class=block' : '';
-                if ($.isArray(filter.values)) {
-                	$.each(filter.values, function(index, entry) {
-	                	if ($.type(entry) == 'string') {
-	                		// list of strings (for backwards compatibility)
-	                		h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ index +'"> '+ entry +'</label> ';
-	                	}
-	                	else {
-	                		// list of one-element maps
-	                    	$.each(entry, function(key, val) {
-	                    		h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
-	                    		return false; // break after first entry
-	                    	});
-                		}
-                	});
-            	}
-            	else {
-            		// unordered map of option entries
-                	$.each(filter.values, function(key, val) {
-                		h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
-                	});
-            	}
+                c = filter.vertical ? ' class=block' : '';
+                this.iterateOptions(filter.values, function(key, val) {
+                    h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
+                });
                 break;
 
             case 'checkbox':
-            	c = filter.vertical ? ' class=block' : '';
-                if ($.isArray(filter.values)) {
-                    $.each(filter.values, function(index, entry) {
-                    	if ($.type(entry) == 'string') {
-                    		// list of strings (for backwards compatibility)
-                    		h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ index +'"> '+ entry +'</label> ';
-                    	}
-                    	else {
-                    		// list of one-element maps
-	                    	$.each(entry, function(key, val) {
-	                    		h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
-	                    		return false; // break after first entry
-	                    	});
-                    	}
-                    });
-            	}
-            	else {
-            		// unordered map of option entries
-                	$.each(filter.values, function(key, val) {
-                		h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
-                	});
-            	}
+                c = filter.vertical ? ' class=block' : '';
+                this.iterateOptions(filter.values, function(key, val) {
+                    h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
+                });
                 break;
 
             case 'select':
-            	h+= '<select name="'+ rule_id +'_value"'+ (filter.multiple ? ' multiple' : '') +'>';
-                if (filter.values) {
-                	if ($.isArray(filter.values)) {
-	                    $.each(filter.values, function(index, entry) {
-	                    	if ($.type(entry) == 'string') {
-	                    		// list of strings (for backwards compatibility)
-	                    		h+= '<option value="'+ index +'"> '+ entry +'</option> ';
-	                    	}
-	                    	else {
-	                    		// list of one-element maps
-		                    	$.each(entry, function(key, val) {
-		                    		h+= '<option value="'+ key +'"> '+ val +'</option> ';
-		                    		return false; // break after first entry
-		                    	});
-	                    	}
-	                    });
-                	}
-                	else {
-                		// unordered map of option entries
-                    	$.each(filter.values, function(key, val) {
-                    		h+= '<option value="'+ key +'"> '+ val +'</option> ';
-                    	});
-                	}
-                }
+                h+= '<select name="'+ rule_id +'_value"'+ (filter.multiple ? ' multiple' : '') +'>';
+                this.iterateOptions(filter.values, function(key, val) {
+                    h+= '<option value="'+ key +'"> '+ val +'</option> ';
+                });
                 h+= '</select>';
                 break;
 
