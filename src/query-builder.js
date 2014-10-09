@@ -1223,25 +1223,79 @@
 
         switch (filter.input) {
             case 'radio':
-                c = filter.vertical ? ' class=block' : '';
-                $.each(filter.values, function(key, val) {
-                    h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
-                });
+            	c = filter.vertical ? ' class=block' : '';
+                if ($.isArray(filter.values)) {
+                	$.each(filter.values, function(index, entry) {
+	                	if ($.type(entry) == 'string') {
+	                		// list of strings (for backwards compatibility)
+	                		h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ index +'"> '+ entry +'</label> ';
+	                	}
+	                	else {
+	                		// list of one-element maps
+	                    	$.each(entry, function(key, val) {
+	                    		h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
+	                    		return false; // break after first entry
+	                    	});
+                		}
+                	});
+            	}
+            	else {
+            		// unordered map of option entries
+                	$.each(filter.values, function(key, val) {
+                		h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
+                	});
+            	}
                 break;
 
             case 'checkbox':
-                c = filter.vertical ? ' class=block' : '';
-                $.each(filter.values, function(key, val) {
-                    h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
-                });
+            	c = filter.vertical ? ' class=block' : '';
+                if ($.isArray(filter.values)) {
+                    $.each(filter.values, function(index, entry) {
+                    	if ($.type(entry) == 'string') {
+                    		// list of strings (for backwards compatibility)
+                    		h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ index +'"> '+ entry +'</label> ';
+                    	}
+                    	else {
+                    		// list of one-element maps
+	                    	$.each(entry, function(key, val) {
+	                    		h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
+	                    		return false; // break after first entry
+	                    	});
+                    	}
+                    });
+            	}
+            	else {
+            		// unordered map of option entries
+                	$.each(filter.values, function(key, val) {
+                		h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
+                	});
+            	}
                 break;
 
             case 'select':
-                h+= '<select name="'+ rule_id +'_value"'+ (filter.multiple ? ' multiple' : '') +'>';
+            	h+= '<select name="'+ rule_id +'_value"'+ (filter.multiple ? ' multiple' : '') +'>';
                 if (filter.values) {
-                    $.each(filter.values, function(key, val) {
-                        h+= '<option value="'+ key +'"> '+ val +'</option> ';
-                    });
+                	if ($.isArray(filter.values)) {
+	                    $.each(filter.values, function(index, entry) {
+	                    	if ($.type(entry) == 'string') {
+	                    		// list of strings (for backwards compatibility)
+	                    		h+= '<option value="'+ index +'"> '+ entry +'</option> ';
+	                    	}
+	                    	else {
+	                    		// list of one-element maps
+		                    	$.each(entry, function(key, val) {
+		                    		h+= '<option value="'+ key +'"> '+ val +'</option> ';
+		                    		return false; // break after first entry
+		                    	});
+	                    	}
+	                    });
+                	}
+                	else {
+                		// unordered map of option entries
+                    	$.each(filter.values, function(key, val) {
+                    		h+= '<option value="'+ key +'"> '+ val +'</option> ';
+                    	});
+                	}
                 }
                 h+= '</select>';
                 break;
