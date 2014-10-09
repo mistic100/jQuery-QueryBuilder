@@ -157,6 +157,12 @@ isHome: true
             </ul>
           </td>
         </tr>
+        <tr>
+          <td>icons</td>
+          <td>object[]</td>
+          <td>glyphicons</td>
+          <td>Array of icon mappings. Defaults to using Glyphicons. <a href="#icons">See bellow</a>.</td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -516,6 +522,54 @@ $('#builder').queryBuilder('destroy')
   <p>Some default translation files are available in the <a href="https://github.com/mistic100/jQuery-QueryBuilder/tree/master/dist/i18n" target="_blank">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<br>
   Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators and conditions.<br>
   Default strings <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L96">in the source code</a>.</p>
+
+  <h3 id="icons">Icons</h3>
+  <p>The <code>icons</code> option provides a way of using alternate icons sets. Available attributes:</p>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th style="width: 130px;">Name</th>
+          <th style="width: 100px;">type</th>
+          <th style="width: 300px;">default</th>
+          <th>description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>add_group</td>
+          <td>string</td>
+          <td>'glyphicon glyphicon-plus-sign'</td>
+          <td>Icon used for the group add button</td>
+        </tr>
+        <tr>
+          <td>add_rule</td>
+          <td>string</td>
+          <td>'glyphicon glyphicon-plus'</td>
+          <td>Icon used for the rule add button</td>
+        </tr>
+        <tr>
+          <td>remove_group</td>
+          <td>string</td>
+          <td>'glyphicon glyphicon-remove'</td>
+          <td>Icon used for the group delete button</td>
+        </tr>
+        <tr>
+          <td>remove_rule</td>
+          <td>string</td>
+          <td>'glyphicon glyphicon-remove'</td>
+          <td>Icon used for the rule delete button</td>
+        </tr>
+        <tr>
+          <td>sort</td>
+          <td>string</td>
+          <td>'glyphicon glyphicon-sort'</td>
+          <td>Icon used for sort</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 </section>
 
 <link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.min.css" rel="stylesheet">
