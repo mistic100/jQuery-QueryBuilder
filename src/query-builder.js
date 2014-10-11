@@ -1103,7 +1103,7 @@
             if ($.isArray(options)) {
                 $.each(options, function(index, entry) {
                     // array of one-element maps
-                    if ($.isObject(entry)) {
+                    if ($.isPlainObject(entry)) {
                         $.each(entry, function(key, val) {
                             tpl(key, val);
                             return false; // break after first entry
