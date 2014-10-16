@@ -306,7 +306,7 @@
                             value = filter.valueParser.call(this, $rule, value, filter, operator);
                         }
 
-                        var valid = that.validateValue(value, filter);
+                        var valid = that.validateValue($rule, value, filter, operator);
                         if (valid !== true) {
                             that.markRuleAsError($rule, true);
                             that.triggerValidationError(valid, $rule, value, filter, operator);
@@ -687,15 +687,17 @@
 
     /**
      * Check if a value is correct for a filter
+     * @param $rule {jQuery} (<li> element)
      * @param value {string|string[]|undefined}
      * @param filter {object}
+     * @param operator {object}
      * @return {string|true}
      */
-    QueryBuilder.prototype.validateValue = function(value, filter) {
+    QueryBuilder.prototype.validateValue = function($rule, value, filter, operator) {
         var validation = filter.validation || {};
 
         if (validation.callback) {
-            return validation.callback.call(this, value, filter);
+            return validation.callback.call(this, value, filter, operator, $rule);
         }
 
         switch (filter.input) {
@@ -1102,7 +1104,7 @@
             if ($.isArray(options)) {
                 $.each(options, function(index, entry) {
                     // array of one-element maps
-                    if ($.isObject(entry)) {
+                    if ($.isPlainObject(entry)) {
                         $.each(entry, function(key, val) {
                             tpl(key, val);
                             return false; // break after first entry
