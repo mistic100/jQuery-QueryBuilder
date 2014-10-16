@@ -13,7 +13,6 @@ $(function(){
     
     assert.ok(rulesMatch($('#container2').queryBuilder('getRules'), basic_rules), 'Should return object with rules');
     assert.deepEqual(getOptions($('#container2_rule_2 [name$=_operator] option')), basic_filters[1].operators, 'Should respect the order of operators');
-    assert.deepEqual($('#container2').queryBuilder('getSQL', true, false), basic_rules_sql, 'Should create SQL query with statements');
   });
   
   QUnit.test('Empty value check', function(assert) {
@@ -108,6 +107,16 @@ $(function(){
     assert.equal($('#container8_group_0.rules-group-container [data-add=rule] i').attr('class'), "fa fa-plus", 'Rule add icon should have been replaced');
     assert.equal($('#container8_group_1.rules-group-container [data-delete=group] i').attr('class'), "fa fa-times", 'Group delete icon should have been replaced');
   });
+  
+  QUnit.test('SQL export', function(assert) {
+    $('#container9').queryBuilder({
+      filters: basic_filters,
+      rules: basic_rules
+    });
+    
+    assert.deepEqual($('#container9').queryBuilder('getSQL', false, false), basic_rules_sql_raw, 'Should create SQL query');
+    assert.deepEqual($('#container9').queryBuilder('getSQL', true, false), basic_rules_sql_stmt, 'Should create SQL query with statements');
+  });
 
 });
 
@@ -142,6 +151,14 @@ function rulesMatch(a, b) {
     return a.condition == b.condition;
   }
   else {
-    return a.id==b.id && a.operator==b.operator && a.value==b.value;
+    var match;
+    if ($.isArray(a.value)) {
+      match = $(a.value).not(b.value).length == 0 && $(b.value).not(a.value).length == 0;
+    }
+    else {
+      match = a.value==b.value;
+    }
+    
+    return a.id==b.id && a.operator==b.operator && match;
   }
 }

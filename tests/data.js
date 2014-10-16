@@ -13,15 +13,16 @@ var basic_filters = [
 {
   id: 'category',
   label: 'Category',
-  type: 'integer',
+  type: 'string',
   input: 'select',
+  multiple: true,
   values: {
-    1: 'Books',
-    2: 'Movies',
-    3: 'Music',
-    4: 'Tools',
-    5: 'Goodies',
-    6: 'Clothes'
+    'bk': 'Books',
+    'mo': 'Movies',
+    'mu': 'Music',
+    'to': 'Tools',
+    'go': 'Goodies',
+    'cl': 'Clothes'
   },
   operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
 },
@@ -79,8 +80,8 @@ var basic_rules = {
     condition: 'OR',
     rules: [{
       id: 'category',
-      operator: 'equal',
-      value: 2
+      operator: 'in',
+      value: ['mo', 'mu']
     }, {
       id: 'id',
       operator: 'not_equal',
@@ -89,9 +90,12 @@ var basic_rules = {
   }]
 };
 
-var basic_rules_sql = {
-  sql: 'price < ? AND name IS NULL AND ( category = ? OR id != ? ) ',
-  params: [10.25, 2, '1234-azer-5678']
+var basic_rules_sql_stmt = {
+  sql: 'price < ? AND name IS NULL AND ( category IN(?, ?) OR id != ? ) ',
+  params: [10.25, 'mo', 'mu', '1234-azer-5678']
+};
+var basic_rules_sql_raw = {
+  sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
 };
 
 var invalid_rules = {
@@ -178,7 +182,7 @@ var readonly_rules = {
     rules: [{
       id: 'category',
       operator: 'equal',
-      value: 2
+      value: 'mu'
     }, {
       id: 'id',
       operator: 'not_equal',
