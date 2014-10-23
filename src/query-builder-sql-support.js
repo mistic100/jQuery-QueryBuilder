@@ -6,16 +6,19 @@
 
 (function($){
 
+    // DEFAULT CONFIG
+    // ===============================
     $.fn.queryBuilder.defaults.set({
         sqlOperators: {
             equal:            '= ?',
             not_equal:        '!= ?',
-            in:               { op: 'IN(?)',     list: true },
-            not_in:           { op: 'NOT IN(?)', list: true },
+            in:               { op: 'IN(?)',     list: true, sep: ', ' },
+            not_in:           { op: 'NOT IN(?)', list: true, sep: ', ' },
             less:             '< ?',
             less_or_equal:    '<= ?',
             greater:          '> ?',
             greater_or_equal: '>= ?',
+            between:          { op: 'BETWEEN ?',   list: true, sep: ' AND ' },
             begins_with:      { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } },
             not_begins_with:  { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } },
             contains:         { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } },
@@ -29,8 +32,10 @@
         }
     });
 
-    $.extend($.fn.queryBuilder.constructor.prototype, {
 
+    // PUBLIC METHODS
+    // ===============================
+    $.extend($.fn.queryBuilder.constructor.prototype, {
         /**
          * Get rules as SQL query
          * @param stmt {false|string} use prepared statements - false, 'question_mark' or 'numbered'
@@ -73,7 +78,7 @@
                         if (sql === false) {
                             $.error('SQL operation unknown for operator '+ rule.operator);
                         }
-                        
+
                         if (ope.accept_values) {
                             if (!(rule.value instanceof Array)) {
                                 rule.value = [rule.value];
@@ -84,7 +89,7 @@
 
                             rule.value.forEach(function(v, i) {
                                 if (i>0) {
-                                    value+= ', ';
+                                    value+= sql.sep;
                                 }
 
                                 if (rule.type=='integer' || rule.type=='double') {
@@ -136,7 +141,7 @@
                 };
             }
         },
-        
+
         /**
          * Sanitize the "sql" field of an operator
          * @param sql {string|object}
@@ -144,7 +149,7 @@
          */
         getSqlOperator: function(type) {
             var sql = this.settings.sqlOperators[type];
-            
+
             if (sql === undefined) {
                 return false;
             }
@@ -158,12 +163,17 @@
             if (!sql.list) {
                 sql.list = false;
             }
+            if (sql.list && !sql.sep) {
+                sql.sep = ', ';
+            }
 
             return sql;
         }
     });
 
 
+    // UTILITIES
+    // ===============================
     /**
      * Does nothing !
      */

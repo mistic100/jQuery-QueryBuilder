@@ -6,6 +6,7 @@
 
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../src/query-builder.css">
+  <link href="../bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -36,6 +37,7 @@
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <script src="../src/query-builder.js"></script>
 <script src="../src/query-builder-sql-support.js"></script>
+<script src="../bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 
 <script>
 // define filters
@@ -97,6 +99,29 @@ $('#builder').queryBuilder({
     validation: {
       min: 0,
       step: 0.01
+    }
+  }, 
+  /*
+   * slider
+   */
+  {
+    id: 'rate',
+    label: 'Rate',
+    type: 'integer',
+    validation: {
+      min: 0,
+      max: 100
+    },
+    plugin: 'slider',
+    plugin_config: {
+      min: 0,
+      max: 100,
+      value: 0
+    },
+    onAfterSetValue: function($rule, value) {
+      var input = $rule.find('.rule-value-container input');
+      input.slider('setValue', value);
+      input.val(value); // don't know why I need it
     }
   }, 
   /*
@@ -173,8 +198,8 @@ $('.set').on('click', function() {
     condition: 'AND',
     rules: [{
       id: 'price',
-      operator: 'less',
-      value: 10.25
+      operator: 'between',
+      value: [10.25, 15.52]
     }, {
       condition: 'OR',
       rules: [{
@@ -191,7 +216,7 @@ $('.set').on('click', function() {
 
   $('.parse-json').trigger('click');
 })
-.trigger('click');
+//.trigger('click');
 
 // reset builder
 $('.reset').on('click', function() {
