@@ -4,6 +4,7 @@
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 /*jshint multistr:true */
+/*jshint loopfunc:true */
 
 (function($){
     "use strict";
@@ -16,6 +17,11 @@
             'double',
             'date',
             'time',
+            'datetime'
+        ],
+        internalTypes = [
+            'string',
+            'number',
             'datetime'
         ],
         inputs = [
@@ -106,6 +112,7 @@
             operator_less_or_equal: 'less or equal',
             operator_greater: 'greater',
             operator_greater_or_equal: 'greater or equal',
+            operator_between: 'between',
             operator_begins_with: 'begins with',
             operator_not_begins_with: 'doesn\'t begin with',
             operator_contains: 'contains',
@@ -119,25 +126,34 @@
         },
 
         operators: [
-            {type: 'equal',            accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'not_equal',        accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'in',               accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'not_in',           accept_values: true,  apply_to: ['string', 'number', 'datetime']},
-            {type: 'less',             accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'less_or_equal',    accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'greater',          accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'greater_or_equal', accept_values: true,  apply_to: ['number', 'datetime']},
-            {type: 'begins_with',      accept_values: true,  apply_to: ['string']},
-            {type: 'not_begins_with',  accept_values: true,  apply_to: ['string']},
-            {type: 'contains',         accept_values: true,  apply_to: ['string']},
-            {type: 'not_contains',     accept_values: true,  apply_to: ['string']},
-            {type: 'ends_with',        accept_values: true,  apply_to: ['string']},
-            {type: 'not_ends_with',    accept_values: true,  apply_to: ['string']},
-            {type: 'is_empty',         accept_values: false, apply_to: ['string']},
-            {type: 'is_not_empty',     accept_values: false, apply_to: ['string']},
-            {type: 'is_null',          accept_values: false, apply_to: ['string', 'number', 'datetime']},
-            {type: 'is_not_null',      accept_values: false, apply_to: ['string', 'number', 'datetime']}
-        ]
+            {type: 'equal',            accept_values: 1, apply_to: ['string', 'number', 'datetime']},
+            {type: 'not_equal',        accept_values: 1, apply_to: ['string', 'number', 'datetime']},
+            {type: 'in',               accept_values: 1, apply_to: ['string', 'number', 'datetime']},
+            {type: 'not_in',           accept_values: 1, apply_to: ['string', 'number', 'datetime']},
+            {type: 'less',             accept_values: 1, apply_to: ['number', 'datetime']},
+            {type: 'less_or_equal',    accept_values: 1, apply_to: ['number', 'datetime']},
+            {type: 'greater',          accept_values: 1, apply_to: ['number', 'datetime']},
+            {type: 'greater_or_equal', accept_values: 1, apply_to: ['number', 'datetime']},
+            {type: 'between',          accept_values: 2, apply_to: ['number', 'datetime']},
+            {type: 'begins_with',      accept_values: 1, apply_to: ['string']},
+            {type: 'not_begins_with',  accept_values: 1, apply_to: ['string']},
+            {type: 'contains',         accept_values: 1, apply_to: ['string']},
+            {type: 'not_contains',     accept_values: 1, apply_to: ['string']},
+            {type: 'ends_with',        accept_values: 1, apply_to: ['string']},
+            {type: 'not_ends_with',    accept_values: 1, apply_to: ['string']},
+            {type: 'is_empty',         accept_values: 0, apply_to: ['string']},
+            {type: 'is_not_empty',     accept_values: 0, apply_to: ['string']},
+            {type: 'is_null',          accept_values: 0, apply_to: ['string', 'number', 'datetime']},
+            {type: 'is_not_null',      accept_values: 0, apply_to: ['string', 'number', 'datetime']}
+        ],
+
+        icons: {
+            add_group: 'glyphicon glyphicon-plus-sign',
+            add_rule: 'glyphicon glyphicon-plus',
+            remove_group: 'glyphicon glyphicon-remove',
+            remove_rule: 'glyphicon glyphicon-remove',
+            sort: 'glyphicon glyphicon-sort'
+        }
     };
 
 
@@ -165,8 +181,7 @@
             var $this = $(this),
                 $rule = $this.closest('.rule-container');
 
-            that.createRuleOperators($rule, $this.val());
-            that.createRuleInput($rule, $this.val());
+            that.updateRuleFilter($rule, $this.val());
         });
 
         // rule operator change
@@ -292,13 +307,13 @@
                         operator = that.getOperatorByType(that.getRuleOperator($rule)),
                         value = null;
 
-                    if (operator.accept_values) {
-                        value = that.getRuleValue($rule, filter);
+                    if (operator.accept_values !== 0) {
+                        value = that.getRuleValue($rule, filter, operator);
                         if (filter.valueParser) {
                             value = filter.valueParser.call(this, $rule, value, filter, operator);
                         }
 
-                        var valid = that.validateValue(value, filter);
+                        var valid = that.validateValue($rule, value, filter, operator);
                         if (valid !== true) {
                             that.markRuleAsError($rule, true);
                             that.triggerValidationError(valid, $rule, value, filter, operator);
@@ -329,6 +344,8 @@
             }
 
             if (out.rules.length === 0) {
+                that.triggerValidationError('empty_group', $group, null, null, null);
+
                 return {};
             }
 
@@ -387,45 +404,13 @@
 
                     var $rule = that.addRule($ul),
                         filter = that.getFilterById(rule.id),
-                        operator = that.getOperatorByType(rule.operator),
-                        $value = $rule.find('.rule-value-container');
+                        operator = that.getOperatorByType(rule.operator);
 
                     $rule.find('.rule-filter-container select[name$=_filter]').val(rule.id).trigger('change');
                     $rule.find('.rule-operator-container select[name$=_operator]').val(rule.operator).trigger('change');
 
-                    if (operator.accept_values) {
-                        switch (filter.input) {
-                            case 'radio':
-                                $value.find('input[name$=_value][value="'+ rule.value +'"]').prop('checked', true).trigger('change');
-                                break;
-
-                            case 'checkbox':
-                                if (!$.isArray(rule.value)) {
-                                    rule.value = [rule.value];
-                                }
-                                $.each(rule.value, function(i, value) {
-                                    $value.find('input[name$=_value][value="'+ value +'"]').prop('checked', true).trigger('change');
-                                });
-                                break;
-
-                            case 'select':
-                                $value.find('select[name$=_value]').val(rule.value).trigger('change');
-                                break;
-
-                            /* falls through */
-                            case 'text': default:
-                                $value.find('input[name$=_value]').val(rule.value).trigger('change');
-                                break;
-                        }
-
-                        if (rule.readonly) {
-                            $rule.find('input, select').prop('disabled', true);
-                            $rule.addClass('disabled').find('[data-delete=rule]').remove();
-
-                            if (that.settings.sortable && !that.settings.readonly_behavior.sortable) {
-                                $rule.find('.drag-handle').remove();
-                            }
-                        }
+                    if (operator.accept_values !== 0) {
+                        that.setRuleValue($rule, rule, filter, operator);
                     }
 
                     if (filter.onAfterSetValue) {
@@ -573,6 +558,15 @@
         container.append($rule);
         $rule.find('.rule-filter-container').append($filterSelect);
 
+        if ($.fn.selectpicker) {
+            $filterSelect.selectpicker({
+                container: 'body',
+                style: 'btn-inverse btn-xs',
+                width: 'auto',
+                showIcon: false
+            });
+        }
+
         if (this.settings.onAfterAddRule) {
             this.settings.onAfterAddRule.call(this, $rule);
         }
@@ -583,43 +577,60 @@
     /**
      * Create operators <select> for a rule
      * @param $rule {jQuery} (<li> element)
-     * @param filterId {string}
+     * @param filter {object}
      */
-    QueryBuilder.prototype.createRuleOperators = function($rule, filterId) {
+    QueryBuilder.prototype.createRuleOperators = function($rule, filter) {
         var $operatorContainer = $rule.find('.rule-operator-container').empty();
 
-        if (filterId == '-1') {
+        if (filter === null) {
             return;
         }
 
-        var operators = this.getOperators(filterId),
+        var operators = this.getOperators(filter),
             $operatorSelect = $(this.getRuleOperatorSelect($rule.attr('id'), operators));
 
         $operatorContainer.html($operatorSelect);
+
+        $rule.data('queryBuilder.operator', operators[0]);
+
+        if ($.fn.selectpicker) {
+            $operatorSelect.selectpicker({
+              container: 'body',
+              style: 'btn-inverse btn-xs',
+              width: 'auto',
+              showIcon: false
+            });
+        }
     };
 
     /**
      * Create main <input> for a rule
      * @param $rule {jQuery} (<li> element)
-     * @param filterId {string}
+     * @param filter {object}
      */
-    QueryBuilder.prototype.createRuleInput = function($rule, filterId) {
+    QueryBuilder.prototype.createRuleInput = function($rule, filter) {
         var $valueContainer = $rule.find('.rule-value-container').empty();
 
-        if (filterId == '-1') {
+        if (filter === null) {
             return;
         }
 
         var operator = this.getOperatorByType(this.getRuleOperator($rule));
 
-        if (!operator.accept_values) {
+        if (operator.accept_values === 0) {
             return;
         }
 
-        var filter = this.getFilterById(filterId),
-            $ruleInput = $(this.getRuleInput($rule.attr('id'), filter));
+        var $inputs = $();
 
-        $valueContainer.append($ruleInput).show();
+        for (var i=0; i<operator.accept_values; i++) {
+            var $ruleInput = $(this.getRuleInput($rule.attr('id'), filter, i));
+            if (i > 0) $valueContainer.append(' , ');
+            $valueContainer.append($ruleInput);
+            $inputs = $inputs.add($ruleInput);
+        }
+
+        $valueContainer.show();
 
         if (filter.onAfterCreateRuleInput) {
             filter.onAfterCreateRuleInput.call(this, $rule, filter);
@@ -627,8 +638,22 @@
 
         // init external jquery plugin
         if (filter.plugin) {
-            $ruleInput[filter.plugin](filter.plugin_config || {});
+            $inputs[filter.plugin](filter.plugin_config || {});
         }
+    };
+
+    /**
+     * Perform action when rule's filter is changed
+     * @param $rule {jQuery} (<li> element)
+     * @param filterId {string}
+     */
+    QueryBuilder.prototype.updateRuleFilter = function($rule, filterId) {
+        var filter = filterId != '-1' ? this.getFilterById(filterId) : null;
+
+        this.createRuleOperators($rule, filter);
+        this.createRuleInput($rule, filter);
+
+        $rule.data('queryBuilder.filter', filter);
     };
 
     /**
@@ -641,16 +666,20 @@
             filter = this.getFilterById(this.getRuleFilter($rule)),
             operator = this.getOperatorByType(operatorType);
 
-        if (!operator.accept_values) {
+        if (operator.accept_values === 0) {
             $valueContainer.hide();
         }
         else {
             $valueContainer.show();
 
-            if ($valueContainer.is(':empty')) {
-                this.createRuleInput($rule, filter.id);
+            var previousOperator = $rule.data('queryBuilder.operator');
+
+            if ($valueContainer.is(':empty') || operator.accept_values != previousOperator.accept_values) {
+                this.createRuleInput($rule, filter);
             }
         }
+
+        $rule.data('queryBuilder.operator', operator);
 
         if (filter.onAfterChangeOperator) {
             filter.onAfterChangeOperator.call(this, $rule, filter, operator);
@@ -659,123 +688,135 @@
 
     /**
      * Check if a value is correct for a filter
+     * @param $rule {jQuery} (<li> element)
      * @param value {string|string[]|undefined}
      * @param filter {object}
+     * @param operator {object}
      * @return {string|true}
      */
-    QueryBuilder.prototype.validateValue = function(value, filter) {
-        var validation = filter.validation || {};
+    QueryBuilder.prototype.validateValue = function($rule, value, filter, operator) {
+        var validation = filter.validation || {},
+            val;
 
         if (validation.callback) {
-            return validation.callback.call(this, value, filter);
+            return validation.callback.call(this, value, filter, operator, $rule);
         }
 
-        switch (filter.input) {
-            case 'radio':
-                if (value === undefined) {
-                    return 'radio_empty';
-                }
-                break;
+        if (operator.accept_values == 1) {
+            val = [value];
+        }
+        else {
+            val = value;
+        }
 
-            case 'checkbox':
-                if (value.length === 0) {
-                    return 'checkbox_empty';
-                }
-                break;
-
-            case 'select':
-                if (filter.multiple) {
-                    if (value.length === 0) {
-                        return 'select_empty';
+        for (var i=0; i<operator.accept_values; i++) {
+            switch (filter.input) {
+                case 'radio':
+                    if (val[i] === undefined) {
+                        return 'radio_empty';
                     }
-                }
-                else {
-                    if (value === undefined) {
-                        return 'select_empty';
+                    break;
+
+                case 'checkbox':
+                    if (val[i].length === 0) {
+                        return 'checkbox_empty';
                     }
-                }
-                break;
+                    break;
 
-            /* falls through */
-            case 'text': default:
-                switch (filter.internalType) {
-                    case 'string':
-                        if (validation.min !== undefined) {
-                            if (value.length < validation.min) {
-                                return 'string_exceed_min_length';
-                            }
+                case 'select':
+                    if (filter.multiple) {
+                        if (val[i].length === 0) {
+                            return 'select_empty';
                         }
-                        else if (value.length === 0) {
-                            return 'string_empty';
+                    }
+                    else {
+                        if (val[i] === undefined) {
+                            return 'select_empty';
                         }
-                        if (validation.max !== undefined) {
-                            if (value.length > validation.max) {
-                                return 'string_exceed_max_length';
-                            }
-                        }
-                        if (validation.format) {
-                            if (!(validation.format.test(value))) {
-                                return 'string_invalid_format';
-                            }
-                        }
-                        break;
+                    }
+                    break;
 
-                    case 'number':
-                        if (isNaN(value)) {
-                            return 'number_nan';
-                        }
-                        if (filter.type == 'integer') {
-                            if (parseInt(value) != value) {
-                                return 'number_not_integer';
+                /* falls through */
+                case 'text': default:
+                    switch (filter.internalType) {
+                        case 'string':
+                            if (validation.min !== undefined) {
+                                if (val[i].length < validation.min) {
+                                    return 'string_exceed_min_length';
+                                }
                             }
-                        }
-                        else {
-                            if (parseFloat(value) != value) {
-                                return 'number_not_double';
+                            else if (val[i].length === 0) {
+                                return 'string_empty';
                             }
-                        }
-                        if (validation.min !== undefined) {
-                            if (value < validation.min) {
-                                return 'number_exceed_min';
+                            if (validation.max !== undefined) {
+                                if (val[i].length > validation.max) {
+                                    return 'string_exceed_max_length';
+                                }
                             }
-                        }
-                        if (validation.max !== undefined) {
-                            if (value > validation.max) {
-                                return 'number_exceed_max';
-                            }
-                        }
-                        if (validation.step) {
-                            var v = value/validation.step;
-                            if (parseInt(v) != v) {
-                                return 'number_wrong_step';
-                            }
-                        }
-                        break;
-
-                    case 'datetime':
-                        // we need MomentJS
-                        if (window.moment) {
                             if (validation.format) {
-                                var datetime = moment(value, validation.format);
-                                if (!datetime.isValid()) {
-                                    return 'datetime_invalid';
+                                if (!(validation.format.test(val[i]))) {
+                                    return 'string_invalid_format';
                                 }
-                                else {
-                                    if (validation.min) {
-                                        if (datetime < moment(validation.min, validation.format)) {
-                                            return 'datetime_exceed_min';
-                                        }
+                            }
+                            break;
+
+                        case 'number':
+                            if (isNaN(val[i])) {
+                                return 'number_nan';
+                            }
+                            if (filter.type == 'integer') {
+                                if (parseInt(val[i]) != val[i]) {
+                                    return 'number_not_integer';
+                                }
+                            }
+                            else {
+                                if (parseFloat(val[i]) != val[i]) {
+                                    return 'number_not_double';
+                                }
+                            }
+                            if (validation.min !== undefined) {
+                                if (val[i] < validation.min) {
+                                    return 'number_exceed_min';
+                                }
+                            }
+                            if (validation.max !== undefined) {
+                                if (val[i] > validation.max) {
+                                    return 'number_exceed_max';
+                                }
+                            }
+                            if (validation.step) {
+                                var v = val[i]/validation.step;
+                                if (parseInt(v) != v) {
+                                    return 'number_wrong_step';
+                                }
+                            }
+                            break;
+
+                        case 'datetime':
+                            // we need MomentJS
+                            if (window.moment) {
+                                if (validation.format) {
+                                    var datetime = moment(val[i], validation.format);
+                                    if (!datetime.isValid()) {
+                                        return 'datetime_invalid';
                                     }
-                                    if (validation.max) {
-                                        if (datetime > moment(validation.max, validation.format)) {
-                                            return 'datetime_exceed_max';
+                                    else {
+                                        if (validation.min) {
+                                            if (datetime < moment(validation.min, validation.format)) {
+                                                return 'datetime_exceed_min';
+                                            }
+                                        }
+                                        if (validation.max) {
+                                            if (datetime > moment(validation.max, validation.format)) {
+                                                return 'datetime_exceed_max';
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        break;
-                }
+                            break;
+                    }
+            }
         }
 
         return true;
@@ -798,12 +839,12 @@
     /**
      * Trigger a validation error event with custom params
      */
-    QueryBuilder.prototype.triggerValidationError = function(error, $rule, value, filter, operator) {
-        if (filter.onValidationError) {
-            filter.onValidationError.call(this, $rule, error, value, filter, operator);
+    QueryBuilder.prototype.triggerValidationError = function(error, $target, value, filter, operator) {
+        if (filter && filter.onValidationError) {
+            filter.onValidationError.call(this, $target, error, value, filter, operator);
         }
         if (this.settings.onValidationError) {
-            this.settings.onValidationError.call(this, $rule, error, value, filter, operator);
+            this.settings.onValidationError.call(this, $target, error, value, filter, operator);
         }
 
         var e = jQuery.Event('validationError.queryBuilder', {
@@ -811,7 +852,7 @@
             filter: filter,
             operator: operator,
             value: value,
-            targetRule: $rule[0],
+            targetRule: $target[0],
             builder: this
         });
 
@@ -954,10 +995,7 @@
                 continue;
             }
 
-            res.push({
-                type: this.operators[i].type,
-                label: this.lang['operator_'+this.operators[i].type] || this.operators[i].type
-            });
+            res.push(this.operators[i]);
         }
 
         // keep sort order defined for the filter
@@ -1022,44 +1060,113 @@
      * Returns rule value
      * @param $rule {jQuery} (<li> element)
      * @param filter {object} (optional - current rule filter)
+     * @param operator {object} (optional - current rule operator)
      * @return {string|string[]|undefined}
      */
-    QueryBuilder.prototype.getRuleValue = function($rule, filter) {
-        filter = filter || this.getFilterByType(this.getRulefilter($rule));
+    QueryBuilder.prototype.getRuleValue = function($rule, filter, operator) {
+        filter = filter || this.getFilterById(this.getRuleFilter($rule));
+        operator = operator || this.getOperatorByType(this.getRuleOperator($rule));
 
-        var out,
+        var out = [], tmp = [],
             $value = $rule.find('.rule-value-container');
 
-        switch (filter.input) {
-            case 'radio':
-                out = $value.find('input[name$=_value]:checked').val();
-                break;
+        for (var i=0; i<operator.accept_values; i++) {
+            var name = $rule[0].id + '_value_' + i;
 
-            case 'checkbox':
-                out = [];
-                $value.find('input[name$=_value]:checked').each(function() {
-                    out.push($(this).val());
-                });
-                break;
+            switch (filter.input) {
+                case 'radio':
+                    out.push($value.find('input[name='+ name +']:checked').val());
+                    break;
 
-            case 'select':
-                if (filter.multiple) {
-                    out = [];
-                    $value.find('select[name$=_value] option:selected').each(function() {
-                        out.push($(this).val());
+                case 'checkbox':
+                    $value.find('input[name='+ name +']:checked').each(function() {
+                        tmp.push($(this).val());
                     });
-                }
-                else {
-                    out = $value.find('select[name$=_value] option:selected').val();
-                }
-                break;
+                    out.push(tmp);
+                    break;
 
-            /* falls through */
-            case 'text': default:
-                out = $value.find('input[name$=_value]').val();
+                case 'select':
+                    if (filter.multiple) {
+                        $value.find('select[name='+ name +'] option:selected').each(function() {
+                            tmp.push($(this).val());
+                        });
+                        out.push(tmp);
+                    }
+                    else {
+                        out.push($value.find('select[name='+ name +'] option:selected').val());
+                    }
+                    break;
+
+                /* falls through */
+                case 'text': default:
+                    out.push($value.find('input[name='+ name +']').val());
+            }
+        }
+
+        if (operator.accept_values == 1) {
+            out = out[0];
         }
 
         return out;
+    };
+
+    /**
+     * Sets the value of a rule.
+     * @param $rule {jQuery} (<li> element)
+     * @param rule {object}
+     * @param filter {object}
+     * @param operator {object}
+     */
+    QueryBuilder.prototype.setRuleValue = function($rule, rule, filter, operator) {
+        filter = filter || this.getFilterById(this.getRuleFilter($rule));
+        operator = operator || this.getOperatorByType(this.getRuleOperator($rule));
+
+        var $value = $rule.find('.rule-value-container'),
+            val;
+
+        if (operator.accept_values == 1) {
+            val = [rule.value];
+        }
+        else {
+            val = rule.value;
+        }
+
+        for (var i=0; i<operator.accept_values; i++) {
+            var name = $rule[0].id +'_value_'+ i;
+
+            switch (filter.input) {
+                case 'radio':
+                    $value.find('input[name='+ name +'][value="'+ val[i] +'"]').prop('checked', true).trigger('change');
+                    break;
+
+                case 'checkbox':
+                    if (!$.isArray(val[i])) {
+                        val[i] = [val[i]];
+                    }
+                    $.each(val[i], function(i, value) {
+                        $value.find('input[name='+ name +'][value="'+ value +'"]').prop('checked', true).trigger('change');
+                    });
+                    break;
+
+                case 'select':
+                    $value.find('select[name='+ name +']').val(val[i]).trigger('change');
+                    break;
+
+                /* falls through */
+                case 'text': default:
+                    $value.find('input[name='+ name +']').val(val[i]).trigger('change');
+                    break;
+            }
+        }
+
+        if (rule.readonly) {
+            $rule.find('input, select').prop('disabled', true);
+            $rule.addClass('disabled').find('[data-delete=rule]').remove();
+
+            if (this.settings.sortable && !this.settings.readonly_behavior.sortable) {
+                $rule.find('.drag-handle').remove();
+            }
+        }
     };
 
 
@@ -1076,14 +1183,20 @@
 <dl id="'+ group_id +'" class="rules-group-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right"> \
-      <button type="button" class="btn btn-xs btn-success" data-add="rule"><i class="glyphicon glyphicon-plus"></i> '+ this.lang.add_rule +'</button> \
-      '+ (this.settings.allow_groups ? '<button type="button" class="btn btn-xs btn-success" data-add="group"><i class="glyphicon glyphicon-plus-sign"></i> '+ this.lang.add_group +'</button>' : '') +' \
-      '+ (!main ? '<button type="button" class="btn btn-xs btn-danger" data-delete="group"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_group +'</button>' : '') +' \
+      <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
+        <i class="' + this.settings.icons.add_rule + '"></i> '+ this.lang.add_rule +' \
+      </button> \
+      '+ (this.settings.allow_groups ? '<button type="button" class="btn btn-xs btn-success" data-add="group"> \
+        <i class="' + this.settings.icons.add_group + '"></i> '+ this.lang.add_group +' \
+      </button>' : '') +' \
+      '+ (!main ? '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
+        <i class="' + this.settings.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
+      </button>' : '') +' \
     </div> \
     <div class="btn-group"> \
       '+ this.getGroupConditions(group_id) +' \
     </div> \
-    '+ (this.settings.sortable && !main ? '<div class="drag-handle"><i class="glyphicon glyphicon-sort"></i></div>' : '') +' \
+    '+ (this.settings.sortable && !main ? '<div class="drag-handle"><i class="' + this.settings.icons.sort + '"></i></div>' : '') +' \
   </dt> \
   <dd class=rules-group-body> \
     <ul class=rules-list></ul> \
@@ -1106,7 +1219,10 @@
                 active = cond == this.settings.default_condition,
                 label = this.lang['condition_'+ cond.toLowerCase()] || cond;
 
-            h+= '<label class="btn btn-xs btn-primary '+ (active?'active':'') +'"><input type="radio" name="'+ group_id +'_cond" value="'+ cond +'" '+ (active?'checked':'') +'> '+ label +'</label>';
+            h+= '\
+            <label class="btn btn-xs btn-primary '+ (active?'active':'') +'"> \
+              <input type="radio" name="'+ group_id +'_cond" value="'+ cond +'" '+ (active?'checked':'') +'> '+ label +' \
+            </label>';
         }
 
         return h;
@@ -1122,10 +1238,12 @@
 <li id="'+ rule_id +'" class="rule-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <div class="rule-header"> \
     <div class="btn-group pull-right"> \
-      <button type="button" class="btn btn-xs btn-danger" data-delete="rule"><i class="glyphicon glyphicon-remove"></i> '+ this.lang.delete_rule +'</button> \
+      <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
+        <i class="' + this.settings.icons.remove_rule + '"></i> '+ this.lang.delete_rule +' \
+      </button> \
     </div> \
   </div> \
-  '+ (this.settings.sortable ? '<div class="drag-handle"><i class="glyphicon glyphicon-sort"></i></div>' : '') +' \
+  '+ (this.settings.sortable ? '<div class="drag-handle"><i class="' + this.settings.icons.sort + '"></i></div>' : '') +' \
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
@@ -1161,7 +1279,8 @@
         var h = '<select name="'+ rule_id +'_operator">';
 
         for (var i=0, l=operators.length; i<l; i++) {
-            h+= '<option value="'+ operators[i].type +'">'+ operators[i].label +'</option>';
+            var label = this.lang['operator_'+operators[i].type] || operators[i].type;
+            h+= '<option value="'+ operators[i].type +'">'+ label +'</option>';
         }
 
         h+= '</select>';
@@ -1174,37 +1293,36 @@
      * @param filter {object}
      * @return {string}
      */
-    QueryBuilder.prototype.getRuleInput = function(rule_id, filter) {
+    QueryBuilder.prototype.getRuleInput = function(rule_id, filter, value_id) {
         if (typeof filter.input == 'function') {
           var $rule = this.$el.find('#'+ rule_id);
-          return filter.input.call(this, $rule, filter);
+          return filter.input.call(this, $rule, filter, value_id);
         }
 
         var validation = filter.validation || {},
+            name = rule_id +'_value_'+ value_id,
             h = '', c;
 
         switch (filter.input) {
             case 'radio':
                 c = filter.vertical ? ' class=block' : '';
-                $.each(filter.values, function(key, val) {
-                    h+= '<label'+ c +'><input type="radio" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
+                iterateOptions(filter.values, function(key, val) {
+                    h+= '<label'+ c +'><input type="radio" name="'+ name +'" value="'+ key +'"> '+ val +'</label> ';
                 });
                 break;
 
             case 'checkbox':
                 c = filter.vertical ? ' class=block' : '';
-                $.each(filter.values, function(key, val) {
-                    h+= '<label'+ c +'><input type="checkbox" name="'+ rule_id +'_value" value="'+ key +'"> '+ val +'</label> ';
+                iterateOptions(filter.values, function(key, val) {
+                    h+= '<label'+ c +'><input type="checkbox" name="'+ name +'" value="'+ key +'"> '+ val +'</label> ';
                 });
                 break;
 
             case 'select':
-                h+= '<select name="'+ rule_id +'_value"'+ (filter.multiple ? ' multiple' : '') +'>';
-                if (filter.values) {
-                    $.each(filter.values, function(key, val) {
-                        h+= '<option value="'+ key +'"> '+ val +'</option> ';
-                    });
-                }
+                h+= '<select name="'+ name +'"'+ (filter.multiple ? ' multiple' : '') +'>';
+                iterateOptions(filter.values, function(key, val) {
+                    h+= '<option value="'+ key +'"> '+ val +'</option> ';
+                });
                 h+= '</select>';
                 break;
 
@@ -1212,7 +1330,7 @@
             case 'text': default:
                 switch (filter.internalType) {
                     case 'number':
-                        h+= '<input type="number" name="'+ rule_id +'_value"';
+                        h+= '<input type="number" name="'+ name +'"';
                         if (validation.step) h+= ' step="'+ validation.step +'"';
                         if (validation.min) h+= ' min="'+ validation.min +'"';
                         if (validation.max) h+= ' max="'+ validation.max +'"';
@@ -1222,7 +1340,7 @@
 
                     /* falls through */
                     case 'datetime': case 'text': default:
-                        h+= '<input type="text" name="'+ rule_id +'_value"';
+                        h+= '<input type="text" name="'+ name +'"';
                         if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
                         h+= '>';
                 }
@@ -1270,6 +1388,9 @@
 
     $.fn.queryBuilder.constructor = QueryBuilder;
 
+
+    // UTILITIES
+    // ===============================
     /**
      * From Highcharts library
      * -----------------------
@@ -1327,20 +1448,56 @@
         return ret;
     }
 
+    /**
+     * Utility to iterate over radio/checkbox/selection options.
+     * it accept three formats: array of values, map, array of 1-element maps
+     *
+     * @param object|array options
+     * @param callable tpl (takes key and text)
+     */
+    function iterateOptions(options, tpl) {
+        if (options) {
+            if ($.isArray(options)) {
+                $.each(options, function(index, entry) {
+                    // array of one-element maps
+                    if ($.isPlainObject(entry)) {
+                        $.each(entry, function(key, val) {
+                            tpl(key, val);
+                            return false; // break after first entry
+                        });
+                    }
+                    // array of values
+                    else {
+                        tpl(index, entry);
+                    }
+                });
+            }
+            // unordered map
+            else {
+                $.each(options, function(key, val) {
+                    tpl(key, val);
+                });
+            }
+        }
+    }
+
 }(jQuery));
 
 (function($){
 
+    // DEFAULT CONFIG
+    // ===============================
     $.fn.queryBuilder.defaults.set({
         sqlOperators: {
             equal:            '= ?',
             not_equal:        '!= ?',
-            in:               { op: 'IN(?)',     list: true },
-            not_in:           { op: 'NOT IN(?)', list: true },
+            in:               { op: 'IN(?)',     list: true, sep: ', ' },
+            not_in:           { op: 'NOT IN(?)', list: true, sep: ', ' },
             less:             '< ?',
             less_or_equal:    '<= ?',
             greater:          '> ?',
             greater_or_equal: '>= ?',
+            between:          { op: 'BETWEEN ?',   list: true, sep: ' AND ' },
             begins_with:      { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } },
             not_begins_with:  { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } },
             contains:         { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } },
@@ -1354,8 +1511,10 @@
         }
     });
 
-    $.extend($.fn.queryBuilder.constructor.prototype, {
 
+    // PUBLIC METHODS
+    // ===============================
+    $.extend($.fn.queryBuilder.constructor.prototype, {
         /**
          * Get rules as SQL query
          * @param stmt {false|string} use prepared statements - false, 'question_mark' or 'numbered'
@@ -1398,7 +1557,7 @@
                         if (sql === false) {
                             $.error('SQL operation unknown for operator '+ rule.operator);
                         }
-                        
+
                         if (ope.accept_values) {
                             if (!(rule.value instanceof Array)) {
                                 rule.value = [rule.value];
@@ -1409,7 +1568,7 @@
 
                             rule.value.forEach(function(v, i) {
                                 if (i>0) {
-                                    value+= ', ';
+                                    value+= sql.sep;
                                 }
 
                                 if (rule.type=='integer' || rule.type=='double') {
@@ -1461,7 +1620,7 @@
                 };
             }
         },
-        
+
         /**
          * Sanitize the "sql" field of an operator
          * @param sql {string|object}
@@ -1469,7 +1628,7 @@
          */
         getSqlOperator: function(type) {
             var sql = this.settings.sqlOperators[type];
-            
+
             if (sql === undefined) {
                 return false;
             }
@@ -1483,12 +1642,17 @@
             if (!sql.list) {
                 sql.list = false;
             }
+            if (sql.list && !sql.sep) {
+                sql.sep = ', ';
+            }
 
             return sql;
         }
     });
 
 
+    // UTILITIES
+    // ===============================
     /**
      * Does nothing !
      */

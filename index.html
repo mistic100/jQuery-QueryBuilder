@@ -336,19 +336,6 @@ isHome: true
 {% highlight javascript %}
 $('#builder').queryBuilder('getRules')
 {% endhighlight %}
-
-  <h4>getSQL</h4>
-  <p>Performs validation and get the rules as a valid SQL WHERE statement. See the <a href="basic-demo.html">basic demo</a> for output example. The first parameter can be:</p>
-  <ul>
-    <li><code>false</code> to output plain SQL</li>
-    <li><code>'question_mark'</code> to output prepared statement with <code>?</code> placeholders</li>
-    <li><code>'numbered'</code> to output prepared statement with numbered (<code>$1</code>, <code>$2</code>, ...) placeholders</li>
-  </ul>
-  <p>Set the second parameter to <code>false</code> to disable new lines in output.</p>
-{% highlight javascript %}
-$('#builder').queryBuilder('getSQL')
-$('#builder').queryBuilder('getSQL', false, false)
-{% endhighlight %}
   
   <h4>setRules</h4>
   <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>.</p>
@@ -396,8 +383,10 @@ $('#builder').queryBuilder('destroy')
         </tr>
         <tr>
           <td>accept_values</td>
-          <td>boolean</td>
-          <td><code>true</code> if the user can enter a value when this operator is selected.</td>
+          <td>int</td>
+          <td>The number of inputs displayed. Typical values are <code>0</code> (<code>is_null</code> &amp; similar operators),
+            <code>1</code> (most operators) and <code>2</code> (<code>between</code> operator).
+          </td>
         </tr>
         <tr>
           <td>apply_to</td>
@@ -418,7 +407,7 @@ $('#builder').queryBuilder('destroy')
     </table>
   </div>
   
-  <p>The default operators are available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L127">in the source code</a>.</p>
+  <p>The default operators are available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L129">in the source code</a>.</p>
   
   <h3 id="validation">Validation</h3>
   <p>QueryBuilder integrates a configurable validation system triggered when <code>getRules</code> and <code>getSQL</code> methods are called. The default validator checks for emptyness and can be extended with format check an bounds.<br>
@@ -483,6 +472,8 @@ $('#builder').queryBuilder('destroy')
             <ul>
               <li><code>value</code></li>
               <li><code>filter</code></li>
+              <li><code>operator</code></li>
+              <li><code>$rule</code>, the jQuery <code>&lt;li&gt;</code> element of the rule</li>
             </ul>
           </td>
         </tr>
@@ -519,9 +510,9 @@ $('#builder').queryBuilder('destroy')
   </div>
   
   <h3 id="lang">Translation</h3>
-  <p>Some default translation files are available in the <a href="https://github.com/mistic100/jQuery-QueryBuilder/tree/master/dist/i18n" target="_blank">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<br>
+  <p>Some default translation files are available in the <a href="https://github.com/mistic100/jQuery-QueryBuilder/tree/master/dist/i18n">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<br>
   Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators and conditions.<br>
-  Default strings <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L96">in the source code</a>.</p>
+  Default strings <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L97">in the source code</a>.</p>
 
   <h3 id="icons">Icons</h3>
   <p>The <code>icons</code> option provides a way of using alternate icons sets. Available attributes:</p>
@@ -529,10 +520,9 @@ $('#builder').queryBuilder('destroy')
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
-          <th style="width: 130px;">Name</th>
+          <th style="width: 150px;">Name</th>
           <th style="width: 100px;">type</th>
-          <th style="width: 300px;">default</th>
-          <th>description</th>
+          <th>default</th>
         </tr>
       </thead>
       <tbody>
@@ -540,36 +530,102 @@ $('#builder').queryBuilder('destroy')
           <td>add_group</td>
           <td>string</td>
           <td>'glyphicon glyphicon-plus-sign'</td>
-          <td>Icon used for the group add button</td>
         </tr>
         <tr>
           <td>add_rule</td>
           <td>string</td>
           <td>'glyphicon glyphicon-plus'</td>
-          <td>Icon used for the rule add button</td>
         </tr>
         <tr>
           <td>remove_group</td>
           <td>string</td>
           <td>'glyphicon glyphicon-remove'</td>
-          <td>Icon used for the group delete button</td>
         </tr>
         <tr>
           <td>remove_rule</td>
           <td>string</td>
           <td>'glyphicon glyphicon-remove'</td>
-          <td>Icon used for the rule delete button</td>
         </tr>
         <tr>
           <td>sort</td>
           <td>string</td>
           <td>'glyphicon glyphicon-sort'</td>
-          <td>Icon used for sort</td>
         </tr>
       </tbody>
     </table>
   </div>
 
+</section>
+
+<section class="bs-docs-section">
+  <h1 id="modules" class="page-header">
+    Modules
+  </h1>
+  
+  <h3 id="sql">SQL export</h3>
+  <p>The SQL module allows to export rules as a SQL WHERE statement.</p>
+  
+  <h4>Methods</h4>
+  
+  <h5>getSQL</h5>
+  <p>Performs validation and returns the rules as a valid SQL WHERE statement. See the <a href="basic-demo.html">basic demo</a> for output example. The first parameter can be:</p>
+  <ul>
+    <li><code>false</code> to output plain SQL</li>
+    <li><code>'question_mark'</code> to output prepared statement with <code>?</code> placeholders</li>
+    <li><code>'numbered'</code> to output prepared statement with numbered (<code>$1</code>, <code>$2</code>, ...) placeholders</li>
+  </ul>
+  <p>Set the second parameter to <code>false</code> to disable new lines in output.</p>
+{% highlight javascript %}
+$('#builder').queryBuilder('getSQL')
+$('#builder').queryBuilder('getSQL', false, false)
+{% endhighlight %}
+
+  <h5>Operators</h5>
+  <p>The SQL module requires special configuration of operators to convert rules to a valid SQL query.
+    This configuration is stored in <code>sqlOperators</code> object, the keys are the operators types and the values are objects:</p>
+    
+  
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th style="width: 150px;">Name</th>
+          <th style="width: 100px;">type</th>
+          <th style="width: 100px;">default</th>
+          <th>description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>op</td>
+          <td>string</td>
+          <td><span class="label label-danger">required</span></td>
+          <td>SQL operator used for this QueryBuilder operator, <code>?</code> is a placeholder which will be replaced by the value</td>
+        </tr>
+        <tr>
+          <td>list</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td><code>true</code> if the operator accepts multiple values (eg: <code>IN</code> operator)</td>
+        </tr>
+        <tr>
+          <td>sep</td>
+          <td>string</td>
+          <td>', '</td>
+          <td>Separator between each value if <code>list</code> is true</td>
+        </tr>
+        <tr>
+          <td>fn</td>
+          <td>function</td>
+          <td><i>passthru</i></td>
+          <td>Function called on each value after escaping</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <p>The default operators configuration is available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder-sql-support.js#L12">in the source code</a>.</p>
+  
 </section>
 
 <link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.min.css" rel="stylesheet">

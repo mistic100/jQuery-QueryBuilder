@@ -22,6 +22,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
   "operator_less_or_equal": "inférieur ou égal",
   "operator_greater": "supérieur",
   "operator_greater_or_equal": "supérieur ou égal",
+  "operator_between": "entre",
   "operator_begins_with": "commence par",
   "operator_not_begins_with": "ne commence pas par",
   "operator_contains": "contient",
