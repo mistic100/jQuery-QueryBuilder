@@ -891,6 +891,7 @@
 
         var placeholder, src, isHandle = false;
 
+        // only init drag from drag handle
         this.$el.on('mousedown', '.drag-handle', function(e) {
             isHandle = true;
         });
@@ -898,6 +899,7 @@
             isHandle = false;
         });
 
+        // dragstart: create placeholder and hide current element
         this.$el.on('dragstart', '[draggable]', function(e) {
             e.stopPropagation();
 
@@ -915,7 +917,7 @@
 
                 // Chrome glitch (helper invisible if hidden immediately)
                 setTimeout(function() {
-                  src.hide();
+                    src.hide();
                 }, 0);
             }
             else {
@@ -923,18 +925,29 @@
             }
         });
 
+        // dragenter: move the placeholder
         this.$el.on('dragenter', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
             var target = $(e.target), parent;
 
+            // on rule
             parent = target.closest('.rule-container');
             if (parent.length) {
                 placeholder.detach().insertAfter(parent);
                 return;
             }
 
+            // on group header
+            parent = target.closest('.rules-group-header');
+            if (parent.length) {
+                parent = target.closest('.rules-group-container');
+                placeholder.detach().prependTo(parent.find('.rules-list').eq(0));
+                return;
+            }
+
+            // on group
             parent = target.closest('.rules-group-container');
             if (parent.length) {
                 placeholder.detach().appendTo(parent.find('.rules-list').eq(0));
@@ -942,23 +955,35 @@
             }
         });
 
+        // dragover: prevent glitches
         this.$el.on('dragover', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
         });
 
+        // drop: move current element
         this.$el.on('drop', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
             var target = $(e.target), parent;
 
+            // on rule
             parent = target.closest('.rule-container');
             if (parent.length) {
                 src.detach().insertAfter(parent);
                 return;
             }
 
+            // on group header
+            parent = target.closest('.rules-group-header');
+            if (parent.length) {
+                parent = target.closest('.rules-group-container');
+                src.detach().prependTo(parent.find('.rules-list').eq(0));
+                return;
+            }
+
+            // on group
             parent = target.closest('.rules-group-container');
             if (parent.length) {
                 src.detach().appendTo(parent.find('.rules-list').eq(0));
@@ -966,6 +991,7 @@
             }
         });
 
+        // dragend: show current element and delete placeholder
         this.$el.on('dragend', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
