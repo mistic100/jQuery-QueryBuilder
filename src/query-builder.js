@@ -286,7 +286,7 @@
      * @return {object}
      */
     QueryBuilder.prototype.getRules = function() {
-        this.markRuleAsError(this.$el.find('.rule-container'), false);
+        this.clearErrorMarks();
 
         var $group = this.$el.find('>.rules-group-container'),
             that = this;
@@ -306,7 +306,9 @@
                     var filterId = that.getRuleFilter($rule);
 
                     if (filterId == '-1') {
-                        continue;
+                        that.markRuleAsError($rule, true);
+                        that.triggerValidationError('no_filter', $rule, null, null, null);
+                        return {};
                     }
 
                     var filter = that.getFilterById(filterId),
@@ -350,8 +352,8 @@
             }
 
             if (out.rules.length === 0) {
+                that.markRuleAsError($group, true);
                 that.triggerValidationError('empty_group', $group, null, null, null);
-
                 return {};
             }
 
@@ -846,17 +848,24 @@
     };
 
     /**
-     * Add CSS for rule error
-     * @param $rule {jQuery} (<li> element)
+     * Add 'has-error' class for rule/group error
+     * @param $element {jQuery} (<li> or <dl> element)
      * @param status {bool}
      */
-    QueryBuilder.prototype.markRuleAsError = function($rule, status) {
+    QueryBuilder.prototype.markRuleAsError = function($element, status) {
         if (status) {
-            $rule.addClass('has-error');
+            $element.addClass('has-error');
         }
         else {
-            $rule.removeClass('has-error');
+            $element.removeClass('has-error');
         }
+    };
+
+    /**
+     * Remove 'has-error' from everythin
+     */
+    QueryBuilder.prototype.clearErrorMarks = function() {
+      this.$el.find('.has-error').removeClass('has-error');
     };
 
     /**

@@ -28,38 +28,40 @@
     .rules-group-header input[name$=_cond] {
       display:none;
     }
+  .rules-list {
+    list-style:none;
+    padding:0 0 0 20px;
+    margin:0;
+  }
 
 /* RULES */
-.rules-list {
-  list-style:none;
-  padding:0 0 0 20px;
-  margin:0;
+.rule-container  {}
+  .rule-container>div:not(.rule-header) {
+    display:inline-block;
+    margin:0 5px 0 0;
+    vertical-align:top;
+  }
+  .rule-value-container:not(:empty) {
+    border-left:1px solid #ddd;
+    padding-left:5px;
+  }
+  .rule-value-container label {
+    margin-bottom:0;
+  }
+  .rule-value-container label.block {
+    display:block;
+  }
+  .rule-container select,
+  .rule-container input[type=text],
+  .rule-container input[type=number] {
+    padding:1px;
+  }
+
+.rules-group-container.has-error,
+.rule-container.has-error {
+  background:#fdd;
+  border-color:#f99;
 }
-  .rule-container  {}
-    .rule-container.has-error {
-      background:#fdd;
-      border-color:#f99;
-    }
-    .rule-container>div:not(.rule-header) {
-      display:inline-block;
-      margin:0 5px 0 0;
-      vertical-align:top;
-    }
-    .rule-value-container:not(:empty) {
-      border-left:1px solid #ddd;
-      padding-left:5px;
-    }
-    .rule-value-container label {
-      margin-bottom:0;
-    }
-    .rule-value-container label.block {
-      display:block;
-    }
-    .rule-container select,
-    .rule-container input[type=text],
-    .rule-container input[type=number] {
-      padding:1px;
-    }
 
 /* TICKS */
 .rules-list>* {
