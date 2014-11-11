@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 1.3.0-SNAPSHOT
+ * jQuery QueryBuilder 1.3.0
  * Copyright 2014 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -39,7 +39,12 @@
         this.$el = $el;
 
         this.settings = merge(QueryBuilder.DEFAULTS, options);
-        this.status = { group_id: 0, rule_id: 0, generatedId: false };
+        this.status = {
+            group_id: 0,
+            rule_id: 0,
+            generatedId: false,
+            has_optgroup: false
+        };
 
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
@@ -280,7 +285,7 @@
      * @return {object}
      */
     QueryBuilder.prototype.getRules = function() {
-        this.markRuleAsError(this.$el.find('.rule-container'), false);
+        this.clearErrorMarks();
 
         var $group = this.$el.find('>.rules-group-container'),
             that = this;
@@ -300,7 +305,9 @@
                     var filterId = that.getRuleFilter($rule);
 
                     if (filterId == '-1') {
-                        continue;
+                        that.markRuleAsError($rule, true);
+                        that.triggerValidationError('no_filter', $rule, null, null, null);
+                        return {};
                     }
 
                     var filter = that.getFilterById(filterId),
@@ -344,8 +351,8 @@
             }
 
             if (out.rules.length === 0) {
+                that.markRuleAsError($group, true);
                 that.triggerValidationError('empty_group', $group, null, null, null);
-
                 return {};
             }
 
@@ -462,6 +469,11 @@
                 filter.label = filter.field;
             }
 
+            that.status.has_optgroup|= !!filter.optgroup;
+            if (!filter.optgroup) {
+                filter.optgroup = null;
+            }
+
             switch (filter.type) {
                 case 'string':
                     filter.internalType = 'string';
@@ -482,6 +494,18 @@
                     break;
             }
         });
+
+        if (this.status.has_optgroup) {
+            this.filters.sort(function(a, b) {
+                if (a.optgroup === null && b.optgroup === null) {
+                    return 0;
+                }
+                if (a.optgroup === null) {
+                    return 1;
+                }
+                return a.optgroup.localeCompare(b.optgroup);
+            });
+        }
     };
 
     /**
@@ -823,17 +847,24 @@
     };
 
     /**
-     * Add CSS for rule error
-     * @param $rule {jQuery} (<li> element)
+     * Add 'has-error' class for rule/group error
+     * @param $element {jQuery} (<li> or <dl> element)
      * @param status {bool}
      */
-    QueryBuilder.prototype.markRuleAsError = function($rule, status) {
+    QueryBuilder.prototype.markRuleAsError = function($element, status) {
         if (status) {
-            $rule.addClass('has-error');
+            $element.addClass('has-error');
         }
         else {
-            $rule.removeClass('has-error');
+            $element.removeClass('has-error');
         }
+    };
+
+    /**
+     * Remove 'has-error' from everythin
+     */
+    QueryBuilder.prototype.clearErrorMarks = function() {
+      this.$el.find('.has-error').removeClass('has-error');
     };
 
     /**
@@ -868,6 +899,7 @@
 
         var placeholder, src, isHandle = false;
 
+        // only init drag from drag handle
         this.$el.on('mousedown', '.drag-handle', function(e) {
             isHandle = true;
         });
@@ -875,6 +907,7 @@
             isHandle = false;
         });
 
+        // dragstart: create placeholder and hide current element
         this.$el.on('dragstart', '[draggable]', function(e) {
             e.stopPropagation();
 
@@ -892,7 +925,7 @@
 
                 // Chrome glitch (helper invisible if hidden immediately)
                 setTimeout(function() {
-                  src.hide();
+                    src.hide();
                 }, 0);
             }
             else {
@@ -900,18 +933,29 @@
             }
         });
 
+        // dragenter: move the placeholder
         this.$el.on('dragenter', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
             var target = $(e.target), parent;
 
+            // on rule
             parent = target.closest('.rule-container');
             if (parent.length) {
                 placeholder.detach().insertAfter(parent);
                 return;
             }
 
+            // on group header
+            parent = target.closest('.rules-group-header');
+            if (parent.length) {
+                parent = target.closest('.rules-group-container');
+                placeholder.detach().prependTo(parent.find('.rules-list').eq(0));
+                return;
+            }
+
+            // on group
             parent = target.closest('.rules-group-container');
             if (parent.length) {
                 placeholder.detach().appendTo(parent.find('.rules-list').eq(0));
@@ -919,23 +963,35 @@
             }
         });
 
+        // dragover: prevent glitches
         this.$el.on('dragover', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
         });
 
+        // drop: move current element
         this.$el.on('drop', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
             var target = $(e.target), parent;
 
+            // on rule
             parent = target.closest('.rule-container');
             if (parent.length) {
                 src.detach().insertAfter(parent);
                 return;
             }
 
+            // on group header
+            parent = target.closest('.rules-group-header');
+            if (parent.length) {
+                parent = target.closest('.rules-group-container');
+                src.detach().prependTo(parent.find('.rules-list').eq(0));
+                return;
+            }
+
+            // on group
             parent = target.closest('.rules-group-container');
             if (parent.length) {
                 src.detach().appendTo(parent.find('.rules-list').eq(0));
@@ -943,6 +999,7 @@
             }
         });
 
+        // dragend: show current element and delete placeholder
         this.$el.on('dragend', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -1258,13 +1315,22 @@
      * @return {string}
      */
     QueryBuilder.prototype.getRuleFilterSelect = function(rule_id) {
+        var optgroup = null;
+
         var h = '<select name="'+ rule_id +'_filter">';
         h+= '<option value="-1">'+ this.lang.filter_select_placeholder +'</option>';
 
         $.each(this.filters, function(i, filter) {
+            if (optgroup != filter.optgroup) {
+                if (optgroup !== null) h+= '</optgroup>';
+                optgroup = filter.optgroup;
+                if (optgroup !== null) h+= '<optgroup label="'+ optgroup +'">';
+            }
+
             h+= '<option value="'+ filter.id +'">'+ filter.label +'</option>';
         });
 
+        if (optgroup !== null) h+= '</optgroup>';
         h+= '</select>';
         return h;
     };

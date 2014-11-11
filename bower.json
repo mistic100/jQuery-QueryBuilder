@@ -1,6 +1,6 @@
 {
   "name": "jQuery-QueryBuilder",
-  "version": "1.3.0-SNAPSHOT",
+  "version": "1.3.0",
   "authors": [{
     "name": "Damien \"Mistic\" Sorel",
     "homepage": "http://www.strangeplanet.fr"
