@@ -55,7 +55,8 @@ $('#builder').queryBuilder({
   {
     id: 'name',
     label: 'Name',
-    type: 'string'
+    type: 'string',
+    optgroup: 'core'
   },
   /*
    * select
@@ -65,6 +66,7 @@ $('#builder').queryBuilder({
     label: 'Category',
     type: 'integer',
     input: 'checkbox',
+    optgroup: 'core',
     values: {
       1: 'Books',
       2: 'Movies',
@@ -83,6 +85,7 @@ $('#builder').queryBuilder({
     label: 'In stock',
     type: 'integer',
     input: 'radio',
+    optgroup: 'plugin',
     values: {
       1: 'Yes',
       0: 'No'
@@ -131,6 +134,7 @@ $('#builder').queryBuilder({
     id: 'id',
     label: 'Identifier',
     type: 'string',
+    optgroup: 'plugin',
     placeholder: '____-____-____',
     operators: ['equal', 'not_equal'],
     validation: {

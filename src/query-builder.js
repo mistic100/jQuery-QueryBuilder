@@ -40,7 +40,12 @@
         this.$el = $el;
 
         this.settings = merge(QueryBuilder.DEFAULTS, options);
-        this.status = { group_id: 0, rule_id: 0, generatedId: false };
+        this.status = {
+            group_id: 0,
+            rule_id: 0,
+            generatedId: false,
+            has_optgroup: false
+        };
 
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
@@ -463,6 +468,11 @@
                 filter.label = filter.field;
             }
 
+            that.status.has_optgroup|= !!filter.optgroup;
+            if (!filter.optgroup) {
+                filter.optgroup = null;
+            }
+
             switch (filter.type) {
                 case 'string':
                     filter.internalType = 'string';
@@ -483,6 +493,18 @@
                     break;
             }
         });
+
+        if (this.status.has_optgroup) {
+            this.filters.sort(function(a, b) {
+                if (a.optgroup === null && b.optgroup === null) {
+                    return 0;
+                }
+                if (a.optgroup === null) {
+                    return 1;
+                }
+                return a.optgroup.localeCompare(b.optgroup);
+            });
+        }
     };
 
     /**
@@ -1259,13 +1281,22 @@
      * @return {string}
      */
     QueryBuilder.prototype.getRuleFilterSelect = function(rule_id) {
+        var optgroup = null;
+
         var h = '<select name="'+ rule_id +'_filter">';
         h+= '<option value="-1">'+ this.lang.filter_select_placeholder +'</option>';
 
         $.each(this.filters, function(i, filter) {
+            if (optgroup != filter.optgroup) {
+                if (optgroup !== null) h+= '</optgroup>';
+                optgroup = filter.optgroup;
+                if (optgroup !== null) h+= '<optgroup label="'+ optgroup +'">';
+            }
+
             h+= '<option value="'+ filter.id +'">'+ filter.label +'</option>';
         });
 
+        if (optgroup !== null) h+= '</optgroup>';
         h+= '</select>';
         return h;
     };
