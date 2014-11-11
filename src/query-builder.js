@@ -504,6 +504,9 @@
                 if (a.optgroup === null) {
                     return 1;
                 }
+                if (b.optgroup === null) {
+                    return -1;
+                }
                 return a.optgroup.localeCompare(b.optgroup);
             });
         }
