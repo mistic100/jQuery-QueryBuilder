@@ -14,22 +14,24 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "filter_select_placeholder": "------",
 
-  "operator_equal": "lig med",
-  "operator_not_equal": "ikke lige med",
-  "operator_in": "i",
-  "operator_not_in": "ikke i",
-  "operator_less": "mindre",
-  "operator_less_or_equal": "mindre eller lig med",
-  "operator_greater": "større",
-  "operator_greater_or_equal": "større eller lig med",
-  "operator_begins_with": "begynder med",
-  "operator_not_begins_with": "begynder ikke med",
-  "operator_contains": "indeholder",
-  "operator_not_contains": "indeholder ikke",
-  "operator_ends_with": "slutter med",
-  "operator_not_ends_with": "slutter ikke med",
-  "operator_is_empty": "er tom",
-  "operator_is_not_empty": "er ikke tom",
-  "operator_is_null": "er null",
-  "operator_is_not_null": "er ikke null"
+  operators: {
+    "equal": "lig med",
+    "not_equal": "ikke lige med",
+    "in": "i",
+    "not_in": "ikke i",
+    "less": "mindre",
+    "less_or_equal": "mindre eller lig med",
+    "greater": "større",
+    "greater_or_equal": "større eller lig med",
+    "begins_with": "begynder med",
+    "not_begins_with": "begynder ikke med",
+    "contains": "indeholder",
+    "not_contains": "indeholder ikke",
+    "ends_with": "slutter med",
+    "not_ends_with": "slutter ikke med",
+    "is_empty": "er tom",
+    "is_not_empty": "er ikke tom",
+    "is_null": "er null",
+    "is_not_null": "er ikke null"
+  }
 }});

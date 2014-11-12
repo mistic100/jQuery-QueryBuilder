@@ -49,6 +49,7 @@
 
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
+        this.icons = this.settings.icons;
         this.operators = this.settings.operators;
         this.template = this.settings.template;
 
@@ -84,6 +85,7 @@
         onAfterAddGroup: null,
         onAfterAddRule: null,
 
+        display_errors: true,
         allow_groups: true,
         sortable: false,
         filters: [],
@@ -110,25 +112,48 @@
 
             filter_select_placeholder: '------',
 
-            operator_equal: 'equal',
-            operator_not_equal: 'not equal',
-            operator_in: 'in',
-            operator_not_in: 'not in',
-            operator_less: 'less',
-            operator_less_or_equal: 'less or equal',
-            operator_greater: 'greater',
-            operator_greater_or_equal: 'greater or equal',
-            operator_between: 'between',
-            operator_begins_with: 'begins with',
-            operator_not_begins_with: 'doesn\'t begin with',
-            operator_contains: 'contains',
-            operator_not_contains: 'doesn\'t contain',
-            operator_ends_with: 'ends with',
-            operator_not_ends_with: 'doesn\'t end with',
-            operator_is_empty: 'is empty',
-            operator_is_not_empty: 'is not empty',
-            operator_is_null: 'is null',
-            operator_is_not_null: 'is not null'
+            operators : {
+                "equal": "equal",
+                "not_equal": "not equal",
+                "in": "in",
+                "not_in": "not in",
+                "less": "less",
+                "less_or_equal": "less or equal",
+                "greater": "greater",
+                "greater_or_equal": "greater or equal",
+                "between": "between",
+                "begins_with": "begins with",
+                "not_begins_with": "doesn't begin with",
+                "contains": "contains",
+                "not_contains": "doesn't contain",
+                "ends_with": "ends with",
+                "not_ends_with": "doesn't end with",
+                "is_empty": "is empty",
+                "is_not_empty": "is not empty",
+                "is_null": "is null",
+                "is_not_null": "is not null"
+            },
+
+            errors: {
+                "no_filter": "No filter selected",
+                "empty_group": "The group is empty",
+                "radio_empty": "No value selected",
+                "checkbox_empty": "No value selected",
+                "select_empty": "No value selected",
+                "string_empty": "Empty value",
+                "string_exceed_min_length": "Must contain at least {0} characters",
+                "string_exceed_max_length": "Must not contain more than {0} characters",
+                "string_invalid_format": "Invalid format ({0})",
+                "number_nan": "Not a number",
+                "number_not_integer": "Not an integer",
+                "number_not_double": "Not a real number",
+                "number_exceed_min": "Must be greater than {0}",
+                "number_exceed_max": "Must be lower than {0}",
+                "number_wrong_step": "Must be a multiple of {0}",
+                "datetime_invalid": "Invalid date format ({0})",
+                "datetime_exceed_min": "Must be after {0}",
+                "datetime_exceed_max": "Must be before {0}"
+            }
         },
 
         operators: [
@@ -158,7 +183,8 @@
             add_rule: 'glyphicon glyphicon-plus',
             remove_group: 'glyphicon glyphicon-remove',
             remove_rule: 'glyphicon glyphicon-remove',
-            sort: 'glyphicon glyphicon-sort'
+            sort: 'glyphicon glyphicon-sort',
+            error: 'glyphicon glyphicon-warning-sign'
         }
     };
 
@@ -286,7 +312,7 @@
      * @return {object}
      */
     QueryBuilder.prototype.getRules = function() {
-        this.clearErrorMarks();
+        this.clearErrors();
 
         var $group = this.$el.find('>.rules-group-container'),
             that = this;
@@ -306,8 +332,7 @@
                     var filterId = that.getRuleFilter($rule);
 
                     if (filterId == '-1') {
-                        that.markRuleAsError($rule, true);
-                        that.triggerValidationError('no_filter', $rule, null, null, null);
+                        that.triggerValidationError(['no_filter'], $rule, null, null, null);
                         return {};
                     }
 
@@ -323,7 +348,6 @@
 
                         var valid = that.validateValue($rule, value, filter, operator);
                         if (valid !== true) {
-                            that.markRuleAsError($rule, true);
                             that.triggerValidationError(valid, $rule, value, filter, operator);
                             return {};
                         }
@@ -352,8 +376,7 @@
             }
 
             if (out.rules.length === 0) {
-                that.markRuleAsError($group, true);
-                that.triggerValidationError('empty_group', $group, null, null, null);
+                that.triggerValidationError(['empty_group'], $group, null, null, null);
                 return {};
             }
 
@@ -720,7 +743,7 @@
      * @param value {string|string[]|undefined}
      * @param filter {object}
      * @param operator {object}
-     * @return {string|true}
+     * @return {array|true}
      */
     QueryBuilder.prototype.validateValue = function($rule, value, filter, operator) {
         var validation = filter.validation || {},
@@ -741,25 +764,25 @@
             switch (filter.input) {
                 case 'radio':
                     if (val[i] === undefined) {
-                        return 'radio_empty';
+                        return ['radio_empty'];
                     }
                     break;
 
                 case 'checkbox':
                     if (val[i].length === 0) {
-                        return 'checkbox_empty';
+                        return ['checkbox_empty'];
                     }
                     break;
 
                 case 'select':
                     if (filter.multiple) {
                         if (val[i].length === 0) {
-                            return 'select_empty';
+                            return ['select_empty'];
                         }
                     }
                     else {
                         if (val[i] === undefined) {
-                            return 'select_empty';
+                            return ['select_empty'];
                         }
                     }
                     break;
@@ -770,74 +793,72 @@
                         case 'string':
                             if (validation.min !== undefined) {
                                 if (val[i].length < validation.min) {
-                                    return 'string_exceed_min_length';
+                                    return ['string_exceed_min_length', validation.min];
                                 }
                             }
                             else if (val[i].length === 0) {
-                                return 'string_empty';
+                                return ['string_empty'];
                             }
                             if (validation.max !== undefined) {
                                 if (val[i].length > validation.max) {
-                                    return 'string_exceed_max_length';
+                                    return ['string_exceed_max_length', validation.max];
                                 }
                             }
                             if (validation.format) {
                                 if (!(validation.format.test(val[i]))) {
-                                    return 'string_invalid_format';
+                                    return ['string_invalid_format', validation.format];
                                 }
                             }
                             break;
 
                         case 'number':
                             if (isNaN(val[i])) {
-                                return 'number_nan';
+                                return ['number_nan'];
                             }
                             if (filter.type == 'integer') {
                                 if (parseInt(val[i]) != val[i]) {
-                                    return 'number_not_integer';
+                                    return ['number_not_integer'];
                                 }
                             }
                             else {
                                 if (parseFloat(val[i]) != val[i]) {
-                                    return 'number_not_double';
+                                    return ['number_not_double'];
                                 }
                             }
                             if (validation.min !== undefined) {
                                 if (val[i] < validation.min) {
-                                    return 'number_exceed_min';
+                                    return ['number_exceed_min', validation.min];
                                 }
                             }
                             if (validation.max !== undefined) {
                                 if (val[i] > validation.max) {
-                                    return 'number_exceed_max';
+                                    return ['number_exceed_max', validation.max];
                                 }
                             }
                             if (validation.step) {
                                 var v = val[i]/validation.step;
                                 if (parseInt(v) != v) {
-                                    return 'number_wrong_step';
+                                    return ['number_wrong_step', validation.step];
                                 }
                             }
                             break;
 
                         case 'datetime':
                             // we need MomentJS
-                            if (window.moment) {
-                                if (validation.format) {
-                                    var datetime = moment(val[i], validation.format);
-                                    if (!datetime.isValid()) {
-                                        return 'datetime_invalid';
-                                    }
-                                    else {
-                                        if (validation.min) {
-                                            if (datetime < moment(validation.min, validation.format)) {
-                                                return 'datetime_exceed_min';
-                                            }
+                            if (window.moment && validation.format) {
+                                var datetime = moment(val[i], validation.format);
+                                if (!datetime.isValid()) {
+                                    return ['datetime_invalid'];
+                                }
+                                else {
+                                    if (validation.min) {
+                                        if (datetime < moment(validation.min, validation.format)) {
+                                            return ['datetime_exceed_min', validation.min];
                                         }
-                                        if (validation.max) {
-                                            if (datetime > moment(validation.max, validation.format)) {
-                                                return 'datetime_exceed_max';
-                                            }
+                                    }
+                                    if (validation.max) {
+                                        if (datetime > moment(validation.max, validation.format)) {
+                                            return ['datetime_exceed_max', validation.max];
                                         }
                                     }
                                 }
@@ -851,28 +872,19 @@
     };
 
     /**
-     * Add 'has-error' class for rule/group error
-     * @param $element {jQuery} (<li> or <dl> element)
-     * @param status {bool}
+     * Remove 'has-error' from everything
      */
-    QueryBuilder.prototype.markRuleAsError = function($element, status) {
-        if (status) {
-            $element.addClass('has-error');
-        }
-        else {
-            $element.removeClass('has-error');
-        }
-    };
-
-    /**
-     * Remove 'has-error' from everythin
-     */
-    QueryBuilder.prototype.clearErrorMarks = function() {
+    QueryBuilder.prototype.clearErrors = function() {
       this.$el.find('.has-error').removeClass('has-error');
     };
 
     /**
      * Trigger a validation error event with custom params
+     * @param error {array}
+     * @param $target {jQuery}
+     * @param value {mixed}
+     * @param filter {object}
+     * @param operator {object}
      */
     QueryBuilder.prototype.triggerValidationError = function(error, $target, value, filter, operator) {
         if (filter && filter.onValidationError) {
@@ -892,6 +904,17 @@
         });
 
         this.$el.trigger(e);
+
+        if (this.settings.display_errors && !e.isDefaultPrevented()) {
+            error[0] = this.lang.errors[error[0]];
+            $target.addClass('has-error');
+            var $error = $target.find('.error-container').eq(0);
+            $error.attr('title', fmt.apply(null, error));
+
+            if ($.fn.tooltip) {
+                $error.tooltip('hide').tooltip('fixTitle');
+            }
+        }
     };
 
     /**
@@ -1245,19 +1268,20 @@
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right"> \
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
-        <i class="' + this.settings.icons.add_rule + '"></i> '+ this.lang.add_rule +' \
+        <i class="' + this.icons.add_rule + '"></i> '+ this.lang.add_rule +' \
       </button> \
       '+ (this.settings.allow_groups ? '<button type="button" class="btn btn-xs btn-success" data-add="group"> \
-        <i class="' + this.settings.icons.add_group + '"></i> '+ this.lang.add_group +' \
+        <i class="' + this.icons.add_group + '"></i> '+ this.lang.add_group +' \
       </button>' : '') +' \
       '+ (!main ? '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
-        <i class="' + this.settings.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
+        <i class="' + this.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
       </button>' : '') +' \
     </div> \
     <div class="btn-group"> \
       '+ this.getGroupConditions(group_id) +' \
     </div> \
-    '+ (this.settings.sortable && !main ? '<div class="drag-handle"><i class="' + this.settings.icons.sort + '"></i></div>' : '') +' \
+    '+ (this.settings.sortable && !main ? '<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>' : '') +' \
+    '+ (this.settings.display_errors ? '<div class="error-container" data-toggle="tooltip" data-placement="right"><i class="' + this.icons.error + '"></i></div>' : '') +'\
   </dt> \
   <dd class=rules-group-body> \
     <ul class=rules-list></ul> \
@@ -1300,11 +1324,12 @@
   <div class="rule-header"> \
     <div class="btn-group pull-right"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
-        <i class="' + this.settings.icons.remove_rule + '"></i> '+ this.lang.delete_rule +' \
+        <i class="' + this.icons.remove_rule + '"></i> '+ this.lang.delete_rule +' \
       </button> \
     </div> \
   </div> \
-  '+ (this.settings.sortable ? '<div class="drag-handle"><i class="' + this.settings.icons.sort + '"></i></div>' : '') +' \
+  '+ (this.settings.sortable ? '<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>' : '') +' \
+  '+ (this.settings.display_errors ? '<div class="error-container" data-toggle="tooltip" data-placement="right"><i class="' + this.icons.error + '"></i></div>' : '') +'\
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
@@ -1349,7 +1374,7 @@
         var h = '<select name="'+ rule_id +'_operator">';
 
         for (var i=0, l=operators.length; i<l; i++) {
-            var label = this.lang['operator_'+operators[i].type] || operators[i].type;
+            var label = this.lang.operators[operators[i].type] || operators[i].type;
             h+= '<option value="'+ operators[i].type +'">'+ label +'</option>';
         }
 
@@ -1522,8 +1547,8 @@
      * Utility to iterate over radio/checkbox/selection options.
      * it accept three formats: array of values, map, array of 1-element maps
      *
-     * @param object|array options
-     * @param callable tpl (takes key and text)
+     * @param options {object|array}
+     * @param tpl {callable} (takes key and text)
      */
     function iterateOptions(options, tpl) {
         if (options) {
@@ -1549,6 +1574,20 @@
                 });
             }
         }
+    }
+
+    /**
+     * Replaces {0}, {1}, ... in a string
+     * @param str {string}
+     * @param args,... {string|int|float}
+     * @return {string}
+     */
+    function fmt(str, args) {
+        args = Array.prototype.slice.call(arguments);
+
+        return str.replace(/{([0-9]+)}/g, function(m, i) {
+            return args[parseInt(i)+1];
+        });
     }
 
 }(jQuery));
