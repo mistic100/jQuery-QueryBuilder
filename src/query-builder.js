@@ -518,21 +518,6 @@
                     break;
             }
         });
-
-        if (this.status.has_optgroup) {
-            this.filters.sort(function(a, b) {
-                if (a.optgroup === null && b.optgroup === null) {
-                    return 0;
-                }
-                if (a.optgroup === null) {
-                    return 1;
-                }
-                if (b.optgroup === null) {
-                    return -1;
-                }
-                return a.optgroup.localeCompare(b.optgroup);
-            });
-        }
     };
 
     /**
@@ -1343,26 +1328,59 @@
      * @param rule_id {string}
      * @return {string}
      */
-    QueryBuilder.prototype.getRuleFilterSelect = function(rule_id) {
-        var optgroup = null;
+	QueryBuilder.prototype.getRuleFilterSelect = function(rule_id) {
+		var final_order_key = [];
+		var final_order_values = [];
 
-        var h = '<select name="'+ rule_id +'_filter">';
-        h+= '<option value="-1">'+ this.lang.filter_select_placeholder +'</option>';
+		var final_str = '<select name="'+ rule_id +'_filter">';;
 
-        $.each(this.filters, function(i, filter) {
-            if (optgroup != filter.optgroup) {
-                if (optgroup !== null) h+= '</optgroup>';
-                optgroup = filter.optgroup;
-                if (optgroup !== null) h+= '<optgroup label="'+ optgroup +'">';
-            }
+		final_str += '<option value="-1">'+ this.lang.filter_select_placeholder +'</option>';
 
-            h+= '<option value="'+ filter.id +'">'+ filter.label +'</option>';
-        });
+		$.each(this.filters, function(i, filter) {
+			// If this filter is part of an optgroup, look for it, or create
+			if (filter.optgroup) {
+				//Find if it already exists
+				var idx = $.inArray(filter.optgroup, final_order_key);
 
-        if (optgroup !== null) h+= '</optgroup>';
-        h+= '</select>';
-        return h;
-    };
+				//First time it was ever seen
+				if (idx == -1) { 
+					final_order_key.push(filter.optgroup);
+					final_order_values.push('<optgroup label="'+ filter.optgroup +'">' + '<option value="'+ filter.id +'">'+ filter.label +'</option>');
+				}
+				//Add rule to existing optgroup
+				else {
+					final_order_values[idx] += '<option value="'+ filter.id +'">'+ filter.label +'</option>';
+				}
+
+			}
+			else {
+				var last_idx = final_order_key.length - 1;
+
+				if (final_order_key[last_idx] != null || last_idx < 0) {
+					final_order_key.push(null);
+					final_order_values.push('<option value="'+ filter.id +'">'+ filter.label +'</option>');
+				}
+				else {
+					final_order_values[last_idx] += '<option value="'+ filter.id +'">'+ filter.label +'</option>';
+				}
+			}
+		});
+
+		// Now go through the final array and append the closing optgroups
+		// Return H, the final string
+
+		$.each(final_order_key, function(idx, val) {
+			final_str += final_order_values[idx] //append the string
+			// We have an optgroup, close with '</optgroup>' tag
+			if (val != null) {
+				final_str += '</optgroup>';
+			}
+		});
+
+		// End the select
+		final_str += '</select>';
+		return final_str;
+	};
 
     /**
      * Returns rule operator <select> HTML
