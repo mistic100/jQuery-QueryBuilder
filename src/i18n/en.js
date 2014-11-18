@@ -14,7 +14,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "filter_select_placeholder": "------",
 
-  operators: {
+  "operators": {
     "equal": "equal",
     "not_equal": "not equal",
     "in": "in",
@@ -36,7 +36,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_not_null": "is not null"
   },
   
-  errors: {
+  "errors": {
     "no_filter": "No filter selected",
     "empty_group": "The group is empty",
     "radio_empty": "No value selected",

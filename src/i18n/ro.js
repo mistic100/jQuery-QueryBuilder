@@ -14,7 +14,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "filter_select_placeholder": "------",
 
-  operators: {
+  "operators": {
     "equal": "egal",
     "not_equal": "diferit",
     "in": "în",

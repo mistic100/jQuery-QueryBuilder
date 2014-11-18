@@ -14,7 +14,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "filter_select_placeholder": "------",
 
-  operators: {
+  "operators": {
     "equal": "równa się",
     "not_equal": "jest różne od",
     "in": "zawiera",
@@ -36,7 +36,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_not_null": "nie jest niezdefiniowane"
   },
   
-  errors: {
+  "errors": {
     "no_filter": "Nie wybrano żadnego filtra",
     "empty_group": "Grupa jest pusta",
     "radio_empty": "Nie wybrano wartości",

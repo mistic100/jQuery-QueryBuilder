@@ -102,17 +102,17 @@
         },
 
         lang: {
-            add_rule: 'Add rule',
-            add_group: 'Add group',
-            delete_rule: 'Delete',
-            delete_group: 'Delete',
+            "add_rule": 'Add rule',
+            "add_group": 'Add group',
+            "delete_rule": 'Delete',
+            "delete_group": 'Delete',
 
-            condition_and: 'AND',
-            condition_or: 'OR',
+            "condition_and": 'AND',
+            "condition_or": 'OR',
 
-            filter_select_placeholder: '------',
+            "filter_select_placeholder": '------',
 
-            operators : {
+            "operators": {
                 "equal": "equal",
                 "not_equal": "not equal",
                 "in": "in",
@@ -134,7 +134,7 @@
                 "is_not_null": "is not null"
             },
 
-            errors: {
+            "errors": {
                 "no_filter": "No filter selected",
                 "empty_group": "The group is empty",
                 "radio_empty": "No value selected",
