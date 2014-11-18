@@ -1,6 +1,6 @@
 /*!
  * jQuery QueryBuilder
- * Reference language file
+ * Polish translation by Artur Smolarek
  */
 
 jQuery.fn.queryBuilder.defaults.set({ lang: {
