@@ -47,6 +47,14 @@
             has_optgroup: false
         };
 
+        // "allow_groups" changed in 1.3.1 from boolean to int
+        if (this.settings.allow_groups === false) {
+          this.settings.allow_groups = 0;
+        }
+        else if (this.settings.allow_groups === true) {
+          this.settings.allow_groups = -1;
+        }
+
         this.filters = this.settings.filters;
         this.lang = this.settings.lang;
         this.icons = this.settings.icons;
@@ -86,7 +94,7 @@
         onAfterAddRule: null,
 
         display_errors: true,
-        allow_groups: true,
+        allow_groups: -1,
         sortable: false,
         filters: [],
         conditions: ['AND', 'OR'],
@@ -227,18 +235,18 @@
         // add rule button
         this.$el.on('click.queryBuilder', '[data-add=rule]', function() {
             var $this = $(this),
-                $ul = $this.closest('.rules-group-container').find('>.rules-group-body>.rules-list');
+                $group = $this.closest('.rules-group-container');
 
-            that.addRule($ul);
+            that.addRule($group);
         });
 
         // add group button
-        if (this.settings.allow_groups) {
+        if (this.settings.allow_groups !== 0) {
             this.$el.on('click.queryBuilder', '[data-add=group]', function() {
                 var $this = $(this),
-                    $ul = $this.closest('.rules-group-container').find('>.rules-group-body>.rules-list');
+                    $group = $this.closest('.rules-group-container');
 
-                that.addGroup($ul);
+                that.addGroup($group);
             });
         }
 
@@ -294,7 +302,9 @@
         this.status.group_id = 1;
         this.status.rule_id = 0;
 
-        this.addRule(this.$el.find('>.rules-group-container>.rules-group-body>.rules-list').empty());
+        this.$el.find('>.rules-group-container>.rules-group-body>.rules-list').empty();
+
+        this.addRule(this.$el.find('>.rules-group-container'));
     };
 
     /**
@@ -400,7 +410,6 @@
 
         (function add(data, $container){
             var $group = that.addGroup($container, false),
-                $ul = $group.find('>.rules-group-body>.rules-list'),
                 $buttons = $group.find('>.rules-group-header input[name$=_cond]');
 
             if (data.condition === undefined) {
@@ -415,11 +424,12 @@
 
             $.each(data.rules, function(i, rule) {
                 if (rule.rules && rule.rules.length>0) {
-                    if (!that.settings.allow_groups) {
-                        $.error('Groups are disabled');
+                    if (that.settings.allow_groups !== -1 && that.settings.allow_groups < $group.data('queryBuilder').level) {
+                        that.reset();
+                        $.error(fmt('No more than {0} groups are allowed', that.settings.allow_groups));
                     }
                     else {
-                        add(rule, $ul);
+                        add(rule, $group);
                     }
                 }
                 else {
@@ -433,7 +443,7 @@
                         rule.operator = 'equal';
                     }
 
-                    var $rule = that.addRule($ul),
+                    var $rule = that.addRule($group),
                         filter = that.getFilterById(rule.id),
                         operator = that.getOperatorByType(rule.operator);
 
@@ -537,23 +547,25 @@
 
     /**
      * Add a new rules group
-     * @param container {jQuery} (parent <li>)
+     * @param $parent {jQuery}
      * @param addRule {bool} (optional - add a default empty rule)
      * @return $group {jQuery}
      */
-    QueryBuilder.prototype.addGroup = function(container, addRule) {
+    QueryBuilder.prototype.addGroup = function($parent, addRule) {
         var group_id = this.nextGroupId(),
-            first = group_id == this.$el_id + '_group_0',
-            $group = $(this.template.group.call(this, group_id, first));
+            level = ($parent.data('queryBuilder') || {}).level || 0,
+            $container = level===0 ? $parent : $parent.find('>.rules-group-body>.rules-list'),
+            $group = $(this.template.group.call(this, group_id, ++level));
 
-        container.append($group);
+        $group.data('queryBuilder', {level:level});
+        $container.append($group);
 
         if (this.settings.onAfterAddGroup) {
             this.settings.onAfterAddGroup.call(this, $group);
         }
 
         if (addRule === undefined || addRule === true) {
-            this.addRule($group.find('>.rules-group-body>.rules-list'));
+            this.addRule($group);
         }
 
         return $group;
@@ -598,15 +610,17 @@
 
     /**
      * Add a new rule
-     * @param container {jQuery} (parent <ul>)
+     * @param $parent {jQuery}
      * @return $rule {jQuery}
      */
-    QueryBuilder.prototype.addRule = function(container) {
+    QueryBuilder.prototype.addRule = function($parent) {
         var rule_id = this.nextRuleId(),
+            $container = $parent.find('>.rules-group-body>.rules-list'),
             $rule = $(this.template.rule.call(this, rule_id)),
             $filterSelect = $(this.getRuleFilterSelect(rule_id));
 
-        container.append($rule);
+        $rule.data('queryBuilder', {});
+        $container.append($rule);
         $rule.find('.rule-filter-container').append($filterSelect);
 
         if ($.fn.selectpicker) {
@@ -642,7 +656,7 @@
 
         $operatorContainer.html($operatorSelect);
 
-        $rule.data('queryBuilder.operator', operators[0]);
+        $rule.data('queryBuilder').operator = operators[0];
 
         if ($.fn.selectpicker) {
             $operatorSelect.selectpicker({
@@ -704,7 +718,7 @@
         this.createRuleOperators($rule, filter);
         this.createRuleInput($rule, filter);
 
-        $rule.data('queryBuilder.filter', filter);
+        $rule.data('queryBuilder').filter = filter;
     };
 
     /**
@@ -723,14 +737,14 @@
         else {
             $valueContainer.show();
 
-            var previousOperator = $rule.data('queryBuilder.operator');
+            var previousOperator = $rule.data('queryBuilder').operator;
 
             if ($valueContainer.is(':empty') || operator.accept_values != previousOperator.accept_values) {
                 this.createRuleInput($rule, filter);
             }
         }
 
-        $rule.data('queryBuilder.operator', operator);
+        $rule.data('queryBuilder').operator = operator;
 
         if (filter.onAfterChangeOperator) {
             filter.onAfterChangeOperator.call(this, $rule, filter, operator);
@@ -1259,10 +1273,10 @@
     /**
      * Returns group HTML
      * @param group_id {string}
-     * @param main {boolean}
+     * @param level {int}
      * @return {string}
      */
-    QueryBuilder.prototype.getGroupTemplate = function(group_id, main) {
+    QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
         var h = '\
 <dl id="'+ group_id +'" class="rules-group-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <dt class="rules-group-header"> \
@@ -1270,17 +1284,17 @@
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
         <i class="' + this.icons.add_rule + '"></i> '+ this.lang.add_rule +' \
       </button> \
-      '+ (this.settings.allow_groups ? '<button type="button" class="btn btn-xs btn-success" data-add="group"> \
+      '+ (this.settings.allow_groups===-1 || this.settings.allow_groups>=level ? '<button type="button" class="btn btn-xs btn-success" data-add="group"> \
         <i class="' + this.icons.add_group + '"></i> '+ this.lang.add_group +' \
       </button>' : '') +' \
-      '+ (!main ? '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
+      '+ (level>1 ? '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
         <i class="' + this.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
       </button>' : '') +' \
     </div> \
     <div class="btn-group"> \
       '+ this.getGroupConditions(group_id) +' \
     </div> \
-    '+ (this.settings.sortable && !main ? '<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>' : '') +' \
+    '+ (this.settings.sortable && level>1 ? '<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>' : '') +' \
     '+ (this.settings.display_errors ? '<div class="error-container" data-toggle="tooltip" data-placement="right"><i class="' + this.icons.error + '"></i></div>' : '') +'\
   </dt> \
   <dd class=rules-group-body> \
