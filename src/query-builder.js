@@ -582,6 +582,7 @@
 
         if (this.settings.readonly_behavior.delete_group) {
             $group.remove();
+            return;
         }
 
         var that = this,
@@ -591,7 +592,7 @@
             var $element = $(this);
 
             if ($element.hasClass('rule-container')) {
-                if ($element.hasClass('disabled')) {
+                if ($element.data('queryBuilder').no_delete) {
                     keepGroup = true;
                 }
                 else {
@@ -1258,12 +1259,18 @@
         }
 
         if (rule.readonly) {
-            $rule.find('input, select').prop('disabled', true);
-            $rule.addClass('disabled').find('[data-delete=rule]').remove();
+            $rule.data('queryBuilder').no_delete = true;
+            $rule.addClass('readonly')
+              .find('input, select').prop('disabled', true)
+              .end().find('[data-delete=rule]').remove();
 
             if (this.settings.sortable && !this.settings.readonly_behavior.sortable) {
                 $rule.find('.drag-handle').remove();
             }
+        }
+        else if (rule.no_delete) {
+            $rule.data('queryBuilder').no_delete = true;
+            $rule.find('[data-delete=rule]').remove();
         }
     };
 
