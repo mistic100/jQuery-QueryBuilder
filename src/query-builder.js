@@ -89,6 +89,8 @@
     // DEFAULT CONFIG
     // ===============================
     QueryBuilder.DEFAULTS = {
+        filters: [],
+
         onValidationError: null,
         onAfterAddGroup: null,
         onAfterAddRule: null,
@@ -96,12 +98,15 @@
         display_errors: true,
         allow_groups: -1,
         sortable: false,
-        filters: [],
         conditions: ['AND', 'OR'],
         default_condition: 'AND',
-        readonly_behavior: {
-            delete_group: false,
-            sortable: true
+
+        default_rule_flags: {
+          filter_readonly: false,
+          operator_readonly: false,
+          value_readonly: false,
+          no_delete: false,
+          no_sortable: false
         },
 
         template: {
@@ -572,16 +577,11 @@
     };
 
     /**
-     * Tries to delete a group after checks
+     * Tries to delete a group. The group is not deleted if at least one rule is no_delete.
      * @param $group {jQuery}
      */
     QueryBuilder.prototype.deleteGroup = function($group) {
         if ($group[0].id == this.$el_id + '_group_0') {
-            return;
-        }
-
-        if (this.settings.readonly_behavior.delete_group) {
-            $group.remove();
             return;
         }
 
@@ -592,7 +592,7 @@
             var $element = $(this);
 
             if ($element.hasClass('rule-container')) {
-                if ($element.data('queryBuilder').no_delete) {
+                if ($element.data('queryBuilder').flags.no_delete) {
                     keepGroup = true;
                 }
                 else {
@@ -600,13 +600,15 @@
                 }
             }
             else {
-                that.deleteGroup($element);
+                keepGroup|= that.deleteGroup($element);
             }
         });
 
         if (!keepGroup) {
             $group.remove();
         }
+
+        return keepGroup;
     };
 
     /**
@@ -1258,19 +1260,23 @@
             }
         }
 
-        if (rule.readonly) {
-            $rule.data('queryBuilder').no_delete = true;
-            $rule.addClass('readonly')
-              .find('input, select').prop('disabled', true)
-              .end().find('[data-delete=rule]').remove();
+        var flags = this.getRuleFlags(rule);
+        $rule.data('queryBuilder').flags = flags;
 
-            if (this.settings.sortable && !this.settings.readonly_behavior.sortable) {
-                $rule.find('.drag-handle').remove();
-            }
+        if (flags.filter_readonly) {
+            $rule.find('select[name$=_filter]').prop('disabled', true);
         }
-        else if (rule.no_delete) {
-            $rule.data('queryBuilder').no_delete = true;
+        if (flags.operator_readonly) {
+            $rule.find('select[name$=_operator]').prop('disabled', true);
+        }
+        if (flags.value_readonly) {
+            $rule.find('input[name*=_value_], select[name*=_value_]').prop('disabled', true);
+        }
+        if (flags.no_delete) {
             $rule.find('[data-delete=rule]').remove();
+        }
+        if (flags.no_sortable) {
+            $rule.find('.drag-handle').remove();
         }
     };
 
@@ -1463,6 +1469,30 @@
         }
 
         return h;
+    };
+
+    /**
+     * Clean rule flags.
+     * @param rule {object}
+     * @return {object}
+     */
+    QueryBuilder.prototype.getRuleFlags = function(rule) {
+        var flags = merge(this.settings.default_rule_flags);
+
+        if (rule.readonly) {
+            merge(true, flags, {
+                filter_readonly: true,
+                operator_readonly: true,
+                value_readonly: true,
+                no_delete: true
+            });
+        }
+
+        if (rule.flags) {
+            merge(true, flags, rule.flags);
+        }
+
+        return flags;
     };
 
 

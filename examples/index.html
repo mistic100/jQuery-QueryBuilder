@@ -203,7 +203,11 @@ $('.set').on('click', function() {
     rules: [{
       id: 'price',
       operator: 'between',
-      value: [10.25, 15.52]
+      value: [10.25, 15.52],
+      flags: {
+        no_delete: true,
+        filter_readonly: true
+      }
     }, {
       condition: 'OR',
       rules: [{
