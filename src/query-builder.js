@@ -534,19 +534,30 @@
             }
         });
 
+        // group filters with same optgroup, preserving declaration order when possible
         if (this.status.has_optgroup) {
-            this.filters.sort(function(a, b) {
-                if (a.optgroup === null && b.optgroup === null) {
-                    return 0;
+            var optgroups = [],
+                filters = [];
+
+            $.each(this.filters, function(i, filter) {
+                var idx;
+
+                if (filter.optgroup) {
+                    idx = optgroups.lastIndexOf(filter.optgroup);
+
+                    if (idx == -1) {
+                        idx = optgroups.length;
+                    }
                 }
-                if (a.optgroup === null) {
-                    return 1;
+                else {
+                    idx = optgroups.length;
                 }
-                if (b.optgroup === null) {
-                    return -1;
-                }
-                return a.optgroup.localeCompare(b.optgroup);
+
+                optgroups.splice(idx, 0, filter.optgroup);
+                filters.splice(idx, 0, filter);
             });
+
+            this.filters = filters;
         }
     };
 
