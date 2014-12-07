@@ -21,3 +21,4 @@ Gemfile.lock
 !/dist/selectize/dist
 /dist/selectize/dist/less
 /dist/sifter
+/dist/jquery-bridget
