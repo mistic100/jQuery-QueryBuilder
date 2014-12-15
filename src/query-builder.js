@@ -863,7 +863,7 @@
                                     return ['number_exceed_max', validation.max];
                                 }
                             }
-                            if (validation.step) {
+                            if (validation.step !== undefined) {
                                 var v = val[i]/validation.step;
                                 if (parseInt(v) != v) {
                                     return ['number_wrong_step', validation.step];
@@ -1464,9 +1464,9 @@
                 switch (filter.internalType) {
                     case 'number':
                         h+= '<input type="number" name="'+ name +'"';
-                        if (validation.step) h+= ' step="'+ validation.step +'"';
-                        if (validation.min) h+= ' min="'+ validation.min +'"';
-                        if (validation.max) h+= ' max="'+ validation.max +'"';
+                        if (validation.step !== undefined) h+= ' step="'+ validation.step +'"';
+                        if (validation.min !== undefined) h+= ' min="'+ validation.min +'"';
+                        if (validation.max !== undefined) h+= ' max="'+ validation.max +'"';
                         if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
                         h+= '>';
                         break;
