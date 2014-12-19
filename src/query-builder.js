@@ -1550,6 +1550,7 @@
     // ===============================
     /**
      * From Highcharts library
+     * https://gist.github.com/highslide-software/f646f39d51d18b7d6bfb
      * -----------------------
      * Deep merge two or more objects and return a third object. If the first argument is
      * true, the contents of the second object is copied into the first object.
