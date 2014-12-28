@@ -26,18 +26,20 @@ $(function(){
     });
     
     assert.ok(rulesMatch($('#container3').queryBuilder('getRules'), {}), 'Should return empty object');
-    assert.equal(error_str, 'string_empty', 'Should throw "string_empty" error');
+    assert.deepEqual(error_str, ['Empty value'], 'Should throw "Empty value" error');
   });
   
-  QUnit.asyncTest('Language change', function(assert) {
-    expect(2);
-    var original = $.fn.queryBuilder.defaults.get('lang');
+  QUnit.test('Language change', function(assert) {
+    assert.expect(2);
+    
+    var done = assert.async(),
+        original = $.fn.queryBuilder.defaults.get('lang');
     
     $.getScript('../dist/i18n/fr.js', function() {
       assert.equal($.fn.queryBuilder.defaults.get('lang').delete_rule, 'Supprimer', 'Should be in french');
       $.fn.queryBuilder.defaults.set({ lang: original });
       assert.equal($.fn.queryBuilder.defaults.get('lang').delete_rule, 'Delete', 'Should be in english');
-      QUnit.start();
+      done();
     });
   });
   
@@ -79,17 +81,14 @@ $(function(){
     });
     
     assert.equal($('#container6_group_0>.rules-group-header [data-add=group]').length, 0, 'Should not contain group add button');
-    assert.throws(function(){ $('#container6').queryBuilder('setRules', basic_rules); }, /Groups are disabled/, 'Should throw "Groups are disabled" error');
+    assert.throws(function(){ $('#container6').queryBuilder('setRules', basic_rules); }, /No more than 0 groups are allowed/, 'Should throw "Groups are disabled" error');
   });
   
   QUnit.test('Readonly', function(assert) {
     $('#container7').queryBuilder({
       filters: basic_filters,
       rules: readonly_rules,
-      sortable: true,
-      readonly_behavior: {
-        sortable: false
-      }
+      sortable: true
     });
     
     assert.equal($('#container7_rule_2').find('.drag-handle, [data-delete=rule]').length, 0, 'Should hide drag handle and delete button of readonly rule');
@@ -108,7 +107,7 @@ $(function(){
     assert.equal($('#container8_group_1.rules-group-container [data-delete=group] i').attr('class'), "fa fa-times", 'Group delete icon should have been replaced');
   });
   
-  QUnit.test('SQL export', function(assert) {
+  QUnit.test('SQL/MongoDB export', function(assert) {
     $('#container9').queryBuilder({
       filters: basic_filters,
       rules: basic_rules
@@ -116,6 +115,7 @@ $(function(){
     
     assert.deepEqual($('#container9').queryBuilder('getSQL', false, false), basic_rules_sql_raw, 'Should create SQL query');
     assert.deepEqual($('#container9').queryBuilder('getSQL', true, false), basic_rules_sql_stmt, 'Should create SQL query with statements');
+    assert.deepEqual($('#container9').queryBuilder('getMongo'), basic_rules_mongodb, 'Should create MongoDB query');
   });
 
 });

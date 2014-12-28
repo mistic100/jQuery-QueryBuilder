@@ -97,6 +97,14 @@ var basic_rules_sql_stmt = {
 var basic_rules_sql_raw = {
   sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
 };
+var basic_rules_mongodb = {'$and': [
+  {'price': { '$lt': 10.25 }},
+  {'name': null},
+  {'$or': [
+    {'category': {'$in': ['mo', 'mu']}},
+    {'id': {'$ne': '1234-azer-5678'}}
+  ]}
+]};
 
 var invalid_rules = {
   condition: 'AND',
@@ -187,7 +195,13 @@ var readonly_rules = {
       id: 'id',
       operator: 'not_equal',
       value: '1234-azer-5678',
-      readonly: true
+      flags: {
+        filter_readonly: true,
+        operator_readonly: true,
+        value_readonly: true,
+        no_delete: true,
+        no_sortable: true
+      }
     }, {
       condition: 'AND',
       rules: [{
