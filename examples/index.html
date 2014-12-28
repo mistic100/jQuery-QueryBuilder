@@ -25,6 +25,7 @@
       <button class="btn btn-primary parse-sql" data-stmt="question_mark">SQL (question mark)</button>
       <button class="btn btn-primary parse-sql" data-stmt="numbered">SQL (numbered)</button>
       <button class="btn btn-primary parse-sql" data-stmt="false">SQL</button>
+      <button class="btn btn-primary parse-mongo">MongoDB</button>
     </div>
 
     <div id="result" class="hide">
@@ -37,6 +38,7 @@
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <script src="../src/query-builder.js"></script>
 <script src="../src/query-builder-sql-support.js"></script>
+<script src="../src/query-builder-mongodb-support.js"></script>
 <script src="../bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 
 <script>
@@ -247,6 +249,14 @@ $('.parse-sql').on('click', function() {
     .find('pre').html(
       res.sql + (res.params ? '\n\n' + JSON.stringify(res.params, undefined, 2) : '')
     );
+});
+
+$('.parse-mongo').on('click', function() {
+  $('#result').removeClass('hide')
+    .find('pre').html(JSON.stringify(
+      $('#builder').queryBuilder('getMongo'),
+      undefined, 2
+    ));
 });
 </script>
 
