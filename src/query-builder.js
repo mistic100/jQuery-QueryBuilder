@@ -633,7 +633,7 @@
             $rule = $(this.template.rule.call(this, rule_id)),
             $filterSelect = $(this.getRuleFilterSelect(rule_id));
 
-        $rule.data('queryBuilder', {});
+        $rule.data('queryBuilder', {flags: {}});
         $container.append($rule);
         $rule.find('.rule-filter-container').append($filterSelect);
 
@@ -1301,7 +1301,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
-        var h = '\
+        return '\
 <dl id="'+ group_id +'" class="rules-group-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right"> \
@@ -1325,8 +1325,6 @@
     <ul class=rules-list></ul> \
   </dd> \
 </dl>';
-
-        return h;
     };
 
     /**
@@ -1357,7 +1355,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
-        var h = '\
+        return '\
 <li id="'+ rule_id +'" class="rule-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <div class="rule-header"> \
     <div class="btn-group pull-right"> \
@@ -1372,8 +1370,6 @@
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
 </li>';
-
-        return h;
     };
 
     /**

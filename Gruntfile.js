@@ -1,7 +1,8 @@
 module.exports = function(grunt) {
     // list available modules and languages
     var modules = {
-            'sql': 'src/query-builder-sql-support.js'
+            'sql': 'src/query-builder-sql-support.js',
+            'mongodb': 'src/query-builder-mongodb-support.js'
         },
     
         langs = {},

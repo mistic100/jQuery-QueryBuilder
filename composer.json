@@ -1,14 +1,18 @@
 {
     "name": "mistic100/jquery-querybuilder",
     "description": "jQuery plugin for user friendly query/filter creator",
-    "keywords": [ "jquery", "query", "builder", "filter"],
-    "homepage": "https://github.com/mistic100/jQuery-QueryBuilder",
-    "authors": [
-        {
-            "name": "Damien \"Mistic\" Sorel",
-            "homepage": "http://www.strangeplanet.fr"
-        }
+    "keywords": [
+        "jquery",
+        "query",
+        "builder",
+        "filter"
     ],
+    "homepage": "https://github.com/mistic100/jQuery-QueryBuilder",
+    "authors": [{
+        "name": "Damien \"Mistic\" Sorel",
+        "email": "contact@git.strangeplanet.fr",
+        "homepage": "http://www.strangeplanet.fr"
+    }],
     "support": {
         "issues": "https://github.com/mistic100/jQuery-QueryBuilder/issues"
     },
