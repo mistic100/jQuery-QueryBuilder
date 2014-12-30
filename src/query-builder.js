@@ -357,9 +357,6 @@
 
                     if (operator.accept_values !== 0) {
                         value = that.getRuleValue($rule, filter, operator);
-                        if (filter.valueParser) {
-                            value = filter.valueParser.call(this, $rule, value, filter, operator);
-                        }
 
                         var valid = that.validateValue($rule, value, filter, operator);
                         if (valid !== true) {
@@ -915,6 +912,10 @@
      * @param operator {object}
      */
     QueryBuilder.prototype.triggerValidationError = function(error, $target, value, filter, operator) {
+        if (!$.isArray(error)) {
+            error = [error];
+        }
+
         if (filter && filter.onValidationError) {
             filter.onValidationError.call(this, $target, error, value, filter, operator);
         }
@@ -934,7 +935,11 @@
         this.$el.trigger(e);
 
         if (this.settings.display_errors && !e.isDefaultPrevented()) {
-            error[0] = this.lang.errors[error[0]];
+            // translate the text without modifying event array
+            error = $.extend([], error, [
+                this.lang.errors[error[0]] || error[0]
+            ]);
+
             $target.addClass('has-error');
             var $error = $target.find('.error-container').eq(0);
             $error.attr('title', fmt.apply(null, error));
@@ -1132,7 +1137,7 @@
             }
         }
 
-        throw 'Undefined filter: '+ filterId;
+        $.error('Undefined filter: '+ filterId);
     };
 
     /**
@@ -1147,7 +1152,7 @@
             }
         }
 
-        throw 'Undefined operator: '+ type;
+        $.error('Undefined operator: '+ type);
     };
 
     /**
@@ -1219,6 +1224,10 @@
             out = out[0];
         }
 
+        if (filter.valueParser) {
+            out = filter.valueParser.call(this, $rule, out, filter, operator);
+        }
+
         return out;
     };
 
@@ -1232,6 +1241,11 @@
     QueryBuilder.prototype.setRuleValue = function($rule, rule, filter, operator) {
         filter = filter || this.getFilterById(this.getRuleFilter($rule));
         operator = operator || this.getOperatorByType(this.getRuleOperator($rule));
+
+        if (filter.valueSetter) {
+            filter.valueSetter.call(this, $rule, rule.value, filter, operator);
+            return;
+        }
 
         var $value = $rule.find('.rule-value-container'),
             val;
@@ -1301,7 +1315,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
-        return '\
+        var h = '\
 <dl id="'+ group_id +'" class="rules-group-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right"> \
@@ -1325,6 +1339,7 @@
     <ul class=rules-list></ul> \
   </dd> \
 </dl>';
+        return h;
     };
 
     /**
@@ -1355,7 +1370,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
-        return '\
+        var h = '\
 <li id="'+ rule_id +'" class="rule-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
   <div class="rule-header"> \
     <div class="btn-group pull-right"> \
@@ -1370,6 +1385,7 @@
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
 </li>';
+        return h;
     };
 
     /**

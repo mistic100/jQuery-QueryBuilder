@@ -115,8 +115,63 @@ var invalid_rules = {
   }]
 };
 
-var filters_for_custom_operators = [
-{
+var filters_for_validation_callback = [{
+  id: 'name',
+  type: 'integer',
+  validation: {
+    callback: function(value, filter, operator, $rule) {
+      switch (value) {
+        case '1':
+          return 'invalid_name';
+          
+        case '2':
+          return ['translated_error', value];
+          
+        case '3':
+          return true;
+      }
+    }
+  }
+}];
+
+var rules_for_validation_callback = {
+  condition: 'AND',
+  rules: [{
+    id: 'name',
+    operator: 'equal',
+    value: 1
+  }]
+};
+
+var filters_for_value_callback = [{
+  id: 'name',
+  type: 'string',
+  valueSetter: function($rule, value) {
+    value = (''+value).split('').map(function(c) {
+      return String.fromCharCode(97 + parseInt(c));
+    }).join('');
+    
+    $rule.find('.rule-value-container input').val(value);
+  },
+  valueParser: function($rule, value) {
+    value = value.split('').map(function(c) {
+      return c.charCodeAt(0) - 97;
+    }).join('');
+    
+    return value;
+  }
+}];
+
+var rules_for_value_callback = {
+  condition: 'AND',
+  rules: [{
+    id: 'name',
+    operator: 'equal',
+    value: '0123456789'
+  }]
+};
+
+var filters_for_custom_operators = [{
   id: 'name',
   label: 'Name',
   type: 'string'
@@ -134,8 +189,7 @@ var filters_for_custom_operators = [
   id: 'release',
   label: 'Release date',
   type: 'date'
-}
-];
+}];
 
 var rules_for_custom_operators = {
   condition: 'AND',
@@ -195,11 +249,8 @@ var readonly_rules = {
       id: 'id',
       operator: 'not_equal',
       value: '1234-azer-5678',
+      readonly: true,
       flags: {
-        filter_readonly: true,
-        operator_readonly: true,
-        value_readonly: true,
-        no_delete: true,
         no_sortable: true
       }
     }, {

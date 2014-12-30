@@ -1,8 +1,12 @@
 $(function(){
 
-  QUnit.test('Empty builder', function(assert) {
+  QUnit.test('Empty builder + destroy', function(assert) {
     $('#container1').queryBuilder({ filters: basic_filters });
-    assert.ok(rulesMatch($('#container1').queryBuilder('getRules'), {}), 'Should return empty object');
+    assert.ok($.isEmptyObject($('#container1').queryBuilder('getRules')), 'Should return empty object');
+    
+    $('#container1').queryBuilder('destroy');
+    assert.ok(!$('#container1').hasClass('query-builder'), 'Should not have "query-builder" class');
+    assert.ok($('#container1').data('queryBuilder')===undefined, 'Should not have "queryBuilder" data');
   });
   
   QUnit.test('Set/get rules', function(assert) {
@@ -21,12 +25,12 @@ $(function(){
       filters: basic_filters,
       rules: invalid_rules,
       onValidationError: function($rule, error, value, filter, operator) {
-        error_str = error;
+        error_str = error[0];
       }
     });
     
     assert.ok(rulesMatch($('#container3').queryBuilder('getRules'), {}), 'Should return empty object');
-    assert.deepEqual(error_str, ['Empty value'], 'Should throw "Empty value" error');
+    assert.equal(error_str, 'string_empty', 'Should throw "string_empty" error');
   });
   
   QUnit.test('Language change', function(assert) {
@@ -56,22 +60,24 @@ $(function(){
   });
   
   QUnit.test('Change conditions', function(assert) {
-    $('#container5-1').queryBuilder({
+    $('#container5').queryBuilder({
       filters: basic_filters,
       rules: rules_for_custom_conditions,
       conditions: ['NAND', 'XOR'],
       default_condition: 'NAND'
     });
   
-    assert.ok(rulesMatch($('#container5-1').queryBuilder('getRules'), rules_for_custom_conditions), 'Should return correct rules');
-    assert.deepEqual(getOptions($('#container5-1_group_0>.rules-group-header [name$=_cond]')), ['NAND', 'XOR'], 'Conditions should be NAND & XOR');
+    assert.ok(rulesMatch($('#container5').queryBuilder('getRules'), rules_for_custom_conditions), 'Should return correct rules');
+    assert.deepEqual(getOptions($('#container5_group_0>.rules-group-header [name$=_cond]')), ['NAND', 'XOR'], 'Conditions should be NAND & XOR');
     
-    $('#container5-2').queryBuilder({
+    $('#container5').queryBuilder('destroy');
+    
+    $('#container5').queryBuilder({
       filters: basic_filters,
       conditions: ['AND']
     });
   
-    assert.deepEqual(getOptions($('#container5-2_group_0>.rules-group-header [name$=_cond]')), ['AND'], 'Condition should be AND');
+    assert.deepEqual(getOptions($('#container5_group_0>.rules-group-header [name$=_cond]')), ['AND'], 'Condition should be AND');
   });
   
   QUnit.test('No groups', function(assert) {
@@ -118,6 +124,43 @@ $(function(){
     assert.deepEqual($('#container9').queryBuilder('getMongo'), basic_rules_mongodb, 'Should create MongoDB query');
   });
 
+  QUnit.test('Validation callback', function(assert) {
+    $('#container10').queryBuilder({
+      filters: filters_for_validation_callback,
+      lang: {
+        errors: {
+          translated_error: 'Translated error! {0}'
+        }
+      }
+    });
+    
+    rules_for_validation_callback.rules[0].value = 1;
+    $('#container10').queryBuilder('setRules', rules_for_validation_callback);
+    $('#container10').queryBuilder('getRules');
+    assert.deepEqual($('#container10_rule_0 .error-container').attr('title'), 'invalid_name', 'Should display "invalid_name" error');
+    
+    rules_for_validation_callback.rules[0].value = 2;
+    $('#container10').queryBuilder('setRules', rules_for_validation_callback);
+    $('#container10').queryBuilder('getRules');
+    assert.deepEqual($('#container10_rule_0 .error-container').attr('title'), 'Translated error! 2', 'Should display "Translated error! 2" error');
+    
+    rules_for_validation_callback.rules[0].value = 3;
+    $('#container10').queryBuilder('setRules', rules_for_validation_callback);
+    $('#container10').queryBuilder('getRules');
+    assert.ok(!$('#container10_rule_0 .error-container').is(':visible'), 'Should hide rule error');
+  });
+  
+  QUnit.test('valueSetter & valueParser', function(assert) {
+    $('#container11').queryBuilder({
+      filters: filters_for_value_callback,
+      rules: rules_for_value_callback
+    });
+    
+    assert.equal($('#container11_rule_0 .rule-value-container input').val(), 'abcdefghij', 'Displayed value should be "abcdefghij"');
+    
+    $('#container11_rule_0 .rule-value-container input').val('iefdabchg');
+    assert.equal($('#container11').queryBuilder('getRules').rules[0].value, '845301276', 'Final value should be "845301276"');
+  });
 });
 
 function getOptions($target) {

@@ -93,7 +93,7 @@
                 res[ '$'+data.condition.toLowerCase() ] = parts;
                 return res;
             }(data));
-        },
+        }
     });
 
 
