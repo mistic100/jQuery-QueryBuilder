@@ -130,11 +130,12 @@ isHome: true
           <td>Function called when a validation error occurs. It takes 5 parameters:
             <ul>
               <li><code>$rule</code> the jQuery <code>&lt;li></code> element of the rule throwing the error</li>
-              <li><code>error</code> a String containing an error code</li>
+              <li><code>error</code> an array containing an error code</li>
               <li><code>value</code></li>
               <li><code>filter</code></li>
               <li><code>operator</code></li>
             </ul>
+            You can also use the <a href="#events">validationError.queryBuilder</a> event.
           </td>
         </tr>
         <tr>
@@ -301,10 +302,10 @@ isHome: true
           </td>
         </tr>
         <tr>
-          <td>onAfterSetValue</td>
+          <td>valueParser</td>
           <td>function</td>
           <td>null</td>
-          <td>Function called after setting the value of the rule in <code>setRules</code> function. It takes 4 parameters:
+          <td>Modifier applied to each value in <code>getRules</code> function. It takes 4 parameters:
             <ul>
               <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
               <li><code>value</code></li>
@@ -314,10 +315,23 @@ isHome: true
           </td>
         </tr>
         <tr>
-          <td>valueParser</td>
+          <td>valueSetter</td>
           <td>function</td>
           <td>null</td>
-          <td>Modifier applied to each value in <code>getRules</code> function. It takes 4 parameters:
+          <td>Function used to set the input(s) value in <code>getRules</code> function. If provided the default function is not run. It takes 4 parameters:
+            <ul>
+              <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
+              <li><code>value</code></li>
+              <li><code>filter</code></li>
+              <li><code>operator</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>onAfterSetValue</td>
+          <td>function</td>
+          <td>null</td>
+          <td>Function called after setting the value of the rule in <code>setRules</code> function. It takes 4 parameters:
             <ul>
               <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
               <li><code>value</code></li>
@@ -452,7 +466,7 @@ $('#builder').queryBuilder('destroy')
     </table>
   </div>
   
-  <p>Default operators are: equal, not_equal, in, not_in, less, less_or_equal, greater, greater_or_equal, between, begins_with, not_begins_with, contains, not_contains, ends_with, no_ends_with, is_empty_, is_not_empty, is_null, is_not_null. Check their configguration <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L172-192">in the source code</a>.</p>
+  <p>Default operators are: equal, not_equal, in, not_in, less, less_or_equal, greater, greater_or_equal, between, begins_with, not_begins_with, contains, not_contains, ends_with, not_ends_with, is_empty_, is_not_empty, is_null, is_not_null. Check their configuration <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L172-192">in the source code</a>.</p>
   
   <h3 id="validation">Validation</h3>
   <p>QueryBuilder integrates a configurable validation system triggered when <code>getRules</code> and <code>getSQL</code> methods are called. The default validator checks for emptyness and can be extended with format check an bounds.<br>
@@ -542,7 +556,7 @@ $('#builder').queryBuilder('destroy')
          <td>Fired when a validation error occurred. The Event object contains the following attributes:
             <ul>
               <li><code>targetRule</code> DOM <code>&lt;li></code> element of the rule throwing the error</li>
-              <li><code>error</code> a String containing an error code</li>
+              <li><code>error</code> an array containing an error code</li>
               <li><code>value</code></li>
               <li><code>filter</code></li>
               <li><code>operator</code></li>
@@ -636,7 +650,6 @@ $('#builder').queryBuilder('getSQL', false, false)
   <h3>Operators</h3>
   <p>The SQL module requires special configuration of operators to convert rules to a valid SQL query.
     This configuration is stored in <code>sqlOperators</code> object, the keys are the operators types and the values are objects:</p>
-    
   
   <div class="table-responsive">
     <table class="table table-bordered table-striped">
@@ -678,6 +691,23 @@ $('#builder').queryBuilder('getSQL', false, false)
   </div>
   
   <p>The default operators configuration is available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder-sql-support.js#L12-32">in the source code</a>.</p>
+  
+  <h2 id="mongodb">MongoDB export</h2>
+  <p>The MongoDB module allows to export rules as a MongoDB find object.</p>
+  
+  <h3>Methods</h3>
+  
+  <h4>getMongo</h4>
+  <p>Performs validation and returns the rules as a valid MongoDB find object. See the <a href="demo-basic.html">basic demo</a> for output example.</p>
+{% highlight javascript %}
+$('#builder').queryBuilder('getMongo')
+{% endhighlight %}
+
+  <h3>Operators</h3>
+  <p>The MongoDB module requires special configuration of operators to convert rules to a valid Mongo JSON.
+    This configuration is stored in <code>mongoOperators</code> object, the keys are the operators types and the values are formatting functions.</p>
+  
+  <p>The default operators configuration is available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder-mongodb-support.js#L12-32">in the source code</a>.</p>
   
 </section>
 
