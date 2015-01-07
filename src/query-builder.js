@@ -1,6 +1,6 @@
 /*!
  * jQuery QueryBuilder
- * Copyright 2014 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
@@ -36,52 +36,7 @@
     // CLASS DEFINITION
     // ===============================
     var QueryBuilder = function($el, options) {
-        // variables
         this.$el = $el;
-
-        this.settings = merge(QueryBuilder.DEFAULTS, options);
-        this.status = {
-            group_id: 0,
-            rule_id: 0,
-            generatedId: false,
-            has_optgroup: false
-        };
-
-        // "allow_groups" changed in 1.3.1 from boolean to int
-        if (this.settings.allow_groups === false) {
-          this.settings.allow_groups = 0;
-        }
-        else if (this.settings.allow_groups === true) {
-          this.settings.allow_groups = -1;
-        }
-
-        this.filters = this.settings.filters;
-        this.lang = this.settings.lang;
-        this.icons = this.settings.icons;
-        this.operators = this.settings.operators;
-        this.template = this.settings.template;
-
-        if (this.template.group === null) {
-            this.template.group = this.getGroupTemplate;
-        }
-        if (this.template.rule === null) {
-            this.template.rule = this.getRuleTemplate;
-        }
-
-        // ensure we have a container id
-        if (!this.$el.attr('id')) {
-            this.$el.attr('id', 'qb_'+Math.floor(Math.random()*99999));
-            this.status.generatedId = true;
-        }
-        this.$el_id = this.$el.attr('id');
-
-        // check filters
-        if (!this.filters || this.filters.length < 1) {
-            $.error('Missing filters list');
-        }
-        this.checkFilters();
-
-        // init
         this.init(options);
     };
 
@@ -102,11 +57,11 @@
         default_condition: 'AND',
 
         default_rule_flags: {
-          filter_readonly: false,
-          operator_readonly: false,
-          value_readonly: false,
-          no_delete: false,
-          no_sortable: false
+            filter_readonly: false,
+            operator_readonly: false,
+            value_readonly: false,
+            no_delete: false,
+            no_sortable: false
         },
 
         template: {
@@ -205,78 +160,60 @@
     // PUBLIC METHODS
     // ===============================
     /**
-     * Init event handlers and default display
+     * Init the builder
      */
     QueryBuilder.prototype.init = function(options) {
-        var that = this;
+        // PROPERTIES
+        this.settings = merge(QueryBuilder.DEFAULTS, options);
+        this.status = {
+            group_id: 0,
+            rule_id: 0,
+            generatedId: false,
+            has_optgroup: false
+        };
 
-        // EVENTS
-        // group condition change
-        this.$el.on('change.queryBuilder', '.rules-group-header input[name$=_cond]', function() {
-            var $this = $(this);
-
-            if ($this.is(':checked')) {
-                $this.parent().addClass('active');
-                $this.parent().siblings().removeClass('active');
-            }
-        });
-
-        // rule filter change
-        this.$el.on('change.queryBuilder', '.rule-filter-container select[name$=_filter]', function() {
-            var $this = $(this),
-                $rule = $this.closest('.rule-container');
-
-            that.updateRuleFilter($rule, $this.val());
-        });
-
-        // rule operator change
-        this.$el.on('change.queryBuilder', '.rule-operator-container select[name$=_operator]', function() {
-            var $this = $(this),
-                $rule = $this.closest('.rule-container');
-
-            that.updateRuleOperator($rule, $this.val());
-        });
-
-        // add rule button
-        this.$el.on('click.queryBuilder', '[data-add=rule]', function() {
-            var $this = $(this),
-                $group = $this.closest('.rules-group-container');
-
-            that.addRule($group);
-        });
-
-        // add group button
-        if (this.settings.allow_groups !== 0) {
-            this.$el.on('click.queryBuilder', '[data-add=group]', function() {
-                var $this = $(this),
-                    $group = $this.closest('.rules-group-container');
-
-                that.addGroup($group);
-            });
+        // "allow_groups" changed in 1.3.1 from boolean to int
+        if (this.settings.allow_groups === false) {
+            this.settings.allow_groups = 0;
+        }
+        else if (this.settings.allow_groups === true) {
+            this.settings.allow_groups = -1;
         }
 
-        // delete rule button
-        this.$el.on('click.queryBuilder', '[data-delete=rule]', function() {
-            var $this = $(this),
-                $rule = $this.closest('.rule-container');
+        this.filters = this.settings.filters;
+        this.lang = this.settings.lang;
+        this.icons = this.settings.icons;
+        this.operators = this.settings.operators;
+        this.template = this.settings.template;
 
-            $rule.remove();
-        });
+        if (this.template.group === null) {
+            this.template.group = this.getGroupTemplate;
+        }
+        if (this.template.rule === null) {
+            this.template.rule = this.getRuleTemplate;
+        }
 
-        // delete group button
-        this.$el.on('click.queryBuilder', '[data-delete=group]', function() {
-            var $this = $(this),
-                $group = $this.closest('.rules-group-container');
+        // ensure we have a container id
+        if (!this.$el.attr('id')) {
+            this.$el.attr('id', 'qb_'+Math.floor(Math.random()*99999));
+            this.status.generatedId = true;
+        }
+        this.$el_id = this.$el.attr('id');
 
-            that.deleteGroup($group);
-        });
+        this.$el.addClass('query-builder');
+
+        // CHECK FILTERS
+        if (!this.filters || this.filters.length < 1) {
+            $.error('Missing filters list');
+        }
+        this.checkFilters();
 
         // INIT
+        this.bindEvents();
+
         if (this.settings.sortable) {
             this.initSortable();
         }
-
-        this.$el.addClass('query-builder');
 
         if (options.rules) {
             this.setRules(options.rules);
@@ -336,7 +273,7 @@
             var out = {},
                 $elements = $group.find('>.rules-group-body>.rules-list>*');
 
-            out.condition = $group.find('>.rules-group-header input[name$=_cond]:checked').val();
+            out.condition = that.getGroupCondition($group);
             out.rules = [];
 
             for (var i=0, l=$elements.length; i<l; i++) {
@@ -556,6 +493,73 @@
 
             this.filters = filters;
         }
+    };
+
+    /**
+     * Add all events listeners
+     */
+    QueryBuilder.prototype.bindEvents = function() {
+        var that = this;
+
+        // group condition change
+        this.$el.on('change.queryBuilder', '.rules-group-header input[name$=_cond]', function() {
+            var $this = $(this);
+
+            if ($this.is(':checked')) {
+                $this.parent().addClass('active');
+                $this.parent().siblings().removeClass('active');
+            }
+        });
+
+        // rule filter change
+        this.$el.on('change.queryBuilder', '.rule-filter-container select[name$=_filter]', function() {
+            var $this = $(this),
+                $rule = $this.closest('.rule-container');
+
+            that.updateRuleFilter($rule, $this.val());
+        });
+
+        // rule operator change
+        this.$el.on('change.queryBuilder', '.rule-operator-container select[name$=_operator]', function() {
+            var $this = $(this),
+                $rule = $this.closest('.rule-container');
+
+            that.updateRuleOperator($rule, $this.val());
+        });
+
+        // add rule button
+        this.$el.on('click.queryBuilder', '[data-add=rule]', function() {
+            var $this = $(this),
+                $group = $this.closest('.rules-group-container');
+
+            that.addRule($group);
+        });
+
+        // add group button
+        if (this.settings.allow_groups !== 0) {
+            this.$el.on('click.queryBuilder', '[data-add=group]', function() {
+                var $this = $(this),
+                    $group = $this.closest('.rules-group-container');
+
+                that.addGroup($group);
+            });
+        }
+
+        // delete rule button
+        this.$el.on('click.queryBuilder', '[data-delete=rule]', function() {
+            var $this = $(this),
+                $rule = $this.closest('.rule-container');
+
+            $rule.remove();
+        });
+
+        // delete group button
+        this.$el.on('click.queryBuilder', '[data-delete=group]', function() {
+            var $this = $(this),
+                $group = $this.closest('.rules-group-container');
+
+            that.deleteGroup($group);
+        });
     };
 
     /**
@@ -1156,6 +1160,15 @@
     };
 
     /**
+     * Returns the selected condition of a group
+     * @param $group {jQuery} (<dl> element)
+     * @return {string}
+     */
+    QueryBuilder.prototype.getGroupCondition = function($group) {
+        return $group.find('>.rules-group-header input[name$=_cond]:checked').val();
+    };
+
+    /**
      * Returns the selected filter of a rule
      * @param $rule {jQuery} (<li> element)
      * @return {string}
@@ -1440,8 +1453,8 @@
      */
     QueryBuilder.prototype.getRuleInput = function(rule_id, filter, value_id) {
         if (typeof filter.input == 'function') {
-          var $rule = this.$el.find('#'+ rule_id);
-          return filter.input.call(this, $rule, filter, value_id);
+            var $rule = this.$el.find('#'+ rule_id);
+            return filter.input.call(this, $rule, filter, value_id);
         }
 
         var validation = filter.validation || {},

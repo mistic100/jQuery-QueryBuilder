@@ -4,9 +4,10 @@ module.exports = function(grunt) {
             'sql': 'src/query-builder-sql-support.js',
             'mongodb': 'src/query-builder-mongodb-support.js'
         },
-    
         langs = {},
-        files = [];
+        files_to_load = [],
+        loaded_modules = [],
+        loaded_lang = '';
         
     grunt.file.expandMapping('src/i18n/*.js', '', {
         flatten: true, ext: ''
@@ -19,8 +20,10 @@ module.exports = function(grunt) {
     var arg_modules = grunt.option('modules');
     if (typeof arg_modules === 'string') {
         arg_modules.split(',').forEach(function(m) {
+            m = m.trim();
             if (modules[m]) {
-                files.push(modules[m]);
+                files_to_load.push(modules[m]);
+                loaded_modules.push(m);
             }
             else {
                 grunt.fail.warn('Module '+ m +' unknown');
@@ -29,7 +32,8 @@ module.exports = function(grunt) {
     }
     else if (arg_modules === undefined) {
         for (var m in modules) {
-            files.push(modules[m]);
+            files_to_load.push(modules[m]);
+            loaded_modules.push(m);
         }
     }
     
@@ -38,15 +42,16 @@ module.exports = function(grunt) {
     if (typeof arg_lang === 'string') {
         if (langs[arg_lang]) {
             if (arg_lang != 'en') {
-                files.push(langs[arg_lang]);
+                files_to_load.push(langs[arg_lang]);
             }
+            loaded_lang = arg_lang;
         }
         else {
             grunt.fail.warn('Lang '+ arg_lang +' unknown');
         }
     }
     
-    grunt.log.writeln('Merged files: ['+ files.join(', ') +']');
+    grunt.log.writeln('Merged files: ['+ files_to_load.join(', ') +']');
 
     
     grunt.initConfig({
@@ -55,7 +60,7 @@ module.exports = function(grunt) {
         banner:
             '/*!\n'+
             ' * jQuery QueryBuilder <%= pkg.version %>\n'+
-            ' * Copyright <%= grunt.template.today("yyyy") %> Damien "Mistic" Sorel (http://www.strangeplanet.fr)\n'+
+            ' * Copyright 2014-<%= grunt.template.today("yyyy") %> Damien "Mistic" Sorel (http://www.strangeplanet.fr)\n'+
             ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n'+
             ' */',
 
@@ -74,19 +79,50 @@ module.exports = function(grunt) {
         // copy src
         concat: {
             options: {
-                banner: '<%= banner %>\n',
+                separator: '',
                 stripBanners: {
                     block: true
                 }
             },
-            src: {
-                files: {
-                    'dist/query-builder.css': [
-                        'src/query-builder.css'
-                    ],
-                    'dist/query-builder.js': [
-                        'src/query-builder.js'
-                    ].concat(files)
+            css: {
+                src: ['src/query-builder.css'],
+                dest: 'dist/query-builder.css',
+                options: {
+                    banner: '<%= banner %>\n'
+                }
+            },
+            js: {
+                src: ['src/query-builder.js'].concat(files_to_load),
+                dest: 'dist/query-builder.js',
+                options: {
+                    // remove wrappers, use strict and jshint directives
+                    process: function(src, file) {
+                        return src.replace(/(\(function\(\$\){\n|}\(jQuery\)\);\n?|[ \t]*"use strict";\n|\/\*jshint [a-z:]+ \*\/\n)/g, '');
+                    }
+                }
+            }
+        },
+        
+        // add AMD wrapper
+        wrap: {
+            dist: {
+                src: ['dist/query-builder.js'],
+                dest: '',
+                options: {
+                    separator: '',
+                    wrapper: function() {
+                        var wrapper = grunt.file.read('src/.wrapper.js').split('@@js\n');
+                        
+                        if (loaded_modules.length) {
+                            wrapper[0] = '// Modules: ' + loaded_modules.join(', ') + '\n' + wrapper[0];
+                        }
+                        if (loaded_lang.length) {
+                            wrapper[0] = '// Language: ' + loaded_lang + '\n' + wrapper[0];
+                        }
+                        wrapper[0] = grunt.template.process('<%= banner %>\n\n') + wrapper[0];
+                        
+                        return wrapper;
+                    }
                 }
             }
         },
@@ -144,10 +180,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-wrap');
 
     grunt.registerTask('default', [
         'copy',
         'concat',
+        'wrap',
         'uglify',
         'cssmin'
     ]);
