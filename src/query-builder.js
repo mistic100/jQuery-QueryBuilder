@@ -40,11 +40,15 @@
         this.init(options);
     };
 
+    MicroEvent.mixin(QueryBuilder);
+
 
     // DEFAULT CONFIG
     // ===============================
     QueryBuilder.DEFAULTS = {
         filters: [],
+
+        plugins: null,
 
         onValidationError: null,
         onAfterAddGroup: null,
@@ -157,6 +161,46 @@
     };
 
 
+    // PLUGINS SYSTEM
+    // Inspired by https://github.com/brianreavis/microplugin.js
+    // Very lightened and without dependencies
+    // ===============================
+    QueryBuilder.plugins = {};
+
+    QueryBuilder.define = function(name, fct) {
+        QueryBuilder.plugins[name] = fct;
+    };
+
+    QueryBuilder.prototype.initPlugins = function() {
+        if (!this.settings.plugins) {
+            return;
+        }
+
+        var that = this,
+            queue = {};
+
+        if ($.isArray(this.settings.plugins)) {
+            $.each(this.settings.plugins, function(i, plugin) {
+                queue[plugin] = {};
+            });
+        }
+        else {
+            $.each(this.settings.plugins, function(plugin, options) {
+                queue[plugin] = options;
+            });
+        }
+
+        $.each(queue, function(plugin, options) {
+            if (plugin in QueryBuilder.plugins) {
+                QueryBuilder.plugins[plugin].call(that, options);
+            }
+            else {
+                $.error('Unable to find plugin "' + plugin +'"');
+            }
+        });
+    };
+
+
     // PUBLIC METHODS
     // ===============================
     /**
@@ -214,6 +258,10 @@
         if (this.settings.sortable) {
             this.initSortable();
         }
+
+        this.initPlugins();
+
+        this.trigger('after-init');
 
         if (options.rules) {
             this.setRules(options.rules);
@@ -948,9 +996,7 @@
             var $error = $target.find('.error-container').eq(0);
             $error.attr('title', fmt.apply(null, error));
 
-            if ($.fn.tooltip) {
-                $error.tooltip('hide').tooltip('fixTitle');
-            }
+            this.trigger('rule-error', $target, error);
         }
     };
 
@@ -1352,7 +1398,8 @@
     <ul class=rules-list></ul> \
   </dd> \
 </dl>';
-        return h;
+
+        return this.change('group-template', h);
     };
 
     /**
@@ -1374,7 +1421,7 @@
             </label>';
         }
 
-        return h;
+        return this.change('group-conditions', h);
     };
 
     /**
@@ -1393,12 +1440,13 @@
     </div> \
   </div> \
   '+ (this.settings.sortable ? '<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>' : '') +' \
-  '+ (this.settings.display_errors ? '<div class="error-container" data-toggle="tooltip" data-placement="right"><i class="' + this.icons.error + '"></i></div>' : '') +'\
+  '+ (this.settings.display_errors ? '<div class="error-container"><i class="' + this.icons.error + '"></i></div>' : '') +'\
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
 </li>';
-        return h;
+
+        return this.change('rule-template', h);
     };
 
     /**
@@ -1424,7 +1472,8 @@
 
         if (optgroup !== null) h+= '</optgroup>';
         h+= '</select>';
-        return h;
+
+        return this.change('rule-filter-select', h);
     };
 
     /**
@@ -1442,7 +1491,8 @@
         }
 
         h+= '</select>';
-        return h;
+
+        return this.change('rule-operator-select', h);
     };
 
     /**
