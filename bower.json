@@ -14,7 +14,7 @@
     "jquery": ">= 1.9.0",
     "bootstrap": "^3.1.0",
     "momentjs": "^2.6.0",
-    "microevent-mistic100": "https://github.com/mistic100/microevent.js.git#master"
+    "microevent-mistic100": "^2.0.0"
   },
   "keywords": [
     "jquery",

@@ -1,14 +1,22 @@
 module.exports = function(grunt) {
     // list available modules and languages
-    var modules = {
-            'sql': 'src/query-builder-sql-support.js',
-            'mongodb': 'src/query-builder-mongodb-support.js'
-        },
+    var modules = {},
         langs = {},
         files_to_load = [],
+        files_for_standalone = [
+            'bower_components/microevent-mistic100/microevent.js',
+            'dist/query-builder.js'
+        ],
         loaded_modules = [],
         loaded_lang = '';
         
+    grunt.file.expandMapping('src/plugins/*.js', '', {
+        flatten: true, ext: ''
+    })
+    .forEach(function(f) {
+        modules[f.dest] = f.src[0];
+    });
+    
     grunt.file.expandMapping('src/i18n/*.js', '', {
         flatten: true, ext: ''
     })
@@ -95,9 +103,14 @@ module.exports = function(grunt) {
                 src: ['src/query-builder.js'].concat(files_to_load),
                 dest: 'dist/query-builder.js',
                 options: {
-                    // remove wrappers, use strict and jshint directives
+                    // remove wrappers, use strict, jshint directives, sections comments
                     process: function(src, file) {
-                        return src.replace(/(\(function\(\$\){\n|}\(jQuery\)\);\n?|[ \t]*"use strict";\n|\/\*jshint [a-z:]+ \*\/\n)/g, '');
+                        return src
+                          .replace(/\(function\(\$\){\n/g, '')
+                          .replace(/\n}\(jQuery\)\);/g, '')
+                          .replace(/[ \t]*"use strict";\n/g, '')
+                          .replace(/\/\*jshint [a-z:]+ \*\/\n/g, '')
+                          .replace(/\n( *\/\/ [^\n]*\n)+ *\/\/ =+/g, '');
                     }
                 }
             }
@@ -136,6 +149,9 @@ module.exports = function(grunt) {
                 files: {
                     'dist/query-builder.min.js': [
                         'dist/query-builder.js'
+                    ],
+                    'dist/query-builder.standalone.min.js': [
+                        'dist/query-builder.standalone.js'
                     ]
                 }
             }
@@ -173,6 +189,27 @@ module.exports = function(grunt) {
             all: ['tests/*.html']
         }
     });
+    
+    // from https://github.com/brianreavis/selectize.js/blob/master/Gruntfile.js
+    grunt.registerTask('build_standalone', '', function() {
+        var files = [],
+            modules = [];
+        
+        // get sources with named definitions
+        for (var i=0, n=files_for_standalone.length; i<n; i++) {
+            var path = files_for_standalone[i],
+                name = path.match(/([^\/]+?).js$/)[1],
+                source = grunt.file.read(path);
+            
+            source = source.replace(/define\((.*?)factory\);/, 'define(\'' + name + '\', $1factory);');
+            modules.push(source);
+        }
+        
+        // write output
+        path = 'dist/query-builder.standalone.js';
+        grunt.file.write(path, modules.join('\n\n'));
+        grunt.log.writeln('Built "' + path + '".');
+    });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -186,6 +223,7 @@ module.exports = function(grunt) {
         'copy',
         'concat',
         'wrap',
+        'build_standalone',
         'uglify',
         'cssmin'
     ]);

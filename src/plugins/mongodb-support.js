@@ -35,7 +35,7 @@
 
     // PUBLIC METHODS
     // ===============================
-    $.extend($.fn.queryBuilder.constructor.prototype, {
+    $.fn.queryBuilder.extend({
         /**
          * Get rules as MongoDB query
          * @param data {object} (optional) rules

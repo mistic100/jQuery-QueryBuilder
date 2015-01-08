@@ -35,7 +35,7 @@
 
     // PUBLIC METHODS
     // ===============================
-    $.extend($.fn.queryBuilder.constructor.prototype, {
+    $.fn.queryBuilder.extend({
         /**
          * Get rules as SQL query
          * @param stmt {false|string} use prepared statements - false, 'question_mark' or 'numbered'
@@ -99,7 +99,9 @@
                                     v = escapeString(v);
                                 }
 
-                                v = sql.fn(v);
+                                if (sql.fn) {
+                                    v = sql.fn(v);
+                                }
 
                                 if (stmt) {
                                     if (stmt == 'question_mark') {
@@ -157,9 +159,6 @@
             if (typeof sql === 'string') {
                 sql = { op: sql };
             }
-            if (!sql.fn) {
-                sql.fn = passthru;
-            }
             if (!sql.list) {
                 sql.list = false;
             }
@@ -174,13 +173,6 @@
 
     // UTILITIES
     // ===============================
-    /**
-     * Does nothing !
-     */
-    function passthru(v) {
-        return v;
-    }
-
     /**
      * Change type of a value to int or float
      * @param value {mixed}

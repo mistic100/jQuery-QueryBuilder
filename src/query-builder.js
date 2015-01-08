@@ -167,10 +167,26 @@
     // ===============================
     QueryBuilder.plugins = {};
 
+    /**
+     * Define a new plugin
+     * @param {string}
+     * @param {function}
+     */
     QueryBuilder.define = function(name, fct) {
         QueryBuilder.plugins[name] = fct;
     };
+    
+    /**
+     * Add new methods
+     * @param {object}
+     */
+    QueryBuilder.extend = function(methods) {
+        $.extend(QueryBuilder.prototype, methods);
+    };
 
+    /**
+     * Init plugins for an instance
+     */
     QueryBuilder.prototype.initPlugins = function() {
         if (!this.settings.plugins) {
             return;
@@ -1619,6 +1635,8 @@
     };
 
     $.fn.queryBuilder.constructor = QueryBuilder;
+    $.fn.queryBuilder.extend = QueryBuilder.extend;
+    $.fn.queryBuilder.define = QueryBuilder.define;
 
 
     // UTILITIES
