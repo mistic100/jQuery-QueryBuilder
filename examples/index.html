@@ -6,6 +6,8 @@
 
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../src/query-builder.css">
+  <link rel="stylesheet" href="../src/plugins/bt-tooltip-errors.css">
+  <link rel="stylesheet" href="../src/plugins/sortable.css">
   <link href="../bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
 </head>
 
@@ -43,6 +45,7 @@
 <script src="../src/plugins/sql-support.js"></script>
 <script src="../src/plugins/mongodb-support.js"></script>
 <script src="../src/plugins/bt-tooltip-errors.js"></script>
+<script src="../src/plugins/sortable.js"></script>
 <script src="../bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 
 <script>
@@ -55,7 +58,8 @@ $('#builder').queryBuilder({
   },
   
   plugins: {
-    'bt-tooltip-errors': { delay: 100}
+    'bt-tooltip-errors': { delay: 100},
+    'sortable': null
   },
   
   filters: [

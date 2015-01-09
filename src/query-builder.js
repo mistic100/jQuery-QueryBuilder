@@ -58,7 +58,6 @@
 
         display_errors: true,
         allow_groups: -1,
-        sortable: false,
         conditions: ['AND', 'OR'],
         default_condition: 'AND',
 
@@ -66,8 +65,7 @@
             filter_readonly: false,
             operator_readonly: false,
             value_readonly: false,
-            no_delete: false,
-            no_sortable: false
+            no_delete: false
         },
 
         template: {
@@ -157,7 +155,6 @@
             add_rule: 'glyphicon glyphicon-plus',
             remove_group: 'glyphicon glyphicon-remove',
             remove_rule: 'glyphicon glyphicon-remove',
-            sort: 'glyphicon glyphicon-sort',
             error: 'glyphicon glyphicon-warning-sign'
         }
     };
@@ -272,10 +269,6 @@
 
         // INIT
         this.bindEvents();
-
-        if (this.settings.sortable) {
-            this.initSortable();
-        }
 
         this.initPlugins();
 
@@ -1049,125 +1042,6 @@
         this.trigger('validationError', $target, error);
     };
 
-    /**
-     * Init HTML5 drag and drop
-     */
-    QueryBuilder.prototype.initSortable = function() {
-        // configure jQuery to use dataTransfer
-        $.event.props.push('dataTransfer');
-
-        var placeholder, src, isHandle = false;
-
-        // only init drag from drag handle
-        this.$el.on('mousedown', '.drag-handle', function(e) {
-            isHandle = true;
-        });
-        this.$el.on('mouseup', '.drag-handle', function(e) {
-            isHandle = false;
-        });
-
-        // dragstart: create placeholder and hide current element
-        this.$el.on('dragstart', '[draggable]', function(e) {
-            e.stopPropagation();
-
-            if (isHandle) {
-                isHandle = false;
-
-                // notify drag and drop (only dummy text)
-                e.dataTransfer.setData('text', 'drag');
-
-                src = $(e.target);
-
-                placeholder = $('<div class="rule-placeholder">&nbsp;</div>');
-                placeholder.css('min-height', src.height());
-                placeholder.insertAfter(src);
-
-                // Chrome glitch (helper invisible if hidden immediately)
-                setTimeout(function() {
-                    src.hide();
-                }, 0);
-            }
-            else {
-                e.preventDefault();
-            }
-        });
-
-        // dragenter: move the placeholder
-        this.$el.on('dragenter', '[draggable]', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var target = $(e.target), parent;
-
-            // on rule
-            parent = target.closest('.rule-container');
-            if (parent.length) {
-                placeholder.detach().insertAfter(parent);
-                return;
-            }
-
-            // on group header
-            parent = target.closest('.rules-group-header');
-            if (parent.length) {
-                parent = target.closest('.rules-group-container');
-                placeholder.detach().prependTo(parent.find('.rules-list').eq(0));
-                return;
-            }
-
-            // on group
-            parent = target.closest('.rules-group-container');
-            if (parent.length) {
-                placeholder.detach().appendTo(parent.find('.rules-list').eq(0));
-                return;
-            }
-        });
-
-        // dragover: prevent glitches
-        this.$el.on('dragover', '[draggable]', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        });
-
-        // drop: move current element
-        this.$el.on('drop', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var target = $(e.target), parent;
-
-            // on rule
-            parent = target.closest('.rule-container');
-            if (parent.length) {
-                src.detach().insertAfter(parent);
-                return;
-            }
-
-            // on group header
-            parent = target.closest('.rules-group-header');
-            if (parent.length) {
-                parent = target.closest('.rules-group-container');
-                src.detach().prependTo(parent.find('.rules-list').eq(0));
-                return;
-            }
-
-            // on group
-            parent = target.closest('.rules-group-container');
-            if (parent.length) {
-                src.detach().appendTo(parent.find('.rules-list').eq(0));
-                return;
-            }
-        });
-
-        // dragend: show current element and delete placeholder
-        this.$el.on('dragend', '[draggable]', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            src.show();
-            placeholder.remove();
-        });
-    };
-
 
     // DATA ACCESS
     // ===============================
@@ -1419,9 +1293,6 @@
         if (flags.no_delete) {
             $rule.find('[data-delete=rule]').remove();
         }
-        if (flags.no_sortable) {
-            $rule.find('.drag-handle').remove();
-        }
 
         this.trigger('afterApplyRuleFlags', $rule, rule, flags);
     };
@@ -1437,9 +1308,9 @@
      */
     QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
         var h = '\
-<dl id="'+ group_id +'" class="rules-group-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
+<dl id="'+ group_id +'" class="rules-group-container"> \
   <dt class="rules-group-header"> \
-    <div class="btn-group pull-right"> \
+    <div class="btn-group pull-right group-actions"> \
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
         <i class="' + this.icons.add_rule + '"></i> '+ this.lang.add_rule +' \
       </button> \
@@ -1450,10 +1321,9 @@
         <i class="' + this.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
       </button>' : '') +' \
     </div> \
-    <div class="btn-group"> \
+    <div class="btn-group group-conditions"> \
       '+ this.getGroupConditions(group_id) +' \
     </div> \
-    '+ (this.settings.sortable && level>1 ? '<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>' : '') +' \
     '+ (this.settings.display_errors ? '<div class="error-container" data-toggle="tooltip" data-placement="right"><i class="' + this.icons.error + '"></i></div>' : '') +'\
   </dt> \
   <dd class=rules-group-body> \
@@ -1461,7 +1331,7 @@
   </dd> \
 </dl>';
 
-        return this.change('getGroupTemplate', h);
+        return this.change('getGroupTemplate', h, level);
     };
 
     /**
@@ -1493,15 +1363,14 @@
      */
     QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
         var h = '\
-<li id="'+ rule_id +'" class="rule-container" '+ (this.settings.sortable ? 'draggable="true"' : '') +'> \
+<li id="'+ rule_id +'" class="rule-container"> \
   <div class="rule-header"> \
-    <div class="btn-group pull-right"> \
+    <div class="btn-group pull-right rule-actions"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
         <i class="' + this.icons.remove_rule + '"></i> '+ this.lang.delete_rule +' \
       </button> \
     </div> \
   </div> \
-  '+ (this.settings.sortable ? '<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>' : '') +' \
   '+ (this.settings.display_errors ? '<div class="error-container"><i class="' + this.icons.error + '"></i></div>' : '') +'\
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
