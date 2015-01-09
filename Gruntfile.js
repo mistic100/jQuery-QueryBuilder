@@ -5,6 +5,7 @@ module.exports = function(grunt) {
         files_to_load = [],
         files_for_standalone = [
             'bower_components/microevent-mistic100/microevent.js',
+            'bower_components/jquery-extendext/jQuery.extendext.js',
             'dist/query-builder.js'
         ],
         loaded_modules = [],

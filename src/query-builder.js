@@ -226,7 +226,7 @@
      */
     QueryBuilder.prototype.init = function(options) {
         // PROPERTIES
-        this.settings = merge(QueryBuilder.DEFAULTS, options);
+        this.settings = $.extendext(true, 'replace', {}, QueryBuilder.DEFAULTS, options);
         this.status = {
             group_id: 0,
             rule_id: 0,
@@ -1626,10 +1626,10 @@
      * @return {object}
      */
     QueryBuilder.prototype.getRuleFlags = function(rule) {
-        var flags = merge(this.settings.default_rule_flags);
+        var flags = $.extend({}, this.settings.default_rule_flags);
 
         if (rule.readonly) {
-            merge(true, flags, {
+            $.extend(flags, {
                 filter_readonly: true,
                 operator_readonly: true,
                 value_readonly: true,
@@ -1638,7 +1638,7 @@
         }
 
         if (rule.flags) {
-            merge(true, flags, rule.flags);
+           $.extend(flags, rule.flags);
         }
 
         return this.change('getRuleFlags', flags, rule);
@@ -1670,7 +1670,7 @@
 
     $.fn.queryBuilder.defaults = {
         set: function(options) {
-            merge(true, QueryBuilder.DEFAULTS, options);
+            $.extendext(true, 'replace', QueryBuilder.DEFAULTS, options);
         },
         get: function(key) {
             var options = QueryBuilder.DEFAULTS;
@@ -1688,64 +1688,6 @@
 
     // UTILITIES
     // ===============================
-    /**
-     * From Highcharts library
-     * https://gist.github.com/highslide-software/f646f39d51d18b7d6bfb
-     * -----------------------
-     * Deep merge two or more objects and return a third object. If the first argument is
-     * true, the contents of the second object is copied into the first object.
-     * Previously this function redirected to jQuery.extend(true), but this had two limitations.
-     * First, it deep merged arrays, which lead to workarounds in Highcharts. Second,
-     * it copied properties from extended prototypes.
-     */
-    function merge() {
-        var i,
-          args = arguments,
-          len,
-          ret = {};
-
-        function doCopy(copy, original) {
-            var value, key;
-
-            // An object is replacing a primitive
-            if (typeof copy !== 'object') {
-                copy = {};
-            }
-
-            for (key in original) {
-                if (original.hasOwnProperty(key)) {
-                    value = original[key];
-
-                    // Copy the contents of objects, but not arrays or DOM nodes
-                    if (value && key !== 'renderTo' && typeof value.nodeType !== 'number' &&
-                        typeof value === 'object' && Object.prototype.toString.call(value) !== '[object Array]') {
-                        copy[key] = doCopy(copy[key] || {}, value);
-                    }
-                    // Primitives and arrays are copied over directly
-                    else {
-                        copy[key] = original[key];
-                    }
-                }
-            }
-
-            return copy;
-        }
-
-        // If first argument is true, copy into the existing object. Used in setOptions.
-        if (args[0] === true) {
-            ret = args[1];
-            args = Array.prototype.slice.call(args, 2);
-        }
-
-        // For each argument, extend the return
-        len = args.length;
-        for (i = 0; i < len; i++) {
-            ret = doCopy(ret, args[i]);
-        }
-
-        return ret;
-    }
-
     /**
      * Utility to iterate over radio/checkbox/selection options.
      * it accept three formats: array of values, map, array of 1-element maps
