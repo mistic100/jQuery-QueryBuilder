@@ -58,8 +58,6 @@ module.exports = function(grunt) {
             grunt.fail.warn('Lang '+ arg_lang +' unknown');
         }
     }
-    
-    grunt.log.writeln('Merged files: ['+ files_to_load.join(', ') +']');
 
     
     grunt.initConfig({
@@ -176,10 +174,7 @@ module.exports = function(grunt) {
         jshint: {
             lib: {
                 files: {
-                    src: [
-                        'src/query-builder.js',
-                        'src/query-builder-sql-support.js'
-                    ]
+                    src: ['src/query-builder.js'].concat(files_to_load)
                 }
             }
         },
@@ -209,6 +204,39 @@ module.exports = function(grunt) {
         path = 'dist/query-builder.standalone.js';
         grunt.file.write(path, modules.join('\n\n'));
         grunt.log.writeln('Built "' + path + '".');
+    });
+    
+    // list the triggers and changes in core code
+    grunt.registerTask('describe_triggers', '', function() {
+        var triggers = {};
+        
+        core = grunt.file.read('src/query-builder.js').split('\n').forEach(function(line, i) {
+            var matches = /(?:this|that)\.(trigger|change)\('(\w+)'[^)]*\);/.exec(line);
+            if (matches !== null) {
+                triggers[matches[2]] = triggers[matches[2]] || {
+                  name: matches[2],
+                  type: matches[1],
+                  usages: []
+                };
+                
+                triggers[matches[2]].usages.push([i, matches[0].slice(0,-1)]);
+            }
+        });
+        
+        grunt.log.writeln('\nTriggers in QueryBuilder ' + grunt.template.process('<%= pkg.version %>') + ' :\n');
+        
+        for (var t in triggers) {
+            grunt.log.write((triggers[t].name)['cyan']);
+            grunt.log.writeln(' (' + triggers[t].type + ')');
+            
+            triggers[t].usages.forEach(function(line) {
+                grunt.log.write('+-- ');
+                grunt.log.write((':' + line[0])['red']);
+                grunt.log.writeln(' ' + line[1]);
+            });
+            
+            grunt.log.write('\n');
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
