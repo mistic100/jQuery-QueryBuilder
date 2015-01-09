@@ -1,28 +1,38 @@
 module.exports = function(grunt) {
     // list available modules and languages
-    var modules = {
-            'sql': 'src/query-builder-sql-support.js',
-            'mongodb': 'src/query-builder-mongodb-support.js'
-        },
+    var modules = {},
         langs = {},
-        files_to_load = [],
+        js_files_to_load = [],
+        css_files_to_load = [],
+        files_for_standalone = [
+            'bower_components/microevent-mistic100/microevent.js',
+            'bower_components/jquery-extendext/jQuery.extendext.js',
+            'dist/query-builder.js'
+        ],
         loaded_modules = [],
         loaded_lang = '';
-        
+
+    grunt.file.expandMapping('src/plugins/*.js', '', {
+        flatten: true, ext: ''
+    })
+    .forEach(function(f) {
+        modules[f.dest] = f.src[0];
+    });
+
     grunt.file.expandMapping('src/i18n/*.js', '', {
         flatten: true, ext: ''
     })
     .forEach(function(f) {
         langs[f.dest] = f.src[0];
     });
-    
+
     // parse 'modules' parameter
     var arg_modules = grunt.option('modules');
     if (typeof arg_modules === 'string') {
         arg_modules.split(',').forEach(function(m) {
             m = m.trim();
             if (modules[m]) {
-                files_to_load.push(modules[m]);
+                js_files_to_load.push(modules[m]);
                 loaded_modules.push(m);
             }
             else {
@@ -32,17 +42,17 @@ module.exports = function(grunt) {
     }
     else if (arg_modules === undefined) {
         for (var m in modules) {
-            files_to_load.push(modules[m]);
+            js_files_to_load.push(modules[m]);
             loaded_modules.push(m);
         }
     }
-    
+
     // parse 'lang' parameter
     var arg_lang = grunt.option('lang');
     if (typeof arg_lang === 'string') {
         if (langs[arg_lang]) {
             if (arg_lang != 'en') {
-                files_to_load.push(langs[arg_lang]);
+                js_files_to_load.push(langs[arg_lang]);
             }
             loaded_lang = arg_lang;
         }
@@ -50,10 +60,16 @@ module.exports = function(grunt) {
             grunt.fail.warn('Lang '+ arg_lang +' unknown');
         }
     }
-    
-    grunt.log.writeln('Merged files: ['+ files_to_load.join(', ') +']');
 
-    
+    // get css files for loaded mofules
+    js_files_to_load.forEach(function(js_file) {
+        var css_file = js_file.replace(/js$/, 'css');
+        if (grunt.file.exists(css_file)) {
+            css_files_to_load.push(css_file);
+        }
+    });
+
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -79,30 +95,39 @@ module.exports = function(grunt) {
         // copy src
         concat: {
             options: {
-                separator: '',
+                separator: '\n',
                 stripBanners: {
                     block: true
                 }
             },
             css: {
-                src: ['src/query-builder.css'],
+                src: ['src/query-builder.css'].concat(css_files_to_load),
                 dest: 'dist/query-builder.css',
                 options: {
-                    banner: '<%= banner %>\n'
+                    banner: '<%= banner %>\n',
+                    // remove sections comments
+                    process: function(src) {
+                        return src.replace(/\/\* [^\r\n]* \*\/\r?\n/g, '');
+                    }
                 }
             },
             js: {
-                src: ['src/query-builder.js'].concat(files_to_load),
+                src: ['src/query-builder.js'].concat(js_files_to_load),
                 dest: 'dist/query-builder.js',
                 options: {
-                    // remove wrappers, use strict and jshint directives
-                    process: function(src, file) {
-                        return src.replace(/(\(function\(\$\){\n|}\(jQuery\)\);\n?|[ \t]*"use strict";\n|\/\*jshint [a-z:]+ \*\/\n)/g, '');
+                    // remove wrappers, use strict, jshint directives, sections comments
+                    process: function(src) {
+                        return src
+                          .replace(/\(function\(\$\){\r?\n/g, '')
+                          .replace(/\r?\n}\(jQuery\)\);/g, '')
+                          .replace(/[ \t]*"use strict";\r?\n/g, '')
+                          .replace(/\/\*jshint [a-z:]+ \*\/\r?\n/g, '')
+                          .replace(/\r?\n( *\/\/ [^\r\n]*\r?\n)+ *\/\/ =+/g, '');
                     }
                 }
             }
         },
-        
+
         // add AMD wrapper
         wrap: {
             dist: {
@@ -112,7 +137,7 @@ module.exports = function(grunt) {
                     separator: '',
                     wrapper: function() {
                         var wrapper = grunt.file.read('src/.wrapper.js').split('@@js\n');
-                        
+
                         if (loaded_modules.length) {
                             wrapper[0] = '// Modules: ' + loaded_modules.join(', ') + '\n' + wrapper[0];
                         }
@@ -120,7 +145,7 @@ module.exports = function(grunt) {
                             wrapper[0] = '// Language: ' + loaded_lang + '\n' + wrapper[0];
                         }
                         wrapper[0] = grunt.template.process('<%= banner %>\n\n') + wrapper[0];
-                        
+
                         return wrapper;
                     }
                 }
@@ -136,6 +161,9 @@ module.exports = function(grunt) {
                 files: {
                     'dist/query-builder.min.js': [
                         'dist/query-builder.js'
+                    ],
+                    'dist/query-builder.standalone.min.js': [
+                        'dist/query-builder.standalone.js'
                     ]
                 }
             }
@@ -160,10 +188,7 @@ module.exports = function(grunt) {
         jshint: {
             lib: {
                 files: {
-                    src: [
-                        'src/query-builder.js',
-                        'src/query-builder-sql-support.js'
-                    ]
+                    src: ['src/query-builder.js'].concat(js_files_to_load)
                 }
             }
         },
@@ -171,6 +196,60 @@ module.exports = function(grunt) {
         // qunit test suite
         qunit: {
             all: ['tests/*.html']
+        }
+    });
+
+    // from https://github.com/brianreavis/selectize.js/blob/master/Gruntfile.js
+    grunt.registerTask('build_standalone', '', function() {
+        var files = [],
+            modules = [];
+
+        // get sources with named definitions
+        for (var i=0, n=files_for_standalone.length; i<n; i++) {
+            var path = files_for_standalone[i],
+                name = path.match(/([^\/]+?).js$/)[1],
+                source = grunt.file.read(path);
+
+            source = source.replace(/define\((.*?)factory\);/, 'define(\'' + name + '\', $1factory);');
+            modules.push(source);
+        }
+
+        // write output
+        path = 'dist/query-builder.standalone.js';
+        grunt.file.write(path, modules.join('\n\n'));
+        grunt.log.writeln('Built "' + path + '".');
+    });
+
+    // list the triggers and changes in core code
+    grunt.registerTask('describe_triggers', '', function() {
+        var triggers = {};
+
+        core = grunt.file.read('src/query-builder.js').split('\n').forEach(function(line, i) {
+            var matches = /(?:this|that)\.(trigger|change)\('(\w+)'[^)]*\);/.exec(line);
+            if (matches !== null) {
+                triggers[matches[2]] = triggers[matches[2]] || {
+                  name: matches[2],
+                  type: matches[1],
+                  usages: []
+                };
+
+                triggers[matches[2]].usages.push([i, matches[0].slice(0,-1)]);
+            }
+        });
+
+        grunt.log.writeln('\nTriggers in QueryBuilder ' + grunt.template.process('<%= pkg.version %>') + ' :\n');
+
+        for (var t in triggers) {
+            grunt.log.write((triggers[t].name)['cyan']);
+            grunt.log.writeln(' (' + triggers[t].type + ')');
+
+            triggers[t].usages.forEach(function(line) {
+                grunt.log.write('+-- ');
+                grunt.log.write((':' + line[0])['red']);
+                grunt.log.writeln(' ' + line[1]);
+            });
+
+            grunt.log.write('\n');
         }
     });
 
@@ -186,10 +265,11 @@ module.exports = function(grunt) {
         'copy',
         'concat',
         'wrap',
+        'build_standalone',
         'uglify',
         'cssmin'
     ]);
-    
+
     grunt.registerTask('test', [
         'qunit',
         'jshint'

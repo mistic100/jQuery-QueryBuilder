@@ -73,10 +73,6 @@
   display:inline-block !important;
 }
 
-.query-builder .tooltip-inner {
-  color:#fdd !important;
-}
-
 /* TICKS */
 .query-builder .rules-list>* {
   position:relative;
@@ -111,18 +107,3 @@
   .query-builder .rules-list>*:last-child:after {
     display:none;
   }
-
-/* DRAG & DROP */
-.query-builder  .drag-handle {
-  cursor:move;
-  display:inline-block;
-}
-
-.query-builder  .dragged {
-  opacity:0.5;
-}
-
-.query-builder .rule-placeholder {
-  border:1px dashed #bbb;
-  opacity:0.7;
-}

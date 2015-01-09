@@ -120,7 +120,7 @@ var filters_for_validation_callback = [{
   type: 'integer',
   validation: {
     callback: function(value, filter, operator, $rule) {
-      switch (value) {
+      switch (value[0]) {
         case '1':
           return 'invalid_name';
           
