@@ -5,7 +5,8 @@ Gemfile.lock
 /dist/bootstrap
 /dist/bootstrap-datepicker/*
 !/dist/bootstrap-datepicker/css
-!/dist/bootstrap-datepicker/js
+!/dist/bootstrap-datepicker/js*
+/dist/bootstrap-datepicker/js/locales
 /dist/jquery
 /dist/jQuery-QueryBuilder/*
 !/dist/jQuery-QueryBuilder/dist
@@ -22,3 +23,5 @@ Gemfile.lock
 /dist/selectize/dist/less
 /dist/sifter
 /dist/jquery-bridget
+/dist/jquery-extendext
+/dist/microevent-mistic100
