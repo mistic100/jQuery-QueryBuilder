@@ -7,16 +7,12 @@
 (function($){
     "use strict";
 
-    $.fn.queryBuilder.defaults.set({
-        default_rule_flags: {
-            no_sortable: false
-        },
-        icons: {
-            sort: 'glyphicon glyphicon-sort'
-        }
-    });
-
     $.fn.queryBuilder.define('sortable', function(options) {
+        options = $.extend({
+            default_no_sortable: false,
+            icon: 'glyphicon glyphicon-sort'
+        }, options || {});
+
         /**
          * Init HTML5 drag and drop
          */
@@ -94,6 +90,14 @@
         /**
          * Remove drag handle from non-sortable rules
          */
+        this.on('getRuleFlags', function(flags) {
+            if (flags.no_sortable === undefined) {
+                flags.no_sortable = options.default_no_sortable;
+            }
+
+            return flags;
+        });
+
         this.on('afterApplyRuleFlags', function($rule, rule, flags) {
             if (flags.no_sortable) {
                 $rule.find('.drag-handle').remove();

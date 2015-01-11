@@ -53,8 +53,6 @@
         onValidationError: null,
         onAfterAddGroup: null,
         onAfterAddRule: null,
-        onAfterCreateRuleInput: null,
-        onAfterChangeOperator: null,
 
         display_errors: true,
         allow_groups: -1,
@@ -463,10 +461,6 @@
                     }
 
                     that.applyRuleFlags($rule, rule);
-
-                    if (filter.onAfterSetValue) {
-                        filter.onAfterSetValue.call(that, $rule, rule.value, filter, operator);
-                    }
                 }
             });
 
@@ -1269,6 +1263,10 @@
         }
 
         this.trigger('afterSetRuleValue', $rule, value, filter, operator);
+
+        if (filter.onAfterSetValue) {
+            filter.onAfterSetValue.call(this, $rule, value, filter, operator);
+        }
     };
 
     /**

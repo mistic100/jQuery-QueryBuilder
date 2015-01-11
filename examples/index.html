@@ -6,8 +6,8 @@
 
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../src/query-builder.css">
-  <link rel="stylesheet" href="../src/plugins/bt-tooltip-errors.css">
-  <link rel="stylesheet" href="../src/plugins/sortable.css">
+  <link rel="stylesheet" href="../src/plugins/bt-tooltip-errors/plugin.css">
+  <link rel="stylesheet" href="../src/plugins/sortable/plugin.css">
   <link href="../bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
 </head>
 
@@ -42,10 +42,10 @@
 <script src="../bower_components/jquery-extendext/jQuery.extendext.js"></script>
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../src/query-builder.js"></script>
-<script src="../src/plugins/sql-support.js"></script>
-<script src="../src/plugins/mongodb-support.js"></script>
-<script src="../src/plugins/bt-tooltip-errors.js"></script>
-<script src="../src/plugins/sortable.js"></script>
+<script src="../src/plugins/sql-support/plugin.js"></script>
+<script src="../src/plugins/mongodb-support/plugin.js"></script>
+<script src="../src/plugins/bt-tooltip-errors/plugin.js"></script>
+<script src="../src/plugins/sortable/plugin.js"></script>
 <script src="../bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 
 <script>
@@ -201,7 +201,7 @@ $('#builder').queryBuilder({
     },
     onAfterSetValue: function($rule, value, filter, operator) {
       if (operator.accept_values) {
-        var val = value.split('.');
+        var val = value[0].split('.');
         
         $rule.find('[name=coord_1]').val(val[0]).trigger('change');
         $rule.find('[name=coord_2]').val(val[1]);

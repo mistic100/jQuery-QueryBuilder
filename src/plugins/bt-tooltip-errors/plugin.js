@@ -17,7 +17,7 @@
         }, options || {});
 
         // add BT Tooltip data
-        this.on('ruleTemplate', function(h) {
+        this.on('getRuleTemplate', function(h) {
             return h.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
         });
 

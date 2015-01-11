@@ -12,11 +12,9 @@ module.exports = function(grunt) {
         loaded_modules = [],
         loaded_lang = '';
 
-    grunt.file.expandMapping('src/plugins/*.js', '', {
-        flatten: true, ext: ''
-    })
+    grunt.file.expand('src/plugins/*/plugin.js')
     .forEach(function(f) {
-        modules[f.dest] = f.src[0];
+        modules[f.split('/')[2]] = f;
     });
 
     grunt.file.expandMapping('src/i18n/*.js', '', {
@@ -35,7 +33,7 @@ module.exports = function(grunt) {
                 js_files_to_load.push(modules[m]);
                 loaded_modules.push(m);
             }
-            else {
+            else if (m !== 'none') {
                 grunt.fail.warn('Module '+ m +' unknown');
             }
         });
@@ -237,7 +235,7 @@ module.exports = function(grunt) {
             }
         });
 
-        grunt.log.writeln('\nTriggers in QueryBuilder ' + grunt.template.process('<%= pkg.version %>') + ' :\n');
+        grunt.log.writeln('\nTriggers in QueryBuilder:\n');
 
         for (var t in triggers) {
             grunt.log.write((triggers[t].name)['cyan']);
@@ -250,6 +248,29 @@ module.exports = function(grunt) {
             });
 
             grunt.log.write('\n');
+        }
+    });
+
+    // display avilable modules
+    grunt.registerTask('list_modules', '', function() {
+        grunt.log.writeln('\nAvailable QueryBuilder plugins:\n');
+
+        for (var m in modules) {
+          grunt.log.write(m['cyan']);
+
+          if (grunt.file.exists(modules[m].replace(/js$/, 'css'))) {
+            grunt.log.write(' + CSS');
+          }
+
+          grunt.log.write('\n');
+        }
+        
+        grunt.log.writeln('\nAvailable QueryBuilder languages:\n');
+
+        for (var l in langs) {
+          if (l !== 'en') {
+            grunt.log.writeln(l['cyan']);
+          }
         }
     });
 
