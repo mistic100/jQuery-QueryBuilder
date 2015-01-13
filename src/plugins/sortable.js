@@ -24,40 +24,35 @@
             // configure jQuery to use dataTransfer
             $.event.props.push('dataTransfer');
 
-            var placeholder, src, isHandle = false;
+            var placeholder, src,
+                that = this;
 
-            // only init drag from drag handle
-            this.$el.on('mousedown', '.drag-handle', function(e) {
-                isHandle = true;
+            // only add "draggable" attribute when hovering drag handle
+            // preventing text select bug in Firefox
+            this.$el.on('mouseover', '.drag-handle', function() {
+                that.$el.find('.rule-container, .rules-group-container').attr('draggable', true);
             });
-            this.$el.on('mouseup', '.drag-handle', function(e) {
-                isHandle = false;
+            this.$el.on('mouseout', '.drag-handle', function() {
+                that.$el.find('.rule-container, .rules-group-container').removeAttr('draggable');
             });
 
             // dragstart: create placeholder and hide current element
             this.$el.on('dragstart', '[draggable]', function(e) {
                 e.stopPropagation();
 
-                if (isHandle) {
-                    isHandle = false;
+                // notify drag and drop (only dummy text)
+                e.dataTransfer.setData('text', 'drag');
 
-                    // notify drag and drop (only dummy text)
-                    e.dataTransfer.setData('text', 'drag');
+                src = $(e.target);
 
-                    src = $(e.target);
+                placeholder = $('<div class="rule-placeholder">&nbsp;</div>');
+                placeholder.css('min-height', src.height());
+                placeholder.insertAfter(src);
 
-                    placeholder = $('<div class="rule-placeholder">&nbsp;</div>');
-                    placeholder.css('min-height', src.height());
-                    placeholder.insertAfter(src);
-
-                    // Chrome glitch (helper invisible if hidden immediately)
-                    setTimeout(function() {
-                        src.hide();
-                    }, 0);
-                }
-                else {
-                    e.preventDefault();
-                }
+                // Chrome glitch (helper invisible if hidden immediately)
+                setTimeout(function() {
+                    src.hide();
+                }, 0);
             });
 
             // dragenter: move the placeholder
@@ -65,29 +60,7 @@
                 e.preventDefault();
                 e.stopPropagation();
 
-                var target = $(e.target), parent;
-
-                // on rule
-                parent = target.closest('.rule-container');
-                if (parent.length) {
-                    placeholder.detach().insertAfter(parent);
-                    return;
-                }
-
-                // on group header
-                parent = target.closest('.rules-group-header');
-                if (parent.length) {
-                    parent = target.closest('.rules-group-container');
-                    placeholder.detach().prependTo(parent.find('.rules-list').eq(0));
-                    return;
-                }
-
-                // on group
-                parent = target.closest('.rules-group-container');
-                if (parent.length) {
-                    placeholder.detach().appendTo(parent.find('.rules-list').eq(0));
-                    return;
-                }
+                moveSortableToTarget(placeholder, $(e.target));
             });
 
             // dragover: prevent glitches
@@ -101,29 +74,7 @@
                 e.preventDefault();
                 e.stopPropagation();
 
-                var target = $(e.target), parent;
-
-                // on rule
-                parent = target.closest('.rule-container');
-                if (parent.length) {
-                    src.detach().insertAfter(parent);
-                    return;
-                }
-
-                // on group header
-                parent = target.closest('.rules-group-header');
-                if (parent.length) {
-                    parent = target.closest('.rules-group-container');
-                    src.detach().prependTo(parent.find('.rules-list').eq(0));
-                    return;
-                }
-
-                // on group
-                parent = target.closest('.rules-group-container');
-                if (parent.length) {
-                    src.detach().appendTo(parent.find('.rules-list').eq(0));
-                    return;
-                }
+                moveSortableToTarget(src, $(e.target));
             });
 
             // dragend: show current element and delete placeholder
@@ -133,6 +84,10 @@
 
                 src.show();
                 placeholder.remove();
+
+                src = placeholder = null;
+
+                that.$el.find('.rule-container, .rules-group-container').removeAttr('draggable');
             });
         });
 
@@ -141,7 +96,7 @@
          */
         this.on('afterApplyRuleFlags', function($rule, rule, flags) {
             if (flags.no_sortable) {
-                $rule.removeAttr('draggable').find('.drag-handle').remove();
+                $rule.find('.drag-handle').remove();
             }
         });
 
@@ -151,10 +106,7 @@
         this.on('getGroupTemplate', function(h, level) {
             if (level>1) {
                 var $h = $(h);
-
-                $h.attr('draggable', 'true')
-                  .find('.group-conditions').after('<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>');
-
+                $h.find('.group-conditions').after('<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>');
                 h = $h.prop('outerHTML');
             }
 
@@ -163,12 +115,38 @@
 
         this.on('getRuleTemplate', function(h) {
             var $h = $(h);
-
-            $h.attr('draggable', 'true')
-              .find('.rule-header').after('<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>');
-
+            $h.find('.rule-header').after('<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>');
             return $h.prop('outerHTML');
         });
     });
+
+    /**
+     * Move an element (placeholder or actual object) depending on active target
+     */
+    function moveSortableToTarget(element, target) {
+        var parent;
+
+        // on rule
+        parent = target.closest('.rule-container');
+        if (parent.length) {
+            element.detach().insertAfter(parent);
+            return;
+        }
+
+        // on group header
+        parent = target.closest('.rules-group-header');
+        if (parent.length) {
+            parent = target.closest('.rules-group-container');
+            element.detach().prependTo(parent.find('.rules-list').eq(0));
+            return;
+        }
+
+        // on group
+        parent = target.closest('.rules-group-container');
+        if (parent.length) {
+            element.detach().appendTo(parent.find('.rules-list').eq(0));
+            return;
+        }
+    }
 
 }(jQuery));
