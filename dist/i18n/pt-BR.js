@@ -2,6 +2,7 @@
  * jQuery QueryBuilder
  * Portuguese Brazilian translation by Leandro Gehlen (leandrogehlen@gmail.com)
  */
+
 jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Nova Regra",
   "add_group": "Novo Gruop",

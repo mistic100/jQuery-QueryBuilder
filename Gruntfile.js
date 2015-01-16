@@ -153,7 +153,8 @@ module.exports = function(grunt) {
         // compress js
         uglify: {
             options: {
-                banner: '<%= banner %>\n'
+                banner: '<%= banner %>\n',
+                mangle: { except: ['$'] }
             },
             dist: {
                 files: {

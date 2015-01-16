@@ -110,7 +110,7 @@
         this.on('getGroupTemplate', function(h, level) {
             if (level>1) {
                 var $h = $(h);
-                $h.find('.group-conditions').after('<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>');
+                $h.find('.group-conditions').after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
                 h = $h.prop('outerHTML');
             }
 
@@ -119,7 +119,7 @@
 
         this.on('getRuleTemplate', function(h) {
             var $h = $(h);
-            $h.find('.rule-header').after('<div class="drag-handle"><i class="' + this.icons.sort + '"></i></div>');
+            $h.find('.rule-header').after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
             return $h.prop('outerHTML');
         });
     });

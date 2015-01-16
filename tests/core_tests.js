@@ -31,6 +31,7 @@ $(function(){
     
     assert.ok(rulesMatch($('#container3').queryBuilder('getRules'), {}), 'Should return empty object');
     assert.equal(error_str, 'string_empty', 'Should throw "string_empty" error');
+    assert.equal($('#container3_rule_0 .error-container:visible').attr('title'), 'Empty value', 'Should display error icon with "Empty value" title');
   });
   
   QUnit.test('Language change', function(assert) {
@@ -93,11 +94,11 @@ $(function(){
   QUnit.test('Readonly', function(assert) {
     $('#container7').queryBuilder({
       filters: basic_filters,
-      rules: readonly_rules,
-      sortable: true
+      rules: readonly_rules
     });
     
-    assert.equal($('#container7_rule_2').find('.drag-handle, [data-delete=rule]').length, 0, 'Should hide drag handle and delete button of readonly rule');
+    assert.equal($('#container7_rule_2').find('[data-delete=rule]').length, 0, 'Should hide delete button of readonly rule');
+    assert.equal($('#container7_rule_2').find('input:disabled, select:disabled').length, 3, 'Should disabled select and inputs');
     $('#container7_group_1>.rules-group-header [data-delete=group]').trigger('click');
     assert.ok(rulesMatch($('#container7').queryBuilder('getRules'), readonly_rules_after), 'Should not delete group with readonly rule');
   });
