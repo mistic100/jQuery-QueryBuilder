@@ -1,7 +1,7 @@
 # name of the software
 name: jQuery QueryBuilder
 # current version of the software
-version: 1.3.0
+version: 1.4.0
 # url of the download button
 downloadUrl: https://github.com/mistic100/jQuery-QueryBuilder
 # licence of the software
@@ -56,3 +56,6 @@ pygments: true
 highlight: pygments
 
 exclude: ['README.md', 'Gemfile.lock', 'Gemfile']
+
+gems:
+  - jekyll-redirect-from

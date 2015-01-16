@@ -1,0 +1,283 @@
+---
+layout: default
+title: Plugins
+---
+
+<section class="bs-docs-section">
+  <h1 id="presentation" class="page-header">
+    Presentation
+  </h1>
+
+  <p>QueryBuilder uses <a href="https://github.com/mistic100/microevent.js">MicroEvent.js</a> and some piece of code from <a href="http://brianreavis.github.io/selectize.js">selectize.js</a> to offer a plugins system.<br>
+  <br>
+  Plugins can simply add public methods or make use of events to change the behavior of the builder.</p>
+
+  <h2 id="usage">General usage</h2>
+
+  <p>Some plugins like <b>Mongo support</b> and <b>SQL support</b> don't require any configuration and are useable as long as they are loaded. Other plugins must be manually activated with the <code>plugins</code> option.<br>
+  <br>
+  This option is an object where keys are plugin names and values are plugin configuration (or <code>null</code>).</p>
+
+{% highlight javascript %}
+  $('#builder').queryBuilder({
+    plugins: {
+      'bt-tooltip-errors': { delay: 100 },
+      'sortable': null
+    }
+  });
+{% endhighlight %}
+
+  <p>You can find bellow the few plugins shipped by default with QueryBuilder, with their ids.</p>
+</section>
+
+
+<section class="bs-docs-section">
+  <h1 id="sql-support" class="page-header">
+    SQL export <small>sql-support</small>
+  </h1>
+
+  <p>The SQL plugin allows to export rules as a SQL WHERE statement.</p>
+  
+  <h3>New methods</h3>
+  
+  <h4>getSQL</h4>
+  <p>Performs validation and returns the rules as a valid SQL WHERE statement. See the <a href="{{site.github.url}}/demo-basic.html">basic demo</a> for output example. The first parameter can be:</p>
+  <ul>
+    <li><code>false</code> to output plain SQL</li>
+    <li><code>'question_mark'</code> to output prepared statement with <code>?</code> placeholders</li>
+    <li><code>'numbered'</code> to output prepared statement with numbered (<code>$1</code>, <code>$2</code>, ...) placeholders</li>
+  </ul>
+  <p>Set the second parameter to <code>false</code> to disable new lines in output.</p>
+{% highlight javascript %}
+$('#builder').queryBuilder('getSQL')
+$('#builder').queryBuilder('getSQL', false, false)
+{% endhighlight %}
+
+  <h3>Operators</h3>
+  <p>The SQL plugin requires special configuration of operators to convert rules to a valid SQL query. This configuration is stored in <code>sqlOperators</code> option, the keys are the operators types and the values are objects:</p>
+  
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th style="width: 150px;">Name</th>
+          <th style="width: 100px;">type</th>
+          <th style="width: 100px;">default</th>
+          <th>description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>op</td>
+          <td>string</td>
+          <td><span class="label label-danger">required</span></td>
+          <td>SQL operator used for this QueryBuilder operator, <code>?</code> is a placeholder which will be replaced by the value</td>
+        </tr>
+        <tr>
+          <td>list</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td><code>true</code> if the operator accepts multiple values (eg: <code>IN</code> operator)</td>
+        </tr>
+        <tr>
+          <td>sep</td>
+          <td>string</td>
+          <td>', '</td>
+          <td>Separator between each value if <code>list</code> is true</td>
+        </tr>
+        <tr>
+          <td>fn</td>
+          <td>function</td>
+          <td><i>passthru</i></td>
+          <td>Function called on each value after escaping</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <p>The default operators configuration is available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/plugins/sql-support/plugin.js#L12-32">in the source code</a>.</p>
+</section>
+
+
+<section class="bs-docs-section">
+  <h1 id="mongodb-support" class="page-header">
+    MongoDB export <small>mongodb-support</small>
+  </h1>
+
+  <p>The MongoDB plugin allows to export rules as a MongoDB find object.</p>
+  
+  <h3>New methods</h3>
+  
+  <h4>getMongo</h4>
+  <p>Performs validation and returns the rules as a valid MongoDB find object. See the <a href="{{site.github.url}}/demo-basic.html">basic demo</a> for output example.</p>
+{% highlight javascript %}
+$('#builder').queryBuilder('getMongo')
+{% endhighlight %}
+
+  <h3>Operators</h3>
+  <p>The MongoDB module requires special configuration of operators to convert rules to a valid Mongo JSON. This configuration is stored in <code>mongoOperators</code> option, the keys are the operators types and the values are formatting functions.</p>
+  
+  <p>The default operators configuration is available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/plugins/mongodb-support/plugin.js#L12-32">in the source code</a>.</p>
+</section>
+
+
+<section class="bs-docs-section">
+  <h1 id="sortable" class="page-header">
+    Sortable rules <small>sortable</small>
+  </h1>
+
+  <p>Enables drag &amp; drop sort of rules.</p>
+
+  <h3>Options</h3>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th style="width: 150px;">Name</th>
+          <th style="width: 100px;">type</th>
+          <th style="width: 100px;">default</th>
+          <th>description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>icon</td>
+          <td>string</td>
+          <td>'glyphicon glyphicon-sort'</td>
+          <td>The font-icon used as drag handle</td>
+        </tr>
+        <tr>
+          <td>default_no_sortable</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Default value of <code>no_sortable</code> flag</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The plugin also adds a new rule flag useable with <a href="{{site.github.url}}/index.html#methods">setRules</a> method: <code>no_sortable</code>, set it to <code>true</code> to remove the drag handle of a rule.</p>
+</section>
+
+
+<section class="bs-docs-section">
+  <h1 id="bt-tooltips-errors" class="page-header">
+    BT Tooltips for errors <small>bt-tooltips-errors</small>
+  </h2>
+
+  <p>Apply <a href="http://getbootstrap.com/javascript/#tooltips">Bootstrap Tooltips</a> on validation error messages.</p>
+
+  <h3>Options</h3>
+  <p><i>All options supported by the tooltips plugin.</i></p>
+</section>
+
+
+<section class="bs-docs-section">
+  <h1 id="bt-selectpicker" class="page-header">
+    BT Selectize for filters/operators <small>bt-selectpicker</small>
+  </h2>
+
+  <p>Apply <a href="http://silviomoreto.github.io/bootstrap-select">Bootstrap Select</a> on filters and operators combo-boxes.</p>
+
+  <h3>Options</h3>
+  <p><i>All options supported by the selectpicker plugin.</i></p>
+</section>
+
+
+<section class="bs-docs-section">
+  <h1 id="creation" class="page-header">
+    Create plugins
+  </h1>
+
+  <p>Each plugin is a folder in <code>plugins</code> directory, it contains at least a <code>plugin.js</code> file and optionally a <code>plugin.css</code> file. Everything needed to the plugin operation must be included in these two files.</p>
+
+  <h2 id="api">API</h2>
+
+  <p>QueryBuilder exposes some utilities to ease plugins creation, all available from <code>$.fn.queryBuilder</code>.</p>
+
+  <h3>defaults.set</h3>
+  <p>Use <code>$.fn.queryBuilder.defaults.set</code> to extend the library configuration.</p>
+
+{% highlight javascript %}
+$.fn.queryBuilder.defaults.set({
+  my_new_option: /* value */
+});
+{% endhighlight %}
+
+  <h3>extend</h3>
+  <p><code>$.fn.queryBuilder.extend</code> is used to add new functions to the prototype of the library (eg: public methods).</p>
+
+{% highlight javascript %}
+$.fn.queryBuilder.extend({
+  my_super_method: function() {
+    /* do something */
+  }
+});
+{% endhighlight %}
+
+  <h3>define</h3>
+  <p><code>$.fn.queryBuilder.define</code> is used to declare a plugin which will be initialized with the builder, optionally with a configuration object. It corresponds to plugins loaded with <code>plugins</code> options.<br>
+  <br>
+  You will generally use the events system in you plugin body (see bellow).</p>
+
+{% highlight javascript %}
+$.fn.queryBuilder.define('my_plugin', function(options) {
+  /* "this" is the QueryBuilder instance */
+});
+{% endhighlight %}
+
+  <h2 id="events-system">Events system</h2>
+
+  <p>The library will throw certain amount of events during it's execution. There are two types of events:</p>
+
+  <ul>
+    <li><b>trigger</b>s are events used to "flag" a particular point in the code</li>
+    <li><b>change</b>rs are events used to modify some values, when you subscribe to a change event you MUST accept and value and return it, modified or not</li>
+  </ul>
+
+{% highlight javascript %}
+this.on('validationError', function($target, error) {
+  /* do something when a validation error occurs */
+});
+
+this.on('getRuleTemplate', function(h) {
+  /* modify the rule HTML */
+  return h;
+});
+{% endhighlight %}
+
+  <p>To know the existing events you can just search for "trigger" and "change" in the source code or use the <code>describe_triggers</code> Grunt task which will list them all, with their parameters and the position in the code.</p>
+
+  <h2 id="tips">Tips</h2>
+
+  <h3>Modify an existing method</h3>
+  <p>If the events are not sufficient for you, you can still override existing QueryBuilder methods. You only need to access it from <code>$.fn.queryBuilder.constructor.prototype</code>.</p>
+
+{% highlight javascript %}
+// keep a pointer to the original method
+var originalInit = $.fn.queryBuilder.constructor.prototype.init;
+
+// redefine the method
+$.fn.queryBuilder.extend({
+  init: function() {
+    /* stuff */
+    originalInit.call(this);
+  }
+});
+{% endhighlight %}
+
+  <h3>Building</h3>
+
+  <p>One of the tasks of the Grunt script provided with QueryBuilder is to combine all requested plugins (with optional <code>--modules</code> parameter) with the core JS file in a single AMD-ready file.<br>
+  <br>
+  When doing so the script will remove all wrappers to replace them by a single one, it does it by removing every occurences of the following four lines:</p>
+
+{% highlight javascript linenos %}
+/*jshint ....... */
+(function($){
+"use strict";
+}(jQuery));
+{% endhighlight %}
+  
+  <p>The main wrapper allways contains the "use strict" directive.</p>
+</section>

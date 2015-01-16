@@ -1,4 +1,6 @@
 $('#demo-builder').queryBuilder({
+  plugins: ['sortable', 'bt-tooltip-errors'],
+
   filters: [{
     id: 'name',
     label: 'Name',
@@ -44,26 +46,31 @@ $('#demo-builder').queryBuilder({
     validation: {
       format: /^.{4}-.{4}-.{4}$/
     }
-  }]
+  }],
+
+  rules: {
+    condition: 'AND',
+    rules: [{
+      id: 'price',
+      operator: 'less',
+      value: 10.25
+    }, {
+      id: 'id',
+      operator: 'equal',
+      value: ''
+    }, {
+      condition: 'OR',
+      rules: [{
+        id: 'category',
+        operator: 'equal',
+        value: 2
+      }, {
+        id: 'category',
+        operator: 'equal',
+        value: 1
+      }]
+    }]
+  }
 });
 
-// set rules
-$('#demo-builder').queryBuilder('setRules', {
-  condition: 'AND',
-  rules: [{
-    id: 'price',
-    operator: 'less',
-    value: 10.25
-  }, {
-    condition: 'OR',
-    rules: [{
-      id: 'category',
-      operator: 'equal',
-      value: 2
-    }, {
-      id: 'category',
-      operator: 'equal',
-      value: 1
-    }]
-  }]
-});
+$('#demo-builder').queryBuilder('getRules');

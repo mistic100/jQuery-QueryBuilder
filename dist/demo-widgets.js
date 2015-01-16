@@ -1,12 +1,6 @@
-// load data
-if (localStorage.demoData == undefined) {
-  $.getJSON(baseurl + '/dist/demo-data.json', function(data) {
-    localStorage.demoData = JSON.stringify(data);
-  });
-}
+$('#builder-widgets').queryBuilder({
+  plugins: ['bt-tooltip-errors'],
 
-// define filters
-$('#builder').queryBuilder({
   filters: [{
     id: 'date',
     label: 'Datepicker',
@@ -36,9 +30,10 @@ $('#builder').queryBuilder({
       value: 0
     },
     onAfterSetValue: function($rule, value) {
-      var input = $rule.find('.rule-value-container input');
-      input.slider('setValue', value);
-      input.val(value); // don't know why I need it
+      $rule.find('.rule-value-container input').slider('setValue', value[0]);
+    },
+    valueParser: function($rule, value, filter, operator) {
+      return $rule.find('.rule-value-container input').slider('getValue');
     }
   }, {
     id: 'category',
@@ -54,12 +49,21 @@ $('#builder').queryBuilder({
       maxItems: 1,
       plugins: ['remove_button'],
       onInitialize: function() {
-        var that = this,
-            data = JSON.parse(localStorage.demoData);
+        var that = this;
 
-        data.forEach(function(item) {
-          that.addOption(item);
-        });
+        if (localStorage.demoData === undefined) {
+          $.getJSON(baseurl + '/dist/demo-data.json', function(data) {
+            localStorage.demoData = JSON.stringify(data);
+            data.forEach(function(item) {
+              that.addOption(item);
+            });
+          });
+        }
+        else {
+          JSON.parse(localStorage.demoData).forEach(function(item) {
+            that.addOption(item);
+          });
+        }
       }
     },
     onAfterCreateRuleInput: function($rule) {
@@ -83,16 +87,13 @@ $('#builder').queryBuilder({
         
         switch ($(this).val()) {
           case 'A':
-            h = '\
-            <option value="-1">-</option> \
-            <option value="1">1</option> \
-            <option value="2">2</option>';
+            h = '<option value="-1">-</option> <option value="1">1</option> <option value="2">2</option>';
             break;
-          case 'B': case 'C':
-            h = '\
-            <option value="-1">-</option> \
-            <option value="3">3</option> \
-            <option value="4">4</option>';
+          case 'B':
+            h = '<option value="-1">-</option> <option value="3">3</option> <option value="4">4</option>';
+            break;
+          case 'C':
+            h = '<option value="-1">-</option> <option value="5">5</option> <option value="6">6</option>';
             break;
         }
         
@@ -114,18 +115,15 @@ $('#builder').queryBuilder({
     },
     onAfterSetValue: function($rule, value, filter, operator) {
       if (operator.accept_values) {
-        var val = value.split('.');
+        var val = value[0].split('.');
         
         $rule.find('[name=coord_1]').val(val[0]).trigger('change');
         $rule.find('[name=coord_2]').val(val[1]);
       }
     }
-  }]
-});
+  }],
 
-// set rules
-$('.set').on('click', function() {
-  $('#builder').queryBuilder('setRules', {
+  rules: {
     condition: 'OR',
     rules: [{
       id: 'date',
@@ -147,28 +145,5 @@ $('.set').on('click', function() {
         value: 'B.3'
       }]
     }]
-  });
-});
-
-// reset builder
-$('.reset').on('click', function() {
-  $('#builder').queryBuilder('reset');
-  $('#result').empty().addClass('hide');
-});
-
-// get rules
-$('.parse-json').on('click', function() {
-  var res = $('#builder').queryBuilder('getRules');
-  $('#result').removeClass('hide')
-    .find('pre').html(
-      JSON.stringify(res, null, 2)
-    );
-});
-
-$('.parse-sql').on('click', function() {
-  var res = $('#builder').queryBuilder('getSQL', $(this).data('stmt'));
-  $('#result').removeClass('hide')
-    .find('pre').html(
-      res.sql + (res.params ? '\n\n' + JSON.stringify(res.params, null, 2) : '')
-    );
+  }
 });
