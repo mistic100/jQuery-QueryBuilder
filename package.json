@@ -34,6 +34,6 @@
     "url": "https://github.com/mistic100/jQuery-QueryBuilder/issues"
   },
   "scripts": {
-    "test": "grunt test --force"
+    "test": "grunt test"
   }
 }
