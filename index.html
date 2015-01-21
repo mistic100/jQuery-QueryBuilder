@@ -445,11 +445,65 @@ $('#builder').queryBuilder('destroy')
               <li><code>operator</code></li>
               <li><code>builder</code> instance of QueryBuilder</li>
             </ul>
-            The event is fired after the <code>onValidationError</code> callbacks.
+            Calling <code>preventDefault()</code> on the Event object will disable the error warning when <code>display_errors</code> is true.
+         </td>
+       </tr>
+       <tr>
+         <td>addGroup.queryBuilder<br>
+          <span class="badge">1.5</span>
+         </td>
+         <td>Fired before adding a group. The Event object contains the following attributes:
+            <ul>
+              <li><code>group</code> DOM element (detached) of the group</li>
+              <li><code>parent</code> DOM element where the group will be appended</li>
+              <li><code>group_id</code> the group identifier</li>
+              <li><code>level</code> the level of the group (0 is root)</li>
+              <li><code>addRule</code> will an empty rule be added ?</li>
+              <li><code>builder</code> instance of QueryBuilder</li>
+            </ul>
+         </td>
+       </tr>
+       <tr>
+         <td>deleteGroup.queryBuilder<br>
+          <span class="badge">1.5</span>
+         </td>
+         <td>Fired before deleting a group. The Event object contains the following attributes:
+            <ul>
+              <li><code>group</code> DOM element of the group</li>
+              <li><code>group_id</code> the group identifier</li>
+              <li><code>builder</code> instance of QueryBuilder</li>
+            </ul>
+         </td>
+       </tr>
+       <tr>
+         <td>addRule.queryBuilder<br>
+          <span class="badge">1.5</span>
+         </td>
+         <td>Fired before adding a rule. The Event object contains the following attributes:
+            <ul>
+              <li><code>rule</code> DOM element (detached) of the rule</li>
+              <li><code>parent</code> DOM element where the rule will be appended</li>
+              <li><code>rule_id</code> the rule identifier</li>
+              <li><code>builder</code> instance of QueryBuilder</li>
+            </ul>
+         </td>
+       </tr>
+       <tr>
+         <td>deleteRule.queryBuilder<br>
+          <span class="badge">1.5</span>
+         </td>
+         <td>Fired before deleting a rule. The Event object contains the following attributes:
+            <ul>
+              <li><code>rule</code> DOM element of the rule</li>
+              <li><code>rule_id</code> the rule identifier</li>
+              <li><code>builder</code> instance of QueryBuilder</li>
+            </ul>
          </td>
        </tr>
       </tbody>
     </table>
+    
+    <p>On all events you can call <code>preventDefault()</code> to stop the related action.</p>
     
     <p>Default error codes are: no_filter, empty_group, radio_empty, checkbox_empty, select_empty, string_exceed_min_length, string_exceed_max_length, string_invalid_format, number_nan, number_not_integer, number_not_double, number_exceed_min, number_exceed_max, number_wrong_step, datetime_invalid, datetime_exceed_min, datetime_exceed_max.</p>
   </div>
