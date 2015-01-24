@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../src/query-builder.css">
   <link rel="stylesheet" href="../src/plugins/bt-tooltip-errors/plugin.css">
   <link rel="stylesheet" href="../src/plugins/sortable/plugin.css">
+  <link rel="stylesheet" href="../src/plugins/filter-description/plugin.css">
   <link href="../bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
 </head>
 
@@ -15,6 +16,8 @@
 
 <div class="container">
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
+    <p><a href="http://www.eyecon.ro/bootstrap-slider">Bootstrap Slider</a> and <a href="http://bootboxjs.com">Bootbox</a> must be installed with Bower to run this demo.</p>
+    
     <div id="builder"></div>
     
     <div class="btn-group">
@@ -46,7 +49,9 @@
 <script src="../src/plugins/mongodb-support/plugin.js"></script>
 <script src="../src/plugins/bt-tooltip-errors/plugin.js"></script>
 <script src="../src/plugins/sortable/plugin.js"></script>
+<script src="../src/plugins/filter-description/plugin.js"></script>
 <script src="../bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+<script src="../bower_components/bootbox/bootbox.js"></script>
 
 <script>
 // define filters
@@ -59,7 +64,8 @@ $('#builder').queryBuilder({
   
   plugins: {
     'bt-tooltip-errors': { delay: 100},
-    'sortable': null
+    'sortable': null,
+    'filter-description': { mode: 'bootbox' }
   },
   
   filters: [
@@ -162,6 +168,12 @@ $('#builder').queryBuilder({
     id: 'coord',
     label: 'Coordinates',
     type: 'string',
+    description: '<p>The letter is the cadran identifier:</p>\
+<ul>\
+  <li><b>A</b>: alpha</li>\
+  <li><b>B</b>: beta</li>\
+  <li><b>C</b>: gamma</li>\
+</ul>',
     validation: {
       format: /^[A-C]{1}.[1-6]{1}$/
     },

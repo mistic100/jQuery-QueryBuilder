@@ -868,6 +868,8 @@
         this.createRuleInput($rule, filter);
 
         $rule.data('queryBuilder').filter = filter;
+
+        this.trigger('afterUpdateRuleFilter', $rule, filter);
     };
 
     /**
