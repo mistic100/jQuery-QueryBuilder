@@ -1548,6 +1548,7 @@
                             if (validation.min !== undefined) h+= ' min="'+ validation.min +'"';
                             if (validation.max !== undefined) h+= ' max="'+ validation.max +'"';
                             if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
+                            if (filter.size) h+= ' size="'+ filter.size +'"';
                             h+= '>';
                             break;
 
@@ -1555,6 +1556,7 @@
                         case 'datetime': case 'text': default:
                             h+= '<input type="text" name="'+ name +'"';
                             if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
+                            if (filter.size) h+= ' size="'+ filter.size +'"';
                             h+= '>';
                     }
             }

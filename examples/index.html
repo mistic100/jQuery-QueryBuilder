@@ -76,7 +76,8 @@ $('#builder').queryBuilder({
     id: 'name',
     label: 'Name',
     type: 'string',
-    optgroup: 'core'
+    optgroup: 'core',
+    size: 30
   },
   /*
    * select
@@ -119,6 +120,7 @@ $('#builder').queryBuilder({
     id: 'price',
     label: 'Price',
     type: 'double',
+    size: 5,
     validation: {
       min: 0,
       step: 0.01
@@ -156,6 +158,7 @@ $('#builder').queryBuilder({
     type: 'string',
     optgroup: 'plugin',
     placeholder: '____-____-____',
+    size: 14,
     operators: ['equal', 'not_equal'],
     validation: {
       format: /^.{4}-.{4}-.{4}$/
