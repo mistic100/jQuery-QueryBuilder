@@ -27,6 +27,7 @@
         ],
         inputs = [
             'text',
+            'textarea',
             'radio',
             'checkbox',
             'select'
@@ -420,7 +421,7 @@
                 return;
             }
 
-            var $buttons = $group.find('>.rules-group-header input[name$=_cond]');
+            var $buttons = $group.find('>.rules-group-header [name$=_cond]');
 
             if (data.condition === undefined) {
                 data.condition = that.settings.default_condition;
@@ -461,8 +462,8 @@
                     var filter = that.getFilterById(rule.id),
                         operator = that.getOperatorByType(rule.operator);
 
-                    $rule.find('.rule-filter-container select[name$=_filter]').val(rule.id).trigger('change');
-                    $rule.find('.rule-operator-container select[name$=_operator]').val(rule.operator).trigger('change');
+                    $rule.find('.rule-filter-container [name$=_filter]').val(rule.id).trigger('change');
+                    $rule.find('.rule-operator-container [name$=_operator]').val(rule.operator).trigger('change');
 
                     if (operator.accept_values !== 0) {
                         that.setRuleValue($rule, rule.value, filter, operator);
@@ -577,7 +578,7 @@
         var that = this;
 
         // group condition change
-        this.$el.on('change.queryBuilder', '.rules-group-header input[name$=_cond]', function() {
+        this.$el.on('change.queryBuilder', '.rules-group-header [name$=_cond]', function() {
             var $this = $(this);
 
             if ($this.is(':checked')) {
@@ -587,7 +588,7 @@
         });
 
         // rule filter change
-        this.$el.on('change.queryBuilder', '.rule-filter-container select[name$=_filter]', function() {
+        this.$el.on('change.queryBuilder', '.rule-filter-container [name$=_filter]', function() {
             var $this = $(this),
                 $rule = $this.closest('.rule-container');
 
@@ -595,7 +596,7 @@
         });
 
         // rule operator change
-        this.$el.on('change.queryBuilder', '.rule-operator-container select[name$=_operator]', function() {
+        this.$el.on('change.queryBuilder', '.rule-operator-container [name$=_operator]', function() {
             var $this = $(this),
                 $rule = $this.closest('.rule-container');
 
@@ -959,8 +960,7 @@
                     }
                     break;
 
-                /* falls through */
-                case 'text': default:
+                default:
                     switch (filter.internalType) {
                         case 'string':
                             if (validation.min !== undefined) {
@@ -1204,7 +1204,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getGroupCondition = function($group) {
-        return $group.find('>.rules-group-header input[name$=_cond]:checked').val();
+        return $group.find('>.rules-group-header [name$=_cond]:checked').val();
     };
 
     /**
@@ -1213,7 +1213,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getRuleFilter = function($rule) {
-        return $rule.find('.rule-filter-container select[name$=_filter]').val();
+        return $rule.find('.rule-filter-container [name$=_filter]').val();
     };
 
     /**
@@ -1222,7 +1222,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getRuleOperator = function($rule) {
-        return $rule.find('.rule-operator-container select[name$=_operator]').val();
+        return $rule.find('.rule-operator-container [name$=_operator]').val();
     };
 
     /**
@@ -1244,11 +1244,11 @@
 
             switch (filter.input) {
                 case 'radio':
-                    value.push($value.find('input[name='+ name +']:checked').val());
+                    value.push($value.find('[name='+ name +']:checked').val());
                     break;
 
                 case 'checkbox':
-                    $value.find('input[name='+ name +']:checked').each(function() {
+                    $value.find('[name='+ name +']:checked').each(function() {
                         tmp.push($(this).val());
                     });
                     value.push(tmp);
@@ -1256,19 +1256,18 @@
 
                 case 'select':
                     if (filter.multiple) {
-                        $value.find('select[name='+ name +'] option:selected').each(function() {
+                        $value.find('[name='+ name +'] option:selected').each(function() {
                             tmp.push($(this).val());
                         });
                         value.push(tmp);
                     }
                     else {
-                        value.push($value.find('select[name='+ name +'] option:selected').val());
+                        value.push($value.find('[name='+ name +'] option:selected').val());
                     }
                     break;
 
-                /* falls through */
-                case 'text': default:
-                    value.push($value.find('input[name='+ name +']').val());
+                default:
+                    value.push($value.find('[name='+ name +']').val());
             }
         }
 
@@ -1314,7 +1313,7 @@
 
                 switch (filter.input) {
                     case 'radio':
-                        $value.find('input[name='+ name +'][value="'+ value[i] +'"]').prop('checked', true).trigger('change');
+                        $value.find('[name='+ name +'][value="'+ value[i] +'"]').prop('checked', true).trigger('change');
                         break;
 
                     case 'checkbox':
@@ -1322,17 +1321,12 @@
                             value[i] = [value[i]];
                         }
                         $.each(value[i], function(i, value) {
-                            $value.find('input[name='+ name +'][value="'+ value +'"]').prop('checked', true).trigger('change');
+                            $value.find('[name='+ name +'][value="'+ value +'"]').prop('checked', true).trigger('change');
                         });
                         break;
 
-                    case 'select':
-                        $value.find('select[name='+ name +']').val(value[i]).trigger('change');
-                        break;
-
-                    /* falls through */
-                    case 'text': default:
-                        $value.find('input[name='+ name +']').val(value[i]).trigger('change');
+                    default:
+                        $value.find('[name='+ name +']').val(value[i]).trigger('change');
                         break;
                 }
             }
@@ -1356,13 +1350,13 @@
         $rule.data('queryBuilder').flags = flags;
 
         if (flags.filter_readonly) {
-            $rule.find('select[name$=_filter]').prop('disabled', true);
+            $rule.find('[name$=_filter]').prop('disabled', true);
         }
         if (flags.operator_readonly) {
-            $rule.find('select[name$=_operator]').prop('disabled', true);
+            $rule.find('[name$=_operator]').prop('disabled', true);
         }
         if (flags.value_readonly) {
-            $rule.find('input[name*=_value_], select[name*=_value_]').prop('disabled', true);
+            $rule.find('[name*=_value_]').prop('disabled', true);
         }
         if (flags.no_delete) {
             $rule.find('[data-delete=rule]').remove();
@@ -1539,8 +1533,17 @@
                     h+= '</select>';
                     break;
 
-                /* falls through */
-                case 'text': default:
+                case 'textarea':
+                    h+= '<textarea name="'+ name +'"';
+                    if (filter.size) h+= ' cols="'+ filter.size +'"';
+                    if (filter.rows) h+= ' rows="'+ filter.rows +'"';
+                    if (validation.min !== undefined) h+= ' minlength="'+ validation.min +'"';
+                    if (validation.max !== undefined) h+= ' maxlength="'+ validation.max +'"';
+                    if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
+                    h+= '></textarea>';
+                    break;
+
+                default:
                     switch (filter.internalType) {
                         case 'number':
                             h+= '<input type="number" name="'+ name +'"';
@@ -1552,10 +1555,11 @@
                             h+= '>';
                             break;
 
-                        /* falls through */
-                        case 'datetime': case 'text': default:
+                        default:
                             h+= '<input type="text" name="'+ name +'"';
                             if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
+                            if (filter.type === 'string' && validation.min !== undefined) h+= ' minlength="'+ validation.min +'"';
+                            if (filter.type === 'string' && validation.max !== undefined) h+= ' maxlength="'+ validation.max +'"';
                             if (filter.size) h+= ' size="'+ filter.size +'"';
                             h+= '>';
                     }
