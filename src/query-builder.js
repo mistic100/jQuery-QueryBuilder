@@ -849,9 +849,12 @@
             filter.onAfterCreateRuleInput.call(this, $rule, filter);
         }
 
-        // init external jquery plugin
         if (filter.plugin) {
             $inputs[filter.plugin](filter.plugin_config || {});
+        }
+
+        if (filter.default_value !== undefined) {
+            this.setRuleValue($rule, filter.default_value, filter, operator);
         }
 
         this.trigger('afterCreateRuleInput', $rule, filter, operator);
