@@ -57,6 +57,7 @@
 
         display_errors: true,
         allow_groups: -1,
+        allow_empty: false,
         conditions: ['AND', 'OR'],
         default_condition: 'AND',
 
@@ -388,7 +389,7 @@
                 }
             }
 
-            if (out.rules.length === 0) {
+            if (out.rules.length === 0 && (!that.settings.allow_empty || $group.data('queryBuilder').level > 1)) {
                 that.triggerValidationError(['empty_group'], $group, null, null, null);
                 return {};
             }
@@ -406,7 +407,7 @@
     QueryBuilder.prototype.setRules = function(data) {
         this.clear();
 
-        if (!data || !data.rules || data.rules.length===0) {
+        if (!data || !data.rules || (data.rules.length===0 && !this.settings.allow_empty)) {
             $.error('Incorrect data object passed');
         }
 
