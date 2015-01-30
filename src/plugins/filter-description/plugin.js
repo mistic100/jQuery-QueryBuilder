@@ -81,7 +81,7 @@
          * BOOTBOX
          */
         else if (options.mode === 'bootbox') {
-            if (!bootbox) {
+            if (!window.bootbox) {
                 $.error('Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
             }
 

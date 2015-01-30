@@ -251,6 +251,12 @@
             this.template.rule = this.getRuleTemplate;
         }
 
+        // CHECK FILTERS
+        if (!this.filters || this.filters.length < 1) {
+            $.error('Missing filters list');
+        }
+        this.checkFilters();
+
         // ensure we have a container id
         if (!this.$el.attr('id')) {
             this.$el.attr('id', 'qb_'+Math.floor(Math.random()*99999));
@@ -259,12 +265,6 @@
         this.$el_id = this.$el.attr('id');
 
         this.$el.addClass('query-builder');
-
-        // CHECK FILTERS
-        if (!this.filters || this.filters.length < 1) {
-            $.error('Missing filters list');
-        }
-        this.checkFilters();
 
         // INIT
         this.bindEvents();
@@ -582,8 +582,7 @@
             var $this = $(this);
 
             if ($this.is(':checked')) {
-                $this.parent().addClass('active');
-                $this.parent().siblings().removeClass('active');
+                $this.parent().addClass('active').siblings().removeClass('active');
             }
         });
 
@@ -611,16 +610,6 @@
             that.addRule($group);
         });
 
-        // add group button
-        if (this.settings.allow_groups !== 0) {
-            this.$el.on('click.queryBuilder', '[data-add=group]', function() {
-                var $this = $(this),
-                    $group = $this.closest('.rules-group-container');
-
-                that.addGroup($group);
-            });
-        }
-
         // delete rule button
         this.$el.on('click.queryBuilder', '[data-delete=rule]', function() {
             var $this = $(this),
@@ -629,13 +618,23 @@
             that.deleteRule($rule);
         });
 
-        // delete group button
-        this.$el.on('click.queryBuilder', '[data-delete=group]', function() {
-            var $this = $(this),
-                $group = $this.closest('.rules-group-container');
+        if (this.settings.allow_groups !== 0) {
+            // add group button
+            this.$el.on('click.queryBuilder', '[data-add=group]', function() {
+                var $this = $(this),
+                    $group = $this.closest('.rules-group-container');
 
-            that.deleteGroup($group);
-        });
+                that.addGroup($group);
+            });
+
+            // delete group button
+            this.$el.on('click.queryBuilder', '[data-delete=group]', function() {
+                var $this = $(this),
+                    $group = $this.closest('.rules-group-container');
+
+                that.deleteGroup($group);
+            });
+        }
     };
 
     /**
@@ -646,13 +645,13 @@
      */
     QueryBuilder.prototype.addGroup = function($parent, addRule) {
         var group_id = this.nextGroupId(),
-            level = ($parent.data('queryBuilder') || {}).level || 0,
-            $container = level===0 ? $parent : $parent.find('>.rules-group-body>.rules-list'),
-            $group = $(this.template.group.call(this, group_id, ++level));
+            level = (($parent.data('queryBuilder') || {}).level || 0) + 1,
+            $container = level===1 ? $parent : $parent.find('>.rules-group-body>.rules-list'),
+            $group = $(this.template.group.call(this, group_id, level));
 
         $group.data('queryBuilder', {level:level});
 
-        var e = jQuery.Event('addGroup.queryBuilder', {
+        var e = $.Event('addGroup.queryBuilder', {
             group_id: group_id,
             level: level,
             addRule: addRule,
@@ -692,7 +691,7 @@
             return;
         }
 
-        var e = jQuery.Event('deleteGroup.queryBuilder', {
+        var e = $.Event('deleteGroup.queryBuilder', {
             group_id: $group[0].id,
             group: $group,
             builder: this
@@ -745,7 +744,7 @@
 
         $rule.data('queryBuilder', {flags: {}});
 
-        var e = jQuery.Event('addRule.queryBuilder', {
+        var e = $.Event('addRule.queryBuilder', {
             rule_id: rule_id,
             rule: $rule,
             parent: $parent,
@@ -776,7 +775,7 @@
      * @return {boolean} true if the rule has been deleted
      */
     QueryBuilder.prototype.deleteRule = function($rule) {
-        var e = jQuery.Event('deleteRule.queryBuilder', {
+        var e = $.Event('deleteRule.queryBuilder', {
             rule_id: $rule[0].id,
             rule: $rule,
             builder: this
@@ -837,7 +836,7 @@
         var $inputs = $();
 
         for (var i=0; i<operator.accept_values; i++) {
-            var $ruleInput = $(this.getRuleInput($rule.attr('id'), filter, i));
+            var $ruleInput = $(this.getRuleInput($rule, filter, i));
             if (i > 0) $valueContainer.append(' , ');
             $valueContainer.append($ruleInput);
             $inputs = $inputs.add($ruleInput);
@@ -1067,7 +1066,7 @@
      * Remove 'has-error' from everything
      */
     QueryBuilder.prototype.clearErrors = function() {
-      this.$el.find('.has-error').removeClass('has-error');
+        this.$el.find('.has-error').removeClass('has-error');
     };
 
     /**
@@ -1090,7 +1089,7 @@
             this.settings.onValidationError.call(this, $target, error, value, filter, operator);
         }
 
-        var e = jQuery.Event('validationError.queryBuilder', {
+        var e = $.Event('validationError.queryBuilder', {
             error: error,
             filter: filter,
             operator: operator,
@@ -1239,7 +1238,7 @@
         filter = filter || this.getFilterById(this.getRuleFilter($rule));
         operator = operator || this.getOperatorByType(this.getRuleOperator($rule));
 
-        var value = [], tmp = [],
+        var value = [], tmp,
             $value = $rule.find('.rule-value-container');
 
         for (var i=0; i<operator.accept_values; i++) {
@@ -1251,6 +1250,7 @@
                     break;
 
                 case 'checkbox':
+                    tmp = [];
                     $value.find('[name='+ name +']:checked').each(function() {
                         tmp.push($(this).val());
                     });
@@ -1259,6 +1259,7 @@
 
                 case 'select':
                     if (filter.multiple) {
+                        tmp = [];
                         $value.find('[name='+ name +'] option:selected').each(function() {
                             tmp.push($(this).val());
                         });
@@ -1348,7 +1349,6 @@
      * @param rule {object}
      */
     QueryBuilder.prototype.applyRuleFlags = function($rule, rule) {
-
         var flags = this.getRuleFlags(rule);
         $rule.data('queryBuilder').flags = flags;
 
@@ -1385,17 +1385,23 @@
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
         <i class="' + this.icons.add_rule + '"></i> '+ this.lang.add_rule +' \
       </button> \
-      '+ (this.settings.allow_groups===-1 || this.settings.allow_groups>=level ? '<button type="button" class="btn btn-xs btn-success" data-add="group"> \
+    '+ (this.settings.allow_groups===-1 || this.settings.allow_groups>=level ?
+      '<button type="button" class="btn btn-xs btn-success" data-add="group"> \
         <i class="' + this.icons.add_group + '"></i> '+ this.lang.add_group +' \
-      </button>' : '') +' \
-      '+ (level>1 ? '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
+      </button>'
+    :'') +' \
+    '+ (level>1 ? 
+      '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
         <i class="' + this.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
-      </button>' : '') +' \
+      </button>'
+    : '') +' \
     </div> \
     <div class="btn-group group-conditions"> \
       '+ this.getGroupConditions(group_id) +' \
     </div> \
-    '+ (this.settings.display_errors ? '<div class="error-container" data-toggle="tooltip" data-placement="right"><i class="' + this.icons.error + '"></i></div>' : '') +'\
+  '+ (this.settings.display_errors ?
+    '<div class="error-container" data-toggle="tooltip" data-placement="right"><i class="' + this.icons.error + '"></i></div>'
+  :'') +'\
   </dt> \
   <dd class=rules-group-body> \
     <ul class=rules-list></ul> \
@@ -1442,7 +1448,9 @@
       </button> \
     </div> \
   </div> \
-  '+ (this.settings.display_errors ? '<div class="error-container"><i class="' + this.icons.error + '"></i></div>' : '') +'\
+'+ (this.settings.display_errors ?
+  '<div class="error-container"><i class="' + this.icons.error + '"></i></div>'
+:'') +'\
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
@@ -1499,14 +1507,14 @@
 
     /**
      * Return the rule value HTML
-     * @param rule_id {string}
+     * @param $rule {jQuery}
      * @param filter {object}
+     * @param value_id {int}
      * @return {string}
      */
-    QueryBuilder.prototype.getRuleInput = function(rule_id, filter, value_id) {
-        var $rule = this.$el.find('#'+ rule_id),
-            validation = filter.validation || {},
-            name = rule_id +'_value_'+ value_id,
+    QueryBuilder.prototype.getRuleInput = function($rule, filter, value_id) {
+        var validation = filter.validation || {},
+            name = $rule[0].id +'_value_'+ value_id,
             h = '', c;
 
         if (typeof filter.input === 'function') {

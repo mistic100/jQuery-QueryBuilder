@@ -90,7 +90,9 @@
                 });
 
                 var res = {};
-                res[ '$'+data.condition.toLowerCase() ] = parts;
+                if (parts.length > 0) {
+                    res[ '$'+data.condition.toLowerCase() ] = parts;
+                }
                 return res;
             }(data));
         }
