@@ -1,13 +1,13 @@
 /*!
- * jQuery QueryBuilder 1.4.0
+ * jQuery QueryBuilder 1.4.1
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-// Modules: bt-selectpicker, bt-tooltip-errors, mongodb-support, sortable, sql-support
+// Modules: bt-selectpicker, bt-tooltip-errors, filter-description, mongodb-support, sortable, sql-support
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['jquery', 'microevent'], factory);
+        define(['jquery', 'microevent', 'jQuery.extendext'], factory);
     }
     else {
         factory(root.jQuery, root.MicroEvent);
@@ -30,6 +30,7 @@
         ],
         inputs = [
             'text',
+            'textarea',
             'radio',
             'checkbox',
             'select'
@@ -55,6 +56,7 @@
 
         display_errors: true,
         allow_groups: -1,
+        allow_empty: false,
         conditions: ['AND', 'OR'],
         default_condition: 'AND',
 
@@ -243,6 +245,12 @@
             this.template.rule = this.getRuleTemplate;
         }
 
+        // CHECK FILTERS
+        if (!this.filters || this.filters.length < 1) {
+            $.error('Missing filters list');
+        }
+        this.checkFilters();
+
         // ensure we have a container id
         if (!this.$el.attr('id')) {
             this.$el.attr('id', 'qb_'+Math.floor(Math.random()*99999));
@@ -251,12 +259,6 @@
         this.$el_id = this.$el.attr('id');
 
         this.$el.addClass('query-builder');
-
-        // CHECK FILTERS
-        if (!this.filters || this.filters.length < 1) {
-            $.error('Missing filters list');
-        }
-        this.checkFilters();
 
         // INIT
         this.bindEvents();
@@ -380,7 +382,7 @@
                 }
             }
 
-            if (out.rules.length === 0) {
+            if (out.rules.length === 0 && (!that.settings.allow_empty || $group.data('queryBuilder').level > 1)) {
                 that.triggerValidationError(['empty_group'], $group, null, null, null);
                 return {};
             }
@@ -398,7 +400,7 @@
     QueryBuilder.prototype.setRules = function(data) {
         this.clear();
 
-        if (!data || !data.rules || data.rules.length===0) {
+        if (!data || !data.rules || (data.rules.length===0 && !this.settings.allow_empty)) {
             $.error('Incorrect data object passed');
         }
 
@@ -408,8 +410,12 @@
             that = this;
 
         (function add(data, $container){
-            var $group = that.addGroup($container, false),
-                $buttons = $group.find('>.rules-group-header input[name$=_cond]');
+            var $group = that.addGroup($container, false);
+            if ($group === null) {
+                return;
+            }
+
+            var $buttons = $group.find('>.rules-group-header [name$=_cond]');
 
             if (data.condition === undefined) {
                 data.condition = that.settings.default_condition;
@@ -442,12 +448,16 @@
                         rule.operator = 'equal';
                     }
 
-                    var $rule = that.addRule($group),
-                        filter = that.getFilterById(rule.id),
+                    var $rule = that.addRule($group);
+                    if ($rule === null) {
+                        return;
+                    }
+
+                    var filter = that.getFilterById(rule.id),
                         operator = that.getOperatorByType(rule.operator);
 
-                    $rule.find('.rule-filter-container select[name$=_filter]').val(rule.id).trigger('change');
-                    $rule.find('.rule-operator-container select[name$=_operator]').val(rule.operator).trigger('change');
+                    $rule.find('.rule-filter-container [name$=_filter]').val(rule.id).trigger('change');
+                    $rule.find('.rule-operator-container [name$=_operator]').val(rule.operator).trigger('change');
 
                     if (operator.accept_values !== 0) {
                         that.setRuleValue($rule, rule.value, filter, operator);
@@ -560,17 +570,16 @@
         var that = this;
 
         // group condition change
-        this.$el.on('change.queryBuilder', '.rules-group-header input[name$=_cond]', function() {
+        this.$el.on('change.queryBuilder', '.rules-group-header [name$=_cond]', function() {
             var $this = $(this);
 
             if ($this.is(':checked')) {
-                $this.parent().addClass('active');
-                $this.parent().siblings().removeClass('active');
+                $this.parent().addClass('active').siblings().removeClass('active');
             }
         });
 
         // rule filter change
-        this.$el.on('change.queryBuilder', '.rule-filter-container select[name$=_filter]', function() {
+        this.$el.on('change.queryBuilder', '.rule-filter-container [name$=_filter]', function() {
             var $this = $(this),
                 $rule = $this.closest('.rule-container');
 
@@ -578,7 +587,7 @@
         });
 
         // rule operator change
-        this.$el.on('change.queryBuilder', '.rule-operator-container select[name$=_operator]', function() {
+        this.$el.on('change.queryBuilder', '.rule-operator-container [name$=_operator]', function() {
             var $this = $(this),
                 $rule = $this.closest('.rule-container');
 
@@ -593,31 +602,31 @@
             that.addRule($group);
         });
 
-        // add group button
+        // delete rule button
+        this.$el.on('click.queryBuilder', '[data-delete=rule]', function() {
+            var $this = $(this),
+                $rule = $this.closest('.rule-container');
+
+            that.deleteRule($rule);
+        });
+
         if (this.settings.allow_groups !== 0) {
+            // add group button
             this.$el.on('click.queryBuilder', '[data-add=group]', function() {
                 var $this = $(this),
                     $group = $this.closest('.rules-group-container');
 
                 that.addGroup($group);
             });
+
+            // delete group button
+            this.$el.on('click.queryBuilder', '[data-delete=group]', function() {
+                var $this = $(this),
+                    $group = $this.closest('.rules-group-container');
+
+                that.deleteGroup($group);
+            });
         }
-
-        // delete rule button
-        this.$el.on('click.queryBuilder', '[data-delete=rule]', function() {
-            var $this = $(this),
-                $rule = $this.closest('.rule-container');
-
-            $rule.remove();
-        });
-
-        // delete group button
-        this.$el.on('click.queryBuilder', '[data-delete=group]', function() {
-            var $this = $(this),
-                $group = $this.closest('.rules-group-container');
-
-            that.deleteGroup($group);
-        });
     };
 
     /**
@@ -628,11 +637,27 @@
      */
     QueryBuilder.prototype.addGroup = function($parent, addRule) {
         var group_id = this.nextGroupId(),
-            level = ($parent.data('queryBuilder') || {}).level || 0,
-            $container = level===0 ? $parent : $parent.find('>.rules-group-body>.rules-list'),
-            $group = $(this.template.group.call(this, group_id, ++level));
+            level = (($parent.data('queryBuilder') || {}).level || 0) + 1,
+            $container = level===1 ? $parent : $parent.find('>.rules-group-body>.rules-list'),
+            $group = $(this.template.group.call(this, group_id, level));
 
         $group.data('queryBuilder', {level:level});
+
+        var e = $.Event('addGroup.queryBuilder', {
+            group_id: group_id,
+            level: level,
+            addRule: addRule,
+            group: $group,
+            parent: $parent,
+            builder: this
+        });
+
+        this.$el.trigger(e);
+
+        if (e.isDefaultPrevented()) {
+            return null;
+        }
+
         $container.append($group);
 
         if (this.settings.onAfterAddGroup) {
@@ -651,11 +676,23 @@
     /**
      * Tries to delete a group. The group is not deleted if at least one rule is no_delete.
      * @param $group {jQuery}
-     * @return keepGroup {boolean} true if the group has not been deleted
+     * @return {boolean} true if the group has been deleted
      */
     QueryBuilder.prototype.deleteGroup = function($group) {
         if ($group[0].id == this.$el_id + '_group_0') {
             return;
+        }
+
+        var e = $.Event('deleteGroup.queryBuilder', {
+            group_id: $group[0].id,
+            group: $group,
+            builder: this
+        });
+
+        this.$el.trigger(e);
+
+        if (e.isDefaultPrevented()) {
+            return false;
         }
 
         this.trigger('beforeDeleteGroup', $group);
@@ -675,7 +712,7 @@
                 }
             }
             else {
-                keepGroup|= that.deleteGroup($element);
+                keepGroup|= !that.deleteGroup($element);
             }
         });
 
@@ -683,7 +720,7 @@
             $group.remove();
         }
 
-        return keepGroup;
+        return !keepGroup;
     };
 
     /**
@@ -698,6 +735,20 @@
             $filterSelect = $(this.getRuleFilterSelect(rule_id));
 
         $rule.data('queryBuilder', {flags: {}});
+
+        var e = $.Event('addRule.queryBuilder', {
+            rule_id: rule_id,
+            rule: $rule,
+            parent: $parent,
+            builder: this
+        });
+
+        this.$el.trigger(e);
+
+        if (e.isDefaultPrevented()) {
+            return null;
+        }
+
         $container.append($rule);
         $rule.find('.rule-filter-container').append($filterSelect);
 
@@ -708,6 +759,30 @@
         this.trigger('afterAddRule', $rule);
 
         return $rule;
+    };
+
+    /**
+     * Delete a rule.
+     * @param $rule {jQuery}
+     * @return {boolean} true if the rule has been deleted
+     */
+    QueryBuilder.prototype.deleteRule = function($rule) {
+        var e = $.Event('deleteRule.queryBuilder', {
+            rule_id: $rule[0].id,
+            rule: $rule,
+            builder: this
+        });
+
+        this.$el.trigger(e);
+
+        if (e.isDefaultPrevented()) {
+            return false;
+        }
+
+        this.trigger('beforeDeleteRule', $rule);
+
+        $rule.remove();
+        return true;
     };
 
     /**
@@ -753,7 +828,7 @@
         var $inputs = $();
 
         for (var i=0; i<operator.accept_values; i++) {
-            var $ruleInput = $(this.getRuleInput($rule.attr('id'), filter, i));
+            var $ruleInput = $(this.getRuleInput($rule, filter, i));
             if (i > 0) $valueContainer.append(' , ');
             $valueContainer.append($ruleInput);
             $inputs = $inputs.add($ruleInput);
@@ -765,9 +840,12 @@
             filter.onAfterCreateRuleInput.call(this, $rule, filter);
         }
 
-        // init external jquery plugin
         if (filter.plugin) {
             $inputs[filter.plugin](filter.plugin_config || {});
+        }
+
+        if (filter.default_value !== undefined) {
+            this.setRuleValue($rule, filter.default_value, filter, operator);
         }
 
         this.trigger('afterCreateRuleInput', $rule, filter, operator);
@@ -785,6 +863,8 @@
         this.createRuleInput($rule, filter);
 
         $rule.data('queryBuilder').filter = filter;
+
+        this.trigger('afterUpdateRuleFilter', $rule, filter);
     };
 
     /**
@@ -874,8 +954,7 @@
                     }
                     break;
 
-                /* falls through */
-                case 'text': default:
+                default:
                     switch (filter.internalType) {
                         case 'string':
                             if (validation.min !== undefined) {
@@ -979,7 +1058,7 @@
      * Remove 'has-error' from everything
      */
     QueryBuilder.prototype.clearErrors = function() {
-      this.$el.find('.has-error').removeClass('has-error');
+        this.$el.find('.has-error').removeClass('has-error');
     };
 
     /**
@@ -1002,7 +1081,7 @@
             this.settings.onValidationError.call(this, $target, error, value, filter, operator);
         }
 
-        var e = jQuery.Event('validationError.queryBuilder', {
+        var e = $.Event('validationError.queryBuilder', {
             error: error,
             filter: filter,
             operator: operator,
@@ -1117,7 +1196,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getGroupCondition = function($group) {
-        return $group.find('>.rules-group-header input[name$=_cond]:checked').val();
+        return $group.find('>.rules-group-header [name$=_cond]:checked').val();
     };
 
     /**
@@ -1126,7 +1205,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getRuleFilter = function($rule) {
-        return $rule.find('.rule-filter-container select[name$=_filter]').val();
+        return $rule.find('.rule-filter-container [name$=_filter]').val();
     };
 
     /**
@@ -1135,7 +1214,7 @@
      * @return {string}
      */
     QueryBuilder.prototype.getRuleOperator = function($rule) {
-        return $rule.find('.rule-operator-container select[name$=_operator]').val();
+        return $rule.find('.rule-operator-container [name$=_operator]').val();
     };
 
     /**
@@ -1149,7 +1228,7 @@
         filter = filter || this.getFilterById(this.getRuleFilter($rule));
         operator = operator || this.getOperatorByType(this.getRuleOperator($rule));
 
-        var value = [], tmp = [],
+        var value = [], tmp,
             $value = $rule.find('.rule-value-container');
 
         for (var i=0; i<operator.accept_values; i++) {
@@ -1157,11 +1236,12 @@
 
             switch (filter.input) {
                 case 'radio':
-                    value.push($value.find('input[name='+ name +']:checked').val());
+                    value.push($value.find('[name='+ name +']:checked').val());
                     break;
 
                 case 'checkbox':
-                    $value.find('input[name='+ name +']:checked').each(function() {
+                    tmp = [];
+                    $value.find('[name='+ name +']:checked').each(function() {
                         tmp.push($(this).val());
                     });
                     value.push(tmp);
@@ -1169,19 +1249,19 @@
 
                 case 'select':
                     if (filter.multiple) {
-                        $value.find('select[name='+ name +'] option:selected').each(function() {
+                        tmp = [];
+                        $value.find('[name='+ name +'] option:selected').each(function() {
                             tmp.push($(this).val());
                         });
                         value.push(tmp);
                     }
                     else {
-                        value.push($value.find('select[name='+ name +'] option:selected').val());
+                        value.push($value.find('[name='+ name +'] option:selected').val());
                     }
                     break;
 
-                /* falls through */
-                case 'text': default:
-                    value.push($value.find('input[name='+ name +']').val());
+                default:
+                    value.push($value.find('[name='+ name +']').val());
             }
         }
 
@@ -1227,7 +1307,7 @@
 
                 switch (filter.input) {
                     case 'radio':
-                        $value.find('input[name='+ name +'][value="'+ value[i] +'"]').prop('checked', true).trigger('change');
+                        $value.find('[name='+ name +'][value="'+ value[i] +'"]').prop('checked', true).trigger('change');
                         break;
 
                     case 'checkbox':
@@ -1235,17 +1315,12 @@
                             value[i] = [value[i]];
                         }
                         $.each(value[i], function(i, value) {
-                            $value.find('input[name='+ name +'][value="'+ value +'"]').prop('checked', true).trigger('change');
+                            $value.find('[name='+ name +'][value="'+ value +'"]').prop('checked', true).trigger('change');
                         });
                         break;
 
-                    case 'select':
-                        $value.find('select[name='+ name +']').val(value[i]).trigger('change');
-                        break;
-
-                    /* falls through */
-                    case 'text': default:
-                        $value.find('input[name='+ name +']').val(value[i]).trigger('change');
+                    default:
+                        $value.find('[name='+ name +']').val(value[i]).trigger('change');
                         break;
                 }
             }
@@ -1264,18 +1339,17 @@
      * @param rule {object}
      */
     QueryBuilder.prototype.applyRuleFlags = function($rule, rule) {
-
         var flags = this.getRuleFlags(rule);
         $rule.data('queryBuilder').flags = flags;
 
         if (flags.filter_readonly) {
-            $rule.find('select[name$=_filter]').prop('disabled', true);
+            $rule.find('[name$=_filter]').prop('disabled', true);
         }
         if (flags.operator_readonly) {
-            $rule.find('select[name$=_operator]').prop('disabled', true);
+            $rule.find('[name$=_operator]').prop('disabled', true);
         }
         if (flags.value_readonly) {
-            $rule.find('input[name*=_value_], select[name*=_value_]').prop('disabled', true);
+            $rule.find('[name*=_value_]').prop('disabled', true);
         }
         if (flags.no_delete) {
             $rule.find('[data-delete=rule]').remove();
@@ -1299,17 +1373,23 @@
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
         <i class="' + this.icons.add_rule + '"></i> '+ this.lang.add_rule +' \
       </button> \
-      '+ (this.settings.allow_groups===-1 || this.settings.allow_groups>=level ? '<button type="button" class="btn btn-xs btn-success" data-add="group"> \
+    '+ (this.settings.allow_groups===-1 || this.settings.allow_groups>=level ?
+      '<button type="button" class="btn btn-xs btn-success" data-add="group"> \
         <i class="' + this.icons.add_group + '"></i> '+ this.lang.add_group +' \
-      </button>' : '') +' \
-      '+ (level>1 ? '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
+      </button>'
+    :'') +' \
+    '+ (level>1 ? 
+      '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
         <i class="' + this.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
-      </button>' : '') +' \
+      </button>'
+    : '') +' \
     </div> \
     <div class="btn-group group-conditions"> \
       '+ this.getGroupConditions(group_id) +' \
     </div> \
-    '+ (this.settings.display_errors ? '<div class="error-container" data-toggle="tooltip" data-placement="right"><i class="' + this.icons.error + '"></i></div>' : '') +'\
+  '+ (this.settings.display_errors ?
+    '<div class="error-container" data-toggle="tooltip" data-placement="right"><i class="' + this.icons.error + '"></i></div>'
+  :'') +'\
   </dt> \
   <dd class=rules-group-body> \
     <ul class=rules-list></ul> \
@@ -1356,7 +1436,9 @@
       </button> \
     </div> \
   </div> \
-  '+ (this.settings.display_errors ? '<div class="error-container"><i class="' + this.icons.error + '"></i></div>' : '') +'\
+  '+ (this.settings.display_errors ?
+    '<div class="error-container"><i class="' + this.icons.error + '"></i></div>'
+  :'') +'\
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
@@ -1413,14 +1495,14 @@
 
     /**
      * Return the rule value HTML
-     * @param rule_id {string}
+     * @param $rule {jQuery}
      * @param filter {object}
+     * @param value_id {int}
      * @return {string}
      */
-    QueryBuilder.prototype.getRuleInput = function(rule_id, filter, value_id) {
-        var $rule = this.$el.find('#'+ rule_id),
-            validation = filter.validation || {},
-            name = rule_id +'_value_'+ value_id,
+    QueryBuilder.prototype.getRuleInput = function($rule, filter, value_id) {
+        var validation = filter.validation || {},
+            name = $rule[0].id +'_value_'+ value_id,
             h = '', c;
 
         if (typeof filter.input === 'function') {
@@ -1450,8 +1532,17 @@
                     h+= '</select>';
                     break;
 
-                /* falls through */
-                case 'text': default:
+                case 'textarea':
+                    h+= '<textarea name="'+ name +'"';
+                    if (filter.size) h+= ' cols="'+ filter.size +'"';
+                    if (filter.rows) h+= ' rows="'+ filter.rows +'"';
+                    if (validation.min !== undefined) h+= ' minlength="'+ validation.min +'"';
+                    if (validation.max !== undefined) h+= ' maxlength="'+ validation.max +'"';
+                    if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
+                    h+= '></textarea>';
+                    break;
+
+                default:
                     switch (filter.internalType) {
                         case 'number':
                             h+= '<input type="number" name="'+ name +'"';
@@ -1459,13 +1550,16 @@
                             if (validation.min !== undefined) h+= ' min="'+ validation.min +'"';
                             if (validation.max !== undefined) h+= ' max="'+ validation.max +'"';
                             if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
+                            if (filter.size) h+= ' size="'+ filter.size +'"';
                             h+= '>';
                             break;
 
-                        /* falls through */
-                        case 'datetime': case 'text': default:
+                        default:
                             h+= '<input type="text" name="'+ name +'"';
                             if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
+                            if (filter.type === 'string' && validation.min !== undefined) h+= ' minlength="'+ validation.min +'"';
+                            if (filter.type === 'string' && validation.max !== undefined) h+= ' maxlength="'+ validation.max +'"';
+                            if (filter.size) h+= ' size="'+ filter.size +'"';
                             h+= '>';
                     }
             }
@@ -1631,6 +1725,110 @@ $.fn.queryBuilder.define('bt-tooltip-errors', function(options) {
         });
     });
 
+$.fn.queryBuilder.define('filter-description', function(options) {
+        options = $.extend({
+            icon: 'glyphicon glyphicon-info-sign',
+            mode: 'popover'
+        }, options || {});
+
+        /**
+         * INLINE
+         */
+        if (options.mode === 'inline') {
+            this.on('afterUpdateRuleFilter', function($rule, filter) {
+                var $p = $rule.find('p.filter-description');
+
+                if (!filter || !filter.description) {
+                    $p.hide();
+                }
+                else {
+                    if ($p.length === 0) {
+                        $p = $('<p class="filter-description"></p>');
+                        $p.appendTo($rule);
+                    }
+                    else {
+                        $p.show();
+                    }
+
+                    $p.html('<i class="' + options.icon + '"></i> ' + filter.description);
+                }
+            });
+        }
+        /**
+         * POPOVER
+         */
+        else if (options.mode === 'popover') {
+            if (!$.fn.popover || !$.fn.popover.Constructor || !$.fn.popover.Constructor.prototype.fixTitle) {
+                $.error('Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
+            }
+
+            this.on('afterUpdateRuleFilter', function($rule, filter) {
+                var $b = $rule.find('button.filter-description');
+
+                if (!filter || !filter.description) {
+                    $b.hide();
+
+                    if ($b.data('bs.popover')) {
+                        $b.popover('hide');
+                    }
+                }
+                else {
+                    if ($b.length === 0) {
+                        $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="popover"><i class="' + options.icon + '"></i></button>');
+                        $b.prependTo($rule.find('.rule-actions'));
+
+                        $b.popover({
+                            placement: 'left',
+                            container: 'body',
+                            html: true
+                        });
+
+                        $b.on('mouseout', function() {
+                            $b.popover('hide');
+                        });
+                    }
+                    else {
+                        $b.show();
+                    }
+
+                    $b.data('bs.popover').options.content = filter.description;
+
+                    if ($b.attr('aria-describedby')) {
+                        $b.popover('show');
+                    }
+                }
+            });
+        }
+        /**
+         * BOOTBOX
+         */
+        else if (options.mode === 'bootbox') {
+            if (!window.bootbox) {
+                $.error('Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
+            }
+
+            this.on('afterUpdateRuleFilter', function($rule, filter) {
+                var $b = $rule.find('button.filter-description');
+
+                if (!filter || !filter.description) {
+                    $b.hide();
+                }
+                else {
+                    if ($b.length === 0) {
+                        $b = $('<button type="button" class="btn btn-xs btn-info filter-description"><i class="' + options.icon + '"></i></button>');
+                        $b.prependTo($rule.find('.rule-actions'));
+
+                        $b.on('click', function() {
+                            bootbox.alert($b.data('description'));
+                        });
+                    }
+
+                    $b.data('description', filter.description);
+                }
+            });
+        }
+    });
+
 $.fn.queryBuilder.defaults.set({
         mongoOperators: {
             equal:            function(v){ return v[0]; },
@@ -1642,12 +1840,12 @@ $.fn.queryBuilder.defaults.set({
             greater:          function(v){ return {'$gt': v[0]}; },
             greater_or_equal: function(v){ return {'$gte': v[0]}; },
             between:          function(v){ return {'$gte': v[0], '$lte': v[1]}; },
-            begins_with:      function(v){ return {'$regex': '^'+escapeRegExp(v[0])}; },
-            not_begins_with:  function(v){ return {'$not': {'$regex': '^'+escapeRegExp(v[0])}}; },
+            begins_with:      function(v){ return {'$regex': '^' + escapeRegExp(v[0])}; },
+            not_begins_with:  function(v){ return {'$regex': '^(?!' + escapeRegExp(v[0]) + ')'}; },
             contains:         function(v){ return {'$regex': escapeRegExp(v[0])}; },
-            not_contains:     function(v){ return {'$not': {'$regex': escapeRegExp(v[0])}}; },
-            ends_with:        function(v){ return {'$regex': escapeRegExp(v[0])+'$'}; },
-            not_ends_with:    function(v){ return {'$not': {'$regex': escapeRegExp(v[0])+'$'}}; },
+            not_contains:     function(v){ return {'$regex': '^((?!' + escapeRegExp(v[0]) + ').)*$', '$options': 's'}; },
+            ends_with:        function(v){ return {'$regex': escapeRegExp(v[0]) + '$'}; },
+            not_ends_with:    function(v){ return {'$regex': '(?<!' + escapeRegExp(v[0]) + ')$'}; },
             is_empty:         function(v){ return ''; },
             is_not_empty:     function(v){ return {'$ne': ''}; },
             is_null:          function(v){ return null; },
@@ -1711,7 +1909,9 @@ $.fn.queryBuilder.defaults.set({
                 });
 
                 var res = {};
-                res[ '$'+data.condition.toLowerCase() ] = parts;
+                if (parts.length > 0) {
+                    res[ '$'+data.condition.toLowerCase() ] = parts;
+                }
                 return res;
             }(data));
         }

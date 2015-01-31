@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 1.4.0
+ * jQuery QueryBuilder 1.4.1
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -104,6 +104,15 @@
   }
 .query-builder .tooltip-inner {
   color:#fdd !important;
+}
+.query-builder p.filter-description {
+  margin:5px 0 0 0;
+  background:#D9EDF7;
+  border:1px solid #BCE8F1;
+  color:#31708F;
+  border-radius:4px;
+  padding:2px 5px;
+  font-size:0.8em;
 }
 .query-builder  .drag-handle {
   cursor:move;

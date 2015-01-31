@@ -40,6 +40,10 @@
          * POPOVER
          */
         else if (options.mode === 'popover') {
+            if (!$.fn.popover || !$.fn.popover.Constructor || !$.fn.popover.Constructor.prototype.fixTitle) {
+                $.error('Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
+            }
+
             this.on('afterUpdateRuleFilter', function($rule, filter) {
                 var $b = $rule.find('button.filter-description');
 
