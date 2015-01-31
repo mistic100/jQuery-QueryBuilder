@@ -8,15 +8,19 @@ title: Plugins
     Presentation
   </h1>
 
-  <p>QueryBuilder uses <a href="https://github.com/mistic100/microevent.js">MicroEvent.js</a> and some piece of code from <a href="http://brianreavis.github.io/selectize.js">selectize.js</a> to offer a plugins system.<br>
-  <br>
-  Plugins can simply add public methods or make use of events to change the behavior of the builder.</p>
+  <p>
+    QueryBuilder uses <a href="https://github.com/mistic100/microevent.js">MicroEvent.js</a> and some piece of code from <a href="http://brianreavis.github.io/selectize.js">selectize.js</a> to offer a plugins system.<br>
+    <br>
+    Plugins can simply add public methods or make use of events to change the behavior of the builder.
+  </p>
 
   <h2 id="usage">General usage</h2>
 
-  <p>Some plugins like <b>Mongo support</b> and <b>SQL support</b> don't require any configuration and are useable as long as they are loaded. Other plugins must be manually activated with the <code>plugins</code> option.<br>
-  <br>
-  This option is an object where keys are plugin names and values are plugin configuration (or <code>null</code>).</p>
+  <p>
+    Some plugins like <b>Mongo support</b> and <b>SQL support</b> don't require any configuration and are useable as long as they are loaded. Other plugins must be manually activated with the <code>plugins</code> option.<br>
+    <br>
+    This option is an object where keys are plugin names and values are plugin configuration (or <code>null</code>).
+  </p>
 
 {% highlight javascript %}
   $('#builder').queryBuilder({
@@ -115,9 +119,11 @@ $('#builder').queryBuilder('getMongo')
 {% endhighlight %}
 
   <h3>Operators</h3>
-  <p>The MongoDB module requires special configuration of operators to convert rules to a valid Mongo JSON. This configuration is stored in <code>mongoOperators</code> option, the keys are the operators types and the values are formatting functions.</p>
-  
-  <p>The default operators configuration is available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/plugins/mongodb-support/plugin.js#L12-32">in the source code</a>.</p>
+  <p>
+    The MongoDB module requires special configuration of operators to convert rules to a valid Mongo JSON. This configuration is stored in <code>mongoOperators</code> option, the keys are the operators types and the values are formatting functions.<br>
+    <br>
+    The default operators configuration is available <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/plugins/mongodb-support/plugin.js#L12-32">in the source code</a>.
+  </p>
 </section>
 
 
@@ -135,7 +141,7 @@ $('#builder').queryBuilder('getMongo')
         <tr>
           <th style="width: 150px;">Name</th>
           <th style="width: 100px;">type</th>
-          <th style="width: 100px;">default</th>
+          <th style="width: 190px;">default</th>
           <th>description</th>
         </tr>
       </thead>
@@ -157,6 +163,47 @@ $('#builder').queryBuilder('getMongo')
   </div>
 
   <p>The plugin also adds a new rule flag useable with <a href="{{site.github.url}}/index.html#methods">setRules</a> method: <code>no_sortable</code>, set it to <code>true</code> to remove the drag handle of a rule.</p>
+</section>
+
+
+<section class="bs-docs-section">
+  <h1 id="filter-description" class="page-header">
+    Filter description <small>filter-description</small>
+  </h1>
+
+  <p>
+    Provide three ways to display a description about a filter: inline, <a href="http://getbootstrap.com/javascript/#popovers">Bootsrap Popover</a> or <a href="http://bootboxjs.com">Bootbox</a>.<br>
+    <br>
+    The description is defined in the <code>description</code> of each filter. It can contain HTML.
+  </p>
+
+  <h3>Options</h3>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th style="width: 100px;">Name</th>
+          <th style="width: 100px;">type</th>
+          <th style="width: 220px;">default</th>
+          <th>description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>icon</td>
+          <td>string</td>
+          <td>'glyphicon glyphicon-info-sign'</td>
+          <td>The font-icon used for the button</td>
+        </tr>
+        <tr>
+          <td>mode</td>
+          <td>string</td>
+          <td>'popover'</td>
+          <td><code>inline</code>, <code>popover</code> or <code>bootbox</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 
@@ -216,9 +263,11 @@ $.fn.queryBuilder.extend({
 {% endhighlight %}
 
   <h3>define</h3>
-  <p><code>$.fn.queryBuilder.define</code> is used to declare a plugin which will be initialized with the builder, optionally with a configuration object. It corresponds to plugins loaded with <code>plugins</code> options.<br>
-  <br>
-  You will generally use the events system in you plugin body (see bellow).</p>
+  <p>
+    <code>$.fn.queryBuilder.define</code> is used to declare a plugin which will be initialized with the builder, optionally with a configuration object. It corresponds to plugins loaded with <code>plugins</code> options.<br>
+    <br>
+    You will generally use the events system in you plugin body (see bellow).
+  </p>
 
 {% highlight javascript %}
 $.fn.queryBuilder.define('my_plugin', function(options) {
@@ -268,9 +317,11 @@ $.fn.queryBuilder.extend({
 
   <h3>Building</h3>
 
-  <p>One of the tasks of the Grunt script provided with QueryBuilder is to combine all requested plugins (with optional <code>--modules</code> parameter) with the core JS file in a single AMD-ready file.<br>
-  <br>
-  When doing so the script will remove all wrappers to replace them by a single one, it does it by removing every occurences of the following four lines:</p>
+  <p>
+    One of the tasks of the Grunt script provided with QueryBuilder is to combine all requested plugins (with optional <code>--modules</code> parameter) with the core JS file in a single AMD-ready file.<br>
+    <br>
+    When doing so the script will remove all wrappers to replace them by a single one, it does it by removing every occurences of the following four lines:
+  </p>
 
 {% highlight javascript linenos %}
 /*jshint ....... */

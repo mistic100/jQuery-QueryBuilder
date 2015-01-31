@@ -90,6 +90,12 @@ isHome: true
           <td>Number of nested groups allowed. <code>true</code> for no limit.</td>
         </tr>
         <tr>
+          <td>allow_empty</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>No error will be thrown is the builder is entirely empty.</td>
+        </tr>
+        <tr>
           <td>display_errors</td>
           <td>boolean</td>
           <td>true</td>
@@ -208,16 +214,10 @@ isHome: true
           <td>Type of the field. Available types are <code>string</code>, <code>integer</code>, <code>double</code>, <code>date</code>, <code>time</code> and <code>datetime</code>.</td>
         </tr>
         <tr>
-          <td>optgroup</td>
-          <td>string</td>
-          <td>null</td>
-          <td>Optional label of an <code>&lt;optgroup&gt;</code> in the filters dropdown.</td>
-        </tr>
-        <tr>
           <td>input</td>
           <td>string|function</td>
           <td>'text'</td>
-          <td>Type of input used. Available types are <code>text</code>, <code>radio</code>, <code>checkbox</code> and <code>select</code>.
+          <td>Type of input used. Available types are <code>text</code>, <code>textarea</code>, <code>radio</code>, <code>checkbox</code> and <code>select</code>.
             It can also be a function which returns the HTML of the said input, this function takes 2 parameters:
             <ul>
               <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
@@ -225,6 +225,31 @@ isHome: true
               <li><code>input_name</code></li>
             </ul>
           </td>
+        </tr>
+        <tr>
+          <td>values</td>
+          <td>array</td>
+          <td><span class="label label-warning">required*</span></td>
+          <td><i>Required for <code>radio</code> and <code>checkboxe</code> inputs. Generally needed for <code>select</code> inputs.</i><br>
+            Hashmap of options available. Keys are used as values and values are used as labels.</td>
+        </tr>
+        <tr>
+          <td>default_value</td>
+          <td>mixed</td>
+          <td></td>
+          <td>As it says :-)</td>
+        </tr>
+        <tr>
+          <td>size</td>
+          <td>int</td>
+          <td></td>
+          <td><code>size</code> attribute of <code>text</code> inputs and <code>cols</code> attribute of <code>textarea</code> inputs. Ignored otherwise.</td>
+        </tr>
+        <tr>
+          <td>rows</td>
+          <td>int</td>
+          <td></td>
+          <td><code>rows</code> attribute of <code>textarea</code> inputs. Ignored otherwise.</td>
         </tr>
         <tr>
           <td>multiple</td>
@@ -245,11 +270,10 @@ isHome: true
           <td><i>Only for <code>radio</code> and <code>checkbox</code> inputs:</i> display inputs vertically on not horizontally.</td>
         </tr>
         <tr>
-          <td>values</td>
-          <td>array</td>
-          <td><span class="label label-warning">required*</span></td>
-          <td><i>Required for <code>radio</code> and <code>checkboxe</code> inputs. Generally needed for <code>select</code> inputs.</i><br>
-            Hashmap of options available. Keys are used as values and values are used as labels.</td>
+          <td>optgroup</td>
+          <td>string</td>
+          <td>null</td>
+          <td>Optional label of an <code>&lt;optgroup&gt;</code> in the filters dropdown.</td>
         </tr>
         <tr>
           <td>validation</td>
@@ -449,9 +473,7 @@ $('#builder').queryBuilder('destroy')
          </td>
        </tr>
        <tr>
-         <td>addGroup.queryBuilder<br>
-          <span class="badge">1.5</span>
-         </td>
+         <td>addGroup.queryBuilder</td>
          <td>Fired before adding a group. The Event object contains the following attributes:
             <ul>
               <li><code>group</code> DOM element (detached) of the group</li>
@@ -464,9 +486,7 @@ $('#builder').queryBuilder('destroy')
          </td>
        </tr>
        <tr>
-         <td>deleteGroup.queryBuilder<br>
-          <span class="badge">1.5</span>
-         </td>
+         <td>deleteGroup.queryBuilder</td>
          <td>Fired before deleting a group. The Event object contains the following attributes:
             <ul>
               <li><code>group</code> DOM element of the group</li>
@@ -476,9 +496,7 @@ $('#builder').queryBuilder('destroy')
          </td>
        </tr>
        <tr>
-         <td>addRule.queryBuilder<br>
-          <span class="badge">1.5</span>
-         </td>
+         <td>addRule.queryBuilder</td>
          <td>Fired before adding a rule. The Event object contains the following attributes:
             <ul>
               <li><code>rule</code> DOM element (detached) of the rule</li>
@@ -489,9 +507,7 @@ $('#builder').queryBuilder('destroy')
          </td>
        </tr>
        <tr>
-         <td>deleteRule.queryBuilder<br>
-          <span class="badge">1.5</span>
-         </td>
+         <td>deleteRule.queryBuilder</td>
          <td>Fired before deleting a rule. The Event object contains the following attributes:
             <ul>
               <li><code>rule</code> DOM element of the rule</li>
