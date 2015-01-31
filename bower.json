@@ -15,7 +15,7 @@
     "bootstrap": "^3.1.0",
     "momentjs": "^2.6.0",
     "microevent-mistic100": "^2.0.0",
-    "jquery-extendext": "^0.1.0"
+    "jquery-extendext": "^0.1.1"
   },
   "keywords": [
     "jquery",
