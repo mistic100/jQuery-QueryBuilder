@@ -1449,9 +1449,9 @@
       </button> \
     </div> \
   </div> \
-'+ (this.settings.display_errors ?
-  '<div class="error-container"><i class="' + this.icons.error + '"></i></div>'
-:'') +'\
+  '+ (this.settings.display_errors ?
+    '<div class="error-container"><i class="' + this.icons.error + '"></i></div>'
+  :'') +'\
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
