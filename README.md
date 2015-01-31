@@ -11,7 +11,7 @@ http://mistic100.github.io/jQuery-QueryBuilder
 ### Dependencies
  * Bootstrap 3.x CSS
  * jQuery >= 1.9
- * [jQuery.extendext](https://github.com/mistic100/microevent.js)
+ * [jQuery.extendext](https://github.com/mistic100/jQuery.extendext)
  * [MicroEvent](https://github.com/mistic100/microevent.js) (mistic100 version)
  * (optional) MomentJS
  * (optional) any widgets library like jQuery UI

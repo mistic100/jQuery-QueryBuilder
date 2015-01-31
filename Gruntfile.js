@@ -68,6 +68,21 @@ module.exports = function(grunt) {
     });
 
 
+    function removeJshint(src) {
+        return src
+          .replace(/\/\*jshint [a-z:]+ \*\/\r?\n/g, '')
+          .replace(/\/\*jshint -[EWI]{1}[0-9]{3} \*\/\r?\n/g, '');
+    }
+
+    function removeWrapper(src) {
+        return src
+          .replace(/\(function\(\$\){\r?\n/g, '')
+          .replace(/\r?\n}\(jQuery\)\);/g, '')
+          .replace(/[ \t]*"use strict";\r?\n/g, '')
+          .replace(/\r?\n( *\/\/ [^\r\n]*\r?\n)+ *\/\/ =+/g, '');
+    }
+
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -115,12 +130,7 @@ module.exports = function(grunt) {
                 options: {
                     // remove wrappers, use strict, jshint directives, sections comments
                     process: function(src) {
-                        return src
-                          .replace(/\(function\(\$\){\r?\n/g, '')
-                          .replace(/\r?\n}\(jQuery\)\);/g, '')
-                          .replace(/[ \t]*"use strict";\r?\n/g, '')
-                          .replace(/\/\*jshint [a-z:]+ \*\/\r?\n/g, '')
-                          .replace(/\r?\n( *\/\/ [^\r\n]*\r?\n)+ *\/\/ =+/g, '');
+                        return removeWrapper(removeJshint(src));
                     }
                 }
             }
@@ -210,6 +220,7 @@ module.exports = function(grunt) {
                 source = grunt.file.read(path);
 
             source = source.replace(/define\((.*?)factory\);/, 'define(\'' + name + '\', $1factory);');
+            source = removeJshint(source);
             modules.push(source);
         }
 
