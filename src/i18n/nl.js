@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Dutch translation by "Roywcm"
- */
+{
+  "__copyright": "Dutch translation by \"Roywcm\"",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Nieuwe regel",
   "add_group": "Nieuwe groep",
   "delete_rule": "Verwijder",
@@ -56,4 +53,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "Dient na {0}",
     "datetime_exceed_max": "Dient voor {0}"
   }
-}});
+}

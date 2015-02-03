@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Portuguese Brazilian translation by Leandro Gehlen (leandrogehlen@gmail.com)
- */
+{
+  "__copyright": "Portuguese Brazilian translation by Leandro Gehlen (leandrogehlen@gmail.com)",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Nova Regra",
   "add_group": "Novo Gruop",
   "delete_rule": "Excluir",
@@ -56,4 +53,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "É necessário ser superior a {0}",
     "datetime_exceed_max": "É necessário ser inferior a {0}"
   }
-}});
+}

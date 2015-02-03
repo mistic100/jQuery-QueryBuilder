@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Polish translation by Artur Smolarek
- */
+{
+  "__copyright": "Polish translation by Artur Smolarek",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Dodaj regułę",
   "add_group": "Dodaj grupę",
   "delete_rule": "Usuń",
@@ -56,4 +53,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "Musi być po {0}",
     "datetime_exceed_max": "Musi być przed {0}"
   }
-}});
+}

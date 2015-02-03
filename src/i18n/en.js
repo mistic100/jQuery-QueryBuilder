@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Reference language file
- */
+{
+  "__copyright": "Reference language file",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Add rule",
   "add_group": "Add group",
   "delete_rule": "Delete",
@@ -56,4 +53,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "Must be after {0}",
     "datetime_exceed_max": "Must be before {0}"
   }
-}});
+}

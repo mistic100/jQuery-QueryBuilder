@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * French translation by Damien "Mistic" Sorel
- */
+{
+  "__copyright": "French translation by Damien \"Mistic\" Sorel",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Ajouter une règle",
   "add_group": "Ajouter un groupe",
   "delete_rule": "Supprimer",
@@ -56,4 +53,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "Doit être après {0}",
     "datetime_exceed_max": "Doit être avant {0}"
   }
-}});
+}

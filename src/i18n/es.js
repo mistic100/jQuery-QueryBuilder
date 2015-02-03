@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Spanish translation by "pyarza"
- */
+{
+  "__copyright": "Spanish translation by \"pyarza\"",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Añadir regla",
   "add_group": "Añadir grupo",
   "delete_rule": "Borrar",
@@ -56,4 +53,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "Debe ser posterior a {0}",
     "datetime_exceed_max": "Debe ser anterior a {0}"
   }
-}});
+}

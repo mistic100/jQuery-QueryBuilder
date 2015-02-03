@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Oversat af Jna Borup Coyle, github@coyle.dk
- */
+{
+  "__copyright": "Oversat af Jna Borup Coyle, github@coyle.dk",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Tilføj regel",
   "add_group": "Tilføj gruppe",
   "delete_rule": "Slet regel",
@@ -34,4 +31,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "er null",
     "is_not_null": "er ikke null"
   }
-}});
+}

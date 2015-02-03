@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * German translation
- */
+{
+  "__copyright": "German translation by \"raimu\"",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "neue Regel",
   "add_group": "neue Gruppe",
   "delete_rule": "löschen",
@@ -34,4 +31,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "ist null",
     "is_not_null": "ist nicht null"
   }
-}});
+}
