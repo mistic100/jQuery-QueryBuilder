@@ -1,13 +1,19 @@
 var deepmerge = require('deepmerge');
 
 module.exports = function(grunt) {
-    // list available modules and languages
     var all_modules = {},
         all_langs = {},
         loaded_modules = [],
         loaded_lang = '',
         js_core_files = [
-            'src/query-builder.js'
+            'src/main.js',
+            'src/model.js',
+            'src/defaults.js',
+            'src/public.js',
+            'src/data.js',
+            'src/template.js',
+            'src/plugins.js',
+            'src/utils.js'
         ],
         css_core_files = [
             'src/scss/default.scss'
@@ -20,6 +26,7 @@ module.exports = function(grunt) {
             'dist/query-builder.js'
         ];
 
+    // list available modules and languages
     grunt.file.expand('src/plugins/*/plugin.js')
     .forEach(function(f) {
         all_modules[f.split('/')[2]] = f;
@@ -371,6 +378,7 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('test', [
+        'default',
         'qunit',
         'jshint'
     ]);
