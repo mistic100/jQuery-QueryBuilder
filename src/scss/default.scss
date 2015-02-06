@@ -1,0 +1,147 @@
+// common
+$item-vertical-spacing: 4px;
+$item-border-radius: 5px;
+
+// groups
+$group-background-color: rgba(250, 240, 210, 0.5);
+$group-border-color: #DCC896;
+$group-border: 1px solid $group-border-color;
+$group-padding: 10px;
+
+// rules
+$rule-background-color: rgba(255, 255, 255, 0.9);
+$rule-border-color: #EEE;
+$rule-border: 1px solid $rule-border-color;
+$rule-padding: 5px;
+
+// errors
+$error-icon-color: #F00;
+$error-border-color: #F99;
+$error-background-color: #FDD;
+
+// ticks
+$ticks-width: 2px;
+$ticks-color: #CCC;
+
+
+// ABSTRACTS
+%base-container {
+  position: relative;
+  margin: $item-vertical-spacing 0;
+  border-radius: $item-border-radius;
+  padding: $rule-padding;
+  border: $rule-border;
+  background: $rule-background-color;
+}
+
+%rule-component {
+  display: inline-block;
+  margin: 0 5px 0 0;
+  vertical-align: top;
+}
+
+.query-builder {
+
+  // GROUPS
+  .rules-group-container {
+    @extend %base-container;
+    
+    padding: $group-padding;
+    padding-bottom: #{$group-padding - $item-vertical-spacing};
+    border: $group-border;
+    background: $group-background-color;
+
+    .rules-group-header {
+      margin-bottom: $group-padding;
+
+      input[name$=_cond] {
+        display: none;
+      }
+    }
+    
+    .rules-list {
+      list-style: none;
+      padding: 0 0 0 #{2 * $group-padding};
+      margin: 0;
+    }
+  }
+  
+  // RULES
+  .rule-container {
+    @extend %base-container;
+
+    .rule-filter-container,
+    .rule-operator-container,
+    .rule-value-container {
+      @extend %rule-component;
+    }
+    
+    .rule-value-container {
+      border-left: 1px solid #ddd;
+      padding-left: 5px;
+
+      label {
+        margin-bottom: 0;
+
+        &.block {
+          display: block;
+        }
+      }
+    }
+    
+    select, input[type=text], input[type=number] {
+      padding: 1px;
+    }
+  }
+  
+  // ERRORS
+  .error-container {
+    @extend %rule-component;
+    display: none;
+    cursor: help;
+    color: $error-icon-color;
+  }
+  
+  .has-error {
+    background-color: $error-background-color;
+    border-color: $error-border-color;
+    
+    .error-container {
+      display: inline-block !important;
+    }
+  }
+  
+  // TICKS
+  .rules-list>* {
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      left: -15px;
+      width: 15px;
+      height: calc(50% + #{$item-vertical-spacing});
+      border-color: $ticks-color;
+      border-style: solid;
+    }
+
+    &:before {
+      top: #{-2 * $ticks-width};
+      border-width: 0 0 $ticks-width $ticks-width;
+    }
+    &:after {
+      top: 50%;
+      border-width: 0 0 0 $ticks-width;
+    }
+
+    &:first-child:before {
+      top: #{-10px -$ticks-width};
+      height: calc(50% + #{10px + $item-vertical-spacing});
+    }
+    &:last-child:before {
+      border-radius: 0 0 0 #{2 * $ticks-width};
+    }
+    &:last-child:after {
+      display: none;
+    }
+  }
+}

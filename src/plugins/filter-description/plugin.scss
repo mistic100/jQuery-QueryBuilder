@@ -1,0 +1,14 @@
+$description-background-color: #D9EDF7;
+$description-border-color: #BCE8F1;
+$description-border: 1px solid $description-border-color;
+$description-text-color: #31708F;
+
+.query-builder p.filter-description {
+  margin: $rule-padding 0 0 0;
+  background: $description-background-color;
+  border: $description-border;
+  color: $description-text-color;
+  border-radius: $item-border-radius;
+  padding: #{$rule-padding / 2} $rule-padding;
+  font-size: 0.8em;
+}
