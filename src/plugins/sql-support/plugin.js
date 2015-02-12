@@ -92,8 +92,8 @@
                                     value+= sql.sep;
                                 }
 
-                                if (rule.type=='integer' || rule.type=='double') {
-                                    v = changeType(v, rule.type);
+                                if (rule.type=='integer' || rule.type=='double' || rule.type=='boolean') {
+                                    v = changeType(v, rule.type, 'sql');
                                 }
                                 else if (!stmt) {
                                     v = escapeString(v);
@@ -174,15 +174,24 @@
     // UTILITIES
     // ===============================
     /**
-     * Change type of a value to int or float
+     * Change type of a value to int, float or boolean
      * @param value {mixed}
      * @param type {string}
      * @return {mixed}
      */
-    function changeType(value, type) {
+    function changeType(value, type, db) {
         switch (type) {
             case 'integer': return parseInt(value);
             case 'double': return parseFloat(value);
+            case 'boolean':
+                var bool = value.trim().toLowerCase() === "true" || value.trim() === '1' || value === 1;
+                if (db === 'sql') {
+                    return bool ? 1 : 0;
+                }
+                else if (db === 'mongo') {
+                    return bool;
+                }
+                break;
             default: return value;
         }
     }
