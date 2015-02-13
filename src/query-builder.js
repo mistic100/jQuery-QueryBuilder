@@ -18,12 +18,14 @@
             'double',
             'date',
             'time',
-            'datetime'
+            'datetime',
+            'boolean'
         ],
         internalTypes = [
             'string',
             'number',
-            'datetime'
+            'datetime',
+            'boolean'
         ],
         inputs = [
             'text',
@@ -124,13 +126,14 @@
                 "number_wrong_step": "Must be a multiple of {0}",
                 "datetime_invalid": "Invalid date format ({0})",
                 "datetime_exceed_min": "Must be after {0}",
-                "datetime_exceed_max": "Must be before {0}"
+                "datetime_exceed_max": "Must be before {0}",
+                "boolean_not_valid": "Not a boolean"
             }
         },
 
         operators: [
-            {type: 'equal',            accept_values: 1, apply_to: ['string', 'number', 'datetime']},
-            {type: 'not_equal',        accept_values: 1, apply_to: ['string', 'number', 'datetime']},
+            {type: 'equal',            accept_values: 1, apply_to: ['string', 'number', 'datetime', 'boolean']},
+            {type: 'not_equal',        accept_values: 1, apply_to: ['string', 'number', 'datetime', 'boolean']},
             {type: 'in',               accept_values: 1, apply_to: ['string', 'number', 'datetime']},
             {type: 'not_in',           accept_values: 1, apply_to: ['string', 'number', 'datetime']},
             {type: 'less',             accept_values: 1, apply_to: ['number', 'datetime']},
@@ -146,8 +149,8 @@
             {type: 'not_ends_with',    accept_values: 1, apply_to: ['string']},
             {type: 'is_empty',         accept_values: 0, apply_to: ['string']},
             {type: 'is_not_empty',     accept_values: 0, apply_to: ['string']},
-            {type: 'is_null',          accept_values: 0, apply_to: ['string', 'number', 'datetime']},
-            {type: 'is_not_null',      accept_values: 0, apply_to: ['string', 'number', 'datetime']}
+            {type: 'is_null',          accept_values: 0, apply_to: ['string', 'number', 'datetime', 'boolean']},
+            {type: 'is_not_null',      accept_values: 0, apply_to: ['string', 'number', 'datetime', 'boolean']}
         ],
 
         icons: {
@@ -531,6 +534,9 @@
                     break;
                 case 'date': case 'time': case 'datetime':
                     filter.internalType = 'datetime';
+                    break;
+                case 'boolean':
+                    filter.internalType = 'boolean';
                     break;
             }
 
@@ -1052,6 +1058,13 @@
                                 }
                             }
                             break;
+
+                        case 'boolean':
+                            if (value[i].trim().toLowerCase() !== 'true' && value[i].trim().toLowerCase() !== 'false' &&
+                                value[i].trim() !== '1' && value[i].trim() !== '0' && value[i] !== 1 && value[i] !== 0) {
+                                result = ['boolean_not_valid'];
+                                break;
+                            }
                     }
             }
 
