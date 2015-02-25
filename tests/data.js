@@ -106,6 +106,15 @@ var basic_rules_mongodb = {'$and': [
   ]}
 ]};
 
+var basic_rules_loopback = {'and': [
+  {'price': { 'lt': 10.25 }},
+  {'name': null},
+  {'or': [
+    {'category': {'inq': ['mo', 'mu']}},
+    {'id': {'neq': '1234-azer-5678'}}
+  ]}
+]};
+
 var invalid_rules = {
   condition: 'AND',
   rules: [{

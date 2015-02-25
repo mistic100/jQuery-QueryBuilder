@@ -114,7 +114,7 @@ $(function(){
     assert.equal($('#container8_group_1.rules-group-container [data-delete=group] i').attr('class'), "fa fa-times", 'Group delete icon should have been replaced');
   });
   
-  QUnit.test('SQL/MongoDB export', function(assert) {
+  QUnit.test('SQL/MongoDB/Loopback export', function(assert) {
     $('#container9').queryBuilder({
       filters: basic_filters,
       rules: basic_rules
@@ -123,6 +123,7 @@ $(function(){
     assert.deepEqual($('#container9').queryBuilder('getSQL', false, false), basic_rules_sql_raw, 'Should create SQL query');
     assert.deepEqual($('#container9').queryBuilder('getSQL', true, false), basic_rules_sql_stmt, 'Should create SQL query with statements');
     assert.deepEqual($('#container9').queryBuilder('getMongo'), basic_rules_mongodb, 'Should create MongoDB query');
+    assert.deepEqual($('#container9').queryBuilder('getLoopback'), basic_rules_loopback, 'Should create Loopback query');
   });
 
   QUnit.test('Validation callback', function(assert) {
