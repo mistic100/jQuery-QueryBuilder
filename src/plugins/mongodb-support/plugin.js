@@ -29,6 +29,56 @@
             is_not_empty:     function(v){ return {'$ne': ''}; },
             is_null:          function(v){ return null; },
             is_not_null:      function(v){ return {'$ne': null}; }
+        },
+
+        mongoRuleOperators: {
+            $ne: function(v) {
+                v=v.$ne;
+                var obj={'val':v};
+                if (v===null) { obj.op='is_not_null'; }
+                else if (v==='') { obj.op='is_not_empty'; obj.val=null; }
+                else { obj.op='not_equal'; }
+                return obj;
+            },
+            $regex: function(v) {
+                v=v.$regex;
+                var obj={};
+                if (v.substring(0,4) === '^(?!' &&
+                    v.indexOf(')', v.length - 1) !== -1) {
+                    obj.op='not_begins_with';
+                    obj.val=v.substring(4,v.length-1);
+                }
+                else if (v.substring(0,5) === '^((?!' &&
+                    v.indexOf(').)*$', v.length - 5) !== -1) {
+                    obj.op='not_contains';
+                    obj.val=v.substring(5,v.length-5);
+                }
+                else if (v.substring(0,4) === '(?<!' &&
+                    v.indexOf(')$', v.length - 2) !== -1) {
+                    obj.op='not_ends_with';
+                    obj.val= v.substring(4,v.length-2);
+                }
+                else if (v.indexOf('$', v.length - 1) !== -1) {
+                    obj.op='ends_with';
+                    obj.val= v.slice(0,-1);
+                }
+                else if (v.substring(0,1) === '^') {
+                    obj.op='begins_with';
+                    obj.val= v.substring(1);
+                }
+                else {
+                    obj.op='contains';
+                    obj.val=v;
+                }
+                return obj;
+            },
+            between : function(v) { var obj={'val':[v.$gte, v.$lte],'op':'between'}; return obj; },
+            $in : function(v) { var obj={'val': v.$in,'op':'in'}; return obj; },
+            $nin : function(v) { var obj={'val': v.$nin,'op':'not_in'}; return obj; },
+            $lt : function(v) { var obj={'val': v.$lt,'op':'less'}; return obj; },
+            $lte : function(v) { var obj={'val': v.$lte,'op':'less_or_equal'}; return obj; },
+            $gt : function(v) { var obj={'val': v.$gt,'op':'greater'}; return obj; },
+            $gte : function(v) { var obj={'val': v.$gte,'op':'greater_or_equal'}; return obj; }
         }
     });
 
@@ -95,6 +145,98 @@
                 }
                 return res;
             }(data));
+        },
+
+        /**
+         * Get rules from MongoDB query
+         * @param data {object} (required) mongo query object
+         * @return {object}
+         */
+        getRulesFromMongo: function(data) {
+            if (data === undefined || data === null) {
+                return null;
+            }
+            var condition='';
+            var conditions=['$and','$or'];
+
+            var that = this;
+
+            return (function parse(data,condition) {
+                var topKeys = Object.keys(data);
+
+                if (topKeys.length > 1) {
+                    $.error('Invalid MongoDB query format.');
+                }
+                if (conditions.indexOf(topKeys[0].toLowerCase()) === -1) {
+                    $.error('Unable to build Rule from MongoDB query with '+ topKeys[0] +' condition');
+                }
+                condition = topKeys[0] === conditions[0] ? 'AND' : 'OR';
+
+                var rules = data[topKeys[0]];
+                var parts = [];
+
+                $.each(rules, function(i, rule) {
+                    var keys = Object.keys(rule);
+
+                    if (conditions.indexOf(keys[0].toLowerCase()) !== -1) {
+                        parts.push(parse(rule));
+                    }
+                    else {
+                        var part = {};
+                        var field = Object.keys(rule)[0];
+                        var value = rule[field];
+                        part.id = field;
+
+                        if (value !== null && typeof value === 'object') {
+                            var subkeys = Object.keys(value);
+                            var operator;
+                            if (subkeys.length === 1) {
+                                operator = subkeys[0];
+                            }
+                            else {
+                                if ((subkeys[0] === '$gte' && subkeys[1] === '$lte') ||
+                                    (subkeys[0] === '$lte' && subkeys[1] === '$gte')) {
+                                    operator = 'between';
+                                }
+                                else if ((subkeys[0] === '$regex' && subkeys[1] === '$options') ||
+                                    (subkeys[0] === '$options' && subkeys[1] === '$regex')) {
+                                    operator = '$regex';
+                                }
+                                else {
+                                    $.error('Invalid MongoDB query format.');
+                                }
+                            }
+                            var mdbrl = that.settings.mongoRuleOperators[operator];
+                            if (mdbrl === undefined) {
+                                $.error('JSON Rule operation unknown for operator '+ operator);
+                            }
+                            var opVal = mdbrl.call(that,value);
+                            part.operator = opVal.op;
+                            part.value = opVal.val;
+                        }
+                        else if (value === null) {
+                            part.operator = 'is_null';
+                            part.value = null;
+                        }
+                        else {
+                            part.operator = 'equal';
+                            part.value = value;
+                            if (value === '') {
+                                part.operator = 'is_empty';
+                                part.value = null;
+                            }
+                        }
+                        parts.push(part);
+                    }
+                });
+
+                var res = {};
+                if (parts.length > 0) {
+                    res.condition = condition;
+                    res.rules = parts;
+                }
+                return res;
+            }(data,condition));
         }
     });
 
