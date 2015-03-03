@@ -1,6 +1,6 @@
 /*!
- * jQuery QueryBuilder MongoDB Support
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * jQuery QueryBuilder Loopback Support
+ * Copyright 2014-2015 Fabien Franzen (https://github.com/fabien)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
