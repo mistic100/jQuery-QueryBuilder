@@ -70,20 +70,24 @@ var basic_rules = {
   condition: 'AND',
   rules: [{
     id: 'price',
+    field: 'price',
     operator: 'less',
     value: 10.25
   }, {
     id: 'name',
+    field: 'name',
     operator: 'is_null',
     value: null
   }, {
     condition: 'OR',
     rules: [{
       id: 'category',
+      field: 'category',
       operator: 'in',
       value: ['mo', 'mu']
     }, {
       id: 'id',
+      field: 'id',
       operator: 'not_equal',
       value: '1234-azer-5678'
     }]

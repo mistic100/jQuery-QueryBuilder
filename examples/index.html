@@ -23,6 +23,7 @@
     <div class="btn-group">
       <button class="btn btn-warning reset">Reset</button>
       <button class="btn btn-success set">Set rules</button>
+      <button class="btn btn-success set-mongo">Set rules from MongoDB</button>
     </div>
     
     <div class="btn-group">
@@ -267,7 +268,25 @@ $('.set').on('click', function() {
 
   $('.parse-json').trigger('click');
 })
-//.trigger('click');
+
+// set rules from MongoDB
+$('.set-mongo').on('click', function() {
+  $('#builder').queryBuilder('setRulesFromMongo', {
+    "$and": [{
+      "name": {
+        "$regex": "^(?!Mistic)"
+      }
+    }, {
+      "price": { "$gte": 0, "$lte": 100 }
+    }, {
+      "$or": [{
+        "category": 2
+      }, {
+        "category": { "$in": [4, 5] }
+      }]
+    }]
+  });
+});
 
 // reset builder
 $('.reset').on('click', function() {
