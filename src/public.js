@@ -4,14 +4,14 @@
 QueryBuilder.prototype.destroy = function() {
     this.trigger('beforeDestroy');
 
-    if (this.status.generatedId) {
+    if (this.status.generated_id) {
         this.$el.removeAttr('id');
     }
-    
+
     this.clear();
 
     this.$el
-        .off('click.queryBuilder change.queryBuilder')
+        .off('.queryBuilder')
         .removeClass('query-builder')
         .removeData('queryBuilder');
 };
@@ -23,10 +23,10 @@ QueryBuilder.prototype.reset = function() {
     this.status.group_id = 1;
     this.status.rule_id = 0;
 
-    this.model.empty();
-    this.$el.find('>.rules-group-container>.rules-group-body>.rules-list').empty();
+    this.model.root.empty();
+    //this.$el.find('>.rules-group-container>.rules-group-body>.rules-list').empty();
 
-    this.addRule(this.$el.find('>.rules-group-container'));
+    this.addRule(this.model.root);
 
     this.trigger('afterReset');
 };
@@ -38,12 +38,10 @@ QueryBuilder.prototype.clear = function() {
     this.status.group_id = 0;
     this.status.rule_id = 0;
 
-    if (this.model) {
-        this.model.drop();
-        this.model = null;
+    if (this.model.root) {
+        this.model.root.drop();
+        this.model.root = null;
     }
-
-    this.$el.empty();
 
     this.trigger('afterClear');
 };
@@ -55,72 +53,63 @@ QueryBuilder.prototype.clear = function() {
 QueryBuilder.prototype.getRules = function() {
     this.clearErrors();
 
-    var $group = this.$el.find('>.rules-group-container'),
-        that = this;
+    var that = this;
 
-    var rules = (function parse($group) {
-        var out = {},
-            $elements = $group.find('>.rules-group-body>.rules-list>*');
+    var data = (function parse(group) {
+        var out = {
+            condition: group.condition,
+            rules: []
+        };
 
-        out.condition = that.getGroupCondition($group);
-        out.rules = [];
+        var done = group.each(function(rule) {
+            if (!rule.filter) {
+                that.triggerValidationError(rule, 'no_filter', null);
+                return false;
+            }
 
-        for (var i=0, l=$elements.length; i<l; i++) {
-            var $rule = $elements.eq(i),
-                rule;
+            var value = null;
 
-            if ($rule.hasClass('rule-container')) {
-                var filter = that.getRuleFilter($rule);
+            if (rule.operator.accept_values !== 0) {
+                value = that.getRuleValue(rule);
 
-                if (!filter) {
-                    that.triggerValidationError(['no_filter'], $rule, null, null, null);
-                    return {};
+                var valid = that.validateValue(rule, value);
+                if (valid !== true) {
+                    that.triggerValidationError(rule, valid, value);
+                    return false;
                 }
+            }
 
-                var operator = that.getRuleOperator($rule),
-                    value = null;
-
-                if (operator.accept_values !== 0) {
-                    value = that.getRuleValue($rule, filter, operator);
-
-                    var valid = that.validateValue($rule, value, filter, operator);
-                    if (valid !== true) {
-                        that.triggerValidationError(valid, $rule, value, filter, operator);
-                        return {};
-                    }
-                }
-
-                rule = {
-                    id: filter.id,
-                    field: filter.field,
-                    type: filter.type,
-                    input: filter.input,
-                    operator: operator.type,
-                    value: value
-                };
-
-                out.rules.push(rule);
+            out.rules.push({
+                id: rule.filter.id,
+                field: rule.filter.field,
+                type: rule.filter.type,
+                input: rule.filter.input,
+                operator: rule.operator.type,
+                value: value
+            });
+        }, function(group) {
+            var data = parse(group);
+            if (!$.isEmptyObject(data)) {
+                out.rules.push(data);
             }
             else {
-                rule = parse($rule);
-                if (!$.isEmptyObject(rule)) {
-                    out.rules.push(rule);
-                }
-                else {
-                    return {};
-                }
+                return false;
             }
-        }
+        });
 
-        if (out.rules.length === 0 && (!that.settings.allow_empty || !$group.data(Node.DATAKEY).isRoot())) {
-            that.triggerValidationError(['empty_group'], $group, null, null, null);
-            return {};
+        if (!done) {
+            out = {};
+        }
+        else if (out.rules.length === 0 && (!that.settings.allow_empty || !group.isRoot())) {
+            that.triggerValidationError(group, 'empty_group', null);
+            out = {};
         }
 
         return out;
-    }($group));
 
-    return this.change('getRules', rules);
+    }(this.model.root));
+
+    return this.change('getRules', data);
 };
 
 /**
@@ -129,6 +118,7 @@ QueryBuilder.prototype.getRules = function() {
  */
 QueryBuilder.prototype.setRules = function(data) {
     this.clear();
+    this.setRoot(false);
 
     if (!data || !data.rules || (data.rules.length===0 && !this.settings.allow_empty)) {
         $.error('Incorrect data object passed');
@@ -136,29 +126,28 @@ QueryBuilder.prototype.setRules = function(data) {
 
     data = this.change('setRules', data);
 
-    var $container = this.$el,
-        that = this;
+    var that = this;
 
-    (function add(data, $container){
-        var $group = that.addGroup($container, false);
-        if ($group === null) {
+    (function add(data, group){
+        if (group === null) {
             return;
         }
 
         if (data.condition === undefined) {
             data.condition = that.settings.default_condition;
         }
-
-        that.updateGroupCondition($group, data.condition.toUpperCase());
+        group.condition = data.condition.toUpperCase();
 
         $.each(data.rules, function(i, rule) {
+            var model;
             if (rule.rules && rule.rules.length>0) {
-                if (that.settings.allow_groups !== -1 && that.settings.allow_groups < $group.data(Node.DATAKEY).level) {
+                if (that.settings.allow_groups !== -1 && that.settings.allow_groups < group.level) {
                     that.reset();
                     $.error(fmt('No more than {0} groups are allowed', that.settings.allow_groups));
                 }
                 else {
-                    add(rule, $group);
+                    model = that.addGroup(group, false);
+                    add(rule, model);
                 }
             }
             else {
@@ -172,24 +161,20 @@ QueryBuilder.prototype.setRules = function(data) {
                     rule.operator = 'equal';
                 }
 
-                var $rule = that.addRule($group);
-                if ($rule === null) {
+                model = that.addRule(group);
+                if (model === null) {
                     return;
                 }
 
-                var filter = that.getFilterById(rule.id),
-                    operator = that.getOperatorByType(rule.operator);
+                model.filter = that.getFilterById(rule.id),
+                model.operator = that.getOperatorByType(rule.operator);
+                model.flags = that.parseRuleFlags(rule);
 
-                $rule.find('.rule-filter-container [name$=_filter]').val(rule.id).trigger('change');
-                $rule.find('.rule-operator-container [name$=_operator]').val(rule.operator).trigger('change');
-
-                if (operator.accept_values !== 0) {
-                    that.setRuleValue($rule, rule.value, filter, operator);
+                if (model.operator.accept_values !== 0) {
+                    that.setRuleValue(model, rule.value);
                 }
-
-                that.applyRuleFlags($rule, rule);
             }
         });
 
-    }(data, $container));
+    }(data, this.model.root));
 };

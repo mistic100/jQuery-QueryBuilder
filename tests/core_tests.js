@@ -38,12 +38,12 @@ $(function(){
     assert.expect(2);
     
     var done = assert.async(),
-        original = $.fn.queryBuilder.defaults.get('lang');
+        original = $.fn.queryBuilder.defaults('lang');
     
     $.getScript('../dist/i18n/fr.js', function() {
-      assert.equal($.fn.queryBuilder.defaults.get('lang').delete_rule, 'Supprimer', 'Should be in french');
-      $.fn.queryBuilder.defaults.set({ lang: original });
-      assert.equal($.fn.queryBuilder.defaults.get('lang').delete_rule, 'Delete', 'Should be in english');
+      assert.equal($.fn.queryBuilder.defaults('lang').delete_rule, 'Supprimer', 'Should be in french');
+      $.fn.queryBuilder.defaults({ lang: original });
+      assert.equal($.fn.queryBuilder.defaults('lang').delete_rule, 'Delete', 'Should be in english');
       done();
     });
   });

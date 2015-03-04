@@ -8,28 +8,28 @@ QueryBuilder.define('filter-description', function(options) {
     options = $.extend({
         icon: 'glyphicon glyphicon-info-sign',
         mode: 'popover'
-    }, options || {});
+    }, options);
 
     /**
      * INLINE
      */
     if (options.mode === 'inline') {
-        this.on('afterUpdateRuleFilter', function($rule, filter) {
-            var $p = $rule.find('p.filter-description');
+        this.on('afterUpdateRuleFilter', function(rule) {
+            var $p = rule.$el.find('p.filter-description');
 
-            if (!filter || !filter.description) {
+            if (!rule.filter || !rule.filter.description) {
                 $p.hide();
             }
             else {
                 if ($p.length === 0) {
                     $p = $('<p class="filter-description"></p>');
-                    $p.appendTo($rule);
+                    $p.appendTo(rule.$el);
                 }
                 else {
                     $p.show();
                 }
 
-                $p.html('<i class="' + options.icon + '"></i> ' + filter.description);
+                $p.html('<i class="' + options.icon + '"></i> ' + rule.filter.description);
             }
         });
     }
@@ -41,10 +41,10 @@ QueryBuilder.define('filter-description', function(options) {
             $.error('Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
         }
 
-        this.on('afterUpdateRuleFilter', function($rule, filter) {
-            var $b = $rule.find('button.filter-description');
+        this.on('afterUpdateRuleFilter', function(rule) {
+            var $b = rule.$el.find('button.filter-description');
 
-            if (!filter || !filter.description) {
+            if (!rule.filter || !rule.filter.description) {
                 $b.hide();
 
                 if ($b.data('bs.popover')) {
@@ -54,7 +54,7 @@ QueryBuilder.define('filter-description', function(options) {
             else {
                 if ($b.length === 0) {
                     $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="popover"><i class="' + options.icon + '"></i></button>');
-                    $b.prependTo($rule.find('.rule-actions'));
+                    $b.prependTo(rule.$el.find('.rule-actions'));
 
                     $b.popover({
                         placement: 'left',
@@ -70,7 +70,7 @@ QueryBuilder.define('filter-description', function(options) {
                     $b.show();
                 }
 
-                $b.data('bs.popover').options.content = filter.description;
+                $b.data('bs.popover').options.content = rule.filter.description;
 
                 if ($b.attr('aria-describedby')) {
                     $b.popover('show');
@@ -86,23 +86,23 @@ QueryBuilder.define('filter-description', function(options) {
             $.error('Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
         }
 
-        this.on('afterUpdateRuleFilter', function($rule, filter) {
-            var $b = $rule.find('button.filter-description');
+        this.on('afterUpdateRuleFilter', function(rule) {
+            var $b = rule.$el.find('button.filter-description');
 
-            if (!filter || !filter.description) {
+            if (!rule.filter || !rule.filter.description) {
                 $b.hide();
             }
             else {
                 if ($b.length === 0) {
                     $b = $('<button type="button" class="btn btn-xs btn-info filter-description"><i class="' + options.icon + '"></i></button>');
-                    $b.prependTo($rule.find('.rule-actions'));
+                    $b.prependTo(rule.$el.find('.rule-actions'));
 
                     $b.on('click', function() {
                         bootbox.alert($b.data('description'));
                     });
                 }
 
-                $b.data('description', filter.description);
+                $b.data('description', rule.filter.description);
             }
         });
     }

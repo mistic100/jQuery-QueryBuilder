@@ -8,7 +8,7 @@ QueryBuilder.define('sortable', function(options) {
     options = $.extend({
         default_no_sortable: false,
         icon: 'glyphicon glyphicon-sort'
-    }, options || {});
+    }, options);
 
     /**
      * Init HTML5 drag and drop
@@ -36,15 +36,16 @@ QueryBuilder.define('sortable', function(options) {
             // notify drag and drop (only dummy text)
             e.dataTransfer.setData('text', 'drag');
 
-            src = $(e.target);
+            src = Model(e.target);
 
-            placeholder = $('<div class="rule-placeholder">&nbsp;</div>');
-            placeholder.css('min-height', src.height());
-            placeholder.insertAfter(src);
+            var ph = $('<div class="rule-placeholder">&nbsp;</div>');
+            ph.css('min-height', src.$el.height());
+
+            placeholder = src.parent.addRule(ph, src.getPos());
 
             // Chrome glitch (helper invisible if hidden immediately)
             setTimeout(function() {
-                src.hide();
+                src.$el.hide();
             }, 0);
         });
 
@@ -75,8 +76,8 @@ QueryBuilder.define('sortable', function(options) {
             e.preventDefault();
             e.stopPropagation();
 
-            src.show();
-            placeholder.remove();
+            src.$el.show();
+            placeholder.drop();
 
             src = placeholder = null;
 
@@ -87,17 +88,16 @@ QueryBuilder.define('sortable', function(options) {
     /**
      * Remove drag handle from non-sortable rules
      */
-    this.on('getRuleFlags', function(flags) {
+    this.on('parseRuleFlags', function(flags) {
         if (flags.no_sortable === undefined) {
             flags.no_sortable = options.default_no_sortable;
         }
-
         return flags;
     });
 
-    this.on('afterApplyRuleFlags', function($rule, rule, flags) {
-        if (flags.no_sortable) {
-            $rule.find('.drag-handle').remove();
+    this.on('afterApplyRuleFlags', function(rule) {
+        if (rule.flags.no_sortable) {
+            rule.$el.find('.drag-handle').remove();
         }
     });
 
@@ -110,7 +110,6 @@ QueryBuilder.define('sortable', function(options) {
             $h.find('.group-conditions').after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
             h = $h.prop('outerHTML');
         }
-
         return h;
     });
 
@@ -123,6 +122,8 @@ QueryBuilder.define('sortable', function(options) {
 
 /**
  * Move an element (placeholder or actual object) depending on active target
+ * @param {Node}
+ * @param {jQuery}
  */
 function moveSortableToTarget(element, target) {
     var parent;
@@ -130,7 +131,7 @@ function moveSortableToTarget(element, target) {
     // on rule
     parent = target.closest('.rule-container');
     if (parent.length) {
-        element.detach().insertAfter(parent);
+        element.moveAfter(Model(parent));
         return;
     }
 
@@ -138,14 +139,14 @@ function moveSortableToTarget(element, target) {
     parent = target.closest('.rules-group-header');
     if (parent.length) {
         parent = target.closest('.rules-group-container');
-        element.detach().prependTo(parent.find('.rules-list').eq(0));
+        element.moveAtBegin(Model(parent));
         return;
     }
 
     // on group
     parent = target.closest('.rules-group-container');
     if (parent.length) {
-        element.detach().appendTo(parent.find('.rules-list').eq(0));
+        element.moveAtEnd(Model(parent));
         return;
     }
 }

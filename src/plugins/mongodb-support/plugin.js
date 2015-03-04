@@ -6,7 +6,7 @@
 
 // DEFAULT CONFIG
 // ===============================
-QueryBuilder.defaults.set({
+QueryBuilder.defaults({
     mongoOperators: {
         equal:            function(v){ return v[0]; },
         not_equal:        function(v){ return {'$ne': v[0]}; },
@@ -95,29 +95,3 @@ QueryBuilder.extend({
         }(data));
     }
 });
-
-
-// UTILITIES
-// ===============================
-/**
- * Change type of a value to int or float
- * @param value {mixed}
- * @param type {string}
- * @return {mixed}
- */
-function changeType(value, type) {
-    switch (type) {
-        case 'integer': return parseInt(value);
-        case 'double': return parseFloat(value);
-        default: return value;
-    }
-}
-
-/**
- * Escape value for use in regex
- * @param value {string}
- * @return {string}
- */
-function escapeRegExp(str) {
-    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-}

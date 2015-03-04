@@ -12,7 +12,7 @@ module.exports = function(grunt) {
             'src/public.js',
             'src/data.js',
             'src/template.js',
-            'src/plugins.js',
+            'src/jquery.js',
             'src/utils.js'
         ],
         css_core_files = [
@@ -166,7 +166,7 @@ module.exports = function(grunt) {
                 options: {
                     separator: '',
                     wrapper: function() {
-                        var wrapper = grunt.file.read('src/.wrapper.js').split('@@js\n');
+                        var wrapper = grunt.file.read('src/.wrapper.js').split(/@@js\r?\n/);
 
                         if (loaded_modules.length) {
                             wrapper[0] = '// Modules: ' + loaded_modules.join(', ') + '\n' + wrapper[0];
@@ -285,7 +285,7 @@ module.exports = function(grunt) {
                 }
             });
 
-            content = 'jQuery.fn.queryBuilder.defaults.set({ lang: ' +  JSON.stringify(content, null, 2) + '});';
+            content = 'jQuery.fn.queryBuilder.defaults({ lang: ' +  JSON.stringify(content, null, 2) + '});';
             path = 'dist/i18n/'+ l  +'.js';
 
             grunt.file.write(path, header + content);

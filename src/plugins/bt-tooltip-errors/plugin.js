@@ -11,20 +11,20 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
 
     options = $.extend({
         placement: 'right'
-    }, options || {});
+    }, options);
 
     // add BT Tooltip data
     this.on('getRuleTemplate', function(h) {
         return h.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
     });
-    
+
     this.on('getGroupTemplate', function(h) {
         return h.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
     });
 
     // init/refresh tooltip when title changes
-    this.on('validationError', function($target) {
-        $target.find('.error-container').eq(0)
+    this.on('validationError', function(node) {
+        node.$el.find('.error-container').eq(0)
           .tooltip(options)
           .tooltip('hide')
           .tooltip('fixTitle');

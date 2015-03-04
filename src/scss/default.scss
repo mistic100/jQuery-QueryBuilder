@@ -45,7 +45,7 @@ $ticks-color: #CCC;
   // GROUPS
   .rules-group-container {
     @extend %base-container;
-    
+
     padding: $group-padding;
     padding-bottom: #{$group-padding - $item-vertical-spacing};
     border: $group-border;
@@ -58,14 +58,14 @@ $ticks-color: #CCC;
         display: none;
       }
     }
-    
+
     .rules-list {
       list-style: none;
       padding: 0 0 0 #{2 * $group-padding};
       margin: 0;
     }
   }
-  
+
   // RULES
   .rule-container {
     @extend %base-container;
@@ -75,7 +75,7 @@ $ticks-color: #CCC;
     .rule-value-container {
       @extend %rule-component;
     }
-    
+
     .rule-value-container {
       border-left: 1px solid #ddd;
       padding-left: 5px;
@@ -88,12 +88,12 @@ $ticks-color: #CCC;
         }
       }
     }
-    
+
     select, input[type=text], input[type=number] {
       padding: 1px;
     }
   }
-  
+
   // ERRORS
   .error-container {
     @extend %rule-component;
@@ -101,16 +101,16 @@ $ticks-color: #CCC;
     cursor: help;
     color: $error-icon-color;
   }
-  
+
   .has-error {
     background-color: $error-background-color;
     border-color: $error-border-color;
-    
+
     .error-container {
       display: inline-block !important;
     }
   }
-  
+
   // TICKS
   .rules-list>* {
     &:before,

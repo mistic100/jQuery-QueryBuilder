@@ -6,6 +6,7 @@
 
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
+  <link rel="stylesheet" href="../bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
   <link rel="stylesheet" href="../dist/query-builder.css">
 </head>
 
@@ -13,7 +14,7 @@
 
 <div class="container">
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
-    <p><a href="http://www.eyecon.ro/bootstrap-slider">Bootstrap Slider</a> and <a href="http://bootboxjs.com">Bootbox</a> must be installed with Bower to run this demo.</p>
+    <p><a href="http://www.eyecon.ro/bootstrap-slider">seiyria-bootstrap-slider</a>, <a href="http://bootboxjs.com">bootbox</a> and <a href="http://silviomoreto.github.io/bootstrap-select">bootstrap-select</a> must be installed with Bower to run this demo.</p>
     
     <div id="builder"></div>
     
@@ -42,6 +43,7 @@
 <script src="../bower_components/jquery-extendext/jQuery.extendext.js"></script>
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+<script src="../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 <script src="../bower_components/bootbox/bootbox.js"></script>
 <script src="../dist/query-builder.js"></script>
 
@@ -57,7 +59,8 @@ $('#builder').queryBuilder({
   plugins: {
     'bt-tooltip-errors': { delay: 100},
     'sortable': null,
-    'filter-description': { mode: 'inline' }
+    'filter-description': { mode: 'bootbox' },
+    'bt-selectpicker': null
   },
   
   filters: [
@@ -148,8 +151,8 @@ $('#builder').queryBuilder({
       max: 100,
       value: 0
     },
-    onAfterSetValue: function($rule, value) {
-      var input = $rule.find('.rule-value-container input');
+    onAfterSetValue: function(rule, value) {
+      var input = rule.$el.find('.rule-value-container input');
       input.slider('setValue', value);
       input.val(value); // don't know why I need it
     }
@@ -186,8 +189,8 @@ $('#builder').queryBuilder({
     validation: {
       format: /^[A-C]{1}.[1-6]{1}$/
     },
-    input: function($rule, filter) {
-      var $container = $rule.find('.rule-value-container');
+    input: function(rule) {
+      var $container = rule.$el.find('.rule-value-container');
       
       $container.on('change', '[name=coord_1]', function(){
         var h = '';
@@ -216,16 +219,16 @@ $('#builder').queryBuilder({
       </select> \
       <select name="coord_2" style="display:none;"></select>';
     },
-    valueParser: function($rule, value, filter, operator) {
-      return $rule.find('[name=coord_1]').val()
-        +'.'+$rule.find('[name=coord_2]').val();
+    valueParser: function(rule, value) {
+      return rule.$el.find('[name=coord_1]').val()
+        +'.'+rule.$el.find('[name=coord_2]').val();
     },
-    onAfterSetValue: function($rule, value, filter, operator) {
-      if (operator.accept_values) {
+    onAfterSetValue: function(rule, value) {
+      if (rule.operator.accept_values) {
         var val = value[0].split('.');
         
-        $rule.find('[name=coord_1]').val(val[0]).trigger('change');
-        $rule.find('[name=coord_2]').val(val[1]);
+        rule.$el.find('[name=coord_1]').val(val[0]).trigger('change');
+        rule.$el.find('[name=coord_2]').val(val[1]);
       }
     }
   }]

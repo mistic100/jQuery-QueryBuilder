@@ -1,61 +1,167 @@
+/**
+ * Access Node object stored in jQuery objects
+ * @param el {jQuery|Node}
+ * @return {Node}
+ */
+function Model(el) {
+    if (!(this instanceof Model)) {
+        return Model.getModel(el);
+    }
+
+    this.root = null;
+};
+
+MicroEvent.mixin(Model);
+
+Model.DATAKEY = 'queryBuilderModel';
+
+Model.getModel = function(el) {
+    if (!el) {
+        return null;
+    }
+    else if (el instanceof Node) {
+        return el;
+    }
+    else {
+        return $(el).data(Model.DATAKEY);
+    }
+};
+
+Model.defineProperties = function(obj, fields) {
+    fields.forEach(function(field) {
+        Object.defineProperty(obj.prototype, field, {
+            enumerable: true,
+            get: function() {
+                return this.__[field];
+            },
+            set: function(value) {
+                var oldValue = (this.__[field] !== null && typeof this.__[field] === 'object') ?
+                  $.extend({}, this.__[field]) :
+                  this.__[field];
+
+                this.__[field] = value;
+
+                if (this.model !== null) {
+                    this.model.trigger('update', this, field, value, oldValue);
+                }
+            }
+        });
+    });
+};
+
 // Node abstract CLASS
 // ===============================
-var Node = function() {};
-
-Node.DATAKEY = 'queryBuilderModel';
-
 /**
- * Common constructor
  * @param {Node}
  * @param {jQuery}
  */
-Node.prototype.init = function(parent, $el) {
-    $el.data(Node.DATAKEY, this);
-    
+var Node = function(parent, $el) {
+    if (!(this instanceof Node)) {
+        return new Node();
+    }
+
+    Object.defineProperty(this, '__', { value: {}});
+
+    $el.data(Model.DATAKEY, this);
+
+    this.model = parent === null ? null : parent.model;
+    this.parent = parent;
+    // this.level // initialized in 'parent' setter
     this.$el = $el;
-    this.parent = (parent instanceof $) ? parent.data(Node.DATAKEY) : parent;
-    this.level = !!this.parent ? this.parent.level+1 : 1;
+    this.id = $el[0].id
+    this.error = null;
 };
 
-/**
- * Get the root Node object
- * @return {Node}
- */
-Node.prototype.getRoot = function() {
-    if (this.isRoot()) {
-        return this;
+Model.defineProperties(Node, ['level', 'error']);
+
+Object.defineProperty(Node.prototype, 'parent', {
+    enumerable: true,
+    get: function() {
+        return this.__.parent;
+    },
+    set: function(value) {
+        this.__.parent = value;
+        this.level = this.parent === null ? 1 : this.parent.level+1;
     }
-    else {
-        return this.parent.getRoot();
-    }
-};
+});
 
 /**
  * Check if this Node is the root
  * @return {boolean}
  */
 Node.prototype.isRoot = function() {
-    return this.level === 1;
+    return (this.level === 1);
 };
 
 /**
- * Delete self from parent
+ * Return node position inside parent
+ * @return {int}
+ */
+Node.prototype.getPos = function() {
+    if (this.isRoot()) {
+        return -1;
+    }
+    else {
+        return this.parent.getNodePos(this);
+    }
+};
+
+/**
+ * Delete self
  */
 Node.prototype.drop = function() {
+    this.model.trigger('drop', this);
+
     if (!this.isRoot()) {
-        this.parent.deleteNode(this);
+        this.parent._dropNode(this);
         this.parent = null;
     }
-    this.$el.removeData(Node.DATAKEY);
 };
 
 /**
- * Move itself after another Node, or at the beginning if `target` is null
+ * Move itself after another Node
  * @param {Node}
  * @return {Node} self
  */
-Node.prototype.moveAfter = function(target) {
-    this.parent.moveNodeAfter(this, target);
+Node.prototype.moveAfter = function(node) {
+    if (this.isRoot()) return;
+
+    this.parent._dropNode(this);
+    node.parent._addNode(this, node.getPos()+1);
+    return this;
+};
+
+/**
+ * Move itself at the beginning of parent or another Group
+ * @param {Group,optional}
+ * @return {Node} self
+ */
+Node.prototype.moveAtBegin = function(target) {
+    if (this.isRoot()) return;
+
+    if (target === undefined) {
+        target = this.parent;
+    }
+
+    this.parent._dropNode(this);
+    target._addNode(this, 0);
+    return this;
+};
+
+/**
+ * Move itself at the end of parent or another Group
+ * @param {Group,optional}
+ * @return {Node} self
+ */
+Node.prototype.moveAtEnd = function(target) {
+    if (this.isRoot()) return;
+
+    if (target === undefined) {
+        target = this.parent;
+    }
+
+    this.parent._dropNode(this);
+    target._addNode(this, target.length());
     return this;
 };
 
@@ -67,28 +173,34 @@ Node.prototype.moveAfter = function(target) {
  * @param {jQuery}
  */
 var Group = function(parent, $el) {
-    var that = this;
-    
-    this.init(parent, $el);
-    
+    if (!(this instanceof Group)) {
+        return new Group(parent, $el);
+    }
+
+    Node.call(this, parent, $el);
+
     this.condition = null;
     this.rules = [];
 };
 
-Group.prototype = new Node();
+Group.prototype = Object.create(Node.prototype);
 Group.prototype.constructor = Group;
+
+Model.defineProperties(Node, ['condition']);
 
 /**
  * Empty the Group
  */
 Group.prototype.empty = function() {
-    this.each(function(node) {
-        node.drop();
+    this.each('reverse', function(rule) {
+        rule.drop();
+    }, function(group) {
+        group.drop();
     });
 };
 
 /**
- * Delete self from parent
+ * Delete self
  */
 Group.prototype.drop = function() {
     this.empty();
@@ -109,34 +221,37 @@ Group.prototype.length = function() {
  * @param {int,optional}
  * @return {Node} the inserted node
  */
-Group.prototype.addNode = function(node, index) {
+Group.prototype._addNode = function(node, index) {
     if (index === undefined) {
         index = this.length();
     }
+
     this.rules.splice(index, 0, node);
+    node.parent = this;
+
+    this.model.trigger('add', node, index);
+
     return node;
 };
 
 /**
- * Add a Group by raw data at specied index
+ * Add a Group by jQuery element at specified index
  * @param {jQuery}
- * @param {object}
  * @param {int,optional}
  * @return {Group} the inserted group
  */
-Group.prototype.addGroup = function($el, data, index) {
-    return this.addNode(new Group(this, $el, data), index);
+Group.prototype.addGroup = function($el, index) {
+    return this._addNode(new Group(this, $el), index);
 };
 
 /**
- * Add a Rule by raw data at specied index
+ * Add a Rule by jQuery element at specified index
  * @param {jQuery}
- * @param {object}
  * @param {int,optional}
  * @return {Rule} the inserted rule
  */
-Group.prototype.addRule = function($el, data, index) {
-    return this.addNode(new Rule(this, $el, data), index);
+Group.prototype.addRule = function($el, index) {
+    return this._addNode(new Rule(this, $el), index);
 };
 
 /**
@@ -144,62 +259,82 @@ Group.prototype.addRule = function($el, data, index) {
  * @param {Node}
  * @return {Group} self
  */
-Group.prototype.deleteNode = function(node) {
-    var index = this.rules.indexOf(node);
+Group.prototype._dropNode = function(node) {
+    var index = this.getNodePos(node);
     if (index !== -1) {
+        node.parent = null;
         this.rules.splice(index, 1);
     }
     return this;
 };
 
 /**
- * Move one node after another, or at the begining if `target` is null
+ * Return position of a child Node
  * @param {Node}
- * @param {Node,optional}
- * @param {Group} self
+ * @return {int}
  */
-Group.prototype.moveNodeAfter = function(node, target) {
-    this.deleteNode(node);
-    var index = 0;
-    if (target !== undefined) {
-        index = this.rules.indexOf(target) + 1;
-    }
-    this.addNode(node, index);
-    return this;
+Group.prototype.getNodePos = function(node) {
+    return this.rules.indexOf(node);
 };
 
 /**
  * Iterate over all Nodes
+ * @param {boolean,optional} iterate in reverse order, required if you delete nodes
  * @param {function} callback for Rules
  * @param {function,optional} callback for Groups
- * @param {object,optional} context, default is root
+ * @return {boolean}
  */
-Group.prototype.each = function(cbRule, cbGroup, context) {
-    if (arguments.length === 2) {
-        if (typeof cbGroup !== 'function') {
-            context = cbGroup;
-            cbGroup = null;
-        }
-        else {
-            context = this.getRoot();
-        }
+Group.prototype.each = function(reverse, cbRule, cbGroup) {
+    if (typeof reverse === 'function') {
+        cbGroup = cbRule;
+        cbRule = reverse;
+        reverse = false;
     }
-    else if (arguments.length === 1) {
-        cbGroup = null;
-        context = this.getRoot();
-    }
-    
-    $.each(this.rules, function(i, rule) {
-        if (rule instanceof Group) {
-            if (cbGroup !== null) {
-                cbGroup.call(context, rule);
+
+    var i = reverse ? this.rules.length-1 : 0,
+        l = reverse ? 0 : this.rules.length-1,
+        c = reverse ? -1 : 1,
+        test = function(){ return reverse ? i>=l : i<=l; };
+
+    for (; test(); i+=c) {
+        if (this.rules[i] instanceof Group) {
+            if (cbGroup !== undefined) {
+                stop = cbGroup.call(null, this.rules[i]) === false;
             }
-            rule.each(cbGroup, cbRule, context);
         }
         else {
-            cbRule.call(context, rule);
+            stop = cbRule.call(null, this.rules[i]) === false;
         }
-    });
+
+        if (stop) {
+            break;
+        }
+    }
+
+    return !stop;
+};
+
+/**
+ * Return true if the group contains a particular Node
+ * @param {Node}
+ * @param {boolean,optional} recursive search
+ * @return {boolean}
+ */
+Group.prototype.contains = function(node, deep) {
+    if (this.getNodePos(node) !== -1) {
+        return true;
+    }
+    else if (!deep) {
+        return false;
+    }
+    else {
+        // the loop will return with false as soon as the Node is found
+        return !this.each(function(rule) {
+            return true;
+        }, function(group) {
+            return !group.contains(node, true);
+        });
+    }
 };
 
 
@@ -210,12 +345,18 @@ Group.prototype.each = function(cbRule, cbGroup, context) {
  * @param {jQuery}
  */
 var Rule = function(parent, $el) {
-    this.init(parent, $el);
-    
+    if (!(this instanceof Rule)) {
+        return new Rule(parent, $el);
+    }
+
+    Node.call(this, parent, $el);
+
     this.filter = null;
     this.operator = null;
-    this.flags = null;
+    this.flags = {};
 };
 
-Rule.prototype = new Node();
+Rule.prototype = Object.create(Node.prototype);
 Rule.prototype.constructor = Rule;
+
+Model.defineProperties(Node, ['filter', 'operator', 'flags']);

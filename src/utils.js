@@ -44,3 +44,51 @@ function fmt(str, args) {
         return args[parseInt(i)+1];
     });
 }
+
+/**
+ * Change type of a value to int or float
+ * @param value {mixed}
+ * @param type {string} 'integer', 'double' or anything else
+ * @return {mixed}
+ */
+function changeType(value, type) {
+    switch (type) {
+        case 'integer': return parseInt(value);
+        case 'double': return parseFloat(value);
+        default: return value;
+    }
+}
+
+/**
+ * Escape string like mysql_real_escape_string
+ * @param value {string}
+ * @return {string}
+ */
+function escapeString(value) {
+    if (typeof value !== 'string') {
+        return value;
+    }
+
+    return value
+      .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
+          switch(s) {
+              case '\0': return '\\0';
+              case '\n': return '\\n';
+              case '\r': return '\\r';
+              case '\b': return '\\b';
+              default:   return '\\' + s;
+          }
+      })
+      // uglify compliant
+      .replace(/\t/g, '\\t')
+      .replace(/\x1a/g, '\\Z');
+}
+
+/**
+ * Escape value for use in regex
+ * @param value {string}
+ * @return {string}
+ */
+function escapeRegExp(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
