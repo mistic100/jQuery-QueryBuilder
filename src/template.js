@@ -97,7 +97,7 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
     var optgroup = null;
 
     var h = '<select name="'+ rule.id +'_filter">';
-    h+= '<option value="-1">'+ this.lang.filter_select_placeholder +'</option>';
+    h+= '<option value="-1">'+ this.settings.select_placeholder +'</option>';
 
     $.each(filters, function(i, filter) {
         if (optgroup != filter.optgroup) {

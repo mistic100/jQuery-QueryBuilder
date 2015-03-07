@@ -7,12 +7,10 @@
  * @return {array|true}
  */
 QueryBuilder.prototype.validateValue = function(rule, value) {
-    var filter = rule.filter,
-        operator = rule.operator,
-        validation = filter.validation || {},
+    var validation = rule.filter.validation || {},
         result = true;
 
-    if (operator.accept_values == 1) {
+    if (rule.operator.accept_values == 1) {
         value = [value];
     }
     else {
@@ -23,140 +21,157 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
         result = validation.callback.call(this, value, rule);
     }
     else {
-        for (var i=0; i<operator.accept_values; i++) {
-            switch (filter.input) {
-                case 'radio':
-                    if (value[i] === undefined) {
-                        result = ['radio_empty'];
-                        break;
-                    }
-                    break;
-
-                case 'checkbox':
-                    if (value[i].length === 0) {
-                        result = ['checkbox_empty'];
-                        break;
-                    }
-                    break;
-
-                case 'select':
-                    if (filter.multiple) {
-                        if (value[i].length === 0) {
-                            result = ['select_empty'];
-                            break;
-                        }
-                    }
-                    else {
-                        if (value[i] === undefined) {
-                            result = ['select_empty'];
-                            break;
-                        }
-                    }
-                    break;
-
-                default:
-                    switch (filter.internalType) {
-                        case 'string':
-                            if (validation.min !== undefined) {
-                                if (value[i].length < validation.min) {
-                                    result = ['string_exceed_min_length', validation.min];
-                                    break;
-                                }
-                            }
-                            else if (value[i].length === 0) {
-                                result = ['string_empty'];
-                                break;
-                            }
-                            if (validation.max !== undefined) {
-                                if (value[i].length > validation.max) {
-                                    result = ['string_exceed_max_length', validation.max];
-                                    break;
-                                }
-                            }
-                            if (validation.format) {
-                                if (!(validation.format.test(value[i]))) {
-                                    result = ['string_invalid_format', validation.format];
-                                    break;
-                                }
-                            }
-                            break;
-
-                        case 'number':
-                            if (isNaN(value[i])) {
-                                result = ['number_nan'];
-                                break;
-                            }
-                            if (filter.type == 'integer') {
-                                if (parseInt(value[i]) != value[i]) {
-                                    result = ['number_not_integer'];
-                                    break;
-                                }
-                            }
-                            else {
-                                if (parseFloat(value[i]) != value[i]) {
-                                    result = ['number_not_double'];
-                                    break;
-                                }
-                            }
-                            if (validation.min !== undefined) {
-                                if (value[i] < validation.min) {
-                                    result = ['number_exceed_min', validation.min];
-                                    break;
-                                }
-                            }
-                            if (validation.max !== undefined) {
-                                if (value[i] > validation.max) {
-                                    result = ['number_exceed_max', validation.max];
-                                    break;
-                                }
-                            }
-                            if (validation.step !== undefined) {
-                                var v = value[i]/validation.step;
-                                if (parseInt(v) != v) {
-                                    result = ['number_wrong_step', validation.step];
-                                    break;
-                                }
-                            }
-                            break;
-
-                        case 'datetime':
-                            // we need MomentJS
-                            if (validation.format) {
-                                if (!('moment' in window)) {
-                                    $.error('MomentJS is required for Date/Time validation');
-                                }
-
-                                var datetime = moment(value[i], validation.format);
-                                if (!datetime.isValid()) {
-                                    result = ['datetime_invalid'];
-                                    break;
-                                }
-                                else {
-                                    if (validation.min) {
-                                        if (datetime < moment(validation.min, validation.format)) {
-                                            result = ['datetime_exceed_min', validation.min];
-                                            break;
-                                        }
-                                    }
-                                    if (validation.max) {
-                                        if (datetime > moment(validation.max, validation.format)) {
-                                            result = ['datetime_exceed_max', validation.max];
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            break;
-                    }
-            }
-
-            if (result !== true) {
-                break;
-            }
-        }
+        result = this._validateValue(rule, value);
     }
 
     return this.change('validateValue', result, value, rule);
+};
+
+/**
+ * Default validation function
+ * @param rule {Rule}
+ * @param value {string|string[]|undefined}
+ * @return {array|true}
+ */
+QueryBuilder.prototype._validateValue = function(rule, value) {
+    var filter = rule.filter,
+        operator = rule.operator,
+        validation = filter.validation || {},
+        result = true;
+
+    for (var i=0; i<operator.accept_values; i++) {
+        switch (filter.input) {
+            case 'radio':
+                if (value[i] === undefined) {
+                    result = ['radio_empty'];
+                    break;
+                }
+                break;
+
+            case 'checkbox':
+                if (value[i].length === 0) {
+                    result = ['checkbox_empty'];
+                    break;
+                }
+                break;
+
+            case 'select':
+                if (filter.multiple) {
+                    if (value[i].length === 0) {
+                        result = ['select_empty'];
+                        break;
+                    }
+                }
+                else {
+                    if (value[i] === undefined) {
+                        result = ['select_empty'];
+                        break;
+                    }
+                }
+                break;
+
+            default:
+                switch (filter.internalType) {
+                    case 'string':
+                        if (validation.min !== undefined) {
+                            if (value[i].length < validation.min) {
+                                result = ['string_exceed_min_length', validation.min];
+                                break;
+                            }
+                        }
+                        else if (value[i].length === 0) {
+                            result = ['string_empty'];
+                            break;
+                        }
+                        if (validation.max !== undefined) {
+                            if (value[i].length > validation.max) {
+                                result = ['string_exceed_max_length', validation.max];
+                                break;
+                            }
+                        }
+                        if (validation.format) {
+                            if (!validation.format.test(value[i])) {
+                                result = ['string_invalid_format', validation.format];
+                                break;
+                            }
+                        }
+                        break;
+
+                    case 'number':
+                        if (isNaN(value[i])) {
+                            result = ['number_nan'];
+                            break;
+                        }
+                        if (filter.type == 'integer') {
+                            if (parseInt(value[i]) != value[i]) {
+                                result = ['number_not_integer'];
+                                break;
+                            }
+                        }
+                        else {
+                            if (parseFloat(value[i]) != value[i]) {
+                                result = ['number_not_double'];
+                                break;
+                            }
+                        }
+                        if (validation.min !== undefined) {
+                            if (value[i] < validation.min) {
+                                result = ['number_exceed_min', validation.min];
+                                break;
+                            }
+                        }
+                        if (validation.max !== undefined) {
+                            if (value[i] > validation.max) {
+                                result = ['number_exceed_max', validation.max];
+                                break;
+                            }
+                        }
+                        if (validation.step !== undefined) {
+                            var v = value[i]/validation.step;
+                            if (parseInt(v) != v) {
+                                result = ['number_wrong_step', validation.step];
+                                break;
+                            }
+                        }
+                        break;
+
+                    case 'datetime':
+                        // we need MomentJS
+                        if (validation.format) {
+                            if (!('moment' in window)) {
+                                error('MomentJS is required for Date/Time validation');
+                            }
+
+                            var datetime = moment(value[i], validation.format);
+                            if (!datetime.isValid()) {
+                                result = ['datetime_invalid'];
+                                break;
+                            }
+                            else {
+                                if (validation.min) {
+                                    if (datetime < moment(validation.min, validation.format)) {
+                                        result = ['datetime_exceed_min', validation.min];
+                                        break;
+                                    }
+                                }
+                                if (validation.max) {
+                                    if (datetime > moment(validation.max, validation.format)) {
+                                        result = ['datetime_exceed_max', validation.max];
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                }
+        }
+
+        if (result !== true) {
+            break;
+        }
+    }
+
+    return result;
 };
 
 /**
@@ -215,35 +230,39 @@ QueryBuilder.prototype.getOperators = function(filter) {
 /**
  * Returns a particular filter by its id
  * @param filterId {string}
- * @return {object}
+ * @return {object|null}
  */
-QueryBuilder.prototype.getFilterById = function(filterId) {
-    if (filterId === '-1') {
+QueryBuilder.prototype.getFilterById = function(id) {
+    if (id == '-1') {
         return null;
     }
 
     for (var i=0, l=this.filters.length; i<l; i++) {
-        if (this.filters[i].id == filterId) {
+        if (this.filters[i].id == id) {
             return this.filters[i];
         }
     }
 
-    $.error('Undefined filter: '+ filterId);
+    error('Undefined filter "{0}"', id);
 };
 
 /**
  * Return a particular operator by its type
  * @param type {string}
- * @return {object}
+ * @return {object|null}
  */
 QueryBuilder.prototype.getOperatorByType = function(type) {
+    if (type == '-1') {
+        return null;
+    }
+
     for (var i=0, l=this.operators.length; i<l; i++) {
         if (this.operators[i].type == type) {
             return this.operators[i];
         }
     }
 
-    $.error('Undefined operator: '+ type);
+    error('Undefined operator  "{0}"', type);
 };
 
 /**
@@ -351,10 +370,6 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
     }
 
     this.trigger('afterSetRuleValue', rule, value);
-
-    if (filter.onAfterSetValue) {
-        filter.onAfterSetValue.call(this, rule, value);
-    }
 };
 
 /**

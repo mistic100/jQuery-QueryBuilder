@@ -1,17 +1,14 @@
 QueryBuilder.DEFAULTS = {
     filters: [],
-
     plugins: null,
-
-    onValidationError: null,
-    onAfterAddGroup: null,
-    onAfterAddRule: null,
 
     display_errors: true,
     allow_groups: -1,
     allow_empty: false,
     conditions: ['AND', 'OR'],
     default_condition: 'AND',
+    inputs_separator: ' , ',
+    select_placeholder: '------',
 
     default_rule_flags: {
         filter_readonly: false,
@@ -33,8 +30,6 @@ QueryBuilder.DEFAULTS = {
 
         "condition_and": 'AND',
         "condition_or": 'OR',
-
-        "filter_select_placeholder": '------',
 
         "operators": {
             "equal": "equal",

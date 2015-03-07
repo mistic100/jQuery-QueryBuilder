@@ -9,8 +9,6 @@
   "condition_and": "OG",
   "condition_or": "ELLER",
 
-  "filter_select_placeholder": "------",
-
   "operators": {
     "equal": "lig med",
     "not_equal": "ikke lige med",

@@ -55,7 +55,7 @@ QueryBuilder.extend({
                 data.condition = that.settings.default_condition;
             }
             if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                $.error('Unable to build SQL query with '+ data.condition +' condition');
+                error('Unable to build SQL query with condition "{0}"', data.condition);
             }
 
             if (!data.rules) {
@@ -74,7 +74,7 @@ QueryBuilder.extend({
                         value = '';
 
                     if (sql === false) {
-                        $.error('SQL operation unknown for operator '+ rule.operator);
+                        error('Unknown SQL operation for operator "{0}"', rule.operator);
                     }
 
                     if (ope.accept_values) {
@@ -82,7 +82,7 @@ QueryBuilder.extend({
                             rule.value = [rule.value];
                         }
                         else if (!sql.list && rule.value.length>1) {
-                            $.error('Operator '+ rule.operator +' cannot accept multiple values');
+                            error('Operator "{0}" cannot accept multiple values', rule.operator);
                         }
 
                         rule.value.forEach(function(v, i) {

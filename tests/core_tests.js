@@ -22,11 +22,11 @@ $(function(){
   QUnit.test('Empty value check', function(assert) {
     var error_str;
     $('#container3').queryBuilder({
-      filters: basic_filters,
-      rules: invalid_rules,
-      onValidationError: function($rule, error, value, filter, operator) {
+        filters: basic_filters,
+        rules: invalid_rules
+    });
+    $('#container3').queryBuilder('on', 'validationError', function(node, error, value) {
         error_str = error[0];
-      }
     });
     
     assert.ok(rulesMatch($('#container3').queryBuilder('getRules'), {}), 'Should return empty object');

@@ -38,7 +38,7 @@ QueryBuilder.define('filter-description', function(options) {
      */
     else if (options.mode === 'popover') {
         if (!$.fn.popover || !$.fn.popover.Constructor || !$.fn.popover.Constructor.prototype.fixTitle) {
-            $.error('Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
+            error('Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
         }
 
         this.on('afterUpdateRuleFilter', function(rule) {
@@ -82,8 +82,8 @@ QueryBuilder.define('filter-description', function(options) {
      * BOOTBOX
      */
     else if (options.mode === 'bootbox') {
-        if (!window.bootbox) {
-            $.error('Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
+        if (!('bootbox' in window)) {
+            error('Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
         }
 
         this.on('afterUpdateRuleFilter', function(rule) {

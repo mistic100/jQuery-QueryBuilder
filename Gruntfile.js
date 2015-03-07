@@ -7,13 +7,14 @@ module.exports = function(grunt) {
         loaded_lang = '',
         js_core_files = [
             'src/main.js',
-            'src/model.js',
             'src/defaults.js',
+            'src/core.js',
             'src/public.js',
             'src/data.js',
             'src/template.js',
-            'src/jquery.js',
-            'src/utils.js'
+            'src/model.js',
+            'src/utils.js',
+            'src/jquery.js'
         ],
         css_core_files = [
             'src/scss/default.scss'

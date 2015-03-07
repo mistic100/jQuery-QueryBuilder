@@ -9,8 +9,6 @@
   "condition_and": "EN",
   "condition_or": "OF",
 
-  "filter_select_placeholder": "------",
-
   "operators": {
     "equal": "gelijk",
     "not_equal": "niet gelijk",
@@ -32,7 +30,7 @@
     "is_null": "is null",
     "is_not_null": "is niet null"
   },
-  
+
   "errors": {
     "no_filter": "Geen filter geselecteerd",
     "empty_group": "De groep is leeg",

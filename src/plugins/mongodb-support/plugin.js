@@ -49,7 +49,7 @@ QueryBuilder.extend({
                 data.condition = that.settings.default_condition;
             }
             if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                $.error('Unable to build MongoDB query with '+ data.condition +' condition');
+                error('Unable to build MongoDB query with condition "{0}"', data.condition);
             }
 
             if (!data.rules) {
@@ -68,7 +68,7 @@ QueryBuilder.extend({
                         values = [];
 
                     if (mdb === undefined) {
-                        $.error('MongoDB operation unknown for operator '+ rule.operator);
+                        error('Unknown MongoDB operation for operator "{0}"', rule.operator);
                     }
 
                     if (ope.accept_values) {
@@ -89,7 +89,7 @@ QueryBuilder.extend({
 
             var res = {};
             if (parts.length > 0) {
-                res[ '$'+data.condition.toLowerCase() ] = parts;
+                res['$'+data.condition.toLowerCase()] = parts;
             }
             return res;
         }(data));

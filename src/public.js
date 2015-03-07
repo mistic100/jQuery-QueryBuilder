@@ -9,11 +9,14 @@ QueryBuilder.prototype.destroy = function() {
     }
 
     this.clear();
+    this.model = null;
 
     this.$el
         .off('.queryBuilder')
         .removeClass('query-builder')
         .removeData('queryBuilder');
+
+    delete this.$el[0].queryBuilder;
 };
 
 /**
@@ -24,7 +27,6 @@ QueryBuilder.prototype.reset = function() {
     this.status.rule_id = 0;
 
     this.model.root.empty();
-    //this.$el.find('>.rules-group-container>.rules-group-body>.rules-list').empty();
 
     this.addRule(this.model.root);
 
@@ -87,6 +89,7 @@ QueryBuilder.prototype.getRules = function() {
                 operator: rule.operator.type,
                 value: value
             });
+
         }, function(group) {
             var data = parse(group);
             if (!$.isEmptyObject(data)) {
@@ -121,7 +124,7 @@ QueryBuilder.prototype.setRules = function(data) {
     this.setRoot(false);
 
     if (!data || !data.rules || (data.rules.length===0 && !this.settings.allow_empty)) {
-        $.error('Incorrect data object passed');
+        error('Incorrect data object passed');
     }
 
     data = this.change('setRules', data);
@@ -136,14 +139,18 @@ QueryBuilder.prototype.setRules = function(data) {
         if (data.condition === undefined) {
             data.condition = that.settings.default_condition;
         }
+        else if (that.settings.conditions.indexOf(data.condition) == -1) {
+            error('Invalid condition "{0}"', data.condition);
+        }
+
         group.condition = data.condition.toUpperCase();
 
         $.each(data.rules, function(i, rule) {
             var model;
             if (rule.rules && rule.rules.length>0) {
-                if (that.settings.allow_groups !== -1 && that.settings.allow_groups < group.level) {
+                if (that.settings.allow_groups != -1 && that.settings.allow_groups < group.level) {
                     that.reset();
-                    $.error(fmt('No more than {0} groups are allowed', that.settings.allow_groups));
+                    error('No more than {0} groups are allowed', that.settings.allow_groups);
                 }
                 else {
                     model = that.addGroup(group, false);
@@ -152,7 +159,7 @@ QueryBuilder.prototype.setRules = function(data) {
             }
             else {
                 if (rule.id === undefined) {
-                    $.error('Missing rule field id');
+                    error('Missing rule field id');
                 }
                 if (rule.value === undefined) {
                     rule.value = '';
@@ -166,7 +173,7 @@ QueryBuilder.prototype.setRules = function(data) {
                     return;
                 }
 
-                model.filter = that.getFilterById(rule.id),
+                model.filter = that.getFilterById(rule.id);
                 model.operator = that.getOperatorByType(rule.operator);
                 model.flags = that.parseRuleFlags(rule);
 

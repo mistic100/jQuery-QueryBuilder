@@ -9,8 +9,6 @@
   "condition_and": "E",
   "condition_or": "OU",
 
-  "filter_select_placeholder": "------",
-
   "operators": {
     "equal": "Igual",
     "not_equal": "Diferente",
@@ -32,7 +30,7 @@
     "is_null": "É nulo",
     "is_not_null": "Não é nulo"
   },
-  
+
   "errors": {
     "no_filter": "Nenhum filtro selecionado",
     "empty_group": "O grupo está vazio",

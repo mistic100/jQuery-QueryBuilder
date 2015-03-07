@@ -9,8 +9,6 @@
   "condition_and": "ŞI",
   "condition_or": "SAU",
 
-  "filter_select_placeholder": "------",
-
   "operators": {
     "equal": "egal",
     "not_equal": "diferit",

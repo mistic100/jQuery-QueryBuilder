@@ -1,4 +1,8 @@
+// Model CLASS
+// Main object storing data model and emitting events
+// ===============================
 /**
+ * ---------
  * Access Node object stored in jQuery objects
  * @param el {jQuery|Node}
  * @return {Node}
@@ -9,12 +13,15 @@ function Model(el) {
     }
 
     this.root = null;
-};
+}
 
 MicroEvent.mixin(Model);
 
-Model.DATAKEY = 'queryBuilderModel';
-
+/**
+ * Access Node object stored in jQuery objects
+ * @param el {jQuery|Node}
+ * @return {Node}
+ */
 Model.getModel = function(el) {
     if (!el) {
         return null;
@@ -23,11 +30,15 @@ Model.getModel = function(el) {
         return el;
     }
     else {
-        return $(el).data(Model.DATAKEY);
+        return $(el).data('queryBuilderModel');
     }
 };
 
-Model.defineProperties = function(obj, fields) {
+/*
+ * Define Node properties with getter and setter
+ * Update events are emitted in the setter through root Model (if any)
+ */
+function defineModelProperties(obj, fields) {
     fields.forEach(function(field) {
         Object.defineProperty(obj.prototype, field, {
             enumerable: true,
@@ -35,7 +46,7 @@ Model.defineProperties = function(obj, fields) {
                 return this.__[field];
             },
             set: function(value) {
-                var oldValue = (this.__[field] !== null && typeof this.__[field] === 'object') ?
+                var oldValue = (this.__[field] !== null && typeof this.__[field] == 'object') ?
                   $.extend({}, this.__[field]) :
                   this.__[field];
 
@@ -47,7 +58,8 @@ Model.defineProperties = function(obj, fields) {
             }
         });
     });
-};
+}
+
 
 // Node abstract CLASS
 // ===============================
@@ -62,17 +74,17 @@ var Node = function(parent, $el) {
 
     Object.defineProperty(this, '__', { value: {}});
 
-    $el.data(Model.DATAKEY, this);
+    $el.data('queryBuilderModel', this);
 
     this.model = parent === null ? null : parent.model;
     this.parent = parent;
-    // this.level // initialized in 'parent' setter
+    // this.level -- initialized in 'parent' setter
     this.$el = $el;
-    this.id = $el[0].id
+    this.id = $el[0].id;
     this.error = null;
 };
 
-Model.defineProperties(Node, ['level', 'error']);
+defineModelProperties(Node, ['level', 'error']);
 
 Object.defineProperty(Node.prototype, 'parent', {
     enumerable: true,
@@ -110,7 +122,9 @@ Node.prototype.getPos = function() {
  * Delete self
  */
 Node.prototype.drop = function() {
-    this.model.trigger('drop', this);
+    if (this.model !== null) {
+        this.model.trigger('drop', this);
+    }
 
     if (!this.isRoot()) {
         this.parent._dropNode(this);
@@ -186,7 +200,7 @@ var Group = function(parent, $el) {
 Group.prototype = Object.create(Node.prototype);
 Group.prototype.constructor = Group;
 
-Model.defineProperties(Node, ['condition']);
+defineModelProperties(Group, ['condition']);
 
 /**
  * Empty the Group
@@ -229,7 +243,9 @@ Group.prototype._addNode = function(node, index) {
     this.rules.splice(index, 0, node);
     node.parent = this;
 
-    this.model.trigger('add', node, index);
+    if (this.model !== null) {
+        this.model.trigger('add', node, index);
+    }
 
     return node;
 };
@@ -265,6 +281,7 @@ Group.prototype._dropNode = function(node) {
         node.parent = null;
         this.rules.splice(index, 1);
     }
+
     return this;
 };
 
@@ -284,26 +301,29 @@ Group.prototype.getNodePos = function(node) {
  * @param {function,optional} callback for Groups
  * @return {boolean}
  */
-Group.prototype.each = function(reverse, cbRule, cbGroup) {
+Group.prototype.each = function(reverse, cbRule, cbGroup, context) {
     if (typeof reverse === 'function') {
+        context = cbGroup;
         cbGroup = cbRule;
         cbRule = reverse;
         reverse = false;
     }
+    context = context === undefined ? null : context;
 
     var i = reverse ? this.rules.length-1 : 0,
         l = reverse ? 0 : this.rules.length-1,
         c = reverse ? -1 : 1,
-        test = function(){ return reverse ? i>=l : i<=l; };
+        next = function(){ return reverse ? i>=l : i<=l; },
+        stop = false;
 
-    for (; test(); i+=c) {
+    for (; next(); i+=c) {
         if (this.rules[i] instanceof Group) {
             if (cbGroup !== undefined) {
-                stop = cbGroup.call(null, this.rules[i]) === false;
+                stop = cbGroup.call(context, this.rules[i]) === false;
             }
         }
         else {
-            stop = cbRule.call(null, this.rules[i]) === false;
+            stop = cbRule.call(context, this.rules[i]) === false;
         }
 
         if (stop) {
@@ -359,4 +379,8 @@ var Rule = function(parent, $el) {
 Rule.prototype = Object.create(Node.prototype);
 Rule.prototype.constructor = Rule;
 
-Model.defineProperties(Node, ['filter', 'operator', 'flags']);
+defineModelProperties(Rule, ['filter', 'operator', 'flags']);
+
+
+QueryBuilder.Group = Group;
+QueryBuilder.Rule = Rule;

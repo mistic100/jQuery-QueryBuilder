@@ -46,6 +46,14 @@ function fmt(str, args) {
 }
 
 /**
+ * Output internal error with jQuery.error
+ * @see fmt
+ */
+function error() {
+    $.error(fmt.apply(null, arguments));
+}
+
+/**
  * Change type of a value to int or float
  * @param value {mixed}
  * @param type {string} 'integer', 'double' or anything else

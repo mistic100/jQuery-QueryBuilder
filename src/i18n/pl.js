@@ -9,8 +9,6 @@
   "condition_and": "AND",
   "condition_or": "OR",
 
-  "filter_select_placeholder": "------",
-
   "operators": {
     "equal": "równa się",
     "not_equal": "jest różne od",
@@ -32,7 +30,7 @@
     "is_null": "jest niezdefiniowane",
     "is_not_null": "nie jest niezdefiniowane"
   },
-  
+
   "errors": {
     "no_filter": "Nie wybrano żadnego filtra",
     "empty_group": "Grupa jest pusta",

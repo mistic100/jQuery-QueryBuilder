@@ -9,8 +9,6 @@
   "condition_and": "E",
   "condition_or": "O",
 
-  "filter_select_placeholder": "------",
-
   "operators": {
     "equal": "uguale",
     "not_equal": "non uguale",
