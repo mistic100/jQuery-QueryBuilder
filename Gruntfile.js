@@ -1,4 +1,5 @@
-var deepmerge = require('deepmerge');
+var deepmerge = require('deepmerge'),
+    fs = require('fs');
 
 module.exports = function(grunt) {
     var all_modules = {},
@@ -239,13 +240,36 @@ module.exports = function(grunt) {
 
         // qunit test suite
         qunit: {
-            all: ['tests/*.html']
+            all: {
+                options: {
+                    urls: ['tests/index.html?coverage=true&lcovReport'],
+                    noGlobals: true
+                }
+            }
+        },
+        
+        coveralls: {
+            options: {
+                force: false
+            },
+            all: {
+                src: '.coverage-results/core.lcov',
+            }
         }
+    });
+    
+    // save Blanket code coverage results
+    grunt.event.on('qunit.report', function(data) {
+        data = data.split("\n");
+        data[0] = 'SF:dist/query-builder.js';
+        data = data.join("\n");
+        
+        grunt.file.write('.coverage-results/core.lcov', data);
     });
 
     // build standalone version with dependencies
     // from https://github.com/brianreavis/selectize.js/blob/master/Gruntfile.js
-    grunt.registerTask('build_standalone', '', function() {
+    grunt.registerTask('build_standalone', 'Create standalone build of QueryBuilder.', function() {
         var files = [],
             modules = [];
 
@@ -268,7 +292,7 @@ module.exports = function(grunt) {
 
     // compile language files
     // create executable JS files from JSON + optional plugins JSON
-    grunt.registerTask('build_lang', '', function() {
+    grunt.registerTask('build_lang', 'Build QueryBuilder language files.', function() {
         var content, header, plugin_lang;
 
         for (var l in all_langs) {
@@ -294,7 +318,7 @@ module.exports = function(grunt) {
     });
 
     // list the triggers and changes in core code
-    grunt.registerTask('describe_triggers', '', function() {
+    grunt.registerTask('describe_triggers', 'List QueryBuilder triggers.', function() {
         var triggers = {};
 
         core = grunt.file.read('src/query-builder.js').split('\n').forEach(function(line, i) {
@@ -327,7 +351,7 @@ module.exports = function(grunt) {
     });
 
     // display available modules
-    grunt.registerTask('list_modules', '', function() {
+    grunt.registerTask('list_modules', 'List QueryBuilder plugins and languages.', function() {
         grunt.log.writeln('\nAvailable QueryBuilder plugins:\n');
 
         for (var m in all_modules) {
@@ -357,6 +381,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-wrap');
 
     grunt.registerTask('build_js', [
@@ -380,7 +405,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', [
         'default',
-        'qunit',
-        'jshint'
+        'jshint',
+        'qunit'
     ]);
 };

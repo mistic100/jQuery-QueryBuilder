@@ -162,6 +162,12 @@ $(function(){
     $('#container11_rule_0 .rule-value-container input').val('iefdabchg');
     assert.equal($('#container11').queryBuilder('getRules').rules[0].value, '845301276', 'Final value should be "845301276"');
   });
+  
+  // just for nice final display
+  QUnit.done(function() {
+      $('[id^=container]').remove();
+      $('#blanket-main').addClass('col-lg-10 col-lg-push-1');
+  });
 });
 
 function getOptions($target) {

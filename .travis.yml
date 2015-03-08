@@ -8,3 +8,4 @@ before_install:
 before_script:
   - bower install
 install: npm install
+after_success: grunt coveralls

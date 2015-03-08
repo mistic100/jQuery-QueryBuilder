@@ -4,17 +4,33 @@
   <title>jQuery-QueryBuilder</title>
   <meta charset="utf-8">
   
-  <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+  <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css">
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  
   <link rel="stylesheet" href="../dist/query-builder.css">
   
   <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+  <script src="../bower_components/qunit/qunit/qunit.js"></script>
+  <script src="../bower_components/blanket/dist/qunit/blanket.min.js"></script>
   <script src="../bower_components/microevent-mistic100/microevent.js"></script>
   <script src="../bower_components/jquery-extendext/jQuery.extendext.js"></script>
-  <script src="../dist/query-builder.js"></script>
+  
+  <script src="../dist/query-builder.js" data-cover></script>
   <script src="data.js"></script>
   <script src="core_tests.js"></script>
+  
+  <script>
+    // LCOV reporter
+    if (location.href.match(/(\?|&)lcovReport($|&|=)/)) {
+        blanket.options("reporter", "../bower_components/blanket/src/reporters/lcov_reporter.js");
+        blanket.options("reporter_options", { toHTML:false });
+        
+        // send results to PhantomJS
+        QUnit.done(function() {
+            alert(JSON.stringify(['qunit.report', window._$blanket_LCOV]));
+        });
+    }
+  </script>
 </head>
 
 <body class="container" style="padding:15px;">
