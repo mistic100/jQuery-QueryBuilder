@@ -3,6 +3,7 @@
   "dependencies" : {
     "bootstrap-select": "latest",
     "bootbox": "latest",
-    "seiyria-bootstrap-slider": "latest"
+    "seiyria-bootstrap-slider": "latest",
+    "bootswatch-dist": "#slate"
   }
 }

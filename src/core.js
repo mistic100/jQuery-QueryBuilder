@@ -43,7 +43,7 @@ QueryBuilder.prototype.init = function(options) {
     this.status.id = this.$el.attr('id');
 
     // INIT
-    this.$el.addClass('query-builder');
+    this.$el.addClass('query-builder form-inline');
 
     this.checkFilters();
     this.bindEvents();

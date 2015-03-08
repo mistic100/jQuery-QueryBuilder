@@ -40,7 +40,7 @@ $ticks-color: #CCC !default;
 %rule-component {
   display: inline-block;
   margin: 0 5px 0 0;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .query-builder {
@@ -85,6 +85,7 @@ $ticks-color: #CCC !default;
 
       label {
         margin-bottom: 0;
+        font-weight: normal;
 
         &.block {
           display: block;

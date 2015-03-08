@@ -96,7 +96,7 @@ QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
 QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
     var optgroup = null;
 
-    var h = '<select name="'+ rule.id +'_filter">';
+    var h = '<select class="form-control" name="'+ rule.id +'_filter">';
     h+= '<option value="-1">'+ this.settings.select_placeholder +'</option>';
 
     $.each(filters, function(i, filter) {
@@ -122,7 +122,7 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
  * @return {string}
  */
 QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
-    var h = '<select name="'+ rule.id +'_operator">';
+    var h = '<select class="form-control" name="'+ rule.id +'_operator">';
 
     for (var i=0, l=operators.length; i<l; i++) {
         var label = this.lang.operators[operators[i].type] || operators[i].type;
@@ -166,7 +166,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 break;
 
             case 'select':
-                h+= '<select name="'+ name +'"'+ (filter.multiple ? ' multiple' : '') +'>';
+                h+= '<select class="form-control" name="'+ name +'"'+ (filter.multiple ? ' multiple' : '') +'>';
                 iterateOptions(filter.values, function(key, val) {
                     h+= '<option value="'+ key +'"> '+ val +'</option> ';
                 });
@@ -174,7 +174,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 break;
 
             case 'textarea':
-                h+= '<textarea name="'+ name +'"';
+                h+= '<textarea class="form-control" name="'+ name +'"';
                 if (filter.size) h+= ' cols="'+ filter.size +'"';
                 if (filter.rows) h+= ' rows="'+ filter.rows +'"';
                 if (validation.min !== undefined) h+= ' minlength="'+ validation.min +'"';
@@ -186,7 +186,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
             default:
                 switch (filter.internalType) {
                     case 'number':
-                        h+= '<input type="number" name="'+ name +'"';
+                        h+= '<input class="form-control" type="number" name="'+ name +'"';
                         if (validation.step !== undefined) h+= ' step="'+ validation.step +'"';
                         if (validation.min !== undefined) h+= ' min="'+ validation.min +'"';
                         if (validation.max !== undefined) h+= ' max="'+ validation.max +'"';
@@ -196,7 +196,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                         break;
 
                     default:
-                        h+= '<input type="text" name="'+ name +'"';
+                        h+= '<input class="form-control" type="text" name="'+ name +'"';
                         if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
                         if (filter.type === 'string' && validation.min !== undefined) h+= ' minlength="'+ validation.min +'"';
                         if (filter.type === 'string' && validation.max !== undefined) h+= ' maxlength="'+ validation.max +'"';

@@ -4,17 +4,30 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" id="bt-theme">
   <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
   <link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
-  <link rel="stylesheet" href="../dist/css/query-builder.default.css">
+  <link rel="stylesheet" href="../dist/css/query-builder.default.css" id="qb-theme">
 </head>
 
 <body>
 
 <div class="container">
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
-    <p><a href="http://www.eyecon.ro/bootstrap-slider">seiyria-bootstrap-slider</a>, <a href="http://bootboxjs.com">bootbox</a> and <a href="http://silviomoreto.github.io/bootstrap-select">bootstrap-select</a> must be installed with Bower to run this demo.</p>
+    <div class="page-header">
+      <h1>jQuery QueryBuilder <small>Example</small></h1>
+    </div>
+
+    <div class="alert alert-info alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      You must execute <code>bower install</code> in the example directory to run this demo.
+    </div>
+    
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm" disabled>Theme:</button>
+      <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.default.min.css" data-bt="bower_components/bootstrap/dist/css/bootstrap.min.css">Default</button>
+      <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.dark.min.css" data-bt="bower_components/bootswatch-dist/css/bootstrap.min.css">Dark</button>
+    </div>
     
     <div id="builder"></div>
     
@@ -24,6 +37,7 @@
     </div>
     
     <div class="btn-group">
+      <button class="btn btn-default" disabled>Get:</button>
       <button class="btn btn-primary parse-json">JSON</button>
       <button class="btn btn-primary parse-sql" data-stmt="question_mark">SQL (question mark)</button>
       <button class="btn btn-primary parse-sql" data-stmt="numbered">SQL (numbered)</button>
@@ -38,8 +52,8 @@
   </div>
 </div>
 
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 <script src="bower_components/bootbox/bootbox.js"></script>
@@ -209,13 +223,13 @@ $('#builder').queryBuilder({
       });
       
       return '\
-      <select name="coord_1"> \
+      <select name="coord_1" class="form-control"> \
         <option value="-1">-</option> \
         <option value="A">A</option> \
         <option value="B">B</option> \
         <option value="C">C</option> \
       </select> \
-      <select name="coord_2" style="display:none;"></select>';
+      <select name="coord_2" class="form-control" style="display:none;"></select>';
     },
     valueParser: function(rule, value) {
       return rule.$el.find('[name=coord_1]').val()
@@ -257,7 +271,6 @@ $('.set').on('click', function() {
     }]
   });
 })
-//.trigger('click');
 
 // reset builder
 $('.reset').on('click', function() {
@@ -288,6 +301,12 @@ $('.parse-mongo').on('click', function() {
       $('#builder').queryBuilder('getMongo'),
       undefined, 2
     ));
+});
+
+// change theme
+$('.change-theme').on('click', function() {
+    $('#qb-theme').replaceWith('<link rel="stylesheet" href="' + $(this).data('qb') + '" id="qb-theme">');
+    $('#bt-theme').replaceWith('<link rel="stylesheet" href="' + $(this).data('bt') + '" id="bt-theme">');
 });
 </script>
 

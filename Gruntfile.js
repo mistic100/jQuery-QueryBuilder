@@ -19,9 +19,6 @@ module.exports = function(grunt) {
             'src/utils.js',
             'src/jquery.js'
         ],
-        css_core_files = [
-            'src/scss/default.scss'
-        ],
         js_files_to_load = [],
         js_files_for_standalone = [
             'bower_components/microevent-mistic100/microevent.js',
