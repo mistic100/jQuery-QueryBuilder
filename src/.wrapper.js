@@ -7,6 +7,7 @@
     }
 }(this, function($, MicroEvent) {
 "use strict";
+
 @@js
 
 }));

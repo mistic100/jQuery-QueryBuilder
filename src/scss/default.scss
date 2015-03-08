@@ -1,27 +1,30 @@
+$theme-name: default !default;
+
 // common
-$item-vertical-spacing: 4px;
-$item-border-radius: 5px;
+$item-vertical-spacing: 4px !default;
+$item-border-radius: 5px !default;
 
 // groups
-$group-background-color: rgba(250, 240, 210, 0.5);
-$group-border-color: #DCC896;
-$group-border: 1px solid $group-border-color;
-$group-padding: 10px;
+$group-background-color: rgba(250, 240, 210, 0.5) !default;
+$group-border-color: #DCC896 !default;
+$group-border: 1px solid $group-border-color !default;
+$group-padding: 10px !default;
 
 // rules
-$rule-background-color: rgba(255, 255, 255, 0.9);
-$rule-border-color: #EEE;
-$rule-border: 1px solid $rule-border-color;
-$rule-padding: 5px;
+$rule-background-color: rgba(255, 255, 255, 0.9) !default;
+$rule-border-color: #EEE !default;
+$rule-border: 1px solid $rule-border-color !default;
+$rule-padding: 5px !default;
+$rule-value-separator: 1px solid #ddd !default;
 
 // errors
-$error-icon-color: #F00;
-$error-border-color: #F99;
-$error-background-color: #FDD;
+$error-icon-color: #F00 !default;
+$error-border-color: #F99 !default;
+$error-background-color: #FDD !default;
 
 // ticks
-$ticks-width: 2px;
-$ticks-color: #CCC;
+$ticks-width: 2px !default;
+$ticks-color: #CCC !default;
 
 
 // ABSTRACTS
@@ -77,7 +80,7 @@ $ticks-color: #CCC;
     }
 
     .rule-value-container {
-      border-left: 1px solid #ddd;
+      border-left: $rule-value-separator;
       padding-left: 5px;
 
       label {
