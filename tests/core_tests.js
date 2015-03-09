@@ -22,11 +22,11 @@ $(function(){
   QUnit.test('Empty value check', function(assert) {
     var error_str;
     $('#container3').queryBuilder({
-      filters: basic_filters,
-      rules: invalid_rules,
-      onValidationError: function($rule, error, value, filter, operator) {
+        filters: basic_filters,
+        rules: invalid_rules
+    });
+    $('#container3').queryBuilder('on', 'validationError', function(node, error, value) {
         error_str = error[0];
-      }
     });
     
     assert.ok(rulesMatch($('#container3').queryBuilder('getRules'), {}), 'Should return empty object');
@@ -38,12 +38,12 @@ $(function(){
     assert.expect(2);
     
     var done = assert.async(),
-        original = $.fn.queryBuilder.defaults.get('lang');
+        original = $.fn.queryBuilder.defaults('lang');
     
     $.getScript('../dist/i18n/fr.js', function() {
-      assert.equal($.fn.queryBuilder.defaults.get('lang').delete_rule, 'Supprimer', 'Should be in french');
-      $.fn.queryBuilder.defaults.set({ lang: original });
-      assert.equal($.fn.queryBuilder.defaults.get('lang').delete_rule, 'Delete', 'Should be in english');
+      assert.equal($.fn.queryBuilder.defaults('lang').delete_rule, 'Supprimer', 'Should be in french');
+      $.fn.queryBuilder.defaults({ lang: original });
+      assert.equal($.fn.queryBuilder.defaults('lang').delete_rule, 'Delete', 'Should be in english');
       done();
     });
   });
@@ -163,6 +163,12 @@ $(function(){
     
     $('#container11_rule_0 .rule-value-container input').val('iefdabchg');
     assert.equal($('#container11').queryBuilder('getRules').rules[0].value, '845301276', 'Final value should be "845301276"');
+  });
+  
+  // just for nice final display
+  QUnit.done(function() {
+      $('[id^=container]').remove();
+      $('#blanket-main').addClass('col-lg-10 col-lg-push-1');
   });
 });
 

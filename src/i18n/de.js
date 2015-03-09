@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * German translation
- */
+{
+  "__copyright": "German translation by \"raimu\"",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "neue Regel",
   "add_group": "neue Gruppe",
   "delete_rule": "löschen",
@@ -11,8 +8,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "condition_and": "UND",
   "condition_or": "ODER",
-
-  "filter_select_placeholder": "------",
 
   "operators": {
     "equal": "gleich",
@@ -34,6 +29,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "ist null",
     "is_not_null": "ist nicht null"
   },
+
   "errors": {
     "no_filter": "Kein Filter ausgewählt",
     "empty_group": "Die Gruppe ist leer",
@@ -54,5 +50,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "Muss nach dem {0} sein",
     "datetime_exceed_max": "Muss vor dem {0} sein"
   }
-
-}});
+}

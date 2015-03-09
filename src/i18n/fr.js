@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * French translation by Damien "Mistic" Sorel
- */
+{
+  "__copyright": "French translation by Damien \"Mistic\" Sorel",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Ajouter une règle",
   "add_group": "Ajouter un groupe",
   "delete_rule": "Supprimer",
@@ -11,8 +8,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "condition_and": "ET",
   "condition_or": "OU",
-
-  "filter_select_placeholder": "------",
 
   "operators": {
     "equal": "égal",
@@ -35,7 +30,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "est nul",
     "is_not_null": "n'est pas nul"
   },
-  
+
   "errors": {
     "no_filter": "Aucun filtre sélectionné",
     "empty_group": "Le groupe est vide",
@@ -54,6 +49,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "number_wrong_step": "Doit être un multiple de {0}",
     "datetime_invalid": "Fomat de date invalide ({0})",
     "datetime_exceed_min": "Doit être après {0}",
-    "datetime_exceed_max": "Doit être avant {0}"
+    "datetime_exceed_max": "Doit être avant {0}",
+    "boolean_not_valid": "N'est pas un booléen"
   }
-}});
+}

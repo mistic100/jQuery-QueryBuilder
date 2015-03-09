@@ -1,19 +1,15 @@
 /*!
- * jQuery QueryBuilder
- * German translation
+ * jQuery QueryBuilder 1.4.2
+ * German translation by "raimu"
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
-
-jQuery.fn.queryBuilder.defaults.set({ lang: {
+jQuery.fn.queryBuilder.defaults({ lang: {
   "add_rule": "neue Regel",
   "add_group": "neue Gruppe",
   "delete_rule": "löschen",
   "delete_group": "löschen",
-
   "condition_and": "UND",
   "condition_or": "ODER",
-
-  "filter_select_placeholder": "------",
-
   "operators": {
     "equal": "gleich",
     "not_equal": "ungleich",
@@ -54,5 +50,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "Muss nach dem {0} sein",
     "datetime_exceed_max": "Muss vor dem {0} sein"
   }
-
 }});

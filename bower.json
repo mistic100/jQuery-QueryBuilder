@@ -3,6 +3,7 @@
   "version": "1.4.2",
   "authors": [{
     "name": "Damien \"Mistic\" Sorel",
+    "email": "contact@git.strangeplanet.fr",
     "homepage": "http://www.strangeplanet.fr"
   }],
   "description": "jQuery plugin for user friendly query/filter creator",
@@ -10,12 +11,16 @@
     "dist/query-builder.js",
     "dist/query-builder.css"
   ],
-  "dependencies" : {
+  "dependencies": {
     "jquery": ">= 1.9.0",
     "bootstrap": "^3.1.0",
     "momentjs": "^2.6.0",
-    "microevent-mistic100": "^2.0.0",
+    "microevent-mistic100": "^2.1.0",
     "jquery-extendext": "^0.1.1"
+  },
+  "devDependencies": {
+    "blanket": "~1.1.0",
+    "qunit": "~1.17.0"
   },
   "keywords": [
     "jquery",

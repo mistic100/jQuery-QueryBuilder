@@ -1,7 +1,7 @@
 # How to contribute
 
 ## Core vs Modules
-I want to keep the core clean of extra (and certainly awesome) functionnalities. That includes, but is not limited to, export/import modules, visual aids, etc.
+I want to keep the core clean of extra (and certainly awesome) functionalities. That includes, but is not limited to, export/import modules, visual aids, etc.
 
 Check to doc about [creating plugins](http://mistic100.github.io/jQuery-QueryBuilder/plugins.html#creation)
 
@@ -12,3 +12,6 @@ I won't merge any branch not passing the TravisCI build (this include JShint com
 
 ## `dist`
 Keep it simple, don't commit any files in the `dist` directory, I build these files only before a release.
+
+## Translation
+Source language files are plain JSON files which will be converted to executable JS files by the build task. The `__copyright` key can be used to give information about the translator.

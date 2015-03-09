@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Spanish translation by "pyarza"
- */
+{
+  "__copyright": "Spanish translation by \"pyarza\"",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Añadir regla",
   "add_group": "Añadir grupo",
   "delete_rule": "Borrar",
@@ -11,8 +8,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "condition_and": "Y",
   "condition_or": "O",
-
-  "filter_select_placeholder": "------",
 
   "operators": {
     "equal": "igual",
@@ -35,7 +30,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "es nulo",
     "is_not_null": "no es nulo"
   },
-  
+
   "errors": {
     "no_filter": "No se ha seleccionado ningun filtro",
     "empty_group": "El grupo esta vacio",
@@ -56,4 +51,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "Debe ser posterior a {0}",
     "datetime_exceed_max": "Debe ser anterior a {0}"
   }
-}});
+}

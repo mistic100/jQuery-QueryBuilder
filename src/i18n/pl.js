@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Polish translation by Artur Smolarek
- */
+{
+  "__copyright": "Polish translation by Artur Smolarek",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Dodaj regułę",
   "add_group": "Dodaj grupę",
   "delete_rule": "Usuń",
@@ -11,8 +8,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "condition_and": "AND",
   "condition_or": "OR",
-
-  "filter_select_placeholder": "------",
 
   "operators": {
     "equal": "równa się",
@@ -35,7 +30,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "jest niezdefiniowane",
     "is_not_null": "nie jest niezdefiniowane"
   },
-  
+
   "errors": {
     "no_filter": "Nie wybrano żadnego filtra",
     "empty_group": "Grupa jest pusta",
@@ -56,4 +51,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "Musi być po {0}",
     "datetime_exceed_max": "Musi być przed {0}"
   }
-}});
+}

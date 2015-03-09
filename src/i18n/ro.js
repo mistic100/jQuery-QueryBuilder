@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Romanian translation by ArianServ
- */
+{
+  "__copyright": "Romanian translation by ArianServ",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Adaugă regulă",
   "add_group": "Adaugă grup",
   "delete_rule": "Şterge",
@@ -11,8 +8,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "condition_and": "ŞI",
   "condition_or": "SAU",
-
-  "filter_select_placeholder": "------",
 
   "operators": {
     "equal": "egal",
@@ -34,4 +29,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "e nul",
     "is_not_null": "nu e nul"
   }
-}});
+}

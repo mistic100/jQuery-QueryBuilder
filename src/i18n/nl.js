@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Dutch translation by "Roywcm"
- */
+{
+  "__copyright": "Dutch translation by \"Roywcm\"",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Nieuwe regel",
   "add_group": "Nieuwe groep",
   "delete_rule": "Verwijder",
@@ -11,8 +8,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "condition_and": "EN",
   "condition_or": "OF",
-
-  "filter_select_placeholder": "------",
 
   "operators": {
     "equal": "gelijk",
@@ -35,7 +30,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "is null",
     "is_not_null": "is niet null"
   },
-  
+
   "errors": {
     "no_filter": "Geen filter geselecteerd",
     "empty_group": "De groep is leeg",
@@ -56,4 +51,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "datetime_exceed_min": "Dient na {0}",
     "datetime_exceed_max": "Dient voor {0}"
   }
-}});
+}

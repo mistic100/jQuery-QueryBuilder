@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Italian translation
- */
+{
+  "__copyright": "Italian translation",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Aggiungi regola",
   "add_group": "Aggiungi gruppo",
   "delete_rule": "Elimina",
@@ -11,8 +8,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "condition_and": "E",
   "condition_or": "O",
-
-  "filter_select_placeholder": "------",
 
   "operators": {
     "equal": "uguale",
@@ -34,4 +29,4 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "è nullo",
     "is_not_null": "non è nullo"
   }
-}});
+}

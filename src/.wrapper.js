@@ -6,7 +6,8 @@
         factory(root.jQuery, root.MicroEvent);
     }
 }(this, function($, MicroEvent) {
-    "use strict";
-  
-    @@js
+"use strict";
+
+@@js
+
 }));

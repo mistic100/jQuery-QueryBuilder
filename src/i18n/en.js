@@ -1,9 +1,6 @@
-/*!
- * jQuery QueryBuilder
- * Reference language file
- */
+{
+  "__copyright": "Reference language file",
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
   "add_rule": "Add rule",
   "add_group": "Add group",
   "delete_rule": "Delete",
@@ -11,8 +8,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
 
   "condition_and": "AND",
   "condition_or": "OR",
-
-  "filter_select_placeholder": "------",
 
   "operators": {
     "equal": "equal",
@@ -35,7 +30,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "is null",
     "is_not_null": "is not null"
   },
-  
+
   "errors": {
     "no_filter": "No filter selected",
     "empty_group": "The group is empty",
@@ -54,6 +49,7 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "number_wrong_step": "Must be a multiple of {0}",
     "datetime_invalid": "Invalid date format ({0})",
     "datetime_exceed_min": "Must be after {0}",
-    "datetime_exceed_max": "Must be before {0}"
+    "datetime_exceed_max": "Must be before {0}",
+    "boolean_not_valid": "Not a boolean"
   }
-}});
+}

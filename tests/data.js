@@ -132,7 +132,7 @@ var filters_for_validation_callback = [{
   id: 'name',
   type: 'integer',
   validation: {
-    callback: function(value, filter, operator, $rule) {
+    callback: function(value, rule) {
       switch (value[0]) {
         case '1':
           return 'invalid_name';
@@ -159,14 +159,14 @@ var rules_for_validation_callback = {
 var filters_for_value_callback = [{
   id: 'name',
   type: 'string',
-  valueSetter: function($rule, value) {
+  valueSetter: function(rule, value) {
     value = (''+value).split('').map(function(c) {
       return String.fromCharCode(97 + parseInt(c));
     }).join('');
     
-    $rule.find('.rule-value-container input').val(value);
+    rule.$el.find('.rule-value-container input').val(value);
   },
-  valueParser: function($rule, value) {
+  valueParser: function(rule, value) {
     value = value.split('').map(function(c) {
       return c.charCodeAt(0) - 97;
     }).join('');
