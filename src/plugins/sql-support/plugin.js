@@ -188,7 +188,7 @@
                 if (db === 'sql') {
                     return bool ? 1 : 0;
                 }
-                else if (db === 'mongo') {
+                else {
                     return bool;
                 }
                 break;
