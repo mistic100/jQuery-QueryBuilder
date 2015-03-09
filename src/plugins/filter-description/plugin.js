@@ -1,9 +1,3 @@
-/*!
- * jQuery QueryBuilder Filter Description
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
- * Licensed under MIT (http://opensource.org/licenses/MIT)
- */
-
 QueryBuilder.define('filter-description', function(options) {
     options = $.extend({
         icon: 'glyphicon glyphicon-info-sign',

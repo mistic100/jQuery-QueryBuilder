@@ -1,9 +1,3 @@
-/*!
- * jQuery QueryBuilder Bootstrap Selectpicker
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
- * Licensed under MIT (http://opensource.org/licenses/MIT)
- */
-
 QueryBuilder.define('bt-selectpicker', function(options) {
     if (!$.fn.selectpicker || !$.fn.selectpicker.Constructor) {
         error('Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');

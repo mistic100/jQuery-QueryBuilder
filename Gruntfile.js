@@ -1,5 +1,4 @@
-var deepmerge = require('deepmerge'),
-    fs = require('fs');
+var deepmerge = require('deepmerge');
 
 module.exports = function(grunt) {
     grunt.util.linefeed = '\n';
@@ -162,6 +161,18 @@ module.exports = function(grunt) {
                     flatten: true,
                     src: ['dist/css/*.css', '!dist/css/*.min.css'],
                     dest: 'dist/css'
+                }]
+            },
+            // add banner to SASS files
+            sass: {
+                options: {
+                    banner: '<%= banner %>\n\n',
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'dist/scss',
+                    src: ['**/*.scss'],
+                    dest: 'dist/scss'
                 }]
             }
         },
@@ -434,7 +445,8 @@ module.exports = function(grunt) {
         'wrap:sass',
         'sass',
         'concat:css',
-        'cssmin'
+        'concat:sass',
+        'cssmin',
     ]);
 
     grunt.registerTask('default', [

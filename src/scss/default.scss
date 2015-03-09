@@ -25,6 +25,7 @@ $error-background-color: #FDD !default;
 // ticks
 $ticks-width: 2px !default;
 $ticks-color: #CCC !default;
+$ticks-position: 5px, 10px !default;
 
 
 // ABSTRACTS
@@ -64,7 +65,7 @@ $ticks-color: #CCC !default;
 
     .rules-list {
       list-style: none;
-      padding: 0 0 0 #{2 * $group-padding};
+      padding: 0 0 0 #{nth($ticks-position, 1) + nth($ticks-position, 2)};
       margin: 0;
     }
   }
@@ -121,8 +122,8 @@ $ticks-color: #CCC !default;
     &:after {
       content: '';
       position: absolute;
-      left: -15px;
-      width: 15px;
+      left: #{-1 * nth($ticks-position, 2)};
+      width: nth($ticks-position, 2);
       height: calc(50% + #{$item-vertical-spacing});
       border-color: $ticks-color;
       border-style: solid;
@@ -138,8 +139,8 @@ $ticks-color: #CCC !default;
     }
 
     &:first-child:before {
-      top: #{-10px -$ticks-width};
-      height: calc(50% + #{10px + $item-vertical-spacing});
+      top: #{-$group-padding -$ticks-width};
+      height: calc(50% + #{$group-padding + $item-vertical-spacing});
     }
     &:last-child:before {
       border-radius: 0 0 0 #{2 * $ticks-width};

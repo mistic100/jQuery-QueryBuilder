@@ -17,7 +17,7 @@ http://mistic100.github.io/jQuery-QueryBuilder
  * (optional) MomentJS
  * (optional) any widgets library like jQuery UI
 
-($.extendext and MicroEvent are directly included in the [standalone](https://github.com/mistic100/jQuery-QueryBuilder/blob/master/dist/query-builder.standalone.js) file)
+($.extendext and MicroEvent are directly included in the [standalone](https://github.com/mistic100/jQuery-QueryBuilder/blob/master/dist/js/query-builder.standalone.js) file)
 
 ### Browser support
  * Internet Explorer >= 10
@@ -45,13 +45,11 @@ You can also include ONE language with `--lang`
 grunt --lang=fr
 ```
 
-Run `grunt test` to run jsHint and the Mocha test suite.
+Run `grunt test` to run JSHint and the QUnit test suite.
 
 Run `grunt list_modules` to get the list of available plugins and languages.
 
-### Contributing
-Changes have to be done only in `src` directory. The `dist` directory is updated only once in a while before a release.
-
+Run `grunt watch` to automatically build the library when modifying source files.
 
 ### Inspiration
  * [Knockout Query Builder](http://kindohm.com/posts/2013/09/25/knockout-query-builder/)
