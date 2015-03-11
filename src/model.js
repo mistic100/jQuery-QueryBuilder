@@ -82,9 +82,10 @@ var Node = function(parent, $el) {
     this.$el = $el;
     this.id = $el[0].id;
     this.error = null;
+    this.data = undefined;
 };
 
-defineModelProperties(Node, ['level', 'error']);
+defineModelProperties(Node, ['level', 'error', 'data']);
 
 Object.defineProperty(Node.prototype, 'parent', {
     enumerable: true,

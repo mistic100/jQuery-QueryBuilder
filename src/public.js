@@ -121,23 +121,29 @@ QueryBuilder.prototype.getRules = function() {
             rules: []
         };
 
-        group.each(function(rule) {
+        group.each(function(model) {
             var value = null;
-            if (rule.operator.nb_inputs !== 0) {
-                value = that.getRuleValue(rule);
+            if (model.operator.nb_inputs !== 0) {
+                value = that.getRuleValue(model);
             }
 
-            out.rules.push({
-                id: rule.filter.id,
-                field: rule.filter.field,
-                type: rule.filter.type,
-                input: rule.filter.input,
-                operator: rule.operator.type,
+            var rule = {
+                id: model.filter.id,
+                field: model.filter.field,
+                type: model.filter.type,
+                input: model.filter.input,
+                operator: model.operator.type,
                 value: value
-            });
+            };
 
-        }, function(group) {
-            out.rules.push(parse(group));
+            if (model.filter.data || model.data) {
+                rule.data = $.extendext(true, 'replace', {}, model.filter.data, model.data);
+            }
+
+            out.rules.push(rule);
+
+        }, function(model) {
+            out.rules.push(parse(model));
         });
 
         return out;
@@ -208,6 +214,10 @@ QueryBuilder.prototype.setRules = function(data) {
                 model.filter = that.getFilterById(rule.id);
                 model.operator = that.getOperatorByType(rule.operator);
                 model.flags = that.parseRuleFlags(rule);
+                
+                if (rule.data) {
+                    model.data = rule.data;
+                }
 
                 if (model.operator.nb_inputs !== 0) {
                     that.setRuleValue(model, rule.value);
