@@ -50,7 +50,9 @@ var basic_filters = [
   validation: {
     min: 0,
     step: 0.01
-  }
+  },
+  unique: 'group',
+  description: 'Lorem ipsum sit amet'
 }, 
 /*
  * placeholder and regex validation
@@ -63,7 +65,8 @@ var basic_filters = [
   operators: ['equal', 'not_equal'],
   validation: {
     format: /^.{4}-.{4}-.{4}$/
-  }
+  },
+  unique: true
 }];
 
 var basic_rules = {
@@ -301,3 +304,16 @@ var icons = {
   remove_group: 'fa fa-times',
   sort: 'fa fa-sort'
 };
+
+var rules_for_plugins = {
+  rules: [{
+    id: 'id',
+    value: '1234-1234-1234'
+  }, {
+    rules: [{
+      id: 'price',
+      value: 42
+    }]
+  }]
+};
+  

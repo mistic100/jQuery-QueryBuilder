@@ -165,6 +165,25 @@ $(function(){
     assert.equal($('#container11').queryBuilder('getRules').rules[0].value, '845301276', 'Final value should be "845301276"');
   });
   
+  QUnit.test('Plugins', function(assert) {
+      $('#container12').queryBuilder({
+        plugins: {
+          'unique-filter': null,
+          'filter-description': { mode: 'inline' }
+        },
+        filters: basic_filters,
+        rules: rules_for_plugins
+      });
+      
+      $('#container12_group_0 > .rules-group-header [data-add=rule]').click();
+      
+      assert.ok($('#container12_rule_1 .rule-filter-container option[value=id]').is(':disabled'), '"Identifier" is disabled in nested group');
+      assert.ok($('#container12_rule_2 .rule-filter-container option[value=id]').is(':disabled'), '"Identifier" is disabled in root group');
+      assert.ok(!$('#container12_rule_0 .rule-filter-container option[value=id]').is(':disabled'), '"Price" is NOT disabled in root group');
+      
+      assert.equal($('#container12_rule_1 .filter-description').text().trim(), 'Lorem ipsum sit amet', '"Price" has a description');
+  });
+  
   // just for nice final display
   QUnit.done(function() {
       $('[id^=container]').remove();

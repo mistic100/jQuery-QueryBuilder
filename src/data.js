@@ -14,7 +14,7 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
         result = validation.callback.call(this, value, rule);
     }
     else {
-        result = this._validateValue(rule, value);
+        result = this.validateValueInternal(rule, value);
     }
 
     return this.change('validateValue', result, value, rule);
@@ -26,7 +26,7 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
  * @param value {string|string[]|undefined}
  * @return {array|true}
  */
-QueryBuilder.prototype._validateValue = function(rule, value) {
+QueryBuilder.prototype.validateValueInternal = function(rule, value) {
     var filter = rule.filter,
         operator = rule.operator,
         validation = filter.validation || {},

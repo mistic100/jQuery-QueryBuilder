@@ -80,7 +80,8 @@ $('#builder').queryBuilder({
     'bt-tooltip-errors': { delay: 100},
     'sortable': null,
     'filter-description': { mode: 'bootbox' },
-    'bt-selectpicker': null
+    'bt-selectpicker': null,
+    'unique-filter': null
   },
   
   filters: [
@@ -93,7 +94,8 @@ $('#builder').queryBuilder({
     type: 'string',
     optgroup: 'core',
     default_value: 'Mistic',
-    size: 30
+    size: 30,
+    unique: true
   },
   /*
    * textarea

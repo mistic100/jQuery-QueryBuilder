@@ -333,6 +333,8 @@ QueryBuilder.prototype.deleteGroup = function(group) {
         group.drop();
     }
 
+    this.trigger('afterDeleteGroup', del);
+
     return del;
 };
 
@@ -386,6 +388,8 @@ QueryBuilder.prototype.deleteRule = function(rule) {
     }
 
     rule.drop();
+
+    this.trigger('afterDeleteRule');
 
     return true;
 };

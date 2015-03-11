@@ -102,7 +102,9 @@ QueryBuilder.prototype.initPlugins = function() {
         });
     }
 
-    $.each(queue, function(plugin, options) {
+    this.settings.plugins = queue;
+
+    $.each(this.settings.plugins, function(plugin, options) {
         if (plugin in QueryBuilder.plugins) {
             QueryBuilder.plugins[plugin].call(that, options);
         }
