@@ -52,5 +52,5 @@ Run `grunt list_modules` to get the list of available plugins and languages.
 Run `grunt watch` to automatically build the library when modifying source files.
 
 ### Inspiration
- * [Knockout Query Builder](http://kindohm.com/posts/2013/09/25/knockout-query-builder/)
+ * [Knockout Query Builder](http://kindohm.github.io/knockout-query-builder/)
  * [jui_filter_rules](http://www.pontikis.net/labs/jui_filter_rules/)

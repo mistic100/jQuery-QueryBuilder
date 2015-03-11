@@ -10,13 +10,6 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
     var validation = rule.filter.validation || {},
         result = true;
 
-    if (rule.operator.accept_values == 1) {
-        value = [value];
-    }
-    else {
-        value = value;
-    }
-
     if (validation.callback) {
         result = validation.callback.call(this, value, rule);
     }
@@ -40,7 +33,15 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
         result = true,
         tmp;
 
-    for (var i=0; i<operator.accept_values; i++) {
+    if (rule.operator.nb_inputs === 1) {
+        value = [value];
+    }
+    else {
+        value = value;
+    }
+
+    for (var i=0; i<operator.nb_inputs; i++) {
+
         switch (filter.input) {
             case 'radio':
                 if (value[i] === undefined) {
@@ -54,12 +55,20 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
                     result = ['checkbox_empty'];
                     break;
                 }
+                else if (!operator.multiple && value[i].length > 1) {
+                    result = ['operator_not_multiple', this.lang[operator.type] || operator.type];
+                    break;
+                }
                 break;
 
             case 'select':
                 if (filter.multiple) {
                     if (value[i].length === 0) {
                         result = ['select_empty'];
+                        break;
+                    }
+                    else if (!operator.multiple && value[i].length > 1) {
+                        result = ['operator_not_multiple', this.lang[operator.type] || operator.type];
                         break;
                     }
                 }
@@ -276,7 +285,7 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
 /**
  * Returns rule value
  * @param rule {Rule}
- * @return {string|string[]|undefined}
+ * @return {mixed}
  */
 QueryBuilder.prototype.getRuleValue = function(rule) {
     var filter = rule.filter,
@@ -284,7 +293,7 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
         $value = rule.$el.find('.rule-value-container'),
         value = [], tmp;
 
-    for (var i=0; i<operator.accept_values; i++) {
+    for (var i=0; i<operator.nb_inputs; i++) {
         var name = rule.id + '_value_' + i;
 
         switch (filter.input) {
@@ -318,7 +327,7 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
         }
     }
 
-    if (operator.accept_values == 1) {
+    if (operator.nb_inputs === 1) {
         value = value[0];
     }
 
@@ -346,14 +355,14 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
     else {
         var $value = rule.$el.find('.rule-value-container');
 
-        if (operator.accept_values == 1) {
+        if (operator.nb_inputs == 1) {
             value = [value];
         }
         else {
             value = value;
         }
 
-        for (var i=0; i<operator.accept_values; i++) {
+        for (var i=0; i<operator.nb_inputs; i++) {
             var name = rule.id +'_value_'+ i;
 
             switch (filter.input) {

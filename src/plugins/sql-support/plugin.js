@@ -4,13 +4,13 @@ QueryBuilder.defaults({
     sqlOperators: {
         equal:            '= ?',
         not_equal:        '!= ?',
-        in:               { op: 'IN(?)',     list: true, sep: ', ' },
-        not_in:           { op: 'NOT IN(?)', list: true, sep: ', ' },
+        in:               { op: 'IN(?)',     sep: ', ' },
+        not_in:           { op: 'NOT IN(?)', sep: ', ' },
         less:             '< ?',
         less_or_equal:    '<= ?',
         greater:          '> ?',
         greater_or_equal: '>= ?',
-        between:          { op: 'BETWEEN ?',   list: true, sep: ' AND ' },
+        between:          { op: 'BETWEEN ?',   sep: ' AND ' },
         begins_with:      { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } },
         not_begins_with:  { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } },
         contains:         { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } },
@@ -71,12 +71,9 @@ QueryBuilder.extend({
                         error('Unknown SQL operation for operator "{0}"', rule.operator);
                     }
 
-                    if (ope.accept_values) {
+                    if (ope.nb_inputs !== 0) {
                         if (!(rule.value instanceof Array)) {
                             rule.value = [rule.value];
-                        }
-                        else if (!sql.list && rule.value.length>1) {
-                            error('Operator "{0}" cannot accept multiple values', rule.operator);
                         }
 
                         rule.value.forEach(function(v, i) {
@@ -148,11 +145,8 @@ QueryBuilder.extend({
             return false;
         }
 
-        if (typeof sql === 'string') {
+        if (typeof sql == 'string') {
             sql = { op: sql };
-        }
-        if (!sql.list) {
-            sql.list = false;
         }
         if (sql.list && !sql.sep) {
             sql.sep = ', ';

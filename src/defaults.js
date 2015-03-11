@@ -72,30 +72,31 @@ QueryBuilder.DEFAULTS = {
             "datetime_invalid": "Invalid date format ({0})",
             "datetime_exceed_min": "Must be after {0}",
             "datetime_exceed_max": "Must be before {0}",
-            "boolean_not_valid": "Not a boolean"
+            "boolean_not_valid": "Not a boolean",
+            "operator_not_multiple": "Operator {0} cannot accept multiple values"
         }
     },
 
     operators: [
-        {type: 'equal',            accept_values: 1, apply_to: ['string', 'number', 'datetime', 'boolean']},
-        {type: 'not_equal',        accept_values: 1, apply_to: ['string', 'number', 'datetime', 'boolean']},
-        {type: 'in',               accept_values: 1, apply_to: ['string', 'number', 'datetime']},
-        {type: 'not_in',           accept_values: 1, apply_to: ['string', 'number', 'datetime']},
-        {type: 'less',             accept_values: 1, apply_to: ['number', 'datetime']},
-        {type: 'less_or_equal',    accept_values: 1, apply_to: ['number', 'datetime']},
-        {type: 'greater',          accept_values: 1, apply_to: ['number', 'datetime']},
-        {type: 'greater_or_equal', accept_values: 1, apply_to: ['number', 'datetime']},
-        {type: 'between',          accept_values: 2, apply_to: ['number', 'datetime']},
-        {type: 'begins_with',      accept_values: 1, apply_to: ['string']},
-        {type: 'not_begins_with',  accept_values: 1, apply_to: ['string']},
-        {type: 'contains',         accept_values: 1, apply_to: ['string']},
-        {type: 'not_contains',     accept_values: 1, apply_to: ['string']},
-        {type: 'ends_with',        accept_values: 1, apply_to: ['string']},
-        {type: 'not_ends_with',    accept_values: 1, apply_to: ['string']},
-        {type: 'is_empty',         accept_values: 0, apply_to: ['string']},
-        {type: 'is_not_empty',     accept_values: 0, apply_to: ['string']},
-        {type: 'is_null',          accept_values: 0, apply_to: ['string', 'number', 'datetime', 'boolean']},
-        {type: 'is_not_null',      accept_values: 0, apply_to: ['string', 'number', 'datetime', 'boolean']}
+        {type: 'equal',            nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
+        {type: 'not_equal',        nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
+        {type: 'in',               nb_inputs: 1, multiple: true,  apply_to: ['string', 'number', 'datetime']},
+        {type: 'not_in',           nb_inputs: 1, multiple: true,  apply_to: ['string', 'number', 'datetime']},
+        {type: 'less',             nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'less_or_equal',    nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'greater',          nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'greater_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'between',          nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'begins_with',      nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'not_begins_with',  nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'contains',         nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'not_contains',     nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'ends_with',        nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'not_ends_with',    nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'is_empty',         nb_inputs: 0, multiple: false, apply_to: ['string']},
+        {type: 'is_not_empty',     nb_inputs: 0, multiple: false, apply_to: ['string']},
+        {type: 'is_null',          nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
+        {type: 'is_not_null',      nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']}
     ],
 
     icons: {

@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" id="bt-theme">
   <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
   <link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.bootstrap3.css">
+  
   <link rel="stylesheet" href="../dist/css/query-builder.default.css" id="qb-theme">
 </head>
 
@@ -57,8 +59,13 @@
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
 <script src="bower_components/bootbox/bootbox.js"></script>
-<script src="../dist/js/query-builder.standalone.js"></script>
+  
+<script src="../bower_components/microevent-mistic100/microevent.min.js"></script>
+<script src="../bower_components/jquery-extendext/jQuery.extendext.min.js"></script>
+
+<script src="../dist/js/query-builder.js"></script>
 
 <script>
 // define filters
@@ -118,6 +125,41 @@ $('#builder').queryBuilder({
       6: 'Clothes'
     },
     operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
+  },
+  /*
+   * Selectize
+   */
+  {
+    id: 'state',
+    label: 'State',
+    type: 'string',
+    input: 'select',
+    multiple: true,
+    plugin: 'selectize',
+    plugin_config: {
+      valueField: 'id',
+      labelField: 'name',
+      searchField: 'name',
+      sortField: 'name',
+      options: [
+        { id: "AL", name: "Alabama" },
+        { id: "AK", name: "Alaska" },
+        { id: "AZ", name: "Arizona" },
+        { id: "AR", name: "Arkansas" },
+        { id: "CA", name: "California" },
+        { id: "CO", name: "Colorado" },
+        { id: "CT", name: "Connecticut" },
+        { id: "DE", name: "Delaware" },
+        { id: "DC", name: "District of Columbia" },
+        { id: "FL", name: "Florida" },
+        { id: "GA", name: "Georgia" },
+        { id: "HI", name: "Hawaii" },
+        { id: "ID", name: "Idaho" }
+      ]
+    },
+    valueSetter: function(rule, value) {
+      rule.$el.find('.rule-value-container select')[0].selectize.setValue(value);
+    }
   },
   /*
    * radio
@@ -237,13 +279,20 @@ $('#builder').queryBuilder({
         +'.'+rule.$el.find('[name=coord_2]').val();
     },
     valueSetter: function(rule, value) {
-      if (rule.operator.accept_values) {
+      if (rule.operator.nb_inputs !== 0) {
         var val = value.split('.');
         rule.$el.find('[name=coord_1]').val(val[0]).trigger('change');
         rule.$el.find('[name=coord_2]').val(val[1]);
       }
     }
   }]
+});
+
+$('#builder').queryBuilder('on', 'afterCreateRuleInput', function(rule) {
+    if (rule.filter.plugin == 'selectize') {
+        rule.$el.find('.rule-value-container').css('min-width', '200px')
+          .find('.selectize-control').removeClass('form-control');
+    }
 });
 
 // set rules
@@ -258,6 +307,10 @@ $('.set').on('click', function() {
         no_delete: true,
         filter_readonly: true
       }
+    }, {
+      id: 'state',
+      operator: 'equal',
+      value: 'AK',
     }, {
       condition: 'OR',
       rules: [{

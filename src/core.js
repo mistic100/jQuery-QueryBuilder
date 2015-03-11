@@ -435,13 +435,13 @@ QueryBuilder.prototype.createRuleOperators = function(rule, triggerChangeOperato
 QueryBuilder.prototype.createRuleInput = function(rule) {
     var $valueContainer = rule.$el.find('.rule-value-container').empty();
 
-    if (!rule.filter || rule.operator.accept_values === 0) {
+    if (!rule.filter || rule.operator.nb_inputs === 0) {
         return;
     }
 
     var $inputs = $();
 
-    for (var i=0; i<rule.operator.accept_values; i++) {
+    for (var i=0; i<rule.operator.nb_inputs; i++) {
         var $ruleInput = $(this.getRuleInput(rule, i));
         if (i > 0) $valueContainer.append(this.settings.inputs_separator);
         $valueContainer.append($ruleInput);
@@ -482,13 +482,13 @@ QueryBuilder.prototype.updateRuleFilter = function(rule) {
 QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     var $valueContainer = rule.$el.find('.rule-value-container');
 
-    if (!rule.operator || rule.operator.accept_values === 0) {
+    if (!rule.operator || rule.operator.nb_inputs === 0) {
         $valueContainer.hide();
     }
     else {
         $valueContainer.show();
 
-        if ($valueContainer.is(':empty') || rule.operator.accept_values != previousOperator.accept_values) {
+        if ($valueContainer.is(':empty') || rule.operator.nb_inputs !== previousOperator.nb_inputs) {
             this.createRuleInput(rule);
         }
 

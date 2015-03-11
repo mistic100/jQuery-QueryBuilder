@@ -65,7 +65,7 @@ QueryBuilder.extend({
                         error('Unknown Loopback operation for operator "{0}"', rule.operator);
                     }
 
-                    if (ope.accept_values) {
+                    if (ope.nb_inputs !== 0) {
                         if (!(rule.value instanceof Array)) {
                             rule.value = [rule.value];
                         }

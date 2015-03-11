@@ -50,6 +50,7 @@
     "datetime_invalid": "Invalid date format ({0})",
     "datetime_exceed_min": "Must be after {0}",
     "datetime_exceed_max": "Must be before {0}",
-    "boolean_not_valid": "Not a boolean"
+    "boolean_not_valid": "Not a boolean",
+    "operator_not_multiple": "Operator {0} cannot accept multiple values"
   }
 }

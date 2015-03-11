@@ -50,6 +50,7 @@
     "datetime_invalid": "Fomat de date invalide ({0})",
     "datetime_exceed_min": "Doit être après {0}",
     "datetime_exceed_max": "Doit être avant {0}",
-    "boolean_not_valid": "N'est pas un booléen"
+    "boolean_not_valid": "N'est pas un booléen",
+    "operator_not_multiple": "L'opérateur {0} ne peut utiliser plusieurs valeurs"
   }
 }

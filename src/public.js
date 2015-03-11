@@ -49,11 +49,69 @@ QueryBuilder.prototype.clear = function() {
 };
 
 /**
+ * Validate the whole builder
+ * @return {boolean}
+ */
+QueryBuilder.prototype.validate = function() {
+    this.clearErrors();
+
+    var that = this;
+
+    var valid = (function parse(group) {
+        var done = 0, errors = 0;
+
+        group.each(function(rule) {
+            if (!rule.filter) {
+                that.triggerValidationError(rule, 'no_filter', null);
+                errors++;
+                return;
+            }
+
+            if (rule.operator.nb_inputs !== 0) {
+                var value = that.getRuleValue(rule),
+                    valid = that.validateValue(rule, value);
+
+                if (valid !== true) {
+                    that.triggerValidationError(rule, valid, value);
+                    errors++;
+                    return;
+                }
+            }
+
+            done++;
+
+        }, function(group) {
+            if (parse(group)) {
+                done++;
+            }
+            else {
+                errors++;
+            }
+        });
+
+        if (errors > 0) {
+            return false;
+        }
+        else if (done === 0 && (!that.settings.allow_empty || !group.isRoot())) {
+            that.triggerValidationError(group, 'empty_group', null);
+            return false;
+        }
+
+        return true;
+
+    }(this.model.root));
+
+    return this.change('validate', valid);
+};
+
+/**
  * Get an object representing current rules
  * @return {object}
  */
 QueryBuilder.prototype.getRules = function() {
-    this.clearErrors();
+    if (!this.validate()) {
+        return {};
+    }
 
     var that = this;
 
@@ -63,22 +121,10 @@ QueryBuilder.prototype.getRules = function() {
             rules: []
         };
 
-        var done = group.each(function(rule) {
-            if (!rule.filter) {
-                that.triggerValidationError(rule, 'no_filter', null);
-                return false;
-            }
-
+        group.each(function(rule) {
             var value = null;
-
-            if (rule.operator.accept_values !== 0) {
+            if (rule.operator.nb_inputs !== 0) {
                 value = that.getRuleValue(rule);
-
-                var valid = that.validateValue(rule, value);
-                if (valid !== true) {
-                    that.triggerValidationError(rule, valid, value);
-                    return false;
-                }
             }
 
             out.rules.push({
@@ -91,22 +137,8 @@ QueryBuilder.prototype.getRules = function() {
             });
 
         }, function(group) {
-            var data = parse(group);
-            if (!$.isEmptyObject(data)) {
-                out.rules.push(data);
-            }
-            else {
-                return false;
-            }
+            out.rules.push(parse(group));
         });
-
-        if (!done) {
-            out = {};
-        }
-        else if (out.rules.length === 0 && (!that.settings.allow_empty || !group.isRoot())) {
-            that.triggerValidationError(group, 'empty_group', null);
-            out = {};
-        }
 
         return out;
 
@@ -177,7 +209,7 @@ QueryBuilder.prototype.setRules = function(data) {
                 model.operator = that.getOperatorByType(rule.operator);
                 model.flags = that.parseRuleFlags(rule);
 
-                if (model.operator.accept_values !== 0) {
+                if (model.operator.nb_inputs !== 0) {
                     that.setRuleValue(model, rule.value);
                 }
             }
