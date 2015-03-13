@@ -8,7 +8,7 @@
 function iterateOptions(options, tpl) {
     if (options) {
         if ($.isArray(options)) {
-            $.each(options, function(index, entry) {
+            options.forEach(function(entry, index) {
                 // array of one-element maps
                 if ($.isPlainObject(entry)) {
                     $.each(entry, function(key, val) {

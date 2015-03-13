@@ -1,44 +1,14 @@
-// GLOBAL STATIC VARIABLES
-// ===============================
-var types = [
-        'string',
-        'integer',
-        'double',
-        'date',
-        'time',
-        'datetime',
-        'boolean'
-    ],
-    internalTypes = [
-        'string',
-        'number',
-        'datetime',
-        'boolean'
-    ],
-    inputs = [
-        'text',
-        'textarea',
-        'radio',
-        'checkbox',
-        'select'
-    ];
-
-
 // CLASS DEFINITION
 // ===============================
 var QueryBuilder = function($el, options) {
-    $el[0].queryBuilder = this;
-    this.$el = $el;
-    this.init(options);
+    this.init($el, options);
 };
-
-MicroEvent.mixin(QueryBuilder);
 
 
 // PLUGINS SYSTEM
-// Inspired by https://github.com/brianreavis/microplugin.js
-// Very lightened and without dependencies
 // ===============================
+MicroEvent.mixin(QueryBuilder);
+
 QueryBuilder.plugins = {};
 
 /**
@@ -88,21 +58,22 @@ QueryBuilder.prototype.initPlugins = function() {
         return;
     }
 
-    var that = this,
-        queue = {};
+    var that = this;
 
     if ($.isArray(this.settings.plugins)) {
-        $.each(this.settings.plugins, function(i, plugin) {
-            queue[plugin] = {};
+        var tmp = {};
+        this.settings.plugins.forEach(function(plugin) {
+            tmp[plugin] = {};
         });
+        this.settings.plugins = tmp;
     }
     else {
         $.each(this.settings.plugins, function(plugin, options) {
-            queue[plugin] = options || {};
+            if (!options) {
+                that.settings.plugins[plugin] = {};
+            }
         });
     }
-
-    this.settings.plugins = queue;
 
     $.each(this.settings.plugins, function(plugin, options) {
         if (plugin in QueryBuilder.plugins) {

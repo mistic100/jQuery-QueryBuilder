@@ -96,7 +96,7 @@ QueryBuilder.extend({
 
             var parts = [];
 
-            $.each(data.rules, function(i, rule) {
+            data.rules.forEach(function(rule) {
                 if (rule.rules && rule.rules.length>0) {
                     parts.push(parse(rule));
                 }
@@ -114,7 +114,7 @@ QueryBuilder.extend({
                             rule.value = [rule.value];
                         }
 
-                        rule.value.forEach(function(v, i) {
+                        rule.value.forEach(function(v) {
                             values.push(changeType(v, rule.type, false));
                         });
                     }
@@ -150,17 +150,17 @@ QueryBuilder.extend({
             var topKeys = Object.keys(data);
 
             if (topKeys.length > 1) {
-                $.error('Invalid MongoDB query format.');
+                error('Invalid MongoDB query format.');
             }
             if (conditions.indexOf(topKeys[0].toLowerCase()) === -1) {
-                $.error('Unable to build Rule from MongoDB query with '+ topKeys[0] +' condition');
+                error('Unable to build Rule from MongoDB query with condition "{0}"', topKeys[0]);
             }
 
             var condition = topKeys[0].toLowerCase() === conditions[0] ? 'AND' : 'OR',
                 rules = data[topKeys[0]],
                 parts = [];
 
-            $.each(rules, function(i, rule) {
+            rules.forEach(function(rule) {
                 var keys = Object.keys(rule);
 
                 if (conditions.indexOf(keys[0].toLowerCase()) !== -1) {
@@ -172,12 +172,12 @@ QueryBuilder.extend({
 
                     var operator = that.determineMongoOperator(value, field);
                     if (operator === undefined) {
-                        $.error('Invalid MongoDB query format.');
+                        error('Invalid MongoDB query format.');
                     }
 
                     var mdbrl = that.settings.mongoRuleOperators[operator];
                     if (mdbrl === undefined) {
-                        $.error('JSON Rule operation unknown for operator '+ operator);
+                        error('JSON Rule operation unknown for operator "{0}"', operator);
                     }
 
                     var opVal = mdbrl.call(that, value);

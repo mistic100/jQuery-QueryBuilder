@@ -52,7 +52,7 @@ QueryBuilder.extend({
 
             var parts = [];
 
-            $.each(data.rules, function(i, rule) {
+            data.rules.forEach(function(rule) {
                 if (rule.rules && rule.rules.length>0) {
                     parts.push(parse(rule));
                 }
@@ -70,7 +70,7 @@ QueryBuilder.extend({
                             rule.value = [rule.value];
                         }
 
-                        rule.value.forEach(function(v, i) {
+                        rule.value.forEach(function(v) {
                             values.push(changeType(v, rule.type));
                         });
                     }

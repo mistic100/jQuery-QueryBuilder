@@ -183,7 +183,7 @@ QueryBuilder.prototype.setRules = function(data) {
 
         group.condition = data.condition.toUpperCase();
 
-        $.each(data.rules, function(i, rule) {
+        data.rules.forEach(function(rule) {
             var model;
             if (rule.rules && rule.rules.length>0) {
                 if (that.settings.allow_groups != -1 && that.settings.allow_groups < group.level) {

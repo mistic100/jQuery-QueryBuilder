@@ -58,7 +58,7 @@ QueryBuilder.extend({
 
             var parts = [];
 
-            $.each(data.rules, function(i, rule) {
+            data.rules.forEach(function(rule) {
                 if (rule.rules && rule.rules.length>0) {
                     parts.push('('+ nl + parse(rule) + nl +')'+ nl);
                 }

@@ -1,3 +1,21 @@
+QueryBuilder.types = {
+    'string': 'string',
+    'integer': 'number',
+    'double': 'number',
+    'date': 'datetime',
+    'time': 'datetime',
+    'datetime': 'datetime',
+    'boolean': 'boolean'
+};
+
+QueryBuilder.inputs = [
+    'text',
+    'textarea',
+    'radio',
+    'checkbox',
+    'select'
+];
+
 QueryBuilder.DEFAULTS = {
     filters: [],
     plugins: null,

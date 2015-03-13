@@ -18,12 +18,13 @@ module.exports = function(grunt) {
             'src/utils.js',
             'src/jquery.js'
         ],
-        js_files_to_load = [],
+        js_files_to_load = js_core_files.slice(),
         js_files_for_standalone = [
             'bower_components/microevent-mistic100/microevent.js',
             'bower_components/jquery-extendext/jQuery.extendext.js',
             'dist/js/query-builder.js'
         ];
+
 
     (function(){
         // list available modules and languages
@@ -35,7 +36,7 @@ module.exports = function(grunt) {
 
         grunt.file.expand('src/i18n/*.js')
         .forEach(function(f) {
-            var n = f.split('/')[2].split('.')[0];
+            var n = f.split(/[\/\.]/)[2];
             all_langs[n] = f;
         });
 
@@ -94,7 +95,7 @@ module.exports = function(grunt) {
         langBanner:
             '/*!\n'+
             ' * jQuery QueryBuilder <%= pkg.version %>\n'+
-            ' * <%= copyright %>\n'+
+            ' * <%= lang_copyright %>\n'+
             ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n'+
             ' */',
 
@@ -135,44 +136,75 @@ module.exports = function(grunt) {
         },
 
         concat: {
-            options: {
-                stripBanners: {
-                    block: true
-                }
-            },
             // concat all JS
             js: {
-                src: js_core_files.concat(js_files_to_load),
+                src: js_files_to_load,
                 dest: 'dist/js/query-builder.js',
                 options: {
+                    stripBanners: { block: true },
                     separator: '\n\n',
                     process: function(src) {
                         return removeJshint(src).replace(/\r\n/g, '\n');
                     }
                 }
             },
+            // create standalone version
+            js_standalone: {
+                src: js_files_for_standalone,
+                dest: 'dist/js/query-builder.standalone.js',
+                options: {
+                    stripBanners: false,
+                    separator: '\n\n',
+                    process: function(src, file) {
+                        var name = file.match(/([^\/]+?).js$/)[1];
+
+                        return removeJshint(src)
+                          .replace(/\r\n/g, '\n')
+                          .replace(/define\((.*?)\);/, 'define(\'' + name + '\', $1);');
+                    }
+                }
+            },
+            // compile language files
+            lang: {
+                files: Object.keys(all_langs).map(function(name) {
+                    return {
+                        src: 'src/i18n/'+ name +'.js',
+                        dest: 'dist/i18n/' + name + '.js'
+                    };
+                }),
+                options: {
+                    stripBanners: false,
+                    process: function(src, file) {
+                        var lang = file.split(/[\/\.]/)[2],
+                            content = JSON.parse(src),
+                            header;
+
+                        grunt.config.set('lang_copyright', content.__copyright || (l + ' translation'));
+                        header = grunt.template.process('<%= langBanner %>\n\n');
+                        delete content.__copyright;
+
+                        loaded_modules.forEach(function(m) {
+                            var plugin_file = 'src/plugins/'+ m +'/i18n/'+ lang +'.js';
+
+                            if (grunt.file.exists(plugin_file)) {
+                                content = deepmerge(content, grunt.file.readJSON(plugin_file));
+                            }
+                        });
+
+                        return header + 'jQuery.fn.queryBuilder.defaults({ lang: ' +  JSON.stringify(content, null, 2) + '});';
+                    }
+                }
+            },
             // add banner to CSS files
             css: {
                 options: {
+                    stripBanners: { block: true },
                     banner: '<%= banner %>\n\n',
                 },
                 files: [{
                     expand: true,
-                    flatten: true,
-                    src: ['dist/css/*.css', '!dist/css/*.min.css'],
-                    dest: 'dist/css'
-                }]
-            },
-            // add banner to SASS files
-            sass: {
-                options: {
-                    banner: '<%= banner %>\n\n',
-                },
-                files: [{
-                    expand: true,
-                    cwd: 'dist/scss',
-                    src: ['**/*.scss'],
-                    dest: 'dist/scss'
+                    src: ['dist/css/*.css', '!dist/css/*.min.css', 'dist/scss/*.scss', 'dist/scss/plugins/*.scss'],
+                    dest: ''
                 }]
             }
         },
@@ -278,7 +310,7 @@ module.exports = function(grunt) {
         jshint: {
             lib: {
                 files: {
-                    src: js_core_files.concat(js_files_to_load)
+                    src: js_files_to_load
                 }
             }
         },
@@ -304,6 +336,7 @@ module.exports = function(grunt) {
         }
     });
 
+
     // save Blanket code coverage results
     grunt.event.on('qunit.report', function(data) {
         data = data.split("\n");
@@ -313,55 +346,6 @@ module.exports = function(grunt) {
         grunt.file.write('.coverage-results/core.lcov', data);
     });
 
-    // build standalone version with dependencies
-    grunt.registerTask('build_standalone', 'Create standalone build of QueryBuilder.', function() {
-        var files = [],
-            modules = [],
-            path, name, source;
-
-        // get sources with named definitions
-        for (var i=0, n=js_files_for_standalone.length; i<n; i++) {
-            path = js_files_for_standalone[i];
-            name = path.match(/([^\/]+?).js$/)[1];
-            source = grunt.file.read(path);
-
-            source = source.replace(/define\((.*?)\);/, 'define(\'' + name + '\', $1);');
-            source = removeJshint(source).replace(/\r\n/g, '\n');
-            modules.push(source);
-        }
-
-        // write output
-        path = 'dist/js/query-builder.standalone.js';
-        grunt.file.write(path, modules.join('\n\n'));
-        grunt.log.writeln('File ' + path['cyan'] + ' created.');
-    });
-
-    // compile language files
-    // create executable JS files from JSON + optional plugins JSON
-    grunt.registerTask('build_lang', 'Build QueryBuilder language files.', function() {
-        var content, header, plugin_lang;
-
-        for (var l in all_langs) {
-            content = grunt.file.readJSON(all_langs[l]);
-            grunt.config.set('copyright', content.__copyright || (l + ' translation'));
-            header = grunt.template.process('<%= langBanner %>\n');
-
-            delete content.__copyright;
-
-            loaded_modules.forEach(function(m) {
-                plugin_lang = 'src/plugins/'+ m +'/i18n/'+ l +'.js';
-
-                if (grunt.file.exists(plugin_lang)) {
-                    content = deepmerge(content, grunt.file.readJSON(plugin_lang));
-                }
-            });
-
-            content = 'jQuery.fn.queryBuilder.defaults({ lang: ' +  JSON.stringify(content, null, 2) + '});';
-            path = 'dist/i18n/'+ l  +'.js';
-
-            grunt.file.write(path, header + content);
-        }
-    });
 
     // list the triggers and changes in core code
     grunt.registerTask('describe_triggers', 'List QueryBuilder triggers.', function() {
@@ -421,6 +405,7 @@ module.exports = function(grunt) {
         }
     });
 
+
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -435,7 +420,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build_js', [
         'concat:js',
         'wrap:js',
-        'build_standalone',
+        'concat:js_standalone',
         'uglify'
     ]);
 
@@ -445,8 +430,11 @@ module.exports = function(grunt) {
         'wrap:sass',
         'sass',
         'concat:css',
-        'concat:sass',
-        'cssmin',
+        'cssmin'
+    ]);
+
+    grunt.registerTask('build_lang', [
+        'concat:lang'
     ]);
 
     grunt.registerTask('default', [

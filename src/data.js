@@ -81,7 +81,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                 break;
 
             default:
-                switch (filter.internalType) {
+                switch (QueryBuilder.types[filter.type]) {
                     case 'string':
                         if (validation.min !== undefined) {
                             if (value[i].length < validation.min) {
@@ -227,7 +227,7 @@ QueryBuilder.prototype.getOperators = function(filter) {
             }
         }
         // type check
-        else if (this.operators[i].apply_to.indexOf(filter.internalType) == -1) {
+        else if (this.operators[i].apply_to.indexOf(QueryBuilder.types[filter.type]) == -1) {
             continue;
         }
 
@@ -374,7 +374,7 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
                     if (!$.isArray(value[i])) {
                         value[i] = [value[i]];
                     }
-                    $.each(value[i], function(i, value) {
+                    value[i].forEach(function(value) {
                         $value.find('[name='+ name +'][value="'+ value +'"]').prop('checked', true).trigger('change');
                     });
                     break;

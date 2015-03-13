@@ -1,7 +1,10 @@
 /**
  * Init the builder
  */
-QueryBuilder.prototype.init = function(options) {
+QueryBuilder.prototype.init = function($el, options) {
+    $el[0].queryBuilder = this;
+    this.$el = $el;
+
     // PROPERTIES
     this.settings = $.extendext(true, 'replace', {}, QueryBuilder.DEFAULTS, options);
     this.model = new Model();
@@ -71,7 +74,7 @@ QueryBuilder.prototype.checkFilters = function() {
         error('Missing filters list');
     }
 
-    $.each(this.filters, function(i, filter) {
+    this.filters.forEach(function(filter, i) {
         if (!filter.id) {
             error('Missing filter {0} id', i);
         }
@@ -83,14 +86,14 @@ QueryBuilder.prototype.checkFilters = function() {
         if (!filter.type) {
             error('Missing filter "{0}" type', filter.id);
         }
-        if (types.indexOf(filter.type) == -1) {
+        if (!QueryBuilder.types[filter.type]) {
             error('Invalid type "{0}"', filter.type);
         }
 
         if (!filter.input) {
             filter.input = 'text';
         }
-        else if (typeof filter.input != 'function' && inputs.indexOf(filter.input) == -1) {
+        else if (typeof filter.input != 'function' && QueryBuilder.inputs.indexOf(filter.input) == -1) {
             error('Invalid input "{0}"', filter.input);
         }
 
@@ -108,18 +111,6 @@ QueryBuilder.prototype.checkFilters = function() {
             that.status.has_optgroup = true;
         }
 
-        switch (filter.type) {
-            case 'integer': case 'double':
-                filter.internalType = 'number';
-                break;
-            case 'date': case 'time': case 'datetime':
-                filter.internalType = 'datetime';
-                break;
-            default:
-                filter.internalType = filter.type;
-                break;
-        }
-
         switch (filter.input) {
             case 'radio': case 'checkbox':
                 if (!filter.values || filter.values.length < 1) {
@@ -134,7 +125,7 @@ QueryBuilder.prototype.checkFilters = function() {
         var optgroups = [],
             filters = [];
 
-        $.each(this.filters, function(i, filter) {
+        this.filters.forEach(function(filter, i) {
             var idx;
 
             if (filter.optgroup) {

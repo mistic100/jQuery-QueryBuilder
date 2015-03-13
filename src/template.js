@@ -99,7 +99,7 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
     var h = '<select class="form-control" name="'+ rule.id +'_filter">';
     h+= '<option value="-1">'+ this.settings.select_placeholder +'</option>';
 
-    $.each(filters, function(i, filter) {
+    filters.forEach(function(filter) {
         if (optgroup != filter.optgroup) {
             if (optgroup !== null) h+= '</optgroup>';
             optgroup = filter.optgroup;
@@ -184,7 +184,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 break;
 
             default:
-                switch (filter.internalType) {
+                switch (QueryBuilder.types[filter.type]) {
                     case 'number':
                         h+= '<input class="form-control" type="number" name="'+ name +'"';
                         if (validation.step !== undefined) h+= ' step="'+ validation.step +'"';
