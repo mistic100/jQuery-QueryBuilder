@@ -1,9 +1,4 @@
 QueryBuilder.define('sortable', function(options) {
-    options = $.extend({
-        default_no_sortable: false,
-        icon: 'glyphicon glyphicon-sort'
-    }, options);
-
     /**
      * Init HTML5 drag and drop
      */
@@ -112,6 +107,9 @@ QueryBuilder.define('sortable', function(options) {
         $h.find('.rule-header').after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
         return $h.prop('outerHTML');
     });
+}, {
+    default_no_sortable: false,
+    icon: 'glyphicon glyphicon-sort'
 });
 
 /**

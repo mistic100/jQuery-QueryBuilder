@@ -37,9 +37,13 @@ QueryBuilder.defaults = function(options) {
  * Define a new plugin
  * @param {string}
  * @param {function}
+ * @param {object,optional} default configuration
  */
-QueryBuilder.define = function(name, fct) {
-    QueryBuilder.plugins[name] = fct;
+QueryBuilder.define = function(name, fct, def) {
+    QueryBuilder.plugins[name] = {
+        fct: fct,
+        def: def || {}
+    };
 };
 
 /**
@@ -54,33 +58,29 @@ QueryBuilder.extend = function(methods) {
  * Init plugins for an instance
  */
 QueryBuilder.prototype.initPlugins = function() {
-    if (!this.settings.plugins) {
+    if (!this.plugins) {
         return;
     }
 
-    var that = this;
-
-    if ($.isArray(this.settings.plugins)) {
+    if ($.isArray(this.plugins)) {
         var tmp = {};
-        this.settings.plugins.forEach(function(plugin) {
-            tmp[plugin] = {};
+        this.plugins.forEach(function(plugin) {
+            tmp[plugin] = null;
         });
-        this.settings.plugins = tmp;
+        this.plugins = tmp;
     }
-    else {
-        $.each(this.settings.plugins, function(plugin, options) {
-            if (!options) {
-                that.settings.plugins[plugin] = {};
-            }
-        });
-    }
-
-    $.each(this.settings.plugins, function(plugin, options) {
+    
+    Object.keys(this.plugins).forEach(function(plugin) {
         if (plugin in QueryBuilder.plugins) {
-            QueryBuilder.plugins[plugin].call(that, options);
+            this.plugins[plugin] = $.extend(true, {},
+                QueryBuilder.plugins[plugin].def,
+                this.plugins[plugin] || {}
+            );
+        
+            QueryBuilder.plugins[plugin].fct.call(this, this.plugins[plugin]);
         }
         else {
             error('Unable to find plugin "{0}"', plugin);
         }
-    });
+    }, this);
 };

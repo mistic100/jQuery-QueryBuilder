@@ -1,12 +1,6 @@
 /*jshint multistr:true */
 
 QueryBuilder.define('bt-checkbox', function(options) {
-
-    options = $.extend({
-        font: 'glyphicons',
-        color: 'default'
-    }, options);
-
     if (options.font == 'glyphicons') {
         var injectCSS = document.createElement('style');
         injectCSS.innerHTML = '\
@@ -52,4 +46,7 @@ QueryBuilder.define('bt-checkbox', function(options) {
 
         return h;
     });
+}, {
+    font: 'glyphicons',
+    color: 'default'
 });

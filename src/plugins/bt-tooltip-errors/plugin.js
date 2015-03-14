@@ -3,10 +3,6 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
         error('Bootstrap Tooltip is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
     }
 
-    options = $.extend({
-        placement: 'right'
-    }, options);
-
     // add BT Tooltip data
     this.on('getRuleTemplate', function(h) {
         return h.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
@@ -23,4 +19,6 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
           .tooltip('hide')
           .tooltip('fixTitle');
     });
+}, {
+    placement: 'right'
 });

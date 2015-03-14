@@ -30,6 +30,7 @@ QueryBuilder.prototype.init = function($el, options) {
     this.icons = this.settings.icons;
     this.operators = this.settings.operators;
     this.template = this.settings.template;
+    this.plugins = this.settings.plugins;
 
     if (this.template.group === null) {
         this.template.group = this.getGroupTemplate;
@@ -434,7 +435,8 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         return;
     }
 
-    var $inputs = $();
+    var $inputs = $(),
+        filter = rule.filter;
 
     for (var i=0; i<rule.operator.nb_inputs; i++) {
         var $ruleInput = $(this.getRuleInput(rule, i));
@@ -445,12 +447,12 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
 
     $valueContainer.show();
 
-    if (rule.filter.plugin) {
-        $inputs[rule.filter.plugin](rule.filter.plugin_config || {});
+    if (filter.plugin) {
+        $inputs[filter.plugin](filter.plugin_config || {});
     }
 
-    if (rule.filter.default_value !== undefined) {
-        this.setRuleValue(rule, rule.filter.default_value);
+    if (filter.default_value !== undefined) {
+        this.setRuleValue(rule, filter.default_value);
     }
 
     this.trigger('afterCreateRuleInput', rule);

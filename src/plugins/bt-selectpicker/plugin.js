@@ -3,13 +3,6 @@ QueryBuilder.define('bt-selectpicker', function(options) {
         error('Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');
     }
 
-    options = $.extend({
-        container: 'body',
-        style: 'btn-inverse btn-xs',
-        width: 'auto',
-        showIcon: false
-    }, options);
-
     // init selectpicker
     this.on('afterCreateRuleFilters', function(rule) {
         rule.$el.find('.rule-filter-container select').removeClass('form-control').selectpicker(options);
@@ -27,4 +20,9 @@ QueryBuilder.define('bt-selectpicker', function(options) {
     this.on('afterUpdateRuleOperator', function(rule) {
         rule.$el.find('.rule-operator-container select').selectpicker('render');
     });
+}, {
+    container: 'body',
+    style: 'btn-inverse btn-xs',
+    width: 'auto',
+    showIcon: false
 });

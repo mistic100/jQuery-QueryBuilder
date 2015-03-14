@@ -18,7 +18,7 @@ QueryBuilder.inputs = [
 
 QueryBuilder.DEFAULTS = {
     filters: [],
-    plugins: null,
+    plugins: {},
 
     display_errors: true,
     allow_groups: -1,

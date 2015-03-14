@@ -1,9 +1,4 @@
 QueryBuilder.define('filter-description', function(options) {
-    options = $.extend({
-        icon: 'glyphicon glyphicon-info-sign',
-        mode: 'popover'
-    }, options);
-
     /**
      * INLINE
      */
@@ -100,4 +95,7 @@ QueryBuilder.define('filter-description', function(options) {
             }
         });
     }
+}, {
+    icon: 'glyphicon glyphicon-info-sign',
+    mode: 'popover'
 });

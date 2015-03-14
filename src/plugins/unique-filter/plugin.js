@@ -1,4 +1,4 @@
-QueryBuilder.define('unique-filter', function(options) {
+QueryBuilder.define('unique-filter', function() {
     this.status.used_filters = {};
 
     this.on('afterUpdateRuleFilter', this.updateDisabledFilters);
