@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
   <link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
   <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.bootstrap3.css">
+  <link rel="stylesheet" href="bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
   
   <link rel="stylesheet" href="../dist/css/query-builder.default.css" id="qb-theme">
 </head>
@@ -81,7 +82,8 @@ $('#builder').queryBuilder({
     'sortable': null,
     'filter-description': { mode: 'bootbox' },
     'bt-selectpicker': null,
-    'unique-filter': null
+    'unique-filter': null,
+    'bt-checkbox': { color: 'primary' }
   },
   
   filters: [
@@ -125,6 +127,11 @@ $('#builder').queryBuilder({
       4: 'Tools',
       5: 'Goodies',
       6: 'Clothes'
+    },
+    colors: {
+      1: 'danger',
+      2: 'warning',
+      5: 'success'
     },
     operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
   },

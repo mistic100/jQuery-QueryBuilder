@@ -5,6 +5,7 @@
     "bootbox": "latest",
     "seiyria-bootstrap-slider": "latest",
     "bootswatch-dist": "#slate",
-    "selectize": "latest"
+    "selectize": "latest",
+    "awesome-bootstrap-checkbox": "latest"
   }
 }
