@@ -34,7 +34,7 @@ module.exports = function(grunt) {
             all_modules[n] = f;
         });
 
-        grunt.file.expand('src/i18n/*.js')
+        grunt.file.expand('src/i18n/*.json')
         .forEach(function(f) {
             var n = f.split(/[\/\.]/)[2];
             all_langs[n] = f;
@@ -110,7 +110,7 @@ module.exports = function(grunt) {
                 tasks: ['build_css']
             },
             lang: {
-                files: ['src/i18n/*.js', 'src/plugins/**/i18n/*.js'],
+                files: ['src/i18n/*.json', 'src/plugins/**/i18n/*.json'],
                 tasks: ['build_lang']
             }
         },
@@ -168,7 +168,7 @@ module.exports = function(grunt) {
             lang: {
                 files: Object.keys(all_langs).map(function(name) {
                     return {
-                        src: 'src/i18n/'+ name +'.js',
+                        src: 'src/i18n/'+ name +'.json',
                         dest: 'dist/i18n/' + name + '.js'
                     };
                 }),
@@ -184,7 +184,7 @@ module.exports = function(grunt) {
                         delete content.__copyright;
 
                         loaded_modules.forEach(function(m) {
-                            var plugin_file = 'src/plugins/'+ m +'/i18n/'+ lang +'.js';
+                            var plugin_file = 'src/plugins/'+ m +'/i18n/'+ lang +'.json';
 
                             if (grunt.file.exists(plugin_file)) {
                                 content = deepmerge(content, grunt.file.readJSON(plugin_file));
