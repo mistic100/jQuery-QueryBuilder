@@ -6,6 +6,11 @@
   "delete_rule": "Slet regel",
   "delete_group": "Slet gruppe",
 
+  "conditions": {
+    "AND": "OG",
+    "OR": "ELLER"
+  },
+
   "condition_and": "OG",
   "condition_or": "ELLER",
 

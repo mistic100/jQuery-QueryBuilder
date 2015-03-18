@@ -46,8 +46,10 @@ QueryBuilder.DEFAULTS = {
         "delete_rule": 'Delete',
         "delete_group": 'Delete',
 
-        "condition_and": 'AND',
-        "condition_or": 'OR',
+        "conditions": {
+            "AND": "AND",
+            "OR": "OR"
+        },
 
         "operators": {
             "equal": "equal",

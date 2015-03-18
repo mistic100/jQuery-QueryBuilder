@@ -6,8 +6,10 @@
   "delete_rule": "Supprimer",
   "delete_group": "Supprimer",
 
-  "condition_and": "ET",
-  "condition_or": "OU",
+  "conditions": {
+    "AND": "ET",
+    "OR": "OU"
+  },
 
   "operators": {
     "equal": "égal",

@@ -6,8 +6,10 @@
   "delete_rule": "Borrar",
   "delete_group": "Borrar",
 
-  "condition_and": "Y",
-  "condition_or": "O",
+  "conditions": {
+    "AND": "Y",
+    "OR": "O"
+  },
 
   "operators": {
     "equal": "igual",

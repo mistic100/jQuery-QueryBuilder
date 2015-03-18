@@ -6,8 +6,10 @@
   "delete_rule": "Verwijder",
   "delete_group": "Verwijder",
 
-  "condition_and": "EN",
-  "condition_or": "OF",
+  "conditions": {
+    "AND": "EN",
+    "OR": "OF"
+  },
 
   "operators": {
     "equal": "gelijk",

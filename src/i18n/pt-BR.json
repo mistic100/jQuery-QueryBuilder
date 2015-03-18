@@ -6,8 +6,10 @@
   "delete_rule": "Excluir",
   "delete_group": "Excluir",
 
-  "condition_and": "E",
-  "condition_or": "OU",
+  "conditions": {
+    "AND": "E",
+    "OR": "OU"
+  },
 
   "operators": {
     "equal": "Igual",

@@ -50,7 +50,7 @@ QueryBuilder.prototype.getGroupConditions = function(group_id) {
 
     for (var i=0, l=this.settings.conditions.length; i<l; i++) {
         var cond = this.settings.conditions[i],
-            label = this.lang['condition_'+ cond.toLowerCase()] || cond;
+            label = this.lang.conditions[cond] || cond;
 
         h+= '\
         <label class="btn btn-xs btn-primary"> \

@@ -6,8 +6,10 @@
   "delete_rule": "Şterge",
   "delete_group": "Şterge",
 
-  "condition_and": "ŞI",
-  "condition_or": "SAU",
+  "conditions": {
+    "AND": "ŞI",
+    "OR": "SAU"
+  },
 
   "operators": {
     "equal": "egal",
