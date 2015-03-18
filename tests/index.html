@@ -16,22 +16,28 @@
   <script src="../bower_components/microevent-mistic100/microevent.min.js"></script>
   <script src="../bower_components/jquery-extendext/jQuery.extendext.min.js"></script>
   
-  <script src="../dist/js/query-builder.js" data-cover></script>
+  <script src="../src/main.js" data-cover></script>
+  <script src="../src/defaults.js" data-cover></script>
+  <script src="../src/core.js" data-cover></script>
+  <script src="../src/public.js" data-cover></script>
+  <script src="../src/data.js" data-cover></script>
+  <script src="../src/template.js" data-cover></script>
+  <script src="../src/model.js" data-cover></script>
+  <script src="../src/utils.js" data-cover></script>
+  <script src="../src/jquery.js" data-cover></script>
+  
+  <script src="../src/plugins/bt-checkbox/plugin.js" data-cover></script>
+  <script src="../src/plugins/bt-selectpicker/plugin.js" data-cover></script>
+  <script src="../src/plugins/bt-tooltip-errors/plugin.js" data-cover></script>
+  <script src="../src/plugins/filter-description/plugin.js" data-cover></script>
+  <script src="../src/plugins/loopback-support/plugin.js" data-cover></script>
+  <script src="../src/plugins/mongodb-support/plugin.js" data-cover></script>
+  <script src="../src/plugins/sortable/plugin.js" data-cover></script>
+  <script src="../src/plugins/sql-support/plugin.js" data-cover></script>
+  <script src="../src/plugins/unique-filter/plugin.js" data-cover></script>
+
   <script src="data.js"></script>
   <script src="core_tests.js"></script>
-  
-  <script>
-    // LCOV reporter
-    if (location.href.match(/(\?|&)lcovReport($|&|=)/)) {
-        blanket.options("reporter", "../bower_components/blanket/src/reporters/lcov_reporter.js");
-        blanket.options("reporter_options", { toHTML:false });
-        
-        // send results to PhantomJS
-        QUnit.done(function() {
-            alert(JSON.stringify(['qunit.report', window._$blanket_LCOV]));
-        });
-    }
-  </script>
 </head>
 
 <body class="container" style="padding:15px;">

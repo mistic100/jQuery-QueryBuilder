@@ -319,9 +319,27 @@ module.exports = function(grunt) {
         qunit: {
             all: {
                 options: {
-                    urls: ['tests/index.html?coverage=true&lcovReport'],
+                    urls: ['tests/index.html?coverage=true'],
                     noGlobals: true
                 }
+            }
+        },
+
+        // save LCOV files
+        qunit_blanket_lcov: {
+            all: {
+                files: [{
+                    expand: true,
+                    src: ['src/*.js', 'src/plugins/**/plugin.js'],
+                    dest: '.coverage-results',
+                    ext: '.lcov',
+                    rename: function(dest, src) {
+                        if (src.indexOf('plugins') !== -1) {
+                            src = src.replace(/plugins\/([^\/]+)\/plugin.lcov$/, 'plugin-$1.lcov');
+                        }
+                        return dest + src.replace(/^src/, '');
+                    }
+                }]
             }
         },
 
@@ -331,19 +349,9 @@ module.exports = function(grunt) {
                 force: true
             },
             all: {
-                src: '.coverage-results/core.lcov',
+                src: '.coverage-results/*.lcov',
             }
         }
-    });
-
-
-    // save Blanket code coverage results
-    grunt.event.on('qunit.report', function(data) {
-        data = data.split("\n");
-        data[0] = 'SF:dist/js/query-builder.js';
-        data = data.join("\n");
-
-        grunt.file.write('.coverage-results/core.lcov', data);
     });
 
 
@@ -413,6 +421,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-qunit-blanket-lcov');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-wrap');
@@ -444,8 +453,9 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('test', [
-        'default',
+        //'default',
         'jshint',
+        'qunit_blanket_lcov',
         'qunit'
     ]);
 };
