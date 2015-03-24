@@ -49,6 +49,19 @@ QueryBuilder.prototype.clear = function() {
 };
 
 /**
+ * Modify the builder configuration
+ * Only options defined in QueryBuilder.modifiable_options are modifiable
+ * @param {object}
+ */
+QueryBuilder.prototype.setOptions = function(options) {
+    // use jQuery utils to filter options keys
+    $.makeArray($(Object.keys(options)).filter(QueryBuilder.modifiable_options))
+        .forEach(function(opt) {
+            this.settings[opt] = options[opt];
+        }, this);
+};
+
+/**
  * Validate the whole builder
  * @return {boolean}
  */

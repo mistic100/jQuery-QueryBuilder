@@ -3,6 +3,8 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
         error('Bootstrap Tooltip is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
     }
 
+    var that = this;
+
     // add BT Tooltip data
     this.on('getRuleTemplate', function(h) {
         return h.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
@@ -13,11 +15,13 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
     });
 
     // init/refresh tooltip when title changes
-    this.on('validationError', function(node) {
-        node.$el.find('.error-container').eq(0)
-          .tooltip(options)
-          .tooltip('hide')
-          .tooltip('fixTitle');
+    this.model.on('update', function(node, field) {
+        if (field == 'error' && that.settings.display_errors) {
+            node.$el.find('.error-container').eq(0)
+              .tooltip(options)
+              .tooltip('hide')
+              .tooltip('fixTitle');
+        }
     });
 }, {
     placement: 'right'

@@ -25,15 +25,15 @@ QueryBuilder.define('bt-checkbox', function(options) {
             if (!filter.colors) {
                 filter.colors = {};
             }
-            else if (typeof filter.colors == 'string') {
-                filter.colors = { _def: filter.colors };
+            if (filter.color) {
+                filter.colors._def_ = filter.color;
             }
 
             var style = filter.vertical ? ' style="display:block"' : '',
                 i = 0, color, id;
 
             iterateOptions(filter.values, function(key, val) {
-                color = filter.colors[key] || filter.colors._def || options.color;
+                color = filter.colors[key] || filter.colors._def_ || options.color;
                 id = name +'_'+ (i++);
 
                 h+= '\

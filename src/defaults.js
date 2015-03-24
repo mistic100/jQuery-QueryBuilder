@@ -16,9 +16,15 @@ QueryBuilder.inputs = [
     'select'
 ];
 
+QueryBuilder.modifiable_options = [
+    'display_errors',
+    'allow_groups',
+    'allow_empty'
+];
+
 QueryBuilder.DEFAULTS = {
     filters: [],
-    plugins: {},
+    plugins: [],
 
     display_errors: true,
     allow_groups: -1,

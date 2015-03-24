@@ -83,7 +83,7 @@ QueryBuilder.define('filter-description', function(options) {
             }
             else {
                 if ($b.length === 0) {
-                    $b = $('<button type="button" class="btn btn-xs btn-info filter-description"><i class="' + options.icon + '"></i></button>');
+                    $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="bootbox"><i class="' + options.icon + '"></i></button>');
                     $b.prependTo(rule.$el.find('.rule-actions'));
 
                     $b.on('click', function() {

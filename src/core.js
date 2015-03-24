@@ -526,6 +526,10 @@ QueryBuilder.prototype.applyRuleFlags = function(rule, readonly) {
 QueryBuilder.prototype.clearErrors = function(node) {
     node = node || this.model.root;
 
+    if (!node) {
+        return;
+    }
+
     node.error = null;
 
     if (node instanceof Group) {
