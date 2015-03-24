@@ -48,7 +48,7 @@ module.exports = function(grunt) {
                     js_files_to_load.push(all_modules[m]);
                     loaded_modules.push(m);
                 }
-                else if (m !== 'none') {
+                else {
                     grunt.fail.warn('Module '+ m +' unknown');
                 }
             });
@@ -369,16 +369,11 @@ module.exports = function(grunt) {
             all: {
                 files: [{
                     expand: true,
-                    src: ['src/*.js', 'src/plugins/**/plugin.js'],
-                    dest: '.coverage-results',
-                    ext: '.lcov',
-                    rename: function(dest, src) {
-                        if (src.indexOf('plugins') !== -1) {
-                            src = src.replace(/plugins\/([^\/]+)\/plugin.lcov$/, 'plugin-$1.lcov');
-                        }
-                        return dest + src.replace(/^src/, '');
-                    }
-                }]
+                    src: ['src/*.js', 'src/plugins/**/plugin.js']
+                }],
+                options: {
+                    dest: '.coverage-results/all.lcov'
+                }
             }
         },
 
@@ -388,7 +383,7 @@ module.exports = function(grunt) {
                 force: true
             },
             all: {
-                src: '.coverage-results/*.lcov',
+                src: '.coverage-results/all.lcov',
             }
         }
     });
@@ -400,15 +395,16 @@ module.exports = function(grunt) {
 
         for (var f in js_core_files) {
             grunt.file.read(js_core_files[f]).split(/\r?\n/).forEach(function(line, i) {
-                var matches = /(?:this|that)\.(trigger|change)\('(\w+)'([^)]*)\);/.exec(line);
+                var matches = /(e = )?(?:this|that)\.(trigger|change)\('(\w+)'([^)]*)\);/.exec(line);
                 if (matches !== null) {
-                    triggers[matches[2]] = triggers[matches[2]] || {
-                        name: matches[2],
-                        type: matches[1],
-                        usages: []
+                    triggers[matches[3]] = {
+                        name: matches[3],
+                        type: matches[2],
+                        file: js_core_files[f],
+                        line: i,
+                        args: matches[4].slice(2),
+                        prevent: !!matches[1]
                     };
-
-                    triggers[matches[2]].usages.push([js_core_files[f]+':'+i, matches[3]]);
                 }
             });
         }
@@ -416,16 +412,11 @@ module.exports = function(grunt) {
         grunt.log.writeln('\nTriggers in QueryBuilder:\n');
 
         for (var t in triggers) {
-            grunt.log.write((triggers[t].name)['cyan']);
-            grunt.log.writeln(' (' + triggers[t].type + ')');
-
-            triggers[t].usages.forEach(function(line) {
-                grunt.log.write('+-- ');
-                grunt.log.write(line[0]['red']);
-                grunt.log.writeln(' ' + line[1]);
-            });
-
+            grunt.log.write((triggers[t].name)['cyan'] + ' ' + triggers[t].type);
+            if (triggers[t].prevent) grunt.log.write(' (*)'['yellow']);
             grunt.log.write('\n');
+            grunt.log.write('   ' + (triggers[t].file +':'+ triggers[t].line)['red'] + ' ' + triggers[t].args);
+            grunt.log.write('\n\n');
         }
     });
 

@@ -149,8 +149,6 @@ QueryBuilder.prototype.checkFilters = function() {
 
         this.filters = filters;
     }
-
-    this.trigger('afterCheckFilters');
 };
 
 /**
@@ -278,13 +276,15 @@ QueryBuilder.prototype.setRoot = function(addRule) {
 QueryBuilder.prototype.addGroup = function(parent, addRule) {
     addRule = (addRule === undefined || addRule === true);
 
-    var e = this.trigger('beforeAddGroup', parent, addRule, parent.level + 1);
+    var level = parent.level + 1;
+
+    var e = this.trigger('beforeAddGroup', parent, addRule, level);
     if (e.isDefaultPrevented()) {
         return null;
     }
 
     var group_id = this.nextGroupId(),
-        $group = $(this.template.group.call(this, group_id, parent.level + 1)),
+        $group = $(this.template.group.call(this, group_id, level)),
         model = parent.addGroup($group);
 
     this.trigger('afterAddGroup', model);
@@ -323,9 +323,8 @@ QueryBuilder.prototype.deleteGroup = function(group) {
 
     if (del) {
         group.drop();
+        this.trigger('afterDeleteGroup');
     }
-
-    this.trigger('afterDeleteGroup', del);
 
     return del;
 };

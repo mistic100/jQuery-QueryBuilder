@@ -26,7 +26,7 @@ QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
       : '') +' \
     </div> \
     <div class="btn-group group-conditions"> \
-      '+ this.getGroupConditions(group_id) +' \
+      '+ this.getGroupConditions(group_id, level) +' \
     </div> \
     '+ (this.settings.display_errors ?
       '<div class="error-container"><i class="' + this.icons.error + '"></i></div>'
@@ -43,9 +43,10 @@ QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
 /**
  * Returns group conditions HTML
  * @param group_id {string}
+ * @param level {int}
  * @return {string}
  */
-QueryBuilder.prototype.getGroupConditions = function(group_id) {
+QueryBuilder.prototype.getGroupConditions = function(group_id, level) {
     var h = '';
 
     for (var i=0, l=this.settings.conditions.length; i<l; i++) {
@@ -58,7 +59,7 @@ QueryBuilder.prototype.getGroupConditions = function(group_id) {
         </label>';
     }
 
-    return this.change('getGroupConditions', h);
+    return this.change('getGroupConditions', h, level);
 };
 
 /**

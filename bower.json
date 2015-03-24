@@ -41,7 +41,11 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "src",
+    "tests",
+    "composer.json",
+    "package.json",
+    "Gruntfile.js",
+    "CONTRIBUTING.md"
   ]
 }
