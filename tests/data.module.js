@@ -212,8 +212,8 @@ $(function(){
   }, {
     id: 'string_val',
     validation: {
-      min: 4, max: 5,
-      format: /^[a-z]?$/
+      min: '4', max: '5',
+      format: '^[a-z]?$'
     }
   }, {
     id: 'integer',

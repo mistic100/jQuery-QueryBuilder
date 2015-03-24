@@ -83,23 +83,26 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
             default:
                 switch (QueryBuilder.types[filter.type]) {
                     case 'string':
+                        if (value[i].length === 0) {
+                            result = ['string_empty'];
+                            break;
+                        }
                         if (validation.min !== undefined) {
-                            if (value[i].length < validation.min) {
+                            if (value[i].length < parseInt(validation.min)) {
                                 result = ['string_exceed_min_length', validation.min];
                                 break;
                             }
                         }
-                        else if (value[i].length === 0) {
-                            result = ['string_empty'];
-                            break;
-                        }
                         if (validation.max !== undefined) {
-                            if (value[i].length > validation.max) {
+                            if (value[i].length > parseInt(validation.max)) {
                                 result = ['string_exceed_max_length', validation.max];
                                 break;
                             }
                         }
                         if (validation.format) {
+                            if (typeof validation.format === 'string') {
+                                validation.format = new RegExp(validation.format);
+                            }
                             if (!validation.format.test(value[i])) {
                                 result = ['string_invalid_format', validation.format];
                                 break;
@@ -125,13 +128,13 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                             }
                         }
                         if (validation.min !== undefined) {
-                            if (value[i] < validation.min) {
+                            if (value[i] < parseFloat(validation.min)) {
                                 result = ['number_exceed_min', validation.min];
                                 break;
                             }
                         }
                         if (validation.max !== undefined) {
-                            if (value[i] > validation.max) {
+                            if (value[i] > parseFloat(validation.max)) {
                                 result = ['number_exceed_max', validation.max];
                                 break;
                             }
