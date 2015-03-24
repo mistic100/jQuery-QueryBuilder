@@ -49,6 +49,7 @@
     "number_exceed_min": "Doit être plus grand que {0}",
     "number_exceed_max": "Doit être plus petit que {0}",
     "number_wrong_step": "Doit être un multiple de {0}",
+    "datetime_empty": "Valeur vide",
     "datetime_invalid": "Fomat de date invalide ({0})",
     "datetime_exceed_min": "Doit être après {0}",
     "datetime_exceed_max": "Doit être avant {0}",

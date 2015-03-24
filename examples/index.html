@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" id="bt-theme">
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css" id="bt-theme">
+  <link rel="stylesheet" href="../bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="../bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
   <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
-  <link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
   <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.bootstrap3.css">
-  <link rel="stylesheet" href="bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
   
   <link rel="stylesheet" href="../dist/css/query-builder.default.css" id="qb-theme">
 </head>
@@ -56,12 +56,12 @@
   </div>
 </div>
 
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="../bower_components/bootbox/bootbox.js"></script>
 <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
-<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 <script src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
-<script src="bower_components/bootbox/bootbox.js"></script>
   
 <script src="../bower_components/microevent-mistic100/microevent.min.js"></script>
 <script src="../bower_components/jquery-extendext/jQuery.extendext.min.js"></script>
@@ -72,10 +72,6 @@
 // define filters
 $('#builder').queryBuilder({
   allow_empty: true,
-  
-  onValidationError: function($target, err) {
-      console.error(err, $target);
-  },
   
   plugins: {
     'bt-tooltip-errors': { delay: 100},

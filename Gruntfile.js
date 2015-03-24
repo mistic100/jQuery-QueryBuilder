@@ -315,6 +315,45 @@ module.exports = function(grunt) {
             }
         },
 
+        // inject all source files and test modules in the test file
+        'string-replace': {
+            test: {
+                src: 'tests/index.html',
+                dest: 'tests/index.html',
+                options: {
+                    replacements: [{
+                        pattern: /(<!-- qunit:imports -->)(?:[\s\S]*)(<!-- \/qunit:imports -->)/m,
+                        replacement: function(match, m1, m2) {
+                            var scripts = '\n';
+
+                            js_core_files.forEach(function(file) {
+                                scripts+= '<script src="../' + file + '" data-cover></script>\n';
+                            });
+
+                            scripts+= '\n';
+
+                            for (var m in all_modules) {
+                                scripts+= '<script src="../' + all_modules[m] + '" data-cover></script>\n';
+                            }
+
+                            return m1 + scripts + m2;
+                        }
+                    }, {
+                        pattern: /(<!-- qunit:modules -->)(?:[\s\S]*)(<!-- \/qunit:modules -->)/m,
+                        replacement: function(match, m1, m2) {
+                            var scripts = '\n';
+                            
+                            grunt.file.expand('tests/*.module.js').forEach(function(file) {
+                                scripts+= '<script src="../' + file + '"></script>\n';
+                            });
+                            
+                            return m1 + scripts + m2;
+                        }
+                    }]
+                }
+            }
+        },
+
         // qunit test suite
         qunit: {
             all: {
@@ -397,7 +436,7 @@ module.exports = function(grunt) {
         for (var m in all_modules) {
             grunt.log.write(m['cyan']);
 
-            if (grunt.file.exists(all_modules[m].replace(/js$/, 'css'))) {
+            if (grunt.file.exists(all_modules[m].replace(/js$/, 'scss'))) {
                 grunt.log.write(' + CSS');
             }
 
@@ -422,6 +461,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-qunit-blanket-lcov');
+    grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-wrap');
@@ -453,8 +493,9 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('test', [
-        //'default',
+        'default',
         'jshint',
+        'string-replace:test',
         'qunit_blanket_lcov',
         'qunit'
     ]);

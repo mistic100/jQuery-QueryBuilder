@@ -3,60 +3,67 @@
 <head>
   <title>jQuery-QueryBuilder</title>
   <meta charset="utf-8">
-  
+
   <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css">
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-  
+  <link rel="stylesheet" href="../bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="../bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
+
+  <style>
+  #qunit-modulefilter-container { float:none; }
+  #blanket-main { font-size:14px !important; }
+  </style>
+
   <link rel="stylesheet" href="../dist/css/query-builder.default.css">
-  
+
   <script src="../bower_components/jquery/dist/jquery.min.js"></script>
   <script src="../bower_components/qunit/qunit/qunit.js"></script>
   <script src="../bower_components/blanket/dist/qunit/blanket.min.js"></script>
-  
+  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+  <script src="../bower_components/bootbox/bootbox.js"></script>
+  <script src="../bower_components/momentjs/min/moment.min.js"></script>
+
   <script src="../bower_components/microevent-mistic100/microevent.min.js"></script>
   <script src="../bower_components/jquery-extendext/jQuery.extendext.min.js"></script>
-  
-  <script src="../src/main.js" data-cover></script>
-  <script src="../src/defaults.js" data-cover></script>
-  <script src="../src/core.js" data-cover></script>
-  <script src="../src/public.js" data-cover></script>
-  <script src="../src/data.js" data-cover></script>
-  <script src="../src/template.js" data-cover></script>
-  <script src="../src/model.js" data-cover></script>
-  <script src="../src/utils.js" data-cover></script>
-  <script src="../src/jquery.js" data-cover></script>
-  
-  <script src="../src/plugins/bt-checkbox/plugin.js" data-cover></script>
-  <script src="../src/plugins/bt-selectpicker/plugin.js" data-cover></script>
-  <script src="../src/plugins/bt-tooltip-errors/plugin.js" data-cover></script>
-  <script src="../src/plugins/filter-description/plugin.js" data-cover></script>
-  <script src="../src/plugins/loopback-support/plugin.js" data-cover></script>
-  <script src="../src/plugins/mongodb-support/plugin.js" data-cover></script>
-  <script src="../src/plugins/sortable/plugin.js" data-cover></script>
-  <script src="../src/plugins/sql-support/plugin.js" data-cover></script>
-  <script src="../src/plugins/unique-filter/plugin.js" data-cover></script>
 
-  <script src="data.js"></script>
-  <script src="core_tests.js"></script>
+  <script src="common.js"></script>
+
+<!-- qunit:imports -->
+<script src="../src/main.js" data-cover></script>
+<script src="../src/defaults.js" data-cover></script>
+<script src="../src/core.js" data-cover></script>
+<script src="../src/public.js" data-cover></script>
+<script src="../src/data.js" data-cover></script>
+<script src="../src/template.js" data-cover></script>
+<script src="../src/model.js" data-cover></script>
+<script src="../src/utils.js" data-cover></script>
+<script src="../src/jquery.js" data-cover></script>
+
+<script src="../src/plugins/bt-checkbox/plugin.js" data-cover></script>
+<script src="../src/plugins/bt-selectpicker/plugin.js" data-cover></script>
+<script src="../src/plugins/bt-tooltip-errors/plugin.js" data-cover></script>
+<script src="../src/plugins/filter-description/plugin.js" data-cover></script>
+<script src="../src/plugins/loopback-support/plugin.js" data-cover></script>
+<script src="../src/plugins/mongodb-support/plugin.js" data-cover></script>
+<script src="../src/plugins/sortable/plugin.js" data-cover></script>
+<script src="../src/plugins/sql-support/plugin.js" data-cover></script>
+<script src="../src/plugins/unique-filter/plugin.js" data-cover></script>
+<!-- /qunit:imports -->
+
+<!-- qunit:modules -->
+<script src="../tests/core.module.js"></script>
+<script src="../tests/data.module.js"></script>
+<script src="../tests/plugins.module.js"></script>
+<!-- /qunit:modules -->
 </head>
 
 <body class="container" style="padding:15px;">
   <div class="col-lg-8 col-lg-push-2">
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    
-    <div id="container1"></div>
-    <div id="container2"></div>
-    <div id="container3"></div>
-    <div id="container4"></div>
-    <div id="container5"></div>
-    <div id="container6"></div>
-    <div id="container7"></div>
-    <div id="container8"></div>
-    <div id="container9"></div>
-    <div id="container10"></div>
-    <div id="container11"></div>
-    <div id="container12"></div>
+
+    <div id="builder"></div>
   </div>
 </body>
 </html>

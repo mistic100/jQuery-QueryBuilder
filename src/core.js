@@ -85,9 +85,9 @@ QueryBuilder.prototype.checkFilters = function() {
         definedFilters.push(filter.id);
 
         if (!filter.type) {
-            error('Missing filter "{0}" type', filter.id);
+            filter.type = 'string';
         }
-        if (!QueryBuilder.types[filter.type]) {
+        else if (!QueryBuilder.types[filter.type]) {
             error('Invalid type "{0}"', filter.type);
         }
 

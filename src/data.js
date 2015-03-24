@@ -146,6 +146,11 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         break;
 
                     case 'datetime':
+                        if (value[i].length === 0) {
+                            result = ['datetime_empty'];
+                            break;
+                        }
+
                         // we need MomentJS
                         if (validation.format) {
                             if (!('moment' in window)) {
