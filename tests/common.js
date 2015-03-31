@@ -70,6 +70,17 @@ QUnit.assert.rulesMatch = function(actual, expected, message) {
 };
 
 /**
+ * Custom assert for init errors
+ */
+QUnit.assert.initError = function($b, options, error) {
+  this.throws(
+    function() { $b.queryBuilder(options); },
+    error,
+    'Should throw "' + error + '" error'
+  );
+};
+
+/**
  * Custom assert for validation errors
  */
 QUnit.assert.validationError = function($b, rule, code) {

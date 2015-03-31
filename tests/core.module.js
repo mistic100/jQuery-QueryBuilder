@@ -8,6 +8,50 @@ $(function(){
   });
 
   /**
+   * Test invalid filters
+   */
+  QUnit.test('Invalid filters', function(assert) {
+    assert.initError($b,
+      {},
+      /Missing filters list/
+    );
+
+    assert.initError($b,
+      {filters: [{}]},
+      /Missing filter 0 id/
+    );
+
+    assert.initError($b,
+      {filters: [
+        {id: 'foo'},
+        {id: 'foo'}
+      ]},
+      /Filter "foo" already defined/
+    );
+
+    assert.initError($b,
+      {filters: [
+        {id: 'foo', type: 'bar'}
+      ]},
+      /Invalid type "bar"/
+    );
+
+    assert.initError($b,
+      {filters: [
+        {id: 'foo', input: 'bar'}
+      ]},
+      /Invalid input "bar"/
+    );
+
+    assert.initError($b,
+      {filters: [
+        {id: 'foo', input: 'radio'}
+      ]},
+      /Missing filter "foo" values/
+    );
+  });
+
+  /**
    * Test getRules with an empty builder
    */
   QUnit.test('Empty builder', function(assert) {
@@ -56,6 +100,29 @@ $(function(){
       $b.queryBuilder('getRules'),
       basic_rules,
       'Should return object with rules'
+    );
+  });
+
+  /**
+   * Test UI events
+   */
+  QUnit.test('UI events', function(assert) {
+    $b.queryBuilder({
+      filters: basic_filters
+    });
+
+    $('#builder_group_0>.rules-group-header>.group-conditions [value=OR]').trigger('click');
+    $('[name=builder_rule_0_filter]').val('name').trigger('change');
+    $('[name=builder_rule_0_operator]').val('not_equal').trigger('change');
+    $('[name=builder_rule_0_value_0]').val('foo');
+    $('#builder_group_0>.rules-group-header>.group-actions [data-add=rule]').trigger('click');
+    $('#builder_group_0>.rules-group-header>.group-actions [data-add=group]').trigger('click');
+    $('#builder_rule_1 [data-delete=rule]').trigger('click');
+    $('#builder_group_1 [data-delete=group]').trigger('click');
+
+    assert.rulesMatch(
+      $b.queryBuilder('getRules'),
+      rules_after_ui_events
     );
   });
 
@@ -213,10 +280,38 @@ $(function(){
   });
 
   /**
+   * Test optgroups
+   */
+  QUnit.test('Optgroups', function(assert) {
+    $b.queryBuilder({
+      filters: optgroups_filters
+    });
+
+    var select = [];
+    $('[name=builder_rule_0_filter]>*').each(function() {
+      if (this.nodeName == 'OPTION') {
+        select.push($(this).val());
+      }
+      else {
+        var group = [];
+        $(this).find('option').each(function() {
+          group.push($(this).val());
+        });
+        select.push(group);
+      }
+    });
+
+    assert.deepEqual(
+      select,
+      ['-1', ['1', '3', '6'], '2', ['4'], '5'],
+      'Filters should have been put in optgroup, solving discontinuities and keeping order'
+    );
+  });
+
+  /**
    * Test access to defaults
    */
   QUnit.test('Access to defaults', function(assert) {
-    var def = QueryBuilder.defaults();
     if (QueryBuilder.defaults() == QueryBuilder.DEFAULTS) {
         assert.push(false, '[copy]', '[original]', 'Should return full copy of defaults');
     }
@@ -237,24 +332,14 @@ $(function(){
     assert.deepEqual(
       QueryBuilder.defaults('lang'),
       QueryBuilder.DEFAULTS.lang,
-      'Chould return a specific default object'
+      'Should return a specific default object'
     );
 
-    QueryBuilder.defaults({ default_rule_flags: {
-      filter_readonly: true,
-      operator_readonly: false,
-      value_readonly: true,
-      no_delete: false
-    }});
+    QueryBuilder.defaults({ default_rule_flags: new_default_flags });
 
     assert.deepEqual(
       QueryBuilder.DEFAULTS.default_rule_flags,
-      {
-        filter_readonly: true,
-        operator_readonly: false,
-        value_readonly: true,
-        no_delete: false
-      },
+      new_default_flags,
       'Should have modified the default config object'
     );
   });
@@ -266,16 +351,25 @@ $(function(){
     assert.expect(2);
 
     var done = assert.async(),
-        original = $.fn.queryBuilder.defaults('lang');
+        original = QueryBuilder.defaults('lang');
 
     $.getScript('../dist/i18n/fr.js', function() {
-      assert.equal($.fn.queryBuilder.defaults('lang').delete_rule, 'Supprimer', 'Should be in french');
-      $.fn.queryBuilder.defaults({ lang: original });
-      assert.equal($.fn.queryBuilder.defaults('lang').delete_rule, 'Delete', 'Should be in english');
+      assert.equal(QueryBuilder.defaults('lang').delete_rule, 'Supprimer', 'Should be in french');
+      QueryBuilder.defaults({ lang: original });
+      assert.equal(QueryBuilder.defaults('lang').delete_rule, 'Delete', 'Should be in english');
       done();
     });
   });
 
+
+  var rules_after_ui_events = {
+    condition: 'OR',
+    rules: [{
+      id: 'name',
+      operator: 'not_equal',
+      value: 'foo'
+    }]
+  };
 
   var filters_for_custom_operators = [{
     id: 'name',
@@ -373,5 +467,30 @@ $(function(){
         value: '1234-azer-5678'
       }]
     }]
+  };
+
+  var optgroups_filters = [{
+    id: '1',
+    optgroup: 'A'
+  }, {
+    id: '2'
+  }, {
+    id: '3',
+    optgroup: 'A'
+  }, {
+    id: '4',
+    optgroup: 'B'
+  }, {
+    id: '5'
+  }, {
+    id: '6',
+    optgroup: 'A'
+  }];
+
+  var new_default_flags = {
+    filter_readonly: true,
+    operator_readonly: false,
+    value_readonly: true,
+    no_delete: false
   };
 });

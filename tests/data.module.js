@@ -142,13 +142,11 @@ $(function(){
       { id: 'boolean', value: 'oui' },
       /boolean_not_valid/
     );
-  });
 
-  /**
-   * Test validation callbacks
-   */
-  QUnit.skip('calidation callbacks', function(assert) {
-
+    assert.validationError($b,
+      { id: 'custom', value: '' },
+      /you_fool/
+    );
   });
 
 
@@ -244,6 +242,16 @@ $(function(){
   }, {
     id: 'boolean',
     type: 'boolean'
+  }, {
+    id: 'custom',
+    type: 'string',
+    validation: {
+      callback: function(value, rule) {
+        if (value == null || !value.length) {
+          return 'you_fool';
+        }
+      }
+    }
   }];
 
 });

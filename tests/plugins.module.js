@@ -107,6 +107,30 @@ $(function(){
   });
 
   /**
+   * Extended tests fro MongoDB
+   */
+  QUnit.test('mongo-support', function(assert) {
+    $b.queryBuilder({
+      filters: basic_filters,
+      rules: all_operators_rules
+    });
+
+    assert.deepEqual(
+      $b.queryBuilder('getMongo'),
+      all_operators_rules_mongodb,
+      'Should successfully convert all kind of operators to MongoDB'
+    );
+
+    $b.queryBuilder('setRulesFromMongo', all_operators_rules_mongodb);
+
+    assert.rulesMatch(
+      $b.queryBuilder('getRules'),
+      all_operators_rules,
+      'Should successfully parse all kind of operators from MongoDB'
+    );
+  });
+
+  /**
    * Test bt-checkbox
    */
   QUnit.test('bt-checkbox', function(assert) {
@@ -308,6 +332,111 @@ $(function(){
       {'id': {'neq': '1234-azer-5678'}}
     ]}
   ]};
+
+  var all_operators_rules = {
+    condition: 'AND',
+    rules: [{
+      id: 'name',
+      operator: 'equal',
+      value: 'foo'
+    }, {
+      id: 'name',
+      operator: 'not_equal',
+      value: 'foo'
+    }, {
+      id: 'category',
+      operator: 'in',
+      value: ['bk','mo']
+    }, {
+      id: 'category',
+      operator: 'not_in',
+      value: ['bk','mo']
+    }, {
+      id: 'price',
+      operator: 'less',
+      value: '5'
+    }, {
+      id: 'price',
+      operator: 'less_or_equal',
+      value: '5'
+    }, {
+      id: 'price',
+      operator: 'greater',
+      value: '4'
+    }, {
+      id: 'price',
+      operator: 'greater_or_equal',
+      value: '4'
+    }, {
+      id: 'price',
+      operator: 'between',
+      value: ['4','5']
+    }, {
+      id: 'name',
+      operator: 'begins_with',
+      value: 'foo'
+    }, {
+      id: 'name',
+      operator: 'not_begins_with',
+      value: 'foo'
+    }, {
+      id: 'name',
+      operator: 'contains',
+      value: 'foo'
+    }, {
+      id: 'name',
+      operator: 'not_contains',
+      value: 'foo'
+    }, {
+      id: 'name',
+      operator: 'ends_with',
+      value: 'foo'
+    }, {
+      id: 'name',
+      operator: 'not_ends_with',
+      value: 'foo'
+    }, {
+      id: 'name',
+      operator: 'is_empty',
+      value: null
+    }, {
+      id: 'name',
+      operator: 'is_not_empty',
+      value: null
+    }, {
+      id: 'name',
+      operator: 'is_null',
+      value: null
+    }, {
+      id: 'name',
+      operator: 'is_not_null',
+      value: null
+    }]
+  };
+
+  var all_operators_rules_mongodb = {
+    $and: [
+      { name: 'foo' },
+      { name: {$ne: 'foo'} },
+      { category: { $in: ['bk','mo'] }},
+      { category: { $nin: ['bk','mo'] }},
+      { price: {$lt: 5} },
+      { price: {$lte: 5} },
+      { price: {$gt: 4} },
+      { price: {$gte: 4} },
+      { price: {$gte: 4, $lte: 5} },
+      { name: {$regex: '^foo'} },
+      { name: {$regex: '^(?!foo)'} },
+      { name: {$regex: 'foo'} },
+      { name: {$regex: '^((?!foo).)*$', $options: 's'} },
+      { name: {$regex: 'foo$'} },
+      { name: {$regex: '(?<!foo)$'} },
+      { name: '' },
+      { name: {$ne: ''} },
+      { name: null },
+      { name: {$ne: null} }
+    ]
+  };
 
   var bt_checkbox_filters = [{
     id: 'no-color',
