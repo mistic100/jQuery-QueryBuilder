@@ -76,15 +76,27 @@ $(function(){
     });
 
     assert.deepEqual(
-      $b.queryBuilder('getSQL', false, false),
+      $b.queryBuilder('getSQL', false),
       basic_rules_sql_raw,
       'Should create SQL query'
     );
 
     assert.deepEqual(
-      $b.queryBuilder('getSQL', true, false),
+      $b.queryBuilder('getSQL', 'question_mark'),
       basic_rules_sql_stmt,
-      'Should create SQL query with statements'
+      'Should create SQL query with statements (?)'
+    );
+
+    assert.deepEqual(
+      $b.queryBuilder('getSQL', 'numbered'),
+      basic_rules_sql_stmt_num,
+      'Should create SQL query with statements (numbered)'
+    );
+
+    assert.deepEqual(
+      $b.queryBuilder('getSQL', 'named'),
+      basic_rules_sql_stmt_named,
+      'Should create SQL query with statements (named)'
     );
 
     assert.deepEqual(
@@ -306,13 +318,28 @@ $(function(){
   });
 
 
+  var basic_rules_sql_raw = {
+    sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
+  };
+
   var basic_rules_sql_stmt = {
     sql: 'price < ? AND name IS NULL AND ( category IN(?, ?) OR id != ? ) ',
     params: [10.25, 'mo', 'mu', '1234-azer-5678']
   };
+  
+  var basic_rules_sql_stmt_num = {
+    sql: 'price < $1 AND name IS NULL AND ( category IN($2, $3) OR id != $4 ) ',
+    params: [10.25, 'mo', 'mu', '1234-azer-5678']
+  };
 
-  var basic_rules_sql_raw = {
-    sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
+  var basic_rules_sql_stmt_named = {
+    sql: 'price < :price_1 AND name IS NULL AND ( category IN(:category_1, :category_2) OR id != :id_1 ) ',
+    params: {
+      price_1: 10.25,
+      category_1: 'mo',
+      category_2: 'mu',
+      id_1: '1234-azer-5678'
+    }
   };
 
   var basic_rules_mongodb = {'$and': [

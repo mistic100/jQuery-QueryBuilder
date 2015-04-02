@@ -21,6 +21,53 @@ QueryBuilder.defaults({
         is_not_empty:     '!= ""',
         is_null:          'IS NULL',
         is_not_null:      'IS NOT NULL'
+    },
+
+    sqlStatements: {
+        'question_mark': function() {
+            var bind_params = [];
+            return {
+                add: function(rule, value) {
+                    bind_params.push(value);
+                    return '?';
+                },
+                run: function() {
+                    return bind_params;
+                }
+            };
+        },
+
+        'numbered': function() {
+            var bind_index = 0;
+            var bind_params = [];
+            return {
+                add: function(rule, value) {
+                    bind_params.push(value);
+                    bind_index++;
+                    return '$' + bind_index;
+                },
+                run: function() {
+                    return bind_params;
+                }
+            };
+        },
+
+        'named': function() {
+            var bind_index = {};
+            var bind_params = {};
+            return {
+                add: function(rule, value) {
+                    if (!bind_index[rule.field]) bind_index[rule.field] = 0;
+                    bind_index[rule.field]++;
+                    var key = rule.field + '_' + bind_index[rule.field];
+                    bind_params[key] = value;
+                    return ':' + key;
+                },
+                run: function() {
+                    return bind_params;
+                }
+            };
+        }
     }
 });
 
@@ -37,8 +84,10 @@ QueryBuilder.extend({
      */
     getSQL: function(stmt, nl, data) {
         data = (data===undefined) ? this.getRules() : data;
-        stmt = (stmt===true || stmt===undefined) ? 'question_mark' : stmt;
-        nl =   (nl || nl===undefined) ? '\n' : ' ';
+        nl = (nl===true) ? '\n' : ' ';
+
+        if (stmt===true || stmt===undefined) stmt = 'question_mark';
+        if (typeof stmt == 'string') stmt = this.settings.sqlStatements[stmt]();
 
         var that = this,
             bind_index = 1,
@@ -93,15 +142,7 @@ QueryBuilder.extend({
                             }
 
                             if (stmt) {
-                                if (stmt == 'question_mark') {
-                                    value+= '?';
-                                }
-                                else {
-                                    value+= '$'+bind_index;
-                                }
-
-                                bind_params.push(v);
-                                bind_index++;
+                                value+= stmt.add(rule, v);
                             }
                             else {
                                 if (typeof v === 'string') {
@@ -123,7 +164,7 @@ QueryBuilder.extend({
         if (stmt) {
             return {
                 sql: sql,
-                params: bind_params
+                params: stmt.run()
             };
         }
         else {
