@@ -16,7 +16,7 @@ QueryBuilder.define('bt-checkbox', function(options) {
         document.body.appendChild(injectCSS);
     }
 
-    this.on('getRuleInput.queryBuilder.filter', function(h, rule, name) {
+    this.on('getRuleInput.filter', function(h, rule, name) {
         var filter = rule.filter;
 
         if ((filter.input === 'radio' || filter.input === 'checkbox') && !filter.plugin) {

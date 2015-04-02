@@ -390,7 +390,7 @@ QueryBuilder.prototype.deleteRule = function(rule) {
  * @param rule {Rule}
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
-    var filters = this.change('ruleFilters', this.filters, rule);
+    var filters = this.change('getRuleFilters', this.filters, rule);
 
     var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
 
@@ -452,11 +452,11 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         $inputs[filter.plugin](filter.plugin_config || {});
     }
 
+    this.trigger('afterCreateRuleInput', rule);
+
     if (filter.default_value !== undefined) {
         this.setRuleValue(rule, filter.default_value);
     }
-
-    this.trigger('afterCreateRuleInput', rule);
 };
 
 /**

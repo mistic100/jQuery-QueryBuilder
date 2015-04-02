@@ -6,11 +6,11 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
     var self = this;
 
     // add BT Tooltip data
-    this.on('getRuleTemplate.queryBuilder.filter', function(h) {
+    this.on('getRuleTemplate.filter', function(h) {
         h.value = h.value.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
     });
 
-    this.on('getGroupTemplate.queryBuilder.filter', function(h) {
+    this.on('getGroupTemplate.filter', function(h) {
         h.value = h.value.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
     });
 

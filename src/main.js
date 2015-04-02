@@ -31,18 +31,18 @@ $.extend(QueryBuilder.prototype, {
         return event;
     },
 
-    on: function() {
-        this.$el.on.apply(this.$el, aps.call(arguments));
+    on: function(type, cb) {
+        this.$el.on(type + '.queryBuilder', cb);
         return this;
     },
 
-    off: function() {
-        this.$el.off.apply(this.$el, aps.call(arguments));
+    off: function(type, cb) {
+        this.$el.off(type + '.queryBuilder', cb);
         return this;
     },
 
-    once: function() {
-        this.$el.one.apply(this.$el, aps.call(arguments));
+    once: function(type, cb) {
+        this.$el.one(type + '.queryBuilder', cb);
         return this;
     }
 });

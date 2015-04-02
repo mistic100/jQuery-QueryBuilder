@@ -3,7 +3,7 @@ QueryBuilder.define('filter-description', function(options) {
      * INLINE
      */
     if (options.mode === 'inline') {
-        this.on('afterUpdateRuleFilter.queryBuilder', function(e, rule) {
+        this.on('afterUpdateRuleFilter', function(e, rule) {
             var $p = rule.$el.find('p.filter-description');
 
             if (!rule.filter || !rule.filter.description) {
@@ -30,7 +30,7 @@ QueryBuilder.define('filter-description', function(options) {
             error('Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
         }
 
-        this.on('afterUpdateRuleFilter.queryBuilder', function(e, rule) {
+        this.on('afterUpdateRuleFilter', function(e, rule) {
             var $b = rule.$el.find('button.filter-description');
 
             if (!rule.filter || !rule.filter.description) {
@@ -75,7 +75,7 @@ QueryBuilder.define('filter-description', function(options) {
             error('Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
         }
 
-        this.on('afterUpdateRuleFilter.queryBuilder', function(e, rule) {
+        this.on('afterUpdateRuleFilter', function(e, rule) {
             var $b = rule.$el.find('button.filter-description');
 
             if (!rule.filter || !rule.filter.description) {

@@ -4,20 +4,20 @@ QueryBuilder.define('bt-selectpicker', function(options) {
     }
 
     // init selectpicker
-    this.on('afterCreateRuleFilters.queryBuilder', function(e, rule) {
+    this.on('afterCreateRuleFilters', function(e, rule) {
         rule.$el.find('.rule-filter-container select').removeClass('form-control').selectpicker(options);
     });
 
-    this.on('afterCreateRuleOperators.queryBuilder', function(e, rule) {
+    this.on('afterCreateRuleOperators', function(e, rule) {
         rule.$el.find('.rule-operator-container select').removeClass('form-control').selectpicker(options);
     });
 
     // update selectpicker on change
-    this.on('afterUpdateRuleFilter.queryBuilder', function(e, rule) {
+    this.on('afterUpdateRuleFilter', function(e, rule) {
         rule.$el.find('.rule-filter-container select').selectpicker('render');
     });
 
-    this.on('afterUpdateRuleOperator.queryBuilder', function(e, rule) {
+    this.on('afterUpdateRuleOperator', function(e, rule) {
         rule.$el.find('.rule-operator-container select').selectpicker('render');
     });
 }, {

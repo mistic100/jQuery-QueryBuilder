@@ -1,9 +1,9 @@
 QueryBuilder.define('unique-filter', function() {
     this.status.used_filters = {};
 
-    this.on('afterUpdateRuleFilter.queryBuilder', this.updateDisabledFilters);
-    this.on('afterDeleteRule.queryBuilder', this.updateDisabledFilters);
-    this.on('afterCreateRuleFilters.queryBuilder', this.applyDisabledFilters);
+    this.on('afterUpdateRuleFilter', this.updateDisabledFilters);
+    this.on('afterDeleteRule', this.updateDisabledFilters);
+    this.on('afterCreateRuleFilters', this.applyDisabledFilters);
 });
 
 QueryBuilder.extend({

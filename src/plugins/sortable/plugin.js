@@ -2,7 +2,7 @@ QueryBuilder.define('sortable', function(options) {
     /**
      * Init HTML5 drag and drop
      */
-    this.on('afterInit.queryBuilder', function(e) {
+    this.on('afterInit', function(e) {
         // configure jQuery to use dataTransfer
         $.event.props.push('dataTransfer');
 
@@ -77,13 +77,13 @@ QueryBuilder.define('sortable', function(options) {
     /**
      * Remove drag handle from non-sortable rules
      */
-    this.on('parseRuleFlags.queryBuilder.filter', function(flags) {
+    this.on('parseRuleFlags.filter', function(flags) {
         if (flags.value.no_sortable === undefined) {
             flags.value.no_sortable = options.default_no_sortable;
         }
     });
 
-    this.on('afterApplyRuleFlags.queryBuilder', function(e, rule) {
+    this.on('afterApplyRuleFlags', function(e, rule) {
         if (rule.flags.no_sortable) {
             rule.$el.find('.drag-handle').remove();
         }
@@ -92,7 +92,7 @@ QueryBuilder.define('sortable', function(options) {
     /**
      * Modify templates
      */
-    this.on('getGroupTemplate.queryBuilder.filter', function(h, level) {
+    this.on('getGroupTemplate.filter', function(h, level) {
         if (level>1) {
             var $h = $(h.value);
             $h.find('.group-conditions').after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
@@ -100,7 +100,7 @@ QueryBuilder.define('sortable', function(options) {
         }
     });
 
-    this.on('getRuleTemplate.queryBuilder.filter', function(h) {
+    this.on('getRuleTemplate.filter', function(h) {
         var $h = $(h.value);
         $h.find('.rule-header').after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
         h.value = $h.prop('outerHTML');
