@@ -88,7 +88,7 @@ QUnit.assert.validationError = function($b, rule, code) {
     rules: [rule]
   });
 
-  $b.queryBuilder('on', 'validationError', function(node, error) {
+  $b.on('validationError.queryBuilder', function(e, node, error) {
     throw error[0];
   });
 
@@ -98,7 +98,7 @@ QUnit.assert.validationError = function($b, rule, code) {
     'Should throw "' + code + '" error'
   );
 
-  $b.queryBuilder('off', 'validationError');
+  $b.off('validationError.queryBuilder');
 };
 
 /**

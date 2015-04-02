@@ -20,7 +20,6 @@ module.exports = function(grunt) {
         ],
         js_files_to_load = js_core_files.slice(),
         js_files_for_standalone = [
-            'bower_components/microevent-mistic100/microevent.js',
             'bower_components/jquery-extendext/jQuery.extendext.js',
             'dist/js/query-builder.js'
         ];
@@ -141,7 +140,7 @@ module.exports = function(grunt) {
                 src: js_files_to_load,
                 dest: 'dist/js/query-builder.js',
                 options: {
-                    stripBanners: { block: true },
+                    stripBanners: false,
                     separator: '\n\n',
                     process: function(src) {
                         return removeJshint(src).replace(/\r\n/g, '\n');

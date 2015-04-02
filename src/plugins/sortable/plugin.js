@@ -2,24 +2,24 @@ QueryBuilder.define('sortable', function(options) {
     /**
      * Init HTML5 drag and drop
      */
-    this.on('afterInit', function() {
+    this.on('afterInit.queryBuilder', function(e) {
         // configure jQuery to use dataTransfer
         $.event.props.push('dataTransfer');
 
         var placeholder, src,
-            that = this;
+            self = e.builder;
 
         // only add "draggable" attribute when hovering drag handle
         // preventing text select bug in Firefox
-        this.$el.on('mouseover', '.drag-handle', function() {
-            that.$el.find('.rule-container, .rules-group-container').attr('draggable', true);
+        self.$el.on('mouseover', '.drag-handle', function() {
+            self.$el.find('.rule-container, .rules-group-container').attr('draggable', true);
         });
-        this.$el.on('mouseout', '.drag-handle', function() {
-            that.$el.find('.rule-container, .rules-group-container').removeAttr('draggable');
+        self.$el.on('mouseout', '.drag-handle', function() {
+            self.$el.find('.rule-container, .rules-group-container').removeAttr('draggable');
         });
 
         // dragstart: create placeholder and hide current element
-        this.$el.on('dragstart', '[draggable]', function(e) {
+        self.$el.on('dragstart', '[draggable]', function(e) {
             e.stopPropagation();
 
             // notify drag and drop (only dummy text)
@@ -39,7 +39,7 @@ QueryBuilder.define('sortable', function(options) {
         });
 
         // dragenter: move the placeholder
-        this.$el.on('dragenter', '[draggable]', function(e) {
+        self.$el.on('dragenter', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -47,13 +47,13 @@ QueryBuilder.define('sortable', function(options) {
         });
 
         // dragover: prevent glitches
-        this.$el.on('dragover', '[draggable]', function(e) {
+        self.$el.on('dragover', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
         });
 
         // drop: move current element
-        this.$el.on('drop', function(e) {
+        self.$el.on('drop', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -61,7 +61,7 @@ QueryBuilder.define('sortable', function(options) {
         });
 
         // dragend: show current element and delete placeholder
-        this.$el.on('dragend', '[draggable]', function(e) {
+        self.$el.on('dragend', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -70,21 +70,20 @@ QueryBuilder.define('sortable', function(options) {
 
             src = placeholder = null;
 
-            that.$el.find('.rule-container, .rules-group-container').removeAttr('draggable');
+            self.$el.find('.rule-container, .rules-group-container').removeAttr('draggable');
         });
     });
 
     /**
      * Remove drag handle from non-sortable rules
      */
-    this.on('parseRuleFlags', function(flags) {
-        if (flags.no_sortable === undefined) {
-            flags.no_sortable = options.default_no_sortable;
+    this.on('parseRuleFlags.queryBuilder.filter', function(flags) {
+        if (flags.value.no_sortable === undefined) {
+            flags.value.no_sortable = options.default_no_sortable;
         }
-        return flags;
     });
 
-    this.on('afterApplyRuleFlags', function(rule) {
+    this.on('afterApplyRuleFlags.queryBuilder', function(e, rule) {
         if (rule.flags.no_sortable) {
             rule.$el.find('.drag-handle').remove();
         }
@@ -93,19 +92,18 @@ QueryBuilder.define('sortable', function(options) {
     /**
      * Modify templates
      */
-    this.on('getGroupTemplate', function(h, level) {
+    this.on('getGroupTemplate.queryBuilder.filter', function(h, level) {
         if (level>1) {
-            var $h = $(h);
+            var $h = $(h.value);
             $h.find('.group-conditions').after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
-            h = $h.prop('outerHTML');
+            h.value = $h.prop('outerHTML');
         }
-        return h;
     });
 
-    this.on('getRuleTemplate', function(h) {
-        var $h = $(h);
+    this.on('getRuleTemplate.queryBuilder.filter', function(h) {
+        var $h = $(h.value);
         $h.find('.rule-header').after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
-        return $h.prop('outerHTML');
+        h.value = $h.prop('outerHTML');
     });
 }, {
     default_no_sortable: false,

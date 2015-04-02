@@ -3,20 +3,20 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
         error('Bootstrap Tooltip is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
     }
 
-    var that = this;
+    var self = this;
 
     // add BT Tooltip data
-    this.on('getRuleTemplate', function(h) {
-        return h.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
+    this.on('getRuleTemplate.queryBuilder.filter', function(h) {
+        h.value = h.value.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
     });
 
-    this.on('getGroupTemplate', function(h) {
-        return h.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
+    this.on('getGroupTemplate.queryBuilder.filter', function(h) {
+        h.value = h.value.replace('class="error-container"', 'class="error-container" data-toggle="tooltip"');
     });
 
     // init/refresh tooltip when title changes
-    this.model.on('update', function(node, field) {
-        if (field == 'error' && that.settings.display_errors) {
+    this.model.on('update', function(e, node, field) {
+        if (field == 'error' && self.settings.display_errors) {
             node.$el.find('.error-container').eq(0)
               .tooltip(options)
               .tooltip('hide')

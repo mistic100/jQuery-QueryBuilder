@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="../bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
   <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
   <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.bootstrap3.css">
-  
+
   <link rel="stylesheet" href="../dist/css/query-builder.default.css" id="qb-theme">
 </head>
 
@@ -25,21 +25,21 @@
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       You must execute <code>bower install</code> in the example directory to run this demo.
     </div>
-    
+
     <div class="btn-group">
       <button class="btn btn-default btn-sm" disabled>Theme:</button>
       <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.default.min.css" data-bt="bower_components/bootstrap/dist/css/bootstrap.min.css">Default</button>
       <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.dark.min.css" data-bt="bower_components/bootswatch-dist/css/bootstrap.min.css">Dark</button>
     </div>
-    
+
     <div id="builder"></div>
-    
+
     <div class="btn-group">
       <button class="btn btn-warning reset">Reset</button>
       <button class="btn btn-success set">Set rules</button>
       <button class="btn btn-success set-mongo">Set rules from MongoDB</button>
     </div>
-    
+
     <div class="btn-group">
       <button class="btn btn-default" disabled>Get:</button>
       <button class="btn btn-primary parse-json">JSON</button>
@@ -56,14 +56,12 @@
   </div>
 </div>
 
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/jquery/dist/jquery.js"></script>
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 <script src="../bower_components/bootbox/bootbox.js"></script>
 <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 <script src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
-  
-<script src="../bower_components/microevent-mistic100/microevent.min.js"></script>
 <script src="../bower_components/jquery-extendext/jQuery.extendext.min.js"></script>
 
 <script src="../dist/js/query-builder.js"></script>
@@ -72,7 +70,7 @@
 // define filters
 $('#builder').queryBuilder({
   allow_empty: true,
-  
+
   plugins: {
     'bt-tooltip-errors': { delay: 100},
     'sortable': null,
@@ -81,7 +79,7 @@ $('#builder').queryBuilder({
     'unique-filter': null,
     'bt-checkbox': { color: 'primary' }
   },
-  
+
   filters: [
   /*
    * basic
@@ -196,7 +194,7 @@ $('#builder').queryBuilder({
     data: {
       class: 'com.example.PriceTag'
     }
-  }, 
+  },
   /*
    * slider
    */
@@ -219,7 +217,7 @@ $('#builder').queryBuilder({
       input.slider('setValue', value);
       input.val(value); // don't know why I need it
     }
-  }, 
+  },
   /*
    * placeholder and regex validation
    */
@@ -254,10 +252,10 @@ $('#builder').queryBuilder({
     },
     input: function(rule) {
       var $container = rule.$el.find('.rule-value-container');
-      
+
       $container.on('change', '[name=coord_1]', function(){
         var h = '';
-        
+
         switch ($(this).val()) {
           case 'A':
             h = '<option value="-1">-</option> <option value="1">1</option> <option value="2">2</option>';
@@ -269,10 +267,10 @@ $('#builder').queryBuilder({
             h = '<option value="-1">-</option> <option value="5">5</option> <option value="6">6</option>';
             break;
         }
-        
+
         $container.find('[name=coord_2]').html(h).toggle(h!='');
       });
-      
+
       return '\
       <select name="coord_1" class="form-control"> \
         <option value="-1">-</option> \
@@ -296,7 +294,7 @@ $('#builder').queryBuilder({
   }]
 });
 
-$('#builder').queryBuilder('on', 'afterCreateRuleInput', function(rule) {
+$('#builder').on('afterCreateRuleInput.queryBuilder', function(e, rule) {
     if (rule.filter.plugin == 'selectize') {
         rule.$el.find('.rule-value-container').css('min-width', '200px')
           .find('.selectize-control').removeClass('form-control');

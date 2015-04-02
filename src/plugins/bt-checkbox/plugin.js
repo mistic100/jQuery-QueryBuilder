@@ -16,11 +16,11 @@ QueryBuilder.define('bt-checkbox', function(options) {
         document.body.appendChild(injectCSS);
     }
 
-    this.on('getRuleInput', function(h, rule, name) {
+    this.on('getRuleInput.queryBuilder.filter', function(h, rule, name) {
         var filter = rule.filter;
 
         if ((filter.input === 'radio' || filter.input === 'checkbox') && !filter.plugin) {
-            h = '';
+            h.value = '';
 
             if (!filter.colors) {
                 filter.colors = {};
@@ -36,15 +36,13 @@ QueryBuilder.define('bt-checkbox', function(options) {
                 color = filter.colors[key] || filter.colors._def_ || options.color;
                 id = name +'_'+ (i++);
 
-                h+= '\
+                h.value+= '\
 <div'+ style +' class="'+ filter.input +' '+ filter.input +'-'+ color +'"> \
   <input type="'+ filter.input +'" name="'+ name +'" id="'+ id +'" value="'+ key +'"> \
   <label for="'+ id +'">'+ val +'</label> \
 </div>';
             });
         }
-
-        return h;
     });
 }, {
     font: 'glyphicons',

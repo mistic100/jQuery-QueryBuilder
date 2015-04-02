@@ -1,7 +1,7 @@
 // Model CLASS
-// Main object storing data model and emitting events
 // ===============================
 /**
+ * Main object storing data model and emitting events
  * ---------
  * Access Node object stored in jQuery objects
  * @param el {jQuery|Node}
@@ -13,9 +13,30 @@ function Model(el) {
     }
 
     this.root = null;
+    this.$ = $(this);
 }
 
-MicroEvent.mixin(Model);
+$.extend(Model.prototype, {
+    trigger: function(type) {
+        this.$.triggerHandler(type, aps.call(arguments, 1));
+        return this;
+    },
+
+    on: function() {
+        this.$.on.apply(this.$, aps.call(arguments));
+        return this;
+    },
+
+    off: function() {
+        this.$.off.apply(this.$, aps.call(arguments));
+        return this;
+    },
+
+    once: function() {
+        this.$.one.apply(this.$, aps.call(arguments));
+        return this;
+    }
+});
 
 /**
  * Access Node object stored in jQuery objects

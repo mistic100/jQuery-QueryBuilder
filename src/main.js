@@ -5,10 +5,51 @@ var QueryBuilder = function($el, options) {
 };
 
 
+// EVENTS SYSTEM
+// ===============================
+var aps = Array.prototype.slice;
+
+$.extend(QueryBuilder.prototype, {
+    change: function(type, value) {
+        var event = new $.Event(type + '.queryBuilder.filter', {
+            builder: this,
+            value: value
+        });
+
+        this.$el.triggerHandler(event, aps.call(arguments, 2));
+
+        return event.value;
+    },
+
+    trigger: function(type) {
+        var event = new $.Event(type + '.queryBuilder', {
+            builder: this
+        });
+
+        this.$el.triggerHandler(event, aps.call(arguments, 1));
+
+        return event;
+    },
+
+    on: function() {
+        this.$el.on.apply(this.$el, aps.call(arguments));
+        return this;
+    },
+
+    off: function() {
+        this.$el.off.apply(this.$el, aps.call(arguments));
+        return this;
+    },
+
+    once: function() {
+        this.$el.one.apply(this.$el, aps.call(arguments));
+        return this;
+    }
+});
+
+
 // PLUGINS SYSTEM
 // ===============================
-MicroEvent.mixin(QueryBuilder);
-
 QueryBuilder.plugins = {};
 
 /**
@@ -69,14 +110,14 @@ QueryBuilder.prototype.initPlugins = function() {
         });
         this.plugins = tmp;
     }
-    
+
     Object.keys(this.plugins).forEach(function(plugin) {
         if (plugin in QueryBuilder.plugins) {
             this.plugins[plugin] = $.extend(true, {},
                 QueryBuilder.plugins[plugin].def,
                 this.plugins[plugin] || {}
             );
-        
+
             QueryBuilder.plugins[plugin].fct.call(this, this.plugins[plugin]);
         }
         else {

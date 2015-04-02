@@ -205,10 +205,10 @@ QueryBuilder.prototype.bindEvents = function() {
 
     // model events
     this.model.on({
-        'drop': function(node) {
+        'drop': function(e, node) {
             node.$el.remove();
         },
-        'add': function(node, index) {
+        'add': function(e, node, index) {
             node.$el.detach();
 
             if (index === 0) {
@@ -218,7 +218,7 @@ QueryBuilder.prototype.bindEvents = function() {
                 node.$el.insertAfter(node.parent.rules[index-1].$el);
             }
         },
-        'update': function(node, field, value, oldValue) {
+        'update': function(e, node, field, value, oldValue) {
             switch (field) {
                 case 'error':
                     that.displayError(node);
@@ -390,7 +390,9 @@ QueryBuilder.prototype.deleteRule = function(rule) {
  * @param rule {Rule}
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
-    var $filterSelect = $(this.getRuleFilterSelect(rule, this.filters));
+    var filters = this.change('ruleFilters', this.filters, rule);
+
+    var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
 
     rule.$el.find('.rule-filter-container').append($filterSelect);
 

@@ -62,7 +62,7 @@ $(function(){
     });
     $('#builder_rule_0 [data-delete]').click();
 
-    $b.queryBuilder('on', 'validationError', function(node, error, value) {
+    $b.on('validationError.queryBuilder', function(e, node, error, value) {
       assert.equal(
         error[0],
         'empty_group',

@@ -1,17 +1,17 @@
 QueryBuilder.define('unique-filter', function() {
     this.status.used_filters = {};
 
-    this.on('afterUpdateRuleFilter', this.updateDisabledFilters);
-    this.on('afterDeleteRule', this.updateDisabledFilters);
-    this.on('afterCreateRuleFilters', this.applyDisabledFilters);
+    this.on('afterUpdateRuleFilter.queryBuilder', this.updateDisabledFilters);
+    this.on('afterDeleteRule.queryBuilder', this.updateDisabledFilters);
+    this.on('afterCreateRuleFilters.queryBuilder', this.applyDisabledFilters);
 });
 
 QueryBuilder.extend({
-    updateDisabledFilters: function() {
-        var that = this;
-        this.status.used_filters = {};
+    updateDisabledFilters: function(e) {
+        var self = e.builder;
+        self.status.used_filters = {};
 
-        if (!this.model) {
+        if (!self.model) {
             return;
         }
 
@@ -19,31 +19,31 @@ QueryBuilder.extend({
         (function walk(group) {
             group.each(function(rule) {
                 if (rule.filter && rule.filter.unique) {
-                    if (!that.status.used_filters[rule.filter.id]) {
-                        that.status.used_filters[rule.filter.id] = [];
+                    if (!self.status.used_filters[rule.filter.id]) {
+                        self.status.used_filters[rule.filter.id] = [];
                     }
                     if (rule.filter.unique == 'group') {
-                        that.status.used_filters[rule.filter.id].push(rule.parent);
+                        self.status.used_filters[rule.filter.id].push(rule.parent);
                     }
                 }
             }, function(group) {
                 walk(group);
             });
-        }(this.model.root));
+        }(self.model.root));
 
-        this.applyDisabledFilters();
+        self.applyDisabledFilters(e);
     },
 
-    applyDisabledFilters: function() {
-        var that = this;
+    applyDisabledFilters: function(e) {
+        var self = e.builder;
 
         // re-enable everything
-        this.$el.find('.rule-filter-container option').prop('disabled', false);
+        self.$el.find('.rule-filter-container option').prop('disabled', false);
 
         // disable some
-        $.each(this.status.used_filters, function(filterId, groups) {
+        $.each(self.status.used_filters, function(filterId, groups) {
             if (groups.length === 0) {
-                that.$el.find('.rule-filter-container option[value=' + filterId + ']:not(:selected)').prop('disabled', true);
+                self.$el.find('.rule-filter-container option[value=' + filterId + ']:not(:selected)').prop('disabled', true);
             }
             else {
                 groups.forEach(function(group) {
@@ -55,8 +55,8 @@ QueryBuilder.extend({
         });
 
         // update Selectpicker
-        if (this.settings.plugins && this.settings.plugins['bt-selectpicker']) {
-            this.$el.find('.rule-filter-container select').selectpicker('render');
+        if (self.settings.plugins && self.settings.plugins['bt-selectpicker']) {
+            self.$el.find('.rule-filter-container select').selectpicker('render');
         }
     }
 });

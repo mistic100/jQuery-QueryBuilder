@@ -227,7 +227,7 @@ QueryBuilder.prototype.setRules = function(data) {
                 model.filter = that.getFilterById(rule.id);
                 model.operator = that.getOperatorByType(rule.operator);
                 model.flags = that.parseRuleFlags(rule);
-                
+
                 if (rule.data) {
                     model.data = rule.data;
                 }

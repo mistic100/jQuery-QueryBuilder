@@ -13,7 +13,6 @@ http://mistic100.github.io/jQuery-QueryBuilder
  * Bootstrap >= 3.1 (CSS only)
  * jQuery >= 1.9
  * [jQuery.extendext](https://github.com/mistic100/jQuery.extendext)
- * [MicroEvent](https://github.com/mistic100/microevent.js) (mistic100 version)
  * (optional) MomentJS for date/time validation
  * (optional) some JS components used by plugins
 
