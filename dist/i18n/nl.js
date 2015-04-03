@@ -1,15 +1,18 @@
 /*!
- * jQuery QueryBuilder 1.4.2
+ * jQuery QueryBuilder 2.0.0
  * Dutch translation by "Roywcm"
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
+
 jQuery.fn.queryBuilder.defaults({ lang: {
   "add_rule": "Nieuwe regel",
   "add_group": "Nieuwe groep",
   "delete_rule": "Verwijder",
   "delete_group": "Verwijder",
-  "condition_and": "EN",
-  "condition_or": "OF",
+  "conditions": {
+    "AND": "EN",
+    "OR": "OF"
+  },
   "operators": {
     "equal": "gelijk",
     "not_equal": "niet gelijk",

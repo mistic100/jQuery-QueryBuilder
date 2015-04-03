@@ -1,3 +1,9 @@
+/*!
+ * jQuery QueryBuilder Loopback Support
+ * Allows to export rules as a Loopback statement.
+ * Copyright 2015 Fabien Franzen (http://www.atelierfabien.be)
+ */
+
 // DEFAULT CONFIG
 // ===============================
 QueryBuilder.defaults({

@@ -1,15 +1,18 @@
 /*!
- * jQuery QueryBuilder 1.4.2
+ * jQuery QueryBuilder 2.0.0
  * Italian translation
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
+
 jQuery.fn.queryBuilder.defaults({ lang: {
   "add_rule": "Aggiungi regola",
   "add_group": "Aggiungi gruppo",
   "delete_rule": "Elimina",
   "delete_group": "Elimina",
-  "condition_and": "E",
-  "condition_or": "O",
+  "conditions": {
+    "AND": "E",
+    "OR": "O"
+  },
   "operators": {
     "equal": "uguale",
     "not_equal": "non uguale",

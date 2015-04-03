@@ -1,3 +1,9 @@
+/*!
+ * jQuery QueryBuilder SQL Support
+ * Allows to export rules as a SQL WHERE statement.
+ * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ */
+
 // DEFAULT CONFIG
 // ===============================
 QueryBuilder.defaults({

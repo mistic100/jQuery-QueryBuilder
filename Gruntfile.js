@@ -76,8 +76,8 @@ module.exports = function(grunt) {
 
     function removeJshint(src) {
         return src
-          .replace(/\/\*jshint [a-z:]+ \*\/\r?\n/g, '')
-          .replace(/\/\*jshint -[EWI]{1}[0-9]{3} \*\/\r?\n/g, '');
+          .replace(/\/\*jshint [a-z:]+ \*\/\r?\n\r?\n?/g, '')
+          .replace(/\/\*jshint -[EWI]{1}[0-9]{3} \*\/\r?\n\r?\n?/g, '');
     }
 
 
@@ -202,7 +202,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    src: ['dist/css/*.css', '!dist/css/*.min.css', 'dist/scss/*.scss', 'dist/scss/plugins/*.scss'],
+                    src: ['dist/css/*.css', 'dist/scss/*.scss'],
                     dest: ''
                 }]
             }
@@ -272,7 +272,7 @@ module.exports = function(grunt) {
         // compress js
         uglify: {
             options: {
-                banner: '<%= banner %>\n',
+                banner: '<%= banner %>\n\n',
                 mangle: { except: ['$'] }
             },
             dist: {
@@ -289,10 +289,6 @@ module.exports = function(grunt) {
 
         // compress css
         cssmin: {
-            options: {
-                banner: '<%= banner %>',
-                keepSpecialComments: 0
-            },
             dist: {
                 files: [{
                     expand: true,
@@ -468,8 +464,8 @@ module.exports = function(grunt) {
         'copy:sass_plugins',
         'wrap:sass',
         'sass',
-        'concat:css',
-        'cssmin'
+        'cssmin',
+        'concat:css'
     ]);
 
     grunt.registerTask('build_lang', [

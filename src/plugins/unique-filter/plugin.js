@@ -1,3 +1,9 @@
+/*!
+ * jQuery QueryBuilder Unique Filter
+ * Allows to define some filters as "unique": ie which can be used for only one rule, globally or in the same group.
+ * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ */
+
 QueryBuilder.define('unique-filter', function() {
     this.status.used_filters = {};
 

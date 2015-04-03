@@ -1,13 +1,18 @@
 /*!
- * jQuery QueryBuilder 1.4.2
+ * jQuery QueryBuilder 2.0.0
  * Oversat af Jna Borup Coyle, github@coyle.dk
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
+
 jQuery.fn.queryBuilder.defaults({ lang: {
   "add_rule": "Tilføj regel",
   "add_group": "Tilføj gruppe",
   "delete_rule": "Slet regel",
   "delete_group": "Slet gruppe",
+  "conditions": {
+    "AND": "OG",
+    "OR": "ELLER"
+  },
   "condition_and": "OG",
   "condition_or": "ELLER",
   "operators": {

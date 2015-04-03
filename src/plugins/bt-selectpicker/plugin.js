@@ -1,3 +1,9 @@
+/*!
+ * jQuery QueryBuilder Bootstrap Selectpicker
+ * Applies Bootstrap Select on filters and operators combo-boxes.
+ * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ */
+
 QueryBuilder.define('bt-selectpicker', function(options) {
     if (!$.fn.selectpicker || !$.fn.selectpicker.Constructor) {
         error('Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');

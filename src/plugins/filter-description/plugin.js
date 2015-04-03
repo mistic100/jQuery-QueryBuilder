@@ -1,3 +1,9 @@
+/*!
+ * jQuery QueryBuilder Filter Description
+ * Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.
+ * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ */
+
 QueryBuilder.define('filter-description', function(options) {
     /**
      * INLINE

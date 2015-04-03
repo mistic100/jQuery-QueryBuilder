@@ -1,3 +1,9 @@
+/*!
+ * jQuery QueryBuilder Sortable
+ * Enables drag & drop sort of rules.
+ * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ */
+
 QueryBuilder.define('sortable', function(options) {
     /**
      * Init HTML5 drag and drop

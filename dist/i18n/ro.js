@@ -1,15 +1,18 @@
 /*!
- * jQuery QueryBuilder 1.4.2
+ * jQuery QueryBuilder 2.0.0
  * Romanian translation by ArianServ
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
+
 jQuery.fn.queryBuilder.defaults({ lang: {
   "add_rule": "Adaugă regulă",
   "add_group": "Adaugă grup",
   "delete_rule": "Şterge",
   "delete_group": "Şterge",
-  "condition_and": "ŞI",
-  "condition_or": "SAU",
+  "conditions": {
+    "AND": "ŞI",
+    "OR": "SAU"
+  },
   "operators": {
     "equal": "egal",
     "not_equal": "diferit",

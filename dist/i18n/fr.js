@@ -1,15 +1,18 @@
 /*!
- * jQuery QueryBuilder 1.4.2
+ * jQuery QueryBuilder 2.0.0
  * French translation by Damien "Mistic" Sorel
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
+
 jQuery.fn.queryBuilder.defaults({ lang: {
   "add_rule": "Ajouter une règle",
   "add_group": "Ajouter un groupe",
   "delete_rule": "Supprimer",
   "delete_group": "Supprimer",
-  "condition_and": "ET",
-  "condition_or": "OU",
+  "conditions": {
+    "AND": "ET",
+    "OR": "OU"
+  },
   "operators": {
     "equal": "égal",
     "not_equal": "non égal",
@@ -47,9 +50,11 @@ jQuery.fn.queryBuilder.defaults({ lang: {
     "number_exceed_min": "Doit être plus grand que {0}",
     "number_exceed_max": "Doit être plus petit que {0}",
     "number_wrong_step": "Doit être un multiple de {0}",
+    "datetime_empty": "Valeur vide",
     "datetime_invalid": "Fomat de date invalide ({0})",
     "datetime_exceed_min": "Doit être après {0}",
     "datetime_exceed_max": "Doit être avant {0}",
-    "boolean_not_valid": "N'est pas un booléen"
+    "boolean_not_valid": "N'est pas un booléen",
+    "operator_not_multiple": "L'opérateur {0} ne peut utiliser plusieurs valeurs"
   }
 }});
