@@ -1,19 +1,18 @@
 /*!
- * jQuery QueryBuilder
+ * jQuery QueryBuilder 2.0.0
  * Reference language file
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
+jQuery.fn.queryBuilder.defaults({ lang: {
   "add_rule": "Add rule",
   "add_group": "Add group",
   "delete_rule": "Delete",
   "delete_group": "Delete",
-
-  "condition_and": "AND",
-  "condition_or": "OR",
-
-  "filter_select_placeholder": "------",
-
+  "conditions": {
+    "AND": "AND",
+    "OR": "OR"
+  },
   "operators": {
     "equal": "equal",
     "not_equal": "not equal",
@@ -35,7 +34,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "is null",
     "is_not_null": "is not null"
   },
-  
   "errors": {
     "no_filter": "No filter selected",
     "empty_group": "The group is empty",
@@ -52,8 +50,11 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "number_exceed_min": "Must be greater than {0}",
     "number_exceed_max": "Must be lower than {0}",
     "number_wrong_step": "Must be a multiple of {0}",
+    "datetime_empty": "Empty value",
     "datetime_invalid": "Invalid date format ({0})",
     "datetime_exceed_min": "Must be after {0}",
-    "datetime_exceed_max": "Must be before {0}"
+    "datetime_exceed_max": "Must be before {0}",
+    "boolean_not_valid": "Not a boolean",
+    "operator_not_multiple": "Operator {0} cannot accept multiple values"
   }
 }});

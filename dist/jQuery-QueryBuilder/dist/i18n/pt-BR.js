@@ -1,19 +1,18 @@
 /*!
- * jQuery QueryBuilder
+ * jQuery QueryBuilder 2.0.0
  * Portuguese Brazilian translation by Leandro Gehlen (leandrogehlen@gmail.com)
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
+jQuery.fn.queryBuilder.defaults({ lang: {
   "add_rule": "Nova Regra",
   "add_group": "Novo Gruop",
   "delete_rule": "Excluir",
   "delete_group": "Excluir",
-
-  "condition_and": "E",
-  "condition_or": "OU",
-
-  "filter_select_placeholder": "------",
-
+  "conditions": {
+    "AND": "E",
+    "OR": "OU"
+  },
   "operators": {
     "equal": "Igual",
     "not_equal": "Diferente",
@@ -35,7 +34,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "É nulo",
     "is_not_null": "Não é nulo"
   },
-  
   "errors": {
     "no_filter": "Nenhum filtro selecionado",
     "empty_group": "O grupo está vazio",

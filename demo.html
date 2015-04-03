@@ -11,11 +11,9 @@ redirect_from:
     Basic
   </h1>
 
-  <p>
-    This demo shows the basic features of the QueryBuilder. Click one of the blue buttons to trigger the validation and display the output.
-  </p>
+  <p>This demo shows the basic features of the QueryBuilder. Click one of the blue buttons to trigger the validation and display the output.</p>
 
-  <a href="{{site.github.url}}/dist/demo-basic.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
+  <a href="{{site.github.url}}/assets/demo-basic.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
 
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
     <div id="builder-basic"></div>
@@ -31,11 +29,6 @@ redirect_from:
       <button class="btn btn-primary parse-sql" data-target="basic" data-stmt="false">SQL (raw)</button>
       <button class="btn btn-primary parse-mongo" data-target="basic">MongoDB</button>
     </div>
-
-    <div id="result-basic" class="hide">
-      <h3>Output</h3>
-      <pre></pre>
-    </div>
   </div>
 </section>
 
@@ -45,12 +38,11 @@ redirect_from:
     Widgets
   </h1>
 
-  <p>
-    This demo shows how to integrates widgets into QueryBuilder rules. Widgets used are <a href="https://github.com/eternicode/bootstrap-datepicker">Bootstrap Datepicker</a>, <a href="https://github.com/seiyria/bootstrap-slider">Bootstrap Slider</a> and <a href="https://github.com/brianreavis/selectize.js">Selectize</a>.<br>
-    The filter <b>Coordinates</b> shows how to define a custom input (here two linked &lt;select&gt;) without using a plugin.
-  </p>
+  <p>This demo shows how to integrates widgets into QueryBuilder rules. Widgets used are <a href="https://github.com/eternicode/bootstrap-datepicker">Bootstrap Datepicker</a>, 
+  <a href="https://github.com/seiyria/bootstrap-slider">Bootstrap Slider</a> and <a href="https://github.com/brianreavis/selectize.js">Selectize</a>.<br>
+  The filter <b>Coordinates</b> shows how to define a custom input (here two linked &lt;select&gt;) without using a plugin.</p>
   
-  <a href="{{site.github.url}}/dist/demo-widgets.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
+  <a href="{{site.github.url}}/assets/demo-widgets.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
 
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
     <div id="builder-widgets"></div>
@@ -66,65 +58,57 @@ redirect_from:
       <button class="btn btn-primary parse-sql" data-target="widgets" data-stmt="false">SQL (raw)</button>
       <button class="btn btn-primary parse-mongo" data-target="widgets">MongoDB</button>
     </div>
+  </div>
+</section>
 
-    <div id="result-widgets" class="hide">
-      <h3>Output</h3>
-      <pre></pre>
+
+<section class="bs-docs-section clearfix">
+  <h1 id="plugins" class="page-header">
+    Plugins
+  </h1>
+
+  <p>This demo uses all <a href="{{site.github.url}}/plugins.html">plugins</a> with their default configuration.</p>
+  
+  <a href="{{site.github.url}}/assets/demo-plugins.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
+
+  <div class="col-md-12 col-lg-10 col-lg-offset-1">
+    <div id="builder-plugins"></div>
+
+    <div class="btn-group">
+      <button class="btn btn-warning reset" data-target="plugins">Reset</button>
+      <button class="btn btn-success set" data-target="plugins">Set rules</button>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary parse-json" data-target="plugins">JSON</button>
+      <button class="btn btn-primary parse-sql" data-target="plugins" data-stmt="question_mark">SQL (prepared statement)</button>
+      <button class="btn btn-primary parse-sql" data-target="plugins" data-stmt="false">SQL (raw)</button>
+      <button class="btn btn-primary parse-mongo" data-target="plugins">MongoDB</button>
     </div>
   </div>
 </section>
 
 
-<link href="{{site.github.url}}/dist/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet">
+<link href="{{site.github.url}}/dist/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 <link href="{{site.github.url}}/dist/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
 <link href="{{site.github.url}}/dist/selectize/dist/css/selectize.default.css" rel="stylesheet">
-<link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.min.css" rel="stylesheet">
+<link href="{{site.github.url}}/dist/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+<link href="{{site.github.url}}/dist/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/css/query-builder.default.min.css" rel="stylesheet">
 
 <script src="{{site.github.url}}/dist/momentjs/min/moment.min.js"></script>
-<script src="{{site.github.url}}/dist/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="{{site.github.url}}/dist/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script src="{{site.github.url}}/dist/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 <script src="{{site.github.url}}/dist/selectize/dist/js/standalone/selectize.min.js"></script>
-<script src="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.standalone.min.js"></script>
+<script src="{{site.github.url}}/dist/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/js/query-builder.standalone.js"></script>
 
 <script>var baseurl = '{{site.github.url}}';</script>
-<script src="{{site.github.url}}/dist/demo-basic.js"></script>
-<script src="{{site.github.url}}/dist/demo-widgets.js"></script>
+<script src="{{site.github.url}}/assets/demo-basic.js"></script>
+<script src="{{site.github.url}}/assets/demo-widgets.js"></script>
+<script src="{{site.github.url}}/assets/demo-plugins.js"></script>
+<script src="{{site.github.url}}/assets/demo.js"></script>
 
-<script>
-// set rules
-$('.set').on('click', function() {
-  var rules = $('#builder-'+$(this).data('target')).data('queryBuilder').settings.rules;
-  $('#builder-'+$(this).data('target')).queryBuilder('setRules', rules);
-});
-
-// reset builder
-$('.reset').on('click', function() {
-  $('#builder-'+$(this).data('target')).queryBuilder('reset');
-  $('#result-'+$(this).data('target')).addClass('hide');
-});
-
-// get rules
-$('.parse-json').on('click', function() {
-  var res = $('#builder-'+$(this).data('target')).queryBuilder('getRules');
-  $('#result-'+$(this).data('target')).removeClass('hide')
-    .find('pre').html(
-      JSON.stringify(res, null, 2)
-    );
-});
-
-$('.parse-sql').on('click', function() {
-  var res = $('#builder-'+$(this).data('target')).queryBuilder('getSQL', $(this).data('stmt'));
-  $('#result-'+$(this).data('target')).removeClass('hide')
-    .find('pre').html(
-      res.sql + (res.params ? '\n\n' + JSON.stringify(res.params, null, 2) : '')
-    );
-});
-
-$('.parse-mongo').on('click', function() {
-  var res = $('#builder-'+$(this).data('target')).queryBuilder('getMongo');
-  $('#result-'+$(this).data('target')).removeClass('hide')
-    .find('pre').html(
-      JSON.stringify(res, null, 2)
-    );
-});
-</script>
+<style>
+.code-popup { max-height:500px; }
+</style>

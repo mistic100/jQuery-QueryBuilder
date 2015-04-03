@@ -1,6 +1,26 @@
-$('#demo-builder').queryBuilder({
-  plugins: ['sortable', 'bt-tooltip-errors'],
+var rules_basic = {
+  condition: 'AND',
+  rules: [{
+    id: 'price',
+    operator: 'less',
+    value: 10.25
+  }, {
+    condition: 'OR',
+    rules: [{
+      id: 'category',
+      operator: 'equal',
+      value: 2
+    }, {
+      id: 'category',
+      operator: 'equal',
+      value: 1
+    }]
+  }]
+};
 
+$('#builder-basic').queryBuilder({
+  plugins: ['bt-tooltip-errors'],
+  
   filters: [{
     id: 'name',
     label: 'Name',
@@ -48,29 +68,5 @@ $('#demo-builder').queryBuilder({
     }
   }],
 
-  rules: {
-    condition: 'AND',
-    rules: [{
-      id: 'price',
-      operator: 'less',
-      value: 10.25
-    }, {
-      id: 'id',
-      operator: 'equal',
-      value: ''
-    }, {
-      condition: 'OR',
-      rules: [{
-        id: 'category',
-        operator: 'equal',
-        value: 2
-      }, {
-        id: 'category',
-        operator: 'equal',
-        value: 1
-      }]
-    }]
-  }
+  rules: rules_basic
 });
-
-$('#demo-builder').queryBuilder('getRules');

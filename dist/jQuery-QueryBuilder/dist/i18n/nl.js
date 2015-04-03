@@ -1,19 +1,18 @@
 /*!
- * jQuery QueryBuilder
+ * jQuery QueryBuilder 2.0.0
  * Dutch translation by "Roywcm"
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults.set({ lang: {
+jQuery.fn.queryBuilder.defaults({ lang: {
   "add_rule": "Nieuwe regel",
   "add_group": "Nieuwe groep",
   "delete_rule": "Verwijder",
   "delete_group": "Verwijder",
-
-  "condition_and": "EN",
-  "condition_or": "OF",
-
-  "filter_select_placeholder": "------",
-
+  "conditions": {
+    "AND": "EN",
+    "OR": "OF"
+  },
   "operators": {
     "equal": "gelijk",
     "not_equal": "niet gelijk",
@@ -35,7 +34,6 @@ jQuery.fn.queryBuilder.defaults.set({ lang: {
     "is_null": "is null",
     "is_not_null": "is niet null"
   },
-  
   "errors": {
     "no_filter": "Geen filter geselecteerd",
     "empty_group": "De groep is leeg",

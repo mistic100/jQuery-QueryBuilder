@@ -1,3 +1,35 @@
+var rules_widgets = {
+  condition: 'OR',
+  rules: [{
+    id: 'date',
+    operator: 'equal',
+    value: '1991/11/17'
+  }, {
+    id: 'rate',
+    operator: 'equal',
+    value: 22
+  }, {
+    id: 'category',
+    operator: 'equal',
+    value: '38'
+  }, {
+    condition: 'AND',
+    rules: [{
+      id: 'coord',
+      operator: 'equal',
+      value: 'B.3'
+    }]
+  }]
+};
+
+// Fix for Selectize
+$('#builder-widgets').on('afterCreateRuleInput.queryBuilder', function(e, rule) {
+  if (rule.filter.plugin == 'selectize') {
+    rule.$el.find('.rule-value-container').css('min-width', '200px')
+      .find('.selectize-control').removeClass('form-control');
+  }
+});
+
 $('#builder-widgets').queryBuilder({
   plugins: ['bt-tooltip-errors'],
 
@@ -29,11 +61,11 @@ $('#builder-widgets').queryBuilder({
       max: 100,
       value: 0
     },
-    onAfterSetValue: function($rule, value) {
-      $rule.find('.rule-value-container input').slider('setValue', value[0]);
+    valueSetter: function(rule, value) {
+      rule.$el.find('.rule-value-container input').slider('setValue', value);
     },
-    valueParser: function($rule, value, filter, operator) {
-      return $rule.find('.rule-value-container input').slider('getValue');
+    valueParser: function(rule) {
+      return rule.$el.find('.rule-value-container input').slider('getValue');
     }
   }, {
     id: 'category',
@@ -52,7 +84,7 @@ $('#builder-widgets').queryBuilder({
         var that = this;
 
         if (localStorage.demoData === undefined) {
-          $.getJSON(baseurl + '/dist/demo-data.json', function(data) {
+          $.getJSON(baseurl + '/assets/demo-data.json', function(data) {
             localStorage.demoData = JSON.stringify(data);
             data.forEach(function(item) {
               that.addOption(item);
@@ -66,11 +98,8 @@ $('#builder-widgets').queryBuilder({
         }
       }
     },
-    onAfterCreateRuleInput: function($rule) {
-      $rule.find('.rule-value-container').css('min-width', '200px');
-    },
-    onAfterSetValue: function($rule, value) {
-      $rule.find('.rule-value-container input')[0].selectize.setValue(value);
+    valueSetter: function(rule, value) {
+      rule.$el.find('.rule-value-container input')[0].selectize.setValue(value);
     }
   }, {
     id: 'coord',
@@ -79,10 +108,10 @@ $('#builder-widgets').queryBuilder({
     validation: {
       format: /^[A-C]{1}.[1-6]{1}$/
     },
-    input: function($rule, filter) {
-      var $container = $rule.find('.rule-value-container');
+    input: function(rule, name) {
+      var $container = rule.$el.find('.rule-value-container');
       
-      $container.on('change', '[name=coord_1]', function(){
+      $container.on('change', '[name='+ name +'_1]', function(){
         var h = '';
         
         switch ($(this).val()) {
@@ -97,53 +126,31 @@ $('#builder-widgets').queryBuilder({
             break;
         }
         
-        $container.find('[name=coord_2]').html(h).toggle(h!='');
+        $container.find('[name='+ name +'_2]').html(h).toggle(h!='');
       });
       
       return '\
-      <select name="coord_1"> \
+      <select name="'+ name +'_1"> \
         <option value="-1">-</option> \
         <option value="A">A</option> \
         <option value="B">B</option> \
         <option value="C">C</option> \
       </select> \
-      <select name="coord_2" style="display:none;"></select>';
+      <select name="'+ name +'_2" style="display:none;"></select>';
     },
-    valueParser: function($rule, value, filter, operator) {
-      return $rule.find('[name=coord_1]').val()
-        +'.'+$rule.find('[name=coord_2]').val();
+    valueParser: function(rule) {
+      return rule.$el.find('.rule-value-container [name$=_1]').val()
+        +'.'+ rule.$el.find('.rule-value-container [name$=_2]').val();
     },
-    onAfterSetValue: function($rule, value, filter, operator) {
-      if (operator.accept_values) {
-        var val = value[0].split('.');
+    valueSetter: function(rule, value) {
+      if (rule.operator.nb_inputs > 0) {
+        var val = value.split('.');
         
-        $rule.find('[name=coord_1]').val(val[0]).trigger('change');
-        $rule.find('[name=coord_2]').val(val[1]);
+        rule.$el.find('.rule-value-container [name$=_1]').val(val[0]).trigger('change');
+        rule.$el.find('.rule-value-container [name$=_2]').val(val[1]);
       }
     }
   }],
 
-  rules: {
-    condition: 'OR',
-    rules: [{
-      id: 'date',
-      operator: 'equal',
-      value: '1991/11/17'
-    }, {
-      id: 'rate',
-      operator: 'equal',
-      value: 22
-    }, {
-      id: 'category',
-      operator: 'equal',
-      value: '38'
-    }, {
-      condition: 'AND',
-      rules: [{
-        id: 'coord',
-        operator: 'equal',
-        value: 'B.3'
-      }]
-    }]
-  }
+  rules: rules_widgets
 });

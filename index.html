@@ -5,20 +5,28 @@ description: jQuery plugin for user friendly query/filter creator
 isHome: true
 ---
 
-<section class="bs-docs-section">
-	<h1 id="overview" class="page-header">
-		Overview
-	</h1>
-  <blockquote>
-    QueryBuilder can be used on advanced search engine pages, administration backends, etc. to build complex queries or filters. It is highly customisable and can be used with many jQuery widgets like autocompleters and sliders.<br>
-    It outputs a structured JSON of rules which can be easily parsed to create SQL/NoSQL/whatever queries.<br>
-    <br>
-    But let's look at an example !
-  </blockquote>
+<div class="alert alert-info">
+  <b>Comming from version 1.4.x ?</b> Check the <a href="{{site.github.url}}/dev/migrate-14-20.html">migration guide</a>.
+</div>
+
+<section class="bs-docs-section clearfix">
+  <h1 id="overview" class="page-header">
+    Overview
+  </h1>
+
+  <blockquote>QueryBuilder is an UI component to create queries and filters.</blockquote>
+
+  <ul>
+    <li>It can be used on advanced search engine pages, administration backends, etc.</li>
+    <li>It is highly customisable and is pluggable to many jQuery widgets like autocompleters, sliders and datepickers.</li>
+    <li>It outputs a structured JSON of rules which can be easily parsed to create SQL/NoSQL/whatever queries.</li>
+    <li>And it also comes with a <i>great</i> set of <i>great</i> <a href="{{site.github.url}}/plugins.html">plugins</a> for even more features.</li>
+  </ul>
   
+  <b>But let's look at a live example !</b>
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
-    <div id="demo-builder"></div>
-    <p class="text-center">The full code of this example can be found <a href="{{site.github.url}}/demo-basic.html">here</a>.</p>
+    <div id="builder-basic"></div>
+    <p class="text-center">The full code of this example can be found <a href="{{site.github.url}}/demo.html">here</a>.</p>
   </div>
 </section>
 
@@ -30,15 +38,15 @@ isHome: true
   
   <h3 id="dependencies">Dependencies</h3>
   <ul>
-      <li><a href="http://jquery.com">jQuery</a></li>
-      <li><a href="http://getbootstrap.com">Bootstrap</a> (CSS Buttons and Utilities only)</li>
-      <li><a href="https://github.com/mistic100/microevent.js">MicroEvent (mistic100 version)</a></li>
+      <li><a href="http://jquery.com">jQuery >= 1.9</a></li>
+      <li><a href="http://getbootstrap.com">Bootstrap >= 3.1</a> (CSS Buttons and Utilities only)</li>
       <li><a href="https://github.com/mistic100/jQuery.extendext">$.extendext</a></li>
       <li><a href="http://momentjs.com">MomentJS</a> (optional, for Date/Time validation)</li>
+      <li>Other Bootstrap components used by plugins</li>
   </ul>
 
   <h3 id="letsgo">Let's go!</h3>
-  <p>Include <a href="https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/dist/query-builder.min.css" target="_blank">query-builder.css</a> in your page head and <a href="https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/dist/query-builder.min.js" target="_blank">query-builder.js</a> after dependencies. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
+  <p>Include <a href="{{site.rawSourceUrl}}/dist/css/query-builder.default.min.css" target="_blank">query-builder.css</a> in your page head and <a href="{{site.rawSourceUrl}}/dist/js/query-builder.min.js" target="_blank">query-builder.js</a> after dependencies. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
   
 {% highlight html %}
 <div id="builder"></div>
@@ -50,7 +58,17 @@ isHome: true
 </script>
 {% endhighlight %}
 
-  <p>A <a href="https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/dist/query-builder.standalone.min.js" target="_blank">standalone</a> version is also available, it ships MicroEvent and $.extendext (you still need to add jQuery and Bootstrap).</p>
+  <p>QueryBuilder can also be used with CommonJS :</p>
+
+{% highlight js %}
+require(['jquery', 'query-builder'], function($) {
+  $('#builder').queryBuilder({
+    filters: [ ... ]
+  });
+});
+{% endhighlight %}
+
+  <p>A <a href="{{site.rawSourceUrl}}/dist/js/query-builder.standalone.min.js" target="_blank">standalone</a> version is available, it ships MicroEvent and $.extendext (you still need to add jQuery and Bootstrap).</p>
 </section>
 
 
@@ -79,7 +97,7 @@ isHome: true
         </tr>
         <tr>
           <td>plugins</td>
-          <td>object[]</td>
+          <td>object</td>
           <td></td>
           <td>Configuration of plugins. See the <a href="{{site.github.url}}/plugins.html">page about plugins</a>.</td>
         </tr>
@@ -87,7 +105,7 @@ isHome: true
           <td>allow_groups</td>
           <td>boolean|int</td>
           <td>true</td>
-          <td>Number of nested groups allowed. <code>true</code> for no limit.</td>
+          <td>Number of allowed nested groups. <code>true</code> for no limit.</td>
         </tr>
         <tr>
           <td>allow_empty</td>
@@ -102,23 +120,34 @@ isHome: true
           <td>When an error occurs on a rule, display an icon <i class="glyphicon glyphicon-warning-sign"></i> with a tooltip explaining the error.</td>
         </tr>
         <tr>
-          <td>operators</td>
-          <td>object[]</td>
-          <td></td>
-          <td>Array of operators. <a href="#operators">See below</a>.</td>
-        </tr>
-        <tr>
           <td>conditions</td>
           <td>string[]</td>
           <td>['AND', 'OR']</td>
-          <td>Array of available group conditions. Use the <a href="#lang">lang</a> option to change the label
-            (the keyword is always lower-cased before lookup in <code>lang</code> array).</td>
+          <td>Array of available group conditions. Use the <code>lang</code> option to change the label.</td>
         </tr>
         <tr>
           <td>default_condition</td>
           <td>string</td>
           <td>'AND'</td>
           <td>Default active condition.</td>
+        </tr>
+        <tr>
+          <td>inputs_separator</td>
+          <td>string</td>
+          <td>' , '</td>
+          <td>Piece of HTML used to separate multiple inputs (for <code>between</code> operator).</td>
+        </tr>
+        <tr>
+          <td>select_placeholder</td>
+          <td>string</td>
+          <td>'------'</td>
+          <td>Label of the "no filter" option.</td>
+        </tr>
+        <tr>
+          <td>operators</td>
+          <td>object[]</td>
+          <td></td>
+          <td>Configuration of operators. <a href="#operators">See below</a>.</td>
         </tr>
         <tr>
           <td>lang</td>
@@ -130,50 +159,10 @@ isHome: true
           <td>icons</td>
           <td>object</td>
           <td><i>glyphicons</i></td>
-          <td>Array of icon mappings. Defaults to using Glyphicons. <a href="#icons">See below</a>.</td>
-        </tr>
-        <tr>
-          <td>onValidationError</td>
-          <td>function</td>
-          <td>null</td>
-          <td>Function called when a validation error occurs. It takes 5 parameters:
-            <ul>
-              <li><code>$rule</code> the jQuery <code>&lt;li></code> element of the rule throwing the error</li>
-              <li><code>error</code> an array containing an error code</li>
-              <li><code>value</code></li>
-              <li><code>filter</code></li>
-              <li><code>operator</code></li>
-            </ul>
-            You can also use the <a href="#events">validationError.queryBuilder</a> event.
-          </td>
-        </tr>
-        <tr>
-          <td>onAfterAddGroup</td>
-          <td>function</td>
-          <td>null</td>
-          <td>Function called just after adding a group. It takes 1 parameter:
-            <ul>
-              <li><code>$group</code> is the jQuery <code>&lt;dl></code> element of the group</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>onAfterAddRule</td>
-          <td>function</td>
-          <td>null</td>
-          <td>Function called just after adding a rule. It takes 1 parameter:
-            <ul>
-              <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
-            </ul>
-          </td>
+          <td>Font-icons used in the builder. Defaults to using Glyphicons. <a href="#icons">See below</a>.</td>
         </tr>
       </tbody>
     </table>
-  </div>
-  
-  <div class="bs-callout bs-callout-info">
-    <h4>Callbacks context</h4>
-    <p>In all callbacks, the <code>this</code> context is the QueryBuilder object currently used. Among other things it contains <code>this.settings</code> which holds the current configuration.</p>
   </div>
   
   <h3 id="filters">Filters</h3>
@@ -198,40 +187,74 @@ isHome: true
         <tr>
           <td>field</td>
           <td>string</td>
-          <td><code>id</code></td>
+          <td><code>=id</code></td>
           <td>Field used by the filter, multiple filters can use the same field.</td>
         </tr>
         <tr>
           <td>label</td>
           <td>string</td>
-          <td><code>field</code></td>
+          <td><code>=field</code></td>
           <td>Label used to display the filter.</td>
+        </tr>
+        <tr>
+          <td>optgroup</td>
+          <td>string</td>
+          <td>null</td>
+          <td>Optional label of an <code>&lt;optgroup&gt;</code> in the filters dropdown.</td>
         </tr>
         <tr>
           <td>type</td>
           <td>string</td>
           <td><span class="label label-danger">required</span></td>
-          <td>Type of the field. Available types are <code>string</code>, <code>integer</code>, <code>double</code>, <code>date</code>, <code>time</code> and <code>datetime</code>.</td>
+          <td>Type of the field. Available types are <code>string</code>, <code>integer</code>, <code>double</code>, <code>date</code>, <code>time</code>, <code>datetime</code> and <code>boolean</code>.</td>
         </tr>
         <tr>
           <td>input</td>
           <td>string|function</td>
           <td>'text'</td>
-          <td>Type of input used. Available types are <code>text</code>, <code>textarea</code>, <code>radio</code>, <code>checkbox</code> and <code>select</code>.
+          <td>Type of input used. Available types are <code>text</code>, <code>textarea</code>, <code>radio</code>, <code>checkbox</code> and <code>select</code>.<br>
             It can also be a function which returns the HTML of the said input, this function takes 2 parameters:
             <ul>
-              <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
-              <li><code>filter</code></li>
-              <li><code>input_name</code></li>
+              <li><code>rule</code> a <b>Rule</b> object</li>
+              <li><code>input_name</code> the name of the input</li>
             </ul>
           </td>
         </tr>
         <tr>
           <td>values</td>
-          <td>array</td>
+          <td>array|object</td>
           <td><span class="label label-warning">required*</span></td>
-          <td><i>Required for <code>radio</code> and <code>checkboxe</code> inputs. Generally needed for <code>select</code> inputs.</i><br>
-            Hashmap of options available. Keys are used as values and values are used as labels.</td>
+          <td><i>Required for <code>radio</code> and <code>checkbox</code> inputs. Generally needed for <code>select</code> inputs.</i><br>
+            <button class="btn btn-primary btn-xs" data-bootbox="filter_values_details">More details</button>
+            <div id="filter_values_details" class="hidden" title="Filter values">
+              <p>Three forms are allowed for the <code>values</code> object.</p>
+              <ol>
+                <li>Simple array of values, labels will be the values.
+{% highlight js %}
+values: ['one', 'two', 'three']
+{% endhighlight %}
+                </li>
+                <li>Key-value object, keys are input values and values and labels.
+{% highlight js %}
+values: {
+  'one': 'Un',
+  'two': 'Deux',
+  'three': 'Trois'
+}
+{% endhighlight %}
+                </li>
+                <li>Because the order of key-value objects is uncertain, you can also use an array of one-element objects.
+{% highlight js %}
+values: [
+  {'one': 'Un'},
+  {'two': 'Deux'},
+  {'three': 'Trois'}
+]
+{% endhighlight %}
+                </li>
+              </ol>
+            </div>
+          </td>
         </tr>
         <tr>
           <td>default_value</td>
@@ -243,13 +266,13 @@ isHome: true
           <td>size</td>
           <td>int</td>
           <td></td>
-          <td><code>size</code> attribute of <code>text</code> inputs and <code>cols</code> attribute of <code>textarea</code> inputs. Ignored otherwise.</td>
+          <td><i>Only for <code>text</code> and <code>textarea</code> inputs:</i> horizontal size of the input.</td>
         </tr>
         <tr>
           <td>rows</td>
           <td>int</td>
           <td></td>
-          <td><code>rows</code> attribute of <code>textarea</code> inputs. Ignored otherwise.</td>
+          <td><i>Only for <code>textarea</code> inputs:</i> vertical size of the input.</td>
         </tr>
         <tr>
           <td>multiple</td>
@@ -261,7 +284,7 @@ isHome: true
           <td>placeholder</td>
           <td>string</td>
           <td></td>
-          <td><i>Only for <code>text</code> inputs:</i> placeholder to display (uses HTML5 feature).</td>
+          <td><i>Only for <code>text</code> and <code>textarea</code> inputs:</i> placeholder to display inside the input.</td>
         </tr>
         <tr>
           <td>vertical</td>
@@ -270,22 +293,41 @@ isHome: true
           <td><i>Only for <code>radio</code> and <code>checkbox</code> inputs:</i> display inputs vertically on not horizontally.</td>
         </tr>
         <tr>
-          <td>optgroup</td>
-          <td>string</td>
-          <td>null</td>
-          <td>Optional label of an <code>&lt;optgroup&gt;</code> in the filters dropdown.</td>
-        </tr>
-        <tr>
           <td>validation</td>
           <td>object</td>
-          <td>{}</td>
+          <td></td>
           <td>Object of options for rule validation. <a href="#validation">See below</a>.</td>
         </tr>
         <tr>
           <td>operators</td>
           <td>array</td>
-          <td>[]</td>
-          <td>Array of operators types to use for this filter. If empty the filter will use all applicable operators.</td>
+          <td></td>
+          <td>Array of operators types to use for this filter. If empty the filter will use all applicable operators.<br>
+            <button class="btn btn-primary btn-xs" data-bootbox="default_operators">Show all operators</button>
+            <div id="default_operators" title="All operators" class="hidden">
+              <ul>
+                <li>equal</li>
+                <li>not_equal</li>
+                <li>in</li>
+                <li>not_in</li>
+                <li>less</li>
+                <li>less_or_equal</li>
+                <li>greater</li>
+                <li>greater_or_equal</li>
+                <li>etween</li>
+                <li>begins_with</li>
+                <li>not_begins_with</li>
+                <li>contains</li>
+                <li>not_contains</li>
+                <li>ends_with</li>
+                <li>not_ends_with</li>
+                <li>is_empty</li>
+                <li>is_not_empty</li>
+                <li>is_null</li>
+                <li>is_not_null</li>
+              </ul>
+            </div>
+          </td>
         </tr>
         <tr>
           <td>plugin</td>
@@ -300,45 +342,19 @@ isHome: true
           <td>Object of parameters to pass to the plugin.</td>
         </tr>
         <tr>
-          <td>onValidationError</td>
-          <td>function</td>
-          <td>null</td>
-          <td>Called before the main <code>onValidationError</code>. Takes the same parameters.</td>
-        </tr>
-        <tr>
-          <td>onAfterCreateRuleInput</td>
-          <td>function</td>
-          <td>null</td>
-          <td>Function called after creating the input of a rule, typically at rule addition and filter change. It takes 2 parameters:
-            <ul>
-              <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
-              <li><code>filter</code></li>
-            </ul>
-            If a plugin is active on the filter, it is applied after this callback.
-          </td>
-        </tr>
-        <tr>
-          <td>onAfterChangeOperator</td>
-          <td>function</td>
-          <td>null</td>
-          <td>Function called after changing the rule operator. It takes 3 parameters:
-            <ul>
-              <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
-              <li><code>filter</code></li>
-              <li><code>operator</code></li>
-            </ul>
-          </td>
+          <td>data</td>
+          <td>object</td>
+          <td></td>
+          <td>Additionnal data not use by QueryBuilder but that will be added to the output rules object. Use this to store any functional data you need.</td>
         </tr>
         <tr>
           <td>valueParser</td>
           <td>function</td>
           <td>null</td>
-          <td>Modifier applied to each value in <code>getRules</code> function. It takes 4 parameters:
+          <td>Modifier applied to each value in <code>getRules</code> function. It will be called after teh default process. It takes 2 parameters:
             <ul>
-              <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
+              <li><code>rule</code> the <b>Rule</b> object</li>
               <li><code>value</code></li>
-              <li><code>filter</code></li>
-              <li><code>operator</code></li>
             </ul>
           </td>
         </tr>
@@ -346,25 +362,81 @@ isHome: true
           <td>valueSetter</td>
           <td>function</td>
           <td>null</td>
-          <td>Function used to set the input(s) value in <code>getRules</code> function. If provided the default function is not run. It takes 4 parameters:
+          <td>Function used to set the input(s) value in <code>getRules</code> function. If provided the default function is not run. It takes 2 parameters:
             <ul>
-              <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
+              <li><code>rule</code> the <b>Rule</b> object</li>
               <li><code>value</code></li>
-              <li><code>filter</code></li>
-              <li><code>operator</code></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <h3 id="validation">Validation</h3>
+  <p>QueryBuilder integrates a configurable validation system triggered when <code>validate</code> or <code>getRules</code> methods are called. The default validator checks for emptyness and can be extended with format check and bounds.<br>
+  Optionally you can define a custom validation callback.</p>
+
+  <p>Here are the available attributes of the <code>validation</code> field of each filter:</p>
+  
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th style="width: 130px;">Name</th>
+          <th style="width: 100px;">type</th>
+          <th>description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>format</td>
+          <td>string|object</td>
+          <td>
+            <ul>
+              <li>For <code>date</code>, <code>time</code>, <code>datetime</code>: a valid <a href="http://momentjs.com/docs/#/parsing/string-format/">MomentJS string format</a></li>
+              <li>For <code>string</code>: a regular expression (plain or RegExp object)</li>
             </ul>
           </td>
         </tr>
         <tr>
-          <td>onAfterSetValue</td>
-          <td>function</td>
-          <td>null</td>
-          <td>Function called after setting the value of the rule in <code>setRules</code> function. It takes 4 parameters:
+          <td>min</td>
+          <td>integer|double|string</td>
+          <td>
             <ul>
-              <li><code>$rule</code> is the jQuery <code>&lt;li></code> element of the rule</li>
+              <li>For <code>integer</code>, <code>double</code>: minimum value</li>
+              <li>For <code>date</code>, <code>time</code>, <code>datetime</code>: minimum value, respecting <code>format</code></li>
+              <li>For <code>string</code>: minimum length</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>max</td>
+          <td>integer|double|string</td>
+          <td>
+            <ul>
+              <li>For <code>integer</code>, <code>double</code>: maximum value</li>
+              <li>For <code>date</code>, <code>time</code>, <code>datetime</code>: maximum value, respecting <code>format</code></li>
+              <li>For <code>string</code>: maximum length</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>step</td>
+          <td>integer|double</td>
+          <td>
+            <ul>
+              <li>For <code>integer</code>, <code>double</code>: step value (for <code>double</code> you should always provide this value in order to pass the browser validation on <code>number</code> inputs)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>callback</td>
+          <td>function</td>
+          <td>A function used to perform the validation. If provided, the default validation will not be performed. It must returns <code>true</code> if the value is valid or an error string otherwise. It takes 2 parameters:
+            <ul>
               <li><code>value</code></li>
-              <li><code>filter</code></li>
-              <li><code>operator</code></li>
+              <li><code>rule</code> the <b>Rule</b> object</li>
             </ul>
           </td>
         </tr>
@@ -373,17 +445,27 @@ isHome: true
   </div>
   
   <h3 id="methods">Methods</h3>
+  <h4>validate</h4>
+  <p>Returns a boolean whereas the builder is valid or not. Use the <code>validationError</code> event to catch per-rule validation errors. If <code>display_errors</code> is enabled the invalid rules will turn red.</p>
+
   <h4>getRules</h4>
-  <p>Performs validation and returns the rules as a plain object. See the <a href="demo-basic.html">basic demo</a> for output example.</p>
+  <p>Performs validation and returns the rules as a plain JSON object. See the <a href="{{site.github.url}}/demo.html">demo</a> for output example.</p>
 {% highlight javascript %}
 $('#builder').queryBuilder('getRules')
 {% endhighlight %}
+
+  <div class="bs-callout bs-callout-info">
+    <h4>Other formats</h4>
+    <p>For other output formats like <b>SQL</b> and <b>MongoDB</b>, please refer to the <a href="{{site.github.url}}/plugins.html#import-export">plugins</a> page.</p>
+  </div>
   
   <h4>setRules</h4>
   <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>.</p>
 {% highlight javascript %}
 $('#builder').queryBuilder('setRules', { ... })
 {% endhighlight %}
+
+  <p>Each rule can have an additional <code>data</code> parameter wich will be merge with the filter data when calling <code>getRules</code>.</p>
 
   <p>Each rule can have an additional <code>flags</code> parameter which will control the editability of the rule.</p>
 
@@ -449,82 +531,13 @@ $('#builder').queryBuilder('destroy')
 {% endhighlight %}
   
   <h3 id="events">Events</h3>
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped">
-      <thead>
-       <tr>
-         <th style="width: 150px;">Event type</th>
-         <th>description</th>
-       </tr>
-      </thead>
-      <tbody>
-       <tr>
-         <td>validationError.queryBuilder</td>
-         <td>Fired when a validation error occurred. The Event object contains the following attributes:
-            <ul>
-              <li><code>targetRule</code> DOM <code>&lt;li></code> element of the rule throwing the error</li>
-              <li><code>error</code> an array containing an error code</li>
-              <li><code>value</code></li>
-              <li><code>filter</code></li>
-              <li><code>operator</code></li>
-              <li><code>builder</code> instance of QueryBuilder</li>
-            </ul>
-            Calling <code>preventDefault()</code> on the Event object will disable the error warning when <code>display_errors</code> is true.
-         </td>
-       </tr>
-       <tr>
-         <td>addGroup.queryBuilder</td>
-         <td>Fired before adding a group. The Event object contains the following attributes:
-            <ul>
-              <li><code>group</code> DOM element (detached) of the group</li>
-              <li><code>parent</code> DOM element where the group will be appended</li>
-              <li><code>group_id</code> the group identifier</li>
-              <li><code>level</code> the level of the group (0 is root)</li>
-              <li><code>addRule</code> will an empty rule be added ?</li>
-              <li><code>builder</code> instance of QueryBuilder</li>
-            </ul>
-         </td>
-       </tr>
-       <tr>
-         <td>deleteGroup.queryBuilder</td>
-         <td>Fired before deleting a group. The Event object contains the following attributes:
-            <ul>
-              <li><code>group</code> DOM element of the group</li>
-              <li><code>group_id</code> the group identifier</li>
-              <li><code>builder</code> instance of QueryBuilder</li>
-            </ul>
-         </td>
-       </tr>
-       <tr>
-         <td>addRule.queryBuilder</td>
-         <td>Fired before adding a rule. The Event object contains the following attributes:
-            <ul>
-              <li><code>rule</code> DOM element (detached) of the rule</li>
-              <li><code>parent</code> DOM element where the rule will be appended</li>
-              <li><code>rule_id</code> the rule identifier</li>
-              <li><code>builder</code> instance of QueryBuilder</li>
-            </ul>
-         </td>
-       </tr>
-       <tr>
-         <td>deleteRule.queryBuilder</td>
-         <td>Fired before deleting a rule. The Event object contains the following attributes:
-            <ul>
-              <li><code>rule</code> DOM element of the rule</li>
-              <li><code>rule_id</code> the rule identifier</li>
-              <li><code>builder</code> instance of QueryBuilder</li>
-            </ul>
-         </td>
-       </tr>
-      </tbody>
-    </table>
-    
-    <p>On all events you can call <code>preventDefault()</code> to stop the related action.</p>
-    
-    <p>Default error codes are: no_filter, empty_group, radio_empty, checkbox_empty, select_empty, string_exceed_min_length, string_exceed_max_length, string_invalid_format, number_nan, number_not_integer, number_not_double, number_exceed_min, number_exceed_max, number_wrong_step, datetime_invalid, datetime_exceed_min, datetime_exceed_max.</p>
-  </div>
-</section>
+  <p>QueryBuilder uses events to notify the "outer world" about various things happening, like adding a rule or when a validation error happens. The events system is also used by plugins.</p>
 
+  <p><a class="btn btn-primary" href="{{site.github.url}}/dev/events.html">Read more about events</a></p>
+  
+  <h3 id="themes">Themes</h3>
+  <p>QueryBuilder comes with two colors-schemes: <a href="{{site.rawSourceUrl}}/dist/css/query-builder.default.min.css">default</a> (clear) and <a href="{{site.rawSourceUrl}}/dist/css/query-builder.dark.min.css">dark</a>. Change the active theme only by switching stylesheet, you cannot use the two colors-schemes on the same page.</p>
+</section>
 
 <section class="bs-docs-section">
   <h1 id="advanced" class="page-header">
@@ -546,103 +559,53 @@ $('#builder').queryBuilder('destroy')
         <tr>
           <td>type</td>
           <td>string</td>
-          <td>Identifier of the operator.</td>
+          <td>Identifier of the operator, use the <code>lang.operators</code> to translate give a human readable name to your operator.</td>
         </tr>
         <tr>
-          <td>accept_values</td>
+          <td>nb_inputs</td>
           <td>int</td>
           <td>The number of inputs displayed. Typical values are <code>0</code> (<code>is_null</code> &amp; similar operators),
             <code>1</code> (most operators) and <code>2</code> (<code>between</code> operator).
           </td>
         </tr>
         <tr>
+          <td>multiple</td>
+          <td>boolean</td>
+          <td>Inform the builder that each input can have multiple values. <code>true</code> for
+            <code>in, bot_in</code>, <code>false</code> otherwise.
+          </td>
+        </tr>
+        <tr>
           <td>apply_to</td>
           <td>array</td>
-          <td>An array containing <code>string</code>, <code>number</code>, <code>datetime</code>.</td>
+          <td>An array containing <code>string</code>, <code>number</code>, <code>datetime</code>, <code>boolean</code>.</td>
         </tr>
       </tbody>
     </table>
   </div>
   
-  <p>Default operators are: equal, not_equal, in, not_in, less, less_or_equal, greater, greater_or_equal, between, begins_with, not_begins_with, contains, not_contains, ends_with, not_ends_with, is_empty, is_not_empty, is_null, is_not_null. Check their configuration <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L131-150">in the source code</a>.</p>
-  
-  <h3 id="validation">Validation</h3>
-  <p>QueryBuilder integrates a configurable validation system triggered when <code>getRules</code> method is called. The default validator checks for emptyness and can be extended with format check an bounds.<br>
-  Optionally you can define a custom validation callback.</p>
-
-  <p>Here are the available attributes of the <code>validation</code> field of each filter:</p>
-  
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th style="width: 130px;">Name</th>
-          <th style="width: 100px;">type</th>
-          <th>description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>format</td>
-          <td>string|object</td>
-          <td>
-            <ul>
-              <li>For <code>date</code>, <code>time</code>, <code>datetime</code>: a valid <a href="http://momentjs.com/docs/#/parsing/string-format/">MomentJS string format</a></li>
-              <li>For <code>string</code>: a regular expression (plain or RegExp object)</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>min</td>
-          <td>integer|double|string</td>
-          <td>
-            <ul>
-              <li>For <code>integer</code>, <code>double</code>: minimum value</li>
-              <li>For <code>date</code>, <code>time</code>, <code>datetime</code>: minimum value, respecting <code>format</code></li>
-              <li>For <code>string</code>: minimum length</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>max</td>
-          <td>integer|double|string</td>
-          <td>
-            <ul>
-              <li>For <code>integer</code>, <code>double</code>: maximum value</li>
-              <li>For <code>date</code>, <code>time</code>, <code>datetime</code>: maximum value, respecting <code>format</code></li>
-              <li>For <code>string</code>: maximum length</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>step</td>
-          <td>integer|double</td>
-          <td>
-            <ul>
-              <li>For <code>integer</code>, <code>double</code>: step value (for <code>double</code> you should always provide this value in order to pass the browser validation on <code>number</code> inputs)</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>callback</td>
-          <td>function</td>
-          <td>A function used to perform the validation. If provided, the default validation will not be performed. It must returns <code>true</code> if the value is valid or an error string otherwise. It takes 4 parameters:
-            <ul>
-              <li><code>value</code></li>
-              <li><code>filter</code></li>
-              <li><code>operator</code></li>
-              <li><code>$rule</code>, the jQuery <code>&lt;li&gt;</code> element of the rule</li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <p>Check the default operators configuration <a href="{{site.sourceUrl}}/src/defaults.js#L107-127">in the source code</a>.</p>
   
   <h3 id="lang">Translation</h3>
-  <p>Some default translation files are available in the <a href="https://github.com/mistic100/jQuery-QueryBuilder/tree/master/dist/i18n">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<br>
-  Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators and conditions.<br>
-  Default strings <a href="https://github.com/mistic100/jQuery-QueryBuilder/blob/master/src/query-builder.js#L76-129">in the source code</a>.</p>
+  <p>Translation files are available in the <a href="https://github.com/mistic100/jQuery-QueryBuilder/tree/master/dist/i18n">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<p>
+
+  <p>Available languages are (some partially translated) :<br>
+    <i class="flag flag-de"></i> German
+    <i class="flag flag-dk"></i> Danish
+    <i class="flag flag-es"></i> Spanish
+    <i class="flag flag-fr"></i> French
+    <i class="flag flag-gb"></i> English
+    <i class="flag flag-it"></i> Italian
+    <i class="flag flag-nl"></i> Dutch
+    <i class="flag flag-no"></i> Norwegian
+    <i class="flag flag-pl"></i> Polish
+    <i class="flag flag-pt"></i> Portuguese
+    <i class="flag flag-ro"></i> Romanian
+    <i class="flag flag-ru"></i> Rusian
+  </p>
+
+  <p>Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators and conditions.<br>
+  Default english strings <a href="{{site.sourceUrl}}/src/i18n/en.json#1">in the source code</a>.</p>
 
   <h3 id="icons">Icons</h3>
   <p>The <code>icons</code> option provides a way of using alternate icons sets. Available attributes:</p>
@@ -685,11 +648,26 @@ $('#builder').queryBuilder('destroy')
     </table>
   </div>
 
-  <h3 id="build">Custom build</h3>
-  <p>The distributed version of QueryBuilder (in <code>dist</code> directory) contains all <a href="{{site.github.url}}/plugins.html">plugins</a> and is English only. You can run the Grunt task provided with the library to select which plugins to include and load another language.</p>
+  <h3 id="inside_the_box">Inside the box</h3>
+  <p>You might have noticed that callbacks and events reffer to two objects <b>Rule</b> and <b>Group</b>. These objects are part of the data model with partial data-binding used internally by QueryBuilder. Here the structure of these two objects. Most attributes will live-update the builder when modified.</p>
 
-  <p><code>--modules</code>: comma separated list of plugins or <b>none</b><br>
-  <code>--lang</code>: language code.</p>
+  <div class="container-fluid">
+    <div class="col-sm-6">
+      <div id="tree-common"></div>
+    </div>
+    <div class="col-sm-6">
+      <div id="tree-rule"></div>
+      <div id="tree-group"></div>
+    </div>
+  </div>
+
+  <h3 id="build">Custom build</h3>
+  <p>The distributed version of QueryBuilder (in <code>dist</code> directory) contains all plugins and is English only. You can run the Grunt task provided with the library to select which plugins to include and load another language.</p>
+
+  <ul>
+    <li><code>--modules</code>: comma separated list of plugins or <b>false</b></li>
+    <li><code>--lang</code>: language code.</li>
+  </ul>
 
 {% highlight bash %}
 # list available plugins and languages
@@ -704,6 +682,15 @@ grunt --modules=false --lang=de
 </section>
 
 
-<link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.min.css" rel="stylesheet">
-<script src="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/query-builder.standalone.min.js"></script>
-<script src="{{site.github.url}}/dist/demo-index.js"></script>
+<link href="{{site.github.url}}/dist/bootstrap-treeview/dist/bootstrap-treeview.min.css" rel="stylesheet">
+<link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/css/query-builder.default.min.css" rel="stylesheet">
+<link href="{{site.github.url}}/assets/flags/flags.css" rel="stylesheet">
+
+<style>
+.flag { display: inline-block; }
+</style>
+
+<script src="{{site.github.url}}/dist/bootstrap-treeview/dist/bootstrap-treeview.min.js"></script>
+<script src="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/js/query-builder.standalone.min.js"></script>
+<script src="{{site.github.url}}/assets/demo-basic.js"></script>
+<script src="{{site.github.url}}/assets/index.js"></script>

@@ -2,14 +2,17 @@
 Gemfile.lock
 
 # commit minimum dependencies
+/dist/**/*.map
 /dist/bootstrap
-/dist/bootstrap-datepicker/*
-!/dist/bootstrap-datepicker/css
-!/dist/bootstrap-datepicker/js*
-/dist/bootstrap-datepicker/js/locales
 /dist/jquery
+/dist/bootstrap-datepicker/*
+!/dist/bootstrap-datepicker/dist
+/dist/bootstrap-datepicker/dist/locales
+/dist/bootstrap-treeview/*
+!/dist/bootstrap-treeview/dist
 /dist/jQuery-QueryBuilder/*
 !/dist/jQuery-QueryBuilder/dist
+/dist/jQuery-QueryBuilder/dist/scss
 /dist/microplugin
 /dist/modernizr
 /dist/momentjs/*
@@ -24,4 +27,8 @@ Gemfile.lock
 /dist/sifter
 /dist/jquery-bridget
 /dist/jquery-extendext
-/dist/microevent-mistic100
+/dist/awesome-bootstrap-checkbox/*
+!/dist/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css
+/dist/bootstrap-select/*
+!/dist/bootstrap-select/dist
+/dist/bootstrap-select/dist/js/i18n

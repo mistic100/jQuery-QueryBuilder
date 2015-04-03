@@ -1,0 +1,207 @@
+---
+layout: default
+title: Migrate from 1.4.x to 2.x
+hide: true
+---
+
+<p>Though there were major architectural changes in QueryBuilder 2, basic usage remains the same. The only big change is about callbacks: <b>there are no more callbacks !</b> everything is done via events, which also changed a bit.</p>
+
+<section class="bs-docs-section">
+  <h1 id="events" class="page-header">
+    Changes in events
+  </h1>
+  
+  <p>There were previously only 5 events, all five have been modified, four of them have been renamed and 15 new were added !</p>
+  
+  <b>The renamed events are :</b>
+  <ul>
+    <li>addGroup.queryBuilder <i class="glyphicon glyphicon-arrow-right"></i> beforeAddGroup.queryBuilder</li>
+    <li>deleteGroup.queryBuilder <i class="glyphicon glyphicon-arrow-right"></i> beforeDeleteGroup.queryBuilder</li>
+    <li>addRule.queryBuilder <i class="glyphicon glyphicon-arrow-right"></i> beforeAddRule.queryBuilder</li>
+    <li>deleteRule.queryBuilder <i class="glyphicon glyphicon-arrow-right"></i> beforeDeleteRule.queryBuilder</li>
+  </ul>
+  
+  <p>Be sure to check the documentation about <a href="{{site.github.url}}/dev/events.html">events</a> to know the new usages.</p>
+</section>
+  
+<section class="bs-docs-section">
+  <h1 id="callbacks" class="page-header">
+   Migrate callbacks
+  </h1>
+  
+  <p>In the following I will illustrate how to convert each 1.4 callback to 2.0 events.</p>
+
+  
+  <h2 id="onValidationError">onValidationError</h2>
+
+  <h3>1.4.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  /* ... */
+  onValidationError: function($rule, error, value, filter, operator) {
+    if (filter == 'name') {
+      $rule.something();
+    }
+  }
+});
+
+// OR
+
+$('#builder').queryBuilder({
+  filters: [{
+    id: 'name',
+    onValidationError: function($rule, error, value, filter, operator) {
+      $rule.something();
+    }
+  }]
+});
+{% endhighlight %}
+
+  <h3>2.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  /* ... */
+});
+
+$('#builder').on('validationError.queryBuilder', function(e, node, error, value) {
+  // node is a Rule or a Group
+  if (node.filter && node.filter.id == 'name') {
+    node.$el.something();
+  }
+});
+{% endhighlight %}
+
+
+  <h2 id="onAfterAddGroup">onAfterAddGroup</h2>
+
+  <h3>1.4.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  /* ... */
+  onAfterAddGroup: function($group) {
+    $group.something();
+  }
+});
+{% endhighlight %}
+
+  <h3>2.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  /* ... */
+});
+
+$('#builder').on('afterAddGroup.queryBuilder', function(e, group) {
+  group.$el.something();
+});
+{% endhighlight %}
+
+
+  <h2 id="onAfterAddRule">onAfterAddRule</h2>
+
+  <h3>1.4.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  /* ... */
+  onAfterAddRule: function($rule) {
+    $rule.something();
+  }
+});
+{% endhighlight %}
+
+  <h3>2.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  /* ... */
+});
+
+$('#builder').on('afterAddRule.queryBuilder', function(e, rule) {
+  rule.$el.something();
+});
+{% endhighlight %}
+
+
+  <h2 id="onAfterCreateRuleInput">onAfterCreateRuleInput</h2>
+
+  <h3>1.4.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  filters: [{
+    id: 'name',
+    onAfterCreateRuleInput: function($rule, filter) {
+      $rule.something();
+    }
+  }]
+});
+{% endhighlight %}
+
+  <h3>2.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  /* ... */
+});
+
+$('#builder').on('afterCreateRuleInput.queryBuilder', function(e, rule) {
+  if (rule.filter.id == 'name') {
+    node.$el.something();
+  }
+});
+{% endhighlight %}
+
+
+  <h2 id="onAfterChangeOperator">onAfterChangeOperator</h2>
+
+  <h3>1.4.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  filters: [{
+    id: 'name',
+    onAfterChangeOperator: function($rule, filter, operator) {
+      if (operator == 'equal') {
+        $rule.something();
+      }
+    }
+  }]
+});
+{% endhighlight %}
+
+  <h3>2.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  /* ... */
+});
+
+$('#builder').on('afterUpdateRuleOperator.queryBuilder', function(e, rule) {
+  if (rule.filter.id == 'name' && rule.operator.type == 'equal') {
+    node.$el.something();
+  }
+});
+{% endhighlight %}
+
+
+  <h2 id="onAfterSetValue">onAfterSetValue</h2>
+
+  <h3>1.4.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  filters: [{
+    id: 'name',
+    onAfterSetValue: function($rule, value, filter, operator) {
+      $rule.something(value);
+    }
+  }]
+});
+{% endhighlight %}
+
+  <h3>2.x</h3>
+{% highlight javascript %}
+$('#builder').queryBuilder({
+  /* ... */
+});
+
+$('#builder').on('afterSetRuleValue.queryBuilder', function(e, rule, value) {
+  if (rule.filter.id == 'name') {
+    node.$el.something(value);
+  }
+});
+{% endhighlight %}
+</section>

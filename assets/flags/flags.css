@@ -1,0 +1,20 @@
+/* https://www.flag-sprites.com */
+
+.flag {
+	width: 16px;
+	height: 11px;
+	background:url(flags.png) no-repeat
+}
+
+.flag.flag-de {background-position: -16px 0}
+.flag.flag-dk {background-position: -32px 0}
+.flag.flag-es {background-position: -48px 0}
+.flag.flag-fr {background-position: 0 -11px}
+.flag.flag-gb {background-position: -16px -11px}
+.flag.flag-it {background-position: -32px -11px}
+.flag.flag-nl {background-position: -48px -11px}
+.flag.flag-no {background-position: 0 -22px}
+.flag.flag-pl {background-position: -16px -22px}
+.flag.flag-pt {background-position: -32px -22px}
+.flag.flag-ro {background-position: -48px -22px}
+.flag.flag-ru {background-position: 0 -33px}

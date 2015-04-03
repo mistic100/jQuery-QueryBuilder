@@ -1,0 +1,380 @@
+---
+layout: default
+title: Events
+hide: true
+---
+
+<section class="bs-docs-section">
+  <h1 id="intro" class="page-header">
+    Introduction
+  </h1>
+
+  <p>QueryBuilder uses jQuery events to notify the "outer world" about various things happening, like adding a rule or when a validation error happens. The events system is also used by plugins.</p>
+  
+  <p>There are two types of events: <b>triggers</b> are used to identify a point in the code and <b>changers</b> are used to modify a value before it used (eg: template, output rules). Both types are used the same way with the jQuery <code>on</code> method on the builder container.</p>
+
+  <div class="bs-callout bs-callout-info">
+    <h4>Callbacks context</h4>
+    <p>In all events callbacks, the first parameter is an <code>Event</code> object which contains the <code>builder</code> property, a reference to the QueryBuilder object currently used. Among other things it contains <code>builder.settings</code> which holds the current configuration.</p>
+  </div>
+
+  <div class="bs-callout bs-callout-info">
+    <h4>Rule &amp; Group</h4>
+    <p>Read <a href="{{site.github.url}}/index.html#inside_the_box">Inside the box</a> to learn more about the Rule and Group objects.</p>
+  </div>
+</section>
+
+
+<section class="bs-docs-section">
+  <h1 id="triggers">Triggers</h1>
+  
+  <p>Events marked with a <i class="glyphicon glyphicon-asterisk"></i> can be cancelled by calling <code>preventDefault()</code>. The typical example is for the errors events :</p>
+{% highlight javascript %}
+$('#builder').on('validationError.queryBuilder', function(e, rule, error, value) {
+  // never display error for my custom filter
+  if (rule.filter.id == 'my_custom_filter') {
+    e.preventDefault();
+  }
+});
+{% endhighlight %}
+  
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th style="width: 150px;">Name</th>
+          <th>Description &amp; arguments</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>afterInit<small>.queryBuilder</small></td>
+          <td>When the initilization is done, just before creating the root group.</td>
+        </tr>
+        <tr>
+          <td>beforeAddGroup<small>.queryBuilder</small> <i class="glyphicon glyphicon-asterisk"></i></td>
+          <td>Just before adding a group.
+            <ul>
+              <li><code>parent</code> <b>Group</b> object</li>
+              <li><code>addRule</code> <code>true</code> if an empty rule will be added in the group</li>
+              <li><code>level</code> nesting level of the group, <code>1</code> is the root group</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterAddGroup<small>.queryBuilder</small></td>
+          <td>Just after adding a group.
+            <ul>
+              <li><code>model</code> <b>Group</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>beforeDeleteGroup<small>.queryBuilder</small> <i class="glyphicon glyphicon-asterisk"></i></td>
+          <td>Just before deleting a group.
+            <ul>
+              <li><code>group</code> <b>Group</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterDeleteGroup<small>.queryBuilder</small></td>
+          <td>Just after deleting a group.</td>
+        </tr>
+        <tr>
+          <td>beforeAddRule<small>.queryBuilder</small> <i class="glyphicon glyphicon-asterisk"></i></td>
+          <td>Just before adding a rule.
+            <ul>
+              <li><code>parent</code> <b>Group</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterAddRule</td>
+          <td>Just after adding a rule.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>beforeDeleteRule<small>.queryBuilder</small> <i class="glyphicon glyphicon-asterisk"></i></td>
+          <td>Just before deleting a rule.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterDeleteRule<small>.queryBuilder</small></td>
+          <td>Just after deleting a rule.</td>
+        </tr>
+        <tr>
+          <td>afterCreateRuleFilters<small>.queryBuilder</small></td>
+          <td>After creating the <code>&lt;select&gt;</code> for filters.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterCreateRuleOperators<small>.queryBuilder</small></td>
+          <td>After creating the <code>&lt;select&gt;</code> for operators.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+              <li><code>operators</code> allowed for this rule</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterCreateRuleInput<small>.queryBuilder</small></td>
+          <td>After creating the input for a rule and initializing optional plugin.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterUpdateRuleFilter<small>.queryBuilder</small></td>
+          <td>After the filter has been updated and the operators and input re-created.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterUpdateRuleOperator<small>.queryBuilder</small></td>
+          <td>After the operator has been update and the input optionally re-created.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterApplyRuleFlags<small>.queryBuilder</small></td>
+          <td>After readonly flags has been applied.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>validationError<small>.queryBuilder</small> <i class="glyphicon glyphicon-asterisk"></i></td>
+          <td>Fired when a validation error occurred.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> or <b>Group</b> object</li>
+              <li><code>error</code></li>
+              <li><code>value</code></li>
+            </ul>
+            <button class="btn btn-primary btn-xs" data-bootbox="error_codes">See error codes</button>
+            <div id="error_codes" title="Error codes" class="hidden">
+              <ul>
+                <li>no_filter</li>
+                <li>empty_group</li>
+                <li>radio_empty</li>
+                <li>checkbox_empty</li>
+                <li>select_empty</li>
+                <li>string_exceed_min_length</li>
+                <li>string_exceed_max_length</li>
+                <li>string_invalid_format</li>
+                <li>number_nan</li>
+                <li>umber_not_integer</li>
+                <li>number_not_double</li>
+                <li>number_exceed_min</li>
+                <li>number_exceed_max</li>
+                <li>number_wrong_step</li>
+                <li>datetime_empty</li>
+                <li>datetime_invalid</li>
+                <li>datetime_exceed_min</li>
+                <li>datetime_exceed_max</li>
+                <li>boolean_not_valid</li>
+                <li>operator_not_multiple</li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>beforeDestroy<small>.queryBuilder</small></td>
+          <td>Before <code>destroy</code> method.</td>
+        </tr>
+        <tr>
+          <td>afterReset<small>.queryBuilder</small></td>
+          <td>After <code>reset</code> method.</td>
+        </tr>
+        <tr>
+          <td>afterClear<small>.queryBuilder</small></td>
+          <td>After <code>clear</code> method.</td>
+        </tr>
+        <tr>
+          <td>beforeSetRuleValue<small>.queryBuilder</small></td>
+          <td>Before setting a value inside <code>setRules</code> method.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+              <li><code>value</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterSetRuleValue<small>.queryBuilder</small></td>
+          <td>After setting a value inside <code>setRules</code> method.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+              <li><code>value</code></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<section class="bs-docs-section">
+  <h1 id="changers">Changers</h1>
+  
+  <p>All changers events have an additional <code>value</code> property which holds the value to be altered (or not).</p>
+{% highlight javascript %}
+$('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
+  if (level == 1) {
+    e.value = /* ... */
+  }
+});
+{% endhighlight %}
+  
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th style="width: 150px;">Name</th>
+          <th>Description &amp; arguments</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>validate<small>.queryBuilder.filter</small></td>
+          <td>Modifies the result of <code>validate</code> method.
+            <ul>
+              <li><code>valid</code> boolean</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>getRules<small>.queryBuilder.filter</small></td>
+          <td>Modifies the result of <code>getRules</code> method.
+            <ul>
+              <li><code>data</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>setRules<small>.queryBuilder.filter</small></td>
+          <td>Modifies data before <code>setRules</code> method.
+            <ul>
+              <li><code>data</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>validateValue<small>.queryBuilder.filter</small></td>
+          <td>Modifies the result of the rule validation method.
+            <ul>
+              <li><code>result</code> <b>true</b> or an error array</li>
+              <li><code>value</code></li>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>getOperators<small>.queryBuilder.filter</small></td>
+          <td>Modifies operators applicable to a rule.
+            <ul>
+              <li><code>operators</code> array of objects</li>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>getRuleFilters<small>.queryBuilder.filter</small></td>
+          <td>Modifies filters applicable to a rule.
+            <ul>
+              <li><code>filters</code> array of objects</li>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>getRuleValue<small>.queryBuilder.filter</small></td>
+          <td>Modifies the value grabbed from the DOM.
+            <ul>
+              <li><code>value</code></li>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>parseRuleFlags<small>.queryBuilder.filter</small></td>
+          <td>Modifies the consolidated rule flags.
+            <ul>
+              <li><code>flags</code> object of booleans</li>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>getGroupTemplate<small>.queryBuilder.filter</small></td>
+          <td>Modifies the raw HTML of a group.
+            <ul>
+              <li><code>html</code></li>
+              <li><code>level</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>getGroupConditions<small>.queryBuilder.filter</small></td>
+          <td>Modifies the raw HTML of the group conditions buttons.
+            <ul>
+              <li><code>html</code></li>
+              <li><code>level</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>getRuleTempate<small>.queryBuilder.filter</small></td>
+          <td>Modifies the raw HTML of a rule.
+            <ul>
+              <li><code>html</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>getRuleFilterSelect<small>.queryBuilder.filter</small></td>
+          <td>Modifies the raw HTML of the rule filter <code>&lt;select&gt;</code>.
+            <ul>
+              <li><code>html</code></li>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>getRuleOperatorSelect<small>.queryBuilder.filter</small></td>
+          <td>Modifies the raw HTML of the rule operator <code>&lt;select&gt;</code>.
+            <ul>
+              <li><code>html</code></li>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>getRuleInput<small>.queryBuilder.filter</small></td>
+          <td>Modifies the raw HTML of the rule input, radios group, checkboxes group, select, etc.
+            <ul>
+              <li><code>html</code></li>
+              <li><code>rule</code> <b>Rule</b> object</li>
+              <li><code>name</code> of the input</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

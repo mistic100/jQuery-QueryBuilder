@@ -11,7 +11,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
 
-  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="{{site.github.url}}/assets/css/docs.min.css" rel="stylesheet">
   <link href="{{site.github.url}}/assets/css/style.css" rel="stylesheet">
 
@@ -22,8 +22,9 @@
     }
   </style>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js"></script>
   <script src="{{site.github.url}}/assets/js/docs.min.js"></script>
 </head>
 
@@ -43,8 +44,9 @@
       </div>
       <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
         <ul class="nav navbar-nav">
-        {% for p in site.pages %}
-          {% if p.isHome != true %}
+        {% assign sorted_pages = site.pages | sort:"name" %}
+        {% for p in sorted_pages %}
+          {% if p.isHome != true and p.hide != true and p.title !=  %}
           <li {% if page.title == p.title %}class="active"{% endif %}>
             <a href="{{site.github.url}}{{p.url}}">{{p.title}}</a>
           </li>
@@ -115,7 +117,7 @@
     <div class="container">
       <div class="bs-docs-social">
         <ul class="bs-docs-social-buttons">
-        {% if site.githubButton.user && site.githubButton.repo %}
+        {% if site.githubButton.user and site.githubButton.repo %}
           <li>
             <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user={{site.githubButton.user}}&amp;repo={{site.githubButton.repo}}&amp;type=watch&amp;count=true" width="90" height="20" title="Star on GitHub"></iframe>
           </li>
@@ -174,7 +176,7 @@
   <script>trianglify('{{site.header.color1}}', '{{site.header.color2}}');</script>
   {% endif %}
 
-  {% if site.twitter.enabled || site.twitter.account %}
+  {% if site.twitter.enabled or site.twitter.account %}
   <script>
     window.twttr = (function (d,s,id) {
       var t, js, fjs = d.getElementsByTagName(s)[0];
@@ -185,7 +187,7 @@
   </script>
   {% endif %}
 
-  {% if site.facebook.enabled || site.facebook.profileUrl %}
+  {% if site.facebook.enabled or site.facebook.profileUrl %}
   <div id="fb-root"></div>
   <script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -197,7 +199,7 @@
   </script>
   {% endif %}
 
-  {% if site.analytics.account && site.analytics.domain %}
+  {% if site.analytics.account and site.analytics.domain %}
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
