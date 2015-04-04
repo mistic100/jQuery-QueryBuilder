@@ -489,7 +489,9 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
         if ($valueContainer.is(':empty') || rule.operator.nb_inputs !== previousOperator.nb_inputs) {
             this.createRuleInput(rule);
         }
+    }
 
+    if (rule.operator) {
         rule.$el.find('.rule-operator-container [name$=_operator]').val(rule.operator.type);
     }
 

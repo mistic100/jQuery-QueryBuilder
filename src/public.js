@@ -212,9 +212,6 @@ QueryBuilder.prototype.setRules = function(data) {
                 if (rule.id === undefined) {
                     error('Missing rule field id');
                 }
-                if (rule.value === undefined) {
-                    rule.value = '';
-                }
                 if (rule.operator === undefined) {
                     rule.operator = 'equal';
                 }
@@ -232,7 +229,7 @@ QueryBuilder.prototype.setRules = function(data) {
                     model.data = rule.data;
                 }
 
-                if (model.operator.nb_inputs !== 0) {
+                if (model.operator.nb_inputs !== 0 && rule.value !== undefined) {
                     that.setRuleValue(model, rule.value);
                 }
             }
