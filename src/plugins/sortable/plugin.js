@@ -33,13 +33,15 @@ QueryBuilder.define('sortable', function(options) {
 
             src = Model(e.target);
 
-            var ph = $('<div class="rule-placeholder">&nbsp;</div>');
-            ph.css('min-height', src.$el.height());
-
-            placeholder = src.parent.addRule(ph, src.getPos());
-
-            // Chrome glitch (helper invisible if hidden immediately)
+            // Chrome glitchs
+            // - helper invisible if hidden immediately
+            // - "dragend" is called immediately if we modify the DOM directly
             setTimeout(function() {
+                var ph = $('<div class="rule-placeholder">&nbsp;</div>');
+                ph.css('min-height', src.$el.height());
+
+                placeholder = src.parent.addRule(ph, src.getPos());
+
                 src.$el.hide();
             }, 0);
         });
@@ -49,7 +51,9 @@ QueryBuilder.define('sortable', function(options) {
             e.preventDefault();
             e.stopPropagation();
 
-            moveSortableToTarget(placeholder, $(e.target));
+            if (placeholder) {
+                moveSortableToTarget(placeholder, $(e.target));
+            }
         });
 
         // dragover: prevent glitches

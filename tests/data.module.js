@@ -59,11 +59,6 @@ $(function(){
     );
 
     assert.validationError($b,
-      { id: 'select' },
-      /select_empty/
-    );
-
-    assert.validationError($b,
       { id: 'select_mult' },
       /select_empty/
     );
