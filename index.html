@@ -660,25 +660,6 @@ $('#builder').queryBuilder('destroy')
       <div id="tree-group"></div>
     </div>
   </div>
-
-  <h3 id="build">Custom build</h3>
-  <p>The distributed version of QueryBuilder (in <code>dist</code> directory) contains all plugins and is English only. You can run the Grunt task provided with the library to select which plugins to include and load another language.</p>
-
-  <ul>
-    <li><code>--modules</code>: comma separated list of plugins or <b>false</b></li>
-    <li><code>--lang</code>: language code.</li>
-  </ul>
-
-{% highlight bash %}
-# list available plugins and languages
-grunt list_modules
-
-# build QueryBuilder in French with SQL Support and BT Tooltip Errors plugins only
-grunt --modules=sql-support,bt-tooltip-errors --lang=fr
-
-# build QueryBuilder in Deutsch with no modules
-grunt --modules=false --lang=de
-{% endhighlight %}
 </section>
 
 

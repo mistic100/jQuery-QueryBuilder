@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.0.0
+ * jQuery QueryBuilder 2.0.1
  * Oversat af Jna Borup Coyle, github@coyle.dk
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */

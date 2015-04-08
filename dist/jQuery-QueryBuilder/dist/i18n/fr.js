@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.0.0
+ * jQuery QueryBuilder 2.0.1
  * French translation by Damien "Mistic" Sorel
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
