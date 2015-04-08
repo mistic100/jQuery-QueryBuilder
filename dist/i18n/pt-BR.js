@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.0.0
+ * jQuery QueryBuilder 2.0.1
  * Portuguese Brazilian translation by Leandro Gehlen (leandrogehlen@gmail.com)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */

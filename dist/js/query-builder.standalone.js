@@ -124,7 +124,7 @@
 }));
 
 /*!
- * jQuery QueryBuilder 2.0.0
+ * jQuery QueryBuilder 2.0.1
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -896,7 +896,9 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
         if ($valueContainer.is(':empty') || rule.operator.nb_inputs !== previousOperator.nb_inputs) {
             this.createRuleInput(rule);
         }
+    }
 
+    if (rule.operator) {
         rule.$el.find('.rule-operator-container [name$=_operator]').val(rule.operator.type);
     }
 
@@ -1201,9 +1203,6 @@ QueryBuilder.prototype.setRules = function(data) {
                 if (rule.id === undefined) {
                     error('Missing rule field id');
                 }
-                if (rule.value === undefined) {
-                    rule.value = '';
-                }
                 if (rule.operator === undefined) {
                     rule.operator = 'equal';
                 }
@@ -1221,7 +1220,7 @@ QueryBuilder.prototype.setRules = function(data) {
                     model.data = rule.data;
                 }
 
-                if (model.operator.nb_inputs !== 0) {
+                if (model.operator.nb_inputs !== 0 && rule.value !== undefined) {
                     that.setRuleValue(model, rule.value);
                 }
             }
@@ -3015,13 +3014,15 @@ QueryBuilder.define('sortable', function(options) {
 
             src = Model(e.target);
 
-            var ph = $('<div class="rule-placeholder">&nbsp;</div>');
-            ph.css('min-height', src.$el.height());
-
-            placeholder = src.parent.addRule(ph, src.getPos());
-
-            // Chrome glitch (helper invisible if hidden immediately)
+            // Chrome glitchs
+            // - helper invisible if hidden immediately
+            // - "dragend" is called immediately if we modify the DOM directly
             setTimeout(function() {
+                var ph = $('<div class="rule-placeholder">&nbsp;</div>');
+                ph.css('min-height', src.$el.height());
+
+                placeholder = src.parent.addRule(ph, src.getPos());
+
                 src.$el.hide();
             }, 0);
         });
@@ -3031,7 +3032,9 @@ QueryBuilder.define('sortable', function(options) {
             e.preventDefault();
             e.stopPropagation();
 
-            moveSortableToTarget(placeholder, $(e.target));
+            if (placeholder) {
+                moveSortableToTarget(placeholder, $(e.target));
+            }
         });
 
         // dragover: prevent glitches
