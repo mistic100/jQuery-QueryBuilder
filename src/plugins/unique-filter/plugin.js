@@ -49,12 +49,12 @@ QueryBuilder.extend({
         // disable some
         $.each(self.status.used_filters, function(filterId, groups) {
             if (groups.length === 0) {
-                self.$el.find('.rule-filter-container option[value=' + filterId + ']:not(:selected)').prop('disabled', true);
+                self.$el.find('.rule-filter-container option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
             }
             else {
                 groups.forEach(function(group) {
                     group.each(function(rule) {
-                        rule.$el.find('.rule-filter-container option[value=' + filterId + ']:not(:selected)').prop('disabled', true);
+                        rule.$el.find('.rule-filter-container option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
                     });
                 });
             }
