@@ -29,9 +29,18 @@ QUnit.done(function(){
 QUnit.assert.rulesMatch = function(actual, expected, message) {
   var ok = (function match(a, b){
     var ok = true;
+    
+    if (b.hasOwnProperty('data')) {
+      if (!a.hasOwnProperty('data')) {
+        ok = false;
+      }
+      else {
+        ok = JSON.stringify(a.data) === JSON.stringify(b.data);
+      }
+    }
 
-    if (a.hasOwnProperty('rules')) {
-      if (!b.hasOwnProperty('rules')) {
+    if (b.hasOwnProperty('rules')) {
+      if (!a.hasOwnProperty('rules')) {
         ok = false;
       }
       else {

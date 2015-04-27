@@ -247,9 +247,10 @@ QueryBuilder.prototype.bindEvents = function() {
 /**
  * Create the root group
  * @param addRule {bool,optional} add a default empty rule
+ * @param data {mixed,optional} group custom data
  * @return group {Root}
  */
-QueryBuilder.prototype.setRoot = function(addRule) {
+QueryBuilder.prototype.setRoot = function(addRule, data) {
     addRule = (addRule === undefined || addRule === true);
 
     var group_id = this.nextGroupId(),
@@ -259,6 +260,10 @@ QueryBuilder.prototype.setRoot = function(addRule) {
     this.model.root = new Group(null, $group);
     this.model.root.model = this.model;
     this.model.root.condition = this.settings.default_condition;
+
+    if (data !== undefined) {
+        this.model.root.data = data;
+    }
 
     if (addRule) {
         this.addRule(this.model.root);
@@ -271,9 +276,10 @@ QueryBuilder.prototype.setRoot = function(addRule) {
  * Add a new group
  * @param parent {Group}
  * @param addRule {bool,optional} add a default empty rule
+ * @param data {mixed,optional} group custom data
  * @return group {Group}
  */
-QueryBuilder.prototype.addGroup = function(parent, addRule) {
+QueryBuilder.prototype.addGroup = function(parent, addRule, data) {
     addRule = (addRule === undefined || addRule === true);
 
     var level = parent.level + 1;
@@ -286,6 +292,10 @@ QueryBuilder.prototype.addGroup = function(parent, addRule) {
     var group_id = this.nextGroupId(),
         $group = $(this.template.group.call(this, group_id, level)),
         model = parent.addGroup($group);
+
+    if (data !== undefined) {
+        model.data = data;
+    }
 
     this.trigger('afterAddGroup', model);
 
@@ -344,9 +354,10 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
 /**
  * Add a new rule
  * @param parent {Group}
+ * @param data {mixed,optional} rule custom data
  * @return rule {Rule}
  */
-QueryBuilder.prototype.addRule = function(parent) {
+QueryBuilder.prototype.addRule = function(parent, data) {
     var e = this.trigger('beforeAddRule', parent);
     if (e.isDefaultPrevented()) {
         return null;
@@ -355,6 +366,10 @@ QueryBuilder.prototype.addRule = function(parent) {
     var rule_id = this.nextRuleId(),
         $rule = $(this.template.rule.call(this, rule_id)),
         model = parent.addRule($rule);
+
+    if (data !== undefined) {
+        model.data = data;
+    }
 
     this.trigger('afterAddRule', model);
 

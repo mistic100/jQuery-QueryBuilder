@@ -122,7 +122,8 @@ $(function(){
 
     assert.rulesMatch(
       $b.queryBuilder('getRules'),
-      rules_after_ui_events
+      rules_after_ui_events,
+      'Should return correct rules after UI events'
     );
   });
 

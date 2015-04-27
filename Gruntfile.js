@@ -98,6 +98,13 @@ module.exports = function(grunt) {
             ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n'+
             ' */',
 
+        // bump version
+        bump: {
+            options: {
+                files: ['package.json', 'bower.json', 'composer.json']
+            }
+        },
+
         // watchers
         watch: {
             js: {
@@ -451,6 +458,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-wrap');
+    grunt.loadNpmTasks('grunt-bump');
 
     grunt.registerTask('build_js', [
         'concat:js',

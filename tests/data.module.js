@@ -143,7 +143,45 @@ $(function(){
       /you_fool/
     );
   });
+  
+  /**
+   * Test custom data
+   */
+  QUnit.test('custom data', function(assert) {
+    assert.expect(2);
+    
+    $b.queryBuilder({
+      filters: basic_filters
+    });
+    
+    $b.on('afterAddRule.queryBuilder', function(e, rule) {
+      assert.ok(
+        JSON.stringify(rule.data) === JSON.stringify(rules_with_data.rules[0].data),
+        'Custom data should be accessible in "afterAddRule" event'
+      );
+    });
+    
+    $b.queryBuilder('setRules', rules_with_data);
 
+    assert.rulesMatch(
+      $b.queryBuilder('getRules'),
+      rules_with_data,
+      'Should keep custom data in "getRules"'
+    );
+  });
+
+  
+  var rules_with_data = {
+    condition: 'AND',
+    data: [1,2,3],
+    rules: [{
+      id: 'name',
+      value: 'Mistic',
+      data: {
+        foo: 'bar'
+      }
+    }]
+  };
 
   var values_filters = [{
     id: '1',
