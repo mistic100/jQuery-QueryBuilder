@@ -3,6 +3,8 @@
 [![Bower version](https://badge.fury.io/bo/jQuery-QueryBuilder.svg)](http://badge.fury.io/bo/jQuery-QueryBuilder)
 [![Build Status](https://travis-ci.org/mistic100/jQuery-QueryBuilder.svg?branch=master)](https://travis-ci.org/mistic100/jQuery-QueryBuilder)
 [![Coverage Status](https://coveralls.io/repos/mistic100/jQuery-QueryBuilder/badge.svg)](https://coveralls.io/r/mistic100/jQuery-QueryBuilder)
+[![Gratipay](https://img.shields.io/gratipay/mistic100.svg)](https://gratipay.com/mistic100)
+[![Online documentation](https://img.shields.io/badge/documentation-online-blue.svg)](http://mistic100.github.io/jQuery-QueryBuilder)
 
 jQuery plugin offering an simple interface to create complex queries.
 
@@ -16,7 +18,7 @@ http://mistic100.github.io/jQuery-QueryBuilder
  * (optional) MomentJS for date/time validation
  * (optional) some JS components used by plugins
 
-($.extendext and MicroEvent are directly included in the [standalone](https://github.com/mistic100/jQuery-QueryBuilder/blob/master/dist/js/query-builder.standalone.js) file)
+($.extendext is directly included in the [standalone](https://github.com/mistic100/jQuery-QueryBuilder/blob/master/dist/js/query-builder.standalone.js) file)
 
 ### Browser support
  * Internet Explorer >= 10 (9 with various shims)
