@@ -81,11 +81,10 @@ QueryBuilder.prototype.validate = function() {
             }
 
             if (rule.operator.nb_inputs !== 0) {
-                var value = that.getRuleValue(rule),
-                    valid = that.validateValue(rule, value);
+                var valid = that.validateValue(rule, rule.value);
 
                 if (valid !== true) {
-                    that.triggerValidationError(rule, valid, value);
+                    that.triggerValidationError(rule, valid, rule.value);
                     errors++;
                     return;
                 }
@@ -141,7 +140,7 @@ QueryBuilder.prototype.getRules = function() {
         group.each(function(model) {
             var value = null;
             if (model.operator.nb_inputs !== 0) {
-                value = that.getRuleValue(model);
+                value = model.value;
             }
 
             var rule = {
@@ -230,7 +229,7 @@ QueryBuilder.prototype.setRules = function(data) {
                 model.flags = that.parseRuleFlags(item);
 
                 if (model.operator.nb_inputs !== 0 && item.value !== undefined) {
-                    that.setRuleValue(model, item.value);
+                    model.value = item.value;
                 }
             }
         });

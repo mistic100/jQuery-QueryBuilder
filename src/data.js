@@ -51,7 +51,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                 break;
 
             case 'checkbox':
-                if (value[i].length === 0) {
+                if (value[i] === undefined || value[i].length === 0) {
                     result = ['checkbox_empty'];
                     break;
                 }
@@ -63,7 +63,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
             case 'select':
                 if (filter.multiple) {
-                    if (value[i].length === 0) {
+                    if (value[i] === undefined || value[i].length === 0) {
                         result = ['select_empty'];
                         break;
                     }
@@ -83,7 +83,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
             default:
                 switch (QueryBuilder.types[filter.type]) {
                     case 'string':
-                        if (value[i].length === 0) {
+                        if (value[i] === undefined || value[i].length === 0) {
                             result = ['string_empty'];
                             break;
                         }
@@ -111,7 +111,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         break;
 
                     case 'number':
-                        if (isNaN(value[i])) {
+                        if (value[i] === undefined || isNaN(value[i])) {
                             result = ['number_nan'];
                             break;
                         }
@@ -149,7 +149,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         break;
 
                     case 'datetime':
-                        if (value[i].length === 0) {
+                        if (value[i] === undefined || value[i].length === 0) {
                             result = ['datetime_empty'];
                             break;
                         }
@@ -298,49 +298,57 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
 QueryBuilder.prototype.getRuleValue = function(rule) {
     var filter = rule.filter,
         operator = rule.operator,
-        $value = rule.$el.find('.rule-value-container'),
-        value = [], tmp;
+        value = [];
 
-    for (var i=0; i<operator.nb_inputs; i++) {
-        var name = rule.id + '_value_' + i;
+    if (filter.valueGetter) {
+        value = filter.valueGetter.call(this, rule);
+    }
+    else {
+        var $value = rule.$el.find('.rule-value-container'),
+            tmp;
 
-        switch (filter.input) {
-            case 'radio':
-                value.push($value.find('[name='+ name +']:checked').val());
-                break;
+        for (var i=0; i<operator.nb_inputs; i++) {
+            var name = rule.id + '_value_' + i;
 
-            case 'checkbox':
-                tmp = [];
-                $value.find('[name='+ name +']:checked').each(function() {
-                    tmp.push($(this).val());
-                });
-                value.push(tmp);
-                break;
+            switch (filter.input) {
+                case 'radio':
+                    value.push($value.find('[name='+ name +']:checked').val());
+                    break;
 
-            case 'select':
-                if (filter.multiple) {
+                case 'checkbox':
                     tmp = [];
-                    $value.find('[name='+ name +'] option:selected').each(function() {
+                    $value.find('[name='+ name +']:checked').each(function() {
                         tmp.push($(this).val());
                     });
                     value.push(tmp);
-                }
-                else {
-                    value.push($value.find('[name='+ name +'] option:selected').val());
-                }
-                break;
+                    break;
 
-            default:
-                value.push($value.find('[name='+ name +']').val());
+                case 'select':
+                    if (filter.multiple) {
+                        tmp = [];
+                        $value.find('[name='+ name +'] option:selected').each(function() {
+                            tmp.push($(this).val());
+                        });
+                        value.push(tmp);
+                    }
+                    else {
+                        value.push($value.find('[name='+ name +'] option:selected').val());
+                    }
+                    break;
+
+                default:
+                    value.push($value.find('[name='+ name +']').val());
+            }
         }
-    }
 
-    if (operator.nb_inputs === 1) {
-        value = value[0];
-    }
+        if (operator.nb_inputs === 1) {
+            value = value[0];
+        }
 
-    if (filter.valueParser) {
-        value = filter.valueParser.call(this, rule, value);
+        // @deprecated
+        if (filter.valueParser) {
+            value = filter.valueParser.call(this, rule, value);
+        }
     }
 
     return this.change('getRuleValue', value, rule);
@@ -354,8 +362,6 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
 QueryBuilder.prototype.setRuleValue = function(rule, value) {
     var filter = rule.filter,
         operator = rule.operator;
-
-    this.trigger('beforeSetRuleValue', rule, value);
 
     if (filter.valueSetter) {
         filter.valueSetter.call(this, rule, value);
@@ -393,8 +399,6 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
             }
         }
     }
-
-    this.trigger('afterSetRuleValue', rule, value);
 };
 
 /**

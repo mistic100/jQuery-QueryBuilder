@@ -114,7 +114,7 @@ $(function(){
     $('#builder_group_0>.rules-group-header>.group-conditions [value=OR]').trigger('click');
     $('[name=builder_rule_0_filter]').val('name').trigger('change');
     $('[name=builder_rule_0_operator]').val('not_equal').trigger('change');
-    $('[name=builder_rule_0_value_0]').val('foo');
+    $('[name=builder_rule_0_value_0]').val('foo').trigger('change');
     $('#builder_group_0>.rules-group-header>.group-actions [data-add=rule]').trigger('click');
     $('#builder_group_0>.rules-group-header>.group-actions [data-add=group]').trigger('click');
     $('#builder_rule_1 [data-delete=rule]').trigger('click');

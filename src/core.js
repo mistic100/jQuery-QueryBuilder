@@ -13,7 +13,8 @@ QueryBuilder.prototype.init = function($el, options) {
         rule_id: 0,
         generated_id: false,
         has_optgroup: false,
-        id: null
+        id: null,
+        updating_value: false
     };
 
     // "allow_groups" can be boolean or int
@@ -239,6 +240,10 @@ QueryBuilder.prototype.bindEvents = function() {
                 case 'flags':
                     that.applyRuleFlags(node);
                     break;
+
+                case 'value':
+                    that.updateRuleValue(node);
+                    break;
             }
         }
     });
@@ -418,7 +423,7 @@ QueryBuilder.prototype.createRuleFilters = function(rule) {
  * Create the operators <select> for a rule and init the rule operator
  * @param rule {Rule}
  */
-QueryBuilder.prototype.createRuleOperators = function(rule, triggerChangeOperator) {
+QueryBuilder.prototype.createRuleOperators = function(rule) {
     var $operatorContainer = rule.$el.find('.rule-operator-container').empty();
 
     if (!rule.filter) {
@@ -430,12 +435,8 @@ QueryBuilder.prototype.createRuleOperators = function(rule, triggerChangeOperato
 
     $operatorContainer.html($operatorSelect);
 
-    if (triggerChangeOperator !== false) {
-        rule.operator = operators[0];
-    }
-    else {
-        rule.__.operator = operators[0];
-    }
+    // set the operator without triggering update event
+    rule.__.operator = operators[0];
 
     this.trigger('afterCreateRuleOperators', rule, operators);
 };
@@ -447,11 +448,14 @@ QueryBuilder.prototype.createRuleOperators = function(rule, triggerChangeOperato
 QueryBuilder.prototype.createRuleInput = function(rule) {
     var $valueContainer = rule.$el.find('.rule-value-container').empty();
 
-    if (!rule.filter || rule.operator.nb_inputs === 0) {
+    rule.__.value = undefined;
+
+    if (!rule.filter || !rule.operator || rule.operator.nb_inputs === 0) {
         return;
     }
 
-    var $inputs = $(),
+    var that = this,
+        $inputs = $(),
         filter = rule.filter;
 
     for (var i=0; i<rule.operator.nb_inputs; i++) {
@@ -463,6 +467,12 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
 
     $valueContainer.show();
 
+    $inputs.on('change', function() {
+        that.status.updating_value = true;
+        rule.value = that.getRuleValue(rule);
+        that.status.updating_value = false;
+    });
+
     if (filter.plugin) {
         $inputs[filter.plugin](filter.plugin_config || {});
     }
@@ -470,7 +480,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     this.trigger('afterCreateRuleInput', rule);
 
     if (filter.default_value !== undefined) {
-        this.setRuleValue(rule, filter.default_value);
+        rule.value = filter.default_value;
     }
 };
 
@@ -479,7 +489,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
  * @param rule {Rule}
  */
 QueryBuilder.prototype.updateRuleFilter = function(rule) {
-    this.createRuleOperators(rule, false);
+    this.createRuleOperators(rule);
     this.createRuleInput(rule);
 
     rule.$el.find('.rule-filter-container [name$=_filter]').val(rule.filter ? rule.filter.id : '-1');
@@ -497,6 +507,8 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
 
     if (!rule.operator || rule.operator.nb_inputs === 0) {
         $valueContainer.hide();
+
+        rule.__.value = undefined;
     }
     else {
         $valueContainer.show();
@@ -511,6 +523,18 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     }
 
     this.trigger('afterUpdateRuleOperator', rule);
+};
+
+/**
+ * Perform action when rule's value is changed
+ * @param rule {Rule}
+ */
+QueryBuilder.prototype.updateRuleValue = function(rule) {
+    if (!this.status.updating_value) {
+        this.setRuleValue(rule, rule.value);
+    }
+
+    this.trigger('afterUpdateRuleValue', rule, rule.value);
 };
 
 /**

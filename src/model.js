@@ -97,13 +97,13 @@ var Node = function(parent, $el) {
 
     $el.data('queryBuilderModel', this);
 
-    this.model = parent === null ? null : parent.model;
-    this.parent = parent;
-    // this.level -- initialized in 'parent' setter
+    this.__.level = 0;
+    this.__.error = null;
+    this.__.data = undefined;
     this.$el = $el;
     this.id = $el[0].id;
-    this.error = null;
-    this.data = undefined;
+    this.model = null;
+    this.parent = parent;
 };
 
 defineModelProperties(Node, ['level', 'error', 'data']);
@@ -115,7 +115,8 @@ Object.defineProperty(Node.prototype, 'parent', {
     },
     set: function(value) {
         this.__.parent = value;
-        this.level = this.parent === null ? 1 : this.parent.level+1;
+        this.level = value === null ? 1 : value.level+1;
+        this.model = value === null ? null : value.model;
     }
 });
 
@@ -215,8 +216,8 @@ var Group = function(parent, $el) {
 
     Node.call(this, parent, $el);
 
-    this.condition = null;
     this.rules = [];
+    this.__.condition = null;
 };
 
 Group.prototype = Object.create(Node.prototype);
@@ -393,15 +394,16 @@ var Rule = function(parent, $el) {
 
     Node.call(this, parent, $el);
 
-    this.filter = null;
-    this.operator = null;
-    this.flags = {};
+    this.__.filter = null;
+    this.__.operator = null;
+    this.__.flags = {};
+    this.__.value = undefined;
 };
 
 Rule.prototype = Object.create(Node.prototype);
 Rule.prototype.constructor = Rule;
 
-defineModelProperties(Rule, ['filter', 'operator', 'flags']);
+defineModelProperties(Rule, ['filter', 'operator', 'flags', 'value']);
 
 
 QueryBuilder.Group = Group;
