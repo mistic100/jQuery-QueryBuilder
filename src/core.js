@@ -354,6 +354,8 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
         $this.prop('checked', $this.val() === group.condition);
         $this.parent().toggleClass('active', $this.val() === group.condition);
     });
+
+    this.trigger('afterUpdateGroupCondition', group);
 };
 
 /**
@@ -534,7 +536,7 @@ QueryBuilder.prototype.updateRuleValue = function(rule) {
         this.setRuleValue(rule, rule.value);
     }
 
-    this.trigger('afterUpdateRuleValue', rule, rule.value);
+    this.trigger('afterUpdateRuleValue', rule);
 };
 
 /**
