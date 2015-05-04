@@ -1,12 +1,18 @@
 var deepmerge = require('deepmerge');
 
+function removeJshint(src) {
+    return src
+      .replace(/\/\*jshint [a-z:]+ \*\/\r?\n\r?\n?/g, '')
+      .replace(/\/\*jshint -[EWI]{1}[0-9]{3} \*\/\r?\n\r?\n?/g, '');
+}
+
 module.exports = function(grunt) {
     grunt.util.linefeed = '\n';
 
     var all_modules = {},
         all_langs = {},
         loaded_modules = [],
-        loaded_lang = '',
+        loaded_langs = [],
         js_core_files = [
             'src/main.js',
             'src/defaults.js',
@@ -59,26 +65,26 @@ module.exports = function(grunt) {
             }
         }
 
+        // default language
+        js_files_to_load.push('dist/i18n/en.js');
+        loaded_langs.push('en');
+
         // parse 'lang' parameter
-        var arg_lang = grunt.option('lang');
-        if (typeof arg_lang === 'string') {
-            if (all_langs[arg_lang]) {
-                if (arg_lang != 'en') {
-                    js_files_to_load.push(all_langs[arg_lang].replace(/^src/, 'dist'));
-                    loaded_lang = arg_lang;
+        var arg_langs = grunt.option('languages');
+        if (typeof arg_langs === 'string') {
+            arg_langs.replace(/ /g, '').split(',').forEach(function(l) {
+                if (all_langs[l]) {
+                    if (l !== 'en') {
+                        js_files_to_load.push(all_langs[l].replace(/^src/, 'dist').replace(/json$/, 'js'));
+                        loaded_langs.push(l);
+                    }
                 }
-            }
-            else {
-                grunt.fail.warn('Lang '+ arg_lang +' unknown');
-            }
+                else {
+                    grunt.fail.warn('Language '+ l +' unknown');
+                }
+            });
         }
     }());
-
-    function removeJshint(src) {
-        return src
-          .replace(/\/\*jshint [a-z:]+ \*\/\r?\n\r?\n?/g, '')
-          .replace(/\/\*jshint -[EWI]{1}[0-9]{3} \*\/\r?\n\r?\n?/g, '');
-    }
 
 
     grunt.initConfig({
@@ -181,12 +187,11 @@ module.exports = function(grunt) {
                 options: {
                     stripBanners: false,
                     process: function(src, file) {
-                        var lang = file.split(/[\/\.]/)[2],
-                            content = JSON.parse(src),
-                            header;
+                        var lang = file.split(/[\/\.]/)[2];
+                        var content = JSON.parse(src);
 
-                        grunt.config.set('lang_copyright', content.__copyright || (l + ' translation'));
-                        header = grunt.template.process('<%= langBanner %>\n\n');
+                        grunt.config.set('lang_copyright', content.__copyright || (lang + ' translation'));
+                        var header = grunt.template.process('<%= langBanner %>');
                         delete content.__copyright;
 
                         loaded_modules.forEach(function(m) {
@@ -196,8 +201,13 @@ module.exports = function(grunt) {
                                 content = deepmerge(content, grunt.file.readJSON(plugin_file));
                             }
                         });
-
-                        return header + 'jQuery.fn.queryBuilder.defaults({ lang: ' +  JSON.stringify(content, null, 2) + '});';
+                        
+                        return header
+                          + '\n\n'
+                          + 'jQuery.fn.queryBuilder.regional[\'' + lang + '\'] = '
+                          + JSON.stringify(content, null, 2)
+                          + ';\n\n'
+                          + 'jQuery.fn.queryBuilder.defaults({ lang_code: \'' + lang + '\' });'
                     }
                 }
             },
@@ -223,14 +233,13 @@ module.exports = function(grunt) {
                 options: {
                     separator: '',
                     wrapper: function() {
-                        var wrapper = grunt.file.read('src/.wrapper.js').replace(/\r\n/g, '\n')
-                        wrapper = wrapper.split(/@@js\n/);
+                        var wrapper = grunt.file.read('src/.wrapper.js').replace(/\r\n/g, '\n').split(/@@js\n/);
 
                         if (loaded_modules.length) {
                             wrapper[0] = '// Modules: ' + loaded_modules.join(', ') + '\n' + wrapper[0];
                         }
-                        if (loaded_lang.length) {
-                            wrapper[0] = '// Language: ' + loaded_lang + '\n' + wrapper[0];
+                        if (loaded_langs.length) {
+                            wrapper[0] = '// Languages: ' + loaded_langs.join(', ') + '\n' + wrapper[0];
                         }
                         wrapper[0] = grunt.template.process('<%= banner %>\n\n') + wrapper[0];
 
@@ -311,9 +320,10 @@ module.exports = function(grunt) {
         // jshint tests
         jshint: {
             lib: {
-                files: {
-                    src: js_files_to_load
-                }
+                options: {
+                    '-W069': true // accesses to "regional" in language files
+                },
+                src: js_files_to_load
             }
         },
 

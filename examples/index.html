@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.bootstrap3.css">
 
   <link rel="stylesheet" href="../dist/css/query-builder.default.css" id="qb-theme">
+  
+  <link rel="stylesheet" href="http://mistic100.github.io/jQuery-QueryBuilder/assets/flags/flags.css">
 </head>
 
 <body>
@@ -26,10 +28,32 @@
       You must execute <code>bower install</code> in the example directory to run this demo.
     </div>
 
-    <div class="btn-group">
-      <button class="btn btn-default btn-sm" disabled>Theme:</button>
-      <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.default.min.css" data-bt="bower_components/bootstrap/dist/css/bootstrap.min.css">Default</button>
-      <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.dark.min.css" data-bt="bower_components/bootswatch-dist/css/bootstrap.min.css">Dark</button>
+    <div class="well well-sm">
+      <label>Theme:</label>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.default.min.css" data-bt="bower_components/bootstrap/dist/css/bootstrap.min.css">Default</button>
+        <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.dark.min.css" data-bt="bower_components/bootswatch-dist/css/bootstrap.min.css">Dark</button>
+      </div>
+      
+      <label>Language:</label>
+      <select name="language" class="selectpicker show-tick show-menu-arrow" data-width="auto">
+        <optgroup label="Complete">
+          <option value="de" data-icon="flag flag-de">German</option>
+          <option value="en" data-icon="flag flag-gb" selected>English</option>
+          <option value="es" data-icon="flag flag-es">Spanish</option>
+          <option value="fr" data-icon="flag flag-fr">French</option>
+          <option value="nl" data-icon="flag flag-nl">Dutch</option>
+          <option value="pl" data-icon="flag flag-pl">Polish</option>
+          <option value="pt-BR" data-icon="flag flag-pt">Portuguese</option>
+          <option value="ru" data-icon="flag flag-ru">Russian</option>
+        </optgroup>
+        <optgroup label="Partial">
+          <option value="da" data-icon="flag flag-dk">Danish</option>
+          <option value="it" data-icon="flag flag-it">Italian</option>
+          <option value="no" data-icon="flag flag-no">Norwegian</option>
+          <option value="ro" data-icon="flag flag-ro">Romanian</option>
+        </optgroup>
+      </select>
     </div>
 
     <div id="builder"></div>
@@ -67,8 +91,10 @@
 <script src="../dist/js/query-builder.js"></script>
 
 <script>
+var $b = $('#builder');
+
 // define filters
-$('#builder').queryBuilder({
+var options = {
   allow_empty: true,
 
   plugins: {
@@ -292,13 +318,38 @@ $('#builder').queryBuilder({
       }
     }
   }]
-});
+};
+
+// init
+$('#builder').queryBuilder(options);
 
 $('#builder').on('afterCreateRuleInput.queryBuilder', function(e, rule) {
     if (rule.filter.plugin == 'selectize') {
         rule.$el.find('.rule-value-container').css('min-width', '200px')
           .find('.selectize-control').removeClass('form-control');
     }
+});
+
+// change language
+$('[name=language]').selectpicker().on('change', function() {
+  var lang = $(this).val();
+  
+  var done = function() {
+    var rules = $b.queryBuilder('getRules');
+    if (!$.isEmptyObject(rules)) {
+      options.rules = rules;
+    }
+    options.lang_code = lang;
+    $b.queryBuilder('destroy');
+    $('#builder').queryBuilder(options);
+  };
+  
+  if ($.fn.queryBuilder.regional[lang] === undefined) {
+    $.getScript('../dist/i18n/' + lang + '.js', done);
+  }
+  else {
+    done();
+  }
 });
 
 // set rules

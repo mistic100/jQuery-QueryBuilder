@@ -1,4 +1,16 @@
 /**
+ * Sync load of language file once QUnit and Blanket are ready
+ * Otherwise the language file is loaded before instrumented files
+ */
+QUnit.begin(function() {
+  $.ajax({
+    async: false,
+    url: '../dist/i18n/en.js',
+    dataType: 'script'
+  });
+});
+
+/**
  * Add GitHub link in header
  */
 QUnit.begin(function(){
@@ -22,6 +34,7 @@ QUnit.done(function(){
       this.innerHTML = this.innerHTML.replace(/(.*)\/src\/(.*)$/, '$2');
     });
 });
+
 
 /**
  * Custom assert to compare rules objects
@@ -129,6 +142,7 @@ QUnit.assert.optionsMatch = function($target, expected, message) {
 QUnit.assert.match = function(actual, regex, message) {
   this.push(regex.test(actual), actual, regex, message);
 };
+
 
 /**
  * Drag & Drop simulation

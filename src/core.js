@@ -27,11 +27,16 @@ QueryBuilder.prototype.init = function($el, options) {
 
     // SETTINGS SHORTCUTS
     this.filters = this.settings.filters;
-    this.lang = this.settings.lang;
     this.icons = this.settings.icons;
     this.operators = this.settings.operators;
     this.template = this.settings.template;
     this.plugins = this.settings.plugins;
+    
+    // translations : english << 'lang_code' << custom
+    if (QueryBuilder.regional['en'] === undefined) {
+      error('"i18n/en.js" not loaded.');
+    }
+    this.lang = $.extendext(true, 'replace', {}, QueryBuilder.regional['en'], QueryBuilder.regional[this.settings.lang_code], this.settings.lang);
 
     if (this.template.group === null) {
         this.template.group = this.getGroupTemplate;

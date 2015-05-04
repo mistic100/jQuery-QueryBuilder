@@ -350,14 +350,34 @@ $(function(){
    */
   QUnit.test('Change language', function(assert) {
     assert.expect(2);
-
-    var done = assert.async(),
-        original = QueryBuilder.defaults('lang');
+    var done = assert.async();
 
     $.getScript('../dist/i18n/fr.js', function() {
-      assert.equal(QueryBuilder.defaults('lang').delete_rule, 'Supprimer', 'Should be in french');
-      QueryBuilder.defaults({ lang: original });
-      assert.equal(QueryBuilder.defaults('lang').delete_rule, 'Delete', 'Should be in english');
+      $b.queryBuilder({
+        filters: basic_filters
+      });
+      
+      assert.equal(
+        $b.find('[data-delete=rule]').text().trim(),
+        'Supprimer',
+        'Should be in french'
+      );
+      
+      $b.queryBuilder('destroy');
+      
+      $b.queryBuilder({
+        filters: basic_filters,
+        lang_code: 'en'
+      });
+      
+      assert.equal(
+        $b.find('[data-delete=rule]').text().trim(),
+        'Delete',
+        'Should be in english'
+      );
+
+      QueryBuilder.defaults({ lang_code: 'en' });
+      
       done();
     });
   });

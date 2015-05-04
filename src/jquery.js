@@ -23,3 +23,4 @@ $.fn.queryBuilder.constructor = QueryBuilder;
 $.fn.queryBuilder.defaults = QueryBuilder.defaults;
 $.fn.queryBuilder.extend = QueryBuilder.extend;
 $.fn.queryBuilder.define = QueryBuilder.define;
+$.fn.queryBuilder.regional = QueryBuilder.regional;
