@@ -1,5 +1,6 @@
 {
-  "__copyright": "Oversat af Jna Borup Coyle, github@coyle.dk",
+  "__locale": "Danish (da)",
+  "__author": "Jna Borup Coyle, github@coyle.dk",
 
   "add_rule": "Tilføj regel",
   "add_group": "Tilføj gruppe",

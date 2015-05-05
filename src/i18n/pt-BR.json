@@ -1,5 +1,6 @@
 {
-  "__copyright": "Portuguese Brazilian translation by Leandro Gehlen (leandrogehlen@gmail.com)",
+  "__locale": "Brazilian Portuguese (pr-BR)",
+  "__author": "Leandro Gehlen, leandrogehlen@gmail.com",
 
   "add_rule": "Nova Regra",
   "add_group": "Novo Gruop",

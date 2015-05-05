@@ -1,5 +1,6 @@
 {
-  "__copyright": "Spanish translation by \"pyarza\", \"kddlb\"",
+  "__locale": "Spanish (es)",
+  "__author": "\"pyarza\", \"kddlb\"",
 
   "add_rule": "Añadir regla",
   "add_group": "Añadir grupo",

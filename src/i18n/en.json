@@ -1,5 +1,6 @@
 {
-  "__copyright": "Reference language file",
+  "__locale": "English (en)",
+  "__author": "Damien \"Mistic\" Sorel, http://www.strangeplanet.fr",
 
   "add_rule": "Add rule",
   "add_group": "Add group",

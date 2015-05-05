@@ -1,13 +1,40 @@
 var deepmerge = require('deepmerge');
-
-function removeJshint(src) {
-    return src
-      .replace(/\/\*jshint [a-z:]+ \*\/\r?\n\r?\n?/g, '')
-      .replace(/\/\*jshint -[EWI]{1}[0-9]{3} \*\/\r?\n\r?\n?/g, '');
-}
-
 module.exports = function(grunt) {
     grunt.util.linefeed = '\n';
+
+    function removeJshint(src) {
+        return src
+          .replace(/\/\*jshint [a-z:]+ \*\/\r?\n\r?\n?/g, '')
+          .replace(/\/\*jshint -[EWI]{1}[0-9]{3} \*\/\r?\n\r?\n?/g, '');
+    }
+
+    function process_lang(file, src, wrapper) {
+        var lang = file.split(/[\/\.]/)[2];
+        var content = JSON.parse(src);
+        wrapper = wrapper || ['',''];
+
+        grunt.config.set('lang_locale', content.__locale || lang);
+        grunt.config.set('lang_author', content.__author);
+        var header = grunt.template.process('<%= langBanner %>');
+
+        loaded_modules.forEach(function(m) {
+            var plugin_file = 'src/plugins/'+ m +'/i18n/'+ lang +'.json';
+
+            if (grunt.file.exists(plugin_file)) {
+                content = deepmerge(content, grunt.file.readJSON(plugin_file));
+            }
+        });
+
+        return header
+          + '\n\n'
+          + wrapper[0]
+          + 'QueryBuilder.regional[\'' + lang + '\'] = '
+          + JSON.stringify(content, null, 2)
+          + ';\n\n'
+          + 'QueryBuilder.defaults({ lang_code: \'' + lang + '\' });'
+          + wrapper[1];
+    }
+
 
     var all_modules = {},
         all_langs = {},
@@ -66,7 +93,7 @@ module.exports = function(grunt) {
         }
 
         // default language
-        js_files_to_load.push('dist/i18n/en.js');
+        js_files_to_load.push('.temp/i18n/en.js');
         loaded_langs.push('en');
 
         // parse 'lang' parameter
@@ -75,7 +102,7 @@ module.exports = function(grunt) {
             arg_langs.replace(/ /g, '').split(',').forEach(function(l) {
                 if (all_langs[l]) {
                     if (l !== 'en') {
-                        js_files_to_load.push(all_langs[l].replace(/^src/, 'dist').replace(/json$/, 'js'));
+                        js_files_to_load.push(all_langs[l].replace(/^src/, '.temp').replace(/json$/, 'js'));
                         loaded_langs.push(l);
                     }
                 }
@@ -100,7 +127,8 @@ module.exports = function(grunt) {
         langBanner:
             '/*!\n'+
             ' * jQuery QueryBuilder <%= pkg.version %>\n'+
-            ' * <%= lang_copyright %>\n'+
+            ' * Locale: <%= lang_locale %>\n'+
+            '<% if (lang_author) { %> * Author: <%= lang_author %>\n<% } %>'+
             ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n'+
             ' */',
 
@@ -187,27 +215,22 @@ module.exports = function(grunt) {
                 options: {
                     stripBanners: false,
                     process: function(src, file) {
-                        var lang = file.split(/[\/\.]/)[2];
-                        var content = JSON.parse(src);
-
-                        grunt.config.set('lang_copyright', content.__copyright || (lang + ' translation'));
-                        var header = grunt.template.process('<%= langBanner %>');
-                        delete content.__copyright;
-
-                        loaded_modules.forEach(function(m) {
-                            var plugin_file = 'src/plugins/'+ m +'/i18n/'+ lang +'.json';
-
-                            if (grunt.file.exists(plugin_file)) {
-                                content = deepmerge(content, grunt.file.readJSON(plugin_file));
-                            }
-                        });
-                        
-                        return header
-                          + '\n\n'
-                          + 'jQuery.fn.queryBuilder.regional[\'' + lang + '\'] = '
-                          + JSON.stringify(content, null, 2)
-                          + ';\n\n'
-                          + 'jQuery.fn.queryBuilder.defaults({ lang_code: \'' + lang + '\' });'
+                        var wrapper = grunt.file.read('src/i18n/.wrapper.js').replace(/\r\n/g, '\n').split(/@@js\n/);
+                        return process_lang(file, src, wrapper);
+                    }
+                }
+            },
+            lang_temp: {
+                files: Object.keys(all_langs).map(function(name) {
+                    return {
+                        src: 'src/i18n/'+ name +'.json',
+                        dest: '.temp/i18n/' + name + '.js'
+                    };
+                }),
+                options: {
+                    stripBanners: false,
+                    process: function(src, file) {
+                        return process_lang(file, src);
                     }
                 }
             },
@@ -317,6 +340,9 @@ module.exports = function(grunt) {
             }
         },
 
+        // clean build dir
+        clean: ['.temp'],
+
         // jshint tests
         jshint: {
             lib: {
@@ -354,11 +380,11 @@ module.exports = function(grunt) {
                         pattern: /(<!-- qunit:modules -->)(?:[\s\S]*)(<!-- \/qunit:modules -->)/m,
                         replacement: function(match, m1, m2) {
                             var scripts = '\n';
-                            
+
                             grunt.file.expand('tests/*.module.js').forEach(function(file) {
                                 scripts+= '<script src="../' + file + '"></script>\n';
                             });
-                            
+
                             return m1 + scripts + m2;
                         }
                     }]
@@ -465,16 +491,19 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-qunit-blanket-lcov');
     grunt.loadNpmTasks('grunt-string-replace');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-wrap');
     grunt.loadNpmTasks('grunt-bump');
 
     grunt.registerTask('build_js', [
+        'concat:lang_temp',
         'concat:js',
         'wrap:js',
         'concat:js_standalone',
-        'uglify'
+        'uglify',
+        'clean'
     ]);
 
     grunt.registerTask('build_css', [
