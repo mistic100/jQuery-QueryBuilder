@@ -1,10 +1,25 @@
 /*!
- * jQuery QueryBuilder 2.0.1
- * Oversat af Jna Borup Coyle, github@coyle.dk
+ * jQuery QueryBuilder 2.1.0
+ * Locale: Norwegian (no)
+ * Author: Jna Borup Coyle, github@coyle.dk
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults({ lang: {
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery', 'query-builder'], factory);
+    }
+    else {
+        factory(root.jQuery);
+    }
+}(this, function($) {
+"use strict";
+
+var QueryBuilder = $.fn.queryBuilder;
+
+QueryBuilder.regional['no'] = {
+  "__locale": "Norwegian (no)",
+  "__author": "Jna Borup Coyle, github@coyle.dk",
   "add_rule": "Legg til regel",
   "add_group": "Legg til gruppe",
   "delete_rule": "Slett regel",
@@ -33,4 +48,7 @@ jQuery.fn.queryBuilder.defaults({ lang: {
     "is_null": "er null",
     "is_not_null": "er ikke null"
   }
-}});
+};
+
+QueryBuilder.defaults({ lang_code: 'no' });
+}));

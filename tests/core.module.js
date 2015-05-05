@@ -352,7 +352,7 @@ $(function(){
     assert.expect(2);
     var done = assert.async();
 
-    $.getScript('../dist/i18n/fr.js', function() {
+    $.getScript('../dist/i18n/query-builder.fr.js', function() {
       $b.queryBuilder({
         filters: basic_filters
       });

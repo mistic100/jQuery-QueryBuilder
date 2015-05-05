@@ -1,10 +1,25 @@
 /*!
- * jQuery QueryBuilder 2.0.1
- * Polish translation by Artur Smolarek
+ * jQuery QueryBuilder 2.1.0
+ * Locale: Polish (pl)
+ * Author: Artur Smolarek
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults({ lang: {
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery', 'query-builder'], factory);
+    }
+    else {
+        factory(root.jQuery);
+    }
+}(this, function($) {
+"use strict";
+
+var QueryBuilder = $.fn.queryBuilder;
+
+QueryBuilder.regional['pl'] = {
+  "__locale": "Polish (pl)",
+  "__author": "Artur Smolarek",
   "add_rule": "Dodaj regułę",
   "add_group": "Dodaj grupę",
   "delete_rule": "Usuń",
@@ -54,4 +69,7 @@ jQuery.fn.queryBuilder.defaults({ lang: {
     "datetime_exceed_min": "Musi być po {0}",
     "datetime_exceed_max": "Musi być przed {0}"
   }
-}});
+};
+
+QueryBuilder.defaults({ lang_code: 'pl' });
+}));

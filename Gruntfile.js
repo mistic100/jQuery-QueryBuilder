@@ -1,4 +1,5 @@
 var deepmerge = require('deepmerge');
+
 module.exports = function(grunt) {
     grunt.util.linefeed = '\n';
 
@@ -17,8 +18,8 @@ module.exports = function(grunt) {
         grunt.config.set('lang_author', content.__author);
         var header = grunt.template.process('<%= langBanner %>');
 
-        loaded_modules.forEach(function(m) {
-            var plugin_file = 'src/plugins/'+ m +'/i18n/'+ lang +'.json';
+        loaded_plugins.forEach(function(p) {
+            var plugin_file = 'src/plugins/'+ p +'/i18n/'+ lang +'.json';
 
             if (grunt.file.exists(plugin_file)) {
                 content = deepmerge(content, grunt.file.readJSON(plugin_file));
@@ -36,9 +37,9 @@ module.exports = function(grunt) {
     }
 
 
-    var all_modules = {},
+    var all_plugins = {},
         all_langs = {},
-        loaded_modules = [],
+        loaded_plugins = [],
         loaded_langs = [],
         js_core_files = [
             'src/main.js',
@@ -59,11 +60,11 @@ module.exports = function(grunt) {
 
 
     (function(){
-        // list available modules and languages
+        // list available plugins and languages
         grunt.file.expand('src/plugins/*/plugin.js')
         .forEach(function(f) {
             var n = f.split('/')[2];
-            all_modules[n] = f;
+            all_plugins[n] = f;
         });
 
         grunt.file.expand('src/i18n/*.json')
@@ -72,23 +73,23 @@ module.exports = function(grunt) {
             all_langs[n] = f;
         });
 
-        // parse 'modules' parameter
-        var arg_modules = grunt.option('modules');
-        if (typeof arg_modules === 'string') {
-            arg_modules.replace(/ /g, '').split(',').forEach(function(m) {
-                if (all_modules[m]) {
-                    js_files_to_load.push(all_modules[m]);
-                    loaded_modules.push(m);
+        // parse 'plugins' parameter
+        var arg_plugins = grunt.option('plugins');
+        if (typeof arg_plugins === 'string') {
+            arg_plugins.replace(/ /g, '').split(',').forEach(function(p) {
+                if (all_plugins[p]) {
+                    js_files_to_load.push(all_plugins[p]);
+                    loaded_plugins.push(p);
                 }
                 else {
-                    grunt.fail.warn('Module '+ m +' unknown');
+                    grunt.fail.warn('Plugin '+ p +' unknown');
                 }
             });
         }
-        else if (arg_modules === undefined) {
-            for (var m in all_modules) {
-                js_files_to_load.push(all_modules[m]);
-                loaded_modules.push(m);
+        else if (arg_plugins === undefined) {
+            for (var p in all_plugins) {
+                js_files_to_load.push(all_plugins[p]);
+                loaded_plugins.push(p);
             }
         }
 
@@ -135,7 +136,10 @@ module.exports = function(grunt) {
         // bump version
         bump: {
             options: {
-                files: ['package.json', 'bower.json', 'composer.json']
+                files: ['package.json', 'bower.json', 'composer.json'],
+                createTag: false,
+                commit: false,
+                push: false
             }
         },
 
@@ -166,7 +170,7 @@ module.exports = function(grunt) {
                 }]
             },
             sass_plugins: {
-                files: loaded_modules.map(function(name) {
+                files: loaded_plugins.map(function(name) {
                     return {
                         src: 'src/plugins/'+ name +'/plugin.scss',
                         dest: 'dist/scss/plugins/' + name + '.scss'
@@ -209,7 +213,7 @@ module.exports = function(grunt) {
                 files: Object.keys(all_langs).map(function(name) {
                     return {
                         src: 'src/i18n/'+ name +'.json',
-                        dest: 'dist/i18n/' + name + '.js'
+                        dest: 'dist/i18n/query-builder.' + name + '.js'
                     };
                 }),
                 options: {
@@ -258,8 +262,8 @@ module.exports = function(grunt) {
                     wrapper: function() {
                         var wrapper = grunt.file.read('src/.wrapper.js').replace(/\r\n/g, '\n').split(/@@js\n/);
 
-                        if (loaded_modules.length) {
-                            wrapper[0] = '// Modules: ' + loaded_modules.join(', ') + '\n' + wrapper[0];
+                        if (loaded_plugins.length) {
+                            wrapper[0] = '// Plugins: ' + loaded_plugins.join(', ') + '\n' + wrapper[0];
                         }
                         if (loaded_langs.length) {
                             wrapper[0] = '// Languages: ' + loaded_langs.join(', ') + '\n' + wrapper[0];
@@ -277,7 +281,7 @@ module.exports = function(grunt) {
                 options: {
                     separator: '',
                     wrapper: function() {
-                        return ['', loaded_modules.reduce(function(wrapper, name) {
+                        return ['', loaded_plugins.reduce(function(wrapper, name) {
                             if (grunt.file.exists('dist/scss/plugins/' + name + '.scss')) {
                                 wrapper+= '\n@import \'plugins/' + name + '\';';
                             }
@@ -370,8 +374,8 @@ module.exports = function(grunt) {
 
                             scripts+= '\n';
 
-                            for (var m in all_modules) {
-                                scripts+= '<script src="../' + all_modules[m] + '" data-cover></script>\n';
+                            for (var p in all_plugins) {
+                                scripts+= '<script src="../' + all_plugins[p] + '" data-cover></script>\n';
                             }
 
                             return m1 + scripts + m2;
@@ -462,10 +466,10 @@ module.exports = function(grunt) {
     grunt.registerTask('list_modules', 'List QueryBuilder plugins and languages.', function() {
         grunt.log.writeln('\nAvailable QueryBuilder plugins:\n');
 
-        for (var m in all_modules) {
-            grunt.log.write(m['cyan']);
+        for (var p in all_plugins) {
+            grunt.log.write(p['cyan']);
 
-            if (grunt.file.exists(all_modules[m].replace(/js$/, 'scss'))) {
+            if (grunt.file.exists(all_plugins[p].replace(/js$/, 'scss'))) {
                 grunt.log.write(' + CSS');
             }
 

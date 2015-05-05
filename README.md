@@ -43,20 +43,20 @@ Install Node and Bower dependencies `npm install & bower install` then run `grun
 
 #### Options
 
-You can choose which plugins to include with `--modules` :
+You can choose which plugins to include with `--plugins` :
 ```bash
 # include "sql-support" plugin
-grunt --modules=sql-support
+grunt --plugins=sql-support
 
-# disable all modules
-grunt --modules=false
+# disable all plugins
+grunt --plugins=false
 ```
 All plugins are included by default.
 
-You can also include ONE language with `--lang` :
+You can also include language files with `--languages` :
 ```bash
-# include French translation
-grunt --lang=fr
+# include French & Italian translation
+grunt --languages=fr,it
 ```
 
 #### Other commands

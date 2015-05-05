@@ -1,10 +1,25 @@
 /*!
- * jQuery QueryBuilder 2.0.1
- * French translation by Damien "Mistic" Sorel
+ * jQuery QueryBuilder 2.1.0
+ * Locale: French (fr)
+ * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults({ lang: {
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery', 'query-builder'], factory);
+    }
+    else {
+        factory(root.jQuery);
+    }
+}(this, function($) {
+"use strict";
+
+var QueryBuilder = $.fn.queryBuilder;
+
+QueryBuilder.regional['fr'] = {
+  "__locale": "French (fr)",
+  "__author": "Damien \"Mistic\" Sorel, http://www.strangeplanet.fr",
   "add_rule": "Ajouter une règle",
   "add_group": "Ajouter un groupe",
   "delete_rule": "Supprimer",
@@ -57,4 +72,7 @@ jQuery.fn.queryBuilder.defaults({ lang: {
     "boolean_not_valid": "N'est pas un booléen",
     "operator_not_multiple": "L'opérateur {0} ne peut utiliser plusieurs valeurs"
   }
-}});
+};
+
+QueryBuilder.defaults({ lang_code: 'fr' });
+}));

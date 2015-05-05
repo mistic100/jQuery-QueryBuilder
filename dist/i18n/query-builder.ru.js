@@ -1,10 +1,23 @@
 /*!
- * jQuery QueryBuilder 2.0.1
- * Локализационный файл
+ * jQuery QueryBuilder 2.1.0
+ * Locale: Russian (ru)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults({ lang: {
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery', 'query-builder'], factory);
+    }
+    else {
+        factory(root.jQuery);
+    }
+}(this, function($) {
+"use strict";
+
+var QueryBuilder = $.fn.queryBuilder;
+
+QueryBuilder.regional['ru'] = {
+  "__locale": "Russian (ru)",
   "add_rule": "Добавить",
   "add_group": "Добавить группу",
   "delete_rule": "Удалить",
@@ -57,4 +70,7 @@ jQuery.fn.queryBuilder.defaults({ lang: {
     "boolean_not_valid": "Не логическое",
     "operator_not_multiple": "Оператор {0} не поддерживает много значений"
   }
-}});
+};
+
+QueryBuilder.defaults({ lang_code: 'ru' });
+}));

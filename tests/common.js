@@ -5,7 +5,7 @@
 QUnit.begin(function() {
   $.ajax({
     async: false,
-    url: '../dist/i18n/en.js',
+    url: '../dist/i18n/query-builder.en.js',
     dataType: 'script'
   });
 });
