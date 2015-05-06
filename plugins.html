@@ -58,7 +58,7 @@ var sql_raw = $('#builder').queryBuilder('getSQL', false, true);
 {% endhighlight %}
 
     <h3>Operators</h3>
-    <p>The SQL plugin requires special configuration for operators to convert rules to a valid SQL query. This configuration is stored in the <code>sqlOperators</code> option, see <a href="{{site.sourceUrl}}/src/plugins/sql-support/plugin.js#L4-24">the source code</a> for more details.</p>
+    <p>The SQL plugin requires special configuration for operators to convert rules to a valid SQL query. This configuration is stored in the <code>sqlOperators</code> option, see <a href="{{site.blobUrl}}/src/plugins/sql-support/plugin.js#L4-24">the source code</a> for more details.</p>
   </div>
 
   <div class="bs-callout">
@@ -83,7 +83,7 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
 {% endhighlight %}
 
     <h3>Operators</h3>
-    <p>The MongoDB module requires special configuration of operators to convert rules to a valid Mongo JSON and vis-versa. This configuration is stored in the <code>mongoOperators</code> and <code>mongoRuleOperators</code> options, the keys are the operators types and the values are formatting functions, see <a href="{{site.sourceUrl}}/src/plugins/mongodb-support/plugin.js#L4-68">the source code</a> for more details.</p>
+    <p>The MongoDB module requires special configuration of operators to convert rules to a valid Mongo JSON and vis-versa. This configuration is stored in the <code>mongoOperators</code> and <code>mongoRuleOperators</code> options, the keys are the operators types and the values are formatting functions, see <a href="{{site.blobUrl}}/src/plugins/mongodb-support/plugin.js#L4-68">the source code</a> for more details.</p>
 
     <div class="bs-callout bs-callout-warning">
       <h4>About filters' id</h4>
@@ -107,7 +107,7 @@ var loopback = $('#builder').queryBuilder('getLoopback');
 {% endhighlight %}
 
     <h3>Operators</h3>
-    <p>The Loopback plugin requires special configuration for operators to convert rules. This configuration is stored in the <code>loopbackOperators</code> option, see <a href="{{site.sourceUrl}}/src/plugins/loopback-support/plugin.js#L4-24">the source code</a> for more details.</p>
+    <p>The Loopback plugin requires special configuration for operators to convert rules. This configuration is stored in the <code>loopbackOperators</code> option, see <a href="{{site.blobUrl}}/src/plugins/loopback-support/plugin.js#L4-24">the source code</a> for more details.</p>
   </div>
 </section>
 

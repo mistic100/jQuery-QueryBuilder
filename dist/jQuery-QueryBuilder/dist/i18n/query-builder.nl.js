@@ -1,10 +1,25 @@
 /*!
- * jQuery QueryBuilder 2.0.1
- * Dutch translation by "Roywcm"
+ * jQuery QueryBuilder 2.1.0
+ * Locale: Dutch (nl)
+ * Author: "Roywcm"
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults({ lang: {
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery', 'query-builder'], factory);
+    }
+    else {
+        factory(root.jQuery);
+    }
+}(this, function($) {
+"use strict";
+
+var QueryBuilder = $.fn.queryBuilder;
+
+QueryBuilder.regional['nl'] = {
+  "__locale": "Dutch (nl)",
+  "__author": "\"Roywcm\"",
   "add_rule": "Nieuwe regel",
   "add_group": "Nieuwe groep",
   "delete_rule": "Verwijder",
@@ -54,4 +69,7 @@ jQuery.fn.queryBuilder.defaults({ lang: {
     "datetime_exceed_min": "Dient na {0}",
     "datetime_exceed_max": "Dient voor {0}"
   }
-}});
+};
+
+QueryBuilder.defaults({ lang_code: 'nl' });
+}));

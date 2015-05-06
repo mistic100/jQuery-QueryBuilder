@@ -1,10 +1,23 @@
 /*!
- * jQuery QueryBuilder 2.0.1
- * Italian translation
+ * jQuery QueryBuilder 2.1.0
+ * Locale: Italian (it)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults({ lang: {
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery', 'query-builder'], factory);
+    }
+    else {
+        factory(root.jQuery);
+    }
+}(this, function($) {
+"use strict";
+
+var QueryBuilder = $.fn.queryBuilder;
+
+QueryBuilder.regional['it'] = {
+  "__locale": "Italian (it)",
   "add_rule": "Aggiungi regola",
   "add_group": "Aggiungi gruppo",
   "delete_rule": "Elimina",
@@ -33,4 +46,7 @@ jQuery.fn.queryBuilder.defaults({ lang: {
     "is_null": "è nullo",
     "is_not_null": "non è nullo"
   }
-}});
+};
+
+QueryBuilder.defaults({ lang_code: 'it' });
+}));

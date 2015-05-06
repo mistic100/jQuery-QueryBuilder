@@ -5,10 +5,6 @@ description: jQuery plugin for user friendly query/filter creator
 isHome: true
 ---
 
-<div class="alert alert-info">
-  <b>Comming from version 1.4.x ?</b> Check the <a href="{{site.github.url}}/dev/migrate-14-20.html">migration guide</a>.
-</div>
-
 <section class="bs-docs-section clearfix">
   <h1 id="overview" class="page-header">
     Overview
@@ -35,6 +31,14 @@ isHome: true
   <h1 id="installation" class="page-header">
     Installation
   </h1>
+
+  <div class="alert alert-info">
+    <b>Comming from version 1.4.x ?</b> Check the <a href="{{site.github.url}}/dev/migrate-14-20.html">migration guide</a>.
+  </div>
+
+  <div class="alert alert-info">
+    <b>Comming from version 2.0.x ?</b> <a href="{{site.treeUrl}}/dist/i18n">i18n</a> file names changed.
+  </div>
   
   <h3 id="dependencies">Dependencies</h3>
   <ul>
@@ -46,7 +50,7 @@ isHome: true
   </ul>
 
   <h3 id="letsgo">Let's go!</h3>
-  <p>Include <a href="{{site.rawSourceUrl}}/dist/css/query-builder.default.min.css" target="_blank">query-builder.css</a> in your page head and <a href="{{site.rawSourceUrl}}/dist/js/query-builder.min.js" target="_blank">query-builder.js</a> after dependencies. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
+  <p>Include <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css" target="_blank">query-builder.css</a> in your page head and <a href="{{site.rawUrl}}/dist/js/query-builder.min.js" target="_blank">query-builder.js</a> after dependencies. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
   
 {% highlight html %}
 <div id="builder"></div>
@@ -68,7 +72,7 @@ require(['jquery', 'query-builder'], function($) {
 });
 {% endhighlight %}
 
-  <p>A <a href="{{site.rawSourceUrl}}/dist/js/query-builder.standalone.min.js" target="_blank">standalone</a> version is available, it ships MicroEvent and $.extendext (you still need to add jQuery and Bootstrap).</p>
+  <p>A <a href="{{site.rawUrl}}/dist/js/query-builder.standalone.min.js" target="_blank">standalone</a> version is available, it ships MicroEvent and $.extendext (you still need to add jQuery and Bootstrap).</p>
 </section>
 
 
@@ -93,13 +97,20 @@ require(['jquery', 'query-builder'], function($) {
           <td>filters</td>
           <td>object[]</td>
           <td><span class="label label-danger">required</span></td>
-          <td>Array of available filters in the builder. <a href="#filters">See below</a>.</td>
+          <td>Array of available filters in the builder. <a href="#filters">See below</a></td>
         </tr>
         <tr>
           <td>plugins</td>
           <td>object</td>
           <td></td>
-          <td>Configuration of plugins. See the <a href="{{site.github.url}}/plugins.html">page about plugins</a>.</td>
+          <td>Configuration of plugins. <a href="{{site.github.url}}/plugins.html">See plugins page</a></td>
+        </tr>
+        <tr>
+          <td>rules</td>
+          <td>object</td>
+          <td></td>
+          <td>Initial set of rules. It's like calling <code>setRules</code> <a href="#methods">method</a> after initialization. By default the builder will contain one empty rule.
+          </td>
         </tr>
         <tr>
           <td>allow_groups</td>
@@ -147,19 +158,25 @@ require(['jquery', 'query-builder'], function($) {
           <td>operators</td>
           <td>object[]</td>
           <td></td>
-          <td>Configuration of operators. <a href="#operators">See below</a>.</td>
+          <td>Configuration of operators. <a href="#operators">See below</a></td>
+        </tr>
+        <tr>
+          <td>lang_code</td>
+          <td>string</td>
+          <td>'en'</td>
+          <td>One of the language files code available. Default is <i>English</i> or the last loaded language.</td>
         </tr>
         <tr>
           <td>lang</td>
           <td>object</td>
-          <td><i>english</i></td>
-          <td>Array of translatable strings. <a href="#lang">See below</a>.</td>
+          <td></td>
+          <td>Additional/overwrites translation strings. <a href="#lang">See below</a></td>
         </tr>
         <tr>
           <td>icons</td>
           <td>object</td>
           <td><i>glyphicons</i></td>
-          <td>Font-icons used in the builder. Defaults to using Glyphicons. <a href="#icons">See below</a>.</td>
+          <td>Font-icons used in the builder. Defaults to using Glyphicons. <a href="#icons">See below</a></td>
         </tr>
       </tbody>
     </table>
@@ -224,8 +241,8 @@ require(['jquery', 'query-builder'], function($) {
           <td>values</td>
           <td>array|object</td>
           <td><span class="label label-warning">required*</span></td>
-          <td><i>Required for <code>radio</code> and <code>checkbox</code> inputs. Generally needed for <code>select</code> inputs.</i><br>
-            <button class="btn btn-primary btn-xs" data-bootbox="filter_values_details">More details</button>
+          <td><i>Required for <code>radio</code> and <code>checkbox</code> inputs. Generally needed for <code>select</code> inputs.</i>
+            <a data-bootbox="filter_values_details">More details</a>
             <div id="filter_values_details" class="hidden" title="Filter values">
               <p>Three forms are allowed for the <code>values</code> object.</p>
               <ol>
@@ -296,14 +313,14 @@ values: [
           <td>validation</td>
           <td>object</td>
           <td></td>
-          <td>Object of options for rule validation. <a href="#validation">See below</a>.</td>
+          <td>Object of options for rule validation. <a href="#validation">See below</a></td>
         </tr>
         <tr>
           <td>operators</td>
           <td>array</td>
           <td></td>
-          <td>Array of operators types to use for this filter. If empty the filter will use all applicable operators.<br>
-            <button class="btn btn-primary btn-xs" data-bootbox="default_operators">Show all operators</button>
+          <td>Array of operators types to use for this filter. If empty the filter will use all applicable operators.
+            <a data-bootbox="default_operators">Show all operators</a>
             <div id="default_operators" title="All operators" class="hidden">
               <ul>
                 <li>equal</li>
@@ -348,10 +365,10 @@ values: [
           <td>Additionnal data not use by QueryBuilder but that will be added to the output rules object. Use this to store any functional data you need.</td>
         </tr>
         <tr>
-          <td>valueParser</td>
+          <td>valueSetter</td>
           <td>function</td>
           <td>null</td>
-          <td>Modifier applied to each value in <code>getRules</code> function. It will be called after teh default process. It takes 2 parameters:
+          <td>Function used to set the input(s) value. If provided the default function is not run. It takes 2 parameters:
             <ul>
               <li><code>rule</code> the <b>Rule</b> object</li>
               <li><code>value</code></li>
@@ -359,15 +376,20 @@ values: [
           </td>
         </tr>
         <tr>
-          <td>valueSetter</td>
+          <td>valueGetter</td>
           <td>function</td>
           <td>null</td>
-          <td>Function used to set the input(s) value in <code>getRules</code> function. If provided the default function is not run. It takes 2 parameters:
+          <td>Function used to get the input(s) value. If provided the default function is not run. It takes 1 parameter:
             <ul>
               <li><code>rule</code> the <b>Rule</b> object</li>
-              <li><code>value</code></li>
             </ul>
           </td>
+        </tr>
+        <tr>
+          <td>valueParser</td>
+          <td>function</td>
+          <td>null</td>
+          <td><span class="label label-warning">deprecated</span> use <code>valueGetter</code> instead</td>
         </tr>
       </tbody>
     </table>
@@ -460,12 +482,52 @@ $('#builder').queryBuilder('getRules')
   </div>
   
   <h4>setRules</h4>
-  <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>.</p>
+  <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>. <a data-bootbox="rules_format">See an example</a></p>
 {% highlight javascript %}
 $('#builder').queryBuilder('setRules', { ... })
 {% endhighlight %}
 
-  <p>Each rule can have an additional <code>data</code> parameter wich will be merge with the filter data when calling <code>getRules</code>.</p>
+  <div id="rules_format" title="Rules JSON format" class="hidden">
+    <p>This is the data format expected by <code>setRules</code> method.</p>
+{% highlight javascript %}
+{
+  "condition": "AND",
+  "rules": [
+    {
+      "id": "price",
+      "field": "price",
+      "type": "double",
+      "input": "text",
+      "operator": "less",
+      "value": "10.25"
+    },
+    {
+      "condition": "OR",
+      "rules": [
+        {
+          "id": "category",
+          "field": "category",
+          "type": "integer",
+          "input": "select",
+          "operator": "equal",
+          "value": "2"
+        },
+        {
+          "id": "category",
+          "field": "category",
+          "type": "integer",
+          "input": "select",
+          "operator": "equal",
+          "value": "1"
+        }
+      ]
+    }
+  ]
+}
+{% endhighlight %}
+  </div>
+
+  <p>Each rule and group can have an additional <code>data</code> parameter which will be merged with the filter data (for rules only) when calling <code>getRules</code>.</p>
 
   <p>Each rule can have an additional <code>flags</code> parameter which will control the editability of the rule.</p>
 
@@ -533,10 +595,10 @@ $('#builder').queryBuilder('destroy')
   <h3 id="events">Events</h3>
   <p>QueryBuilder uses events to notify the "outer world" about various things happening, like adding a rule or when a validation error happens. The events system is also used by plugins.</p>
 
-  <p><a class="btn btn-primary" href="{{site.github.url}}/dev/events.html">Read more about events</a></p>
+  <p><a class="btn btn-link" href="{{site.github.url}}/dev/events.html">Read more about events</a></p>
   
   <h3 id="themes">Themes</h3>
-  <p>QueryBuilder comes with two colors-schemes: <a href="{{site.rawSourceUrl}}/dist/css/query-builder.default.min.css">default</a> (clear) and <a href="{{site.rawSourceUrl}}/dist/css/query-builder.dark.min.css">dark</a>. Change the active theme only by switching stylesheet, you cannot use the two colors-schemes on the same page.</p>
+  <p>QueryBuilder comes with two colors-schemes: <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css">default</a> (clear) and <a href="{{site.rawUrl}}/dist/css/query-builder.dark.min.css">dark</a>. Change the active theme only by switching stylesheet, you cannot use the two colors-schemes on the same page.</p>
 </section>
 
 <section class="bs-docs-section">
@@ -584,10 +646,12 @@ $('#builder').queryBuilder('destroy')
     </table>
   </div>
   
-  <p>Check the default operators configuration <a href="{{site.sourceUrl}}/src/defaults.js#L107-127">in the source code</a>.</p>
+  <p>Check the default operators configuration <a href="{{site.blobUrl}}/src/defaults.js#L69-89">in the source code</a>.</p>
   
   <h3 id="lang">Translation</h3>
-  <p>Translation files are available in the <a href="https://github.com/mistic100/jQuery-QueryBuilder/tree/master/dist/i18n">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<p>
+  <p>Translation files are available in the <a href="{{site.treeUrl}}/dist/i18n">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<p>
+  
+  <p>You can load multiple translation files and use the <code>lang_code</code> option to choose which language to use.</p>
 
   <p>Available languages are (some partially translated) :<br>
     <i class="flag flag-de"></i> German
@@ -605,7 +669,7 @@ $('#builder').queryBuilder('destroy')
   </p>
 
   <p>Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators and conditions.<br>
-  Default english strings <a href="{{site.sourceUrl}}/src/i18n/en.json#1">in the source code</a>.</p>
+  Default English strings are in <a href="{{site.blobUrl}}/src/i18n/en.json">the source code</a>.</p>
 
   <h3 id="icons">Icons</h3>
   <p>The <code>icons</code> option provides a way of using alternate icons sets. Available attributes:</p>

@@ -1,10 +1,25 @@
 /*!
- * jQuery QueryBuilder 2.0.1
- * German translation by "raimu"
+ * jQuery QueryBuilder 2.1.0
+ * Locale: German (de)
+ * Author: "raimu"
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults({ lang: {
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery', 'query-builder'], factory);
+    }
+    else {
+        factory(root.jQuery);
+    }
+}(this, function($) {
+"use strict";
+
+var QueryBuilder = $.fn.queryBuilder;
+
+QueryBuilder.regional['de'] = {
+  "__locale": "German (de)",
+  "__author": "\"raimu\"",
   "add_rule": "neue Regel",
   "add_group": "neue Gruppe",
   "delete_rule": "löschen",
@@ -53,4 +68,7 @@ jQuery.fn.queryBuilder.defaults({ lang: {
     "datetime_exceed_min": "Muss nach dem {0} sein",
     "datetime_exceed_max": "Muss vor dem {0} sein"
   }
-}});
+};
+
+QueryBuilder.defaults({ lang_code: 'de' });
+}));

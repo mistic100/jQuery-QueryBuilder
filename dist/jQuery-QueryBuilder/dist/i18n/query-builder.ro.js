@@ -1,10 +1,25 @@
 /*!
- * jQuery QueryBuilder 2.0.1
- * Romanian translation by ArianServ
+ * jQuery QueryBuilder 2.1.0
+ * Locale: Romanian (ro)
+ * Author: ArianServ
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults({ lang: {
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery', 'query-builder'], factory);
+    }
+    else {
+        factory(root.jQuery);
+    }
+}(this, function($) {
+"use strict";
+
+var QueryBuilder = $.fn.queryBuilder;
+
+QueryBuilder.regional['ro'] = {
+  "__locale": "Romanian (ro)",
+  "__author": "ArianServ",
   "add_rule": "Adaugă regulă",
   "add_group": "Adaugă grup",
   "delete_rule": "Şterge",
@@ -33,4 +48,7 @@ jQuery.fn.queryBuilder.defaults({ lang: {
     "is_null": "e nul",
     "is_not_null": "nu e nul"
   }
-}});
+};
+
+QueryBuilder.defaults({ lang_code: 'ro' });
+}));

@@ -135,6 +135,14 @@ $('#builder').on('validationError.queryBuilder', function(e, rule, error, value)
           </td>
         </tr>
         <tr>
+          <td>afterUpdateRuleValue<small>.queryBuilder</small></td>
+          <td>After the rule value has been modified.
+            <ul>
+              <li><code>rule</code> <b>Rule</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
           <td>afterUpdateRuleFilter<small>.queryBuilder</small></td>
           <td>After the filter has been updated and the operators and input re-created.
             <ul>
@@ -159,6 +167,14 @@ $('#builder').on('validationError.queryBuilder', function(e, rule, error, value)
           </td>
         </tr>
         <tr>
+          <td>afterUpdateGroupCondition<small>.queryBuilder</small></td>
+          <td>After the group condition has been modified.
+            <ul>
+              <li><code>group</code> <b>Group</b> object</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
           <td>validationError<small>.queryBuilder</small> <i class="glyphicon glyphicon-asterisk"></i></td>
           <td>Fired when a validation error occurred.
             <ul>
@@ -166,7 +182,7 @@ $('#builder').on('validationError.queryBuilder', function(e, rule, error, value)
               <li><code>error</code></li>
               <li><code>value</code></li>
             </ul>
-            <button class="btn btn-primary btn-xs" data-bootbox="error_codes">See error codes</button>
+            <a data-bootbox="error_codes">See error codes</a>
             <div id="error_codes" title="Error codes" class="hidden">
               <ul>
                 <li>no_filter</li>
@@ -204,24 +220,6 @@ $('#builder').on('validationError.queryBuilder', function(e, rule, error, value)
         <tr>
           <td>afterClear<small>.queryBuilder</small></td>
           <td>After <code>clear</code> method.</td>
-        </tr>
-        <tr>
-          <td>beforeSetRuleValue<small>.queryBuilder</small></td>
-          <td>Before setting a value inside <code>setRules</code> method.
-            <ul>
-              <li><code>rule</code> <b>Rule</b> object</li>
-              <li><code>value</code></li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>afterSetRuleValue<small>.queryBuilder</small></td>
-          <td>After setting a value inside <code>setRules</code> method.
-            <ul>
-              <li><code>rule</code> <b>Rule</b> object</li>
-              <li><code>value</code></li>
-            </ul>
-          </td>
         </tr>
       </tbody>
     </table>

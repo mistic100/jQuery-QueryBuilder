@@ -124,12 +124,13 @@
 }));
 
 /*!
- * jQuery QueryBuilder 2.0.1
+ * jQuery QueryBuilder 2.1.0
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-// Modules: bt-checkbox, bt-selectpicker, bt-tooltip-errors, filter-description, loopback-support, mongodb-support, sortable, sql-support, unique-filter
+// Languages: en
+// Plugins: bt-checkbox, bt-selectpicker, bt-tooltip-errors, filter-description, loopback-support, mongodb-support, sortable, sql-support, unique-filter
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
         define('query-builder', ['jquery', 'jQuery.extendext'], factory);
@@ -268,6 +269,9 @@ QueryBuilder.prototype.initPlugins = function() {
     }, this);
 };
 
+/**
+ * Allowed types and their internal representation
+ */
 QueryBuilder.types = {
     'string': 'string',
     'integer': 'number',
@@ -278,6 +282,9 @@ QueryBuilder.types = {
     'boolean': 'boolean'
 };
 
+/**
+ * Allowed inputs
+ */
 QueryBuilder.inputs = [
     'text',
     'textarea',
@@ -286,12 +293,23 @@ QueryBuilder.inputs = [
     'select'
 ];
 
+/**
+ * Runtime modifiable options with `setOptions` method
+ */
 QueryBuilder.modifiable_options = [
     'display_errors',
     'allow_groups',
     'allow_empty'
 ];
 
+/**
+ * Localized strings (populated by `i18n` files)
+ */
+QueryBuilder.regional = {};
+
+/**
+ * Default configuration
+ */
 QueryBuilder.DEFAULTS = {
     filters: [],
     plugins: [],
@@ -316,63 +334,8 @@ QueryBuilder.DEFAULTS = {
         rule: null
     },
 
-    lang: {
-        "add_rule": 'Add rule',
-        "add_group": 'Add group',
-        "delete_rule": 'Delete',
-        "delete_group": 'Delete',
-
-        "conditions": {
-            "AND": "AND",
-            "OR": "OR"
-        },
-
-        "operators": {
-            "equal": "equal",
-            "not_equal": "not equal",
-            "in": "in",
-            "not_in": "not in",
-            "less": "less",
-            "less_or_equal": "less or equal",
-            "greater": "greater",
-            "greater_or_equal": "greater or equal",
-            "between": "between",
-            "begins_with": "begins with",
-            "not_begins_with": "doesn't begin with",
-            "contains": "contains",
-            "not_contains": "doesn't contain",
-            "ends_with": "ends with",
-            "not_ends_with": "doesn't end with",
-            "is_empty": "is empty",
-            "is_not_empty": "is not empty",
-            "is_null": "is null",
-            "is_not_null": "is not null"
-        },
-
-        "errors": {
-            "no_filter": "No filter selected",
-            "empty_group": "The group is empty",
-            "radio_empty": "No value selected",
-            "checkbox_empty": "No value selected",
-            "select_empty": "No value selected",
-            "string_empty": "Empty value",
-            "string_exceed_min_length": "Must contain at least {0} characters",
-            "string_exceed_max_length": "Must not contain more than {0} characters",
-            "string_invalid_format": "Invalid format ({0})",
-            "number_nan": "Not a number",
-            "number_not_integer": "Not an integer",
-            "number_not_double": "Not a real number",
-            "number_exceed_min": "Must be greater than {0}",
-            "number_exceed_max": "Must be lower than {0}",
-            "number_wrong_step": "Must be a multiple of {0}",
-            "datetime_empty": "Empty value",
-            "datetime_invalid": "Invalid date format ({0})",
-            "datetime_exceed_min": "Must be after {0}",
-            "datetime_exceed_max": "Must be before {0}",
-            "boolean_not_valid": "Not a boolean",
-            "operator_not_multiple": "Operator {0} cannot accept multiple values"
-        }
-    },
+    lang_code: 'en',
+    lang: {},
 
     operators: [
         {type: 'equal',            nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
@@ -420,7 +383,8 @@ QueryBuilder.prototype.init = function($el, options) {
         rule_id: 0,
         generated_id: false,
         has_optgroup: false,
-        id: null
+        id: null,
+        updating_value: false
     };
 
     // "allow_groups" can be boolean or int
@@ -433,11 +397,16 @@ QueryBuilder.prototype.init = function($el, options) {
 
     // SETTINGS SHORTCUTS
     this.filters = this.settings.filters;
-    this.lang = this.settings.lang;
     this.icons = this.settings.icons;
     this.operators = this.settings.operators;
     this.template = this.settings.template;
     this.plugins = this.settings.plugins;
+    
+    // translations : english << 'lang_code' << custom
+    if (QueryBuilder.regional['en'] === undefined) {
+      error('"i18n/en.js" not loaded.');
+    }
+    this.lang = $.extendext(true, 'replace', {}, QueryBuilder.regional['en'], QueryBuilder.regional[this.settings.lang_code], this.settings.lang);
 
     if (this.template.group === null) {
         this.template.group = this.getGroupTemplate;
@@ -646,6 +615,10 @@ QueryBuilder.prototype.bindEvents = function() {
                 case 'flags':
                     that.applyRuleFlags(node);
                     break;
+
+                case 'value':
+                    that.updateRuleValue(node);
+                    break;
             }
         }
     });
@@ -654,9 +627,10 @@ QueryBuilder.prototype.bindEvents = function() {
 /**
  * Create the root group
  * @param addRule {bool,optional} add a default empty rule
+ * @param data {mixed,optional} group custom data
  * @return group {Root}
  */
-QueryBuilder.prototype.setRoot = function(addRule) {
+QueryBuilder.prototype.setRoot = function(addRule, data) {
     addRule = (addRule === undefined || addRule === true);
 
     var group_id = this.nextGroupId(),
@@ -666,6 +640,10 @@ QueryBuilder.prototype.setRoot = function(addRule) {
     this.model.root = new Group(null, $group);
     this.model.root.model = this.model;
     this.model.root.condition = this.settings.default_condition;
+
+    if (data !== undefined) {
+        this.model.root.data = data;
+    }
 
     if (addRule) {
         this.addRule(this.model.root);
@@ -678,9 +656,10 @@ QueryBuilder.prototype.setRoot = function(addRule) {
  * Add a new group
  * @param parent {Group}
  * @param addRule {bool,optional} add a default empty rule
+ * @param data {mixed,optional} group custom data
  * @return group {Group}
  */
-QueryBuilder.prototype.addGroup = function(parent, addRule) {
+QueryBuilder.prototype.addGroup = function(parent, addRule, data) {
     addRule = (addRule === undefined || addRule === true);
 
     var level = parent.level + 1;
@@ -693,6 +672,10 @@ QueryBuilder.prototype.addGroup = function(parent, addRule) {
     var group_id = this.nextGroupId(),
         $group = $(this.template.group.call(this, group_id, level)),
         model = parent.addGroup($group);
+
+    if (data !== undefined) {
+        model.data = data;
+    }
 
     this.trigger('afterAddGroup', model);
 
@@ -746,14 +729,17 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
         $this.prop('checked', $this.val() === group.condition);
         $this.parent().toggleClass('active', $this.val() === group.condition);
     });
+
+    this.trigger('afterUpdateGroupCondition', group);
 };
 
 /**
  * Add a new rule
  * @param parent {Group}
+ * @param data {mixed,optional} rule custom data
  * @return rule {Rule}
  */
-QueryBuilder.prototype.addRule = function(parent) {
+QueryBuilder.prototype.addRule = function(parent, data) {
     var e = this.trigger('beforeAddRule', parent);
     if (e.isDefaultPrevented()) {
         return null;
@@ -762,6 +748,10 @@ QueryBuilder.prototype.addRule = function(parent) {
     var rule_id = this.nextRuleId(),
         $rule = $(this.template.rule.call(this, rule_id)),
         model = parent.addRule($rule);
+
+    if (data !== undefined) {
+        model.data = data;
+    }
 
     this.trigger('afterAddRule', model);
 
@@ -810,7 +800,7 @@ QueryBuilder.prototype.createRuleFilters = function(rule) {
  * Create the operators <select> for a rule and init the rule operator
  * @param rule {Rule}
  */
-QueryBuilder.prototype.createRuleOperators = function(rule, triggerChangeOperator) {
+QueryBuilder.prototype.createRuleOperators = function(rule) {
     var $operatorContainer = rule.$el.find('.rule-operator-container').empty();
 
     if (!rule.filter) {
@@ -822,12 +812,8 @@ QueryBuilder.prototype.createRuleOperators = function(rule, triggerChangeOperato
 
     $operatorContainer.html($operatorSelect);
 
-    if (triggerChangeOperator !== false) {
-        rule.operator = operators[0];
-    }
-    else {
-        rule.__.operator = operators[0];
-    }
+    // set the operator without triggering update event
+    rule.__.operator = operators[0];
 
     this.trigger('afterCreateRuleOperators', rule, operators);
 };
@@ -839,11 +825,14 @@ QueryBuilder.prototype.createRuleOperators = function(rule, triggerChangeOperato
 QueryBuilder.prototype.createRuleInput = function(rule) {
     var $valueContainer = rule.$el.find('.rule-value-container').empty();
 
-    if (!rule.filter || rule.operator.nb_inputs === 0) {
+    rule.__.value = undefined;
+
+    if (!rule.filter || !rule.operator || rule.operator.nb_inputs === 0) {
         return;
     }
 
-    var $inputs = $(),
+    var that = this,
+        $inputs = $(),
         filter = rule.filter;
 
     for (var i=0; i<rule.operator.nb_inputs; i++) {
@@ -855,6 +844,12 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
 
     $valueContainer.show();
 
+    $inputs.on('change', function() {
+        that.status.updating_value = true;
+        rule.value = that.getRuleValue(rule);
+        that.status.updating_value = false;
+    });
+
     if (filter.plugin) {
         $inputs[filter.plugin](filter.plugin_config || {});
     }
@@ -862,7 +857,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     this.trigger('afterCreateRuleInput', rule);
 
     if (filter.default_value !== undefined) {
-        this.setRuleValue(rule, filter.default_value);
+        rule.value = filter.default_value;
     }
 };
 
@@ -871,7 +866,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
  * @param rule {Rule}
  */
 QueryBuilder.prototype.updateRuleFilter = function(rule) {
-    this.createRuleOperators(rule, false);
+    this.createRuleOperators(rule);
     this.createRuleInput(rule);
 
     rule.$el.find('.rule-filter-container [name$=_filter]').val(rule.filter ? rule.filter.id : '-1');
@@ -889,6 +884,8 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
 
     if (!rule.operator || rule.operator.nb_inputs === 0) {
         $valueContainer.hide();
+
+        rule.__.value = undefined;
     }
     else {
         $valueContainer.show();
@@ -903,6 +900,18 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     }
 
     this.trigger('afterUpdateRuleOperator', rule);
+};
+
+/**
+ * Perform action when rule's value is changed
+ * @param rule {Rule}
+ */
+QueryBuilder.prototype.updateRuleValue = function(rule) {
+    if (!this.status.updating_value) {
+        this.setRuleValue(rule, rule.value);
+    }
+
+    this.trigger('afterUpdateRuleValue', rule);
 };
 
 /**
@@ -1072,11 +1081,10 @@ QueryBuilder.prototype.validate = function() {
             }
 
             if (rule.operator.nb_inputs !== 0) {
-                var value = that.getRuleValue(rule),
-                    valid = that.validateValue(rule, value);
+                var valid = that.validateValue(rule, rule.value);
 
                 if (valid !== true) {
-                    that.triggerValidationError(rule, valid, value);
+                    that.triggerValidationError(rule, valid, rule.value);
                     errors++;
                     return;
                 }
@@ -1119,16 +1127,20 @@ QueryBuilder.prototype.getRules = function() {
 
     var that = this;
 
-    var data = (function parse(group) {
-        var out = {
+    var out = (function parse(group) {
+        var data = {
             condition: group.condition,
             rules: []
         };
 
+        if (group.data) {
+            data.data = $.extendext(true, 'replace', {}, group.data);
+        }
+
         group.each(function(model) {
             var value = null;
             if (model.operator.nb_inputs !== 0) {
-                value = that.getRuleValue(model);
+                value = model.value;
             }
 
             var rule = {
@@ -1144,17 +1156,17 @@ QueryBuilder.prototype.getRules = function() {
                 rule.data = $.extendext(true, 'replace', {}, model.filter.data, model.data);
             }
 
-            out.rules.push(rule);
+            data.rules.push(rule);
 
         }, function(model) {
-            out.rules.push(parse(model));
+            data.rules.push(parse(model));
         });
 
-        return out;
+        return data;
 
     }(this.model.root));
 
-    return this.change('getRules', data);
+    return this.change('getRules', out);
 };
 
 /**
@@ -1162,12 +1174,12 @@ QueryBuilder.prototype.getRules = function() {
  * @param data {object}
  */
 QueryBuilder.prototype.setRules = function(data) {
-    this.clear();
-    this.setRoot(false);
-
     if (!data || !data.rules || (data.rules.length===0 && !this.settings.allow_empty)) {
         error('Incorrect data object passed');
     }
+
+    this.clear();
+    this.setRoot(false, data.data);
 
     data = this.change('setRules', data);
 
@@ -1185,43 +1197,39 @@ QueryBuilder.prototype.setRules = function(data) {
             error('Invalid condition "{0}"', data.condition);
         }
 
-        group.condition = data.condition.toUpperCase();
+        group.condition = data.condition;
 
-        data.rules.forEach(function(rule) {
+        data.rules.forEach(function(item) {
             var model;
-            if (rule.rules && rule.rules.length>0) {
+            if (item.rules && item.rules.length>0) {
                 if (that.settings.allow_groups != -1 && that.settings.allow_groups < group.level) {
                     that.reset();
                     error('No more than {0} groups are allowed', that.settings.allow_groups);
                 }
                 else {
-                    model = that.addGroup(group, false);
-                    add(rule, model);
+                    model = that.addGroup(group, false, item.data);
+                    add(item, model);
                 }
             }
             else {
-                if (rule.id === undefined) {
+                if (item.id === undefined) {
                     error('Missing rule field id');
                 }
-                if (rule.operator === undefined) {
-                    rule.operator = 'equal';
+                if (item.operator === undefined) {
+                    item.operator = 'equal';
                 }
 
-                model = that.addRule(group);
+                model = that.addRule(group, item.data);
                 if (model === null) {
                     return;
                 }
 
-                model.filter = that.getFilterById(rule.id);
-                model.operator = that.getOperatorByType(rule.operator);
-                model.flags = that.parseRuleFlags(rule);
+                model.filter = that.getFilterById(item.id);
+                model.operator = that.getOperatorByType(item.operator);
+                model.flags = that.parseRuleFlags(item);
 
-                if (rule.data) {
-                    model.data = rule.data;
-                }
-
-                if (model.operator.nb_inputs !== 0 && rule.value !== undefined) {
-                    that.setRuleValue(model, rule.value);
+                if (model.operator.nb_inputs !== 0 && item.value !== undefined) {
+                    model.value = item.value;
                 }
             }
         });
@@ -1280,7 +1288,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                 break;
 
             case 'checkbox':
-                if (value[i].length === 0) {
+                if (value[i] === undefined || value[i].length === 0) {
                     result = ['checkbox_empty'];
                     break;
                 }
@@ -1292,7 +1300,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
             case 'select':
                 if (filter.multiple) {
-                    if (value[i].length === 0) {
+                    if (value[i] === undefined || value[i].length === 0) {
                         result = ['select_empty'];
                         break;
                     }
@@ -1312,7 +1320,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
             default:
                 switch (QueryBuilder.types[filter.type]) {
                     case 'string':
-                        if (value[i].length === 0) {
+                        if (value[i] === undefined || value[i].length === 0) {
                             result = ['string_empty'];
                             break;
                         }
@@ -1340,7 +1348,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         break;
 
                     case 'number':
-                        if (isNaN(value[i])) {
+                        if (value[i] === undefined || isNaN(value[i])) {
                             result = ['number_nan'];
                             break;
                         }
@@ -1378,7 +1386,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         break;
 
                     case 'datetime':
-                        if (value[i].length === 0) {
+                        if (value[i] === undefined || value[i].length === 0) {
                             result = ['datetime_empty'];
                             break;
                         }
@@ -1527,49 +1535,57 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
 QueryBuilder.prototype.getRuleValue = function(rule) {
     var filter = rule.filter,
         operator = rule.operator,
-        $value = rule.$el.find('.rule-value-container'),
-        value = [], tmp;
+        value = [];
 
-    for (var i=0; i<operator.nb_inputs; i++) {
-        var name = rule.id + '_value_' + i;
+    if (filter.valueGetter) {
+        value = filter.valueGetter.call(this, rule);
+    }
+    else {
+        var $value = rule.$el.find('.rule-value-container'),
+            tmp;
 
-        switch (filter.input) {
-            case 'radio':
-                value.push($value.find('[name='+ name +']:checked').val());
-                break;
+        for (var i=0; i<operator.nb_inputs; i++) {
+            var name = rule.id + '_value_' + i;
 
-            case 'checkbox':
-                tmp = [];
-                $value.find('[name='+ name +']:checked').each(function() {
-                    tmp.push($(this).val());
-                });
-                value.push(tmp);
-                break;
+            switch (filter.input) {
+                case 'radio':
+                    value.push($value.find('[name='+ name +']:checked').val());
+                    break;
 
-            case 'select':
-                if (filter.multiple) {
+                case 'checkbox':
                     tmp = [];
-                    $value.find('[name='+ name +'] option:selected').each(function() {
+                    $value.find('[name='+ name +']:checked').each(function() {
                         tmp.push($(this).val());
                     });
                     value.push(tmp);
-                }
-                else {
-                    value.push($value.find('[name='+ name +'] option:selected').val());
-                }
-                break;
+                    break;
 
-            default:
-                value.push($value.find('[name='+ name +']').val());
+                case 'select':
+                    if (filter.multiple) {
+                        tmp = [];
+                        $value.find('[name='+ name +'] option:selected').each(function() {
+                            tmp.push($(this).val());
+                        });
+                        value.push(tmp);
+                    }
+                    else {
+                        value.push($value.find('[name='+ name +'] option:selected').val());
+                    }
+                    break;
+
+                default:
+                    value.push($value.find('[name='+ name +']').val());
+            }
         }
-    }
 
-    if (operator.nb_inputs === 1) {
-        value = value[0];
-    }
+        if (operator.nb_inputs === 1) {
+            value = value[0];
+        }
 
-    if (filter.valueParser) {
-        value = filter.valueParser.call(this, rule, value);
+        // @deprecated
+        if (filter.valueParser) {
+            value = filter.valueParser.call(this, rule, value);
+        }
     }
 
     return this.change('getRuleValue', value, rule);
@@ -1583,8 +1599,6 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
 QueryBuilder.prototype.setRuleValue = function(rule, value) {
     var filter = rule.filter,
         operator = rule.operator;
-
-    this.trigger('beforeSetRuleValue', rule, value);
 
     if (filter.valueSetter) {
         filter.valueSetter.call(this, rule, value);
@@ -1622,8 +1636,6 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
             }
         }
     }
-
-    this.trigger('afterSetRuleValue', rule, value);
 };
 
 /**
@@ -1959,13 +1971,13 @@ var Node = function(parent, $el) {
 
     $el.data('queryBuilderModel', this);
 
-    this.model = parent === null ? null : parent.model;
-    this.parent = parent;
-    // this.level -- initialized in 'parent' setter
+    this.__.level = 0;
+    this.__.error = null;
+    this.__.data = undefined;
     this.$el = $el;
     this.id = $el[0].id;
-    this.error = null;
-    this.data = undefined;
+    this.model = null;
+    this.parent = parent;
 };
 
 defineModelProperties(Node, ['level', 'error', 'data']);
@@ -1977,7 +1989,8 @@ Object.defineProperty(Node.prototype, 'parent', {
     },
     set: function(value) {
         this.__.parent = value;
-        this.level = this.parent === null ? 1 : this.parent.level+1;
+        this.level = value === null ? 1 : value.level+1;
+        this.model = value === null ? null : value.model;
     }
 });
 
@@ -2077,8 +2090,8 @@ var Group = function(parent, $el) {
 
     Node.call(this, parent, $el);
 
-    this.condition = null;
     this.rules = [];
+    this.__.condition = null;
 };
 
 Group.prototype = Object.create(Node.prototype);
@@ -2255,15 +2268,16 @@ var Rule = function(parent, $el) {
 
     Node.call(this, parent, $el);
 
-    this.filter = null;
-    this.operator = null;
-    this.flags = {};
+    this.__.filter = null;
+    this.__.operator = null;
+    this.__.flags = {};
+    this.__.value = undefined;
 };
 
 Rule.prototype = Object.create(Node.prototype);
 Rule.prototype.constructor = Rule;
 
-defineModelProperties(Rule, ['filter', 'operator', 'flags']);
+defineModelProperties(Rule, ['filter', 'operator', 'flags', 'value']);
 
 
 QueryBuilder.Group = Group;
@@ -2401,6 +2415,7 @@ $.fn.queryBuilder.constructor = QueryBuilder;
 $.fn.queryBuilder.defaults = QueryBuilder.defaults;
 $.fn.queryBuilder.extend = QueryBuilder.extend;
 $.fn.queryBuilder.define = QueryBuilder.define;
+$.fn.queryBuilder.regional = QueryBuilder.regional;
 
 /*!
  * jQuery QueryBuilder Awesome Bootstrap Checkbox
@@ -3388,12 +3403,12 @@ QueryBuilder.extend({
         // disable some
         $.each(self.status.used_filters, function(filterId, groups) {
             if (groups.length === 0) {
-                self.$el.find('.rule-filter-container option[value=' + filterId + ']:not(:selected)').prop('disabled', true);
+                self.$el.find('.rule-filter-container option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
             }
             else {
                 groups.forEach(function(group) {
                     group.each(function(rule) {
-                        rule.$el.find('.rule-filter-container option[value=' + filterId + ']:not(:selected)').prop('disabled', true);
+                        rule.$el.find('.rule-filter-container option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
                     });
                 });
             }
@@ -3405,4 +3420,70 @@ QueryBuilder.extend({
         }
     }
 });
+
+/*!
+ * jQuery QueryBuilder 2.1.0
+ * Locale: English (en)
+ * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
+ */
+
+QueryBuilder.regional['en'] = {
+  "__locale": "English (en)",
+  "__author": "Damien \"Mistic\" Sorel, http://www.strangeplanet.fr",
+  "add_rule": "Add rule",
+  "add_group": "Add group",
+  "delete_rule": "Delete",
+  "delete_group": "Delete",
+  "conditions": {
+    "AND": "AND",
+    "OR": "OR"
+  },
+  "operators": {
+    "equal": "equal",
+    "not_equal": "not equal",
+    "in": "in",
+    "not_in": "not in",
+    "less": "less",
+    "less_or_equal": "less or equal",
+    "greater": "greater",
+    "greater_or_equal": "greater or equal",
+    "between": "between",
+    "begins_with": "begins with",
+    "not_begins_with": "doesn't begin with",
+    "contains": "contains",
+    "not_contains": "doesn't contain",
+    "ends_with": "ends with",
+    "not_ends_with": "doesn't end with",
+    "is_empty": "is empty",
+    "is_not_empty": "is not empty",
+    "is_null": "is null",
+    "is_not_null": "is not null"
+  },
+  "errors": {
+    "no_filter": "No filter selected",
+    "empty_group": "The group is empty",
+    "radio_empty": "No value selected",
+    "checkbox_empty": "No value selected",
+    "select_empty": "No value selected",
+    "string_empty": "Empty value",
+    "string_exceed_min_length": "Must contain at least {0} characters",
+    "string_exceed_max_length": "Must not contain more than {0} characters",
+    "string_invalid_format": "Invalid format ({0})",
+    "number_nan": "Not a number",
+    "number_not_integer": "Not an integer",
+    "number_not_double": "Not a real number",
+    "number_exceed_min": "Must be greater than {0}",
+    "number_exceed_max": "Must be lower than {0}",
+    "number_wrong_step": "Must be a multiple of {0}",
+    "datetime_empty": "Empty value",
+    "datetime_invalid": "Invalid date format ({0})",
+    "datetime_exceed_min": "Must be after {0}",
+    "datetime_exceed_max": "Must be before {0}",
+    "boolean_not_valid": "Not a boolean",
+    "operator_not_multiple": "Operator {0} cannot accept multiple values"
+  }
+};
+
+QueryBuilder.defaults({ lang_code: 'en' });
 }));

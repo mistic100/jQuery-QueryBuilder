@@ -1,10 +1,25 @@
 /*!
- * jQuery QueryBuilder 2.0.1
- * Portuguese Brazilian translation by Leandro Gehlen (leandrogehlen@gmail.com)
+ * jQuery QueryBuilder 2.1.0
+ * Locale: Brazilian Portuguese (pr-BR)
+ * Author: Leandro Gehlen, leandrogehlen@gmail.com
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
-jQuery.fn.queryBuilder.defaults({ lang: {
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery', 'query-builder'], factory);
+    }
+    else {
+        factory(root.jQuery);
+    }
+}(this, function($) {
+"use strict";
+
+var QueryBuilder = $.fn.queryBuilder;
+
+QueryBuilder.regional['pt-BR'] = {
+  "__locale": "Brazilian Portuguese (pr-BR)",
+  "__author": "Leandro Gehlen, leandrogehlen@gmail.com",
   "add_rule": "Nova Regra",
   "add_group": "Novo Gruop",
   "delete_rule": "Excluir",
@@ -54,4 +69,7 @@ jQuery.fn.queryBuilder.defaults({ lang: {
     "datetime_exceed_min": "É necessário ser superior a {0}",
     "datetime_exceed_max": "É necessário ser inferior a {0}"
   }
-}});
+};
+
+QueryBuilder.defaults({ lang_code: 'pt-BR' });
+}));

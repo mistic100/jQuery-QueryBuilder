@@ -65,7 +65,7 @@ QueryBuilder.define('my_plugin', function(options) {
 {% endhighlight %}
 
   <div class="bs-callout bs-callout-info">
-    <h4>"Public" plugin</h4>
+    <h4>"Standalone" plugin</h4>
     <p>The <code>QueryBuilder</code> variable is private to the CommonJS factory, thus you can't use it if you want to create a plugin which will not be included in the main build (separated JS/CSS files).<br>
     To solve this issue, use <code>$.fn.queryBuilder</code> instead.</p>
   </div>
@@ -143,8 +143,9 @@ $description-text-color: #31708F;
 }
 {% endhighlight %}
 
-  <div class="bs-callout bs-callout-danger">
+  <div class="bs-callout bs-callout-warning">
     <h4>Default translations</h4>
-    <p>Don't forget to define the default translations (English) in the <code>lang</code> config object by using <code>QueryBuilder.defaults</code> method.</p>
+    <p>Don't forget to define the default translations (English) in the <code>en.json</code> file. It will be merged with the core translation by the Grunt task.</p>
+    <p>If your plugin is intended to be standalone, you can extend <code>$.fn.queryBuilder.regional</code> object instead, keys are language codes.</p>
   </div>
 </section>

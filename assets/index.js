@@ -87,6 +87,10 @@ $('#tree-rule').treeview({
         tags: ['object'],
         backColor: '#EAFFEA'
       }, {
+        text: 'value',
+        tags: ['mixed'],
+        backColor: '#EAFFEA'
+      }, {
         text: 'flags',
         tags: ['object'],
         backColor: '#EAFFEA'
