@@ -13,7 +13,16 @@
   },
 
   "operators": {
+    "puppet_equal": "equal",
+    "puppet_l": "less than",
+    "puppet_le": "less or equal",
+    "puppet_g": "greater than",
+    "puppet_ge": "greater or equal",
+    "puppet_re_match": "regex match",
+    "puppet_re_amatch": "regex array match",
     "equal": "equal",
+    "regex_match": "regex match",
+    "regex_array_match": "regex array match",
     "not_equal": "not equal",
     "in": "in",
     "not_in": "not in",
