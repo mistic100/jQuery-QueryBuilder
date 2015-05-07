@@ -104,7 +104,6 @@ QueryBuilder.extend({
                     parts.push(part);
                 }
             });
-            console.log(parts);
             var res = "";
             if (parts.length > 0) {
                 res += '["' + data.condition.toLowerCase() + '"';
@@ -113,7 +112,6 @@ QueryBuilder.extend({
                 });
                 res += ']';
             }
-            console.log(res);
             return res;
         }(data));
     }
