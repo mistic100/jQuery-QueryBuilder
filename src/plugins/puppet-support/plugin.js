@@ -41,34 +41,64 @@ QueryBuilder.defaults({
 
     puppetOperators: {
         equal: function (v) {
+            if (isNumeric(v[0])) {
+                return '["=","certname",' + v[0] + ']';
+            }
             return '["=","certname","' + v[0] + '"]';
         },
         less: function (v) {
+            if (isNumeric(v[0])) {
+                return '["=","certname",' + v[0] + ']';
+            }
             return '["<","certname","' + v[0] + '"]';
         },
         less_or_equal: function (v) {
+            if (isNumeric(v[0])) {
+                return '["=","certname",' + v[0] + ']';
+            }
             return '["<=","certname","' + v[0] + '"]';
         },
         greater: function (v) {
+            if (isNumeric(v[0])) {
+                return '["=","certname",' + v[0] + ']';
+            }
             return '[">","certname","' + v[0] + '"]';
         },
         greater_or_equal: function (v) {
+            if (isNumeric(v[0])) {
+                return '["=","certname",' + v[0] + ']';
+            }
             return '[">=","certname","' + v[0] + '"]';
         },
         puppet_equal: function (v, subq) {
             console.log(subq);
+            if (isNumeric(v[1])) {
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value","' + v[1] + '"]]]]]';
+            }
             return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value","' + v[1] + '"]]]]]';
         },
         puppet_l: function (v, subq) {
+            if (isNumeric(v[1])) {
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value","' + v[1] + '"]]]]]';
+            }
             return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<","value","' + v[1] + '"]]]]]';
         },
         puppet_le: function (v, subq) {
+            if (isNumeric(v[1])) {
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value","' + v[1] + '"]]]]]';
+            }
             return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<=","value","' + v[1] + '"]]]]]';
         },
         puppet_g: function (v, subq) {
+            if (isNumeric(v[1])) {
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value","' + v[1] + '"]]]]]';
+            }
             return '["in","certname",["extract","certname",["select-' + subq + '",["and",["","name","' + v[0] + '"],[">","value","' + v[1] + '"]]]]]';
         },
         puppet_ge: function (v, subq) {
+            if (isNumeric(v[1])) {
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value","' + v[1] + '"]]]]]';
+            }
             return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],[">=","value","' + v[1] + '"]]]]]';
         },
         puppet_re_match: function (v, subq) {
