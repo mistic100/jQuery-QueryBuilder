@@ -1,12 +1,44 @@
 /*!
- * jQuery QueryBuilder SQL Support
- * Allows to export rules as a SQL WHERE statement.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * jQuery QueryBuilder Puppet Support
+ * Allows to export rules as a PuppetDB Query statement.
  */
 
 // DEFAULT CONFIG
 // ===============================
 QueryBuilder.defaults({
+    conditions: ['NOT', 'AND', 'OR'],
+
+    operators: [
+        {type: 'equal', nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
+        {type: 'regex_match', nb_inputs: 1, multiple: false, apply_to: ['string', 'number']},
+        {type: 'regex_array_match', nb_inputs: 1, multiple: false, apply_to: ['string', 'number']},
+        {type: 'puppet_equal', nb_inputs: 2, multiple: true, apply_to: ['string', 'number', 'datetime', 'boolean']},
+        {type: 'not_equal', nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
+        {type: 'in', nb_inputs: 1, multiple: true, apply_to: ['string', 'number', 'datetime']},
+        {type: 'not_in', nb_inputs: 1, multiple: true, apply_to: ['string', 'number', 'datetime']},
+        {type: 'less', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'less_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'puppet_l', nb_inputs: 2, multiple: true, apply_to: ['number', 'datetime']},
+        {type: 'puppet_le', nb_inputs: 2, multiple: true, apply_to: ['number', 'datetime']},
+        {type: 'greater', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'greater_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'puppet_g', nb_inputs: 2, multiple: true, apply_to: ['number', 'datetime']},
+        {type: 'puppet_ge', nb_inputs: 2, multiple: true, apply_to: ['number', 'datetime']},
+        {type: 'puppet_re_match', nb_inputs: 2, multiple: false, apply_to: ['string']},
+        {type: 'puppet_re_amatch', nb_inputs: 2, multiple: false, apply_to: ['string']},
+        {type: 'between', nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'begins_with', nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'not_begins_with', nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'contains', nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'not_contains', nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'ends_with', nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'not_ends_with', nb_inputs: 1, multiple: false, apply_to: ['string']},
+        {type: 'is_empty', nb_inputs: 0, multiple: false, apply_to: ['string']},
+        {type: 'is_not_empty', nb_inputs: 0, multiple: false, apply_to: ['string']},
+        {type: 'is_null', nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
+        {type: 'is_not_null', nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']}
+    ],
+
     puppetOperators: {
         equal: function (v) {
             return '["=","certname","' + v[0] + '"]';
@@ -107,7 +139,7 @@ QueryBuilder.extend({
             var res = "";
             if (parts.length > 0) {
                 res += '["' + data.condition.toLowerCase() + '"';
-                parts.forEach(function (part){
+                parts.forEach(function (part) {
                     res += ',' + part;
                 });
                 res += ']';

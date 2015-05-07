@@ -1,6 +1,7 @@
 {
   "__locale": "English (en)",
   "__author": "Damien \"Mistic\" Sorel, http://www.strangeplanet.fr",
+  "__modified_by": "Takeshi Larsson",
 
   "add_rule": "Add rule",
   "add_group": "Add group",
@@ -8,12 +9,22 @@
   "delete_group": "Delete",
 
   "conditions": {
+    "NOT": "NOT",
     "AND": "AND",
     "OR": "OR"
   },
 
   "operators": {
+    "puppet_equal": "equal",
+    "puppet_l": "less than",
+    "puppet_le": "less or equal",
+    "puppet_g": "greater than",
+    "puppet_ge": "greater or equal",
+    "puppet_re_match": "regex match",
+    "puppet_re_amatch": "regex array match",
     "equal": "equal",
+    "regex_match": "regex match",
+    "regex_array_match": "regex array match",
     "not_equal": "not equal",
     "in": "in",
     "not_in": "not in",
