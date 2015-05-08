@@ -122,7 +122,7 @@ function getSearchName(subq) {
     else if (subq == 'facts') {
         var puppet_search_name = "name";
     }
-    return search_type;
+    return puppet_search_name;
 }
 function getValueName(subq) {
     if (subq == 'resources'){
@@ -131,7 +131,7 @@ function getValueName(subq) {
     else if (subq == 'facts') {
         var puppet_value_name = "value";
     }
-    return search_type;
+    return puppet_value_name;
 }
 
 
