@@ -76,31 +76,31 @@ QueryBuilder.defaults({
         puppet_equal: function (v, subq) {
             console.log(subq);
             if ($.isNumeric(v[1])) {
-                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value","' + v[1] + '"]]]]]';
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value",' + v[1] + ']]]]]';
             }
             return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value","' + v[1] + '"]]]]]';
         },
         puppet_l: function (v, subq) {
             if ($.isNumeric(v[1])) {
-                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<","value","' + v[1] + '"]]]]]';
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<","value",' + v[1] + ']]]]]';
             }
             return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<","value","' + v[1] + '"]]]]]';
         },
         puppet_le: function (v, subq) {
             if ($.isNumeric(v[1])) {
-                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<=","value","' + v[1] + '"]]]]]';
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<=","value",' + v[1] + ']]]]]';
             }
             return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<=","value","' + v[1] + '"]]]]]';
         },
         puppet_g: function (v, subq) {
             if ($.isNumeric(v[1])) {
-                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],[">","value","' + v[1] + '"]]]]]';
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],[">","value",' + v[1] + ']]]]]';
             }
             return '["in","certname",["extract","certname",["select-' + subq + '",["and",["","name","' + v[0] + '"],[">","value","' + v[1] + '"]]]]]';
         },
         puppet_ge: function (v, subq) {
             if ($.isNumeric(v[1])) {
-                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],[">=","value","' + v[1] + '"]]]]]';
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],[">=","value",' + v[1] + ']]]]]';
             }
             return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],[">=","value","' + v[1] + '"]]]]]';
         },
