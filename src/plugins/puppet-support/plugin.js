@@ -74,47 +74,65 @@ QueryBuilder.defaults({
             return '["~","certname","' + v[0] + '"]';
         },
         puppet_equal: function (v, subq) {
-            console.log(subq);
             if ($.isNumeric(v[1])) {
-                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value",' + v[1] + ']]]]]';
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],["=","' + getValueName(subq) + '",' + v[1] + ']]]]]';
             }
-            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["=","value","' + v[1] + '"]]]]]';
+            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],["=","' + getValueName(subq) + '","' + v[1] + '"]]]]]';
         },
         puppet_l: function (v, subq) {
             if ($.isNumeric(v[1])) {
-                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<","value",' + v[1] + ']]]]]';
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],["<","' + getValueName(subq) + '",' + v[1] + ']]]]]';
             }
-            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<","value","' + v[1] + '"]]]]]';
+            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],["<","' + getValueName(subq) + '","' + v[1] + '"]]]]]';
         },
         puppet_le: function (v, subq) {
             if ($.isNumeric(v[1])) {
-                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<=","value",' + v[1] + ']]]]]';
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],["<=","' + getValueName(subq) + '",' + v[1] + ']]]]]';
             }
-            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["<=","value","' + v[1] + '"]]]]]';
+            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],["<=","' + getValueName(subq) + '","' + v[1] + '"]]]]]';
         },
         puppet_g: function (v, subq) {
             if ($.isNumeric(v[1])) {
-                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],[">","value",' + v[1] + ']]]]]';
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],[">","' + getValueName(subq) + '",' + v[1] + ']]]]]';
             }
-            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["","name","' + v[0] + '"],[">","value","' + v[1] + '"]]]]]';
+            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],[">","' + getValueName(subq) + '","' + v[1] + '"]]]]]';
         },
         puppet_ge: function (v, subq) {
             if ($.isNumeric(v[1])) {
-                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],[">=","value",' + v[1] + ']]]]]';
+                return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],[">=","' + getValueName(subq) + '",' + v[1] + ']]]]]';
             }
-            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],[">=","value","' + v[1] + '"]]]]]';
+            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],[">=","' + getValueName(subq) + '","' + v[1] + '"]]]]]';
         },
         puppet_re_match: function (v, subq) {
-            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["~","value","' + v[1] + '"]]]]]';
+            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],["~","' + getValueName(subq) + '","' + v[1] + '"]]]]]';
         },
         puppet_re_amatch: function (v, subq) {
-            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","name","' + v[0] + '"],["~>","value","' + v[1] + '"]]]]]';
+            return '["in","certname",["extract","certname",["select-' + subq + '",["and",["=","' + getSearchName(subq) + '","' + v[0] + '"],["~>","' + getValueName(subq) + '","' + v[1] + '"]]]]]';
         },
         is_null: function (v) {
             return null;
         }
     }
 });
+
+function getSearchName(subq) {
+    if (subq == 'resources'){
+        var puppet_search_name = "type";
+    }
+    else if (subq == 'facts') {
+        var puppet_search_name = "name";
+    }
+    return search_type;
+}
+function getValueName(subq) {
+    if (subq == 'resources'){
+        var puppet_value_name = "title";
+    }
+    else if (subq == 'facts') {
+        var puppet_value_name = "value";
+    }
+    return search_type;
+}
 
 
 // PUBLIC METHODS
