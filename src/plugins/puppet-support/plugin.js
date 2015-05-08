@@ -147,7 +147,6 @@ QueryBuilder.extend({
         data = (data === undefined) ? this.getRules() : data;
 
         var that = this;
-        console.log(data);
         return (function parse(data) {
             if (!data.condition) {
                 data.condition = that.settings.default_condition;
