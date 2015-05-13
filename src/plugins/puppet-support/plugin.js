@@ -40,38 +40,39 @@ QueryBuilder.defaults({
     ],
 
     puppetOperators: {
-        equal: function (v) {
+        equal: function (v, field) {
             if ($.isNumeric(v[0])) {
-                return '["=","certname",' + v[0] + ']';
+                return '["=","' + field + '",' + v[0] + ']';
             }
-            return '["=","certname","' + v[0] + '"]';
+            return '["=","' + field + '","' + v[0] + '"]';
         },
-        less: function (v) {
+        less: function (v, field) {
             if ($.isNumeric(v[0])) {
-                return '["=","certname",' + v[0] + ']';
+                return '["=","' + field + '",' + v[0] + ']';
             }
-            return '["<","certname","' + v[0] + '"]';
+            return '["<","' + field + '","' + v[0] + '"]';
         },
-        less_or_equal: function (v) {
+        less_or_equal: function (v, field) {
             if ($.isNumeric(v[0])) {
-                return '["=","certname",' + v[0] + ']';
+                return '["=","' + field + '",' + v[0] + ']';
             }
-            return '["<=","certname","' + v[0] + '"]';
+            return '["<=","' + field + '","' + v[0] + '"]';
         },
-        greater: function (v) {
+        greater: function (v, field) {
             if ($.isNumeric(v[0])) {
-                return '["=","certname",' + v[0] + ']';
+                return '["=","' + field + '",' + v[0] + ']';
             }
-            return '[">","certname","' + v[0] + '"]';
+            return '[">","' + field + '","' + v[0] + '"]';
         },
-        greater_or_equal: function (v) {
+        greater_or_equal: function (v, field) {
             if ($.isNumeric(v[0])) {
-                return '["=","certname",' + v[0] + ']';
+                return '["=","' + field + '",' + v[0] + ']';
             }
-            return '[">=","certname","' + v[0] + '"]';
+            return '[">=","' + field + '","' + v[0] + '"]';
         },
-        regex_match: function (v) {
-            return '["~","certname","' + v[0] + '"]';
+        regex_match: function (v, field) {
+            console.log(v);
+            return '["~","' + field + '","' + v[0] + '"]';
         },
         puppet_equal: function (v, subq) {
             if ($.isNumeric(v[1])) {
