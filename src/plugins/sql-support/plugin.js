@@ -45,19 +45,19 @@ QueryBuilder.defaults({
             };
         },
         'LIKE': function(v) {
-            if (v.startsWith('%') && v.endsWith('%')) {
+            if (v.slice(0,1)=='%' && v.slice(-1)=='%') {
                 return {
                     val: v.slice(1,-1),
                     op: 'contains'
                 };
             }
-            else if (v.startsWith('%')) {
+            else if (v.slice(0,1)=='%') {
                 return {
                     val: v.slice(1),
                     op: 'ends_with'
                 };
             }
-            else if (v.endsWith('%')) {
+            else if (v.slice(-1)=='%') {
                 return {
                     val: v.slice(0,-1),
                     op: 'begins_with'
@@ -67,13 +67,13 @@ QueryBuilder.defaults({
                 error('Invalid value for LIKE operator');
             }
         },
-        'IN':       function(v) { return { val: v, op: 'in' } },
-        'NOT IN':   function(v) { return { val: v, op: 'not_in' } },
-        '<':        function(v) { return { val: v, op: 'less' } },
-        '<=':       function(v) { return { val: v, op: 'less_or_equal' } },
-        '>':        function(v) { return { val: v, op: 'greater' } },
-        '>=':       function(v) { return { val: v, op: 'greater_or_equal' } },
-        'BETWEEN':  function(v) { return { val: v, op: 'between' } },
+        'IN':       function(v) { return { val: v, op: 'in' }; },
+        'NOT IN':   function(v) { return { val: v, op: 'not_in' }; },
+        '<':        function(v) { return { val: v, op: 'less' }; },
+        '<=':       function(v) { return { val: v, op: 'less_or_equal' }; },
+        '>':        function(v) { return { val: v, op: 'greater' }; },
+        '>=':       function(v) { return { val: v, op: 'greater_or_equal' }; },
+        'BETWEEN':  function(v) { return { val: v, op: 'between' }; },
         'IS':       function(v) {
             if (v !== null) {
                 error('Invalid value for IS operator');

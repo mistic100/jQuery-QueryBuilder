@@ -208,22 +208,6 @@ $(function(){
   });
 
   /**
-   * Loopback export
-   */
-  QUnit.test('loopback-support', function(assert) {
-    $b.queryBuilder({
-      filters: basic_filters,
-      rules: basic_rules
-    });
-
-    assert.deepEqual(
-      $b.queryBuilder('getLoopback'),
-      basic_rules_loopback,
-      'Should create Loopback query'
-    );
-  });
-
-  /**
    * Test bt-checkbox
    */
   QUnit.test('bt-checkbox', function(assert) {
