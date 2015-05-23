@@ -67,9 +67,9 @@ $(function(){
   });
 
   /**
-   * Test import/export modules
+   * SQL import/export
    */
-  QUnit.test('Import/export plugins', function(assert) {
+  QUnit.test('sql-support', function(assert) {
     $b.queryBuilder({
       filters: basic_filters,
       rules: basic_rules
@@ -99,6 +99,82 @@ $(function(){
       'Should create SQL query with statements (named)'
     );
 
+    $b.queryBuilder('setRulesFromSQL', basic_rules_sql_raw);
+    assert.rulesMatch(
+      $b.queryBuilder('getRules'),
+      basic_rules,
+      'Should parse SQL query'
+    );
+
+    $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt, 'question_mark');
+    assert.rulesMatch(
+      $b.queryBuilder('getRules'),
+      basic_rules,
+      'Should parse SQL query with statements (?)'
+    );
+
+    $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_num, 'numbered');
+    assert.rulesMatch(
+      $b.queryBuilder('getRules'),
+      basic_rules,
+      'Should parse SQL query with statements (numbered)'
+    );
+
+    $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_named, 'named');
+    assert.rulesMatch(
+      $b.queryBuilder('getRules'),
+      basic_rules,
+      'Should parse SQL query with statements (named)'
+    );
+
+    $b.queryBuilder('destroy');
+    $b.queryBuilder({
+      filters: basic_filters,
+      rules: all_operators_rules
+    });
+
+    assert.deepEqual(
+      $b.queryBuilder('getSQL', 'question_mark'),
+      all_operators_rules_sql,
+      'Should convert all kind of operators to SQL'
+    );
+
+    $b.queryBuilder('setRulesFromSQL', all_operators_rules_sql, 'question_mark');
+    assert.rulesMatch(
+      $b.queryBuilder('getRules'),
+      all_operators_rules,
+      'Should parse all kind of operators from SQL'
+    );
+
+    $b.queryBuilder('destroy');
+    $b.queryBuilder({
+      filters: simple_filters
+    });
+
+    $b.queryBuilder('setRulesFromSQL', nested_rules_sql);
+    assert.rulesMatch(
+      $b.queryBuilder('getRules'),
+      nested_rules,
+      'Should parse SQL with deep nested rules'
+    );
+
+    $b.queryBuilder('setRulesFromSQL', one_rule_sql);
+    assert.rulesMatch(
+      $b.queryBuilder('getRules'),
+      one_rule,
+      'Should parse SQL with one rule'
+    );
+  });
+
+  /**
+   * MongoDB import/export
+   */
+  QUnit.test('mongo-support', function(assert) {
+    $b.queryBuilder({
+      filters: basic_filters,
+      rules: basic_rules
+    });
+
     assert.deepEqual(
       $b.queryBuilder('getMongo'),
       basic_rules_mongodb,
@@ -111,17 +187,7 @@ $(function(){
       'Should return rules object from MongoDB query'
     );
 
-    assert.deepEqual(
-      $b.queryBuilder('getLoopback'),
-      basic_rules_loopback,
-      'Should create Loopback query'
-    );
-  });
-
-  /**
-   * Extended tests fro MongoDB
-   */
-  QUnit.test('mongo-support', function(assert) {
+    $b.queryBuilder('destroy');
     $b.queryBuilder({
       filters: basic_filters,
       rules: all_operators_rules
@@ -134,11 +200,26 @@ $(function(){
     );
 
     $b.queryBuilder('setRulesFromMongo', all_operators_rules_mongodb);
-
     assert.rulesMatch(
       $b.queryBuilder('getRules'),
       all_operators_rules,
       'Should successfully parse all kind of operators from MongoDB'
+    );
+  });
+
+  /**
+   * Loopback export
+   */
+  QUnit.test('loopback-support', function(assert) {
+    $b.queryBuilder({
+      filters: basic_filters,
+      rules: basic_rules
+    });
+
+    assert.deepEqual(
+      $b.queryBuilder('getLoopback'),
+      basic_rules_loopback,
+      'Should create Loopback query'
     );
   });
 
@@ -326,7 +407,7 @@ $(function(){
     sql: 'price < ? AND name IS NULL AND ( category IN(?, ?) OR id != ? ) ',
     params: [10.25, 'mo', 'mu', '1234-azer-5678']
   };
-  
+
   var basic_rules_sql_stmt_num = {
     sql: 'price < $1 AND name IS NULL AND ( category IN($2, $3) OR id != $4 ) ',
     params: [10.25, 'mo', 'mu', '1234-azer-5678']
@@ -441,6 +522,11 @@ $(function(){
     }]
   };
 
+  var all_operators_rules_sql = {
+    sql: 'name = ? AND name != ? AND category IN(?, ?) AND category NOT IN(?, ?) AND price < ? AND price <= ? AND price > ? AND price >= ? AND price BETWEEN ? AND ? AND name LIKE(?) AND name NOT LIKE(?) AND name LIKE(?) AND name NOT LIKE(?) AND name LIKE(?) AND name NOT LIKE(?) AND name = \'\' AND name != \'\' AND name IS NULL AND name IS NOT NULL',
+    params: ['foo', 'foo', 'bk', 'mo', 'bk', 'mo', 5, 5, 4, 4, 4, 5, 'foo%', 'foo%', '%foo%', '%foo%', '%foo', '%foo']
+  };
+
   var all_operators_rules_mongodb = {
     $and: [
       { name: 'foo' },
@@ -464,6 +550,147 @@ $(function(){
       { name: {$ne: null} }
     ]
   };
+
+  var simple_filters = [
+    {id: 'a', type: 'integer'},
+    {id: 'b', type: 'integer'},
+    {id: 'c', type: 'integer'},
+    {id: 'd', type: 'integer'}
+  ];
+
+  var nested_rules = {
+    condition: 'OR',
+    rules: [
+      {
+        id: 'a',
+        operator: 'equal',
+        value: 5
+      },
+      {
+        condition: 'AND',
+        rules: [
+          {
+            id: 'b',
+            operator: 'equal',
+            value: 4
+          },
+          {
+            id: 'c',
+            operator: 'equal',
+            value: 7
+          },
+          {
+            condition: 'OR',
+            rules: [
+              {
+                id: 'd',
+                operator: 'equal',
+                value: 1
+              },
+              {
+                condition: 'AND',
+                rules: [
+                  {
+                    id: 'a',
+                    operator: 'equal',
+                    value: 7
+                  },
+                  {
+                    id: 'a',
+                    operator: 'equal',
+                    value: 1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            id: 'c',
+            operator: 'equal',
+            value: 3
+          },
+          {
+            condition: 'OR',
+            rules: [
+              {
+                condition: 'AND',
+                rules: [
+                  {
+                    id: 'b',
+                    operator: 'equal',
+                    value: 4
+                  },
+                  {
+                    id: 'c',
+                    operator: 'equal',
+                    value: 9
+                  }
+                ]
+              },
+              {
+                id: 'a',
+                operator: 'equal',
+                value: 8
+              },
+              {
+                id: 'a',
+                operator: 'equal',
+                value: 10
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'a',
+        operator: 'equal',
+        value: 0
+      },
+      {
+        condition: 'AND',
+        rules: [
+          {
+            id: 'b',
+            operator: 'equal',
+            value: 4
+          },
+          {
+            id: 'a',
+            operator: 'equal',
+            value: 4
+          },
+          {
+            condition: 'OR',
+            rules: [
+              {
+                id: 'a',
+                operator: 'equal',
+                value: 4
+              },
+              {
+                id: 'c',
+                operator: 'equal',
+                value: 8
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
+  var nested_rules_sql = 'a=5 or (b=4 and c=7 and (d=1 or (a=7 and a=1)) and c=3 and ((b=4 and c=9) or a=8 or a=10)) or a=0 or (b=4 and a=4 and (a=4 or c=8))';
+
+  var one_rule = {
+    condition: 'AND',
+    rules: [{
+      id: 'a',
+      operator: 'equal',
+      value: 5
+    }]
+  };
+
+  var one_rule_sql = 'a = 5';
 
   var bt_checkbox_filters = [{
     id: 'no-color',

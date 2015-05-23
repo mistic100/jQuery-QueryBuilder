@@ -74,6 +74,9 @@ QUnit.assert.rulesMatch = function(actual, expected, message) {
 
       ok&= a.condition == b.condition;
     }
+    else if (a.hasOwnProperty('rules') && !b.hasOwnProperty('rules')) {
+      ok = false;
+    }
     else {
       if ($.isArray(a.value)) {
         ok&= $(a.value).not(b.value).length == 0 && $(b.value).not(a.value).length == 0;

@@ -64,14 +64,14 @@
       <button class="btn btn-warning reset">Reset</button>
       <button class="btn btn-success set">Set rules</button>
       <button class="btn btn-success set-mongo">Set rules from MongoDB</button>
+      <button class="btn btn-success set-sql">Set rules from SQL</button>
     </div>
 
     <div class="btn-group">
       <button class="btn btn-default" disabled>Get:</button>
       <button class="btn btn-primary parse-json">JSON</button>
-      <button class="btn btn-primary parse-sql" data-stmt="question_mark">SQL (question mark)</button>
-      <button class="btn btn-primary parse-sql" data-stmt="numbered">SQL (numbered)</button>
       <button class="btn btn-primary parse-sql" data-stmt="false">SQL</button>
+      <button class="btn btn-primary parse-sql" data-stmt="question_mark">SQL statement</button>
       <button class="btn btn-primary parse-mongo">MongoDB</button>
     </div>
 
@@ -89,6 +89,7 @@
 <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 <script src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
 <script src="../bower_components/jquery-extendext/jQuery.extendext.min.js"></script>
+<script src="../node_modules/sql-parser/browser/sql-parser.js"></script>
 
 <script src="../dist/js/query-builder.js"></script>
 
@@ -405,6 +406,11 @@ $('.set-mongo').on('click', function() {
       }]
     }]
   });
+});
+
+// set rules from SQL
+$('.set-sql').on('click', function() {
+  $('#builder').queryBuilder('setRulesFromSQL', 'name NOT LIKE "Mistic%" AND price BETWEEN 100 AND 200 AND (category IN(1, 2) OR rate <= 2)');
 });
 
 // reset builder
