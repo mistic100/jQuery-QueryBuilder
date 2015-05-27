@@ -1,0 +1,146 @@
+---
+layout: default
+title: No Bootstrap
+hide: true
+---
+
+<p>QueryBuilder highly depends on Bootstrap components, especially buttons and icons, but you can easilly remove this dependencies with some CSS and extra config.</p>
+
+<p>First you need to change the icon sets for new ones, let's say <a href="http://fortawesome.github.io/Font-Awesome/">Fontawesome</a>:</p>
+{% highlight javascript %}
+icons: {
+  add_group: 'fa fa-plus-square',
+  add_rule: 'fa fa-plus-circle',
+  remove_group: 'fa fa-minus-square',
+  remove_rule: 'fa fa-minus-circle',
+  error: 'fa fa-exclamation-triangle'
+}
+{% endhighlight %}
+
+<p>And then you need a bunch of CSS rules to mimic Bootstrap buttons (the colors set is for the default QueryBuilder theme, you will need to change them to use the dark theme).</p>
+{% highlight css %}
+.query-builder, .query-builder * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.query-builder {
+  font-family: sans-serif;
+}
+
+.query-builder .pull-right {
+  float: right !important;
+}
+
+.query-builder .btn {
+  text-transform: none;
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.query-builder .btn.focus, .query-builder .btn:focus, .query-builder .btn:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.query-builder .btn.active, .query-builder .btn:active {
+  background-image: none;
+  outline: 0px none;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.125) inset;
+}
+
+.query-builder .btn-success {
+  color: #FFF;
+  background-color: #5CB85C;
+  border-color: #4CAE4C;
+}
+
+.query-builder .btn-primary {
+  color: #FFF;
+  background-color: #337AB7;
+  border-color: #2E6DA4;
+}
+
+.query-builder .btn-danger {
+  color: #FFF;
+  background-color: #D9534F;
+  border-color: #D43F3A;
+}
+
+.query-builder .btn-success.active, .query-builder .btn-success.focus,
+.query-builder .btn-success:active, .query-builder .btn-success:focus,
+.query-builder .btn-success:hover {
+  color: #FFF;
+  background-color: #449D44;
+  border-color: #398439;
+}
+
+.query-builder .btn-primary.active, .query-builder .btn-primary.focus,
+.query-builder .btn-primary:active, .query-builder .btn-primary:focus,
+.query-builder .btn-primary:hover {
+  color: #FFF;
+  background-color: #286090;
+  border-color: #204D74;
+}
+
+.query-builder .btn-danger.active, .query-builder .btn-danger.focus,
+.query-builder .btn-danger:active, .query-builder .btn-danger:focus,
+.query-builder .btn-danger:hover {
+  color: #FFF;
+  background-color: #C9302C;
+  border-color: #AC2925;
+}
+
+.query-builder .btn-group {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.query-builder .btn-group > .btn {
+  position: relative;
+  float: left;
+}
+
+.query-builder .btn-group > .btn:first-child {
+  margin-left: 0px;
+}
+
+.query-builder .btn-group > .btn:first-child:not(:last-child) {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.query-builder .btn-group > .btn:last-child:not(:first-child) {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.query-builder .btn-group .btn + .btn, .query-builder .btn-group .btn + .btn-group,
+.query-builder .btn-group .btn-group + .btn, .query-builder .btn-group .btn-group + .btn-group {
+  margin-left: -1px;
+}
+
+.query-builder .btn-xs, .query-builder .btn-group-xs > .btn {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+{% endhighlight %}
+
+<p><b>And you are done</b>, you can remove the Bootstrap CSS. Of course every BT based plugins won't work correctly.</p>
