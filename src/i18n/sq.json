@@ -1,6 +1,6 @@
 {
-  "__locale": "Shqip (sq)",
-  "__author": "Damien \"Mistic\" Sorel, http://www.strangeplanet.fr",
+  "__locale": "Albanian (sq)",
+  "__author": "Tomor Pupovci",
 
   "add_rule": "Shto rregull",
   "add_group": "Shto grup",
@@ -51,7 +51,7 @@
     "number_exceed_max": "Duhet të jetë më i vogël se {0}",
     "number_wrong_step": "Duhet të jetë shumëfish i {0}",
     "datetime_empty": "Vlerë e zbrazët",
-    "datetime_invalid": "Format i pasaktë i datës({0})",
+    "datetime_invalid": "Format i pasaktë i datës ({0})",
     "datetime_exceed_min": "Duhet të jetë pas {0}",
     "datetime_exceed_max": "Duhet të jetë para {0}",
     "boolean_not_valid": "Nuk është boolean",
