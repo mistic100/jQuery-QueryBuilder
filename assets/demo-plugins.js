@@ -75,3 +75,19 @@ $('#builder-plugins').queryBuilder({
 
   rules: rules_plugins
 });
+
+$('#btn-reset').on('click', function() {
+  $('#builder-plugins').queryBuilder('reset');
+});
+
+$('#btn-set').on('click', function() {
+  $('#builder-plugins').queryBuilder('setRules', rules_plugins);
+});
+
+$('#btn-get').on('click', function() {
+  var result = $('#builder-plugins').queryBuilder('getRules');
+  
+  if (!$.isEmptyObject(result)) {
+    alert(JSON.stringify(result, null, 2));
+  }
+});

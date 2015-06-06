@@ -1,20 +1,89 @@
-/* https://www.flag-sprites.com */
-
 .flag {
-	width: 16px;
-	height: 11px;
-	background:url(flags.png) no-repeat
+    background-image: url(flags.png);
+    background-repeat: no-repeat;
+    display: block;
 }
 
-.flag.flag-de {background-position: -16px 0}
-.flag.flag-dk {background-position: -32px 0}
-.flag.flag-es {background-position: -48px 0}
-.flag.flag-fr {background-position: 0 -11px}
-.flag.flag-gb {background-position: -16px -11px}
-.flag.flag-it {background-position: -32px -11px}
-.flag.flag-nl {background-position: -48px -11px}
-.flag.flag-no {background-position: 0 -22px}
-.flag.flag-pl {background-position: -16px -22px}
-.flag.flag-pt {background-position: -32px -22px}
-.flag.flag-ro {background-position: -48px -22px}
-.flag.flag-ru {background-position: 0 -33px}
+.flag-al {
+    width: 16px;
+    height: 11px;
+    background-position: 0 0;
+}
+
+.flag-de {
+    width: 16px;
+    height: 11px;
+    background-position: -16px 0;
+}
+
+.flag-dk {
+    width: 16px;
+    height: 11px;
+    background-position: -32px 0;
+}
+
+.flag-es {
+    width: 16px;
+    height: 11px;
+    background-position: 0 -11px;
+}
+
+.flag-fr {
+    width: 16px;
+    height: 11px;
+    background-position: -16px -11px;
+}
+
+.flag-gb {
+    width: 16px;
+    height: 11px;
+    background-position: -32px -11px;
+}
+
+.flag-ir {
+    width: 16px;
+    height: 11px;
+    background-position: 0 -22px;
+}
+
+.flag-it {
+    width: 16px;
+    height: 11px;
+    background-position: -16px -22px;
+}
+
+.flag-nl {
+    width: 16px;
+    height: 11px;
+    background-position: -32px -22px;
+}
+
+.flag-no {
+    width: 16px;
+    height: 11px;
+    background-position: 0 -33px;
+}
+
+.flag-pl {
+    width: 16px;
+    height: 11px;
+    background-position: -16px -33px;
+}
+
+.flag-pt {
+    width: 16px;
+    height: 11px;
+    background-position: -32px -33px;
+}
+
+.flag-ro {
+    width: 16px;
+    height: 11px;
+    background-position: -48px 0;
+}
+
+.flag-ru {
+    width: 16px;
+    height: 11px;
+    background-position: -48px -11px;
+}

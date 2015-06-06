@@ -58,7 +58,7 @@ var sql_raw = $('#builder').queryBuilder('getSQL', false, true);
 {% endhighlight %}
 
     <h4>setRulesFromSQL</h4>
-    <p>Clears the builder and set new rules from an SQL query. This method requires <a href="https://github.com/forward/sql-parser">SQLParser</a> to be loaded. The second parameter is used to inform the parser which kind of prepared statements are used (if any).</p>
+    <p>Clears the builder and set new rules from an SQL query. This method requires <a href="https://github.com/mistic100/sql-parser">SQLParser</a> to be loaded. The second parameter is used to inform the parser which kind of prepared statements are used (if any).</p>
 {% highlight javascript %}
 // no statements
 $('#builder').queryBuilder('setRulesFromSQL', 'author LIKE "%Tolkien%" AND publish_date BETWEEN "1954/01/01" AND "1956/01/01"');
@@ -79,7 +79,12 @@ $('#builder').queryBuilder('setRulesFromSQL', {
   }
 }, 'named');
 {% endhighlight %}
-
+    
+    <h3>Requirements</h3>
+{% highlight html %}
+<!-- SQLParser -->
+<script src="sql-parser/browser/sql-parser.js"></script>
+{% endhighlight %}
 
     <h3>Operators</h3>
     <p>The SQL plugin requires special configuration for operators to convert rules to a valid SQL query. This configuration is stored in the <code>sqlOperators</code> option, see <a href="{{site.blobUrl}}/src/plugins/sql-support/plugin.js#L4-24">the source code</a> for more details.</p>

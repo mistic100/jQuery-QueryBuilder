@@ -1,24 +1,18 @@
-var rules_basic = {
-  condition: 'AND',
-  rules: [{
-    id: 'price',
-    operator: 'less',
-    value: 10.25
+var sql_import_export = 'name LIKE "%Johnny%" AND (category = 2 OR in_stock = 1)';
+
+var mongo_import_export = {
+  "$and": [{
+    "price": { "$lt": 10.25 }
   }, {
-    condition: 'OR',
-    rules: [{
-      id: 'category',
-      operator: 'equal',
-      value: 2
+    "$or": [{
+      "category": 2
     }, {
-      id: 'category',
-      operator: 'equal',
-      value: 1
+      "category": 1
     }]
   }]
-};
+}
 
-$('#builder-basic').queryBuilder({
+$('#builder-import_export').queryBuilder({
   plugins: ['bt-tooltip-errors'],
   
   filters: [{
@@ -66,21 +60,31 @@ $('#builder-basic').queryBuilder({
     validation: {
       format: /^.{4}-.{4}-.{4}$/
     }
-  }],
-
-  rules: rules_basic
+  }]
 });
 
 $('#btn-reset').on('click', function() {
-  $('#builder-basic').queryBuilder('reset');
+  $('#builder-import_export').queryBuilder('reset');
 });
 
-$('#btn-set').on('click', function() {
-  $('#builder-basic').queryBuilder('setRules', rules_basic);
+$('#btn-set-sql').on('click', function() {
+  $('#builder-import_export').queryBuilder('setRulesFromSQL', sql_import_export);
 });
 
-$('#btn-get').on('click', function() {
-  var result = $('#builder-basic').queryBuilder('getRules');
+$('#btn-set-mongo').on('click', function() {
+  $('#builder-import_export').queryBuilder('setRulesFromMongo', mongo_import_export);
+});
+
+$('#btn-get-sql').on('click', function() {
+  var result = $('#builder-import_export').queryBuilder('getSQL', 'question_mark');
+  
+  if (result.sql.length) {
+    alert(result.sql + '\n\n' + JSON.stringify(result.params, null, 2));
+  }
+});
+
+$('#btn-get-mongo').on('click', function() {
+  var result = $('#builder-import_export').queryBuilder('getMongo');
   
   if (!$.isEmptyObject(result)) {
     alert(JSON.stringify(result, null, 2));

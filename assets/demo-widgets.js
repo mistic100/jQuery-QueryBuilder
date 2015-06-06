@@ -64,7 +64,7 @@ $('#builder-widgets').queryBuilder({
     valueSetter: function(rule, value) {
       rule.$el.find('.rule-value-container input').slider('setValue', value);
     },
-    valueParser: function(rule) {
+    valueGetter: function(rule) {
       return rule.$el.find('.rule-value-container input').slider('getValue');
     }
   }, {
@@ -138,7 +138,7 @@ $('#builder-widgets').queryBuilder({
       </select> \
       <select name="'+ name +'_2" style="display:none;"></select>';
     },
-    valueParser: function(rule) {
+    valueGetter: function(rule) {
       return rule.$el.find('.rule-value-container [name$=_1]').val()
         +'.'+ rule.$el.find('.rule-value-container [name$=_2]').val();
     },
@@ -147,10 +147,26 @@ $('#builder-widgets').queryBuilder({
         var val = value.split('.');
         
         rule.$el.find('.rule-value-container [name$=_1]').val(val[0]).trigger('change');
-        rule.$el.find('.rule-value-container [name$=_2]').val(val[1]);
+        rule.$el.find('.rule-value-container [name$=_2]').val(val[1]).trigger('change');
       }
     }
   }],
 
   rules: rules_widgets
+});
+
+$('#btn-reset').on('click', function() {
+  $('#builder-widgets').queryBuilder('reset');
+});
+
+$('#btn-set').on('click', function() {
+  $('#builder-widgets').queryBuilder('setRules', rules_widgets);
+});
+
+$('#btn-get').on('click', function() {
+  var result = $('#builder-widgets').queryBuilder('getRules');
+  
+  if (!$.isEmptyObject(result)) {
+    alert(JSON.stringify(result, null, 2));
+  }
 });

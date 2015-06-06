@@ -32,3 +32,4 @@ Gemfile.lock
 /dist/bootstrap-select/*
 !/dist/bootstrap-select/dist
 /dist/bootstrap-select/dist/js/i18n
+/dist/sql-parser/lib

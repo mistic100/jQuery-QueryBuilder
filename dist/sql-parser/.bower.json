@@ -1,0 +1,43 @@
+{
+  "name": "sql-parser",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "Andy Kent",
+      "email": "andy@forward.co.uk"
+    }
+  ],
+  "description": "Lexer and Parser for SQL Syntax",
+  "main": "browser/sql-parser.js",
+  "keywords": [
+    "sql",
+    "lexer",
+    "parser",
+    "ast"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/mistic100/sql-parser",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mistic100/sql-parser.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src",
+    "test",
+    "package.json",
+    "Cakefile"
+  ],
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.0",
+    "commit": "e1796a8b711351583211c4c7e570c90bc938a9cf"
+  },
+  "_source": "git://github.com/mistic100/sql-parser.git",
+  "_target": "~1.0.0",
+  "_originalSource": "sql-parser",
+  "_direct": true
+}
