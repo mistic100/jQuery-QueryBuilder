@@ -161,6 +161,16 @@ var loopback = $('#builder').queryBuilder('getLoopback');
 
     <p>Provides three ways to display a description about a filter: inline, <a href="http://getbootstrap.com/javascript/#popovers">Bootsrap Popover</a> or <a href="http://bootboxjs.com">Bootbox</a>.</p>
     <p>The description is defined in the <code>description</code> attribute of each filter. It can contain HTML.</p>
+    
+    <h3>Requirements</h3>
+{% highlight html %}
+<!-- Bootstrap CSS & JS -->
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Bootbox JS (requires Bootstrap CSS & JS) -->
+<script src="bootbox/bootbox.js"></script>
+{% endhighlight %}
 
     <h3>Options</h3>
     <div class="table-responsive">
@@ -213,6 +223,13 @@ var loopback = $('#builder').queryBuilder('getLoopback');
     </h2>
 
     <p>Applies <a href="http://getbootstrap.com/javascript/#tooltips">Bootstrap Tooltips</a> on validation error messages.</p>
+    
+    <h3>Requirements</h3>
+{% highlight html %}
+<!-- Bootstrap CSS & JS -->
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<script src="bootstrap/js/bootstrap.min.js"></script>
+{% endhighlight %}
 
     <h3>Options</h3>
     <p><i>All options supported by the tooltips plugin.</i></p>
@@ -224,6 +241,13 @@ var loopback = $('#builder').queryBuilder('getLoopback');
     </h2>
 
     <p>Applies <a href="http://silviomoreto.github.io/bootstrap-select">Bootstrap Select</a> on filters and operators combo-boxes.</p>
+    
+    <h3>Requirements</h3>
+{% highlight html %}
+<!-- Bootstrap Select CSS & JS -->
+<link rel="stylesheet" href="bootstrap-select/dist/css/bootstrap-select.min.css">
+<script src="bootstrap-select/dist/js/bootstrap.min.js"></script>
+{% endhighlight %}
 
     <h3>Options</h3>
     <p><i>All options supported by the selectpicker plugin.</i></p>
@@ -264,6 +288,12 @@ filters: [
     }
   }
 ]
+{% endhighlight %}
+    
+    <h3>Requirements</h3>
+{% highlight html %}
+<!-- Awesome Bootstrap Checkbox CSS -->
+<link rel="stylesheet" href="awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
 {% endhighlight %}
 
     <h3>Options</h3>
