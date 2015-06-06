@@ -57,8 +57,37 @@ var sql_stmt = $('#builder').queryBuilder('getSQL', 'question_mark');
 var sql_raw = $('#builder').queryBuilder('getSQL', false, true);
 {% endhighlight %}
 
+    <h4>setRulesFromSQL</h4>
+    <p>Clears the builder and set new rules from an SQL query. This method requires <a href="https://github.com/forward/sql-parser">SQLParser</a> to be loaded. The second parameter is used to inform the parser which kind of prepared statements are used (if any).</p>
+{% highlight javascript %}
+// no statements
+$('#builder').queryBuilder('setRulesFromSQL', 'author LIKE "%Tolkien%" AND publish_date BETWEEN "1954/01/01" AND "1956/01/01"');
+
+// statements with question marks
+$('#builder').queryBuilder('setRulesFromSQL', {
+  sql: 'author LIKE ? AND publish_date BETWEEN ? AND ?',
+  params: ['%Tolkien%', '1954/01/01', '1956/01/01']
+}, 'question_mark');
+
+// named statements
+$('#builder').queryBuilder('setRulesFromSQL', {
+  sql: 'author LIKE :author AND publish_date BETWEEN :begin AND :end',
+  params: {
+    author: '%Tolkien%',
+    begin: '1954/01/01',
+    end: '1956/01/01'
+  }
+}, 'named');
+{% endhighlight %}
+
+
     <h3>Operators</h3>
     <p>The SQL plugin requires special configuration for operators to convert rules to a valid SQL query. This configuration is stored in the <code>sqlOperators</code> option, see <a href="{{site.blobUrl}}/src/plugins/sql-support/plugin.js#L4-24">the source code</a> for more details.</p>
+
+    <div class="bs-callout bs-callout-warning">
+      <h4>About filters' id</h4>
+      <p><code>setRulesFromSQL</code> assumes that you have only one filter by database field and that the <code>id</code> is the same as the <code>field</code>. If this is not the case, you can use the <code>getSQLFieldID</code> <a href="{{site.github.url}}/dev/events.html#changers">changer</a> to determine the filter's id, this event take two parameters: field name and value.</p>
+    </div>
   </div>
 
   <div class="bs-callout">
@@ -96,18 +125,7 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
       Loopback export <small>loopback-support</small>
     </h2>
 
-    <p>Allows to export rules as a Loopback statement.</p>
-    
-    <h3>New methods</h3>
-    
-    <h4>getLoopback</h4>
-    <p>Performs validation and returns the rules as a valid Loopback statement.</p>
-{% highlight javascript %}
-var loopback = $('#builder').queryBuilder('getLoopback');
-{% endhighlight %}
-
-    <h3>Operators</h3>
-    <p>The Loopback plugin requires special configuration for operators to convert rules. This configuration is stored in the <code>loopbackOperators</code> option, see <a href="{{site.blobUrl}}/src/plugins/loopback-support/plugin.js#L4-24">the source code</a> for more details.</p>
+    <p>The Loopback plugin has been moved to <a href="https://github.com/fabien/jQuery-QueryBuilder-Loopback">a separated project</a>.</p>
   </div>
 </section>
 
