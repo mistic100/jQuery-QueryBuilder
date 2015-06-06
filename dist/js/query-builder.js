@@ -1,11 +1,11 @@
 /*!
- * jQuery QueryBuilder 2.1.0
+ * jQuery QueryBuilder 2.2.0
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
 // Languages: en
-// Plugins: bt-checkbox, bt-selectpicker, bt-tooltip-errors, filter-description, loopback-support, mongodb-support, sortable, sql-support, unique-filter
+// Plugins: bt-checkbox, bt-selectpicker, bt-tooltip-errors, filter-description, mongodb-support, sortable, sql-support, unique-filter
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
         define(['jquery', 'jQuery.extendext'], factory);
@@ -1269,7 +1269,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         // we need MomentJS
                         if (validation.format) {
                             if (!('moment' in window)) {
-                                error('MomentJS is required for Date/Time validation');
+                                error('MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
                             }
 
                             var datetime = moment(value[i], validation.format);
@@ -2526,104 +2526,6 @@ QueryBuilder.define('filter-description', function(options) {
 });
 
 /*!
- * jQuery QueryBuilder Loopback Support
- * Allows to export rules as a Loopback statement.
- * Copyright 2015 Fabien Franzen (http://www.atelierfabien.be)
- */
-
-// DEFAULT CONFIG
-// ===============================
-QueryBuilder.defaults({
-    loopbackOperators: {
-        equal:            function(v){ return v[0]; },
-        not_equal:        function(v){ return {'neq': v[0]}; },
-        in:               function(v){ return {'inq': v}; },
-        not_in:           function(v){ return {'nin': v}; },
-        less:             function(v){ return {'lt': v[0]}; },
-        less_or_equal:    function(v){ return {'lte': v[0]}; },
-        greater:          function(v){ return {'gt': v[0]}; },
-        greater_or_equal: function(v){ return {'gte': v[0]}; },
-        between:          function(v){ return {'between': v}; },
-        begins_with:      function(v){ return {'like': '^' + escapeRegExp(v[0])}; },
-        not_begins_with:  function(v){ return {'nlike': '^' + escapeRegExp(v[0])}; },
-        contains:         function(v){ return {'like': escapeRegExp(v[0])}; },
-        not_contains:     function(v){ return {'nlike': escapeRegExp(v[0])}; },
-        ends_with:        function(v){ return {'like': escapeRegExp(v[0]) + '$'}; },
-        not_ends_with:    function(v){ return {'nlike': escapeRegExp(v[0]) + '$'}; },
-        is_empty:         function(v){ return ''; },
-        is_not_empty:     function(v){ return {'neq': ''}; },
-        is_null:          function(v){ return null; },
-        is_not_null:      function(v){ return {'neq': null}; }
-    }
-});
-
-
-// PUBLIC METHODS
-// ===============================
-QueryBuilder.extend({
-    /**
-     * Get rules as Loopback query
-     * @param data {object} (optional) rules
-     * @return {object}
-     */
-    getLoopback: function(data) {
-        data = (data===undefined) ? this.getRules() : data;
-
-        var that = this;
-
-        return (function parse(data) {
-            if (!data.condition) {
-                data.condition = that.settings.default_condition;
-            }
-            if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                error('Unable to build Loopback query with condition "{0}"', data.condition);
-            }
-
-            if (!data.rules) {
-                return {};
-            }
-
-            var parts = [];
-
-            data.rules.forEach(function(rule) {
-                if (rule.rules && rule.rules.length>0) {
-                    parts.push(parse(rule));
-                }
-                else {
-                    var mdb = that.settings.loopbackOperators[rule.operator],
-                        ope = that.getOperatorByType(rule.operator),
-                        values = [];
-
-                    if (mdb === undefined) {
-                        error('Unknown Loopback operation for operator "{0}"', rule.operator);
-                    }
-
-                    if (ope.nb_inputs !== 0) {
-                        if (!(rule.value instanceof Array)) {
-                            rule.value = [rule.value];
-                        }
-
-                        rule.value.forEach(function(v) {
-                            values.push(changeType(v, rule.type));
-                        });
-                    }
-
-                    var part = {};
-                    part[rule.field] = mdb.call(that, values);
-                    parts.push(part);
-                }
-            });
-
-            var res = {};
-            if (parts.length > 0) {
-                res[ data.condition.toLowerCase() ] = parts;
-            }
-            return res;
-        }(data));
-    }
-});
-
-/*!
  * jQuery QueryBuilder MongoDB Support
  * Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
@@ -3024,22 +2926,23 @@ function moveSortableToTarget(element, target) {
 
 /*!
  * jQuery QueryBuilder SQL Support
- * Allows to export rules as a SQL WHERE statement.
+ * Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 // DEFAULT CONFIG
 // ===============================
 QueryBuilder.defaults({
+    /* operators for internal -> SQL conversion */
     sqlOperators: {
-        equal:            '= ?',
-        not_equal:        '!= ?',
+        equal:            { op: '= ?' },
+        not_equal:        { op: '!= ?' },
         in:               { op: 'IN(?)',     sep: ', ' },
         not_in:           { op: 'NOT IN(?)', sep: ', ' },
-        less:             '< ?',
-        less_or_equal:    '<= ?',
-        greater:          '> ?',
-        greater_or_equal: '>= ?',
+        less:             { op: '< ?' },
+        less_or_equal:    { op: '<= ?' },
+        greater:          { op: '> ?' },
+        greater_or_equal: { op: '>= ?' },
         between:          { op: 'BETWEEN ?',   sep: ' AND ' },
         begins_with:      { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } },
         not_begins_with:  { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } },
@@ -3047,12 +2950,71 @@ QueryBuilder.defaults({
         not_contains:     { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v+'%'; } },
         ends_with:        { op: 'LIKE(?)',     fn: function(v){ return '%'+v; } },
         not_ends_with:    { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v; } },
-        is_empty:         '== ""',
-        is_not_empty:     '!= ""',
-        is_null:          'IS NULL',
-        is_not_null:      'IS NOT NULL'
+        is_empty:         { op: '= \'\'' },
+        is_not_empty:     { op: '!= \'\'' },
+        is_null:          { op: 'IS NULL' },
+        is_not_null:      { op: 'IS NOT NULL' }
     },
 
+    /* operators for SQL -> internal conversion */
+    sqlRuleOperator: {
+        '=': function(v) {
+            return {
+                val: v,
+                op: v === '' ? 'is_empty' : 'equal'
+            };
+        },
+        '!=': function(v) {
+            return {
+                val: v,
+                op: v === '' ? 'is_not_empty' : 'not_equal'
+            };
+        },
+        'LIKE': function(v) {
+            if (v.slice(0,1)=='%' && v.slice(-1)=='%') {
+                return {
+                    val: v.slice(1,-1),
+                    op: 'contains'
+                };
+            }
+            else if (v.slice(0,1)=='%') {
+                return {
+                    val: v.slice(1),
+                    op: 'ends_with'
+                };
+            }
+            else if (v.slice(-1)=='%') {
+                return {
+                    val: v.slice(0,-1),
+                    op: 'begins_with'
+                };
+            }
+            else {
+                error('Invalid value for LIKE operator');
+            }
+        },
+        'IN':       function(v) { return { val: v, op: 'in' }; },
+        'NOT IN':   function(v) { return { val: v, op: 'not_in' }; },
+        '<':        function(v) { return { val: v, op: 'less' }; },
+        '<=':       function(v) { return { val: v, op: 'less_or_equal' }; },
+        '>':        function(v) { return { val: v, op: 'greater' }; },
+        '>=':       function(v) { return { val: v, op: 'greater_or_equal' }; },
+        'BETWEEN':  function(v) { return { val: v, op: 'between' }; },
+        'IS':       function(v) {
+            if (v !== null) {
+                error('Invalid value for IS operator');
+            }
+            return { val: null, op: 'is_null' };
+        },
+        'IS NOT':   function(v) {
+            if (v !== null) {
+                error('Invalid value for IS operator');
+            }
+            return { val: null, op: 'is_not_null' };
+        }
+    },
+
+    /* statements for internal -> SQL conversion */
     sqlStatements: {
         'question_mark': function() {
             var bind_params = [];
@@ -3095,6 +3057,64 @@ QueryBuilder.defaults({
                 },
                 run: function() {
                     return bind_params;
+                }
+            };
+        }
+    },
+
+    /* statements for SQL -> internal conversion */
+    sqlRuleStatement: {
+        'question_mark': function(values) {
+            var i = 0;
+            return {
+                get: function(v) {
+                    if ($.isArray(v)) {
+                        return v.map(function(v) {
+                            return v=='?' ? values[i++] : v;
+                        });
+                    }
+                    else {
+                        return v=='?' ? values[i++] : v;
+                    }
+                },
+                esc: function(sql) {
+                    return sql.replace(/\?/g, '\'?\'');
+                }
+            };
+        },
+
+        'numbered': function(values) {
+            return {
+                get: function(v) {
+                    if ($.isArray(v)) {
+                        return v.map(function(v) {
+                            return /^\$[0-9]+$/.test(v) ? values[v.slice(1)-1] : v;
+                        });
+                    }
+                    else {
+                        return /^\$[0-9]+$/.test(v) ? values[v.slice(1)-1] : v;
+                    }
+                },
+                esc: function(sql) {
+                    return sql.replace(/\$([0-9]+)/g, '\'$$$1\'');
+                }
+            };
+        },
+
+        'named': function(values) {
+            return {
+                get: function(v) {
+                    if ($.isArray(v)) {
+                        return v.map(function(v) {
+                            return /^:/.test(v) ? values[v.slice(1)] : v;
+                        });
+                    }
+                    else {
+                        return /^:/.test(v) ? values[v.slice(1)] : v;
+                    }
+                },
+                esc: function(sql) {
+                    return sql.replace(new RegExp(':(' + Object.keys(values).join('|') + ')', 'g'), '\':$1\'');
                 }
             };
         }
@@ -3142,11 +3162,11 @@ QueryBuilder.extend({
                     parts.push('('+ nl + parse(rule) + nl +')'+ nl);
                 }
                 else {
-                    var sql = that.getSqlOperator(rule.operator),
+                    var sql = that.settings.sqlOperators[rule.operator],
                         ope = that.getOperatorByType(rule.operator),
                         value = '';
 
-                    if (sql === false) {
+                    if (sql === undefined) {
                         error('Unknown SQL operation for operator "{0}"', rule.operator);
                     }
 
@@ -3205,25 +3225,127 @@ QueryBuilder.extend({
     },
 
     /**
-     * Sanitize the "sql" field of an operator
-     * @param sql {string|object}
+     * Convert SQL to rules
+     * @param data {object} query object
      * @return {object}
      */
-    getSqlOperator: function(type) {
-        var sql = this.settings.sqlOperators[type];
-
-        if (sql === undefined) {
-            return false;
+    getRulesFromSQL: function(data, stmt) {
+        if (!('SQLParser' in window)) {
+            error('SQLParser is required to parse SQL queries. Get it here https://github.com/forward/sql-parser');
         }
 
-        if (typeof sql == 'string') {
-            sql = { op: sql };
+        var that = this;
+
+        if (typeof data == 'string') {
+            data = { sql: data };
         }
-        if (sql.list && !sql.sep) {
-            sql.sep = ', ';
+        if (typeof stmt == 'string') {
+            stmt = this.settings.sqlRuleStatement[stmt](data.params);
+            data.sql = stmt.esc(data.sql);
         }
 
-        return sql;
+        if (!data.sql.toUpperCase().startsWith('SELECT')) {
+            data.sql = 'SELECT * FROM table WHERE ' + data.sql;
+        }
+
+        var parsed = SQLParser.parse(data.sql);
+
+        if (!parsed.where) {
+            error('No WHERE clause found');
+        }
+
+        var out = {
+            condition: this.settings.default_condition,
+            rules: []
+        };
+        var curr = out;
+
+        (function flatten(data, i) {
+            // it's a node
+            if (['AND', 'OR'].indexOf(data.operation.toUpperCase()) !== -1) {
+                // create a sub-group if the condition is not the same and it's not the first level
+                if (i>0 && curr.condition != data.operation.toUpperCase()) {
+                    curr.rules.push({
+                        condition: that.settings.default_condition,
+                        rules: []
+                    });
+
+                    curr = curr.rules[curr.rules.length-1];
+                }
+
+                curr.condition = data.operation.toUpperCase();
+                i++;
+
+                // some magic !
+                var next = curr;
+                flatten(data.left, i);
+
+                curr = next;
+                flatten(data.right, i);
+            }
+            // it's a leaf
+            else {
+                if (data.left.value === undefined || data.right.value === undefined) {
+                    error('Missing field and/or value');
+                }
+
+                if ($.isPlainObject(data.right.value)) {
+                    error('Value format not supported for {0}.', data.left.value);
+                }
+
+                // convert array
+                var value;
+                if ($.isArray(data.right.value)) {
+                    value = data.right.value.map(function(v) {
+                        return v.value;
+                    });
+                }
+                else {
+                    value = data.right.value;
+                }
+
+                // get actual values
+                if (stmt) {
+                    value = stmt.get(value);
+                }
+
+                // convert operator
+                var operator = data.operation.toUpperCase();
+                if (operator == '<>') operator = '!=';
+
+                var sqlrl;
+                if (operator == 'NOT LIKE') {
+                    sqlrl = that.settings.sqlRuleOperator['LIKE'];
+                }
+                else {
+                    sqlrl = that.settings.sqlRuleOperator[operator];
+                }
+
+                if (sqlrl === undefined) {
+                    error('Invalid SQL operation {0}.', data.operation);
+                }
+
+                var opVal = sqlrl.call(this, value, data.operation);
+                if (operator == 'NOT LIKE') opVal.op = 'not_' + opVal.op;
+
+                curr.rules.push({
+                    id: that.change('getSQLFieldID', data.left.value, value),
+                    field: data.left.value,
+                    operator: opVal.op,
+                    value: opVal.val
+                });
+            }
+        }(parsed.where.conditions, 0));
+
+        return out;
+    },
+
+    /**
+     * Set rules from SQL
+     * @param data {object}
+     */
+    setRulesFromSQL: function(data, stmt) {
+        this.setRules(this.getRulesFromSQL(data, stmt));
     }
 });
 
@@ -3297,7 +3419,7 @@ QueryBuilder.extend({
 });
 
 /*!
- * jQuery QueryBuilder 2.1.0
+ * jQuery QueryBuilder 2.2.0
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
