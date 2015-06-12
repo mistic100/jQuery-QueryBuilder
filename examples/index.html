@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="../dist/css/query-builder.default.css" id="qb-theme">
   
   <link rel="stylesheet" href="http://mistic100.github.io/jQuery-QueryBuilder/assets/flags/flags.css">
+  <style>
+    .flag { display: inline-block; }
+  </style>
 </head>
 
 <body>
@@ -39,22 +42,20 @@
       
       <label>Language:</label>
       <select name="language" class="selectpicker show-tick show-menu-arrow" data-width="auto">
-        <optgroup label="Complete">
-          <option value="de" data-icon="flag flag-de">German</option>
-          <option value="en" data-icon="flag flag-gb" selected>English</option>
-          <option value="es" data-icon="flag flag-es">Spanish</option>
-          <option value="fr" data-icon="flag flag-fr">French</option>
-          <option value="nl" data-icon="flag flag-nl">Dutch</option>
-          <option value="pl" data-icon="flag flag-pl">Polish</option>
-          <option value="pt-BR" data-icon="flag flag-pt">Portuguese</option>
-          <option value="ru" data-icon="flag flag-ru">Russian</option>
-        </optgroup>
-        <optgroup label="Partial">
-          <option value="da" data-icon="flag flag-dk">Danish</option>
-          <option value="it" data-icon="flag flag-it">Italian</option>
-          <option value="no" data-icon="flag flag-no">Norwegian</option>
-          <option value="ro" data-icon="flag flag-ro">Romanian</option>
-        </optgroup>
+        <option value="sq" data-icon="flag flag-al">Albanian</option>
+        <option value="de" data-icon="flag flag-de">German</option>
+        <option value="da" data-icon="flag flag-dk">Danish</option>
+        <option value="en" data-icon="flag flag-gb" selected>English</option>
+        <option value="es" data-icon="flag flag-es">Spanish</option>
+        <option value="fr" data-icon="flag flag-fr">French</option>
+        <option value="it" data-icon="flag flag-it">Italian</option>
+        <option value="fa-IR" data-icon="flag flag-ir">Farsi</option>
+        <option value="nl" data-icon="flag flag-nl">Dutch</option>
+        <option value="no" data-icon="flag flag-no">Norwegian</option>
+        <option value="pl" data-icon="flag flag-pl">Polish</option>
+        <option value="pt-BR" data-icon="flag flag-pt">Portuguese</option>
+        <option value="ro" data-icon="flag flag-ro">Romanian</option>
+        <option value="ru" data-icon="flag flag-ru">Russian</option>
       </select>
     </div>
 
@@ -106,7 +107,8 @@ var options = {
     'filter-description': { mode: 'bootbox' },
     'bt-selectpicker': null,
     'unique-filter': null,
-    'bt-checkbox': { color: 'primary' }
+    'bt-checkbox': { color: 'primary' },
+    'invert': null
   },
 
   filters: [

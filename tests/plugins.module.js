@@ -382,6 +382,25 @@ $(function(){
       });
   });
 
+  /**
+   * Test inversion
+   */
+  QUnit.test('invert', function(assert) {
+      $b.queryBuilder({
+          plugins: ['invert'],
+          filters: basic_filters,
+          rules: basic_rules
+      });
+
+      $b.queryBuilder('invert', true, true);
+
+      assert.rulesMatch(
+        $b.queryBuilder('getRules'),
+        basic_rules_invert,
+        'Should have inverted all conditions and operators'
+      );
+  });
+
 
   var basic_rules_sql_raw = {
     sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
@@ -793,4 +812,32 @@ $(function(){
 
   var sorted_rules = $.extend(true, {}, basic_rules);
   sorted_rules.rules.splice(2, 0, sorted_rules.rules[2].rules.pop());
+
+  var basic_rules_invert = {
+    condition: 'OR',
+    rules: [{
+      id: 'price',
+      field: 'price',
+      operator: 'greater_or_equal',
+      value: 10.25
+    }, {
+      id: 'name',
+      field: 'name',
+      operator: 'is_not_null',
+      value: null
+    }, {
+      condition: 'AND',
+      rules: [{
+        id: 'category',
+        field: 'category',
+        operator: 'not_in',
+        value: ['mo', 'mu']
+      }, {
+        id: 'id',
+        field: 'id',
+        operator: 'equal',
+        value: '1234-azer-5678'
+      }]
+    }]
+  };
 });
