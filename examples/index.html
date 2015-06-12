@@ -348,7 +348,7 @@ $('[name=language]').selectpicker().on('change', function() {
   };
   
   if ($.fn.queryBuilder.regional[lang] === undefined) {
-    $.getScript('../dist/i18n/' + lang + '.js', done);
+    $.getScript('../dist/i18n/query-builder.' + lang + '.js', done);
   }
   else {
     done();

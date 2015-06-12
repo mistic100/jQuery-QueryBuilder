@@ -76,6 +76,7 @@ QueryBuilder.DEFAULTS = {
         {type: 'greater',          nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
         {type: 'greater_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
         {type: 'between',          nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'not_between',      nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime']},
         {type: 'begins_with',      nb_inputs: 1, multiple: false, apply_to: ['string']},
         {type: 'not_begins_with',  nb_inputs: 1, multiple: false, apply_to: ['string']},
         {type: 'contains',         nb_inputs: 1, multiple: false, apply_to: ['string']},

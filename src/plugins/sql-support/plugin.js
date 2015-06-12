@@ -17,7 +17,8 @@ QueryBuilder.defaults({
         less_or_equal:    { op: '<= ?' },
         greater:          { op: '> ?' },
         greater_or_equal: { op: '>= ?' },
-        between:          { op: 'BETWEEN ?',   sep: ' AND ' },
+        between:          { op: 'BETWEEN ?',     sep: ' AND ' },
+        not_between:      { op: 'NOT BETWEEN ?', sep: ' AND ' },
         begins_with:      { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } },
         not_begins_with:  { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } },
         contains:         { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } },
@@ -74,6 +75,7 @@ QueryBuilder.defaults({
         '>':        function(v) { return { val: v, op: 'greater' }; },
         '>=':       function(v) { return { val: v, op: 'greater_or_equal' }; },
         'BETWEEN':  function(v) { return { val: v, op: 'between' }; },
+        'NOT BETWEEN': function(v) { return { val: v, op: 'not_between' }; },
         'IS':       function(v) {
             if (v !== null) {
                 error('Invalid value for IS operator');

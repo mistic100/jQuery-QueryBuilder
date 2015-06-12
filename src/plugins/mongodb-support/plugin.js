@@ -17,6 +17,7 @@ QueryBuilder.defaults({
         greater:          function(v){ return {'$gt': v[0]}; },
         greater_or_equal: function(v){ return {'$gte': v[0]}; },
         between:          function(v){ return {'$gte': v[0], '$lte': v[1]}; },
+        not_between:      function(v){ return {'$lt': v[0], '$gt': v[1]}; },
         begins_with:      function(v){ return {'$regex': '^' + escapeRegExp(v[0])}; },
         not_begins_with:  function(v){ return {'$regex': '^(?!' + escapeRegExp(v[0]) + ')'}; },
         contains:         function(v){ return {'$regex': escapeRegExp(v[0])}; },
@@ -65,6 +66,7 @@ QueryBuilder.defaults({
             }
         },
         between : function(v) { return {'val': [v.$gte, v.$lte], 'op': 'between'}; },
+        not_between : function(v) { return {'val': [v.$lt, v.$gt], 'op': 'not_between'}; },
         $in :     function(v) { return {'val': v.$in, 'op': 'in'}; },
         $nin :    function(v) { return {'val': v.$nin, 'op': 'not_in'}; },
         $lt :     function(v) { return {'val': v.$lt, 'op': 'less'}; },
@@ -221,6 +223,9 @@ QueryBuilder.extend({
             else {
                 if (value.$gte !==undefined && value.$lte !==undefined) {
                     return 'between';
+                }
+                if (value.$lt !==undefined && value.$gt !==undefined) {
+                    return 'not_between';
                 }
                 else if (value.$regex !==undefined) { // optional $options
                     return '$regex';

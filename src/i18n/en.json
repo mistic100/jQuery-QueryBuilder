@@ -22,6 +22,7 @@
     "greater": "greater",
     "greater_or_equal": "greater or equal",
     "between": "between",
+    "not_between": "not between",
     "begins_with": "begins with",
     "not_begins_with": "doesn't begin with",
     "contains": "contains",
