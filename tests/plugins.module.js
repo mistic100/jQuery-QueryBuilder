@@ -392,7 +392,7 @@ $(function(){
           rules: basic_rules
       });
 
-      $b.queryBuilder('invert', true, true);
+      $b.queryBuilder('invert');
 
       assert.rulesMatch(
         $b.queryBuilder('getRules'),

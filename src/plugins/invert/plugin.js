@@ -43,13 +43,13 @@ QueryBuilder.define('invert', function(options) {
     this.on('afterInit', function() {
         that.$el.on('click.queryBuilder', '[data-invert=group]', function() {
             var $group = $(this).closest('.rules-group-container');
-            that.invert(Model($group), options.recursive, options.invert_rules);
+            that.invert(Model($group), options);
         });
 
         if (options.display_rules_button && options.invert_rules) {
             that.$el.on('click.queryBuilder', '[data-invert=rule]', function() {
                 var $rule = $(this).closest('.rule-container');
-                that.invert(Model($rule));
+                that.invert(Model($rule), options);
             });
         }
     });
@@ -74,31 +74,43 @@ QueryBuilder.define('invert', function(options) {
   icon: 'glyphicon glyphicon-random',
   recursive: true,
   invert_rules: true,
-  display_rules_button: false
+  display_rules_button: false,
+  silent_fail: false
 });
 
 QueryBuilder.extend({
-    invert: function(node, recursive, invert_rules) {
-        if (typeof node != 'object') {
-            if (this.model.root) {
-                this.invert(this.model.root, node, recursive);
-            }
+    /**
+     * Invert a Group, a Rule or the whole builder
+     * @param {Node,optional}
+     * @param {object,optional}
+     */
+    invert: function(node, options) {
+        if (!(node instanceof Node)) {
+            if (!this.model.root) return;
+            options = node;
+            node = this.model.root;
         }
-        else if (node instanceof Group) {
+
+        if (typeof options != 'object') options = {};
+        if (options.recursive === undefined) options.recursive = true;
+        if (options.invert_rules === undefined) options.invert_rules = true;
+        if (options.silent_fail === undefined) options.silent_fail = false;
+
+        if (node instanceof Group) {
             if (this.settings.conditionOpposites[node.condition]) {
                 node.condition = this.settings.conditionOpposites[node.condition];
             }
-            else {
+            else if (!options.silent_fail) {
                 error('Unknown inverse of condition "{0}"', node.condition);
             }
 
-            if (recursive === true || recursive === undefined) {
+            if (options.recursive) {
                 node.each(function(rule) {
-                    if (invert_rules === true || invert_rules === undefined) {
-                        this.invert(rule);
+                    if (options.invert_rules) {
+                        this.invert(rule, options);
                     }
                 }, function(group) {
-                    this.invert(group, true);
+                    this.invert(group, options);
                 }, this);
             }
         }
@@ -107,7 +119,7 @@ QueryBuilder.extend({
                 if (this.settings.operatorOpposites[node.operator.type]) {
                     node.operator = this.getOperatorByType(this.settings.operatorOpposites[node.operator.type]);
                 }
-                else {
+                else  if (!options.silent_fail){
                     error('Unknown inverse of operator "{0}"', node.operator.type);
                 }
             }
