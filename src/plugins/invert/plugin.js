@@ -44,12 +44,14 @@ QueryBuilder.define('invert', function(options) {
         that.$el.on('click.queryBuilder', '[data-invert=group]', function() {
             var $group = $(this).closest('.rules-group-container');
             that.invert(Model($group), options);
+            that.$el.trigger('change');
         });
 
         if (options.display_rules_button && options.invert_rules) {
             that.$el.on('click.queryBuilder', '[data-invert=rule]', function() {
                 var $rule = $(this).closest('.rule-container');
                 that.invert(Model($rule), options);
+                that.$el.trigger('change');
             });
         }
     });
