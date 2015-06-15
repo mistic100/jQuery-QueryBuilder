@@ -489,6 +489,11 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     if (filter.default_value !== undefined) {
         rule.value = filter.default_value;
     }
+    else {
+        that.status.updating_value = true;
+        rule.value = that.getRuleValue(rule);
+        that.status.updating_value = false;
+    }
 };
 
 /**

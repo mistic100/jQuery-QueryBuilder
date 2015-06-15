@@ -89,11 +89,6 @@ $(function(){
     );
 
     assert.validationError($b,
-      { id: 'integer' },
-      /number_nan/
-    );
-
-    assert.validationError($b,
       { id: 'integer', value: 5.2 },
       /number_not_integer/
     );
