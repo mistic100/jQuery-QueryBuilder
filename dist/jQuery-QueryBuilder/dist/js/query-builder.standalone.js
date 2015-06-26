@@ -124,13 +124,13 @@
 }));
 
 /*!
- * jQuery QueryBuilder 2.2.0
+ * jQuery QueryBuilder 2.2.1
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
 // Languages: en
-// Plugins: bt-checkbox, bt-selectpicker, bt-tooltip-errors, filter-description, mongodb-support, sortable, sql-support, unique-filter
+// Plugins: bt-checkbox, bt-selectpicker, bt-tooltip-errors, filter-description, invert, mongodb-support, sortable, sql-support, unique-filter
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
         define('query-builder', ['jquery', 'jQuery.extendext'], factory);
@@ -347,6 +347,7 @@ QueryBuilder.DEFAULTS = {
         {type: 'greater',          nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
         {type: 'greater_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
         {type: 'between',          nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime']},
+        {type: 'not_between',      nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime']},
         {type: 'begins_with',      nb_inputs: 1, multiple: false, apply_to: ['string']},
         {type: 'not_begins_with',  nb_inputs: 1, multiple: false, apply_to: ['string']},
         {type: 'contains',         nb_inputs: 1, multiple: false, apply_to: ['string']},
@@ -858,6 +859,11 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
 
     if (filter.default_value !== undefined) {
         rule.value = filter.default_value;
+    }
+    else {
+        that.status.updating_value = true;
+        rule.value = that.getRuleValue(rule);
+        that.status.updating_value = false;
     }
 };
 
@@ -2651,6 +2657,142 @@ QueryBuilder.define('filter-description', function(options) {
 });
 
 /*!
+ * jQuery QueryBuilder Invert
+ * Allows to invert a rule operator, a group condition or the entire builder.
+ * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ */
+
+QueryBuilder.defaults({
+    operatorOpposites: {
+        'equal':            'not_equal',
+        'not_equal':        'equal',
+        'in':               'not_in',
+        'not_in':           'in',
+        'less':             'greater_or_equal',
+        'less_or_equal':    'greater',
+        'greater':          'less_or_equal',
+        'greater_or_equal': 'less',
+        'between':          'not_between',
+        'not_between':      'between',
+        'begins_with':      'not_begins_with',
+        'not_begins_with':  'begins_with',
+        'contains':         'not_contains',
+        'not_contains':     'contains',
+        'ends_with':        'not_ends_with',
+        'not_ends_with':    'ends_with',
+        'is_empty':         'is_not_empty',
+        'is_not_empty':     'is_empty',
+        'is_null':          'is_not_null',
+        'is_not_null':      'is_null'
+    },
+
+    conditionOpposites: {
+        'AND': 'OR',
+        'OR': 'AND'
+    }
+});
+
+QueryBuilder.define('invert', function(options) {
+    var that = this;
+
+    /**
+     * Bind events
+     */
+    this.on('afterInit', function() {
+        that.$el.on('click.queryBuilder', '[data-invert=group]', function() {
+            var $group = $(this).closest('.rules-group-container');
+            that.invert(Model($group), options);
+        });
+
+        if (options.display_rules_button && options.invert_rules) {
+            that.$el.on('click.queryBuilder', '[data-invert=rule]', function() {
+                var $rule = $(this).closest('.rule-container');
+                that.invert(Model($rule), options);
+            });
+        }
+    });
+
+    /**
+     * Modify templates
+     */
+    this.on('getGroupTemplate.filter', function(h, level) {
+        var $h = $(h.value);
+        $h.find('.group-conditions').after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> '+ that.lang.invert +'</button>');
+        h.value = $h.prop('outerHTML');
+    });
+
+    if (options.display_rules_button && options.invert_rules) {
+        this.on('getRuleTemplate.filter', function(h) {
+            var $h = $(h.value);
+            $h.find('.rule-actions').prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> '+ that.lang.invert +'</button>');
+            h.value = $h.prop('outerHTML');
+        });
+    }
+}, {
+  icon: 'glyphicon glyphicon-random',
+  recursive: true,
+  invert_rules: true,
+  display_rules_button: false,
+  silent_fail: false
+});
+
+QueryBuilder.extend({
+    /**
+     * Invert a Group, a Rule or the whole builder
+     * @param {Node,optional}
+     * @param {object,optional}
+     */
+    invert: function(node, options) {
+        if (!(node instanceof Node)) {
+            if (!this.model.root) return;
+            options = node;
+            node = this.model.root;
+        }
+
+        if (typeof options != 'object') options = {};
+        if (options.recursive === undefined) options.recursive = true;
+        if (options.invert_rules === undefined) options.invert_rules = true;
+        if (options.silent_fail === undefined) options.silent_fail = false;
+
+        if (node instanceof Group) {
+            // invert group condition
+            if (this.settings.conditionOpposites[node.condition]) {
+                node.condition = this.settings.conditionOpposites[node.condition];
+            }
+            else if (!options.silent_fail) {
+                error('Unknown inverse of condition "{0}"', node.condition);
+            }
+
+            // recursive call
+            if (options.recursive) {
+                node.each(function(rule) {
+                    if (options.invert_rules) {
+                        this.invert(rule, options);
+                    }
+                }, function(group) {
+                    this.invert(group, options);
+                }, this);
+            }
+        }
+        else if (node instanceof Rule) {
+            if (node.operator && !node.filter.no_invert) {
+                // invert rule operator
+                if (this.settings.operatorOpposites[node.operator.type]) {
+                    var invert = this.settings.operatorOpposites[node.operator.type];
+                    // check if the invert is "authorized"
+                    if (!node.filter.operators || node.filter.operators.indexOf(invert) != -1) {
+                        node.operator = this.getOperatorByType(invert);
+                    }
+                }
+                else  if (!options.silent_fail){
+                    error('Unknown inverse of operator "{0}"', node.operator.type);
+                }
+            }
+        }
+    }
+});
+
+/*!
  * jQuery QueryBuilder MongoDB Support
  * Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
@@ -2669,6 +2811,7 @@ QueryBuilder.defaults({
         greater:          function(v){ return {'$gt': v[0]}; },
         greater_or_equal: function(v){ return {'$gte': v[0]}; },
         between:          function(v){ return {'$gte': v[0], '$lte': v[1]}; },
+        not_between:      function(v){ return {'$lt': v[0], '$gt': v[1]}; },
         begins_with:      function(v){ return {'$regex': '^' + escapeRegExp(v[0])}; },
         not_begins_with:  function(v){ return {'$regex': '^(?!' + escapeRegExp(v[0]) + ')'}; },
         contains:         function(v){ return {'$regex': escapeRegExp(v[0])}; },
@@ -2717,6 +2860,7 @@ QueryBuilder.defaults({
             }
         },
         between : function(v) { return {'val': [v.$gte, v.$lte], 'op': 'between'}; },
+        not_between : function(v) { return {'val': [v.$lt, v.$gt], 'op': 'not_between'}; },
         $in :     function(v) { return {'val': v.$in, 'op': 'in'}; },
         $nin :    function(v) { return {'val': v.$nin, 'op': 'not_in'}; },
         $lt :     function(v) { return {'val': v.$lt, 'op': 'less'}; },
@@ -2873,6 +3017,9 @@ QueryBuilder.extend({
             else {
                 if (value.$gte !==undefined && value.$lte !==undefined) {
                     return 'between';
+                }
+                if (value.$lt !==undefined && value.$gt !==undefined) {
+                    return 'not_between';
                 }
                 else if (value.$regex !==undefined) { // optional $options
                     return '$regex';
@@ -3068,7 +3215,8 @@ QueryBuilder.defaults({
         less_or_equal:    { op: '<= ?' },
         greater:          { op: '> ?' },
         greater_or_equal: { op: '>= ?' },
-        between:          { op: 'BETWEEN ?',   sep: ' AND ' },
+        between:          { op: 'BETWEEN ?',     sep: ' AND ' },
+        not_between:      { op: 'NOT BETWEEN ?', sep: ' AND ' },
         begins_with:      { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } },
         not_begins_with:  { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } },
         contains:         { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } },
@@ -3125,6 +3273,7 @@ QueryBuilder.defaults({
         '>':        function(v) { return { val: v, op: 'greater' }; },
         '>=':       function(v) { return { val: v, op: 'greater_or_equal' }; },
         'BETWEEN':  function(v) { return { val: v, op: 'between' }; },
+        'NOT BETWEEN': function(v) { return { val: v, op: 'not_between' }; },
         'IS':       function(v) {
             if (v !== null) {
                 error('Invalid value for IS operator');
@@ -3544,7 +3693,7 @@ QueryBuilder.extend({
 });
 
 /*!
- * jQuery QueryBuilder 2.2.0
+ * jQuery QueryBuilder 2.2.1
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -3571,6 +3720,7 @@ QueryBuilder.regional['en'] = {
     "greater": "greater",
     "greater_or_equal": "greater or equal",
     "between": "between",
+    "not_between": "not between",
     "begins_with": "begins with",
     "not_begins_with": "doesn't begin with",
     "contains": "contains",
@@ -3604,7 +3754,8 @@ QueryBuilder.regional['en'] = {
     "datetime_exceed_max": "Must be before {0}",
     "boolean_not_valid": "Not a boolean",
     "operator_not_multiple": "Operator {0} cannot accept multiple values"
-  }
+  },
+  "invert": "Invert"
 };
 
 QueryBuilder.defaults({ lang_code: 'en' });

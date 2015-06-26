@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.2.0
+ * jQuery QueryBuilder 2.2.1
  * Locale: Polish (pl)
  * Author: Artur Smolarek
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -38,6 +38,7 @@ QueryBuilder.regional['pl'] = {
     "greater": "większe",
     "greater_or_equal": "większe lub równe",
     "between": "pomiędzy",
+    "not_between": "nie jest pomiędzy",
     "begins_with": "rozpoczyna się od",
     "not_begins_with": "nie rozpoczyna się od",
     "contains": "zawiera",
@@ -65,10 +66,14 @@ QueryBuilder.regional['pl'] = {
     "number_exceed_min": "Musi być większe niż {0}",
     "number_exceed_max": "Musi być mniejsze niż {0}",
     "number_wrong_step": "Musi być wielokrotnością {0}",
+    "datetime_empty": "Nie wybrano wartości",
     "datetime_invalid": "Nieprawidłowy format daty ({0})",
     "datetime_exceed_min": "Musi być po {0}",
-    "datetime_exceed_max": "Musi być przed {0}"
-  }
+    "datetime_exceed_max": "Musi być przed {0}",
+    "boolean_not_valid": "Niepoprawna wartość logiczna",
+    "operator_not_multiple": "Operator {0} nie przyjmuje wielu wartości"
+  },
+  "invert": "Odwróć"
 };
 
 QueryBuilder.defaults({ lang_code: 'pl' });

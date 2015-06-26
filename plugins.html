@@ -184,6 +184,12 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
 
     <p>Provides three ways to display a description about a filter: inline, <a href="http://getbootstrap.com/javascript/#popovers">Bootsrap Popover</a> or <a href="http://bootboxjs.com">Bootbox</a>.</p>
     <p>The description is defined in the <code>description</code> attribute of each filter. It can contain HTML.</p>
+{% highlight javascript %}
+filters: [{
+    /* .... */
+    description: 'This filter is <b>awesome</b> !'
+}]
+{% endhighlight %}
     
     <h3>Requirements</h3>
 {% highlight html %}
@@ -229,8 +235,103 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
       Unique filter <small>unique-filter</small>
     </h2>
 
-    <p>Allows to define some filters as "unique": ie which can be used for only one rule, globally or in the same group.</p>
+    <p>Allows to define some filters as "unique": which can be used for only one rule, globally or in the same group.</p>
     <p>The plugin adds a new filter attribute named <code>unique</code>, set it to <code>true</code> to define the filter globally unique, or to <code>group</code> to define the filter unique inside its group.</p>
+{% highlight javascript %}
+filters: [
+  {
+    /* .... */
+    unique: true // this filter can be used only once in the whole builder
+  },
+  {
+    /* .... */
+    unique: 'group' // this filter can be used only once in each group
+  }
+]
+{% endhighlight %}
+  </div>
+  
+  <div class="bs-callout">
+    <h2 id="invert">
+      Invert rules <small>invert</small>
+    </h2>
+    
+    <p>Adds a button in each group & rule to easily "invert" a part of the builder, that means transform "AND" into "OR", "equal" into "not equal", and so on.</p>
+    <p>If a filter must never be inverted, set it's <code>no_invert</code> option to <b>false</b>.</p>
+{% highlight javascript %}
+filters: [{
+    /* .... */
+    no_invert: true
+}]
+{% endhighlight %}
+    
+    <h3>New methods</h3>
+    
+    <h4>invert</h4>
+    <p>Performs invertion programatically on the whole builder or on a particular <b>Node</b>. It also takes an optionnal object of behavioral options similar to the plugin's options.</p>
+    <p><i>This method is available even if the plugin is not initialized in the builder (<code>plugins</code> builder option).</i></p>
+{% highlight javascript %}
+// invert the whole builder with default options
+$('#builder').queryBuilder('invert');
+
+// invert the whole builder with custom behavior
+$('#builder').queryBuilder('invert', {
+  invert_rules: false,
+  silent_fail: true
+});
+
+// invert a particular Group with options
+$('#builder').queryBuilder('invert', group, {/* ... */});
+{% endhighlight %}
+
+    <h3>Options</h3>
+    <p>The plugin uses the <code>operatorOpposites</code> and <code>conditionOpposites</code> builder options to map each condition/operator to its invert. You must update it if you add new operators and conditions. Set <code>silent_fail</code> plugin option to <b>false</b> if one of your new condition/operator has no invert value.</p>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th style="width: 100px;">Name</th>
+            <th style="width: 100px;">type</th>
+            <th style="width: 220px;">default</th>
+            <th>description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>icon</td>
+            <td>string</td>
+            <td>'glyphicon glyphicon-random'</td>
+            <td>The font-icon used for the button</td>
+          </tr>
+          <tr>
+            <td>recursive</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>Recursively invert conditions an operators</td>
+          </tr>
+          <tr>
+            <td>invert_rules</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>Invert rules operators as well as groups conditions</td>
+          </tr>
+          <tr>
+            <td>display_rules_button</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Display the invert button for each rule (by default the button is only on groups)</td>
+          </tr>
+          <tr>
+            <td>silent_fail</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Do not throw an error when a condition or an operator has no invert defined</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 </section>
 
@@ -286,25 +387,13 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
 {% highlight javascript %}
 filters: [
   {
-    id: 'category',
-    type: 'int',
+    /* .... */
     input: 'checkbox',
-    operators: ['in', 'not_in'],
-    values: {
-      1: 'Books',
-      2: 'Movies',
-      3: 'Music'
-    },
     color: 'primary' // same color for each checkbox
   },
   {
-    id: 'stock',
-    type: 'boolean',
+    /* .... */
     input: 'radio',
-    values: {
-      0: 'No',
-      1: 'Yes'
-    },
     colors: { // different color for each radio
       0: 'danger',
       1: 'success'

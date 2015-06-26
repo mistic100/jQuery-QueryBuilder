@@ -25,7 +25,8 @@ $('#builder-plugins').queryBuilder({
     'unique-filter',
     'bt-tooltip-errors',
     'bt-selectpicker',
-    'bt-checkbox'
+    'bt-checkbox',
+    'invert'
   ],
   
   filters: [{
