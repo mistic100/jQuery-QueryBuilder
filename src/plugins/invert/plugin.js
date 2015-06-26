@@ -97,6 +97,7 @@ QueryBuilder.extend({
         if (options.silent_fail === undefined) options.silent_fail = false;
 
         if (node instanceof Group) {
+            // invert group condition
             if (this.settings.conditionOpposites[node.condition]) {
                 node.condition = this.settings.conditionOpposites[node.condition];
             }
@@ -104,6 +105,7 @@ QueryBuilder.extend({
                 error('Unknown inverse of condition "{0}"', node.condition);
             }
 
+            // recursive call
             if (options.recursive) {
                 node.each(function(rule) {
                     if (options.invert_rules) {
@@ -115,9 +117,14 @@ QueryBuilder.extend({
             }
         }
         else if (node instanceof Rule) {
-            if (node.operator) {
+            if (node.operator && !node.filter.no_invert) {
+                // invert rule operator
                 if (this.settings.operatorOpposites[node.operator.type]) {
-                    node.operator = this.getOperatorByType(this.settings.operatorOpposites[node.operator.type]);
+                    var invert = this.settings.operatorOpposites[node.operator.type];
+                    // check if the invert is "authorized"
+                    if (!node.filter.operators || node.filter.operators.indexOf(invert) != -1) {
+                        node.operator = this.getOperatorByType(invert);
+                    }
                 }
                 else  if (!options.silent_fail){
                     error('Unknown inverse of operator "{0}"', node.operator.type);
