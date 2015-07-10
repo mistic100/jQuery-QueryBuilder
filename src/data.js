@@ -139,7 +139,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                                 break;
                             }
                         }
-                        if (validation.step !== undefined) {
+                        if (validation.step !== undefined && validation.step !== 'any') {
                             var v = value[i]/validation.step;
                             if (parseInt(v) != v) {
                                 result = ['number_wrong_step', validation.step];
