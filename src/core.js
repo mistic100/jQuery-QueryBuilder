@@ -124,6 +124,19 @@ QueryBuilder.prototype.checkFilters = function() {
                     error('Missing filter "{0}" values', filter.id);
                 }
                 break;
+
+            case 'select':
+                if (filter.placeholder) {
+                    if (filter.placeholder_value === undefined) {
+                        filter.placeholder_value = -1;
+                    }
+                    iterateOptions(filter.values, function(key, val) {
+                        if (key == filter.placeholder_value) {
+                            error('Placeholder of filter "{0}" overlaps with one of its values', filter.id);
+                        }
+                    });
+                }
+                break;
         }
     });
 

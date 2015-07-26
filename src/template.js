@@ -168,8 +168,11 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
 
             case 'select':
                 h+= '<select class="form-control" name="'+ name +'"'+ (filter.multiple ? ' multiple' : '') +'>';
+                if (filter.placeholder) {
+                    h+= '<option value="' + filter.placeholder_value + '" disabled selected>' + filter.placeholder + '</option>';
+                }
                 iterateOptions(filter.values, function(key, val) {
-                    h+= '<option value="'+ key +'"> '+ val +'</option> ';
+                    h+= '<option value="'+ key +'">'+ val +'</option> ';
                 });
                 h+= '</select>';
                 break;

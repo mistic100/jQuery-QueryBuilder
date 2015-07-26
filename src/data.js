@@ -63,7 +63,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
             case 'select':
                 if (filter.multiple) {
-                    if (value[i] === undefined || value[i].length === 0) {
+                    if (value[i] === undefined || value[i].length === 0 || (filter.placeholder && value[i] == filter.placeholder_value)) {
                         result = ['select_empty'];
                         break;
                     }
@@ -73,7 +73,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                     }
                 }
                 else {
-                    if (value[i] === undefined) {
+                    if (value[i] === undefined || (filter.placeholder && value[i] == filter.placeholder_value)) {
                         result = ['select_empty'];
                         break;
                     }
