@@ -331,7 +331,52 @@ $('#builder').queryBuilder('invert', group, {/* ... */});
         </tbody>
       </table>
     </div>
+  </div>
+  
+  <div class="bs-callout">
+    <h2 id="change-filters">
+      Change filters <small>change-filters</small>
+    </h2>
+    
+    <p><b>This plugin does not require initialization through the <code>plugins</code> config.</b> It adds new methods to change the list of filters after builder initialization.</p>
 
+    <h3>New methods</h3>
+    
+    <h4>setFilters</h4>
+    <p>Replace all filters by new ones. If a rule is using an old filter an error will be throw, unless you set the first parameter to <code>true</code>, in which case such rules will be deleted.</p>
+{% highlight javascript %}
+// change filters, might throw an error
+$('#builder').queryBuilder('setFilters', [ /* ... */ ]);
+
+// change filters and delete orphan rules
+$('#builder').queryBuilder('setFilters', true, [ /* ... */ ]);
+{% endhighlight %}
+    
+    <h4>addFilter</h4>
+    <p>Adds a new filter at a specific position.</p>
+{% highlight javascript %}
+// add a filter at the end of the list
+$('#builder').queryBuilder('addFilter', { /* ... */ });
+
+// add a filter at the begining of the list
+$('#builder').queryBuilder('addFilter', { /* ... */ }, 0);
+
+// add a filter after filter "name"
+$('#builder').queryBuilder('addFilter', { /* ... */ }, 'name');
+
+// add a filter at position 4
+$('#builder').queryBuilder('addFilter', { /* ... */ }, 4);
+{% endhighlight %}
+
+    <h4>removeFilter</h4>
+    <p>Removes a filter by it's identifier.</p>
+{% highlight javascript %}
+// remove filter "name", might throw an error
+$('#builder').queryBuilder('removeFilter', 'name');
+
+// remove filter "name" and delete orphan rules
+$('#builder').queryBuilder('setFilters', 'name', true);
+{% endhighlight %}
   </div>
 </section>
 
