@@ -34,7 +34,7 @@ QueryBuilder.prototype.init = function($el, options) {
     
     // translations : english << 'lang_code' << custom
     if (QueryBuilder.regional['en'] === undefined) {
-      error('"i18n/en.js" not loaded.');
+        error('"i18n/en.js" not loaded.');
     }
     this.lang = $.extendext(true, 'replace', {}, QueryBuilder.regional['en'], QueryBuilder.regional[this.settings.lang_code], this.settings.lang);
 
@@ -55,7 +55,7 @@ QueryBuilder.prototype.init = function($el, options) {
     // INIT
     this.$el.addClass('query-builder form-inline');
 
-    this.checkFilters();
+    this.filters = this.checkFilters(this.filters);
     this.bindEvents();
     this.initPlugins();
 
@@ -73,15 +73,15 @@ QueryBuilder.prototype.init = function($el, options) {
 /**
  * Checks the configuration of each filter
  */
-QueryBuilder.prototype.checkFilters = function() {
+QueryBuilder.prototype.checkFilters = function(filters) {
     var definedFilters = [],
         that = this;
 
-    if (!this.filters || this.filters.length === 0) {
+    if (!filters || filters.length === 0) {
         error('Missing filters list');
     }
 
-    this.filters.forEach(function(filter, i) {
+    filters.forEach(function(filter, i) {
         if (!filter.id) {
             error('Missing filter {0} id', i);
         }
@@ -143,9 +143,9 @@ QueryBuilder.prototype.checkFilters = function() {
     // group filters with same optgroup, preserving declaration order when possible
     if (this.status.has_optgroup) {
         var optgroups = [],
-            filters = [];
+            newFilters = [];
 
-        this.filters.forEach(function(filter, i) {
+        filters.forEach(function(filter, i) {
             var idx;
 
             if (filter.optgroup) {
@@ -163,11 +163,13 @@ QueryBuilder.prototype.checkFilters = function() {
             }
 
             optgroups.splice(idx, 0, filter.optgroup);
-            filters.splice(idx, 0, filter);
+            newFilters.splice(idx, 0, filter);
         });
 
-        this.filters = filters;
+        filters = newFilters;
     }
+
+    return filters;
 };
 
 /**
@@ -434,7 +436,7 @@ QueryBuilder.prototype.createRuleFilters = function(rule) {
 
     var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
 
-    rule.$el.find('.rule-filter-container').append($filterSelect);
+    rule.$el.find('.rule-filter-container').html($filterSelect);
 
     this.trigger('afterCreateRuleFilters', rule);
 };
@@ -571,13 +573,13 @@ QueryBuilder.prototype.applyRuleFlags = function(rule, readonly) {
     var flags = rule.flags;
 
     if (flags.filter_readonly) {
-        rule.$el.find('[name$=_filter]').prop('disabled', true);
+        rule.$el.find('.rule-filter-container [name$=_filter]').prop('disabled', true);
     }
     if (flags.operator_readonly) {
-        rule.$el.find('[name$=_operator]').prop('disabled', true);
+        rule.$el.find('.rule-operator-container [name$=_operator]').prop('disabled', true);
     }
     if (flags.value_readonly) {
-        rule.$el.find('[name*=_value_]').prop('disabled', true);
+        rule.$el.find('.rule-value-container [name*=_value_]').prop('disabled', true);
     }
     if (flags.no_delete) {
         rule.$el.find('[data-delete=rule]').remove();

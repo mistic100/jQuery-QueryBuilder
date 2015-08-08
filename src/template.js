@@ -154,15 +154,9 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
     }
     else {
         switch (filter.input) {
-            case 'radio':
+            case 'radio': case 'checkbox':
                 iterateOptions(filter.values, function(key, val) {
-                    h+= '<label'+ c +'><input type="radio" name="'+ name +'" value="'+ key +'"> '+ val +'</label> ';
-                });
-                break;
-
-            case 'checkbox':
-                iterateOptions(filter.values, function(key, val) {
-                    h+= '<label'+ c +'><input type="checkbox" name="'+ name +'" value="'+ key +'"> '+ val +'</label> ';
+                    h+= '<label'+ c +'><input type="'+ filter.input + '" name="'+ name +'" value="'+ key +'"> '+ val +'</label> ';
                 });
                 break;
 

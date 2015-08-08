@@ -62,7 +62,7 @@ QueryBuilder.extend({
 
         // update Selectpicker
         if (self.settings.plugins && self.settings.plugins['bt-selectpicker']) {
-            self.$el.find('.rule-filter-container select').selectpicker('render');
+            self.$el.find('.rule-filter-container [name$=_filter]').selectpicker('render');
         }
     }
 });

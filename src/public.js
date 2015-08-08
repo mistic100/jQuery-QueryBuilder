@@ -174,6 +174,13 @@ QueryBuilder.prototype.getRules = function() {
  * @param data {object}
  */
 QueryBuilder.prototype.setRules = function(data) {
+    if ($.isArray(data)) {
+        data = {
+            condition: this.settings.default_condition,
+            rules: data
+        };
+    }
+
     if (!data || !data.rules || (data.rules.length===0 && !this.settings.allow_empty)) {
         error('Incorrect data object passed');
     }
