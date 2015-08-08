@@ -1,0 +1,230 @@
+$(function(){
+    var $b = $('#builder');
+
+    QUnit.module('plugins-gui', {
+        afterEach: function() {
+            $b.queryBuilder('destroy');
+        }
+    });
+
+    /**
+     * Test bt-checkbox
+     */
+    QUnit.test('bt-checkbox', function(assert) {
+        $b.queryBuilder({
+            plugins: ['bt-checkbox'],
+            filters: bt_checkbox_filters,
+            rules: bt_checkbox_rules
+        });
+
+        assert.ok(
+            $('#builder_rule_0 .checkbox.checkbox-default').length == 2,
+            'Should have 2 checkboxes with default color'
+        );
+
+        assert.ok(
+            $('#builder_rule_1 .checkbox.checkbox-primary').length == 3,
+            'Should have 3 checkboxes with primary color'
+        );
+
+        assert.ok(
+            $('#builder_rule_2 .radio.radio-danger').length == 1 &&
+            $('#builder_rule_2 .radio.radio-success').length == 1 &&
+            $('#builder_rule_2 .radio.radio-default').length == 1,
+            'Should have 3 radios with danger, success and default colors'
+        );
+    });
+
+    /**
+     * Test bt-selectpicker
+     */
+    QUnit.test('bt-selectpicker', function(assert) {
+        $b.queryBuilder({
+            plugins: ['bt-selectpicker'],
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        assert.ok(
+            $b.find('.bootstrap-select').length == 8,
+            'Should have initialized Bootstrap Select on all filters and operators selectors'
+        );
+    });
+
+    /**
+     * Test bt-tooltip-errors
+     */
+    QUnit.test('bt-tooltip-errors', function(assert) {
+        $b.queryBuilder({
+            plugins: ['bt-tooltip-errors'],
+            filters: basic_filters,
+            rules: invalid_rules
+        });
+
+        $b.queryBuilder('validate');
+
+        assert.equal(
+            $('#builder_group_0 .error-container').eq(0).data('toggle'),
+            'tooltip',
+            'Should have added data-toggle="tooltip" in the template'
+        );
+
+        assert.equal(
+            $('#builder_rule_0 .error-container').data('originalTitle'),
+            'Empty value',
+            'Error title should be "Empty value"'
+        );
+    });
+
+    /**
+     * Test filter-description
+     */
+    QUnit.test('filter-description', function(assert) {
+        $b.queryBuilder({
+            plugins: {
+                'filter-description': { mode: 'inline' }
+            },
+            filters: description_filters,
+            rules: description_rules
+        });
+
+        assert.match(
+            $('#builder_rule_0 p.filter-description').html(),
+            new RegExp(description_filters[0].description),
+            'Paragraph should contain filter description'
+        );
+
+        $b.queryBuilder('destroy');
+
+        $b.queryBuilder({
+            plugins: {
+                'filter-description': { mode: 'popover' }
+            },
+            filters: description_filters,
+            rules: description_rules
+        });
+
+        assert.ok(
+            $('#builder_rule_0 button.filter-description').data('toggle') == 'popover',
+            'Rule should contain a new button enabled with Popover'
+        );
+
+        $b.queryBuilder('destroy');
+
+        $b.queryBuilder({
+            plugins: {
+                'filter-description': { mode: 'bootbox' }
+            },
+            filters: description_filters,
+            rules: description_rules
+        });
+
+        assert.ok(
+            $('#builder_rule_0 button.filter-description').data('toggle') == 'bootbox',
+            'Rule should contain a new button enabled with Bootbox'
+        );
+    });
+
+    /**
+     * Test sortable
+     */
+    QUnit.test('sortable', function(assert) {
+        assert.expect(1);
+        var done = assert.async();
+
+        $b.queryBuilder({
+            plugins: ['sortable'],
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        $('#builder_rule_3').simulateDragDrop({
+            dropTarget: $('#builder_rule_1'),
+            start: function() {
+                $(this).find('.drag-handle').trigger('mouseover');
+            },
+            done: function() {
+                assert.rulesMatch(
+                    $b.queryBuilder('getRules'),
+                    sorted_rules,
+                    'Should have moved "Identifier" rule'
+                );
+                done();
+            }
+        });
+    });
+
+
+    var bt_checkbox_filters = [{
+        id: 'no-color',
+        type: 'integer',
+        input: 'checkbox',
+        values: {
+            10: 'foo',
+            20: 'bar'
+        }
+    }, {
+        id: 'one-color',
+        type: 'integer',
+        input: 'checkbox',
+        values: {
+            1: 'one',
+            2: 'two',
+            3: 'three'
+        },
+        color: 'primary'
+    }, {
+        id: 'multi-color',
+        type: 'integer',
+        input: 'radio',
+        values: {
+            0: 'no',
+            1: 'yes',
+            2: 'perhaps'
+        },
+        colors: {
+            0: 'danger',
+            1: 'success'
+        }
+    }];
+
+    var bt_checkbox_rules = {
+        condition: 'AND',
+        rules: [{
+            id: 'no-color',
+            value: 10
+        }, {
+            id: 'one-color',
+            value: [1,2,3]
+        }, {
+            id: 'multi-color',
+            value: 2
+        }]
+    };
+
+    var invalid_rules = {
+        condition: 'AND',
+        rules: [{
+            id: 'id',
+            operator: 'equal',
+            value: ''
+        }]
+    };
+
+    var description_filters = [{
+        id: 'name',
+        type: 'string',
+        description: '<b>Lorem Ipsum</b> sit amet.'
+    }];
+
+    var description_rules = {
+        rules: [{
+            id: 'name',
+            value: 'Mistic'
+        }]
+    };
+
+    var sorted_rules = $.extend(true, {}, basic_rules);
+    sorted_rules.rules.splice(2, 0, sorted_rules.rules[2].rules.pop());
+
+});
