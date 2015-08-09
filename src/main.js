@@ -7,8 +7,6 @@ var QueryBuilder = function($el, options) {
 
 // EVENTS SYSTEM
 // ===============================
-var aps = Array.prototype.slice;
-
 $.extend(QueryBuilder.prototype, {
     change: function(type, value) {
         var event = new $.Event(type + '.queryBuilder.filter', {
@@ -16,7 +14,7 @@ $.extend(QueryBuilder.prototype, {
             value: value
         });
 
-        this.$el.triggerHandler(event, aps.call(arguments, 2));
+        this.$el.triggerHandler(event, Array.prototype.slice.call(arguments, 2));
 
         return event.value;
     },
@@ -26,7 +24,7 @@ $.extend(QueryBuilder.prototype, {
             builder: this
         });
 
-        this.$el.triggerHandler(event, aps.call(arguments, 1));
+        this.$el.triggerHandler(event, Array.prototype.slice.call(arguments, 1));
 
         return event;
     },
@@ -121,7 +119,7 @@ QueryBuilder.prototype.initPlugins = function() {
             QueryBuilder.plugins[plugin].fct.call(this, this.plugins[plugin]);
         }
         else {
-            error('Unable to find plugin "{0}"', plugin);
+            Utils.error('Unable to find plugin "{0}"', plugin);
         }
     }, this);
 };

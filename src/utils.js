@@ -1,3 +1,5 @@
+Utils = QueryBuilder.utils = {};
+
 /**
  * Utility to iterate over radio/checkbox/selection options.
  * it accept three formats: array of values, map, array of 1-element maps
@@ -5,7 +7,7 @@
  * @param options {object|array}
  * @param tpl {callable} (takes key and text)
  */
-function iterateOptions(options, tpl) {
+Utils.iterateOptions = function(options, tpl) {
     if (options) {
         if ($.isArray(options)) {
             options.forEach(function(entry) {
@@ -29,7 +31,7 @@ function iterateOptions(options, tpl) {
             });
         }
     }
-}
+};
 
 /**
  * Replaces {0}, {1}, ... in a string
@@ -37,21 +39,21 @@ function iterateOptions(options, tpl) {
  * @param args,... {string|int|float}
  * @return {string}
  */
-function fmt(str, args) {
+Utils.fmt = function(str, args) {
     args = Array.prototype.slice.call(arguments);
 
     return str.replace(/{([0-9]+)}/g, function(m, i) {
         return args[parseInt(i)+1];
     });
-}
+};
 
 /**
  * Output internal error with jQuery.error
  * @see fmt
  */
-function error() {
-    $.error(fmt.apply(null, arguments));
-}
+Utils.error = function() {
+    $.error(Utils.fmt.apply(null, arguments));
+};
 
 /**
  * Change type of a value to int or float
@@ -60,7 +62,7 @@ function error() {
  * @param boolAsInt {boolean} return 0 or 1 for booleans
  * @return {mixed}
  */
-function changeType(value, type, boolAsInt) {
+Utils.changeType = function(value, type, boolAsInt) {
     switch (type) {
         case 'integer': return parseInt(value);
         case 'double': return parseFloat(value);
@@ -69,14 +71,14 @@ function changeType(value, type, boolAsInt) {
             return  boolAsInt ? (bool ? 1 : 0) : bool;
         default: return value;
     }
-}
+};
 
 /**
  * Escape string like mysql_real_escape_string
  * @param value {string}
  * @return {string}
  */
-function escapeString(value) {
+Utils.escapeString = function(value) {
     if (typeof value !== 'string') {
         return value;
     }
@@ -94,13 +96,13 @@ function escapeString(value) {
       // uglify compliant
       .replace(/\t/g, '\\t')
       .replace(/\x1a/g, '\\Z');
-}
+};
 
 /**
  * Escape value for use in regex
  * @param value {string}
  * @return {string}
  */
-function escapeRegExp(str) {
+Utils.escapeRegExp = function(str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-}
+};

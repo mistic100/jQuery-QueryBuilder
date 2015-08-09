@@ -182,7 +182,7 @@ QueryBuilder.prototype.setRules = function(data) {
     }
 
     if (!data || !data.rules || (data.rules.length===0 && !this.settings.allow_empty)) {
-        error('Incorrect data object passed');
+        Utils.error('Incorrect data object passed');
     }
 
     this.clear();
@@ -201,7 +201,7 @@ QueryBuilder.prototype.setRules = function(data) {
             data.condition = that.settings.default_condition;
         }
         else if (that.settings.conditions.indexOf(data.condition) == -1) {
-            error('Invalid condition "{0}"', data.condition);
+            Utils.error('Invalid condition "{0}"', data.condition);
         }
 
         group.condition = data.condition;
@@ -211,7 +211,7 @@ QueryBuilder.prototype.setRules = function(data) {
             if (item.rules && item.rules.length>0) {
                 if (that.settings.allow_groups != -1 && that.settings.allow_groups < group.level) {
                     that.reset();
-                    error('No more than {0} groups are allowed', that.settings.allow_groups);
+                    Utils.error('No more than {0} groups are allowed', that.settings.allow_groups);
                 }
                 else {
                     model = that.addGroup(group, false, item.data);
@@ -220,7 +220,7 @@ QueryBuilder.prototype.setRules = function(data) {
             }
             else {
                 if (item.id === undefined) {
-                    error('Missing rule field id');
+                    Utils.error('Missing rule field id');
                 }
                 if (item.operator === undefined) {
                     item.operator = 'equal';

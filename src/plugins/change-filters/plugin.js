@@ -30,7 +30,7 @@ QueryBuilder.extend({
                 node.each(
                   function(rule) {
                       if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
-                          error('A rule is using filter "{0}"', rule.filter.id);
+                          Utils.error('A rule is using filter "{0}"', rule.filter.id);
                       }
                   },
                   checkOrphans
@@ -51,9 +51,7 @@ QueryBuilder.extend({
                   else {
                       that.createRuleFilters(rule);
 
-                      var $select = rule.$el.find('.rule-filter-container [name$=_filter]');
-
-                      $select.val(rule.filter ? rule.filter.id : '-1');
+                      rule.$el.find(Selectors.rule_filter).val(rule.filter ? rule.filter.id : '-1');
                   }
               },
               updateBuilder
@@ -63,10 +61,10 @@ QueryBuilder.extend({
         // update plugins
         if (that.settings.plugins) {
             if (that.settings.plugins['unique-filter']) {
-                this.updateDisabledFilters({ builder: this });
+                this.updateDisabledFilters();
             }
             else if (this.settings.plugins['bt-selectpicker']) {
-                this.$el.find('.rule-filter-container [name$=_filter]').selectpicker('render');
+                this.$el.find(Selectors.rule_filter).selectpicker('render');
             }
         }
     },

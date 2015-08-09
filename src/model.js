@@ -18,22 +18,22 @@ function Model(el) {
 
 $.extend(Model.prototype, {
     trigger: function(type) {
-        this.$.triggerHandler(type, aps.call(arguments, 1));
+        this.$.triggerHandler(type, Array.prototype.slice.call(arguments, 1));
         return this;
     },
 
     on: function() {
-        this.$.on.apply(this.$, aps.call(arguments));
+        this.$.on.apply(this.$, Array.prototype.slice.call(arguments));
         return this;
     },
 
     off: function() {
-        this.$.off.apply(this.$, aps.call(arguments));
+        this.$.off.apply(this.$, Array.prototype.slice.call(arguments));
         return this;
     },
 
     once: function() {
-        this.$.one.apply(this.$, aps.call(arguments));
+        this.$.one.apply(this.$, Array.prototype.slice.call(arguments));
         return this;
     }
 });

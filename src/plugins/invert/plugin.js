@@ -42,13 +42,13 @@ QueryBuilder.define('invert', function(options) {
      */
     this.on('afterInit', function() {
         that.$el.on('click.queryBuilder', '[data-invert=group]', function() {
-            var $group = $(this).closest('.rules-group-container');
+            var $group = $(this).closest(Selectors.group_container);
             that.invert(Model($group), options);
         });
 
         if (options.display_rules_button && options.invert_rules) {
             that.$el.on('click.queryBuilder', '[data-invert=rule]', function() {
-                var $rule = $(this).closest('.rule-container');
+                var $rule = $(this).closest(Selectors.rule_container);
                 that.invert(Model($rule), options);
             });
         }
@@ -59,14 +59,14 @@ QueryBuilder.define('invert', function(options) {
      */
     this.on('getGroupTemplate.filter', function(h, level) {
         var $h = $(h.value);
-        $h.find('.group-conditions').after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> '+ that.lang.invert +'</button>');
+        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> '+ that.lang.invert +'</button>');
         h.value = $h.prop('outerHTML');
     });
 
     if (options.display_rules_button && options.invert_rules) {
         this.on('getRuleTemplate.filter', function(h) {
             var $h = $(h.value);
-            $h.find('.rule-actions').prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> '+ that.lang.invert +'</button>');
+            $h.find(Selectors.rule_actions).prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> '+ that.lang.invert +'</button>');
             h.value = $h.prop('outerHTML');
         });
     }
@@ -102,7 +102,7 @@ QueryBuilder.extend({
                 node.condition = this.settings.conditionOpposites[node.condition];
             }
             else if (!options.silent_fail) {
-                error('Unknown inverse of condition "{0}"', node.condition);
+                Utils.error('Unknown inverse of condition "{0}"', node.condition);
             }
 
             // recursive call
@@ -127,7 +127,7 @@ QueryBuilder.extend({
                     }
                 }
                 else  if (!options.silent_fail){
-                    error('Unknown inverse of operator "{0}"', node.operator.type);
+                    Utils.error('Unknown inverse of operator "{0}"', node.operator.type);
                 }
             }
         }

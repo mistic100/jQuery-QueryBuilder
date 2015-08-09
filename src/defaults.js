@@ -2,13 +2,13 @@
  * Allowed types and their internal representation
  */
 QueryBuilder.types = {
-    'string': 'string',
-    'integer': 'number',
-    'double': 'number',
-    'date': 'datetime',
-    'time': 'datetime',
+    'string':   'string',
+    'integer':  'number',
+    'double':   'number',
+    'date':     'datetime',
+    'time':     'datetime',
     'datetime': 'datetime',
-    'boolean': 'boolean'
+    'boolean':  'boolean'
 };
 
 /**
@@ -30,6 +30,36 @@ QueryBuilder.modifiable_options = [
     'allow_groups',
     'allow_empty'
 ];
+
+/**
+ * CSS selectors for common components
+ */
+Selectors = QueryBuilder.selectors = {
+    group_container:      '.rules-group-container',
+    rule_container:       '.rule-container',
+    filter_container:     '.rule-filter-container',
+    operator_container:   '.rule-operator-container',
+    value_container:      '.rule-value-container',
+    error_container:      '.error-container',
+    condition_container:  '.group-conditions',
+
+    rule_header:          '.rule-header',
+    group_header:         '.rules-group-header',
+    group_actions:        '.group-actions',
+    rule_actions:         '.rule-actions',
+
+    rules_list:           '.rules-group-body>.rules-list',
+
+    group_condition:      '.rules-group-header [name$=_cond]',
+    rule_filter:          '.rule-filter-container [name$=_filter]',
+    rule_operator:        '.rule-operator-container [name$=_operator]',
+    rule_value:           '.rule-value-container [name*=_value_]',
+
+    add_rule:             '[data-add=rule]',
+    delete_rule:          '[data-delete=rule]',
+    add_group:            '[data-add=group]',
+    delete_group:         '[data-delete=group]'
+};
 
 /**
  * Localized strings (populated by `i18n` files)
@@ -90,10 +120,10 @@ QueryBuilder.DEFAULTS = {
     ],
 
     icons: {
-        add_group: 'glyphicon glyphicon-plus-sign',
-        add_rule: 'glyphicon glyphicon-plus',
+        add_group:    'glyphicon glyphicon-plus-sign',
+        add_rule:     'glyphicon glyphicon-plus',
         remove_group: 'glyphicon glyphicon-remove',
-        remove_rule: 'glyphicon glyphicon-remove',
-        error: 'glyphicon glyphicon-warning-sign'
+        remove_rule:  'glyphicon glyphicon-remove',
+        error:        'glyphicon glyphicon-warning-sign'
     }
 };

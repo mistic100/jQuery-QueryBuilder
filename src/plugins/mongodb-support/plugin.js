@@ -18,12 +18,12 @@ QueryBuilder.defaults({
         greater_or_equal: function(v){ return {'$gte': v[0]}; },
         between:          function(v){ return {'$gte': v[0], '$lte': v[1]}; },
         not_between:      function(v){ return {'$lt': v[0], '$gt': v[1]}; },
-        begins_with:      function(v){ return {'$regex': '^' + escapeRegExp(v[0])}; },
-        not_begins_with:  function(v){ return {'$regex': '^(?!' + escapeRegExp(v[0]) + ')'}; },
-        contains:         function(v){ return {'$regex': escapeRegExp(v[0])}; },
-        not_contains:     function(v){ return {'$regex': '^((?!' + escapeRegExp(v[0]) + ').)*$', '$options': 's'}; },
-        ends_with:        function(v){ return {'$regex': escapeRegExp(v[0]) + '$'}; },
-        not_ends_with:    function(v){ return {'$regex': '(?<!' + escapeRegExp(v[0]) + ')$'}; },
+        begins_with:      function(v){ return {'$regex': '^' + Utils.escapeRegExp(v[0])}; },
+        not_begins_with:  function(v){ return {'$regex': '^(?!' + Utils.escapeRegExp(v[0]) + ')'}; },
+        contains:         function(v){ return {'$regex': Utils.escapeRegExp(v[0])}; },
+        not_contains:     function(v){ return {'$regex': '^((?!' + Utils.escapeRegExp(v[0]) + ').)*$', '$options': 's'}; },
+        ends_with:        function(v){ return {'$regex': Utils.escapeRegExp(v[0]) + '$'}; },
+        not_ends_with:    function(v){ return {'$regex': '(?<!' + Utils.escapeRegExp(v[0]) + ')$'}; },
         is_empty:         function(v){ return ''; },
         is_not_empty:     function(v){ return {'$ne': ''}; },
         is_null:          function(v){ return null; },
@@ -95,7 +95,7 @@ QueryBuilder.extend({
                 data.condition = that.settings.default_condition;
             }
             if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                error('Unable to build MongoDB query with condition "{0}"', data.condition);
+                Utils.error('Unable to build MongoDB query with condition "{0}"', data.condition);
             }
 
             if (!data.rules) {
@@ -114,7 +114,7 @@ QueryBuilder.extend({
                         values = [];
 
                     if (mdb === undefined) {
-                        error('Unknown MongoDB operation for operator "{0}"', rule.operator);
+                        Utils.error('Unknown MongoDB operation for operator "{0}"', rule.operator);
                     }
 
                     if (ope.nb_inputs !== 0) {
@@ -123,7 +123,7 @@ QueryBuilder.extend({
                         }
 
                         rule.value.forEach(function(v) {
-                            values.push(changeType(v, rule.type, false));
+                            values.push(Utils.changeType(v, rule.type, false));
                         });
                     }
 
@@ -158,10 +158,10 @@ QueryBuilder.extend({
             var topKeys = Object.keys(data);
 
             if (topKeys.length > 1) {
-                error('Invalid MongoDB query format.');
+                Utils.error('Invalid MongoDB query format.');
             }
             if (conditions.indexOf(topKeys[0].toLowerCase()) === -1) {
-                error('Unable to build Rule from MongoDB query with condition "{0}"', topKeys[0]);
+                Utils.error('Unable to build Rule from MongoDB query with condition "{0}"', topKeys[0]);
             }
 
             var condition = topKeys[0].toLowerCase() === conditions[0] ? 'AND' : 'OR',
@@ -180,12 +180,12 @@ QueryBuilder.extend({
 
                     var operator = that.determineMongoOperator(value, field);
                     if (operator === undefined) {
-                        error('Invalid MongoDB query format.');
+                        Utils.error('Invalid MongoDB query format.');
                     }
 
                     var mdbrl = that.settings.mongoRuleOperators[operator];
                     if (mdbrl === undefined) {
-                        error('JSON Rule operation unknown for operator "{0}"', operator);
+                        Utils.error('JSON Rule operation unknown for operator "{0}"', operator);
                     }
 
                     var opVal = mdbrl.call(that, value);

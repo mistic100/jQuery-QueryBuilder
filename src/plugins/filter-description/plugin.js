@@ -33,7 +33,7 @@ QueryBuilder.define('filter-description', function(options) {
      */
     else if (options.mode === 'popover') {
         if (!$.fn.popover || !$.fn.popover.Constructor || !$.fn.popover.Constructor.prototype.fixTitle) {
-            error('Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
+            Utils.error('Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
         }
 
         this.on('afterUpdateRuleFilter', function(e, rule) {
@@ -49,7 +49,7 @@ QueryBuilder.define('filter-description', function(options) {
             else {
                 if ($b.length === 0) {
                     $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="popover"><i class="' + options.icon + '"></i></button>');
-                    $b.prependTo(rule.$el.find('.rule-actions'));
+                    $b.prependTo(rule.$el.find(Selectors.rule_actions));
 
                     $b.popover({
                         placement: 'left',
@@ -78,7 +78,7 @@ QueryBuilder.define('filter-description', function(options) {
      */
     else if (options.mode === 'bootbox') {
         if (!('bootbox' in window)) {
-            error('Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
+            Utils.error('Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
         }
 
         this.on('afterUpdateRuleFilter', function(e, rule) {
@@ -90,7 +90,7 @@ QueryBuilder.define('filter-description', function(options) {
             else {
                 if ($b.length === 0) {
                     $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="bootbox"><i class="' + options.icon + '"></i></button>');
-                    $b.prependTo(rule.$el.find('.rule-actions'));
+                    $b.prependTo(rule.$el.find(Selectors.rule_actions));
 
                     $b.on('click', function() {
                         bootbox.alert($b.data('description'));

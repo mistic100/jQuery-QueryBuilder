@@ -65,7 +65,7 @@ QueryBuilder.defaults({
                 };
             }
             else {
-                error('Invalid value for LIKE operator');
+                Utils.error('Invalid value for LIKE operator');
             }
         },
         'IN':       function(v) { return { val: v, op: 'in' }; },
@@ -78,13 +78,13 @@ QueryBuilder.defaults({
         'NOT BETWEEN': function(v) { return { val: v, op: 'not_between' }; },
         'IS':       function(v) {
             if (v !== null) {
-                error('Invalid value for IS operator');
+                Utils.error('Invalid value for IS operator');
             }
             return { val: null, op: 'is_null' };
         },
         'IS NOT':   function(v) {
             if (v !== null) {
-                error('Invalid value for IS operator');
+                Utils.error('Invalid value for IS operator');
             }
             return { val: null, op: 'is_not_null' };
         }
@@ -224,7 +224,7 @@ QueryBuilder.extend({
                 data.condition = that.settings.default_condition;
             }
             if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                error('Unable to build SQL query with condition "{0}"', data.condition);
+                Utils.error('Unable to build SQL query with condition "{0}"', data.condition);
             }
 
             if (!data.rules) {
@@ -243,7 +243,7 @@ QueryBuilder.extend({
                         value = '';
 
                     if (sql === undefined) {
-                        error('Unknown SQL operation for operator "{0}"', rule.operator);
+                        Utils.error('Unknown SQL operation for operator "{0}"', rule.operator);
                     }
 
                     if (ope.nb_inputs !== 0) {
@@ -257,10 +257,10 @@ QueryBuilder.extend({
                             }
 
                             if (rule.type=='integer' || rule.type=='double' || rule.type=='boolean') {
-                                v = changeType(v, rule.type, true);
+                                v = Utils.changeType(v, rule.type, true);
                             }
                             else if (!stmt) {
-                                v = escapeString(v);
+                                v = Utils.escapeString(v);
                             }
 
                             if (sql.fn) {
@@ -307,7 +307,7 @@ QueryBuilder.extend({
      */
     getRulesFromSQL: function(data, stmt) {
         if (!('SQLParser' in window)) {
-            error('SQLParser is required to parse SQL queries. Get it here https://github.com/forward/sql-parser');
+            Utils.error('SQLParser is required to parse SQL queries. Get it here https://github.com/forward/sql-parser');
         }
 
         var that = this;
@@ -327,7 +327,7 @@ QueryBuilder.extend({
         var parsed = SQLParser.parse(data.sql);
 
         if (!parsed.where) {
-            error('No WHERE clause found');
+            Utils.error('No WHERE clause found');
         }
 
         var out = {
@@ -362,11 +362,11 @@ QueryBuilder.extend({
             // it's a leaf
             else {
                 if (data.left.value === undefined || data.right.value === undefined) {
-                    error('Missing field and/or value');
+                    Utils.error('Missing field and/or value');
                 }
 
                 if ($.isPlainObject(data.right.value)) {
-                    error('Value format not supported for {0}.', data.left.value);
+                    Utils.error('Value format not supported for {0}.', data.left.value);
                 }
 
                 // convert array
@@ -398,7 +398,7 @@ QueryBuilder.extend({
                 }
 
                 if (sqlrl === undefined) {
-                    error('Invalid SQL operation {0}.', data.operation);
+                    Utils.error('Invalid SQL operation {0}.', data.operation);
                 }
 
                 var opVal = sqlrl.call(this, value, data.operation);

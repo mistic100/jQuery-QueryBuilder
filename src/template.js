@@ -155,7 +155,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
     else {
         switch (filter.input) {
             case 'radio': case 'checkbox':
-                iterateOptions(filter.values, function(key, val) {
+                Utils.iterateOptions(filter.values, function(key, val) {
                     h+= '<label'+ c +'><input type="'+ filter.input + '" name="'+ name +'" value="'+ key +'"> '+ val +'</label> ';
                 });
                 break;
@@ -165,7 +165,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 if (filter.placeholder) {
                     h+= '<option value="' + filter.placeholder_value + '" disabled selected>' + filter.placeholder + '</option>';
                 }
-                iterateOptions(filter.values, function(key, val) {
+                Utils.iterateOptions(filter.values, function(key, val) {
                     h+= '<option value="'+ key +'">'+ val +'</option> ';
                 });
                 h+= '</select>';

@@ -4,6 +4,8 @@
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
+Selectors.rule_and_group_containers = Selectors.rule_container + ', ' + Selectors.group_container;
+
 QueryBuilder.define('sortable', function(options) {
     /**
      * Init HTML5 drag and drop
@@ -18,10 +20,10 @@ QueryBuilder.define('sortable', function(options) {
         // only add "draggable" attribute when hovering drag handle
         // preventing text select bug in Firefox
         self.$el.on('mouseover', '.drag-handle', function() {
-            self.$el.find('.rule-container, .rules-group-container').attr('draggable', true);
+            self.$el.find(Selectors.rule_and_group_containers).attr('draggable', true);
         });
         self.$el.on('mouseout', '.drag-handle', function() {
-            self.$el.find('.rule-container, .rules-group-container').removeAttr('draggable');
+            self.$el.find(Selectors.rule_and_group_containers).removeAttr('draggable');
         });
 
         // dragstart: create placeholder and hide current element
@@ -80,7 +82,7 @@ QueryBuilder.define('sortable', function(options) {
 
             src = placeholder = null;
 
-            self.$el.find('.rule-container, .rules-group-container').removeAttr('draggable');
+            self.$el.find(Selectors.rule_and_group_containers).removeAttr('draggable');
         });
     });
 
@@ -105,14 +107,14 @@ QueryBuilder.define('sortable', function(options) {
     this.on('getGroupTemplate.filter', function(h, level) {
         if (level>1) {
             var $h = $(h.value);
-            $h.find('.group-conditions').after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+            $h.find(Selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
             h.value = $h.prop('outerHTML');
         }
     });
 
     this.on('getRuleTemplate.filter', function(h) {
         var $h = $(h.value);
-        $h.find('.rule-header').after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+        $h.find(Selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
         h.value = $h.prop('outerHTML');
     });
 }, {
@@ -129,22 +131,22 @@ function moveSortableToTarget(element, target) {
     var parent;
 
     // on rule
-    parent = target.closest('.rule-container');
+    parent = target.closest(Selectors.rule_container);
     if (parent.length) {
         element.moveAfter(Model(parent));
         return;
     }
 
     // on group header
-    parent = target.closest('.rules-group-header');
+    parent = target.closest(Selectors.group_header);
     if (parent.length) {
-        parent = target.closest('.rules-group-container');
+        parent = target.closest(Selectors.group_container);
         element.moveAtBegin(Model(parent));
         return;
     }
 
     // on group
-    parent = target.closest('.rules-group-container');
+    parent = target.closest(Selectors.group_container);
     if (parent.length) {
         element.moveAtEnd(Model(parent));
         return;

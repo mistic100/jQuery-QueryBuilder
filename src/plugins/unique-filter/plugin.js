@@ -14,10 +14,11 @@ QueryBuilder.define('unique-filter', function() {
 
 QueryBuilder.extend({
     updateDisabledFilters: function(e) {
-        var self = e.builder;
-        self.status.used_filters = {};
+        var that = e ? e.builder : this;
 
-        if (!self.model) {
+        that.status.used_filters = {};
+
+        if (!that.model) {
             return;
         }
 
@@ -25,44 +26,44 @@ QueryBuilder.extend({
         (function walk(group) {
             group.each(function(rule) {
                 if (rule.filter && rule.filter.unique) {
-                    if (!self.status.used_filters[rule.filter.id]) {
-                        self.status.used_filters[rule.filter.id] = [];
+                    if (!that.status.used_filters[rule.filter.id]) {
+                        that.status.used_filters[rule.filter.id] = [];
                     }
                     if (rule.filter.unique == 'group') {
-                        self.status.used_filters[rule.filter.id].push(rule.parent);
+                        that.status.used_filters[rule.filter.id].push(rule.parent);
                     }
                 }
             }, function(group) {
                 walk(group);
             });
-        }(self.model.root));
+        }(that.model.root));
 
-        self.applyDisabledFilters(e);
+        that.applyDisabledFilters(e);
     },
 
     applyDisabledFilters: function(e) {
-        var self = e.builder;
+        var that = e ? e.builder : this;
 
         // re-enable everything
-        self.$el.find('.rule-filter-container option').prop('disabled', false);
+        that.$el.find(Selectors.filter_container + ' option').prop('disabled', false);
 
         // disable some
-        $.each(self.status.used_filters, function(filterId, groups) {
+        $.each(that.status.used_filters, function(filterId, groups) {
             if (groups.length === 0) {
-                self.$el.find('.rule-filter-container option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
+                that.$el.find(Selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
             }
             else {
                 groups.forEach(function(group) {
                     group.each(function(rule) {
-                        rule.$el.find('.rule-filter-container option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
+                        rule.$el.find(Selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
                     });
                 });
             }
         });
 
         // update Selectpicker
-        if (self.settings.plugins && self.settings.plugins['bt-selectpicker']) {
-            self.$el.find('.rule-filter-container [name$=_filter]').selectpicker('render');
+        if (that.settings.plugins && that.settings.plugins['bt-selectpicker']) {
+            that.$el.find(Selectors.rule_filter).selectpicker('render');
         }
     }
 });

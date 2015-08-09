@@ -157,7 +157,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         // we need MomentJS
                         if (validation.format) {
                             if (!('moment' in window)) {
-                                error('MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
+                                Utils.error('MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
                             }
 
                             var datetime = moment(value[i], validation.format);
@@ -268,7 +268,7 @@ QueryBuilder.prototype.getFilterById = function(id) {
         }
     }
 
-    error('Undefined filter "{0}"', id);
+    Utils.error('Undefined filter "{0}"', id);
 };
 
 /**
@@ -287,7 +287,7 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
         }
     }
 
-    error('Undefined operator  "{0}"', type);
+    Utils.error('Undefined operator  "{0}"', type);
 };
 
 /**
@@ -304,7 +304,7 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
         value = filter.valueGetter.call(this, rule);
     }
     else {
-        var $value = rule.$el.find('.rule-value-container'),
+        var $value = rule.$el.find(Selectors.value_container),
             tmp;
 
         for (var i=0; i<operator.nb_inputs; i++) {
@@ -367,7 +367,7 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
         filter.valueSetter.call(this, rule, value);
     }
     else {
-        var $value = rule.$el.find('.rule-value-container');
+        var $value = rule.$el.find(Selectors.value_container);
 
         if (operator.nb_inputs == 1) {
             value = [value];
