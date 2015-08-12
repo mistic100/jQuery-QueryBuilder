@@ -62,6 +62,15 @@ QueryBuilder.prototype.setOptions = function(options) {
 };
 
 /**
+ * Return the model associated to a DOM object, or root model
+ * @param {jQuery,optional}
+ * @return {Node}
+ */
+QueryBuilder.prototype.getModel = function(target) {
+    return !target ? this.model.root : Model(target);
+};
+
+/**
  * Validate the whole builder
  * @return {boolean}
  */
