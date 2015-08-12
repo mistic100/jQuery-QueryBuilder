@@ -1,4 +1,4 @@
-Utils = QueryBuilder.utils = {};
+var Utils = QueryBuilder.utils = {};
 
 /**
  * Utility to iterate over radio/checkbox/selection options.

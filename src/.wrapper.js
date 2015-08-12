@@ -1,11 +1,11 @@
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['jquery', 'jQuery.extendext'], factory);
+        define(['jquery', 'doT', 'jQuery.extendext'], factory);
     }
     else {
-        factory(root.jQuery);
+        factory(root.jQuery, root.doT);
     }
-}(this, function($) {
+}(this, function($, doT) {
 "use strict";
 
 @@js

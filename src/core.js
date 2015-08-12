@@ -29,7 +29,7 @@ QueryBuilder.prototype.init = function($el, options) {
     this.filters = this.settings.filters;
     this.icons = this.settings.icons;
     this.operators = this.settings.operators;
-    this.template = this.settings.template;
+    this.templates = this.settings.templates;
     this.plugins = this.settings.plugins;
     
     // translations : english << 'lang_code' << custom
@@ -37,13 +37,16 @@ QueryBuilder.prototype.init = function($el, options) {
         Utils.error('"i18n/en.js" not loaded.');
     }
     this.lang = $.extendext(true, 'replace', {}, QueryBuilder.regional['en'], QueryBuilder.regional[this.settings.lang_code], this.settings.lang);
-
-    if (this.template.group === null) {
-        this.template.group = this.getGroupTemplate;
-    }
-    if (this.template.rule === null) {
-        this.template.rule = this.getRuleTemplate;
-    }
+    
+    // init templates
+    Object.keys(this.templates).forEach(function(tpl) {
+        if (!this.templates[tpl]) {
+            this.templates[tpl] = QueryBuilder.templates[tpl];
+        }
+        if (typeof this.templates[tpl] == 'string') {
+            this.templates[tpl] = doT.template(this.templates[tpl]);
+        }
+    }, this);
 
     // ensure we have a container id
     if (!this.$el.attr('id')) {
@@ -279,7 +282,7 @@ QueryBuilder.prototype.setRoot = function(addRule, data) {
     addRule = (addRule === undefined || addRule === true);
 
     var group_id = this.nextGroupId(),
-        $group = $(this.template.group.call(this, group_id, 1));
+        $group = $(this.getGroupTemplate(group_id, 1));
 
     this.$el.append($group);
     this.model.root = new Group(null, $group);
@@ -315,7 +318,7 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data) {
     }
 
     var group_id = this.nextGroupId(),
-        $group = $(this.template.group.call(this, group_id, level)),
+        $group = $(this.getGroupTemplate(group_id, level)),
         model = parent.addGroup($group);
 
     if (data !== undefined) {
@@ -391,7 +394,7 @@ QueryBuilder.prototype.addRule = function(parent, data) {
     }
 
     var rule_id = this.nextRuleId(),
-        $rule = $(this.template.rule.call(this, rule_id)),
+        $rule = $(this.getRuleTemplate(rule_id)),
         model = parent.addRule($rule);
 
     if (data !== undefined) {

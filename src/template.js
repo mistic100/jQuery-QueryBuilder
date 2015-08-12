@@ -1,5 +1,79 @@
 /*jshint multistr:true */
 
+QueryBuilder.templates.group = '\
+<dl id="{{= it.group_id }}" class="rules-group-container"> \
+  <dt class="rules-group-header"> \
+    <div class="btn-group pull-right group-actions"> \
+      <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
+        <i class="{{= it.icons.add_rule }}"></i> {{= it.lang.add_rule }} \
+      </button> \
+      {{? it.settings.allow_groups===-1 || it.settings.allow_groups>=it.level }} \
+        <button type="button" class="btn btn-xs btn-success" data-add="group"> \
+          <i class="{{= it.icons.add_group }}"></i> {{= it.lang.add_group }} \
+        </button> \
+      {{?}} \
+      {{? it.level>1 }} \
+        <button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
+          <i class="{{= it.icons.remove_group }}"></i> {{= it.lang.delete_group }} \
+        </button> \
+      {{?}} \
+    </div> \
+    <div class="btn-group group-conditions"> \
+      {{~ it.conditions: condition }} \
+        <label class="btn btn-xs btn-primary"> \
+          <input type="radio" name="{{= it.group_id }}_cond" value="{{= condition }}"> {{= it.lang.conditions[condition] || condition }} \
+        </label> \
+      {{~}} \
+    </div> \
+    {{? it.settings.display_errors }} \
+      <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
+    {{?}} \
+  </dt> \
+  <dd class=rules-group-body> \
+    <ul class=rules-list></ul> \
+  </dd> \
+</dl>';
+
+QueryBuilder.templates.rule = '\
+<li id="{{= it.rule_id }}" class="rule-container"> \
+  <div class="rule-header"> \
+    <div class="btn-group pull-right rule-actions"> \
+      <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
+        <i class="{{= it.icons.remove_rule }}"></i> {{= it.lang.delete_rule }} \
+      </button> \
+    </div> \
+  </div> \
+  {{? it.settings.display_errors }} \
+    <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
+  {{?}} \
+  <div class="rule-filter-container"></div> \
+  <div class="rule-operator-container"></div> \
+  <div class="rule-value-container"></div> \
+</li>';
+
+QueryBuilder.templates.filterSelect = '\
+{{ var optgroup = null; }} \
+<select class="form-control" name="{{= it.rule.id }}_filter"> \
+  <option value="-1">{{= it.settings.select_placeholder }}</option> \
+  {{~ it.filters: filter }} \
+    {{? optgroup !== filter.optgroup }} \
+      {{? optgroup !== null }}</optgroup>{{?}} \
+      {{? (optgroup = filter.optgroup) !== null}} \
+        <optgroup label="{{= optgroup }}"> \
+      {{?}} \
+    {{?}} \
+    <option value="{{= filter.id }}">{{= filter.label }}</option> \
+  {{~}} \
+  {{? optgroup !== null }}</optgroup>{{?}} \
+</select>';
+
+QueryBuilder.templates.operatorSelect = '\
+<select class="form-control" name="{{= it.rule.id }}_operator"> \
+  {{~ it.operators: operator }} \
+    <option value="{{= operator.type }}">{{= it.lang.operators[operator.type] || operator.type }}</option> \
+  {{~}} \
+</select>';
+
 /**
  * Returns group HTML
  * @param group_id {string}
@@ -7,59 +81,17 @@
  * @return {string}
  */
 QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
-    var h = '\
-<dl id="'+ group_id +'" class="rules-group-container"> \
-  <dt class="rules-group-header"> \
-    <div class="btn-group pull-right group-actions"> \
-      <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
-        <i class="' + this.icons.add_rule + '"></i> '+ this.lang.add_rule +' \
-      </button> \
-      '+ (this.settings.allow_groups===-1 || this.settings.allow_groups>=level ?
-        '<button type="button" class="btn btn-xs btn-success" data-add="group"> \
-          <i class="' + this.icons.add_group + '"></i> '+ this.lang.add_group +' \
-        </button>'
-      :'') +' \
-      '+ (level>1 ?
-        '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
-          <i class="' + this.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
-        </button>'
-      : '') +' \
-    </div> \
-    <div class="btn-group group-conditions"> \
-      '+ this.getGroupConditions(group_id, level) +' \
-    </div> \
-    '+ (this.settings.display_errors ?
-      '<div class="error-container"><i class="' + this.icons.error + '"></i></div>'
-    :'') +'\
-  </dt> \
-  <dd class=rules-group-body> \
-    <ul class=rules-list></ul> \
-  </dd> \
-</dl>';
+    var h = this.templates.group({
+        builder: this,
+        group_id: group_id,
+        level: level,
+        conditions: this.settings.conditions,
+        icons: this.icons,
+        lang: this.lang,
+        settings: this.settings
+    });
 
     return this.change('getGroupTemplate', h, level);
-};
-
-/**
- * Returns group conditions HTML
- * @param group_id {string}
- * @param level {int}
- * @return {string}
- */
-QueryBuilder.prototype.getGroupConditions = function(group_id, level) {
-    var h = '';
-
-    for (var i=0, l=this.settings.conditions.length; i<l; i++) {
-        var cond = this.settings.conditions[i],
-            label = this.lang.conditions[cond] || cond;
-
-        h+= '\
-        <label class="btn btn-xs btn-primary"> \
-          <input type="radio" name="'+ group_id +'_cond" value="'+ cond +'"> '+ label +' \
-        </label>';
-    }
-
-    return this.change('getGroupConditions', h, level);
 };
 
 /**
@@ -68,22 +100,13 @@ QueryBuilder.prototype.getGroupConditions = function(group_id, level) {
  * @return {string}
  */
 QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
-    var h = '\
-<li id="'+ rule_id +'" class="rule-container"> \
-  <div class="rule-header"> \
-  <div class="btn-group pull-right rule-actions"> \
-    <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
-      <i class="' + this.icons.remove_rule + '"></i> '+ this.lang.delete_rule +' \
-    </button> \
-  </div> \
-  </div> \
-  '+ (this.settings.display_errors ?
-    '<div class="error-container"><i class="' + this.icons.error + '"></i></div>'
-  :'') +'\
-  <div class="rule-filter-container"></div> \
-  <div class="rule-operator-container"></div> \
-  <div class="rule-value-container"></div> \
-</li>';
+    var h = this.templates.rule({
+        builder: this,
+        rule_id: rule_id,
+        icons: this.icons,
+        lang: this.lang,
+        settings: this.settings
+    });
 
     return this.change('getRuleTemplate', h);
 };
@@ -94,24 +117,15 @@ QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
  * @param filters {array}
  * @return {string}
  */
-QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
-    var optgroup = null;
-
-    var h = '<select class="form-control" name="'+ rule.id +'_filter">';
-    h+= '<option value="-1">'+ this.settings.select_placeholder +'</option>';
-
-    filters.forEach(function(filter) {
-        if (optgroup != filter.optgroup) {
-            if (optgroup !== null) h+= '</optgroup>';
-            optgroup = filter.optgroup;
-            if (optgroup !== null) h+= '<optgroup label="'+ optgroup +'">';
-        }
-
-        h+= '<option value="'+ filter.id +'">'+ filter.label +'</option>';
+QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) { 
+    var h = this.templates.filterSelect({
+        builder: this,
+        rule: rule,
+        filters: filters,
+        icons: this.icons,
+        lang: this.lang,
+        settings: this.settings
     });
-
-    if (optgroup !== null) h+= '</optgroup>';
-    h+= '</select>';
 
     return this.change('getRuleFilterSelect', h, rule);
 };
@@ -123,14 +137,14 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
  * @return {string}
  */
 QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
-    var h = '<select class="form-control" name="'+ rule.id +'_operator">';
-
-    for (var i=0, l=operators.length; i<l; i++) {
-        var label = this.lang.operators[operators[i].type] || operators[i].type;
-        h+= '<option value="'+ operators[i].type +'">'+ label +'</option>';
-    }
-
-    h+= '</select>';
+    var h = this.templates.operatorSelect({
+        builder: this,
+        rule: rule,
+        operators: operators,
+        icons: this.icons,
+        lang: this.lang,
+        settings: this.settings
+    });
 
     return this.change('getRuleOperatorSelect', h, rule);
 };

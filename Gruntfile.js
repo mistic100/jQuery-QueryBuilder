@@ -55,6 +55,7 @@ module.exports = function(grunt) {
         js_files_to_load = js_core_files.slice(),
         js_files_for_standalone = [
             'bower_components/jquery-extendext/jQuery.extendext.js',
+            'bower_components/doT/doT.js',
             'dist/js/query-builder.js'
         ];
 

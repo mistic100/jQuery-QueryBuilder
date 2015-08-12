@@ -34,7 +34,7 @@ QueryBuilder.modifiable_options = [
 /**
  * CSS selectors for common components
  */
-Selectors = QueryBuilder.selectors = {
+var Selectors = QueryBuilder.selectors = {
     group_container:      '.rules-group-container',
     rule_container:       '.rule-container',
     filter_container:     '.rule-filter-container',
@@ -62,7 +62,12 @@ Selectors = QueryBuilder.selectors = {
 };
 
 /**
- * Localized strings (populated by `i18n` files)
+ * Template strings (see `template.js`)
+ */
+QueryBuilder.templates = {};
+
+/**
+ * Localized strings (see `i18n/`)
  */
 QueryBuilder.regional = {};
 
@@ -88,9 +93,11 @@ QueryBuilder.DEFAULTS = {
         no_delete: false
     },
 
-    template: {
+    templates: {
         group: null,
-        rule: null
+        rule: null,
+        filterSelect: null,
+        operatorSelect: null
     },
 
     lang_code: 'en',
