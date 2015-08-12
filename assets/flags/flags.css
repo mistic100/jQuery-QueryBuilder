@@ -70,10 +70,16 @@
     background-position: -16px -33px;
 }
 
-.flag-pt {
+.flag-pt-PT {
     width: 16px;
     height: 11px;
     background-position: -32px -33px;
+}
+
+.flag-pt-BR {
+    width: 16px;
+    height: 11px;
+    background-position: -48px -22px;
 }
 
 .flag-ro {

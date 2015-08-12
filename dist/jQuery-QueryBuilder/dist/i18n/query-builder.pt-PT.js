@@ -1,7 +1,7 @@
 /*!
  * jQuery QueryBuilder 2.3.0
- * Locale: Brazilian Portuguese (pr-BR)
- * Author: Leandro Gehlen, leandrogehlen@gmail.com
+ * Locale: Portuguese (pt-PT)
+ * Author: Miguel Guerreiro, migas.csi@gmail.com
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
@@ -17,11 +17,11 @@
 
 var QueryBuilder = $.fn.queryBuilder;
 
-QueryBuilder.regional['pt-BR'] = {
-  "__locale": "Brazilian Portuguese (pr-BR)",
-  "__author": "Leandro Gehlen, leandrogehlen@gmail.com",
+QueryBuilder.regional['pt-PT'] = {
+  "__locale": "Portuguese (pt-PT)",
+  "__author": "Miguel Guerreiro, migas.csi@gmail.com",
   "add_rule": "Nova Regra",
-  "add_group": "Novo Gruop",
+  "add_group": "Novo Grupo",
   "delete_rule": "Excluir",
   "delete_group": "Excluir",
   "conditions": {
@@ -29,17 +29,17 @@ QueryBuilder.regional['pt-BR'] = {
     "OR": "OU"
   },
   "operators": {
-    "equal": "Igual",
-    "not_equal": "Diferente",
+    "equal": "Igual a",
+    "not_equal": "Diferente de",
     "in": "Contido",
     "not_in": "Não contido",
-    "less": "Menor",
-    "less_or_equal": "Menor ou igual",
-    "greater": "Maior",
-    "greater_or_equal": "Maior ou igual",
-    "between": "entre",
-    "begins_with": "Iniciando com",
-    "not_begins_with": "Não iniciando com",
+    "less": "Menor que",
+    "less_or_equal": "Menor ou igual a",
+    "greater": "Maior que",
+    "greater_or_equal": "Maior ou igual que",
+    "between": "Entre",
+    "begins_with": "Começar por",
+    "not_begins_with": "Não a começar por",
     "contains": "Contém",
     "not_contains": "Não contém",
     "ends_with": "Terminando com",
@@ -57,7 +57,7 @@ QueryBuilder.regional['pt-BR'] = {
     "select_empty": "Nenhum valor selecionado",
     "string_empty": "Valor vazio",
     "string_exceed_min_length": "É necessário conter pelo menos {0} caracteres",
-    "string_exceed_max_length": "É necessário conterm mais de {0} caracteres",
+    "string_exceed_max_length": "É necessário conter mais de {0} caracteres",
     "string_invalid_format": "Formato inválido ({0})",
     "number_nan": "Não é um número",
     "number_not_integer": "Não é um número inteiro",
@@ -71,5 +71,5 @@ QueryBuilder.regional['pt-BR'] = {
   }
 };
 
-QueryBuilder.defaults({ lang_code: 'pt-BR' });
+QueryBuilder.defaults({ lang_code: 'pt-PT' });
 }));

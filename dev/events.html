@@ -182,7 +182,7 @@ $('#builder').on('validationError.queryBuilder', function(e, rule, error, value)
               <li><code>error</code></li>
               <li><code>value</code></li>
             </ul>
-            <a data-bootbox="error_codes">See error codes</a>
+            <a data-bootbox="error_codes"><i class="glyphicon glyphicon-info-sign"></i> See error codes</a>
             <div id="error_codes" title="Error codes" class="hidden">
               <ul>
                 <li>no_filter</li>
@@ -252,7 +252,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>validate<small>.queryBuilder.filter</small></td>
           <td>Modifies the result of <code>validate</code> method.
             <ul>
-              <li><code>valid</code> boolean</li>
+              <li><code>e.value</code> boolean</li>
             </ul>
           </td>
         </tr>
@@ -260,7 +260,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>getRules<small>.queryBuilder.filter</small></td>
           <td>Modifies the result of <code>getRules</code> method.
             <ul>
-              <li><code>data</code></li>
+              <li><code>e.value</code> rules object</li>
             </ul>
           </td>
         </tr>
@@ -268,7 +268,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>setRules<small>.queryBuilder.filter</small></td>
           <td>Modifies data before <code>setRules</code> method.
             <ul>
-              <li><code>data</code></li>
+              <li><code>e.value</code> rules object</li>
             </ul>
           </td>
         </tr>
@@ -276,7 +276,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>validateValue<small>.queryBuilder.filter</small></td>
           <td>Modifies the result of the rule validation method.
             <ul>
-              <li><code>result</code> <b>true</b> or an error array</li>
+              <li><code>e.value</code> <b>true</b> or an error array</li>
               <li><code>value</code></li>
               <li><code>rule</code> <b>Rule</b> object</li>
             </ul>
@@ -286,7 +286,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>getOperators<small>.queryBuilder.filter</small></td>
           <td>Modifies operators applicable to a rule.
             <ul>
-              <li><code>operators</code> array of objects</li>
+              <li><code>e.value</code> array of objects</li>
               <li><code>rule</code> <b>Rule</b> object</li>
             </ul>
           </td>
@@ -295,7 +295,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>getRuleFilters<small>.queryBuilder.filter</small></td>
           <td>Modifies filters applicable to a rule.
             <ul>
-              <li><code>filters</code> array of objects</li>
+              <li><code>e.value</code> array of objects</li>
               <li><code>rule</code> <b>Rule</b> object</li>
             </ul>
           </td>
@@ -304,7 +304,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>getRuleValue<small>.queryBuilder.filter</small></td>
           <td>Modifies the value grabbed from the DOM.
             <ul>
-              <li><code>value</code></li>
+              <li><code>e.value</code> rule value</li>
               <li><code>rule</code> <b>Rule</b> object</li>
             </ul>
           </td>
@@ -313,7 +313,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>parseRuleFlags<small>.queryBuilder.filter</small></td>
           <td>Modifies the consolidated rule flags.
             <ul>
-              <li><code>flags</code> object of booleans</li>
+              <li><code>e.value</code> object of booleans</li>
               <li><code>rule</code> <b>Rule</b> object</li>
             </ul>
           </td>
@@ -322,17 +322,8 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>getGroupTemplate<small>.queryBuilder.filter</small></td>
           <td>Modifies the raw HTML of a group.
             <ul>
-              <li><code>html</code></li>
-              <li><code>level</code></li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>getGroupConditions<small>.queryBuilder.filter</small></td>
-          <td>Modifies the raw HTML of the group conditions buttons.
-            <ul>
-              <li><code>html</code></li>
-              <li><code>level</code></li>
+              <li><code>e.value</code> HTML string</li>
+              <li><code>level</code> starts from 1 (root)</li>
             </ul>
           </td>
         </tr>
@@ -340,7 +331,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>getRuleTempate<small>.queryBuilder.filter</small></td>
           <td>Modifies the raw HTML of a rule.
             <ul>
-              <li><code>html</code></li>
+              <li><code>e.value</code> HTML string</li>
             </ul>
           </td>
         </tr>
@@ -348,7 +339,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>getRuleFilterSelect<small>.queryBuilder.filter</small></td>
           <td>Modifies the raw HTML of the rule filter <code>&lt;select&gt;</code>.
             <ul>
-              <li><code>html</code></li>
+              <li><code>e.value</code> HTML string</li>
               <li><code>rule</code> <b>Rule</b> object</li>
             </ul>
           </td>
@@ -357,7 +348,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>getRuleOperatorSelect<small>.queryBuilder.filter</small></td>
           <td>Modifies the raw HTML of the rule operator <code>&lt;select&gt;</code>.
             <ul>
-              <li><code>html</code></li>
+              <li><code>e.value</code> HTML string</li>
               <li><code>rule</code> <b>Rule</b> object</li>
             </ul>
           </td>
@@ -366,7 +357,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
           <td>getRuleInput<small>.queryBuilder.filter</small></td>
           <td>Modifies the raw HTML of the rule input, radios group, checkboxes group, select, etc.
             <ul>
-              <li><code>html</code></li>
+              <li><code>e.value</code> HTML string</li>
               <li><code>rule</code> <b>Rule</b> object</li>
               <li><code>name</code> of the input</li>
             </ul>

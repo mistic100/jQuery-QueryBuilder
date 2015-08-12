@@ -14,9 +14,9 @@ isHome: true
 
   <ul>
     <li>It can be used on advanced search engine pages, administration backends, etc.</li>
-    <li>It is highly customisable and is pluggable to many jQuery widgets like autocompleters, sliders and datepickers.</li>
+    <li>It is highly customizable and is pluggable to many jQuery widgets like autocompleters, sliders and datepickers.</li>
     <li>It outputs a structured JSON of rules which can be easily parsed to create SQL/NoSQL/whatever queries.</li>
-    <li>And it also comes with a <i>great</i> set of <i>great</i> <a href="{{site.github.url}}/plugins.html">plugins</a> for even more features.</li>
+    <li>And it also comes with a set of <i>great</i> <a href="{{site.github.url}}/plugins.html">plugins</a> and has a full <a href="{{site.github.url}}/dev/events.html">events system</a> for even more features.</li>
   </ul>
   
   <b>But let's look at a live example !</b>
@@ -45,6 +45,7 @@ isHome: true
       <li><a href="http://jquery.com">jQuery >= 1.9</a></li>
       <li><a href="http://getbootstrap.com">Bootstrap >= 3.1</a> (CSS Buttons and Utilities only)</li>
       <li><a href="https://github.com/mistic100/jQuery.extendext">$.extendext</a></li>
+      <li><a href="http://olado.github.io/doT">doT.js</a></li>
       <li><a href="http://momentjs.com">MomentJS</a> (optional, for Date/Time validation)</li>
       <li>Other Bootstrap/jQuery plugins used by plugins</li>
   </ul>
@@ -77,7 +78,7 @@ require(['jquery', 'query-builder'], function($) {
 });
 {% endhighlight %}
 
-  <p>A <a href="{{site.rawUrl}}/dist/js/query-builder.standalone.min.js" target="_blank">standalone</a> version is available with $.extendext included (you still need to add jQuery and Bootstrap).</p>
+  <p>A <a href="{{site.rawUrl}}/dist/js/query-builder.standalone.min.js" target="_blank">standalone</a> version is available with <i>$.extendext</i> and <i>doT</i> included (you still need to add jQuery and Bootstrap).</p>
 </section>
 
 
@@ -115,6 +116,34 @@ require(['jquery', 'query-builder'], function($) {
           <td>object</td>
           <td></td>
           <td>Initial set of rules. It's like calling <code>setRules</code> <a href="#methods">method</a> after initialization. By default the builder will contain one empty rule.
+          </td>
+        </tr>
+        <tr>
+          <td>optgroups</td>
+          <td>object</td>
+          <td></td>
+          <td>List of groups in the filter's selectbox (see <a href="#filters">filters</a> configuration). It can be a simple <i>id => label</i> map or contains localized strings.
+            <a data-bootbox="optgroups_details"><i class="glyphicon glyphicon-info-sign"></i> More details</a>
+            <div id="optgroups_details" class="hidden" title="Optgroups definition">
+              <p>Simple <i>id => label</i> map :</p>
+{% highlight js %}
+optgroups: {
+  core: '-- Core',
+  plugins: '-- Plugins'
+}
+{% endhighlight %}
+
+              <p>Localized strings (<code>en</code> is mandatory) :</p>
+{% highlight js %}
+optgroups: {
+  core: {
+    'en': '-- Core',
+    'fr': '-- Coeur',
+    'de': '-- Kern'
+  }
+}
+{% endhighlight %}
+            </div>
           </td>
         </tr>
         <tr>
@@ -183,6 +212,12 @@ require(['jquery', 'query-builder'], function($) {
           <td><i>glyphicons</i></td>
           <td>Font-icons used in the builder. Defaults to using Glyphicons. <a href="#icons">See below</a></td>
         </tr>
+        <tr>
+          <td>templates</td>
+          <td>object</td>
+          <td></td>
+          <td>HTML templates. <a href="#templates">See below</a></td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -216,13 +251,24 @@ require(['jquery', 'query-builder'], function($) {
           <td>label</td>
           <td>string</td>
           <td><code>=field</code></td>
-          <td>Label used to display the filter.</td>
+          <td>Label used to display the filter. It can be simple string or a map for localization.
+            <a data-bootbox="filter_label_details"><i class="glyphicon glyphicon-info-sign"></i> More details</a>
+            <div id="filter_label_details" class="hidden" title="Filter localization">
+              <p>Define <code>label</code> as a map to translate the filter (<code>en</code> is mandatory) :</p>
+{% highlight js %}
+label: {
+  'en': 'Name',
+  'fr': 'Nom',
+  'es': 'Nombre'
+}
+{% endhighlight %}
+            </div></td>
         </tr>
         <tr>
           <td>optgroup</td>
-          <td>string</td>
+          <td>string|object</td>
           <td>null</td>
-          <td>Optional label of an <code>&lt;optgroup&gt;</code> in the filters dropdown.</td>
+          <td>Optional id of an <code>&lt;optgroup&gt;</code> in the filters dropdown. If the optgroup does not exist in the <a href="#options">global optgroups</a> map, it will be created with label=id for all languages.</td>
         </tr>
         <tr>
           <td>type</td>
@@ -247,7 +293,7 @@ require(['jquery', 'query-builder'], function($) {
           <td>array|object</td>
           <td><span class="label label-warning">required*</span></td>
           <td><i>Required for <code>radio</code> and <code>checkbox</code> inputs. Generally needed for <code>select</code> inputs.</i>
-            <a data-bootbox="filter_values_details">More details</a>
+            <a data-bootbox="filter_values_details"><i class="glyphicon glyphicon-info-sign"></i> More details</a>
             <div id="filter_values_details" class="hidden" title="Filter values">
               <p>Three forms are allowed for the <code>values</code> object.</p>
               <ol>
@@ -473,13 +519,26 @@ values: [
   </div>
   
   <h3 id="methods">Methods</h3>
+  
+  <p>The plugin's function acts as a proxy to access all underlying methods.</p>
+{% highlight javascript %}
+$('#builder').queryBuilder('method_name', param_1, param_2);
+{% endhighlight %}
+
+  <p>You can also execute methods by getting a reference to the builder instance.</p>
+{% highlight javascript %}
+$('#builder')[0].queryBuilder.method_name(param_1, param_2);
+{% endhighlight %}
+  
+  <p>Only main methods are described are.</p>
+  
   <h4>validate</h4>
   <p>Returns a boolean whereas the builder is valid or not. Use the <code>validationError</code> event to catch per-rule validation errors. If <code>display_errors</code> is enabled the invalid rules will turn red.</p>
 
   <h4>getRules</h4>
   <p>Performs validation and returns the rules as a plain JSON object. See the <a href="{{site.github.url}}/demo.html">demo</a> for output example.</p>
 {% highlight javascript %}
-$('#builder').queryBuilder('getRules')
+$('#builder').queryBuilder('getRules');
 {% endhighlight %}
 
   <div class="bs-callout bs-callout-info">
@@ -490,7 +549,7 @@ $('#builder').queryBuilder('getRules')
   <h4>setRules</h4>
   <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>. <a data-bootbox="rules_format">See an example</a></p>
 {% highlight javascript %}
-$('#builder').queryBuilder('setRules', { ... })
+$('#builder').queryBuilder('setRules', { ... });
 {% endhighlight %}
 
   <div id="rules_format" title="Rules JSON format" class="hidden">
@@ -576,7 +635,7 @@ $('#builder').queryBuilder('setRules', { ... })
     </table>
   </div>
 
-  <p>Alternatively you set the <code>readonly</code> parameter to <code>true</code>, which is a shorthand to:</p>
+  <p>Alternatively you can set the <code>readonly</code> parameter to <code>true</code>, which is a shorthand to:</p>
 {% highlight javascript %}
 {
     filter_readonly: true,
@@ -585,17 +644,25 @@ $('#builder').queryBuilder('setRules', { ... })
     no_delete: true
 }
 {% endhighlight %}
+
+  <h4>getModel</h4>
+  <p>Given a group or rule DOM element, returns the associated <b>Group</b> or <b>Rule</b> object. Useful to perform manual operations on the builder (see <a href="#inside_the_box">Inside the box</a>). Without parameters it returns the root group model.</p>
+{% highlight javascript %}
+var root_model = $('#builder').queryBuilder('getModel');
+
+var last_node_model = $('#builder').queryBuilder('getModel', $('#builder .rule-container').last());
+{% endhighlight %}
   
   <h4>reset</h4>
   <p>Removes all rules.</p>
 {% highlight javascript %}
-$('#builder').queryBuilder('reset')
+$('#builder').queryBuilder('reset');
 {% endhighlight %}
   
   <h4>destroy</h4>
   <p>Completely destroy the builder and it's data.</p>
 {% highlight javascript %}
-$('#builder').queryBuilder('destroy')
+$('#builder').queryBuilder('destroy');
 {% endhighlight %}
   
   <h3 id="events">Events</h3>
@@ -604,7 +671,7 @@ $('#builder').queryBuilder('destroy')
   <p><a class="btn btn-link" href="{{site.github.url}}/dev/events.html">Read more about events</a></p>
   
   <h3 id="themes">Themes</h3>
-  <p>QueryBuilder comes with two colors-schemes: <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css">default</a> (clear) and <a href="{{site.rawUrl}}/dist/css/query-builder.dark.min.css">dark</a>. Change the active theme only by switching stylesheet, you cannot use the two colors-schemes on the same page.</p>
+  <p>QueryBuilder comes with two colors-schemes: <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css">default</a> (clear) and <a href="{{site.rawUrl}}/dist/css/query-builder.dark.min.css">dark</a>. Change the active theme by switching stylesheet, you cannot use the two colors-schemes on the same page.</p>
 </section>
 
 <section class="bs-docs-section">
@@ -652,7 +719,7 @@ $('#builder').queryBuilder('destroy')
     </table>
   </div>
   
-  <p>Check the default operators configuration <a href="{{site.blobUrl}}/src/defaults.js#L69-89">in the source code</a>.</p>
+  <p>Check the default operators configuration <a href="{{site.blobUrl}}/src/defaults.js#L106-L127">in the source code</a>.</p>
   
   <h3 id="lang">Translation</h3>
   <p>Translation files are available in the <a href="{{site.treeUrl}}/dist/i18n">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<p>
@@ -671,7 +738,8 @@ $('#builder').queryBuilder('destroy')
     <i class="flag flag-nl"></i> Dutch
     <i class="flag flag-no"></i> Norwegian
     <i class="flag flag-pl"></i> Polish
-    <i class="flag flag-pt"></i> Portuguese
+    <i class="flag flag-pt-PT"></i> Portuguese
+    <i class="flag flag-pt-BR"></i> Brazilian Portuguese
     <i class="flag flag-ro"></i> Romanian
     <i class="flag flag-ru"></i> Rusian
   </p>
@@ -719,6 +787,54 @@ $('#builder').queryBuilder('destroy')
       </tbody>
     </table>
   </div>
+  
+  <h3 id="templates">Templates</h3>
+  
+  <p>For very custom customizations, QueryBuilder provides a way to completely overwrite de HTML templates used to display rules and groups. It uses the <a href="http://olado.github.io/doT">doT.js</a> template engine by default but can be used with most JS template engines, like <i>underscore.js</i> one.</p>
+  
+  <div class="bs-callout bs-callout-danger">
+    <h4>Very advanced feature</h4>
+    <p>Modifying templates can leads to a not functionnal builder if the general layout differs too much. Particularly you should keep all CSS classes which are not part of Bootstrap.</p>
+  </div>
+  
+  <p>Templates can be provided as a <b>doT.js</b> template string or as a function taking an object of variables and returning an HTML string (<code>_.template</code> for instance). Check the default templates <a href="{{site.blobUrl}}/src/template.js">in the source code</a>.</p>
+  
+  <p>For all templates, these variables are available :</p>
+  <ul>
+    <li><code>builder</code> reference to the QueryBuilder object</li>
+    <li><code>settings</code> short-hand for <i>builder.settings</i></li>
+    <li><code>lang</code> short-hand for <i>builder.settings.lang</i></li>
+    <li><code>icons</code> short-hand for <i>builder.settings.icons</i></li>
+  </ul>
+  
+  <h4>group</h4>
+  <p>The template used to build an empty group. Other variables available :</p>
+  <ul>
+    <li><code>group_id</code> unique identifier of the group</li>
+    <li><code>level</code> level of the group (1 is root)</li>
+    <li><code>conditions</code> the conditions available in this group</li>
+  </ul>
+  
+  <h4>rule</h4>
+  <p>The template used to build an empty rule. Other variables available :</p>
+  <ul>
+    <li><code>rule_id</code> unique identifier of the rule</li>
+  </ul>
+  
+  <h4>filterSelect</h4>
+  <p>The template used to build the filters selectbox. Other variables available :</p>
+  <ul>
+    <li><code>rule</code> a <b>Rule</b> object</li>
+    <li><code>filters</code> the filters available in this rule</li>
+    <li><code>translate</code> a function used for localization</i></li>
+  </ul>
+  
+  <h4>operatorSelect</h4>
+  <p>The template used to build the operators selectbox. Other variables available :</p>
+  <ul>
+    <li><code>rule</code> a <b>Rule</b> object</li>
+    <li><code>operators</code> the operators available in this rule</li>
+  </ul>
 
   <h3 id="inside_the_box">Inside the box</h3>
   <p>You might have noticed that callbacks and events reffer to two objects <b>Rule</b> and <b>Group</b>. These objects are part of the data model with partial data-binding used internally by QueryBuilder. Here the structure of these two objects. Most attributes will live-update the builder when modified.</p>
