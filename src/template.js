@@ -59,10 +59,10 @@ QueryBuilder.templates.filterSelect = '\
     {{? optgroup !== filter.optgroup }} \
       {{? optgroup !== null }}</optgroup>{{?}} \
       {{? (optgroup = filter.optgroup) !== null}} \
-        <optgroup label="{{= optgroup }}"> \
+        <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
       {{?}} \
     {{?}} \
-    <option value="{{= filter.id }}">{{= filter.label }}</option> \
+    <option value="{{= filter.id }}">{{= it.translate(filter.label) }}</option> \
   {{~}} \
   {{? optgroup !== null }}</optgroup>{{?}} \
 </select>';
@@ -124,7 +124,8 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
         filters: filters,
         icons: this.icons,
         lang: this.lang,
-        settings: this.settings
+        settings: this.settings,
+        translate: this.translateLabel
     });
 
     return this.change('getRuleFilterSelect', h, rule);

@@ -77,8 +77,7 @@ QueryBuilder.prototype.init = function($el, options) {
  * Checks the configuration of each filter
  */
 QueryBuilder.prototype.checkFilters = function(filters) {
-    var definedFilters = [],
-        that = this;
+    var definedFilters = [];
 
     if (!filters || filters.length === 0) {
         Utils.error('Missing filters list');
@@ -118,7 +117,12 @@ QueryBuilder.prototype.checkFilters = function(filters) {
             filter.optgroup = null;
         }
         else {
-            that.status.has_optgroup = true;
+            this.status.has_optgroup = true;
+
+            // backward compatiblity, register optgroup if needed
+            if (!this.settings.optgroups[filter.optgroup]) {
+                this.settings.optgroups[filter.optgroup] = filter.optgroup;
+            }
         }
 
         switch (filter.input) {
@@ -141,7 +145,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
                 }
                 break;
         }
-    });
+    }, this);
 
     // group filters with same optgroup, preserving declaration order when possible
     if (this.status.has_optgroup) {

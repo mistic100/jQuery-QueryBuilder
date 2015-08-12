@@ -424,3 +424,12 @@ QueryBuilder.prototype.parseRuleFlags = function(rule) {
 
     return this.change('parseRuleFlags', flags, rule);
 };
+
+/**
+ * Translate a label
+ * @param label {string|object}
+ * @return string
+ */
+QueryBuilder.prototype.translateLabel = function(label) {
+    return typeof label == 'string' ? label : label[this.settings.lang_code] || label['en'];
+};

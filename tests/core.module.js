@@ -285,27 +285,42 @@ $(function(){
      */
     QUnit.test('Optgroups', function(assert) {
         $b.queryBuilder({
-            filters: optgroups_filters
+            filters: optgroups_filters,
+            optgroups: {
+                A: {
+                    en: 'AA',
+                    fr: 'AAA'
+                },
+                B: 'BB'
+            },
+            lang_code: 'fr'
         });
 
-        var select = [];
+        var options = [], groups = [];
         $('[name=builder_rule_0_filter]>*').each(function() {
             if (this.nodeName == 'OPTION') {
-                select.push($(this).val());
+                options.push($(this).val());
             }
             else {
                 var group = [];
                 $(this).find('option').each(function() {
                     group.push($(this).val());
                 });
-                select.push(group);
+                options.push(group);
+                groups.push($(this).attr('label'));
             }
         });
 
         assert.deepEqual(
-            select,
-            ['-1', ['1', '3', '6'], '2', ['4'], '5'],
-            'Filters should have been put in optgroup, solving discontinuities and keeping order'
+            options,
+            ['-1', ['1', '3', '6'], '2', ['4'], '5', ['7']],
+            'Filters should have been put in optgroups, solving discontinuities and keeping order'
+        );
+
+        assert.deepEqual(
+            groups,
+            ['AAA', 'BB', 'C'],
+            'Optgroups should have been correctly translated and created when needed'
         );
     });
 
@@ -506,6 +521,9 @@ $(function(){
     }, {
         id: '6',
         optgroup: 'A'
+    }, {
+        id: '7',
+        optgroup: 'C'
     }];
 
     var new_default_flags = {
