@@ -1,6 +1,9 @@
 var deepmerge = require('deepmerge');
 
 module.exports = function(grunt) {
+    require('time-grunt')(grunt);
+    require('jit-grunt')(grunt);
+
     grunt.util.linefeed = '\n';
 
     function removeJshint(src) {
@@ -62,7 +65,7 @@ module.exports = function(grunt) {
 
     (function(){
         // list available plugins and languages
-        grunt.file.expand('src/plugins/*/plugin.js')
+        grunt.file.expand('src/plugins/**/plugin.js')
         .forEach(function(f) {
             var n = f.split('/')[2];
             all_plugins[n] = f;
@@ -209,7 +212,7 @@ module.exports = function(grunt) {
                     }
                 }
             },
-            // compile language files
+            // compile language files with AMD wrapper
             lang: {
                 files: Object.keys(all_langs).map(function(name) {
                     return {
@@ -218,13 +221,13 @@ module.exports = function(grunt) {
                     };
                 }),
                 options: {
-                    stripBanners: false,
                     process: function(src, file) {
                         var wrapper = grunt.file.read('src/i18n/.wrapper.js').replace(/\r\n/g, '\n').split(/@@js\n/);
                         return process_lang(file, src, wrapper);
                     }
                 }
             },
+            // compîle language files without wrapper
             lang_temp: {
                 files: Object.keys(all_langs).map(function(name) {
                     return {
@@ -233,7 +236,6 @@ module.exports = function(grunt) {
                     };
                 }),
                 options: {
-                    stripBanners: false,
                     process: function(src, file) {
                         return process_lang(file, src);
                     }
@@ -242,7 +244,6 @@ module.exports = function(grunt) {
             // add banner to CSS files
             css: {
                 options: {
-                    stripBanners: { block: true },
                     banner: '<%= banner %>\n\n',
                 },
                 files: [{
@@ -254,7 +255,7 @@ module.exports = function(grunt) {
         },
 
         wrap: {
-            // add AMD wrapper
+            // add AMD wrapper and banner
             js: {
                 src: ['dist/js/query-builder.js'],
                 dest: '',
@@ -346,7 +347,9 @@ module.exports = function(grunt) {
         },
 
         // clean build dir
-        clean: ['.temp'],
+        clean: {
+            temp: ['.temp']
+        },
 
         // jshint tests
         jshint: {
@@ -487,28 +490,13 @@ module.exports = function(grunt) {
     });
 
 
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-qunit');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-qunit-blanket-lcov');
-    grunt.loadNpmTasks('grunt-string-replace');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-coveralls');
-    grunt.loadNpmTasks('grunt-wrap');
-    grunt.loadNpmTasks('grunt-bump');
-
     grunt.registerTask('build_js', [
         'concat:lang_temp',
         'concat:js',
         'wrap:js',
         'concat:js_standalone',
         'uglify',
-        'clean'
+        'clean:temp'
     ]);
 
     grunt.registerTask('build_css', [

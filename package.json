@@ -23,7 +23,9 @@
     "grunt-coveralls": "~1.0.0",
     "grunt-wrap": "~0.3.0",
     "deepmerge": "~0.2.7",
-    "grunt-bump": "^0.3.0"
+    "grunt-bump": "^0.3.0",
+    "time-grunt": "^1.2.1",
+    "jit-grunt": "^0.9.1"
   },
   "keywords": [
     "jquery",
