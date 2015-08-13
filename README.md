@@ -4,28 +4,27 @@
 [![Build Status](https://travis-ci.org/mistic100/jQuery-QueryBuilder.svg?branch=master)](https://travis-ci.org/mistic100/jQuery-QueryBuilder)
 [![Coverage Status](https://coveralls.io/repos/mistic100/jQuery-QueryBuilder/badge.svg)](https://coveralls.io/r/mistic100/jQuery-QueryBuilder)
 [![Gratipay](https://img.shields.io/gratipay/mistic100.svg)](https://gratipay.com/mistic100)
-[![Online documentation](https://img.shields.io/badge/documentation-online-blue.svg)](http://mistic100.github.io/jQuery-QueryBuilder)
 
 jQuery plugin offering an simple interface to create complex queries.
+
+![screenshot](https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/examples/screenshot.png)
 
 ## Documentation
 http://mistic100.github.io/jQuery-QueryBuilder
 
 ### Dependencies
- * Bootstrap >= 3.1 (CSS only)
  * jQuery >= 1.9
+ * Bootstrap >= 3.1 (CSS only)
  * [jQuery.extendext](https://github.com/mistic100/jQuery.extendext)
- * (optional) MomentJS for date/time validation
- * (optional) some JS components used by plugins
+ * [doT.js](http://olado.github.io/doT)
+ * [MomentJS](http://momentjs.com) (optional, for Date/Time validation)
+ * Other Bootstrap/jQuery plugins used by plugins
 
-($.extendext is directly included in the [standalone](https://github.com/mistic100/jQuery-QueryBuilder/blob/master/dist/js/query-builder.standalone.js) file)
+($.extendext and doT.js are directly included in the [standalone](https://github.com/mistic100/jQuery-QueryBuilder/blob/master/dist/js/query-builder.standalone.js) file)
 
 ### Browser support
- * Internet Explorer >= 10 (9 with various shims)
- * Mozilla FireFox ??
- * Google Chrome ??
- * Opera ??
- * Safari ??
+ * Internet Explorer >= 9
+ * All other recent browsers
 
 ### Build
 
@@ -45,8 +44,8 @@ Install Node and Bower dependencies `npm install & bower install` then run `grun
 
 You can choose which plugins to include with `--plugins` :
 ```bash
-# include "sql-support" plugin
-grunt --plugins=sql-support
+# include "sql-support" and "mongodb-support" plugins
+grunt --plugins=sql-support,mongodb-support
 
 # disable all plugins
 grunt --plugins=false
@@ -63,7 +62,8 @@ grunt --languages=fr,it
 
  * `grunt test` to run JSHint and the QUnit test suite.
  * `grunt list_modules` to get the list of available plugins and languages.
- * `grunt watch` to automatically build the library when modifying source files.
+ * `grunt describe_triggers` to get the list of all triggers.
+ * `grunt watch` to automatically build the library when modifying the source files.
 
 ### Inspiration
  * [Knockout Query Builder](http://kindohm.github.io/knockout-query-builder/)
