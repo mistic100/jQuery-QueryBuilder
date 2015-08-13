@@ -12,6 +12,8 @@ rawUrl: https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master
 license: MIT License
 licenseUrl: http://opensource.org/licenses/MIT
 
+customNavBar: true
+
 # list of additional links on the right of the top menu
 headerLinks:
   - title: GitHub

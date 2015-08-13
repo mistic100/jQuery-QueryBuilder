@@ -1,0 +1,20 @@
+<li {% if page.title == 'Demos' %}class="active"{% endif %}>
+  <a href="{{site.github.url}}/demo.html">Demos</a>
+</li>
+
+<li {% if page.title == 'Plugins' %}class="active"{% endif %}>
+  <a href="{{site.github.url}}/plugins.html">Plugins</a>
+</li>
+
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Advanced <span class="caret"></span></a>
+  <ul class="dropdown-menu">
+    <li {% if page.title == 'Create plugins' %}class="active"{% endif %}>
+      <a href="{{site.github.url}}/dev/plugins.html">Create plugins</a>
+    </li>
+
+    <li {% if page.title == 'Events' %}class="active"{% endif %}>
+      <a href="{{site.github.url}}/dev/events.html">Events</a>
+    </li>
+  </ul>
+</li>

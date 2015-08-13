@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Create plugins
-hide: true
 ---
 
 <section class="bs-docs-section">
@@ -14,7 +13,7 @@ hide: true
 
   <p>Each plugin is a folder in <code>plugins</code> directory, it contains at least a <code>plugin.js</code> file and optionally a <code>plugin.scss</code> file and a <code>i18n</code> folder. Everything needed to the plugin operation must be contained in these two files (but third-party dependencies of course).</p>
 
-  <p>Plugins are included in the <b>dist</b> files by the <code>grunt</code> task (depending on <b>modules</b> build option) with everything needed for production (CommonJS factory, SCSS imports + CSS build), thus making plugin creation very easy.</p>
+  <p>Plugins are included in the <code>dist</code> files by the Grunt task (depending on <b>plugins</b> build option) with everything needed for production (CommonJS factory, SCSS imports + CSS build), thus making plugin creation very easy.</p>
 </section>
 
 

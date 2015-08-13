@@ -18,7 +18,9 @@ isHome: true
     <li>It outputs a structured JSON of rules which can be easily parsed to create SQL/NoSQL/whatever queries.</li>
     <li>And it also comes with a set of <i>great</i> <a href="{{site.github.url}}/plugins.html">plugins</a> and has a full <a href="{{site.github.url}}/dev/events.html">events system</a> for even more features.</li>
   </ul>
+</section>
   
+<section>
   <b>But let's look at a live example !</b>
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
     <div id="builder-basic"></div>
@@ -56,7 +58,7 @@ isHome: true
   </div>
 
   <h3 id="letsgo">Let's go!</h3>
-  <p>Include <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css" target="_blank">query-builder.css</a> in your page head and <a href="{{site.rawUrl}}/dist/js/query-builder.min.js" target="_blank">query-builder.js</a> after dependencies. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
+  <p>Include <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css" target="_blank"><i class="glyphicon glyphicon-file"></i> query-builder.css</a> in your page head and <a href="{{site.rawUrl}}/dist/js/query-builder.min.js" target="_blank"><i class="glyphicon glyphicon-file"></i> query-builder.js</a> after dependencies. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
   
 {% highlight html %}
 <div id="builder"></div>
@@ -78,7 +80,7 @@ require(['jquery', 'query-builder'], function($) {
 });
 {% endhighlight %}
 
-  <p>A <a href="{{site.rawUrl}}/dist/js/query-builder.standalone.min.js" target="_blank">standalone</a> version is available with <i>$.extendext</i> and <i>doT</i> included (you still need to add jQuery and Bootstrap).</p>
+  <p>A <a href="{{site.rawUrl}}/dist/js/query-builder.standalone.min.js" target="_blank"><i class="glyphicon glyphicon-file"></i> standalone version</a> is available with <i>$.extendext</i> and <i>doT.js</i> included (you still need to add jQuery and Bootstrap).</p>
 </section>
 
 
@@ -103,13 +105,13 @@ require(['jquery', 'query-builder'], function($) {
           <td>filters</td>
           <td>object[]</td>
           <td><span class="label label-danger">required</span></td>
-          <td>Array of available filters in the builder. <a href="#filters">See below</a></td>
+          <td>Array of available filters in the builder. <a href="#filters"><i class="glyphicon glyphicon-info-sign"></i> See below</a></td>
         </tr>
         <tr>
           <td>plugins</td>
           <td>object</td>
           <td></td>
-          <td>Configuration of plugins. <a href="{{site.github.url}}/plugins.html">See plugins page</a></td>
+          <td>Configuration of plugins. <a href="{{site.github.url}}/plugins.html"><i class="glyphicon glyphicon-info-sign"></i> See plugins page</a></td>
         </tr>
         <tr>
           <td>rules</td>
@@ -192,7 +194,7 @@ optgroups: {
           <td>operators</td>
           <td>object[]</td>
           <td></td>
-          <td>Configuration of operators. <a href="#operators">See below</a></td>
+          <td>Configuration of operators. <a href="#operators"><i class="glyphicon glyphicon-info-sign"></i> See below</a></td>
         </tr>
         <tr>
           <td>lang_code</td>
@@ -204,19 +206,19 @@ optgroups: {
           <td>lang</td>
           <td>object</td>
           <td></td>
-          <td>Additional/overwrites translation strings. <a href="#lang">See below</a></td>
+          <td>Additional/overwrites translation strings. <a href="#lang"><i class="glyphicon glyphicon-info-sign"></i> See below</a></td>
         </tr>
         <tr>
           <td>icons</td>
           <td>object</td>
           <td><i>glyphicons</i></td>
-          <td>Font-icons used in the builder. Defaults to using Glyphicons. <a href="#icons">See below</a></td>
+          <td>Font-icons used in the builder. Defaults to using Glyphicons. <a href="#icons"><i class="glyphicon glyphicon-info-sign"></i> See below</a></td>
         </tr>
         <tr>
           <td>templates</td>
           <td>object</td>
           <td></td>
-          <td>HTML templates. <a href="#templates">See below</a></td>
+          <td>HTML templates. <a href="#templates"><i class="glyphicon glyphicon-info-sign"></i> See below</a></td>
         </tr>
       </tbody>
     </table>
@@ -364,14 +366,14 @@ values: [
           <td>validation</td>
           <td>object</td>
           <td></td>
-          <td>Object of options for rule validation. <a href="#validation">See below</a></td>
+          <td>Object of options for rule validation. <a href="#validation"><i class="glyphicon glyphicon-info-sign"></i> See below</a></td>
         </tr>
         <tr>
           <td>operators</td>
           <td>array</td>
           <td></td>
           <td>Array of operators types to use for this filter. If empty the filter will use all applicable operators.
-            <a data-bootbox="default_operators">Show all operators</a>
+            <a data-bootbox="default_operators"><i class="glyphicon glyphicon-info-sign"></i> Show all operators</a>
             <div id="default_operators" title="All operators" class="hidden">
               <ul>
                 <li>equal</li>
@@ -500,7 +502,9 @@ values: [
           <td>integer|double</td>
           <td>
             <ul>
-              <li>For <code>integer</code>, <code>double</code>: step value (for <code>double</code> you should always provide this value in order to pass the browser validation on <code>number</code> inputs)</li>
+              <li>For <code>integer</code>, <code>double</code>: step value (for <code>double</code> you should always provide this value in order to pass the browser validation on <code>number</code> inputs).<br>
+                <b>any</b> is allowed to bypass browser validation.
+              </li>
             </ul>
           </td>
         </tr>
@@ -532,28 +536,33 @@ $('#builder')[0].queryBuilder.method_name(param_1, param_2);
   
   <p>Only main methods are described are.</p>
   
-  <h4>validate</h4>
-  <p>Returns a boolean whereas the builder is valid or not. Use the <code>validationError</code> event to catch per-rule validation errors. If <code>display_errors</code> is enabled the invalid rules will turn red.</p>
+  <div class="bs-callout">
+    <h4>validate</h4>
+    <p>Returns a boolean whereas the builder is valid or not. Use the <code>validationError</code> event to catch per-rule validation errors. If <code>display_errors</code> is enabled the invalid rules will turn red.</p>
+  </div>
 
-  <h4>getRules</h4>
-  <p>Performs validation and returns the rules as a plain JSON object. See the <a href="{{site.github.url}}/demo.html">demo</a> for output example.</p>
+  <div class="bs-callout">
+    <h4>getRules</h4>
+    <p>Performs validation and returns the rules as a plain JSON object. See the <a href="{{site.github.url}}/demo.html">demo</a> for output example.</p>
 {% highlight javascript %}
 $('#builder').queryBuilder('getRules');
 {% endhighlight %}
 
-  <div class="bs-callout bs-callout-info">
-    <h4>Other formats</h4>
-    <p>For other output formats like <b>SQL</b> and <b>MongoDB</b>, please refer to the <a href="{{site.github.url}}/plugins.html#import-export">plugins</a> page.</p>
+    <div class="bs-callout bs-callout-info">
+      <h4>Other formats</h4>
+      <p>For other output formats like <b>SQL</b> and <b>MongoDB</b>, please refer to the <a href="{{site.github.url}}/plugins.html#import-export">plugins</a> page.</p>
+    </div>
   </div>
   
-  <h4>setRules</h4>
-  <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>. <a data-bootbox="rules_format">See an example</a></p>
+  <div class="bs-callout">
+    <h4>setRules</h4>
+    <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>. <a data-bootbox="rules_format"> <i class="glyphicon glyphicon-info-sign"></i> See an example</a></p>
 {% highlight javascript %}
 $('#builder').queryBuilder('setRules', { ... });
 {% endhighlight %}
 
-  <div id="rules_format" title="Rules JSON format" class="hidden">
-    <p>This is the data format expected by <code>setRules</code> method.</p>
+    <div id="rules_format" title="Rules JSON format" class="hidden">
+      <p>This is the data format expected by <code>setRules</code> method.</p>
 {% highlight javascript %}
 {
   "condition": "AND",
@@ -590,52 +599,51 @@ $('#builder').queryBuilder('setRules', { ... });
   ]
 }
 {% endhighlight %}
-  </div>
+    </div>
 
-  <p>Each rule and group can have an additional <code>data</code> parameter which will be merged with the filter data (for rules only) when calling <code>getRules</code>.</p>
+    <p>Each rule and group can have an additional <code>data</code> parameter which will be merged with the filter data (for rules only) when calling <code>getRules</code>.</p>
+    <p>Each rule can have an additional <code>flags</code> parameter which will control the editability of the rule.</p>
 
-  <p>Each rule can have an additional <code>flags</code> parameter which will control the editability of the rule.</p>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th style="width: 130px;">Property</th>
+            <th style="width: 100px;">type</th>
+            <th style="width: 100px;">default</th>
+            <th>description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>filter_readonly</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>The filter select box is disabled.</td>
+          </tr>
+          <tr>
+            <td>operator_readonly</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>The operator select box is disabled.</td>
+          </tr>
+          <tr>
+            <td>value_readonly</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>The value inputs are disabled.</td>
+          </tr>
+          <tr>
+            <td>no_delete</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>The rule can't be deleted. <b>A group containing an undeletable rule can't deleted</b>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th style="width: 130px;">Property</th>
-          <th style="width: 100px;">type</th>
-          <th style="width: 100px;">default</th>
-          <th>description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>filter_readonly</td>
-          <td>boolean</td>
-          <td>false</td>
-          <td>The filter select box is disabled.</td>
-        </tr>
-        <tr>
-          <td>operator_readonly</td>
-          <td>boolean</td>
-          <td>false</td>
-          <td>The operator select box is disabled.</td>
-        </tr>
-        <tr>
-          <td>value_readonly</td>
-          <td>boolean</td>
-          <td>false</td>
-          <td>The value inputs are disabled.</td>
-        </tr>
-        <tr>
-          <td>no_delete</td>
-          <td>boolean</td>
-          <td>false</td>
-          <td>The rule can't be deleted. <b>A group containing an undeletable rule can't deleted</b>.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <p>Alternatively you can set the <code>readonly</code> parameter to <code>true</code>, which is a shorthand to:</p>
+    <p>Alternatively you can set the <code>readonly</code> parameter to <code>true</code>, which is a shorthand to:</p>
 {% highlight javascript %}
 {
     filter_readonly: true,
@@ -644,34 +652,41 @@ $('#builder').queryBuilder('setRules', { ... });
     no_delete: true
 }
 {% endhighlight %}
+  </div>
 
-  <h4>getModel</h4>
-  <p>Given a group or rule DOM element, returns the associated <b>Group</b> or <b>Rule</b> object. Useful to perform manual operations on the builder (see <a href="#inside_the_box">Inside the box</a>). Without parameters it returns the root group model.</p>
+  <div class="bs-callout">
+    <h4>getModel</h4>
+    <p>Given a group or rule DOM element, returns the associated <b>Group</b> or <b>Rule</b> object. Useful to perform manual operations on the builder (see <a href="#inside_the_box">Inside the box</a>). Without parameters it returns the root group model.</p>
 {% highlight javascript %}
 var root_model = $('#builder').queryBuilder('getModel');
 
 var last_node_model = $('#builder').queryBuilder('getModel', $('#builder .rule-container').last());
 {% endhighlight %}
+  </div>
   
-  <h4>reset</h4>
-  <p>Removes all rules.</p>
+  <div class="bs-callout">
+    <h4>reset</h4>
+    <p>Removes all rules.</p>
 {% highlight javascript %}
 $('#builder').queryBuilder('reset');
 {% endhighlight %}
+  </div>
   
-  <h4>destroy</h4>
-  <p>Completely destroy the builder and it's data.</p>
+  <div class="bs-callout">
+    <h4>destroy</h4>
+    <p>Completely destroy the builder and it's data.</p>
 {% highlight javascript %}
 $('#builder').queryBuilder('destroy');
 {% endhighlight %}
+  </div>
   
   <h3 id="events">Events</h3>
   <p>QueryBuilder uses events to notify the "outer world" about various things happening, like adding a rule or when a validation error happens. The events system is also used by plugins.</p>
 
-  <p><a class="btn btn-link" href="{{site.github.url}}/dev/events.html">Read more about events</a></p>
+  <p><a class="btn btn-link btn-outline" href="{{site.github.url}}/dev/events.html">Read more about events</a></p>
   
   <h3 id="themes">Themes</h3>
-  <p>QueryBuilder comes with two colors-schemes: <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css">default</a> (clear) and <a href="{{site.rawUrl}}/dist/css/query-builder.dark.min.css">dark</a>. Change the active theme by switching stylesheet, you cannot use the two colors-schemes on the same page.</p>
+  <p>QueryBuilder comes with two colors-schemes: <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css" target="_blank"><i class="glyphicon glyphicon-file"></i> default</a> (clear) and <a href="{{site.rawUrl}}/dist/css/query-builder.dark.min.css" target="_blank"><i class="glyphicon glyphicon-file"></i> dark</a>. Change the active theme by switching stylesheet, you cannot use the two colors-schemes on the same page.</p>
 </section>
 
 <section class="bs-docs-section">
@@ -719,10 +734,10 @@ $('#builder').queryBuilder('destroy');
     </table>
   </div>
   
-  <p>Check the default operators configuration <a href="{{site.blobUrl}}/src/defaults.js#L106-L127">in the source code</a>.</p>
+  <p>Check the default operators configuration <a href="{{site.blobUrl}}/src/defaults.js#L106-L127"><i class="glyphicon glyphicon-file"></i> in the source code</a>.</p>
   
   <h3 id="lang">Translation</h3>
-  <p>Translation files are available in the <a href="{{site.treeUrl}}/dist/i18n">i18n</a> folder. Just include one of the files after the main JavaScript to use it.<p>
+  <p>Translation files are available in the <a href="{{site.treeUrl}}/dist/i18n"><i class="glyphicon glyphicon-file"></i> i18n</a> folder. Just include one of the files after the main JavaScript to use it.<p>
   
   <p>You can load multiple translation files and use the <code>lang_code</code> option to choose which language to use.</p>
 
@@ -745,7 +760,7 @@ $('#builder').queryBuilder('destroy');
   </p>
 
   <p>Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators and conditions.<br>
-  Default English strings are in <a href="{{site.blobUrl}}/src/i18n/en.json">the source code</a>.</p>
+  Default English strings are <a href="{{site.blobUrl}}/src/i18n/en.json"><i class="glyphicon glyphicon-file"></i> in the source code</a>.</p>
 
   <h3 id="icons">Icons</h3>
   <p>The <code>icons</code> option provides a way of using alternate icons sets. Available attributes:</p>
@@ -797,7 +812,7 @@ $('#builder').queryBuilder('destroy');
     <p>Modifying templates can leads to a not functionnal builder if the general layout differs too much. Particularly you should keep all CSS classes which are not part of Bootstrap.</p>
   </div>
   
-  <p>Templates can be provided as a <b>doT.js</b> template string or as a function taking an object of variables and returning an HTML string (<code>_.template</code> for instance). Check the default templates <a href="{{site.blobUrl}}/src/template.js">in the source code</a>.</p>
+  <p>Templates can be provided as a <a href="http://olado.github.io/doT/#samples">doT.js template string</a> or as a function taking an object of variables and returning an HTML string (<code>_.template</code> for instance). Check the default templates <a href="{{site.blobUrl}}/src/template.js"><i class="glyphicon glyphicon-file"></i> in the source code</a>.</p>
   
   <p>For all templates, these variables are available :</p>
   <ul>
@@ -807,34 +822,42 @@ $('#builder').queryBuilder('destroy');
     <li><code>icons</code> short-hand for <i>builder.settings.icons</i></li>
   </ul>
   
-  <h4>group</h4>
-  <p>The template used to build an empty group. Other variables available :</p>
-  <ul>
-    <li><code>group_id</code> unique identifier of the group</li>
-    <li><code>level</code> level of the group (1 is root)</li>
-    <li><code>conditions</code> the conditions available in this group</li>
-  </ul>
+  <div class="bs-callout">
+    <h4>group</h4>
+    <p>The template used to build an empty group. Other variables available :</p>
+    <ul>
+      <li><code>group_id</code> unique identifier of the group</li>
+      <li><code>level</code> level of the group (1 is root)</li>
+      <li><code>conditions</code> the conditions available in this group</li>
+    </ul>
+  </div>
   
-  <h4>rule</h4>
-  <p>The template used to build an empty rule. Other variables available :</p>
-  <ul>
-    <li><code>rule_id</code> unique identifier of the rule</li>
-  </ul>
+  <div class="bs-callout">
+    <h4>rule</h4>
+    <p>The template used to build an empty rule. Other variables available :</p>
+    <ul>
+      <li><code>rule_id</code> unique identifier of the rule</li>
+    </ul>
+  </div>
   
-  <h4>filterSelect</h4>
-  <p>The template used to build the filters selectbox. Other variables available :</p>
-  <ul>
-    <li><code>rule</code> a <b>Rule</b> object</li>
-    <li><code>filters</code> the filters available in this rule</li>
-    <li><code>translate</code> a function used for localization</i></li>
-  </ul>
+  <div class="bs-callout">
+    <h4>filterSelect</h4>
+    <p>The template used to build the filters selectbox. Other variables available :</p>
+    <ul>
+      <li><code>rule</code> a <b>Rule</b> object</li>
+      <li><code>filters</code> the filters available in this rule</li>
+      <li><code>translate</code> a function used for localization</i></li>
+    </ul>
+  </div>
   
-  <h4>operatorSelect</h4>
-  <p>The template used to build the operators selectbox. Other variables available :</p>
-  <ul>
-    <li><code>rule</code> a <b>Rule</b> object</li>
-    <li><code>operators</code> the operators available in this rule</li>
-  </ul>
+  <div class="bs-callout">
+    <h4>operatorSelect</h4>
+    <p>The template used to build the operators selectbox. Other variables available :</p>
+    <ul>
+      <li><code>rule</code> a <b>Rule</b> object</li>
+      <li><code>operators</code> the operators available in this rule</li>
+    </ul>
+  </div>
 
   <h3 id="inside_the_box">Inside the box</h3>
   <p>You might have noticed that callbacks and events reffer to two objects <b>Rule</b> and <b>Group</b>. These objects are part of the data model with partial data-binding used internally by QueryBuilder. Here the structure of these two objects. Most attributes will live-update the builder when modified.</p>
@@ -857,6 +880,7 @@ $('#builder').queryBuilder('destroy');
 
 <style>
 .flag { display: inline-block; }
+.treeview .expand-collapse { display: none; }
 </style>
 
 <script src="{{site.github.url}}/dist/bootstrap-treeview/dist/bootstrap-treeview.min.js"></script>
