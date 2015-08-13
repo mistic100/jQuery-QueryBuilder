@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.2.0
+ * jQuery QueryBuilder 2.2.1
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -38,6 +38,7 @@ QueryBuilder.regional['en'] = {
     "greater": "greater",
     "greater_or_equal": "greater or equal",
     "between": "between",
+    "not_between": "not between",
     "begins_with": "begins with",
     "not_begins_with": "doesn't begin with",
     "contains": "contains",
@@ -71,7 +72,8 @@ QueryBuilder.regional['en'] = {
     "datetime_exceed_max": "Must be before {0}",
     "boolean_not_valid": "Not a boolean",
     "operator_not_multiple": "Operator {0} cannot accept multiple values"
-  }
+  },
+  "invert": "Invert"
 };
 
 QueryBuilder.defaults({ lang_code: 'en' });
