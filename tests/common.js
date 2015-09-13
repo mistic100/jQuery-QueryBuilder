@@ -109,9 +109,11 @@ QUnit.assert.initError = function($b, options, error) {
  * Custom assert for validation errors
  */
 QUnit.assert.validationError = function($b, rule, code) {
-    $b.queryBuilder('setRules', {
-        rules: [rule]
-    });
+    if (rule !== null) {
+        $b.queryBuilder('setRules', {
+            rules: [rule]
+        });
+    }
 
     $b.on('validationError.queryBuilder', function(e, node, error) {
         throw error[0];

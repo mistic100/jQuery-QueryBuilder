@@ -409,6 +409,10 @@ QueryBuilder.prototype.addRule = function(parent, data) {
 
     this.createRuleFilters(model);
 
+    if (this.settings.default_filter || !this.settings.display_empty_filter) {
+        model.filter = this.getFilterById(this.settings.default_filter || this.filters[0].id);
+    }
+
     return model;
 };
 

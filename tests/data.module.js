@@ -44,6 +44,19 @@ $(function(){
         });
 
         assert.validationError($b,
+            null,
+            /no_filter/
+        );
+
+        $b.queryBuilder('clear');
+        $b.queryBuilder('setRoot', false);
+
+        assert.validationError($b,
+            null,
+            /empty_group/
+        );
+
+        assert.validationError($b,
             { id: 'radio' },
             /radio_empty/
         );
@@ -56,6 +69,16 @@ $(function(){
         assert.validationError($b,
             { id: 'checkbox', value: ['one', 'two'] },
             /operator_not_multiple/
+        );
+
+        assert.validationError($b,
+            { id: 'select' },
+            /select_empty/
+        );
+
+        assert.validationError($b,
+            { id: 'select', value: -1 },
+            /select_empty/
         );
 
         assert.validationError($b,
@@ -86,6 +109,11 @@ $(function(){
         assert.validationError($b,
             { id: 'string_val', value: '12345' },
             /string_invalid_format/
+        );
+
+        assert.validationError($b,
+            { id: 'textarea' },
+            /string_empty/
         );
 
         assert.validationError($b,
@@ -232,7 +260,9 @@ $(function(){
     }, {
         id: 'select',
         input: 'select',
-        values: ['one', 'two']
+        values: ['one', 'two'],
+        placeholder: '--',
+        placholder_value: -1
     }, {
         id: 'select_mult',
         input: 'select',
@@ -246,6 +276,9 @@ $(function(){
             min: '4', max: '5',
             format: '^[a-z]?$'
         }
+    }, {
+        id: 'textarea',
+        input: 'textarea'
     }, {
         id: 'integer',
         type: 'integer',

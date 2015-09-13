@@ -54,7 +54,9 @@ QueryBuilder.templates.rule = '\
 QueryBuilder.templates.filterSelect = '\
 {{ var optgroup = null; }} \
 <select class="form-control" name="{{= it.rule.id }}_filter"> \
-  <option value="-1">{{= it.settings.select_placeholder }}</option> \
+  {{? it.settings.display_empty_filter }} \
+    <option value="-1">{{= it.settings.select_placeholder }}</option> \
+  {{?}} \
   {{~ it.filters: filter }} \
     {{? optgroup !== filter.optgroup }} \
       {{? optgroup !== null }}</optgroup>{{?}} \

@@ -85,6 +85,8 @@ QueryBuilder.DEFAULTS = {
     default_condition: 'AND',
     inputs_separator: ' , ',
     select_placeholder: '------',
+    display_empty_filter: true,
+    default_filter: null,
     optgroups: {},
 
     default_rule_flags: {

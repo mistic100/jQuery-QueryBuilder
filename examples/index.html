@@ -106,6 +106,8 @@ var $b = $('#builder');
 var options = {
   allow_empty: true,
   
+  default_filter: 'state',
+  
   optgroups: {
     core: {
       en: 'Core',
@@ -179,7 +181,7 @@ var options = {
    * select
    */
   {
-    id: 'contient',
+    id: 'continent',
     label: 'Continent',
     type: 'string',
     input: 'select',

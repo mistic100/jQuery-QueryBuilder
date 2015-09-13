@@ -49,6 +49,13 @@ $(function(){
             ]},
             /Missing filter "foo" values/
         );
+
+        assert.initError($b,
+            {filters: [
+                {id:'foo', input: 'select', values:[1,2,3], placeholder: 1, placeholder_value: 1}
+            ]},
+            /Placeholder of filter "foo" overlaps with one of its values/
+        );
     });
 
     /**
@@ -100,6 +107,47 @@ $(function(){
             $b.queryBuilder('getRules'),
             basic_rules,
             'Should return object with rules'
+        );
+    });
+
+    /**
+     * Test default filter
+     */
+    QUnit.test('Default filter', function(assert) {
+        $b.queryBuilder({
+            default_filter: 'in_stock',
+            filters: basic_filters
+        });
+
+        assert.equal(
+            $('[name=builder_rule_0_filter] [value=-1]').length,
+            1,
+            'Should have the placeholder filter'
+        );
+
+        assert.equal(
+            $('[name=builder_rule_0_filter]').val(),
+            'in_stock',
+            'Sould have used "in_stock" as default filter'
+        );
+
+        $b.queryBuilder('destroy');
+
+        $b.queryBuilder({
+            display_empty_filter: false,
+            filters: basic_filters
+        });
+
+        assert.equal(
+            $('[name=builder_rule_0_filter] [value=-1]').length,
+            0,
+            'Should not have the placeholder filter'
+        );
+
+        assert.equal(
+            $('[name=builder_rule_0_filter]').val(),
+            'name',
+            'Sould have used the first filter as default one'
         );
     });
 
