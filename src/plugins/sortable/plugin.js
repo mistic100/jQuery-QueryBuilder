@@ -19,15 +19,15 @@ QueryBuilder.define('sortable', function(options) {
 
         // only add "draggable" attribute when hovering drag handle
         // preventing text select bug in Firefox
-        self.$el.on('mouseover', '.drag-handle', function() {
+        self.$el.on('mouseover.queryBuilder', '.drag-handle', function() {
             self.$el.find(Selectors.rule_and_group_containers).attr('draggable', true);
         });
-        self.$el.on('mouseout', '.drag-handle', function() {
+        self.$el.on('mouseout.queryBuilder', '.drag-handle', function() {
             self.$el.find(Selectors.rule_and_group_containers).removeAttr('draggable');
         });
 
         // dragstart: create placeholder and hide current element
-        self.$el.on('dragstart', '[draggable]', function(e) {
+        self.$el.on('dragstart.queryBuilder', '[draggable]', function(e) {
             e.stopPropagation();
 
             // notify drag and drop (only dummy text)
@@ -49,7 +49,7 @@ QueryBuilder.define('sortable', function(options) {
         });
 
         // dragenter: move the placeholder
-        self.$el.on('dragenter', '[draggable]', function(e) {
+        self.$el.on('dragenter.queryBuilder', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -59,13 +59,13 @@ QueryBuilder.define('sortable', function(options) {
         });
 
         // dragover: prevent glitches
-        self.$el.on('dragover', '[draggable]', function(e) {
+        self.$el.on('dragover.queryBuilder', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
         });
 
         // drop: move current element
-        self.$el.on('drop', function(e) {
+        self.$el.on('drop.queryBuilder', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -73,7 +73,7 @@ QueryBuilder.define('sortable', function(options) {
         });
 
         // dragend: show current element and delete placeholder
-        self.$el.on('dragend', '[draggable]', function(e) {
+        self.$el.on('dragend.queryBuilder', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
