@@ -11,20 +11,20 @@ QueryBuilder.defaults({
     sqlOperators: {
         equal:            { op: '= ?' },
         not_equal:        { op: '!= ?' },
-        in:               { op: 'IN(?)',     sep: ', ' },
-        not_in:           { op: 'NOT IN(?)', sep: ', ' },
+        in:               { op: 'IN(?)',          sep: ', ' },
+        not_in:           { op: 'NOT IN(?)',      sep: ', ' },
         less:             { op: '< ?' },
         less_or_equal:    { op: '<= ?' },
         greater:          { op: '> ?' },
         greater_or_equal: { op: '>= ?' },
-        between:          { op: 'BETWEEN ?',     sep: ' AND ' },
-        not_between:      { op: 'NOT BETWEEN ?', sep: ' AND ' },
-        begins_with:      { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } },
-        not_begins_with:  { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } },
-        contains:         { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } },
-        not_contains:     { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v+'%'; } },
-        ends_with:        { op: 'LIKE(?)',     fn: function(v){ return '%'+v; } },
-        not_ends_with:    { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v; } },
+        between:          { op: 'BETWEEN ?',      sep: ' AND ' },
+        not_between:      { op: 'NOT BETWEEN ?',  sep: ' AND ' },
+        begins_with:      { op: 'LIKE(?)',        mod: '{0}%' },
+        not_begins_with:  { op: 'NOT LIKE(?)',    mod: '{0}%' },
+        contains:         { op: 'LIKE(?)',        mod: '%{0}%' },
+        not_contains:     { op: 'NOT LIKE(?)',    mod: '%{0}%' },
+        ends_with:        { op: 'LIKE(?)',        mod: '%{0}' },
+        not_ends_with:    { op: 'NOT LIKE(?)',    mod: '%{0}' },
         is_empty:         { op: '= \'\'' },
         is_not_empty:     { op: '!= \'\'' },
         is_null:          { op: 'IS NULL' },
@@ -68,21 +68,21 @@ QueryBuilder.defaults({
                 Utils.error('SQLParse', 'Invalid value for LIKE operator "{0}"', v);
             }
         },
-        'IN':       function(v) { return { val: v, op: 'in' }; },
-        'NOT IN':   function(v) { return { val: v, op: 'not_in' }; },
-        '<':        function(v) { return { val: v, op: 'less' }; },
-        '<=':       function(v) { return { val: v, op: 'less_or_equal' }; },
-        '>':        function(v) { return { val: v, op: 'greater' }; },
-        '>=':       function(v) { return { val: v, op: 'greater_or_equal' }; },
-        'BETWEEN':  function(v) { return { val: v, op: 'between' }; },
-        'NOT BETWEEN': function(v) { return { val: v, op: 'not_between' }; },
-        'IS':       function(v) {
+        'IN':           function(v) { return { val: v, op: 'in' }; },
+        'NOT IN':       function(v) { return { val: v, op: 'not_in' }; },
+        '<':            function(v) { return { val: v, op: 'less' }; },
+        '<=':           function(v) { return { val: v, op: 'less_or_equal' }; },
+        '>':            function(v) { return { val: v, op: 'greater' }; },
+        '>=':           function(v) { return { val: v, op: 'greater_or_equal' }; },
+        'BETWEEN':      function(v) { return { val: v, op: 'between' }; },
+        'NOT BETWEEN':  function(v) { return { val: v, op: 'not_between' }; },
+        'IS': function(v) {
             if (v !== null) {
                 Utils.error('SQLParse', 'Invalid value for IS operator');
             }
             return { val: null, op: 'is_null' };
         },
-        'IS NOT':   function(v) {
+        'IS NOT': function(v) {
             if (v !== null) {
                 Utils.error('SQLParse', 'Invalid value for IS operator');
             }
@@ -93,46 +93,45 @@ QueryBuilder.defaults({
     /* statements for internal -> SQL conversion */
     sqlStatements: {
         'question_mark': function() {
-            var bind_params = [];
+            var params = [];
             return {
                 add: function(rule, value) {
-                    bind_params.push(value);
+                    params.push(value);
                     return '?';
                 },
                 run: function() {
-                    return bind_params;
+                    return params;
                 }
             };
         },
 
         'numbered': function() {
-            var bind_index = 0;
-            var bind_params = [];
+            var index = 0;
+            var params = [];
             return {
                 add: function(rule, value) {
-                    bind_params.push(value);
-                    bind_index++;
-                    return '$' + bind_index;
+                    params.push(value);
+                    index++;
+                    return '$' + index;
                 },
                 run: function() {
-                    return bind_params;
+                    return params;
                 }
             };
         },
 
         'named': function() {
-            var bind_index = {};
-            var bind_params = {};
+            var indexes = {};
+            var params = {};
             return {
                 add: function(rule, value) {
-                    if (!bind_index[rule.field]) bind_index[rule.field] = 0;
-                    bind_index[rule.field]++;
-                    var key = rule.field + '_' + bind_index[rule.field];
-                    bind_params[key] = value;
+                    if (!indexes[rule.field]) indexes[rule.field] = 1;
+                    var key = rule.field + '_' + (indexes[rule.field]++);
+                    params[key] = value;
                     return ':' + key;
                 },
                 run: function() {
-                    return bind_params;
+                    return params;
                 }
             };
         }
@@ -141,17 +140,10 @@ QueryBuilder.defaults({
     /* statements for SQL -> internal conversion */
     sqlRuleStatement: {
         'question_mark': function(values) {
-            var i = 0;
+            var index = 0;
             return {
-                get: function(v) {
-                    if ($.isArray(v)) {
-                        return v.map(function(v) {
-                            return v=='?' ? values[i++] : v;
-                        });
-                    }
-                    else {
-                        return v=='?' ? values[i++] : v;
-                    }
+                parse: function(v) {
+                    return v=='?' ? values[index++] : v;
                 },
                 esc: function(sql) {
                     return sql.replace(/\?/g, '\'?\'');
@@ -161,15 +153,8 @@ QueryBuilder.defaults({
 
         'numbered': function(values) {
             return {
-                get: function(v) {
-                    if ($.isArray(v)) {
-                        return v.map(function(v) {
-                            return /^\$[0-9]+$/.test(v) ? values[v.slice(1)-1] : v;
-                        });
-                    }
-                    else {
-                        return /^\$[0-9]+$/.test(v) ? values[v.slice(1)-1] : v;
-                    }
+                parse: function(v) {
+                    return /^\$[0-9]+$/.test(v) ? values[v.slice(1)-1] : v;
                 },
                 esc: function(sql) {
                     return sql.replace(/\$([0-9]+)/g, '\'$$$1\'');
@@ -179,15 +164,8 @@ QueryBuilder.defaults({
 
         'named': function(values) {
             return {
-                get: function(v) {
-                    if ($.isArray(v)) {
-                        return v.map(function(v) {
-                            return /^:/.test(v) ? values[v.slice(1)] : v;
-                        });
-                    }
-                    else {
-                        return /^:/.test(v) ? values[v.slice(1)] : v;
-                    }
+                parse: function(v) {
+                    return /^:/.test(v) ? values[v.slice(1)] : v;
                 },
                 esc: function(sql) {
                     return sql.replace(new RegExp(':(' + Object.keys(values).join('|') + ')', 'g'), '\':$1\'');
@@ -264,8 +242,8 @@ QueryBuilder.extend({
                                 v = Utils.escapeString(v);
                             }
 
-                            if (sql.fn) {
-                                v = sql.fn(v);
+                            if (sql.mod) {
+                                v = Utils.fmt(sql.mod, v);
                             }
 
                             if (stmt) {
@@ -384,7 +362,12 @@ QueryBuilder.extend({
 
                 // get actual values
                 if (stmt) {
-                    value = stmt.get(value);
+                    if ($.isArray(value)) {
+                        value = value.map(stmt.parse);
+                    }
+                    else {
+                        value = stmt.parse(value);
+                    }
                 }
 
                 // convert operator
