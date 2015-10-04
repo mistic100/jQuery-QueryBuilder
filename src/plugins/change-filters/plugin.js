@@ -7,6 +7,7 @@
 QueryBuilder.extend({
     /**
      * Change the filters of the builder
+     * @throws ChangeFilterError
      * @param {boolean,optional} delete rules using old filters
      * @param {object[]} new filters
      */
@@ -30,7 +31,7 @@ QueryBuilder.extend({
                 node.each(
                   function(rule) {
                       if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
-                          Utils.error('A rule is using filter "{0}"', rule.filter.id);
+                          Utils.error('ChangeFilter', 'A rule is using filter "{0}"', rule.filter.id);
                       }
                   },
                   checkOrphans

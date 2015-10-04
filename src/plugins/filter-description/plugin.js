@@ -4,6 +4,9 @@
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
+/**
+ * @throws ConfigError
+ */
 QueryBuilder.define('filter-description', function(options) {
     /**
      * INLINE
@@ -33,7 +36,7 @@ QueryBuilder.define('filter-description', function(options) {
      */
     else if (options.mode === 'popover') {
         if (!$.fn.popover || !$.fn.popover.Constructor || !$.fn.popover.Constructor.prototype.fixTitle) {
-            Utils.error('Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
+            Utils.error('MissingLibrary', 'Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
         }
 
         this.on('afterUpdateRuleFilter', function(e, rule) {
@@ -78,7 +81,7 @@ QueryBuilder.define('filter-description', function(options) {
      */
     else if (options.mode === 'bootbox') {
         if (!('bootbox' in window)) {
-            Utils.error('Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
+            Utils.error('MissingLibrary', 'Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
         }
 
         this.on('afterUpdateRuleFilter', function(e, rule) {

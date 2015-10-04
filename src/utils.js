@@ -36,23 +36,28 @@ Utils.iterateOptions = function(options, tpl) {
 /**
  * Replaces {0}, {1}, ... in a string
  * @param str {string}
- * @param args,... {string|int|float}
+ * @param args,... {mixed}
  * @return {string}
  */
-Utils.fmt = function(str, args) {
-    args = Array.prototype.slice.call(arguments);
+Utils.fmt = function(str/*, args*/) {
+    var args = Array.prototype.slice.call(arguments, 1);
 
     return str.replace(/{([0-9]+)}/g, function(m, i) {
-        return args[parseInt(i)+1];
+        return args[parseInt(i)];
     });
 };
 
 /**
- * Output internal error with jQuery.error
- * @see fmt
+ * Throw an Error object with custom name
+ * @param type {string}
+ * @param message {string}
+ * @param args,... {mixed}
  */
-Utils.error = function() {
-    $.error(Utils.fmt.apply(null, arguments));
+Utils.error = function(type, message/*, args*/) {
+    var err = new Error(Utils.fmt.apply(null, Array.prototype.slice.call(arguments, 1)));
+    err.name = type + 'Error';
+    err.args = Array.prototype.slice.call(arguments, 2);
+    throw err;
 };
 
 /**

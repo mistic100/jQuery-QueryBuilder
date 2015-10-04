@@ -65,7 +65,7 @@ QueryBuilder.defaults({
                 };
             }
             else {
-                Utils.error('Invalid value for LIKE operator');
+                Utils.error('SQLParse', 'Invalid value for LIKE operator "{0}"', v);
             }
         },
         'IN':       function(v) { return { val: v, op: 'in' }; },
@@ -78,13 +78,13 @@ QueryBuilder.defaults({
         'NOT BETWEEN': function(v) { return { val: v, op: 'not_between' }; },
         'IS':       function(v) {
             if (v !== null) {
-                Utils.error('Invalid value for IS operator');
+                Utils.error('SQLParse', 'Invalid value for IS operator');
             }
             return { val: null, op: 'is_null' };
         },
         'IS NOT':   function(v) {
             if (v !== null) {
-                Utils.error('Invalid value for IS operator');
+                Utils.error('SQLParse', 'Invalid value for IS operator');
             }
             return { val: null, op: 'is_not_null' };
         }
@@ -203,6 +203,7 @@ QueryBuilder.defaults({
 QueryBuilder.extend({
     /**
      * Get rules as SQL query
+     * @throws UndefinedSQLConditionError, UndefinedSQLOperatorError
      * @param stmt {false|string} use prepared statements - false, 'question_mark' or 'numbered'
      * @param nl {bool} output with new lines
      * @param data {object} (optional) rules
@@ -224,7 +225,7 @@ QueryBuilder.extend({
                 data.condition = that.settings.default_condition;
             }
             if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                Utils.error('Unable to build SQL query with condition "{0}"', data.condition);
+                Utils.error('UndefinedSQLCondition', 'Unable to build SQL query with condition "{0}"', data.condition);
             }
 
             if (!data.rules) {
@@ -243,7 +244,7 @@ QueryBuilder.extend({
                         value = '';
 
                     if (sql === undefined) {
-                        Utils.error('Unknown SQL operation for operator "{0}"', rule.operator);
+                        Utils.error('UndefinedSQLOperator', 'Unknown SQL operation for operator "{0}"', rule.operator);
                     }
 
                     if (ope.nb_inputs !== 0) {
@@ -302,12 +303,13 @@ QueryBuilder.extend({
 
     /**
      * Convert SQL to rules
+     * @throws ConfigError, SQLParseError, UndefinedSQLOperatorError
      * @param data {object} query object
      * @return {object}
      */
     getRulesFromSQL: function(data, stmt) {
         if (!('SQLParser' in window)) {
-            Utils.error('SQLParser is required to parse SQL queries. Get it here https://github.com/forward/sql-parser');
+            Utils.error('MissingLibrary', 'SQLParser is required to parse SQL queries. Get it here https://github.com/mistic100/sql-parser');
         }
 
         var that = this;
@@ -327,7 +329,7 @@ QueryBuilder.extend({
         var parsed = SQLParser.parse(data.sql);
 
         if (!parsed.where) {
-            Utils.error('No WHERE clause found');
+            Utils.error('SQLParse', 'No WHERE clause found');
         }
 
         var out = {
@@ -362,11 +364,11 @@ QueryBuilder.extend({
             // it's a leaf
             else {
                 if (data.left.value === undefined || data.right.value === undefined) {
-                    Utils.error('Missing field and/or value');
+                    Utils.error('SQLParse', 'Missing field and/or value');
                 }
 
                 if ($.isPlainObject(data.right.value)) {
-                    Utils.error('Value format not supported for {0}.', data.left.value);
+                    Utils.error('SQLParse', 'Value format not supported for {0}.', data.left.value);
                 }
 
                 // convert array
@@ -398,7 +400,7 @@ QueryBuilder.extend({
                 }
 
                 if (sqlrl === undefined) {
-                    Utils.error('Invalid SQL operation {0}.', data.operation);
+                    Utils.error('UndefinedSQLOperator', 'Invalid SQL operation "{0}".', data.operation);
                 }
 
                 var opVal = sqlrl.call(this, value, data.operation);

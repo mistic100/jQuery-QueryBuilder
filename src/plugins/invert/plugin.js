@@ -81,6 +81,7 @@ QueryBuilder.define('invert', function(options) {
 QueryBuilder.extend({
     /**
      * Invert a Group, a Rule or the whole builder
+     * @throws InvertConditionError, InvertOperatorError
      * @param {Node,optional}
      * @param {object,optional}
      */
@@ -102,7 +103,7 @@ QueryBuilder.extend({
                 node.condition = this.settings.conditionOpposites[node.condition];
             }
             else if (!options.silent_fail) {
-                Utils.error('Unknown inverse of condition "{0}"', node.condition);
+                Utils.error('InvertCondition', 'Unknown inverse of condition "{0}"', node.condition);
             }
 
             // recursive call
@@ -127,7 +128,7 @@ QueryBuilder.extend({
                     }
                 }
                 else  if (!options.silent_fail){
-                    Utils.error('Unknown inverse of operator "{0}"', node.operator.type);
+                    Utils.error('InvertOperator', 'Unknown inverse of operator "{0}"', node.operator.type);
                 }
             }
         }

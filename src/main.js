@@ -95,6 +95,7 @@ QueryBuilder.extend = function(methods) {
 
 /**
  * Init plugins for an instance
+ * @throws ConfigError
  */
 QueryBuilder.prototype.initPlugins = function() {
     if (!this.plugins) {
@@ -119,7 +120,7 @@ QueryBuilder.prototype.initPlugins = function() {
             QueryBuilder.plugins[plugin].fct.call(this, this.plugins[plugin]);
         }
         else {
-            Utils.error('Unable to find plugin "{0}"', plugin);
+            Utils.error('Config', 'Unable to find plugin "{0}"', plugin);
         }
     }, this);
 };

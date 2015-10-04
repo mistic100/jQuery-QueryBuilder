@@ -22,6 +22,7 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
 
 /**
  * Default validation function
+ * @throws ConfigError
  * @param rule {Rule}
  * @param value {string|string[]|undefined}
  * @return {array|true}
@@ -41,7 +42,6 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
     }
 
     for (var i=0; i<operator.nb_inputs; i++) {
-
         switch (filter.input) {
             case 'radio':
                 if (value[i] === undefined) {
@@ -56,7 +56,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                     break;
                 }
                 else if (!operator.multiple && value[i].length > 1) {
-                    result = ['operator_not_multiple', this.lang[operator.type] || operator.type];
+                    result = ['operator_not_multiple', operator.type];
                     break;
                 }
                 break;
@@ -68,7 +68,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         break;
                     }
                     else if (!operator.multiple && value[i].length > 1) {
-                        result = ['operator_not_multiple', this.lang[operator.type] || operator.type];
+                        result = ['operator_not_multiple', operator.type];
                         break;
                     }
                 }
@@ -157,12 +157,12 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         // we need MomentJS
                         if (validation.format) {
                             if (!('moment' in window)) {
-                                Utils.error('MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
+                                Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
                             }
 
                             var datetime = moment(value[i], validation.format);
                             if (!datetime.isValid()) {
-                                result = ['datetime_invalid'];
+                                result = ['datetime_invalid', validation.format];
                                 break;
                             }
                             else {
@@ -254,6 +254,7 @@ QueryBuilder.prototype.getOperators = function(filter) {
 
 /**
  * Returns a particular filter by its id
+ * @throws UndefinedFilterError
  * @param filterId {string}
  * @return {object|null}
  */
@@ -268,11 +269,12 @@ QueryBuilder.prototype.getFilterById = function(id) {
         }
     }
 
-    Utils.error('Undefined filter "{0}"', id);
+    Utils.error('UndefinedFilter', 'Undefined filter "{0}"', id);
 };
 
 /**
  * Return a particular operator by its type
+ * @throws UndefinedOperatorError
  * @param type {string}
  * @return {object|null}
  */
@@ -287,7 +289,7 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
         }
     }
 
-    Utils.error('Undefined operator  "{0}"', type);
+    Utils.error('UndefinedOperator', 'Undefined operator "{0}"', type);
 };
 
 /**

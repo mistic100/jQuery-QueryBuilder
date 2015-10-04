@@ -56,6 +56,7 @@ module.exports = function(grunt) {
             'src/jquery.js'
         ],
         js_files_to_load = js_core_files.slice(),
+        all_js_files = js_core_files.slice(),
         js_files_for_standalone = [
             'bower_components/jquery-extendext/jQuery.extendext.js',
             'bower_components/doT/doT.js',
@@ -76,6 +77,11 @@ module.exports = function(grunt) {
             var n = f.split(/[\/\.]/)[2];
             all_langs[n] = f;
         });
+
+        // fill all js files
+        for (var p in all_plugins) {
+            all_js_files.push(all_plugins[p]);
+        }
 
         // parse 'plugins' parameter
         var arg_plugins = grunt.option('plugins');
@@ -435,35 +441,79 @@ module.exports = function(grunt) {
     });
 
 
-    // list the triggers and changes in core code
+    // list the triggers and changes
     grunt.registerTask('describe_triggers', 'List QueryBuilder triggers.', function() {
         var triggers = {};
+        var total = 0;
 
-        for (var f in js_core_files) {
-            grunt.file.read(js_core_files[f]).split(/\r?\n/).forEach(function(line, i) {
+        for (var f in all_js_files) {
+            grunt.file.read(all_js_files[f]).split(/\r?\n/).forEach(function(line, i) {
                 var matches = /(e = )?(?:this|that)\.(trigger|change)\('(\w+)'([^)]*)\);/.exec(line);
                 if (matches !== null) {
                     triggers[matches[3]] = {
                         name: matches[3],
                         type: matches[2],
-                        file: js_core_files[f],
+                        file: all_js_files[f],
                         line: i,
                         args: matches[4].slice(2),
                         prevent: !!matches[1]
                     };
+
+                    total++;
                 }
             });
         }
 
-        grunt.log.writeln('\nTriggers in QueryBuilder:\n');
+        grunt.log.write('\n');
 
         for (var t in triggers) {
-            grunt.log.write((triggers[t].name)['cyan'] + ' ' + triggers[t].type);
+            grunt.log.write(t['cyan'] + ' ' + triggers[t].type['magenta']);
             if (triggers[t].prevent) grunt.log.write(' (*)'['yellow']);
             grunt.log.write('\n');
-            grunt.log.write('   ' + (triggers[t].file +':'+ triggers[t].line)['red'] + ' ' + triggers[t].args);
-            grunt.log.write('\n\n');
+            grunt.log.writeln('   ' + (triggers[t].file +':'+ triggers[t].line)['red'] + ' ' + triggers[t].args);
+            grunt.log.write('\n');
         }
+
+        grunt.log.writeln((total + ' Triggers in QueryBuilder.')['cyan']['bold']);
+    });
+
+    // list all possible thrown errors
+    grunt.registerTask('describe_errors', 'List QueryBuilder errors.', function() {
+        var errors = {};
+        var total = 0;
+
+        for (var f in all_js_files) {
+            grunt.file.read(all_js_files[f]).split(/\r?\n/).forEach(function(line, i) {
+                var matches = /Utils\.error\('(\w+)', '([^)]+)'([^)]*)\);/.exec(line);
+                if (matches !== null) {
+                    (errors[matches[1]] = errors[matches[1]] || []).push({
+                        type: matches[1],
+                        message: matches[2],
+                        file: all_js_files[f],
+                        line: i,
+                        args: matches[3].slice(2).split(', ')
+                    });
+
+                    total++;
+                }
+            });
+        }
+
+        grunt.log.write('\n');
+
+        for (var e in errors) {
+            grunt.log.writeln((e+'Error')['cyan']);
+            errors[e].forEach(function(error) {
+                var message = error.message.replace(/{([0-9]+)}/g, function(m, i) {
+                    return error.args[parseInt(i)]['yellow'];
+                });
+                grunt.log.writeln('   ' + (error.file +':'+ error.line)['red']);
+                grunt.log.writeln('      ' + message);
+            });
+            grunt.log.write('\n');
+        }
+
+        grunt.log.writeln((total + ' Errors in QueryBuilder.')['cyan']['bold']);
     });
 
     // display available modules

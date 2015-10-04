@@ -1,6 +1,6 @@
 $.fn.queryBuilder = function(option) {
     if (this.length > 1) {
-        Utils.error('Unable to initialize on multiple target');
+        Utils.error('Config', 'Unable to initialize on multiple target');
     }
 
     var data = this.data('queryBuilder'),

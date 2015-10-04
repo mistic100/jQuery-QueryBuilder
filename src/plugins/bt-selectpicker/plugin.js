@@ -4,9 +4,12 @@
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
+/**
+ * @throws ConfigError
+ */
 QueryBuilder.define('bt-selectpicker', function(options) {
     if (!$.fn.selectpicker || !$.fn.selectpicker.Constructor) {
-        Utils.error('Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');
+        Utils.error('MissingLibrary', 'Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');
     }
 
     // init selectpicker

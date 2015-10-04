@@ -82,6 +82,7 @@ QueryBuilder.defaults({
 QueryBuilder.extend({
     /**
      * Get rules as MongoDB query
+     * @throws UndefinedMongoConditionError, UndefinedMongoOperatorError
      * @param data {object} (optional) rules
      * @return {object}
      */
@@ -95,7 +96,7 @@ QueryBuilder.extend({
                 data.condition = that.settings.default_condition;
             }
             if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                Utils.error('Unable to build MongoDB query with condition "{0}"', data.condition);
+                Utils.error('UndefinedMongoCondition', 'Unable to build MongoDB query with condition "{0}"', data.condition);
             }
 
             if (!data.rules) {
@@ -114,7 +115,7 @@ QueryBuilder.extend({
                         values = [];
 
                     if (mdb === undefined) {
-                        Utils.error('Unknown MongoDB operation for operator "{0}"', rule.operator);
+                        Utils.error('UndefinedMongoOperator', 'Unknown MongoDB operation for operator "{0}"', rule.operator);
                     }
 
                     if (ope.nb_inputs !== 0) {
@@ -143,6 +144,7 @@ QueryBuilder.extend({
 
     /**
      * Convert MongoDB object to rules
+     * @throws MongoParseError, UndefinedMongoConditionError, UndefinedMongoOperatorError
      * @param data {object} query object
      * @return {object}
      */
@@ -158,10 +160,10 @@ QueryBuilder.extend({
             var topKeys = Object.keys(data);
 
             if (topKeys.length > 1) {
-                Utils.error('Invalid MongoDB query format.');
+                Utils.error('MongoParse', 'Invalid MongoDB query format');
             }
             if (conditions.indexOf(topKeys[0].toLowerCase()) === -1) {
-                Utils.error('Unable to build Rule from MongoDB query with condition "{0}"', topKeys[0]);
+                Utils.error('UndefinedMongoCondition', 'Unable to build MongoDB query with condition "{0}"', topKeys[0]);
             }
 
             var condition = topKeys[0].toLowerCase() === conditions[0] ? 'AND' : 'OR',
@@ -180,12 +182,12 @@ QueryBuilder.extend({
 
                     var operator = that.determineMongoOperator(value, field);
                     if (operator === undefined) {
-                        Utils.error('Invalid MongoDB query format.');
+                        Utils.error('MongoParse', 'Invalid MongoDB query format');
                     }
 
                     var mdbrl = that.settings.mongoRuleOperators[operator];
                     if (mdbrl === undefined) {
-                        Utils.error('JSON Rule operation unknown for operator "{0}"', operator);
+                        Utils.error('UndefinedMongoOperator', 'JSON Rule operation unknown for operator "{0}"', operator);
                     }
 
                     var opVal = mdbrl.call(that, value);
@@ -205,6 +207,14 @@ QueryBuilder.extend({
             }
             return res;
         }(data));
+    },
+
+    /**
+     * Set rules from MongoDB object
+     * @param data {object}
+     */
+    setRulesFromMongo: function(data) {
+        this.setRules(this.getRulesFromMongo(data));
     },
 
     /**
@@ -238,13 +248,5 @@ QueryBuilder.extend({
         else {
             return 'eq';
         }
-    },
-
-    /**
-     * Set rules from MongoDB object
-     * @param data {object}
-     */
-    setRulesFromMongo: function(data) {
-        this.setRules(this.getRulesFromMongo(data));
     }
 });
