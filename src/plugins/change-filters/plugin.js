@@ -68,14 +68,24 @@ QueryBuilder.extend({
                 this.$el.find(Selectors.rule_filter).selectpicker('render');
             }
         }
+
+        // reset the default_filter if does not exist anymore
+        if (this.settings.default_filter) {
+            try {
+                this.getFilterById(this.settings.default_filter);
+            }
+            catch (e) {
+                this.settings.default_filter = null;
+            }
+        }
     },
 
     /**
      * Adds a new filter to the builder
-     * @param {object} the new filter
+     * @param {object|object[]} the new filter
      * @param {mixed,optional} numeric index or '#start' or '#end'
      */
-    addFilter: function(filter, position) {
+    addFilter: function(new_filters, position) {
         if (position === undefined || position == '#end') {
             position = this.filters.length;
         }
@@ -83,11 +93,15 @@ QueryBuilder.extend({
             position = 0;
         }
 
+        if (!$.isArray(new_filters)) {
+            new_filters = [new_filters];
+        }
+
         var filters = $.extend(true, [], this.filters);
 
         // numeric position
         if (parseInt(position) == position) {
-            filters.splice(position, 0, filter);
+            Array.prototype.splice.apply(filters, [position, 0].concat(new_filters));
         }
         else {
             // after filter by its id
@@ -97,11 +111,11 @@ QueryBuilder.extend({
                     return true;
                 }
             })) {
-                filters.splice(position, 0, filter);
+                Array.prototype.splice.apply(filters, [position, 0].concat(new_filters));
             }
             // defaults to end of list
             else {
-                filters.push(filter);
+                Array.prototype.push.apply(filters, new_filters);
             }
         }
 
@@ -109,15 +123,18 @@ QueryBuilder.extend({
     },
 
     /**
-     * Removes a filters the builder
-     * @param {string} the filter id
+     * Removes a filter from the builder
+     * @param {string|string[]} the filter id
      * @param {boolean,optional} delete rules using old filters
      */
-    removeFilter: function(filter_id, delete_orphans) {
+    removeFilter: function(filter_ids, delete_orphans) {
         var filters = $.extend(true, [], this.filters);
+        if (typeof filter_ids === 'string') {
+            filter_ids = [filter_ids];
+        }
 
         filters = filters.filter(function(filter) {
-            return filter.id != filter_id;
+            return filter_ids.indexOf(filter.id) === -1;
         });
 
         this.setFilters(delete_orphans, filters);

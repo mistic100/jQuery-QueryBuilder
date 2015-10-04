@@ -28,7 +28,9 @@ QueryBuilder.inputs = [
 QueryBuilder.modifiable_options = [
     'display_errors',
     'allow_groups',
-    'allow_empty'
+    'allow_empty',
+    'default_condition',
+    'default_filter'
 ];
 
 /**

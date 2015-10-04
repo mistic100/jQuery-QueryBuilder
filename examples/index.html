@@ -66,11 +66,15 @@
     <div id="builder"></div>
 
     <div class="btn-group">
-      <button class="btn btn-warning reset">Reset</button>
-      <button class="btn btn-success set">Set rules</button>
-      <button class="btn btn-success set-mongo">Set rules from MongoDB</button>
-      <button class="btn btn-success set-sql">Set rules from SQL</button>
-      <button class="btn btn-warning set-filters">Set filters</button>
+      <button class="btn btn-danger reset">Reset</button>
+      <button class="btn btn-warning set-filters" data-toggle="tooltip" title="Adds a filter 'New filter' and removes 'Coordinates', 'State', 'BSON'" data-container="body" data-placement="bottom">Set filters</button>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-default" disabled>Set:</button>
+      <button class="btn btn-success set">From JSON</button>
+      <button class="btn btn-success set-mongo">From MongoDB</button>
+      <button class="btn btn-success set-sql">From SQL</button>
     </div>
 
     <div class="btn-group">
@@ -101,6 +105,8 @@
 <script src="../dist/js/query-builder.js"></script>
 
 <script>
+$('[data-toggle="tooltip"]').tooltip();
+
 var $b = $('#builder');
 
 var options = {
@@ -492,6 +498,7 @@ $('.parse-mongo').on('click', function() {
 // set filters
 $('.set-filters').on('click', function() {
   $(this).prop('disabled', true);
+  $(this).tooltip('hide');
   
   // add a new filter after 'state'
   $('#builder').queryBuilder('addFilter',
@@ -505,7 +512,7 @@ $('.set-filters').on('click', function() {
   
   // remove filter 'coord'
   $('#builder').queryBuilder('removeFilter',
-    'coord',
+    ['coord', 'state', 'bson'],
     true
   );
   
