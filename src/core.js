@@ -248,30 +248,43 @@ QueryBuilder.prototype.bindEvents = function() {
             }
         },
         'update': function(e, node, field, value, oldValue) {
-            switch (field) {
-                case 'error':
-                    that.displayError(node);
-                    break;
+            if (node instanceof Rule) {
+                switch (field) {
+                    case 'error':
+                        that.displayError(node);
+                        break;
 
-                case 'condition':
-                    that.updateGroupCondition(node);
-                    break;
+                    case 'flags':
+                        that.applyRuleFlags(node);
+                        break;
 
-                case 'filter':
-                    that.updateRuleFilter(node);
-                    break;
+                    case 'filter':
+                        that.updateRuleFilter(node);
+                        break;
 
-                case 'operator':
-                    that.updateRuleOperator(node, oldValue);
-                    break;
+                    case 'operator':
+                        that.updateRuleOperator(node, oldValue);
+                        break;
 
-                case 'flags':
-                    that.applyRuleFlags(node);
-                    break;
+                    case 'value':
+                        that.updateRuleValue(node);
+                        break;
+                }
+            }
+            else {
+                switch (field) {
+                    case 'error':
+                        that.displayError(node);
+                        break;
 
-                case 'value':
-                    that.updateRuleValue(node);
-                    break;
+                    case 'flags':
+                        that.applyGroupFlags(node);
+                        break;
+
+                    case 'condition':
+                        that.updateGroupCondition(node);
+                        break;
+                }
             }
         }
     });
@@ -579,9 +592,8 @@ QueryBuilder.prototype.updateRuleValue = function(rule) {
 /**
  * Change rules properties depending on flags.
  * @param rule {Rule}
- * @param readonly {boolean}
  */
-QueryBuilder.prototype.applyRuleFlags = function(rule, readonly) {
+QueryBuilder.prototype.applyRuleFlags = function(rule) {
     var flags = rule.flags;
 
     if (flags.filter_readonly) {
@@ -598,6 +610,24 @@ QueryBuilder.prototype.applyRuleFlags = function(rule, readonly) {
     }
 
     this.trigger('afterApplyRuleFlags', rule);
+};
+
+/**
+ * Change group properties depending on flags.
+ * @param group {Group}
+ */
+QueryBuilder.prototype.applyGroupFlags = function(group) {
+    var flags = group.flags;
+    
+    if (flags.condition_readonly) {
+        group.$el.find('>' + Selectors.condition_container + ' .btn').addClass('disabled');
+        group.$el.find('>' + Selectors.group_condition).prop('disabled', true);
+    }
+    if (flags.no_delete) {
+        group.$el.find(Selectors.delete_group).remove();
+    }
+    
+    this.trigger('afterApplyGroupFlags', group);
 };
 
 /**

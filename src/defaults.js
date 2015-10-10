@@ -43,7 +43,7 @@ var Selectors = QueryBuilder.selectors = {
     operator_container:   '.rule-operator-container',
     value_container:      '.rule-value-container',
     error_container:      '.error-container',
-    condition_container:  '.group-conditions',
+    condition_container:  '.rules-group-header .group-conditions',
 
     rule_header:          '.rule-header',
     group_header:         '.rules-group-header',
@@ -95,6 +95,11 @@ QueryBuilder.DEFAULTS = {
         filter_readonly: false,
         operator_readonly: false,
         value_readonly: false,
+        no_delete: false
+    },
+    
+    default_group_flags: {
+        condition_readonly: false,
         no_delete: false
     },
 

@@ -428,6 +428,28 @@ QueryBuilder.prototype.parseRuleFlags = function(rule) {
 };
 
 /**
+ * Clean group flags.
+ * @param group {object}
+ * @return {object}
+ */
+QueryBuilder.prototype.parseGroupFlags = function(group) {
+    var flags = $.extend({}, this.settings.default_group_flags);
+    
+    if (group.readonly) {
+        $.extend(flags, {
+            condition_readonly: true,
+            no_delete: true
+        });
+    }
+    
+    if (group.flags) {
+        $.extend(flags, group.flags);
+    }
+    
+    return this.change('parseGroupFlags', flags, group);
+};
+
+/**
  * Translate a label
  * @param label {string|object}
  * @return string

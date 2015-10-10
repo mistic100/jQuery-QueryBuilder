@@ -197,6 +197,8 @@ QueryBuilder.prototype.setRules = function(data) {
 
     this.clear();
     this.setRoot(false, data.data);
+    
+    this.model.root.flags = this.parseGroupFlags(data);
 
     data = this.change('setRules', data);
 
@@ -225,6 +227,12 @@ QueryBuilder.prototype.setRules = function(data) {
                 }
                 else {
                     model = that.addGroup(group, false, item.data);
+                    if (model === null) {
+                        return;
+                    }
+                    
+                    model.flags = that.parseGroupFlags(item);
+                    
                     add(item, model);
                 }
             }

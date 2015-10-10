@@ -106,7 +106,7 @@ var Node = function(parent, $el) {
     this.parent = parent;
 };
 
-defineModelProperties(Node, ['level', 'error', 'data']);
+defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
 
 Object.defineProperty(Node.prototype, 'parent', {
     enumerable: true,
@@ -403,7 +403,7 @@ var Rule = function(parent, $el) {
 Rule.prototype = Object.create(Node.prototype);
 Rule.prototype.constructor = Rule;
 
-defineModelProperties(Rule, ['filter', 'operator', 'flags', 'value']);
+defineModelProperties(Rule, ['filter', 'operator', 'value']);
 
 
 QueryBuilder.Group = Group;

@@ -366,6 +366,9 @@ $(function(){
             filters: basic_filters,
             rules: {
                 condition: 'AND',
+                flags: {
+                    condition_readonly: true
+                },
                 rules: [{
                     id: 'price',
                     operator: 'less',
@@ -384,6 +387,11 @@ $(function(){
                 }]
             }
         });
+
+        assert.ok(
+            $('#builder_group_0>.rules-group-header input:not(:disabled)').length == 0,
+            'Should disable group condition radio buttons'
+        );
 
         assert.ok(
             $('#builder_rule_0 [data-delete=rule]').length == 0,

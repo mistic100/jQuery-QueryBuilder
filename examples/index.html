@@ -410,6 +410,9 @@ $('.change-theme').on('click', function() {
 $('.set').on('click', function() {
   $('#builder').queryBuilder('setRules', {
     condition: 'AND',
+    flags: {
+      condition_readonly: true
+    },
     rules: [{
       id: 'price',
       operator: 'between',
@@ -427,6 +430,9 @@ $('.set').on('click', function() {
       value: 'AK',
     }, {
       condition: 'OR',
+      flags: {
+        no_delete: true
+      },
       rules: [{
         id: 'category',
         operator: 'equal',

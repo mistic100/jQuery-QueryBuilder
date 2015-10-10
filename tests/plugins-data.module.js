@@ -35,15 +35,6 @@ $(function(){
             }
         };
 
-        var basic_rules_mongodb = {'$and': [
-            {'price': { '$lt': 10.25 }},
-            {'name': null},
-            {'$or': [
-                {'category': {'$in': ['mo', 'mu']}},
-                {'id': {'$ne': '1234-azer-5678'}}
-            ]}
-        ]};
-
         $b.queryBuilder({
             filters: basic_filters,
             rules: basic_rules
@@ -156,6 +147,15 @@ $(function(){
      * MongoDB import/export
      */
     QUnit.test('mongo-support', function(assert) {
+        var basic_rules_mongodb = {'$and': [
+            {'price': { '$lt': 10.25 }},
+            {'name': null},
+            {'$or': [
+                {'category': {'$in': ['mo', 'mu']}},
+                {'id': {'$ne': '1234-azer-5678'}}
+            ]}
+        ]};
+
         $b.queryBuilder({
             filters: basic_filters,
             rules: basic_rules
