@@ -70,6 +70,10 @@ $(function(){
      * Test unique-filter
      */
     QUnit.test('unique-filter', function(assert) {
+        var unique_filters = $.extend(true, [], basic_filters);
+        unique_filters[3].unique = 'group';
+        unique_filters[4].unique = true;
+
         $b.queryBuilder({
             plugins: ['unique-filter'],
             filters: unique_filters,
@@ -108,7 +112,33 @@ $(function(){
 
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
-            basic_rules_invert,
+            {
+                condition: 'OR',
+                rules: [{
+                    id: 'price',
+                    field: 'price',
+                    operator: 'greater_or_equal',
+                    value: 10.25
+                }, {
+                    id: 'name',
+                    field: 'name',
+                    operator: 'is_not_null',
+                    value: null
+                }, {
+                    condition: 'AND',
+                    rules: [{
+                        id: 'category',
+                        field: 'category',
+                        operator: 'not_in',
+                        value: ['mo', 'mu']
+                    }, {
+                        id: 'id',
+                        field: 'id',
+                        operator: 'equal',
+                        value: '1234-azer-5678'
+                    }]
+                }]
+            },
             'Should have inverted all conditions and operators'
         );
     });
@@ -117,6 +147,35 @@ $(function(){
      * Test change filters
      */
     QUnit.test('change-filters', function(assert) {
+        var filter_a = {
+            id: 'a',
+            type: 'string'
+        };
+
+        var filter_b = {
+            id: 'b',
+            type: 'string'
+        };
+
+        var filter_c = {
+            id: 'c',
+            type: 'string'
+        };
+
+        var rule_a = {
+            id: 'a',
+            field: 'a',
+            operator: 'equal',
+            value: 'foo'
+        };
+
+        var rule_b = {
+            id: 'b',
+            field: 'b',
+            operator: 'equal',
+            value: 'bar'
+        };
+
         $b.queryBuilder({
             filters: [filter_a, filter_b],
             rules: [rule_a, rule_b]
@@ -154,67 +213,4 @@ $(function(){
             'Should have added filter "a" after "c"'
         );
     });
-
-
-    var filter_a = {
-        id: 'a',
-        type: 'string'
-    };
-
-    var filter_b = {
-        id: 'b',
-        type: 'string'
-    };
-
-    var filter_c = {
-        id: 'c',
-        type: 'string'
-    };
-
-    var rule_a = {
-        id: 'a',
-        field: 'a',
-        operator: 'equal',
-        value: 'foo'
-    };
-
-    var rule_b = {
-        id: 'b',
-        field: 'b',
-        operator: 'equal',
-        value: 'bar'
-    };
-
-    var unique_filters = $.extend(true, [], basic_filters);
-    unique_filters[3].unique = 'group';
-    unique_filters[4].unique = true;
-
-    var basic_rules_invert = {
-        condition: 'OR',
-        rules: [{
-            id: 'price',
-            field: 'price',
-            operator: 'greater_or_equal',
-            value: 10.25
-        }, {
-            id: 'name',
-            field: 'name',
-            operator: 'is_not_null',
-            value: null
-        }, {
-            condition: 'AND',
-            rules: [{
-                id: 'category',
-                field: 'category',
-                operator: 'not_in',
-                value: ['mo', 'mu']
-            }, {
-                id: 'id',
-                field: 'id',
-                operator: 'equal',
-                value: '1234-azer-5678'
-            }]
-        }]
-    };
-
 });

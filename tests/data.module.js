@@ -12,8 +12,42 @@ $(function(){
      */
     QUnit.test('radio/checkbox/select values', function(assert) {
         $b.queryBuilder({
-            filters: values_filters,
-            rules: values_rules
+            filters: [{
+                id: '1',
+                type: 'string',
+                input: 'radio',
+                values: ['one', 'two', 'three']
+            }, {
+                id: '2',
+                type: 'string',
+                input: 'checkbox',
+                values: {
+                    one: 'One',
+                    two: 'Two',
+                    three: 'Three'
+                }
+            }, {
+                id: '3',
+                type: 'string',
+                input: 'select',
+                values: [
+                    {one: 'One'},
+                    {two: 'Two'},
+                    {three: 'Three'}
+                ]
+            }],
+            rules: {
+                rules: [{
+                    id: '1',
+                    value: 'one'
+                }, {
+                    id: '2',
+                    value: 'two'
+                }, {
+                    id: '3',
+                    value: 'three'
+                }]
+            }
         });
 
         assert.optionsMatch(
@@ -176,6 +210,18 @@ $(function(){
      * Test custom data
      */
     QUnit.test('custom data', function(assert) {
+        var rules = {
+            condition: 'AND',
+            data: [1,2,3],
+            rules: [{
+                id: 'name',
+                value: 'Mistic',
+                data: {
+                    foo: 'bar'
+                }
+            }]
+        };
+
         assert.expect(2);
 
         $b.queryBuilder({
@@ -184,70 +230,20 @@ $(function(){
 
         $b.on('afterAddRule.queryBuilder', function(e, rule) {
             assert.ok(
-                JSON.stringify(rule.data) === JSON.stringify(rules_with_data.rules[0].data),
+                JSON.stringify(rule.data) === JSON.stringify(rules.rules[0].data),
                 'Custom data should be accessible in "afterAddRule" event'
             );
         });
 
-        $b.queryBuilder('setRules', rules_with_data);
+        $b.queryBuilder('setRules', rules);
 
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
-            rules_with_data,
+            rules,
             'Should keep custom data in "getRules"'
         );
     });
 
-
-    var rules_with_data = {
-        condition: 'AND',
-        data: [1,2,3],
-        rules: [{
-            id: 'name',
-            value: 'Mistic',
-            data: {
-                foo: 'bar'
-            }
-        }]
-    };
-
-    var values_filters = [{
-        id: '1',
-        type: 'string',
-        input: 'radio',
-        values: ['one', 'two', 'three']
-    }, {
-        id: '2',
-        type: 'string',
-        input: 'checkbox',
-        values: {
-            one: 'One',
-            two: 'Two',
-            three: 'Three'
-        }
-    }, {
-        id: '3',
-        type: 'string',
-        input: 'select',
-        values: [
-            {one: 'One'},
-            {two: 'Two'},
-            {three: 'Three'}
-        ]
-    }];
-
-    var values_rules = {
-        rules: [{
-            id: '1',
-            value: 'one'
-        }, {
-            id: '2',
-            value: 'two'
-        }, {
-            id: '3',
-            value: 'three'
-        }]
-    };
 
     var validation_filters = [{
         id: 'radio',
@@ -319,5 +315,4 @@ $(function(){
             }
         }
     }];
-
 });

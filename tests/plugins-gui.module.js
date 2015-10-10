@@ -13,8 +13,51 @@ $(function(){
     QUnit.test('bt-checkbox', function(assert) {
         $b.queryBuilder({
             plugins: ['bt-checkbox'],
-            filters: bt_checkbox_filters,
-            rules: bt_checkbox_rules
+            filters: [{
+                id: 'no-color',
+                type: 'integer',
+                input: 'checkbox',
+                values: {
+                    10: 'foo',
+                    20: 'bar'
+                }
+            }, {
+                id: 'one-color',
+                type: 'integer',
+                input: 'checkbox',
+                values: {
+                    1: 'one',
+                    2: 'two',
+                    3: 'three'
+                },
+                color: 'primary'
+            }, {
+                id: 'multi-color',
+                type: 'integer',
+                input: 'radio',
+                values: {
+                    0: 'no',
+                    1: 'yes',
+                    2: 'perhaps'
+                },
+                colors: {
+                    0: 'danger',
+                    1: 'success'
+                }
+            }],
+            rules: {
+                condition: 'AND',
+                rules: [{
+                    id: 'no-color',
+                    value: 10
+                }, {
+                    id: 'one-color',
+                    value: [1,2,3]
+                }, {
+                    id: 'multi-color',
+                    value: 2
+                }]
+            }
         });
 
         assert.ok(
@@ -58,7 +101,14 @@ $(function(){
         $b.queryBuilder({
             plugins: ['bt-tooltip-errors'],
             filters: basic_filters,
-            rules: invalid_rules
+            rules: {
+                condition: 'AND',
+                rules: [{
+                    id: 'id',
+                    operator: 'equal',
+                    value: ''
+                }]
+            }
         });
 
         $b.queryBuilder('validate');
@@ -80,17 +130,31 @@ $(function(){
      * Test filter-description
      */
     QUnit.test('filter-description', function(assert) {
+        var filters = [{
+            id: 'name',
+            type: 'string',
+            description: '<b>Lorem Ipsum</b> sit amet.'
+        }];
+
+        var rules = {
+            condition: 'AND',
+            rules: [{
+                id: 'name',
+                value: 'Mistic'
+            }]
+        };
+
         $b.queryBuilder({
             plugins: {
                 'filter-description': { mode: 'inline' }
             },
-            filters: description_filters,
-            rules: description_rules
+            filters: filters,
+            rules: rules
         });
 
         assert.match(
             $('#builder_rule_0 p.filter-description').html(),
-            new RegExp(description_filters[0].description),
+            new RegExp(filters[0].description),
             'Paragraph should contain filter description'
         );
 
@@ -100,8 +164,8 @@ $(function(){
             plugins: {
                 'filter-description': { mode: 'popover' }
             },
-            filters: description_filters,
-            rules: description_rules
+            filters: filters,
+            rules: rules
         });
 
         assert.ok(
@@ -115,8 +179,8 @@ $(function(){
             plugins: {
                 'filter-description': { mode: 'bootbox' }
             },
-            filters: description_filters,
-            rules: description_rules
+            filters: filters,
+            rules: rules
         });
 
         assert.ok(
@@ -129,6 +193,9 @@ $(function(){
      * Test sortable
      */
     QUnit.test('sortable', function(assert) {
+        var sorted_rules = $.extend(true, {}, basic_rules);
+        sorted_rules.rules.splice(2, 0, sorted_rules.rules[2].rules.pop());
+
         assert.expect(1);
         var done = assert.async();
 
@@ -153,78 +220,4 @@ $(function(){
             }
         });
     });
-
-
-    var bt_checkbox_filters = [{
-        id: 'no-color',
-        type: 'integer',
-        input: 'checkbox',
-        values: {
-            10: 'foo',
-            20: 'bar'
-        }
-    }, {
-        id: 'one-color',
-        type: 'integer',
-        input: 'checkbox',
-        values: {
-            1: 'one',
-            2: 'two',
-            3: 'three'
-        },
-        color: 'primary'
-    }, {
-        id: 'multi-color',
-        type: 'integer',
-        input: 'radio',
-        values: {
-            0: 'no',
-            1: 'yes',
-            2: 'perhaps'
-        },
-        colors: {
-            0: 'danger',
-            1: 'success'
-        }
-    }];
-
-    var bt_checkbox_rules = {
-        condition: 'AND',
-        rules: [{
-            id: 'no-color',
-            value: 10
-        }, {
-            id: 'one-color',
-            value: [1,2,3]
-        }, {
-            id: 'multi-color',
-            value: 2
-        }]
-    };
-
-    var invalid_rules = {
-        condition: 'AND',
-        rules: [{
-            id: 'id',
-            operator: 'equal',
-            value: ''
-        }]
-    };
-
-    var description_filters = [{
-        id: 'name',
-        type: 'string',
-        description: '<b>Lorem Ipsum</b> sit amet.'
-    }];
-
-    var description_rules = {
-        rules: [{
-            id: 'name',
-            value: 'Mistic'
-        }]
-    };
-
-    var sorted_rules = $.extend(true, {}, basic_rules);
-    sorted_rules.rules.splice(2, 0, sorted_rules.rules[2].rules.pop());
-
 });

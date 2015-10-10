@@ -11,6 +11,39 @@ $(function(){
      * SQL import/export
      */
     QUnit.test('sql-support', function(assert) {
+        var basic_rules_sql_raw = {
+            sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
+        };
+
+        var basic_rules_sql_stmt = {
+            sql: 'price < ? AND name IS NULL AND ( category IN(?, ?) OR id != ? ) ',
+            params: [10.25, 'mo', 'mu', '1234-azer-5678']
+        };
+
+        var basic_rules_sql_stmt_num = {
+            sql: 'price < $1 AND name IS NULL AND ( category IN($2, $3) OR id != $4 ) ',
+            params: [10.25, 'mo', 'mu', '1234-azer-5678']
+        };
+
+        var basic_rules_sql_stmt_named = {
+            sql: 'price < :price_1 AND name IS NULL AND ( category IN(:category_1, :category_2) OR id != :id_1 ) ',
+            params: {
+                price_1: 10.25,
+                category_1: 'mo',
+                category_2: 'mu',
+                id_1: '1234-azer-5678'
+            }
+        };
+
+        var basic_rules_mongodb = {'$and': [
+            {'price': { '$lt': 10.25 }},
+            {'name': null},
+            {'$or': [
+                {'category': {'$in': ['mo', 'mu']}},
+                {'id': {'$ne': '1234-azer-5678'}}
+            ]}
+        ]};
+
         $b.queryBuilder({
             filters: basic_filters,
             rules: basic_rules
@@ -89,7 +122,12 @@ $(function(){
 
         $b.queryBuilder('destroy');
         $b.queryBuilder({
-            filters: simple_filters
+            filters: [
+                {id: 'a', type: 'integer'},
+                {id: 'b', type: 'integer'},
+                {id: 'c', type: 'integer'},
+                {id: 'd', type: 'integer'}
+            ]
         });
 
         $b.queryBuilder('setRulesFromSQL', nested_rules_sql);
@@ -99,10 +137,17 @@ $(function(){
             'Should parse SQL with deep nested rules'
         );
 
-        $b.queryBuilder('setRulesFromSQL', one_rule_sql);
+        $b.queryBuilder('setRulesFromSQL', 'a = 5');
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
-            one_rule,
+            {
+                condition: 'AND',
+                rules: [{
+                    id: 'a',
+                    operator: 'equal',
+                    value: 5
+                }]
+            },
             'Should parse SQL with one rule'
         );
     });
@@ -148,39 +193,6 @@ $(function(){
         );
     });
 
-
-    var basic_rules_sql_raw = {
-        sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
-    };
-
-    var basic_rules_sql_stmt = {
-        sql: 'price < ? AND name IS NULL AND ( category IN(?, ?) OR id != ? ) ',
-        params: [10.25, 'mo', 'mu', '1234-azer-5678']
-    };
-
-    var basic_rules_sql_stmt_num = {
-        sql: 'price < $1 AND name IS NULL AND ( category IN($2, $3) OR id != $4 ) ',
-        params: [10.25, 'mo', 'mu', '1234-azer-5678']
-    };
-
-    var basic_rules_sql_stmt_named = {
-        sql: 'price < :price_1 AND name IS NULL AND ( category IN(:category_1, :category_2) OR id != :id_1 ) ',
-        params: {
-            price_1: 10.25,
-            category_1: 'mo',
-            category_2: 'mu',
-            id_1: '1234-azer-5678'
-        }
-    };
-
-    var basic_rules_mongodb = {'$and': [
-        {'price': { '$lt': 10.25 }},
-        {'name': null},
-        {'$or': [
-            {'category': {'$in': ['mo', 'mu']}},
-            {'id': {'$ne': '1234-azer-5678'}}
-        ]}
-    ]};
 
     var all_operators_rules = {
         condition: 'AND',
@@ -334,13 +346,6 @@ $(function(){
         ]
     };
 
-    var simple_filters = [
-        {id: 'a', type: 'integer'},
-        {id: 'b', type: 'integer'},
-        {id: 'c', type: 'integer'},
-        {id: 'd', type: 'integer'}
-    ];
-
     var nested_rules = {
         condition: 'OR',
         rules: [
@@ -463,16 +468,4 @@ $(function(){
     };
 
     var nested_rules_sql = 'a=5 or (b=4 and c=7 and (d=1 or (a=7 and a=1)) and c=3 and ((b=4 and c=9) or a=8 or a=10)) or a=0 or (b=4 and a=4 and (a=4 or c=8))';
-
-    var one_rule = {
-        condition: 'AND',
-        rules: [{
-            id: 'a',
-            operator: 'equal',
-            value: 5
-        }]
-    };
-
-    var one_rule_sql = 'a = 5';
-
 });
