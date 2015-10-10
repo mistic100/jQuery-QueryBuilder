@@ -270,7 +270,7 @@ var basic_filters = [{
         step: 0.01
     },
     description: 'Lorem ipsum sit amet'
-},    {
+}, {
     id: 'id',
     label: 'Identifier',
     type: 'string',

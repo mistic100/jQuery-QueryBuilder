@@ -170,8 +170,43 @@ $(function(){
 
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
-            rules_after_ui_events,
+            {
+                condition: 'OR',
+                rules: [{
+                    id: 'name',
+                    operator: 'not_equal',
+                    value: 'foo'
+                }]
+            },
             'Should return correct rules after UI events'
+        );
+        
+        $b.queryBuilder('destroy');
+        
+        $b.queryBuilder({
+            filters: [{
+                id: 'name',
+                label: 'Name',
+                type: 'string',
+                input_event: 'custom.evt'
+            }]
+        });
+        
+        $('[name=builder_rule_0_filter]').val('name').trigger('change');
+        $('[name=builder_rule_0_operator]').val('equal').trigger('change');
+        $('[name=builder_rule_0_value_0]').val('bar').trigger('custom.evt');
+        
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            {
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'bar'
+                }]
+            },
+            'Should return correct rules after UI events with custom change event'
         );
     });
 
@@ -444,16 +479,6 @@ $(function(){
             done();
         });
     });
-
-
-    var rules_after_ui_events = {
-        condition: 'OR',
-        rules: [{
-            id: 'name',
-            operator: 'not_equal',
-            value: 'foo'
-        }]
-    };
 
     var filters_for_custom_operators = [{
         id: 'name',

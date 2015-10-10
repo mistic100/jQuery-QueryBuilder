@@ -501,7 +501,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
 
     $valueContainer.show();
 
-    $inputs.on('change', function() {
+    $inputs.on('change ' + (filter.input_event || ''), function() {
         that.status.updating_value = true;
         rule.value = that.getRuleValue(rule);
         that.status.updating_value = false;
