@@ -98,6 +98,7 @@
 <script src="../bower_components/bootbox/bootbox.js"></script>
 <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 <script src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
+<script src="bower_components/bootstrap3-typeahead/bootstrap3-typeahead.min.js"></script>
 <script src="../bower_components/jquery-extendext/jQuery.extendext.min.js"></script>
 <script src="../bower_components/sql-parser/browser/sql-parser.js"></script>
 <script src="../bower_components/doT/doT.js"></script>
@@ -128,7 +129,8 @@ var options = {
     'bt-selectpicker': null,
     'unique-filter': null,
     'bt-checkbox': { color: 'primary' },
-    'invert': null
+    'invert': null,
+    'bootstrap3-typeahead': { minLength: 2 }
   },
 
   filters: [
@@ -305,6 +307,18 @@ var options = {
     operators: ['equal', 'not_equal'],
     validation: {
       format: /^.{4}-.{4}-.{4}$/
+    }
+  },
+  /*
+   * typeahead
+   */
+  {
+    id: 'colour',
+    label: 'Colour',
+    optgroup: 'plugin',
+    type: 'string',
+    typeahead: {
+      source: [ 'Red', 'Green', 'Blue' ]
     }
   },
   /*

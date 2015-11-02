@@ -3,6 +3,7 @@
   "dependencies" : {
     "seiyria-bootstrap-slider": "latest",
     "bootswatch-dist": "#slate",
-    "selectize": "latest"
+    "selectize": "latest",
+    "bootstrap3-typeahead": "https://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master"
   }
 }
