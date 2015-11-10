@@ -1,16 +1,16 @@
 # jQuery QueryBuilder
 
-[![Bower version](https://badge.fury.io/bo/jQuery-QueryBuilder.svg)](http://badge.fury.io/bo/jQuery-QueryBuilder)
-[![Build Status](https://travis-ci.org/mistic100/jQuery-QueryBuilder.svg?branch=master)](https://travis-ci.org/mistic100/jQuery-QueryBuilder)
-[![Coverage Status](https://coveralls.io/repos/mistic100/jQuery-QueryBuilder/badge.svg)](https://coveralls.io/r/mistic100/jQuery-QueryBuilder)
-[![Gratipay](https://img.shields.io/gratipay/mistic100.svg)](https://gratipay.com/mistic100)
+[![Bower version](https://img.shields.io/bower/v/jQuery-QueryBuilder.svg?style=flat-square)](http://querybuilder.js.org)
+[![Build Status](https://img.shields.io/travis/mistic100/jQuery-QueryBuilder.svg?style=flat-square)](https://travis-ci.org/mistic100/jQuery-QueryBuilder)
+[![Coverage Status](https://img.shields.io/coveralls/mistic100/jQuery-QueryBuilder/master.svg?style=flat-square)](https://coveralls.io/r/mistic100/jQuery-QueryBuilder)
+[![CDN](https://img.shields.io/badge/cdn-jsdelivr-%23EB4C36.svg?style=flat-square)](http://www.jsdelivr.com/projects/jquery.query-builder)
 
 jQuery plugin offering an simple interface to create complex queries.
 
-![screenshot](https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/examples/screenshot.png)
+[![screenshot](https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/examples/screenshot.png)](http://querybuilder.js.org)
 
 ## Documentation
-http://mistic100.github.io/jQuery-QueryBuilder
+http://querybuilder.js.org
 
 ### Dependencies
  * jQuery >= 1.9
