@@ -300,7 +300,7 @@ QueryBuilder.extend({
             data.sql = stmt.esc(data.sql);
         }
 
-        if (!data.sql.toUpperCase().startsWith('SELECT')) {
+        if (data.sql.toUpperCase().indexOf('SELECT') !== 0) {
             data.sql = 'SELECT * FROM table WHERE ' + data.sql;
         }
 
