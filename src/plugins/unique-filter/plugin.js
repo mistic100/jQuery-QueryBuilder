@@ -10,6 +10,8 @@ QueryBuilder.define('unique-filter', function() {
     this.on('afterUpdateRuleFilter', this.updateDisabledFilters);
     this.on('afterDeleteRule', this.updateDisabledFilters);
     this.on('afterCreateRuleFilters', this.applyDisabledFilters);
+    this.on('afterReset', this.clearDisabledFilters);
+    this.on('afterClear', this.clearDisabledFilters);
 });
 
 QueryBuilder.extend({
@@ -37,6 +39,14 @@ QueryBuilder.extend({
                 walk(group);
             });
         }(that.model.root));
+
+        that.applyDisabledFilters(e);
+    },
+
+    clearDisabledFilters: function(e) {
+        var that = e ? e.builder : this;
+
+        that.status.used_filters = {};
 
         that.applyDisabledFilters(e);
     },
