@@ -389,9 +389,11 @@ QueryBuilder.extend({
                 var opVal = sqlrl.call(this, value, data.operation);
                 if (operator == 'NOT LIKE') opVal.op = 'not_' + opVal.op;
 
+                var left_value = data.left.values.join('.');
+
                 curr.rules.push({
-                    id: that.change('getSQLFieldID', data.left.value, value),
-                    field: data.left.value,
+                    id: that.change('getSQLFieldID', left_value, value),
+                    field: left_value,
                     operator: opVal.op,
                     value: opVal.val
                 });
