@@ -547,6 +547,7 @@ $(function(){
             'Should return a specific default object'
         );
 
+        var orig_flags = $.extend({}, QueryBuilder.DEFAULTS.default_rule_flags);
         var flags = {
             filter_readonly: true,
             operator_readonly: false,
@@ -561,6 +562,8 @@ $(function(){
             flags,
             'Should have modified the default config object'
         );
+
+        QueryBuilder.defaults({ default_rule_flags: orig_flags });
     });
 
     /**

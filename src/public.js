@@ -127,9 +127,15 @@ QueryBuilder.prototype.validate = function() {
 
 /**
  * Get an object representing current rules
+ * @param {object} options
+ *      - get_flags: false[default] | true(only changes from default flags) | 'all'
  * @return {object}
  */
-QueryBuilder.prototype.getRules = function() {
+QueryBuilder.prototype.getRules = function(options) {
+    options = $.extend({
+        get_flags: false
+    }, options);
+
     if (!this.validate()) {
         return {};
     }
@@ -144,6 +150,13 @@ QueryBuilder.prototype.getRules = function() {
 
         if (group.data) {
             data.data = $.extendext(true, 'replace', {}, group.data);
+        }
+
+        if (options.get_flags) {
+            var flags = that.getGroupFlags(group.flags, options.get_flags==='all');
+            if (!$.isEmptyObject(flags)) {
+                data.flags = flags;
+            }
         }
 
         group.each(function(model) {
@@ -163,6 +176,13 @@ QueryBuilder.prototype.getRules = function() {
 
             if (model.filter.data || model.data) {
                 rule.data = $.extendext(true, 'replace', {}, model.filter.data, model.data);
+            }
+
+            if (options.get_flags) {
+                var flags = that.getRuleFlags(model.flags, options.get_flags==='all');
+                if (!$.isEmptyObject(flags)) {
+                    rule.flags = flags;
+                }
             }
 
             data.rules.push(rule);

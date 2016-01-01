@@ -428,6 +428,27 @@ QueryBuilder.prototype.parseRuleFlags = function(rule) {
 };
 
 /**
+ * Get a copy of flags of a rule.
+ * @param {object} flags
+ * @param {boolean} all - true to return all flags, false to return only changes from default
+ * @returns {object}
+ */
+QueryBuilder.prototype.getRuleFlags = function(flags, all) {
+    if (all) {
+        return $.extend({}, flags);
+    }
+    else {
+        var ret = {};
+        $.each(this.settings.default_rule_flags, function(key, value) {
+           if (flags[key] !== value) {
+               ret[key] = flags[key];
+           }
+        });
+        return ret;
+    }
+};
+
+/**
  * Clean group flags.
  * @param group {object}
  * @return {object}
@@ -447,6 +468,27 @@ QueryBuilder.prototype.parseGroupFlags = function(group) {
     }
     
     return this.change('parseGroupFlags', flags, group);
+};
+
+/**
+ * Get a copy of flags of a group.
+ * @param {object} flags
+ * @param {boolean} all - true to return all flags, false to return only changes from default
+ * @returns {object}
+ */
+QueryBuilder.prototype.getGroupFlags = function(flags, all) {
+    if (all) {
+        return $.extend({}, flags);
+    }
+    else {
+        var ret = {};
+        $.each(this.settings.default_group_flags, function(key, value) {
+            if (flags[key] !== value) {
+                ret[key] = flags[key];
+            }
+        });
+        return ret;
+    }
 };
 
 /**

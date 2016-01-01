@@ -48,7 +48,16 @@ QUnit.assert.rulesMatch = function(actual, expected, message) {
                 ok = false;
             }
             else {
-                ok = JSON.stringify(a.data) === JSON.stringify(b.data);
+                ok = QUnit.equiv(a.data, b.data);
+            }
+        }
+
+        if (b.hasOwnProperty('flags')) {
+            if (!a.hasOwnProperty('flags')) {
+                ok = false;
+            }
+            else {
+                ok = QUnit.equiv(a.flags, b.flags);
             }
         }
 

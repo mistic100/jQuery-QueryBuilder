@@ -244,6 +244,73 @@ $(function(){
         );
     });
 
+    /**
+     * Test get flags with getRules
+     */
+    QUnit.test('get flags', function(assert) {
+        var rules_readonly = {
+            condition: 'AND',
+            flags: {
+                condition_readonly: true
+            },
+            rules: [{
+                id: 'price',
+                operator: 'less',
+                value: 10.25,
+                flags: {
+                    no_delete: true
+                }
+            }, {
+                condition: 'OR',
+                rules: [{
+                    id: 'id',
+                    operator: 'not_equal',
+                    value: '1234-azer-5678',
+                    readonly: true
+                }]
+            }]
+        };
+
+        var rules_all_flags = $.extend(true, {}, rules_readonly);
+        rules_all_flags.flags = {
+            condition_readonly: true,
+            no_delete: false
+        };
+        rules_all_flags.rules[0].flags = {
+            filter_readonly: false,
+            operator_readonly: false,
+            value_readonly: false,
+            no_delete: true
+        };
+        rules_all_flags.rules[1].flags = {
+            condition_readonly: false,
+            no_delete: false
+        };
+        rules_all_flags.rules[1].rules[0].flags = {
+            filter_readonly: true,
+            operator_readonly: true,
+            value_readonly: true,
+            no_delete: true
+        };
+
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: rules_readonly
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules', {get_flags: true}),
+            rules_readonly,
+            'Should export rules with changed flags'
+        );
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules', {get_flags: 'all'}),
+            rules_all_flags,
+            'Should export rules with all flags'
+        );
+    });
+
 
     var validation_filters = [{
         id: 'radio',
