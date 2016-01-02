@@ -120,7 +120,7 @@ $(function(){
         });
 
         assert.equal(
-            $('[name=builder_rule_0_filter] [value=-1]').length,
+            $('[name=builder_rule_0_filter] [value="-1"]').length,
             1,
             'Should have the placeholder filter'
         );
@@ -139,7 +139,7 @@ $(function(){
         });
 
         assert.equal(
-            $('[name=builder_rule_0_filter] [value=-1]').length,
+            $('[name=builder_rule_0_filter] [value="-1"]').length,
             0,
             'Should not have the placeholder filter'
         );
@@ -482,12 +482,38 @@ $(function(){
                 id: '7',
                 optgroup: 'C'
             }],
+            operators: [
+                {type: 'equal',            optgroup: 'equality'},
+                {type: 'not_equal',        optgroup: 'equality'},
+                {type: 'in'           },
+                {type: 'not_in'       },
+                {type: 'less',             optgroup: 'numbers'},
+                {type: 'less_or_equal',    optgroup: 'numbers'},
+                {type: 'greater',          optgroup: 'numbers'},
+                {type: 'greater_or_equal', optgroup: 'numbers'},
+                {type: 'between',          optgroup: 'numbers'},
+                {type: 'not_between',      optgroup: 'numbers'},
+                {type: 'begins_with',      optgroup: 'strings'},
+                {type: 'not_begins_with',  optgroup: 'strings'},
+                {type: 'ends_with',        optgroup: 'strings'},
+                {type: 'not_ends_with',    optgroup: 'strings'},
+                {type: 'contains',         optgroup: 'strings'},
+                {type: 'not_contains',     optgroup: 'strings'},
+                {type: 'is_empty'     },
+                {type: 'is_not_empty' },
+                {type: 'is_null'      },
+                {type: 'is_not_null'  }
+            ],
             optgroups: {
                 A: {
                     en: 'AA',
                     fr: 'AAA'
                 },
-                B: 'BB'
+                B: 'BB',
+                strings: {
+                    en: 'Strings',
+                    fr: 'Chaines'
+                }
             },
             lang_code: 'fr'
         });
@@ -516,6 +542,35 @@ $(function(){
         assert.deepEqual(
             groups,
             ['AAA', 'BB', 'C'],
+            'Optgroups should have been correctly translated and created when needed'
+        );
+
+        $b[0].queryBuilder.model.root.rules[0].filter = '1';
+
+        options = []; groups = [];
+        $('[name=builder_rule_0_operator]>*').each(function() {
+            if (this.nodeName == 'OPTION') {
+                options.push($(this).val());
+            }
+            else {
+                var group = [];
+                $(this).find('option').each(function() {
+                    group.push($(this).val());
+                });
+                options.push(group);
+                groups.push($(this).attr('label'));
+            }
+        });
+
+        assert.deepEqual(
+            options,
+            [['equal', 'not_equal'], 'in', 'not_in', ['begins_with', 'not_begins_with', 'ends_with', 'not_ends_with', 'contains', 'not_contains'], 'is_empty', 'is_not_empty', 'is_null', 'is_not_null'],
+            'Operators should have been put in optgroups, solving discontinuities and keeping order'
+        );
+
+        assert.deepEqual(
+            groups,
+            ['equality', 'Chaines'],
             'Optgroups should have been correctly translated and created when needed'
         );
     });

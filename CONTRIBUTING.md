@@ -10,7 +10,7 @@ I want to keep the core clean of extra (and certainly awesome) functionalities. 
 
 Check the doc about [creating plugins](http://mistic100.github.io/jQuery-QueryBuilder/dev/plugins.html).
 
-I reserve the right to refuse any plugin I think is not useful for many people. Particularly, only import/export plugins for mainstream data storages will be intergated in the main repository. Others should be in a separated repository. But it's totally possible to add a link to your repository in the documentation.
+I reserve the right to refuse any plugin I think is not useful for many people. Particularly, only import/export plugins for mainstream data storages will be integrated in the main repository. Others should be in a separated repository. But it's totally possible to add a link to your repository in the documentation.
 
 ## Unit tests
 Any big feature must have it's own QUnit tests suite. Of course existing tests must still pass after changes.

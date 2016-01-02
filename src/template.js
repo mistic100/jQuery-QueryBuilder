@@ -60,7 +60,7 @@ QueryBuilder.templates.filterSelect = '\
   {{~ it.filters: filter }} \
     {{? optgroup !== filter.optgroup }} \
       {{? optgroup !== null }}</optgroup>{{?}} \
-      {{? (optgroup = filter.optgroup) !== null}} \
+      {{? (optgroup = filter.optgroup) !== null }} \
         <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
       {{?}} \
     {{?}} \
@@ -70,10 +70,18 @@ QueryBuilder.templates.filterSelect = '\
 </select>';
 
 QueryBuilder.templates.operatorSelect = '\
+{{ var optgroup = null; }} \
 <select class="form-control" name="{{= it.rule.id }}_operator"> \
   {{~ it.operators: operator }} \
+    {{? optgroup !== operator.optgroup }} \
+      {{? optgroup !== null }}</optgroup>{{?}} \
+      {{? (optgroup = operator.optgroup) !== null }} \
+        <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
+      {{?}} \
+    {{?}} \
     <option value="{{= operator.type }}">{{= it.lang.operators[operator.type] || operator.type }}</option> \
   {{~}} \
+  {{? optgroup !== null }}</optgroup>{{?}} \
 </select>';
 
 /**
@@ -146,7 +154,8 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
         operators: operators,
         icons: this.icons,
         lang: this.lang,
-        settings: this.settings
+        settings: this.settings,
+        translate: this.translateLabel
     });
 
     return this.change('getRuleOperatorSelect', h, rule);

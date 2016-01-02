@@ -13,6 +13,7 @@ QueryBuilder.prototype.init = function($el, options) {
         rule_id: 0,
         generated_id: false,
         has_optgroup: false,
+        has_operator_oprgroup: false,
         id: null,
         updating_value: false
     };
@@ -59,6 +60,7 @@ QueryBuilder.prototype.init = function($el, options) {
     this.$el.addClass('query-builder form-inline');
 
     this.filters = this.checkFilters(this.filters);
+    this.operators = this.checkOperators(this.operators);
     this.bindEvents();
     this.initPlugins();
 
@@ -120,7 +122,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
         else {
             this.status.has_optgroup = true;
 
-            // backward compatiblity, register optgroup if needed
+            // register optgroup if needed
             if (!this.settings.optgroups[filter.optgroup]) {
                 this.settings.optgroups[filter.optgroup] = filter.optgroup;
             }
@@ -138,7 +140,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
                     if (filter.placeholder_value === undefined) {
                         filter.placeholder_value = -1;
                     }
-                    Utils.iterateOptions(filter.values, function(key, val) {
+                    Utils.iterateOptions(filter.values, function(key) {
                         if (key == filter.placeholder_value) {
                             Utils.error('Config', 'Placeholder of filter "{0}" overlaps with one of its values', filter.id);
                         }
@@ -148,36 +150,65 @@ QueryBuilder.prototype.checkFilters = function(filters) {
         }
     }, this);
 
-    // group filters with same optgroup, preserving declaration order when possible
     if (this.status.has_optgroup) {
-        var optgroups = [],
-            newFilters = [];
-
-        filters.forEach(function(filter, i) {
-            var idx;
-
-            if (filter.optgroup) {
-                idx = optgroups.lastIndexOf(filter.optgroup);
-
-                if (idx == -1) {
-                    idx = optgroups.length;
-                }
-                else {
-                    idx++;
-                }
-            }
-            else {
-                idx = optgroups.length;
-            }
-
-            optgroups.splice(idx, 0, filter.optgroup);
-            newFilters.splice(idx, 0, filter);
-        });
-
-        filters = newFilters;
+        filters = Utils.groupSort(filters, 'optgroup');
     }
 
     return filters;
+};
+
+/**
+ * Checks the configuration of each operator
+ * @throws ConfigError
+ */
+QueryBuilder.prototype.checkOperators = function(operators) {
+    var definedOperators = [];
+
+    operators.forEach(function(operator, i) {
+        if (typeof operator === 'string') {
+            if (!QueryBuilder.OPERATORS[operator]) {
+                Utils.error('Config', 'Unknown operator "{0}"', operator);
+            }
+
+            operators[i] = operator = $.extendext(true, 'replace', {}, QueryBuilder.OPERATORS[operator]);
+        }
+        else {
+            if (!operator.type) {
+                Utils.error('Config', 'Missing "type" for operator {0}', i);
+            }
+
+            if (QueryBuilder.OPERATORS[operator.type]) {
+                operators[i] = operator = $.extendext(true, 'replace', {}, QueryBuilder.OPERATORS[operator.type], operator);
+            }
+
+            if (operator.nb_inputs === undefined || operator.apply_to === undefined) {
+                Utils.error('Config', 'Missing "nb_inputs" and/or "apply_to" for operator "{0}"', operator.type);
+            }
+        }
+
+        if (definedOperators.indexOf(operator.type) != -1) {
+            Utils.error('Config', 'Operator "{0}" already defined', operator.type);
+        }
+        definedOperators.push(operator.type);
+
+        if (!operator.optgroup) {
+            operator.optgroup = null;
+        }
+        else {
+            this.status.has_operator_optgroup = true;
+
+            // register optgroup if needed
+            if (!this.settings.optgroups[operator.optgroup]) {
+                this.settings.optgroups[operator.optgroup] = operator.optgroup;
+            }
+        }
+    }, this);
+
+    if (this.status.has_operator_optgroup) {
+        operators = Utils.groupSort(operators, 'optgroup');
+    }
+
+    return operators;
 };
 
 /**
