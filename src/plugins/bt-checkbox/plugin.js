@@ -4,8 +4,6 @@
  * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
-/*jshint multistr:true */
-
 QueryBuilder.define('bt-checkbox', function(options) {
     if (options.font == 'glyphicons') {
         var injectCSS = document.createElement('style');
@@ -35,17 +33,17 @@ QueryBuilder.define('bt-checkbox', function(options) {
                 filter.colors._def_ = filter.color;
             }
 
-            var style = filter.vertical ? ' style="display:block"' : '',
-                i = 0, color, id;
+            var style = filter.vertical ? ' style="display:block"' : '';
+            var i = 0;
 
             Utils.iterateOptions(filter.values, function(key, val) {
-                color = filter.colors[key] || filter.colors._def_ || options.color;
-                id = name +'_'+ (i++);
+                var color = filter.colors[key] || filter.colors._def_ || options.color;
+                var id = name + '_' + (i++);
 
                 h.value+= '\
-<div'+ style +' class="'+ filter.input +' '+ filter.input +'-'+ color +'"> \
-  <input type="'+ filter.input +'" name="'+ name +'" id="'+ id +'" value="'+ key +'"> \
-  <label for="'+ id +'">'+ val +'</label> \
+<div' + style + ' class="' + filter.input + ' ' + filter.input + '-' + color + '"> \
+  <input type="' + filter.input + '" name="' + name + '" id="' + id + '" value="' + key + '"> \
+  <label for="' + id + '">' + val + '</label> \
 </div>';
             });
         }

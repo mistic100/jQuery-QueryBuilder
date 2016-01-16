@@ -46,21 +46,21 @@ QueryBuilder.defaults({
             };
         },
         'LIKE': function(v) {
-            if (v.slice(0,1)=='%' && v.slice(-1)=='%') {
+            if (v.slice(0, 1) == '%' && v.slice(-1) == '%') {
                 return {
-                    val: v.slice(1,-1),
+                    val: v.slice(1, -1),
                     op: 'contains'
                 };
             }
-            else if (v.slice(0,1)=='%') {
+            else if (v.slice(0, 1) == '%') {
                 return {
                     val: v.slice(1),
                     op: 'ends_with'
                 };
             }
-            else if (v.slice(-1)=='%') {
+            else if (v.slice(-1) == '%') {
                 return {
-                    val: v.slice(0,-1),
+                    val: v.slice(0, -1),
                     op: 'begins_with'
                 };
             }
@@ -143,7 +143,7 @@ QueryBuilder.defaults({
             var index = 0;
             return {
                 parse: function(v) {
-                    return v=='?' ? values[index++] : v;
+                    return v == '?' ? values[index++] : v;
                 },
                 esc: function(sql) {
                     return sql.replace(/\?/g, '\'?\'');
@@ -154,7 +154,7 @@ QueryBuilder.defaults({
         'numbered': function(values) {
             return {
                 parse: function(v) {
-                    return /^\$[0-9]+$/.test(v) ? values[v.slice(1)-1] : v;
+                    return /^\$[0-9]+$/.test(v) ? values[v.slice(1) - 1] : v;
                 },
                 esc: function(sql) {
                     return sql.replace(/\$([0-9]+)/g, '\'$$$1\'');
@@ -188,19 +188,19 @@ QueryBuilder.extend({
      * @return {object}
      */
     getSQL: function(stmt, nl, data) {
-        data = (data===undefined) ? this.getRules() : data;
-        nl = (nl===true) ? '\n' : ' ';
+        data = (data === undefined) ? this.getRules() : data;
+        nl = (nl === true) ? '\n' : ' ';
 
-        if (stmt===true || stmt===undefined) stmt = 'question_mark';
+        if (stmt === true || stmt === undefined) stmt = 'question_mark';
         if (typeof stmt == 'string') stmt = this.settings.sqlStatements[stmt]();
 
-        var that = this,
-            bind_index = 1,
-            bind_params = [];
+        var self = this;
+        var bind_index = 1;
+        var bind_params = [];
 
         var sql = (function parse(data) {
             if (!data.condition) {
-                data.condition = that.settings.default_condition;
+                data.condition = self.settings.default_condition;
             }
             if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
                 Utils.error('UndefinedSQLCondition', 'Unable to build SQL query with condition "{0}"', data.condition);
@@ -213,13 +213,13 @@ QueryBuilder.extend({
             var parts = [];
 
             data.rules.forEach(function(rule) {
-                if (rule.rules && rule.rules.length>0) {
-                    parts.push('('+ nl + parse(rule) + nl +')'+ nl);
+                if (rule.rules && rule.rules.length > 0) {
+                    parts.push('(' + nl + parse(rule) + nl + ')' + nl);
                 }
                 else {
-                    var sql = that.settings.sqlOperators[rule.operator],
-                        ope = that.getOperatorByType(rule.operator),
-                        value = '';
+                    var sql = self.settings.sqlOperators[rule.operator];
+                    var ope = self.getOperatorByType(rule.operator);
+                    var value = '';
 
                     if (sql === undefined) {
                         Utils.error('UndefinedSQLOperator', 'Unknown SQL operation for operator "{0}"', rule.operator);
@@ -231,11 +231,11 @@ QueryBuilder.extend({
                         }
 
                         rule.value.forEach(function(v, i) {
-                            if (i>0) {
+                            if (i > 0) {
                                 value+= sql.sep;
                             }
 
-                            if (rule.type=='integer' || rule.type=='double' || rule.type=='boolean') {
+                            if (rule.type == 'integer' || rule.type == 'double' || rule.type == 'boolean') {
                                 v = Utils.changeType(v, rule.type, true);
                             }
                             else if (!stmt) {
@@ -250,8 +250,8 @@ QueryBuilder.extend({
                                 value+= stmt.add(rule, v);
                             }
                             else {
-                                if (typeof v === 'string') {
-                                    v = '\''+ v +'\'';
+                                if (typeof v == 'string') {
+                                    v = '\'' + v + '\'';
                                 }
 
                                 value+= v;
@@ -259,11 +259,11 @@ QueryBuilder.extend({
                         });
                     }
 
-                    parts.push(rule.field +' '+ sql.op.replace(/\?/, value));
+                    parts.push(rule.field + ' ' + sql.op.replace(/\?/, value));
                 }
             });
 
-            return parts.join(' '+ data.condition + nl);
+            return parts.join(' ' + data.condition + nl);
         }(data));
 
         if (stmt) {
@@ -290,7 +290,7 @@ QueryBuilder.extend({
             Utils.error('MissingLibrary', 'SQLParser is required to parse SQL queries. Get it here https://github.com/mistic100/sql-parser');
         }
 
-        var that = this;
+        var self = this;
 
         if (typeof data == 'string') {
             data = { sql: data };
@@ -320,13 +320,13 @@ QueryBuilder.extend({
             // it's a node
             if (['AND', 'OR'].indexOf(data.operation.toUpperCase()) !== -1) {
                 // create a sub-group if the condition is not the same and it's not the first level
-                if (i>0 && curr.condition != data.operation.toUpperCase()) {
+                if (i > 0 && curr.condition != data.operation.toUpperCase()) {
                     curr.rules.push({
-                        condition: that.settings.default_condition,
+                        condition: self.settings.default_condition,
                         rules: []
                     });
 
-                    curr = curr.rules[curr.rules.length-1];
+                    curr = curr.rules[curr.rules.length - 1];
                 }
 
                 curr.condition = data.operation.toUpperCase();
@@ -376,10 +376,10 @@ QueryBuilder.extend({
 
                 var sqlrl;
                 if (operator == 'NOT LIKE') {
-                    sqlrl = that.settings.sqlRuleOperator['LIKE'];
+                    sqlrl = self.settings.sqlRuleOperator['LIKE'];
                 }
                 else {
-                    sqlrl = that.settings.sqlRuleOperator[operator];
+                    sqlrl = self.settings.sqlRuleOperator[operator];
                 }
 
                 if (sqlrl === undefined) {
@@ -392,7 +392,7 @@ QueryBuilder.extend({
                 var left_value = data.left.values.join('.');
 
                 curr.rules.push({
-                    id: that.change('getSQLFieldID', left_value, value),
+                    id: self.change('getSQLFieldID', left_value, value),
                     field: left_value,
                     operator: opVal.op,
                     value: opVal.val

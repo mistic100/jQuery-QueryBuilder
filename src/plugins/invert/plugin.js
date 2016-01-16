@@ -35,21 +35,21 @@ QueryBuilder.defaults({
 });
 
 QueryBuilder.define('invert', function(options) {
-    var that = this;
+    var self = this;
 
     /**
      * Bind events
      */
     this.on('afterInit', function() {
-        that.$el.on('click.queryBuilder', '[data-invert=group]', function() {
+        self.$el.on('click.queryBuilder', '[data-invert=group]', function() {
             var $group = $(this).closest(Selectors.group_container);
-            that.invert(Model($group), options);
+            self.invert(Model($group), options);
         });
 
         if (options.display_rules_button && options.invert_rules) {
-            that.$el.on('click.queryBuilder', '[data-invert=rule]', function() {
+            self.$el.on('click.queryBuilder', '[data-invert=rule]', function() {
                 var $rule = $(this).closest(Selectors.rule_container);
-                that.invert(Model($rule), options);
+                self.invert(Model($rule), options);
             });
         }
     });
@@ -59,14 +59,14 @@ QueryBuilder.define('invert', function(options) {
      */
     this.on('getGroupTemplate.filter', function(h, level) {
         var $h = $(h.value);
-        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> '+ that.lang.invert +'</button>');
+        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> ' + self.lang.invert + '</button>');
         h.value = $h.prop('outerHTML');
     });
 
     if (options.display_rules_button && options.invert_rules) {
         this.on('getRuleTemplate.filter', function(h) {
             var $h = $(h.value);
-            $h.find(Selectors.rule_actions).prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> '+ that.lang.invert +'</button>');
+            $h.find(Selectors.rule_actions).prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> ' + self.lang.invert + '</button>');
             h.value = $h.prop('outerHTML');
         });
     }
@@ -109,7 +109,7 @@ QueryBuilder.extend({
 
             // recursive call
             if (options.recursive) {
-                var tempOpts = $.extend({}, options, {trigger: false});
+                var tempOpts = $.extend({}, options, { trigger: false });
                 node.each(function(rule) {
                     if (options.invert_rules) {
                         this.invert(rule, tempOpts);
@@ -129,7 +129,7 @@ QueryBuilder.extend({
                         node.operator = this.getOperatorByType(invert);
                     }
                 }
-                else  if (!options.silent_fail){
+                else if (!options.silent_fail) {
                     Utils.error('InvertOperator', 'Unknown inverse of operator "{0}"', node.operator.type);
                 }
             }

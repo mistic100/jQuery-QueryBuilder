@@ -3,6 +3,7 @@ node_js:
   - "0.12"
 before_install:
   - gem install sass
+  - gem install scss_lint
   - npm install -g grunt-cli
   - npm install -g bower
 before_script:

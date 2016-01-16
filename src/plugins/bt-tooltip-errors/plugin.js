@@ -12,7 +12,7 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
         Utils.error('MissingLibrary', 'Bootstrap Tooltip is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
     }
 
-    var that = this;
+    var self = this;
 
     // add BT Tooltip data
     this.on('getRuleTemplate.filter getGroupTemplate.filter', function(h) {
@@ -23,7 +23,7 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
 
     // init/refresh tooltip when title changes
     this.model.on('update', function(e, node, field) {
-        if (field == 'error' && that.settings.display_errors) {
+        if (field == 'error' && self.settings.display_errors) {
             node.$el.find(Selectors.error_container).eq(0)
               .tooltip(options)
               .tooltip('hide')

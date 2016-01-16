@@ -110,7 +110,7 @@ QueryBuilder.extend({
             // after filter by its id
             if (this.filters.some(function(filter, index) {
                 if (filter.id == position) {
-                    position = index+1;
+                    position = index + 1;
                     return true;
                 }
             })) {

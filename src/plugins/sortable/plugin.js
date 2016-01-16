@@ -14,8 +14,9 @@ QueryBuilder.define('sortable', function(options) {
         // configure jQuery to use dataTransfer
         $.event.props.push('dataTransfer');
 
-        var placeholder, src,
-            self = e.builder;
+        var placeholder;
+        var src;
+        var self = e.builder;
 
         // only add "draggable" attribute when hovering drag handle
         // preventing text select bug in Firefox
@@ -107,7 +108,7 @@ QueryBuilder.define('sortable', function(options) {
      * Modify templates
      */
     this.on('getGroupTemplate.filter', function(h, level) {
-        if (level>1) {
+        if (level > 1) {
             var $h = $(h.value);
             $h.find(Selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
             h.value = $h.prop('outerHTML');

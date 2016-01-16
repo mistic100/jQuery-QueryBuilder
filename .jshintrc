@@ -1,0 +1,4 @@
+{
+  "-W069": true, // accesses to "regional" in language files
+  "multistr": true
+}

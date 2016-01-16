@@ -32,13 +32,13 @@ QueryBuilder.prototype.init = function($el, options) {
     this.operators = this.settings.operators;
     this.templates = this.settings.templates;
     this.plugins = this.settings.plugins;
-    
+
     // translations : english << 'lang_code' << custom
     if (QueryBuilder.regional['en'] === undefined) {
         Utils.error('Config', '"i18n/en.js" not loaded.');
     }
     this.lang = $.extendext(true, 'replace', {}, QueryBuilder.regional['en'], QueryBuilder.regional[this.settings.lang_code], this.settings.lang);
-    
+
     // init templates
     Object.keys(this.templates).forEach(function(tpl) {
         if (!this.templates[tpl]) {
@@ -51,7 +51,7 @@ QueryBuilder.prototype.init = function($el, options) {
 
     // ensure we have a container id
     if (!this.$el.attr('id')) {
-        this.$el.attr('id', 'qb_'+Math.floor(Math.random()*99999));
+        this.$el.attr('id', 'qb_' + Math.floor(Math.random() * 99999));
         this.status.generated_id = true;
     }
     this.status.id = this.$el.attr('id');
@@ -165,7 +165,7 @@ QueryBuilder.prototype.checkOperators = function(operators) {
     var definedOperators = [];
 
     operators.forEach(function(operator, i) {
-        if (typeof operator === 'string') {
+        if (typeof operator == 'string') {
             if (!QueryBuilder.OPERATORS[operator]) {
                 Utils.error('Config', 'Unknown operator "{0}"', operator);
             }
@@ -215,7 +215,7 @@ QueryBuilder.prototype.checkOperators = function(operators) {
  * Add all events listeners
  */
 QueryBuilder.prototype.bindEvents = function() {
-    var that = this;
+    var self = this;
 
     // group condition change
     this.$el.on('change.queryBuilder', Selectors.group_condition, function() {
@@ -228,38 +228,38 @@ QueryBuilder.prototype.bindEvents = function() {
     // rule filter change
     this.$el.on('change.queryBuilder', Selectors.rule_filter, function() {
         var $rule = $(this).closest(Selectors.rule_container);
-        Model($rule).filter = that.getFilterById($(this).val());
+        Model($rule).filter = self.getFilterById($(this).val());
     });
 
     // rule operator change
     this.$el.on('change.queryBuilder', Selectors.rule_operator, function() {
         var $rule = $(this).closest(Selectors.rule_container);
-        Model($rule).operator = that.getOperatorByType($(this).val());
+        Model($rule).operator = self.getOperatorByType($(this).val());
     });
 
     // add rule button
     this.$el.on('click.queryBuilder', Selectors.add_rule, function() {
         var $group = $(this).closest(Selectors.group_container);
-        that.addRule(Model($group));
+        self.addRule(Model($group));
     });
 
     // delete rule button
     this.$el.on('click.queryBuilder', Selectors.delete_rule, function() {
         var $rule = $(this).closest(Selectors.rule_container);
-        that.deleteRule(Model($rule));
+        self.deleteRule(Model($rule));
     });
 
     if (this.settings.allow_groups !== 0) {
         // add group button
         this.$el.on('click.queryBuilder', Selectors.add_group, function() {
             var $group = $(this).closest(Selectors.group_container);
-            that.addGroup(Model($group));
+            self.addGroup(Model($group));
         });
 
         // delete group button
         this.$el.on('click.queryBuilder', Selectors.delete_group, function() {
             var $group = $(this).closest(Selectors.group_container);
-            that.deleteGroup(Model($group));
+            self.deleteGroup(Model($group));
         });
     }
 
@@ -273,7 +273,7 @@ QueryBuilder.prototype.bindEvents = function() {
                 node.$el.prependTo(node.parent.$el.find('>' + Selectors.rules_list));
             }
             else {
-                node.$el.insertAfter(node.parent.rules[index-1].$el);
+                node.$el.insertAfter(node.parent.rules[index - 1].$el);
             }
         },
         'move': function(e, node, group, index) {
@@ -283,45 +283,45 @@ QueryBuilder.prototype.bindEvents = function() {
                 node.$el.prependTo(group.$el.find('>' + Selectors.rules_list));
             }
             else {
-                node.$el.insertAfter(group.rules[index-1].$el);
+                node.$el.insertAfter(group.rules[index - 1].$el);
             }
         },
         'update': function(e, node, field, value, oldValue) {
             if (node instanceof Rule) {
                 switch (field) {
                     case 'error':
-                        that.displayError(node);
+                        self.displayError(node);
                         break;
 
                     case 'flags':
-                        that.applyRuleFlags(node);
+                        self.applyRuleFlags(node);
                         break;
 
                     case 'filter':
-                        that.updateRuleFilter(node);
+                        self.updateRuleFilter(node);
                         break;
 
                     case 'operator':
-                        that.updateRuleOperator(node, oldValue);
+                        self.updateRuleOperator(node, oldValue);
                         break;
 
                     case 'value':
-                        that.updateRuleValue(node);
+                        self.updateRuleValue(node);
                         break;
                 }
             }
             else {
                 switch (field) {
                     case 'error':
-                        that.displayError(node);
+                        self.displayError(node);
                         break;
 
                     case 'flags':
-                        that.applyGroupFlags(node);
+                        self.applyGroupFlags(node);
                         break;
 
                     case 'condition':
-                        that.updateGroupCondition(node);
+                        self.updateGroupCondition(node);
                         break;
                 }
             }
@@ -338,8 +338,8 @@ QueryBuilder.prototype.bindEvents = function() {
 QueryBuilder.prototype.setRoot = function(addRule, data) {
     addRule = (addRule === undefined || addRule === true);
 
-    var group_id = this.nextGroupId(),
-        $group = $(this.getGroupTemplate(group_id, 1));
+    var group_id = this.nextGroupId();
+    var $group = $(this.getGroupTemplate(group_id, 1));
 
     this.$el.append($group);
     this.model.root = new Group(null, $group);
@@ -374,9 +374,9 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data) {
         return null;
     }
 
-    var group_id = this.nextGroupId(),
-        $group = $(this.getGroupTemplate(group_id, level)),
-        model = parent.addGroup($group);
+    var group_id = this.nextGroupId();
+    var $group = $(this.getGroupTemplate(group_id, level));
+    var model = parent.addGroup($group);
 
     if (data !== undefined) {
         model.data = data;
@@ -450,9 +450,9 @@ QueryBuilder.prototype.addRule = function(parent, data) {
         return null;
     }
 
-    var rule_id = this.nextRuleId(),
-        $rule = $(this.getRuleTemplate(rule_id)),
-        model = parent.addRule($rule);
+    var rule_id = this.nextRuleId();
+    var $rule = $(this.getRuleTemplate(rule_id));
+    var model = parent.addRule($rule);
 
     if (data !== undefined) {
         model.data = data;
@@ -497,7 +497,6 @@ QueryBuilder.prototype.deleteRule = function(rule) {
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
     var filters = this.change('getRuleFilters', this.filters, rule);
-
     var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
 
     rule.$el.find(Selectors.filter_container).html($filterSelect);
@@ -516,8 +515,8 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
         return;
     }
 
-    var operators = this.getOperators(rule.filter),
-        $operatorSelect = $(this.getRuleOperatorSelect(rule, operators));
+    var operators = this.getOperators(rule.filter);
+    var $operatorSelect = $(this.getRuleOperatorSelect(rule, operators));
 
     $operatorContainer.html($operatorSelect);
 
@@ -540,11 +539,11 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         return;
     }
 
-    var that = this,
-        $inputs = $(),
-        filter = rule.filter;
+    var self = this;
+    var $inputs = $();
+    var filter = rule.filter;
 
-    for (var i=0; i<rule.operator.nb_inputs; i++) {
+    for (var i = 0; i < rule.operator.nb_inputs; i++) {
         var $ruleInput = $(this.getRuleInput(rule, i));
         if (i > 0) $valueContainer.append(this.settings.inputs_separator);
         $valueContainer.append($ruleInput);
@@ -554,9 +553,9 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     $valueContainer.show();
 
     $inputs.on('change ' + (filter.input_event || ''), function() {
-        that.status.updating_value = true;
-        rule.value = that.getRuleValue(rule);
-        that.status.updating_value = false;
+        self.status.updating_value = true;
+        rule.value = self.getRuleValue(rule);
+        self.status.updating_value = false;
     });
 
     if (filter.plugin) {
@@ -569,9 +568,9 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         rule.value = filter.default_value;
     }
     else {
-        that.status.updating_value = true;
-        rule.value = that.getRuleValue(rule);
-        that.status.updating_value = false;
+        self.status.updating_value = true;
+        rule.value = self.getRuleValue(rule);
+        self.status.updating_value = false;
     }
 };
 
@@ -657,7 +656,7 @@ QueryBuilder.prototype.applyRuleFlags = function(rule) {
  */
 QueryBuilder.prototype.applyGroupFlags = function(group) {
     var flags = group.flags;
-    
+
     if (flags.condition_readonly) {
         group.$el.find('>' + Selectors.condition_container + ' .btn').addClass('disabled');
         group.$el.find('>' + Selectors.group_condition).prop('disabled', true);
@@ -665,7 +664,7 @@ QueryBuilder.prototype.applyGroupFlags = function(group) {
     if (flags.no_delete) {
         group.$el.find(Selectors.delete_group).remove();
     }
-    
+
     this.trigger('afterApplyGroupFlags', group);
 };
 

@@ -7,8 +7,8 @@
  * @return {array|true}
  */
 QueryBuilder.prototype.validateValue = function(rule, value) {
-    var validation = rule.filter.validation || {},
-        result = true;
+    var validation = rule.filter.validation || {};
+    var result = true;
 
     if (validation.callback) {
         result = validation.callback.call(this, value, rule);
@@ -28,11 +28,11 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
  * @return {array|true}
  */
 QueryBuilder.prototype.validateValueInternal = function(rule, value) {
-    var filter = rule.filter,
-        operator = rule.operator,
-        validation = filter.validation || {},
-        result = true,
-        tmp;
+    var filter = rule.filter;
+    var operator = rule.operator;
+    var validation = filter.validation || {};
+    var result = true;
+    var tmp;
 
     if (rule.operator.nb_inputs === 1) {
         value = [value];
@@ -41,7 +41,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
         value = value;
     }
 
-    for (var i=0; i<operator.nb_inputs; i++) {
+    for (var i = 0; i < operator.nb_inputs; i++) {
         switch (filter.input) {
             case 'radio':
                 if (value[i] === undefined) {
@@ -100,7 +100,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                             }
                         }
                         if (validation.format) {
-                            if (typeof validation.format === 'string') {
+                            if (typeof validation.format == 'string') {
                                 validation.format = new RegExp(validation.format);
                             }
                             if (!validation.format.test(value[i])) {
@@ -140,7 +140,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                             }
                         }
                         if (validation.step !== undefined && validation.step !== 'any') {
-                            var v = (value[i]/validation.step).toPrecision(14);
+                            var v = (value[i] / validation.step).toPrecision(14);
                             if (parseInt(v) != v) {
                                 result = ['number_wrong_step', validation.step];
                                 break;
@@ -221,13 +221,13 @@ QueryBuilder.prototype.nextRuleId = function() {
  * @return {object[]}
  */
 QueryBuilder.prototype.getOperators = function(filter) {
-    if (typeof filter === 'string') {
+    if (typeof filter == 'string') {
         filter = this.getFilterById(filter);
     }
 
     var result = [];
 
-    for (var i=0, l=this.operators.length; i<l; i++) {
+    for (var i = 0, l = this.operators.length; i < l; i++) {
         // filter operators check
         if (filter.operators) {
             if (filter.operators.indexOf(this.operators[i].type) == -1) {
@@ -263,7 +263,7 @@ QueryBuilder.prototype.getFilterById = function(id) {
         return null;
     }
 
-    for (var i=0, l=this.filters.length; i<l; i++) {
+    for (var i = 0, l = this.filters.length; i < l; i++) {
         if (this.filters[i].id == id) {
             return this.filters[i];
         }
@@ -283,7 +283,7 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
         return null;
     }
 
-    for (var i=0, l=this.operators.length; i<l; i++) {
+    for (var i = 0, l = this.operators.length; i < l; i++) {
         if (this.operators[i].type == type) {
             return this.operators[i];
         }
@@ -298,28 +298,28 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
  * @return {mixed}
  */
 QueryBuilder.prototype.getRuleValue = function(rule) {
-    var filter = rule.filter,
-        operator = rule.operator,
-        value = [];
+    var filter = rule.filter;
+    var operator = rule.operator;
+    var value = [];
 
     if (filter.valueGetter) {
         value = filter.valueGetter.call(this, rule);
     }
     else {
-        var $value = rule.$el.find(Selectors.value_container),
-            tmp;
+        var $value = rule.$el.find(Selectors.value_container);
 
-        for (var i=0; i<operator.nb_inputs; i++) {
+        for (var i = 0; i < operator.nb_inputs; i++) {
             var name = rule.id + '_value_' + i;
+            var tmp;
 
             switch (filter.input) {
                 case 'radio':
-                    value.push($value.find('[name='+ name +']:checked').val());
+                    value.push($value.find('[name=' + name + ']:checked').val());
                     break;
 
                 case 'checkbox':
                     tmp = [];
-                    $value.find('[name='+ name +']:checked').each(function() {
+                    $value.find('[name=' + name + ']:checked').each(function() {
                         tmp.push($(this).val());
                     });
                     value.push(tmp);
@@ -328,18 +328,18 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
                 case 'select':
                     if (filter.multiple) {
                         tmp = [];
-                        $value.find('[name='+ name +'] option:selected').each(function() {
+                        $value.find('[name=' + name + '] option:selected').each(function() {
                             tmp.push($(this).val());
                         });
                         value.push(tmp);
                     }
                     else {
-                        value.push($value.find('[name='+ name +'] option:selected').val());
+                        value.push($value.find('[name=' + name + '] option:selected').val());
                     }
                     break;
 
                 default:
-                    value.push($value.find('[name='+ name +']').val());
+                    value.push($value.find('[name=' + name + ']').val());
             }
         }
 
@@ -362,8 +362,8 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
  * @param value {mixed}
  */
 QueryBuilder.prototype.setRuleValue = function(rule, value) {
-    var filter = rule.filter,
-        operator = rule.operator;
+    var filter = rule.filter;
+    var operator = rule.operator;
 
     if (filter.valueSetter) {
         filter.valueSetter.call(this, rule, value);
@@ -378,12 +378,12 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
             value = value;
         }
 
-        for (var i=0; i<operator.nb_inputs; i++) {
-            var name = rule.id +'_value_'+ i;
+        for (var i = 0; i < operator.nb_inputs; i++) {
+            var name = rule.id + '_value_' + i;
 
             switch (filter.input) {
                 case 'radio':
-                    $value.find('[name='+ name +'][value="'+ value[i] +'"]').prop('checked', true).trigger('change');
+                    $value.find('[name=' + name + '][value="' + value[i] + '"]').prop('checked', true).trigger('change');
                     break;
 
                 case 'checkbox':
@@ -391,12 +391,12 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
                         value[i] = [value[i]];
                     }
                     value[i].forEach(function(value) {
-                        $value.find('[name='+ name +'][value="'+ value +'"]').prop('checked', true).trigger('change');
+                        $value.find('[name=' + name + '][value="' + value + '"]').prop('checked', true).trigger('change');
                     });
                     break;
 
                 default:
-                    $value.find('[name='+ name +']').val(value[i]).trigger('change');
+                    $value.find('[name=' + name + ']').val(value[i]).trigger('change');
                     break;
             }
         }
@@ -421,7 +421,7 @@ QueryBuilder.prototype.parseRuleFlags = function(rule) {
     }
 
     if (rule.flags) {
-       $.extend(flags, rule.flags);
+        $.extend(flags, rule.flags);
     }
 
     return this.change('parseRuleFlags', flags, rule);
@@ -440,9 +440,9 @@ QueryBuilder.prototype.getRuleFlags = function(flags, all) {
     else {
         var ret = {};
         $.each(this.settings.default_rule_flags, function(key, value) {
-           if (flags[key] !== value) {
-               ret[key] = flags[key];
-           }
+            if (flags[key] !== value) {
+                ret[key] = flags[key];
+            }
         });
         return ret;
     }
@@ -455,18 +455,18 @@ QueryBuilder.prototype.getRuleFlags = function(flags, all) {
  */
 QueryBuilder.prototype.parseGroupFlags = function(group) {
     var flags = $.extend({}, this.settings.default_group_flags);
-    
+
     if (group.readonly) {
         $.extend(flags, {
             condition_readonly: true,
             no_delete: true
         });
     }
-    
+
     if (group.flags) {
         $.extend(flags, group.flags);
     }
-    
+
     return this.change('parseGroupFlags', flags, group);
 };
 

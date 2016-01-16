@@ -3,8 +3,8 @@ $.fn.queryBuilder = function(option) {
         Utils.error('Config', 'Unable to initialize on multiple target');
     }
 
-    var data = this.data('queryBuilder'),
-        options = (typeof option == 'object' && option) || {};
+    var data = this.data('queryBuilder');
+    var options = (typeof option == 'object' && option) || {};
 
     if (!data && option == 'destroy') {
         return this;

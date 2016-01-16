@@ -2,7 +2,9 @@ var deepmerge = require('deepmerge');
 
 module.exports = function(grunt) {
     require('time-grunt')(grunt);
-    require('jit-grunt')(grunt);
+    require('jit-grunt')(grunt, {
+        scsslint: 'grunt-scss-lint'
+    });
 
     grunt.util.linefeed = '\n';
 
@@ -361,9 +363,30 @@ module.exports = function(grunt) {
         jshint: {
             lib: {
                 options: {
-                    '-W069': true // accesses to "regional" in language files
+                    jshintrc: '.jshintrc'
                 },
                 src: js_files_to_load
+            }
+        },
+
+        // jscs tests
+        jscs: {
+            lib: {
+                options: {
+                    config: '.jscsrc'
+                },
+                src: js_files_to_load
+            }
+        },
+
+        // scss tests
+        scsslint: {
+            lib: {
+                options: {
+                    colorizeOutput: true,
+                    config: '.scss-lint.yml'
+                },
+                src: ['src/**/*.scss']
             }
         },
 
@@ -569,8 +592,10 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('test', [
-        'default',
         'jshint',
+        'jscs',
+        'scsslint',
+        'default',
         'string-replace:test',
         'qunit_blanket_lcov',
         'qunit'

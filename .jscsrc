@@ -1,0 +1,37 @@
+{
+  "preset": "idiomatic",
+  "validateIndentation": 4,
+  "requireCamelCaseOrUpperCaseIdentifiers": false,
+  "disallowKeywordsOnNewLine": [],
+  "requireKeywordsOnNewLine": [
+    "else"
+  ],
+  "requirePaddingNewLinesAfterBlocks": false,
+  "safeContextKeyword": "self",
+  "disallowMultipleLineStrings": false,
+  "requirePaddingNewLinesBeforeLineComments": false,
+  "requireSpaceBeforeBinaryOperators": [
+    "=", "+", "-", "*", "/", "%", 
+    "<<", ">>", ">>>", "&", "|",  "^", 
+    "&&", "||",
+    "===", "==", ">=", "<=", "<", ">", "!=", "!=="
+  ],
+  "requireDotNotation": false,
+  "requireSpacesInsideBrackets": false,
+  "requireSpacesInsideParentheses": false,
+  "maximumLineLength": null,
+  "maximumNumberOfLines": null,
+  "validateQuoteMarks": {
+    "mark": "'",
+    "escape": true
+  },
+  "requireCurlyBraces": [
+    "for",
+    "while",
+    "do",
+    "try",
+    "catch"
+  ],
+  "requireEarlyReturn": false,
+  "validateCommentPosition": false
+}

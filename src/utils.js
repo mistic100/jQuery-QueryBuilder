@@ -72,8 +72,8 @@ Utils.changeType = function(value, type, boolAsInt) {
         case 'integer': return parseInt(value);
         case 'double': return parseFloat(value);
         case 'boolean':
-            var bool = value.trim().toLowerCase() === "true" || value.trim() === '1' || value === 1;
-            return  boolAsInt ? (bool ? 1 : 0) : bool;
+            var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
+            return boolAsInt ? (bool ? 1 : 0) : bool;
         default: return value;
     }
 };
@@ -84,13 +84,13 @@ Utils.changeType = function(value, type, boolAsInt) {
  * @return {string}
  */
 Utils.escapeString = function(value) {
-    if (typeof value !== 'string') {
+    if (typeof value != 'string') {
         return value;
     }
 
     return value
       .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
-          switch(s) {
+          switch (s) {
               case '\0': return '\\0';
               case '\n': return '\\n';
               case '\r': return '\\r';
@@ -109,7 +109,7 @@ Utils.escapeString = function(value) {
  * @return {string}
  */
 Utils.escapeRegExp = function(str) {
-    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 };
 
 /**
@@ -119,8 +119,8 @@ Utils.escapeRegExp = function(str) {
  * @returns {object[]}
  */
 Utils.groupSort = function(items, key) {
-    var optgroups = [],
-        newItems = [];
+    var optgroups = [];
+    var newItems = [];
 
     items.forEach(function(item) {
         var idx;
