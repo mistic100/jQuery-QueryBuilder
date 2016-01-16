@@ -71,11 +71,11 @@ QueryBuilder.define('invert', function(options) {
         });
     }
 }, {
-  icon: 'glyphicon glyphicon-random',
-  recursive: true,
-  invert_rules: true,
-  display_rules_button: false,
-  silent_fail: false
+    icon: 'glyphicon glyphicon-random',
+    recursive: true,
+    invert_rules: true,
+    display_rules_button: false,
+    silent_fail: false
 });
 
 QueryBuilder.extend({
@@ -96,6 +96,7 @@ QueryBuilder.extend({
         if (options.recursive === undefined) options.recursive = true;
         if (options.invert_rules === undefined) options.invert_rules = true;
         if (options.silent_fail === undefined) options.silent_fail = false;
+        if (options.trigger === undefined) options.trigger = true;
 
         if (node instanceof Group) {
             // invert group condition
@@ -108,12 +109,13 @@ QueryBuilder.extend({
 
             // recursive call
             if (options.recursive) {
+                var tempOpts = $.extend({}, options, {trigger: false});
                 node.each(function(rule) {
                     if (options.invert_rules) {
-                        this.invert(rule, options);
+                        this.invert(rule, tempOpts);
                     }
                 }, function(group) {
-                    this.invert(group, options);
+                    this.invert(group, tempOpts);
                 }, this);
             }
         }
@@ -131,6 +133,10 @@ QueryBuilder.extend({
                     Utils.error('InvertOperator', 'Unknown inverse of operator "{0}"', node.operator.type);
                 }
             }
+        }
+
+        if (options.trigger) {
+            this.trigger('afterInvert', node, options);
         }
     }
 });

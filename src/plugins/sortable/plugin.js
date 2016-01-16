@@ -80,9 +80,11 @@ QueryBuilder.define('sortable', function(options) {
             src.$el.show();
             placeholder.drop();
 
-            src = placeholder = null;
-
             self.$el.find(Selectors.rule_and_group_containers).removeAttr('draggable');
+
+            self.trigger('afterMove', src);
+
+            src = placeholder = null;
         });
     });
 

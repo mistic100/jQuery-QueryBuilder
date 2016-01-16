@@ -150,7 +150,7 @@ Node.prototype.drop = function() {
     }
 
     if (!this.isRoot()) {
-        this.parent._dropNode(this);
+        this.parent._removeNode(this);
         this.parent = null;
     }
 };
@@ -163,8 +163,8 @@ Node.prototype.drop = function() {
 Node.prototype.moveAfter = function(node) {
     if (this.isRoot()) return;
 
-    this.parent._dropNode(this);
-    node.parent._addNode(this, node.getPos()+1);
+    this._move(node.parent, node.getPos()+1);
+
     return this;
 };
 
@@ -179,9 +179,9 @@ Node.prototype.moveAtBegin = function(target) {
     if (target === undefined) {
         target = this.parent;
     }
-
-    this.parent._dropNode(this);
-    target._addNode(this, 0);
+    
+    this._move(target, 0);
+    
     return this;
 };
 
@@ -196,10 +196,24 @@ Node.prototype.moveAtEnd = function(target) {
     if (target === undefined) {
         target = this.parent;
     }
-
-    this.parent._dropNode(this);
-    target._addNode(this, target.length());
+    
+    this._move(target, target.length());
+    
     return this;
+};
+
+/**
+ * Move itself at specific position of Group
+ * @param {Group}
+ * @param {int}
+ */
+Node.prototype._move = function(group, index) {
+    this.parent._removeNode(this);
+    group._appendNode(this, index, false);
+    
+    if (this.model !== null) {
+        this.model.trigger('move', this, group, index);
+    }
 };
 
 
@@ -256,9 +270,10 @@ Group.prototype.length = function() {
  * Add a Node at specified index
  * @param {Node}
  * @param {int,optional}
+ * @param {boolean,optional}
  * @return {Node} the inserted node
  */
-Group.prototype._addNode = function(node, index) {
+Group.prototype._appendNode = function(node, index, trigger) {
     if (index === undefined) {
         index = this.length();
     }
@@ -266,7 +281,7 @@ Group.prototype._addNode = function(node, index) {
     this.rules.splice(index, 0, node);
     node.parent = this;
 
-    if (this.model !== null) {
+    if (trigger && this.model !== null) {
         this.model.trigger('add', node, index);
     }
 
@@ -280,7 +295,7 @@ Group.prototype._addNode = function(node, index) {
  * @return {Group} the inserted group
  */
 Group.prototype.addGroup = function($el, index) {
-    return this._addNode(new Group(this, $el), index);
+    return this._appendNode(new Group(this, $el), index, true);
 };
 
 /**
@@ -290,7 +305,7 @@ Group.prototype.addGroup = function($el, index) {
  * @return {Rule} the inserted rule
  */
 Group.prototype.addRule = function($el, index) {
-    return this._addNode(new Rule(this, $el), index);
+    return this._appendNode(new Rule(this, $el), index, true);
 };
 
 /**
@@ -298,7 +313,7 @@ Group.prototype.addRule = function($el, index) {
  * @param {Node}
  * @return {Group} self
  */
-Group.prototype._dropNode = function(node) {
+Group.prototype._removeNode = function(node) {
     var index = this.getNodePos(node);
     if (index !== -1) {
         node.parent = null;

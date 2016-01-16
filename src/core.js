@@ -269,13 +269,21 @@ QueryBuilder.prototype.bindEvents = function() {
             node.$el.remove();
         },
         'add': function(e, node, index) {
-            node.$el.detach();
-
             if (index === 0) {
                 node.$el.prependTo(node.parent.$el.find('>' + Selectors.rules_list));
             }
             else {
                 node.$el.insertAfter(node.parent.rules[index-1].$el);
+            }
+        },
+        'move': function(e, node, group, index) {
+            node.$el.detach();
+
+            if (index === 0) {
+                node.$el.prependTo(group.$el.find('>' + Selectors.rules_list));
+            }
+            else {
+                node.$el.insertAfter(group.rules[index-1].$el);
             }
         },
         'update': function(e, node, field, value, oldValue) {
