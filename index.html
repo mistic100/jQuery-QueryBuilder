@@ -47,7 +47,7 @@ isHome: true
       <li><a href="http://jquery.com">jQuery >= 1.9</a></li>
       <li><a href="http://getbootstrap.com">Bootstrap >= 3.1</a> (CSS Buttons and Utilities only)</li>
       <li><a href="https://github.com/mistic100/jQuery.extendext">$.extendext</a></li>
-      <li><a href="http://olado.github.io/doT">doT.js</a></li>
+      <li><a href="http://olado.github.io/doT">doT.js</a> (@master until the author decides to publish a new version)</li>
       <li><a href="http://momentjs.com">MomentJS</a> (optional, for Date/Time validation)</li>
       <li>Other Bootstrap/jQuery plugins used by plugins</li>
   </ul>
@@ -58,7 +58,7 @@ isHome: true
   </div>
 
   <h3 id="letsgo">Let's go!</h3>
-  <p>Include <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css" target="_blank"><i class="glyphicon glyphicon-file"></i> query-builder.css</a> in your page head and <a href="{{site.rawUrl}}/dist/js/query-builder.min.js" target="_blank"><i class="glyphicon glyphicon-file"></i> query-builder.js</a> after dependencies. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
+  <p>Include <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css" target="_blank"><i class="glyphicon glyphicon-file"></i> query-builder.css</a> in your page head and <a href="{{site.rawUrl}}/dist/js/query-builder.min.js" target="_blank"><i class="glyphicon glyphicon-file"></i> query-builder.js</a> after the dependencies. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
   
 {% highlight html %}
 <div id="builder"></div>
@@ -124,7 +124,7 @@ require(['jquery', 'query-builder'], function($) {
           <td>optgroups</td>
           <td>object</td>
           <td></td>
-          <td>List of groups in the filter's selectbox (see <a href="#filters">filters</a> configuration). It can be a simple <i>id => label</i> map or contains localized strings.
+          <td>List of groups in the filters and operators dropdowns (see <a href="#filters">filters</a> and <a href="#operators">operators</a> configuration). It can be a simple <i>id => label</i> map or contains localized strings.
             <a data-bootbox="optgroups_details"><i class="glyphicon glyphicon-info-sign"></i> More details</a>
             <div id="optgroups_details" class="hidden" title="Optgroups definition">
               <p>Simple <i>id => label</i> map :</p>
@@ -147,6 +147,12 @@ optgroups: {
 {% endhighlight %}
             </div>
           </td>
+        </tr>
+        <tr>
+          <td>default_filter</td>
+          <td>string</td>
+          <td>null</td>
+          <td>The <code>id</code> of the default filter for any new rule.</td>
         </tr>
         <tr>
           <td>allow_groups</td>
@@ -183,6 +189,12 @@ optgroups: {
           <td>string</td>
           <td>' , '</td>
           <td>Piece of HTML used to separate multiple inputs (for <code>between</code> operator).</td>
+        </tr>
+        <tr>
+          <td>display_empty_filter</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>Add an empty option with <code>select_placeholder</code> code to the filter dropdowns. If the empty filter is disabled and no <code>default_filter</code> is defined, the first filter will be loaded when adding a rule.</td>
         </tr>
         <tr>
           <td>select_placeholder</td>
@@ -331,6 +343,12 @@ values: [
           <td>mixed</td>
           <td></td>
           <td>As it says :-)</td>
+        </tr>
+        <tr>
+          <td>input_event</td>
+          <td>string</td>
+          <td>'change'</td>
+          <td>Space separated list of DOM events which the build should listen to detect value changes.</td>
         </tr>
         <tr>
           <td>size</td>
@@ -543,9 +561,35 @@ $('#builder')[0].queryBuilder.method_name(param_1, param_2);
 
   <div class="bs-callout">
     <h4>getRules</h4>
-    <p>Performs validation and returns the rules as a plain JSON object. See the <a href="{{site.github.url}}/demo.html">demo</a> for output example.</p>
+    <p>Performs validation and returns the rules as a plain JSON object. See the <a href="{{site.github.url}}/demo.html">demo</a> for output example. The method takes an optional object of options.</p>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th style="width: 130px;">Option</th>
+          <th style="width: 100px;">type</th>
+          <th style="width: 100px;">default</th>
+          <th>description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>get_flags</td>
+          <td>boolean|string</td>
+          <td>false</td>
+          <td><code>true</code> to return rule and group flags that differ from the default values. <code>'all'</code> to return all rule and group flags.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
 {% highlight javascript %}
+// get all rules
 $('#builder').queryBuilder('getRules');
+
+// get all rules and their flags when applicable
+$('#builder').queryBuilder('getRules', { get_flags: true });
 {% endhighlight %}
 
     <div class="bs-callout bs-callout-info">
@@ -602,6 +646,7 @@ $('#builder').queryBuilder('setRules', { ... });
     </div>
 
     <p>Each rule and group can have an additional <code>data</code> parameter which will be merged with the filter data (for rules only) when calling <code>getRules</code>.</p>
+
     <p>Each rule can have an additional <code>flags</code> parameter which will control the editability of the rule.</p>
 
     <div class="table-responsive">
@@ -652,6 +697,43 @@ $('#builder').queryBuilder('setRules', { ... });
     no_delete: true
 }
 {% endhighlight %}
+
+    <p>The same way, each group can have an additional <code>flags</code> parameter which will control the editability of the group.</p>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th style="width: 130px;">Property</th>
+          <th style="width: 100px;">type</th>
+          <th style="width: 100px;">default</th>
+          <th>description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>condition_readonly</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>The group condition can't be changed.</td>
+        </tr>
+        <tr>
+          <td>no_delete</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>The group can't be deleted.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Alternatively you can set the <code>readonly</code> parameter to <code>true</code>, which is a shorthand to:</p>
+{% highlight javascript %}
+{
+  condition_readonly: true,
+  no_delete: true
+}
+{% endhighlight %}
   </div>
 
   <div class="bs-callout">
@@ -695,7 +777,9 @@ $('#builder').queryBuilder('destroy');
   </h1>
   
   <h3 id="operators">Operators</h3>
-  <p>You can define the list of operators available in the query builder. It's an array of plain objects.</p>
+  <p>QueryBuilder is bundle with an <a data-bootbox="default_operators"><i class="glyphicon glyphicon-info-sign"></i> extensive list of operators</a>. You can change which operators are available for each filter (see <a href="#filters">filters</a> configuration) but you can also modify/reorder the operators globally and even add new custom operators.</p>
+
+  <p>The <code>operators</code> config property is an array of strings (existing operators) or object (existing and new operators). The operators properties are :</p>
   <div class="table-responsive">
     <table class="table table-bordered table-striped">
       <thead>
@@ -710,6 +794,11 @@ $('#builder').queryBuilder('destroy');
           <td>type</td>
           <td>string</td>
           <td>Identifier of the operator, use the <code>lang.operators</code> to translate give a human readable name to your operator.</td>
+        </tr>
+        <tr>
+          <td>optgroup</td>
+          <td>string</td>
+          <td>Optional id of an <code>&lt;optgroup&gt;</code> in the operators dropdown. If the optgroup does not exist in the <a href="#options">global optgroups</a> map, it will be created with label=id for all languages.</td>
         </tr>
         <tr>
           <td>nb_inputs</td>
@@ -733,31 +822,60 @@ $('#builder').queryBuilder('destroy');
       </tbody>
     </table>
   </div>
-  
-  <p>Check the default operators configuration <a href="{{site.blobUrl}}/src/defaults.js#L106-L127"><i class="glyphicon glyphicon-file"></i> in the source code</a>.</p>
+
+  <p>For example to only use "equal" and "not equal" operators you use this config :</p>
+{% highlight javascript %}
+operators: ['equal', 'not_equal']
+{% endhighlight %}
+
+  <p>To use "equal" and "not equal" and a custom operator, in custom optgroups :</p>
+{% highlight javascript %}
+operators: [
+  { type: 'equal', optgroup: 'basic' },
+  { type: 'not_equal', optgroup: 'basic' },
+  { type: 'geo', optgroup: 'custom', nb_inputs: 3, multiple: false, apply_to: ['number'] }
+]
+{% endhighlight %}
   
   <h3 id="lang">Translation</h3>
   <p>Translation files are available in the <a href="{{site.treeUrl}}/dist/i18n"><i class="glyphicon glyphicon-file"></i> i18n</a> folder. Just include one of the files after the main JavaScript to use it.<p>
   
   <p>You can load multiple translation files and use the <code>lang_code</code> option to choose which language to use.</p>
 
-  <p>Available languages are (somes are partially translated) :<br>
-    <i class="flag flag-al"></i> Albanian
-    <i class="flag flag-de"></i> German
-    <i class="flag flag-dk"></i> Danish
-    <i class="flag flag-es"></i> Spanish
-    <i class="flag flag-fr"></i> French
-    <i class="flag flag-gb"></i> English
-    <i class="flag flag-it"></i> Italian
-    <i class="flag flag-ir"></i> Farsi
-    <i class="flag flag-nl"></i> Dutch
-    <i class="flag flag-no"></i> Norwegian
-    <i class="flag flag-pl"></i> Polish
-    <i class="flag flag-pt-PT"></i> Portuguese
-    <i class="flag flag-pt-BR"></i> Brazilian Portuguese
-    <i class="flag flag-ro"></i> Romanian
-    <i class="flag flag-ru"></i> Rusian
-  </p>
+  <p>Available languages are (some are partially translated) :</p>
+
+  <table class="table table-bordered langs-table">
+    <tr>
+      <td><i class="flag flag-al"></i> Albanian</td>
+      <td><i class="flag flag-ar"></i> Arabic</td>
+      <td><i class="flag flag-de"></i> German</td>
+      <td><i class="flag flag-dk"></i> Danish</td>
+    </tr>
+    <tr>
+      <td><i class="flag flag-es"></i> Spanish</td>
+      <td><i class="flag flag-fr"></i> French</td>
+      <td><i class="flag flag-gb"></i> English</td>
+      <td><i class="flag flag-it"></i> Italian</td>
+    </tr>
+    <tr>
+      <td><i class="flag flag-ir"></i> Farsi</td>
+      <td><i class="flag flag-nl"></i> Dutch</td>
+      <td><i class="flag flag-no"></i> Norwegian</td>
+      <td><i class="flag flag-pl"></i> Polish</td>
+    </tr>
+    <tr>
+      <td><i class="flag flag-pt-PT"></i> Portuguese</td>
+      <td><i class="flag flag-pt-BR"></i> Brazilian Portuguese</td>
+      <td><i class="flag flag-ro"></i> Romanian</td>
+      <td><i class="flag flag-ru"></i> Russian</td>
+    </tr>
+    <tr>
+      <td><i class="flag flag-tr"></i> Turkish</td>
+      <td><i class="flag flag-zh-CN"></i> Simplified Chinese</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
 
   <p>Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom operators and conditions.<br>
   Default English strings are <a href="{{site.blobUrl}}/src/i18n/en.json"><i class="glyphicon glyphicon-file"></i> in the source code</a>.</p>
@@ -856,6 +974,7 @@ $('#builder').queryBuilder('destroy');
     <ul>
       <li><code>rule</code> a <b>Rule</b> object</li>
       <li><code>operators</code> the operators available in this rule</li>
+      <li><code>translate</code> a function used for localization</i></li>
     </ul>
   </div>
 
@@ -879,7 +998,9 @@ $('#builder').queryBuilder('destroy');
 <link href="{{site.github.url}}/assets/flags/flags.css" rel="stylesheet">
 
 <style>
-.flag { display: inline-block; }
+.langs-table { layout: fixed; border: none !important; }
+.langs-table td { width: 25%; border: none !important; padding: 0 !important; }
+.langs-table .flag { display: inline-block; }
 .treeview .expand-collapse { display: none; }
 </style>
 

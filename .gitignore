@@ -1,5 +1,6 @@
 /_site
 Gemfile.lock
+/.idea
 
 # commit minimum dependencies
 /dist/**/*.map
@@ -15,10 +16,10 @@ Gemfile.lock
 /dist/jQuery-QueryBuilder/dist/scss
 /dist/microplugin
 /dist/modernizr
-/dist/momentjs/*
-!/dist/momentjs/min
-/dist/momentjs/min/*
-!/dist/momentjs/min/moment.min.js
+/dist/moment/*
+!/dist/moment/min
+/dist/moment/min/*
+!/dist/moment/min/moment.min.js
 /dist/seiyria-bootstrap-slider/*
 !/dist/seiyria-bootstrap-slider/dist
 /dist/selectize/*
@@ -33,3 +34,4 @@ Gemfile.lock
 !/dist/bootstrap-select/dist
 /dist/bootstrap-select/dist/js/i18n
 /dist/sql-parser/lib
+/dist/doT

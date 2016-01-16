@@ -1,12 +1,12 @@
 /*!
- * jQuery QueryBuilder 2.3.0
+ * jQuery QueryBuilder 2.3.1
  * Locale: Spanish (es)
  * Author: "pyarza", "kddlb"
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
-    if (typeof define === 'function' && define.amd) {
+    if (typeof define == 'function' && define.amd) {
         define(['jquery', 'query-builder'], factory);
     }
     else {

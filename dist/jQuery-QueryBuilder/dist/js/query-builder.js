@@ -1,13 +1,13 @@
 /*!
- * jQuery QueryBuilder 2.3.0
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * jQuery QueryBuilder 2.3.1
+ * Copyright 2014-2016 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
 // Languages: en
 // Plugins: bt-checkbox, bt-selectpicker, bt-tooltip-errors, change-filters, filter-description, invert, mongodb-support, sortable, sql-support, unique-filter
 (function(root, factory) {
-    if (typeof define === 'function' && define.amd) {
+    if (typeof define == 'function' && define.amd) {
         define(['jquery', 'doT', 'jQuery.extendext'], factory);
     }
     else {
@@ -113,6 +113,7 @@ QueryBuilder.extend = function(methods) {
 
 /**
  * Init plugins for an instance
+ * @throws ConfigError
  */
 QueryBuilder.prototype.initPlugins = function() {
     if (!this.plugins) {
@@ -137,10 +138,11 @@ QueryBuilder.prototype.initPlugins = function() {
             QueryBuilder.plugins[plugin].fct.call(this, this.plugins[plugin]);
         }
         else {
-            Utils.error('Unable to find plugin "{0}"', plugin);
+            Utils.error('Config', 'Unable to find plugin "{0}"', plugin);
         }
     }, this);
 };
+
 
 /**
  * Allowed types and their internal representation
@@ -172,7 +174,9 @@ QueryBuilder.inputs = [
 QueryBuilder.modifiable_options = [
     'display_errors',
     'allow_groups',
-    'allow_empty'
+    'allow_empty',
+    'default_condition',
+    'default_filter'
 ];
 
 /**
@@ -185,7 +189,7 @@ var Selectors = QueryBuilder.selectors = {
     operator_container:   '.rule-operator-container',
     value_container:      '.rule-value-container',
     error_container:      '.error-container',
-    condition_container:  '.group-conditions',
+    condition_container:  '.rules-group-header .group-conditions',
 
     rule_header:          '.rule-header',
     group_header:         '.rules-group-header',
@@ -216,6 +220,32 @@ QueryBuilder.templates = {};
 QueryBuilder.regional = {};
 
 /**
+ * Default operators
+ */
+QueryBuilder.OPERATORS = {
+    equal:            { type: 'equal',            nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] },
+    not_equal:        { type: 'not_equal',        nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] },
+    in:               { type: 'in',               nb_inputs: 1, multiple: true,  apply_to: ['string', 'number', 'datetime'] },
+    not_in:           { type: 'not_in',           nb_inputs: 1, multiple: true,  apply_to: ['string', 'number', 'datetime'] },
+    less:             { type: 'less',             nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
+    less_or_equal:    { type: 'less_or_equal',    nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
+    greater:          { type: 'greater',          nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
+    greater_or_equal: { type: 'greater_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
+    between:          { type: 'between',          nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime'] },
+    not_between:      { type: 'not_between',      nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime'] },
+    begins_with:      { type: 'begins_with',      nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    not_begins_with:  { type: 'not_begins_with',  nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    contains:         { type: 'contains',         nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    not_contains:     { type: 'not_contains',     nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    ends_with:        { type: 'ends_with',        nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    not_ends_with:    { type: 'not_ends_with',    nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    is_empty:         { type: 'is_empty',         nb_inputs: 0, multiple: false, apply_to: ['string'] },
+    is_not_empty:     { type: 'is_not_empty',     nb_inputs: 0, multiple: false, apply_to: ['string'] },
+    is_null:          { type: 'is_null',          nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] },
+    is_not_null:      { type: 'is_not_null',      nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] }
+};
+
+/**
  * Default configuration
  */
 QueryBuilder.DEFAULTS = {
@@ -229,12 +259,19 @@ QueryBuilder.DEFAULTS = {
     default_condition: 'AND',
     inputs_separator: ' , ',
     select_placeholder: '------',
+    display_empty_filter: true,
+    default_filter: null,
     optgroups: {},
 
     default_rule_flags: {
         filter_readonly: false,
         operator_readonly: false,
         value_readonly: false,
+        no_delete: false
+    },
+
+    default_group_flags: {
+        condition_readonly: false,
         no_delete: false
     },
 
@@ -249,26 +286,26 @@ QueryBuilder.DEFAULTS = {
     lang: {},
 
     operators: [
-        {type: 'equal',            nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
-        {type: 'not_equal',        nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
-        {type: 'in',               nb_inputs: 1, multiple: true,  apply_to: ['string', 'number', 'datetime']},
-        {type: 'not_in',           nb_inputs: 1, multiple: true,  apply_to: ['string', 'number', 'datetime']},
-        {type: 'less',             nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
-        {type: 'less_or_equal',    nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
-        {type: 'greater',          nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
-        {type: 'greater_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
-        {type: 'between',          nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime']},
-        {type: 'not_between',      nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime']},
-        {type: 'begins_with',      nb_inputs: 1, multiple: false, apply_to: ['string']},
-        {type: 'not_begins_with',  nb_inputs: 1, multiple: false, apply_to: ['string']},
-        {type: 'contains',         nb_inputs: 1, multiple: false, apply_to: ['string']},
-        {type: 'not_contains',     nb_inputs: 1, multiple: false, apply_to: ['string']},
-        {type: 'ends_with',        nb_inputs: 1, multiple: false, apply_to: ['string']},
-        {type: 'not_ends_with',    nb_inputs: 1, multiple: false, apply_to: ['string']},
-        {type: 'is_empty',         nb_inputs: 0, multiple: false, apply_to: ['string']},
-        {type: 'is_not_empty',     nb_inputs: 0, multiple: false, apply_to: ['string']},
-        {type: 'is_null',          nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
-        {type: 'is_not_null',      nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']}
+        'equal',
+        'not_equal',
+        'in',
+        'not_in',
+        'less',
+        'less_or_equal',
+        'greater',
+        'greater_or_equal',
+        'between',
+        'not_between',
+        'begins_with',
+        'not_begins_with',
+        'contains',
+        'not_contains',
+        'ends_with',
+        'not_ends_with',
+        'is_empty',
+        'is_not_empty',
+        'is_null',
+        'is_not_null'
     ],
 
     icons: {
@@ -279,6 +316,7 @@ QueryBuilder.DEFAULTS = {
         error:        'glyphicon glyphicon-warning-sign'
     }
 };
+
 
 /**
  * Init the builder
@@ -295,6 +333,7 @@ QueryBuilder.prototype.init = function($el, options) {
         rule_id: 0,
         generated_id: false,
         has_optgroup: false,
+        has_operator_oprgroup: false,
         id: null,
         updating_value: false
     };
@@ -313,13 +352,13 @@ QueryBuilder.prototype.init = function($el, options) {
     this.operators = this.settings.operators;
     this.templates = this.settings.templates;
     this.plugins = this.settings.plugins;
-    
+
     // translations : english << 'lang_code' << custom
     if (QueryBuilder.regional['en'] === undefined) {
-        Utils.error('"i18n/en.js" not loaded.');
+        Utils.error('Config', '"i18n/en.js" not loaded.');
     }
     this.lang = $.extendext(true, 'replace', {}, QueryBuilder.regional['en'], QueryBuilder.regional[this.settings.lang_code], this.settings.lang);
-    
+
     // init templates
     Object.keys(this.templates).forEach(function(tpl) {
         if (!this.templates[tpl]) {
@@ -332,7 +371,7 @@ QueryBuilder.prototype.init = function($el, options) {
 
     // ensure we have a container id
     if (!this.$el.attr('id')) {
-        this.$el.attr('id', 'qb_'+Math.floor(Math.random()*99999));
+        this.$el.attr('id', 'qb_' + Math.floor(Math.random() * 99999));
         this.status.generated_id = true;
     }
     this.status.id = this.$el.attr('id');
@@ -341,6 +380,7 @@ QueryBuilder.prototype.init = function($el, options) {
     this.$el.addClass('query-builder form-inline');
 
     this.filters = this.checkFilters(this.filters);
+    this.operators = this.checkOperators(this.operators);
     this.bindEvents();
     this.initPlugins();
 
@@ -357,20 +397,21 @@ QueryBuilder.prototype.init = function($el, options) {
 
 /**
  * Checks the configuration of each filter
+ * @throws ConfigError
  */
 QueryBuilder.prototype.checkFilters = function(filters) {
     var definedFilters = [];
 
     if (!filters || filters.length === 0) {
-        Utils.error('Missing filters list');
+        Utils.error('Config', 'Missing filters list');
     }
 
     filters.forEach(function(filter, i) {
         if (!filter.id) {
-            Utils.error('Missing filter {0} id', i);
+            Utils.error('Config', 'Missing filter {0} id', i);
         }
         if (definedFilters.indexOf(filter.id) != -1) {
-            Utils.error('Filter "{0}" already defined', filter.id);
+            Utils.error('Config', 'Filter "{0}" already defined', filter.id);
         }
         definedFilters.push(filter.id);
 
@@ -378,14 +419,14 @@ QueryBuilder.prototype.checkFilters = function(filters) {
             filter.type = 'string';
         }
         else if (!QueryBuilder.types[filter.type]) {
-            Utils.error('Invalid type "{0}"', filter.type);
+            Utils.error('Config', 'Invalid type "{0}"', filter.type);
         }
 
         if (!filter.input) {
             filter.input = 'text';
         }
         else if (typeof filter.input != 'function' && QueryBuilder.inputs.indexOf(filter.input) == -1) {
-            Utils.error('Invalid input "{0}"', filter.input);
+            Utils.error('Config', 'Invalid input "{0}"', filter.input);
         }
 
         if (!filter.field) {
@@ -401,7 +442,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
         else {
             this.status.has_optgroup = true;
 
-            // backward compatiblity, register optgroup if needed
+            // register optgroup if needed
             if (!this.settings.optgroups[filter.optgroup]) {
                 this.settings.optgroups[filter.optgroup] = filter.optgroup;
             }
@@ -410,7 +451,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
         switch (filter.input) {
             case 'radio': case 'checkbox':
                 if (!filter.values || filter.values.length < 1) {
-                    Utils.error('Missing filter "{0}" values', filter.id);
+                    Utils.error('Config', 'Missing filter "{0}" values', filter.id);
                 }
                 break;
 
@@ -419,9 +460,9 @@ QueryBuilder.prototype.checkFilters = function(filters) {
                     if (filter.placeholder_value === undefined) {
                         filter.placeholder_value = -1;
                     }
-                    Utils.iterateOptions(filter.values, function(key, val) {
+                    Utils.iterateOptions(filter.values, function(key) {
                         if (key == filter.placeholder_value) {
-                            Utils.error('Placeholder of filter "{0}" overlaps with one of its values', filter.id);
+                            Utils.error('Config', 'Placeholder of filter "{0}" overlaps with one of its values', filter.id);
                         }
                     });
                 }
@@ -429,43 +470,72 @@ QueryBuilder.prototype.checkFilters = function(filters) {
         }
     }, this);
 
-    // group filters with same optgroup, preserving declaration order when possible
     if (this.status.has_optgroup) {
-        var optgroups = [],
-            newFilters = [];
-
-        filters.forEach(function(filter, i) {
-            var idx;
-
-            if (filter.optgroup) {
-                idx = optgroups.lastIndexOf(filter.optgroup);
-
-                if (idx == -1) {
-                    idx = optgroups.length;
-                }
-                else {
-                    idx++;
-                }
-            }
-            else {
-                idx = optgroups.length;
-            }
-
-            optgroups.splice(idx, 0, filter.optgroup);
-            newFilters.splice(idx, 0, filter);
-        });
-
-        filters = newFilters;
+        filters = Utils.groupSort(filters, 'optgroup');
     }
 
     return filters;
 };
 
 /**
+ * Checks the configuration of each operator
+ * @throws ConfigError
+ */
+QueryBuilder.prototype.checkOperators = function(operators) {
+    var definedOperators = [];
+
+    operators.forEach(function(operator, i) {
+        if (typeof operator == 'string') {
+            if (!QueryBuilder.OPERATORS[operator]) {
+                Utils.error('Config', 'Unknown operator "{0}"', operator);
+            }
+
+            operators[i] = operator = $.extendext(true, 'replace', {}, QueryBuilder.OPERATORS[operator]);
+        }
+        else {
+            if (!operator.type) {
+                Utils.error('Config', 'Missing "type" for operator {0}', i);
+            }
+
+            if (QueryBuilder.OPERATORS[operator.type]) {
+                operators[i] = operator = $.extendext(true, 'replace', {}, QueryBuilder.OPERATORS[operator.type], operator);
+            }
+
+            if (operator.nb_inputs === undefined || operator.apply_to === undefined) {
+                Utils.error('Config', 'Missing "nb_inputs" and/or "apply_to" for operator "{0}"', operator.type);
+            }
+        }
+
+        if (definedOperators.indexOf(operator.type) != -1) {
+            Utils.error('Config', 'Operator "{0}" already defined', operator.type);
+        }
+        definedOperators.push(operator.type);
+
+        if (!operator.optgroup) {
+            operator.optgroup = null;
+        }
+        else {
+            this.status.has_operator_optgroup = true;
+
+            // register optgroup if needed
+            if (!this.settings.optgroups[operator.optgroup]) {
+                this.settings.optgroups[operator.optgroup] = operator.optgroup;
+            }
+        }
+    }, this);
+
+    if (this.status.has_operator_optgroup) {
+        operators = Utils.groupSort(operators, 'optgroup');
+    }
+
+    return operators;
+};
+
+/**
  * Add all events listeners
  */
 QueryBuilder.prototype.bindEvents = function() {
-    var that = this;
+    var self = this;
 
     // group condition change
     this.$el.on('change.queryBuilder', Selectors.group_condition, function() {
@@ -478,38 +548,38 @@ QueryBuilder.prototype.bindEvents = function() {
     // rule filter change
     this.$el.on('change.queryBuilder', Selectors.rule_filter, function() {
         var $rule = $(this).closest(Selectors.rule_container);
-        Model($rule).filter = that.getFilterById($(this).val());
+        Model($rule).filter = self.getFilterById($(this).val());
     });
 
     // rule operator change
     this.$el.on('change.queryBuilder', Selectors.rule_operator, function() {
         var $rule = $(this).closest(Selectors.rule_container);
-        Model($rule).operator = that.getOperatorByType($(this).val());
+        Model($rule).operator = self.getOperatorByType($(this).val());
     });
 
     // add rule button
     this.$el.on('click.queryBuilder', Selectors.add_rule, function() {
         var $group = $(this).closest(Selectors.group_container);
-        that.addRule(Model($group));
+        self.addRule(Model($group));
     });
 
     // delete rule button
     this.$el.on('click.queryBuilder', Selectors.delete_rule, function() {
         var $rule = $(this).closest(Selectors.rule_container);
-        that.deleteRule(Model($rule));
+        self.deleteRule(Model($rule));
     });
 
     if (this.settings.allow_groups !== 0) {
         // add group button
         this.$el.on('click.queryBuilder', Selectors.add_group, function() {
             var $group = $(this).closest(Selectors.group_container);
-            that.addGroup(Model($group));
+            self.addGroup(Model($group));
         });
 
         // delete group button
         this.$el.on('click.queryBuilder', Selectors.delete_group, function() {
             var $group = $(this).closest(Selectors.group_container);
-            that.deleteGroup(Model($group));
+            self.deleteGroup(Model($group));
         });
     }
 
@@ -519,40 +589,61 @@ QueryBuilder.prototype.bindEvents = function() {
             node.$el.remove();
         },
         'add': function(e, node, index) {
-            node.$el.detach();
-
             if (index === 0) {
                 node.$el.prependTo(node.parent.$el.find('>' + Selectors.rules_list));
             }
             else {
-                node.$el.insertAfter(node.parent.rules[index-1].$el);
+                node.$el.insertAfter(node.parent.rules[index - 1].$el);
+            }
+        },
+        'move': function(e, node, group, index) {
+            node.$el.detach();
+
+            if (index === 0) {
+                node.$el.prependTo(group.$el.find('>' + Selectors.rules_list));
+            }
+            else {
+                node.$el.insertAfter(group.rules[index - 1].$el);
             }
         },
         'update': function(e, node, field, value, oldValue) {
-            switch (field) {
-                case 'error':
-                    that.displayError(node);
-                    break;
+            if (node instanceof Rule) {
+                switch (field) {
+                    case 'error':
+                        self.displayError(node);
+                        break;
 
-                case 'condition':
-                    that.updateGroupCondition(node);
-                    break;
+                    case 'flags':
+                        self.applyRuleFlags(node);
+                        break;
 
-                case 'filter':
-                    that.updateRuleFilter(node);
-                    break;
+                    case 'filter':
+                        self.updateRuleFilter(node);
+                        break;
 
-                case 'operator':
-                    that.updateRuleOperator(node, oldValue);
-                    break;
+                    case 'operator':
+                        self.updateRuleOperator(node, oldValue);
+                        break;
 
-                case 'flags':
-                    that.applyRuleFlags(node);
-                    break;
+                    case 'value':
+                        self.updateRuleValue(node);
+                        break;
+                }
+            }
+            else {
+                switch (field) {
+                    case 'error':
+                        self.displayError(node);
+                        break;
 
-                case 'value':
-                    that.updateRuleValue(node);
-                    break;
+                    case 'flags':
+                        self.applyGroupFlags(node);
+                        break;
+
+                    case 'condition':
+                        self.updateGroupCondition(node);
+                        break;
+                }
             }
         }
     });
@@ -567,8 +658,8 @@ QueryBuilder.prototype.bindEvents = function() {
 QueryBuilder.prototype.setRoot = function(addRule, data) {
     addRule = (addRule === undefined || addRule === true);
 
-    var group_id = this.nextGroupId(),
-        $group = $(this.getGroupTemplate(group_id, 1));
+    var group_id = this.nextGroupId();
+    var $group = $(this.getGroupTemplate(group_id, 1));
 
     this.$el.append($group);
     this.model.root = new Group(null, $group);
@@ -603,9 +694,9 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data) {
         return null;
     }
 
-    var group_id = this.nextGroupId(),
-        $group = $(this.getGroupTemplate(group_id, level)),
-        model = parent.addGroup($group);
+    var group_id = this.nextGroupId();
+    var $group = $(this.getGroupTemplate(group_id, level));
+    var model = parent.addGroup($group);
 
     if (data !== undefined) {
         model.data = data;
@@ -679,9 +770,9 @@ QueryBuilder.prototype.addRule = function(parent, data) {
         return null;
     }
 
-    var rule_id = this.nextRuleId(),
-        $rule = $(this.getRuleTemplate(rule_id)),
-        model = parent.addRule($rule);
+    var rule_id = this.nextRuleId();
+    var $rule = $(this.getRuleTemplate(rule_id));
+    var model = parent.addRule($rule);
 
     if (data !== undefined) {
         model.data = data;
@@ -690,6 +781,10 @@ QueryBuilder.prototype.addRule = function(parent, data) {
     this.trigger('afterAddRule', model);
 
     this.createRuleFilters(model);
+
+    if (this.settings.default_filter || !this.settings.display_empty_filter) {
+        model.filter = this.getFilterById(this.settings.default_filter || this.filters[0].id);
+    }
 
     return model;
 };
@@ -722,7 +817,6 @@ QueryBuilder.prototype.deleteRule = function(rule) {
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
     var filters = this.change('getRuleFilters', this.filters, rule);
-
     var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
 
     rule.$el.find(Selectors.filter_container).html($filterSelect);
@@ -741,8 +835,8 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
         return;
     }
 
-    var operators = this.getOperators(rule.filter),
-        $operatorSelect = $(this.getRuleOperatorSelect(rule, operators));
+    var operators = this.getOperators(rule.filter);
+    var $operatorSelect = $(this.getRuleOperatorSelect(rule, operators));
 
     $operatorContainer.html($operatorSelect);
 
@@ -765,11 +859,11 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         return;
     }
 
-    var that = this,
-        $inputs = $(),
-        filter = rule.filter;
+    var self = this;
+    var $inputs = $();
+    var filter = rule.filter;
 
-    for (var i=0; i<rule.operator.nb_inputs; i++) {
+    for (var i = 0; i < rule.operator.nb_inputs; i++) {
         var $ruleInput = $(this.getRuleInput(rule, i));
         if (i > 0) $valueContainer.append(this.settings.inputs_separator);
         $valueContainer.append($ruleInput);
@@ -778,10 +872,10 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
 
     $valueContainer.show();
 
-    $inputs.on('change', function() {
-        that.status.updating_value = true;
-        rule.value = that.getRuleValue(rule);
-        that.status.updating_value = false;
+    $inputs.on('change ' + (filter.input_event || ''), function() {
+        self.status.updating_value = true;
+        rule.value = self.getRuleValue(rule);
+        self.status.updating_value = false;
     });
 
     if (filter.plugin) {
@@ -794,9 +888,9 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         rule.value = filter.default_value;
     }
     else {
-        that.status.updating_value = true;
-        rule.value = that.getRuleValue(rule);
-        that.status.updating_value = false;
+        self.status.updating_value = true;
+        rule.value = self.getRuleValue(rule);
+        self.status.updating_value = false;
     }
 };
 
@@ -856,9 +950,8 @@ QueryBuilder.prototype.updateRuleValue = function(rule) {
 /**
  * Change rules properties depending on flags.
  * @param rule {Rule}
- * @param readonly {boolean}
  */
-QueryBuilder.prototype.applyRuleFlags = function(rule, readonly) {
+QueryBuilder.prototype.applyRuleFlags = function(rule) {
     var flags = rule.flags;
 
     if (flags.filter_readonly) {
@@ -875,6 +968,24 @@ QueryBuilder.prototype.applyRuleFlags = function(rule, readonly) {
     }
 
     this.trigger('afterApplyRuleFlags', rule);
+};
+
+/**
+ * Change group properties depending on flags.
+ * @param group {Group}
+ */
+QueryBuilder.prototype.applyGroupFlags = function(group) {
+    var flags = group.flags;
+
+    if (flags.condition_readonly) {
+        group.$el.find('>' + Selectors.condition_container + ' .btn').addClass('disabled');
+        group.$el.find('>' + Selectors.group_condition).prop('disabled', true);
+    }
+    if (flags.no_delete) {
+        group.$el.find(Selectors.delete_group).remove();
+    }
+
+    this.trigger('afterApplyGroupFlags', group);
 };
 
 /**
@@ -937,6 +1048,7 @@ QueryBuilder.prototype.triggerValidationError = function(node, error, value) {
         node.error = error;
     }
 };
+
 
 /**
  * Destroy the plugin
@@ -1017,23 +1129,24 @@ QueryBuilder.prototype.getModel = function(target) {
 QueryBuilder.prototype.validate = function() {
     this.clearErrors();
 
-    var that = this;
+    var self = this;
 
     var valid = (function parse(group) {
-        var done = 0, errors = 0;
+        var done = 0;
+        var errors = 0;
 
         group.each(function(rule) {
             if (!rule.filter) {
-                that.triggerValidationError(rule, 'no_filter', null);
+                self.triggerValidationError(rule, 'no_filter', null);
                 errors++;
                 return;
             }
 
             if (rule.operator.nb_inputs !== 0) {
-                var valid = that.validateValue(rule, rule.value);
+                var valid = self.validateValue(rule, rule.value);
 
                 if (valid !== true) {
-                    that.triggerValidationError(rule, valid, rule.value);
+                    self.triggerValidationError(rule, valid, rule.value);
                     errors++;
                     return;
                 }
@@ -1053,8 +1166,8 @@ QueryBuilder.prototype.validate = function() {
         if (errors > 0) {
             return false;
         }
-        else if (done === 0 && (!that.settings.allow_empty || !group.isRoot())) {
-            that.triggerValidationError(group, 'empty_group', null);
+        else if (done === 0 && (!self.settings.allow_empty || !group.isRoot())) {
+            self.triggerValidationError(group, 'empty_group', null);
             return false;
         }
 
@@ -1067,14 +1180,20 @@ QueryBuilder.prototype.validate = function() {
 
 /**
  * Get an object representing current rules
+ * @param {object} options
+ *      - get_flags: false[default] | true(only changes from default flags) | 'all'
  * @return {object}
  */
-QueryBuilder.prototype.getRules = function() {
+QueryBuilder.prototype.getRules = function(options) {
+    options = $.extend({
+        get_flags: false
+    }, options);
+
     if (!this.validate()) {
         return {};
     }
 
-    var that = this;
+    var self = this;
 
     var out = (function parse(group) {
         var data = {
@@ -1084,6 +1203,13 @@ QueryBuilder.prototype.getRules = function() {
 
         if (group.data) {
             data.data = $.extendext(true, 'replace', {}, group.data);
+        }
+
+        if (options.get_flags) {
+            var flags = self.getGroupFlags(group.flags, options.get_flags === 'all');
+            if (!$.isEmptyObject(flags)) {
+                data.flags = flags;
+            }
         }
 
         group.each(function(model) {
@@ -1105,6 +1231,13 @@ QueryBuilder.prototype.getRules = function() {
                 rule.data = $.extendext(true, 'replace', {}, model.filter.data, model.data);
             }
 
+            if (options.get_flags) {
+                var flags = self.getRuleFlags(model.flags, options.get_flags === 'all');
+                if (!$.isEmptyObject(flags)) {
+                    rule.flags = flags;
+                }
+            }
+
             data.rules.push(rule);
 
         }, function(model) {
@@ -1120,6 +1253,7 @@ QueryBuilder.prototype.getRules = function() {
 
 /**
  * Set rules from object
+ * @throws RulesError, UndefinedConditionError
  * @param data {object}
  */
 QueryBuilder.prototype.setRules = function(data) {
@@ -1130,59 +1264,67 @@ QueryBuilder.prototype.setRules = function(data) {
         };
     }
 
-    if (!data || !data.rules || (data.rules.length===0 && !this.settings.allow_empty)) {
-        Utils.error('Incorrect data object passed');
+    if (!data || !data.rules || (data.rules.length === 0 && !this.settings.allow_empty)) {
+        Utils.error('RulesParse', 'Incorrect data object passed');
     }
 
     this.clear();
     this.setRoot(false, data.data);
 
+    this.model.root.flags = this.parseGroupFlags(data);
+
     data = this.change('setRules', data);
 
-    var that = this;
+    var self = this;
 
-    (function add(data, group){
+    (function add(data, group) {
         if (group === null) {
             return;
         }
 
         if (data.condition === undefined) {
-            data.condition = that.settings.default_condition;
+            data.condition = self.settings.default_condition;
         }
-        else if (that.settings.conditions.indexOf(data.condition) == -1) {
-            Utils.error('Invalid condition "{0}"', data.condition);
+        else if (self.settings.conditions.indexOf(data.condition) == -1) {
+            Utils.error('UndefinedCondition', 'Invalid condition "{0}"', data.condition);
         }
 
         group.condition = data.condition;
 
         data.rules.forEach(function(item) {
             var model;
-            if (item.rules && item.rules.length>0) {
-                if (that.settings.allow_groups != -1 && that.settings.allow_groups < group.level) {
-                    that.reset();
-                    Utils.error('No more than {0} groups are allowed', that.settings.allow_groups);
+            if (item.rules && item.rules.length > 0) {
+                if (self.settings.allow_groups !== -1 && self.settings.allow_groups < group.level) {
+                    self.reset();
+                    Utils.error('RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
                 }
                 else {
-                    model = that.addGroup(group, false, item.data);
+                    model = self.addGroup(group, false, item.data);
+                    if (model === null) {
+                        return;
+                    }
+
+                    model.flags = self.parseGroupFlags(item);
+
                     add(item, model);
                 }
             }
             else {
                 if (item.id === undefined) {
-                    Utils.error('Missing rule field id');
+                    Utils.error('RulesParse', 'Missing rule field id');
                 }
                 if (item.operator === undefined) {
                     item.operator = 'equal';
                 }
 
-                model = that.addRule(group, item.data);
+                model = self.addRule(group, item.data);
                 if (model === null) {
                     return;
                 }
 
-                model.filter = that.getFilterById(item.id);
-                model.operator = that.getOperatorByType(item.operator);
-                model.flags = that.parseRuleFlags(item);
+                model.filter = self.getFilterById(item.id);
+                model.operator = self.getOperatorByType(item.operator);
+                model.flags = self.parseRuleFlags(item);
 
                 if (model.operator.nb_inputs !== 0 && item.value !== undefined) {
                     model.value = item.value;
@@ -1193,6 +1335,7 @@ QueryBuilder.prototype.setRules = function(data) {
     }(data, this.model.root));
 };
 
+
 /**
  * Check if a value is correct for a filter
  * @param rule {Rule}
@@ -1200,8 +1343,8 @@ QueryBuilder.prototype.setRules = function(data) {
  * @return {array|true}
  */
 QueryBuilder.prototype.validateValue = function(rule, value) {
-    var validation = rule.filter.validation || {},
-        result = true;
+    var validation = rule.filter.validation || {};
+    var result = true;
 
     if (validation.callback) {
         result = validation.callback.call(this, value, rule);
@@ -1215,16 +1358,17 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
 
 /**
  * Default validation function
+ * @throws ConfigError
  * @param rule {Rule}
  * @param value {string|string[]|undefined}
  * @return {array|true}
  */
 QueryBuilder.prototype.validateValueInternal = function(rule, value) {
-    var filter = rule.filter,
-        operator = rule.operator,
-        validation = filter.validation || {},
-        result = true,
-        tmp;
+    var filter = rule.filter;
+    var operator = rule.operator;
+    var validation = filter.validation || {};
+    var result = true;
+    var tmp;
 
     if (rule.operator.nb_inputs === 1) {
         value = [value];
@@ -1233,8 +1377,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
         value = value;
     }
 
-    for (var i=0; i<operator.nb_inputs; i++) {
-
+    for (var i = 0; i < operator.nb_inputs; i++) {
         switch (filter.input) {
             case 'radio':
                 if (value[i] === undefined) {
@@ -1249,7 +1392,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                     break;
                 }
                 else if (!operator.multiple && value[i].length > 1) {
-                    result = ['operator_not_multiple', this.lang[operator.type] || operator.type];
+                    result = ['operator_not_multiple', operator.type];
                     break;
                 }
                 break;
@@ -1261,7 +1404,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         break;
                     }
                     else if (!operator.multiple && value[i].length > 1) {
-                        result = ['operator_not_multiple', this.lang[operator.type] || operator.type];
+                        result = ['operator_not_multiple', operator.type];
                         break;
                     }
                 }
@@ -1293,7 +1436,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                             }
                         }
                         if (validation.format) {
-                            if (typeof validation.format === 'string') {
+                            if (typeof validation.format == 'string') {
                                 validation.format = new RegExp(validation.format);
                             }
                             if (!validation.format.test(value[i])) {
@@ -1333,7 +1476,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                             }
                         }
                         if (validation.step !== undefined && validation.step !== 'any') {
-                            var v = value[i]/validation.step;
+                            var v = (value[i] / validation.step).toPrecision(14);
                             if (parseInt(v) != v) {
                                 result = ['number_wrong_step', validation.step];
                                 break;
@@ -1350,12 +1493,12 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         // we need MomentJS
                         if (validation.format) {
                             if (!('moment' in window)) {
-                                Utils.error('MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
+                                Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
                             }
 
                             var datetime = moment(value[i], validation.format);
                             if (!datetime.isValid()) {
-                                result = ['datetime_invalid'];
+                                result = ['datetime_invalid', validation.format];
                                 break;
                             }
                             else {
@@ -1414,13 +1557,13 @@ QueryBuilder.prototype.nextRuleId = function() {
  * @return {object[]}
  */
 QueryBuilder.prototype.getOperators = function(filter) {
-    if (typeof filter === 'string') {
+    if (typeof filter == 'string') {
         filter = this.getFilterById(filter);
     }
 
     var result = [];
 
-    for (var i=0, l=this.operators.length; i<l; i++) {
+    for (var i = 0, l = this.operators.length; i < l; i++) {
         // filter operators check
         if (filter.operators) {
             if (filter.operators.indexOf(this.operators[i].type) == -1) {
@@ -1447,6 +1590,7 @@ QueryBuilder.prototype.getOperators = function(filter) {
 
 /**
  * Returns a particular filter by its id
+ * @throws UndefinedFilterError
  * @param filterId {string}
  * @return {object|null}
  */
@@ -1455,17 +1599,18 @@ QueryBuilder.prototype.getFilterById = function(id) {
         return null;
     }
 
-    for (var i=0, l=this.filters.length; i<l; i++) {
+    for (var i = 0, l = this.filters.length; i < l; i++) {
         if (this.filters[i].id == id) {
             return this.filters[i];
         }
     }
 
-    Utils.error('Undefined filter "{0}"', id);
+    Utils.error('UndefinedFilter', 'Undefined filter "{0}"', id);
 };
 
 /**
  * Return a particular operator by its type
+ * @throws UndefinedOperatorError
  * @param type {string}
  * @return {object|null}
  */
@@ -1474,13 +1619,13 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
         return null;
     }
 
-    for (var i=0, l=this.operators.length; i<l; i++) {
+    for (var i = 0, l = this.operators.length; i < l; i++) {
         if (this.operators[i].type == type) {
             return this.operators[i];
         }
     }
 
-    Utils.error('Undefined operator  "{0}"', type);
+    Utils.error('UndefinedOperator', 'Undefined operator "{0}"', type);
 };
 
 /**
@@ -1489,28 +1634,28 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
  * @return {mixed}
  */
 QueryBuilder.prototype.getRuleValue = function(rule) {
-    var filter = rule.filter,
-        operator = rule.operator,
-        value = [];
+    var filter = rule.filter;
+    var operator = rule.operator;
+    var value = [];
 
     if (filter.valueGetter) {
         value = filter.valueGetter.call(this, rule);
     }
     else {
-        var $value = rule.$el.find(Selectors.value_container),
-            tmp;
+        var $value = rule.$el.find(Selectors.value_container);
 
-        for (var i=0; i<operator.nb_inputs; i++) {
+        for (var i = 0; i < operator.nb_inputs; i++) {
             var name = rule.id + '_value_' + i;
+            var tmp;
 
             switch (filter.input) {
                 case 'radio':
-                    value.push($value.find('[name='+ name +']:checked').val());
+                    value.push($value.find('[name=' + name + ']:checked').val());
                     break;
 
                 case 'checkbox':
                     tmp = [];
-                    $value.find('[name='+ name +']:checked').each(function() {
+                    $value.find('[name=' + name + ']:checked').each(function() {
                         tmp.push($(this).val());
                     });
                     value.push(tmp);
@@ -1519,18 +1664,18 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
                 case 'select':
                     if (filter.multiple) {
                         tmp = [];
-                        $value.find('[name='+ name +'] option:selected').each(function() {
+                        $value.find('[name=' + name + '] option:selected').each(function() {
                             tmp.push($(this).val());
                         });
                         value.push(tmp);
                     }
                     else {
-                        value.push($value.find('[name='+ name +'] option:selected').val());
+                        value.push($value.find('[name=' + name + '] option:selected').val());
                     }
                     break;
 
                 default:
-                    value.push($value.find('[name='+ name +']').val());
+                    value.push($value.find('[name=' + name + ']').val());
             }
         }
 
@@ -1553,8 +1698,8 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
  * @param value {mixed}
  */
 QueryBuilder.prototype.setRuleValue = function(rule, value) {
-    var filter = rule.filter,
-        operator = rule.operator;
+    var filter = rule.filter;
+    var operator = rule.operator;
 
     if (filter.valueSetter) {
         filter.valueSetter.call(this, rule, value);
@@ -1569,12 +1714,12 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
             value = value;
         }
 
-        for (var i=0; i<operator.nb_inputs; i++) {
-            var name = rule.id +'_value_'+ i;
+        for (var i = 0; i < operator.nb_inputs; i++) {
+            var name = rule.id + '_value_' + i;
 
             switch (filter.input) {
                 case 'radio':
-                    $value.find('[name='+ name +'][value="'+ value[i] +'"]').prop('checked', true).trigger('change');
+                    $value.find('[name=' + name + '][value="' + value[i] + '"]').prop('checked', true).trigger('change');
                     break;
 
                 case 'checkbox':
@@ -1582,12 +1727,12 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
                         value[i] = [value[i]];
                     }
                     value[i].forEach(function(value) {
-                        $value.find('[name='+ name +'][value="'+ value +'"]').prop('checked', true).trigger('change');
+                        $value.find('[name=' + name + '][value="' + value + '"]').prop('checked', true).trigger('change');
                     });
                     break;
 
                 default:
-                    $value.find('[name='+ name +']').val(value[i]).trigger('change');
+                    $value.find('[name=' + name + ']').val(value[i]).trigger('change');
                     break;
             }
         }
@@ -1612,10 +1757,74 @@ QueryBuilder.prototype.parseRuleFlags = function(rule) {
     }
 
     if (rule.flags) {
-       $.extend(flags, rule.flags);
+        $.extend(flags, rule.flags);
     }
 
     return this.change('parseRuleFlags', flags, rule);
+};
+
+/**
+ * Get a copy of flags of a rule.
+ * @param {object} flags
+ * @param {boolean} all - true to return all flags, false to return only changes from default
+ * @returns {object}
+ */
+QueryBuilder.prototype.getRuleFlags = function(flags, all) {
+    if (all) {
+        return $.extend({}, flags);
+    }
+    else {
+        var ret = {};
+        $.each(this.settings.default_rule_flags, function(key, value) {
+            if (flags[key] !== value) {
+                ret[key] = flags[key];
+            }
+        });
+        return ret;
+    }
+};
+
+/**
+ * Clean group flags.
+ * @param group {object}
+ * @return {object}
+ */
+QueryBuilder.prototype.parseGroupFlags = function(group) {
+    var flags = $.extend({}, this.settings.default_group_flags);
+
+    if (group.readonly) {
+        $.extend(flags, {
+            condition_readonly: true,
+            no_delete: true
+        });
+    }
+
+    if (group.flags) {
+        $.extend(flags, group.flags);
+    }
+
+    return this.change('parseGroupFlags', flags, group);
+};
+
+/**
+ * Get a copy of flags of a group.
+ * @param {object} flags
+ * @param {boolean} all - true to return all flags, false to return only changes from default
+ * @returns {object}
+ */
+QueryBuilder.prototype.getGroupFlags = function(flags, all) {
+    if (all) {
+        return $.extend({}, flags);
+    }
+    else {
+        var ret = {};
+        $.each(this.settings.default_group_flags, function(key, value) {
+            if (flags[key] !== value) {
+                ret[key] = flags[key];
+            }
+        });
+        return ret;
+    }
 };
 
 /**
@@ -1626,6 +1835,7 @@ QueryBuilder.prototype.parseRuleFlags = function(rule) {
 QueryBuilder.prototype.translateLabel = function(label) {
     return typeof label == 'string' ? label : label[this.settings.lang_code] || label['en'];
 };
+
 
 QueryBuilder.templates.group = '\
 <dl id="{{= it.group_id }}" class="rules-group-container"> \
@@ -1681,11 +1891,13 @@ QueryBuilder.templates.rule = '\
 QueryBuilder.templates.filterSelect = '\
 {{ var optgroup = null; }} \
 <select class="form-control" name="{{= it.rule.id }}_filter"> \
-  <option value="-1">{{= it.settings.select_placeholder }}</option> \
+  {{? it.settings.display_empty_filter }} \
+    <option value="-1">{{= it.settings.select_placeholder }}</option> \
+  {{?}} \
   {{~ it.filters: filter }} \
     {{? optgroup !== filter.optgroup }} \
       {{? optgroup !== null }}</optgroup>{{?}} \
-      {{? (optgroup = filter.optgroup) !== null}} \
+      {{? (optgroup = filter.optgroup) !== null }} \
         <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
       {{?}} \
     {{?}} \
@@ -1695,10 +1907,18 @@ QueryBuilder.templates.filterSelect = '\
 </select>';
 
 QueryBuilder.templates.operatorSelect = '\
+{{ var optgroup = null; }} \
 <select class="form-control" name="{{= it.rule.id }}_operator"> \
   {{~ it.operators: operator }} \
+    {{? optgroup !== operator.optgroup }} \
+      {{? optgroup !== null }}</optgroup>{{?}} \
+      {{? (optgroup = operator.optgroup) !== null }} \
+        <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
+      {{?}} \
+    {{?}} \
     <option value="{{= operator.type }}">{{= it.lang.operators[operator.type] || operator.type }}</option> \
   {{~}} \
+  {{? optgroup !== null }}</optgroup>{{?}} \
 </select>';
 
 /**
@@ -1744,7 +1964,7 @@ QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
  * @param filters {array}
  * @return {string}
  */
-QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) { 
+QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
     var h = this.templates.filterSelect({
         builder: this,
         rule: rule,
@@ -1771,7 +1991,8 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
         operators: operators,
         icons: this.icons,
         lang: this.lang,
-        settings: this.settings
+        settings: this.settings,
+        translate: this.translateLabel
     });
 
     return this.change('getRuleOperatorSelect', h, rule);
@@ -1785,62 +2006,62 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
  * @return {string}
  */
 QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
-    var filter = rule.filter,
-        validation = rule.filter.validation || {},
-        name = rule.id +'_value_'+ value_id,
-        c = filter.vertical ? ' class=block' : '',
-        h = '';
+    var filter = rule.filter;
+    var validation = rule.filter.validation || {};
+    var name = rule.id + '_value_' + value_id;
+    var c = filter.vertical ? ' class=block' : '';
+    var h = '';
 
-    if (typeof filter.input === 'function') {
+    if (typeof filter.input == 'function') {
         h = filter.input.call(this, rule, name);
     }
     else {
         switch (filter.input) {
             case 'radio': case 'checkbox':
                 Utils.iterateOptions(filter.values, function(key, val) {
-                    h+= '<label'+ c +'><input type="'+ filter.input + '" name="'+ name +'" value="'+ key +'"> '+ val +'</label> ';
+                    h+= '<label' + c + '><input type="' + filter.input + '" name="' + name + '" value="' + key + '"> ' + val + '</label> ';
                 });
                 break;
 
             case 'select':
-                h+= '<select class="form-control" name="'+ name +'"'+ (filter.multiple ? ' multiple' : '') +'>';
+                h+= '<select class="form-control" name="' + name + '"' + (filter.multiple ? ' multiple' : '') + '>';
                 if (filter.placeholder) {
                     h+= '<option value="' + filter.placeholder_value + '" disabled selected>' + filter.placeholder + '</option>';
                 }
                 Utils.iterateOptions(filter.values, function(key, val) {
-                    h+= '<option value="'+ key +'">'+ val +'</option> ';
+                    h+= '<option value="' + key + '">' + val + '</option> ';
                 });
                 h+= '</select>';
                 break;
 
             case 'textarea':
-                h+= '<textarea class="form-control" name="'+ name +'"';
-                if (filter.size) h+= ' cols="'+ filter.size +'"';
-                if (filter.rows) h+= ' rows="'+ filter.rows +'"';
-                if (validation.min !== undefined) h+= ' minlength="'+ validation.min +'"';
-                if (validation.max !== undefined) h+= ' maxlength="'+ validation.max +'"';
-                if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
+                h+= '<textarea class="form-control" name="' + name + '"';
+                if (filter.size) h+= ' cols="' + filter.size + '"';
+                if (filter.rows) h+= ' rows="' + filter.rows + '"';
+                if (validation.min !== undefined) h+= ' minlength="' + validation.min + '"';
+                if (validation.max !== undefined) h+= ' maxlength="' + validation.max + '"';
+                if (filter.placeholder) h+= ' placeholder="' + filter.placeholder + '"';
                 h+= '></textarea>';
                 break;
 
             default:
                 switch (QueryBuilder.types[filter.type]) {
                     case 'number':
-                        h+= '<input class="form-control" type="number" name="'+ name +'"';
-                        if (validation.step !== undefined) h+= ' step="'+ validation.step +'"';
-                        if (validation.min !== undefined) h+= ' min="'+ validation.min +'"';
-                        if (validation.max !== undefined) h+= ' max="'+ validation.max +'"';
-                        if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
-                        if (filter.size) h+= ' size="'+ filter.size +'"';
+                        h+= '<input class="form-control" type="number" name="' + name + '"';
+                        if (validation.step !== undefined) h+= ' step="' + validation.step + '"';
+                        if (validation.min !== undefined) h+= ' min="' + validation.min + '"';
+                        if (validation.max !== undefined) h+= ' max="' + validation.max + '"';
+                        if (filter.placeholder) h+= ' placeholder="' + filter.placeholder + '"';
+                        if (filter.size) h+= ' size="' + filter.size + '"';
                         h+= '>';
                         break;
 
                     default:
-                        h+= '<input class="form-control" type="text" name="'+ name +'"';
-                        if (filter.placeholder) h+= ' placeholder="'+ filter.placeholder +'"';
-                        if (filter.type === 'string' && validation.min !== undefined) h+= ' minlength="'+ validation.min +'"';
-                        if (filter.type === 'string' && validation.max !== undefined) h+= ' maxlength="'+ validation.max +'"';
-                        if (filter.size) h+= ' size="'+ filter.size +'"';
+                        h+= '<input class="form-control" type="text" name="' + name + '"';
+                        if (filter.placeholder) h+= ' placeholder="' + filter.placeholder + '"';
+                        if (filter.type === 'string' && validation.min !== undefined) h+= ' minlength="' + validation.min + '"';
+                        if (filter.type === 'string' && validation.max !== undefined) h+= ' maxlength="' + validation.max + '"';
+                        if (filter.size) h+= ' size="' + filter.size + '"';
                         h+= '>';
                 }
         }
@@ -1848,6 +2069,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
 
     return this.change('getRuleInput', h, rule, name);
 };
+
 
 // Model CLASS
 // ===============================
@@ -1944,7 +2166,7 @@ var Node = function(parent, $el) {
         return new Node();
     }
 
-    Object.defineProperty(this, '__', { value: {}});
+    Object.defineProperty(this, '__', { value: {} });
 
     $el.data('queryBuilderModel', this);
 
@@ -1957,7 +2179,7 @@ var Node = function(parent, $el) {
     this.parent = parent;
 };
 
-defineModelProperties(Node, ['level', 'error', 'data']);
+defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
 
 Object.defineProperty(Node.prototype, 'parent', {
     enumerable: true,
@@ -1966,7 +2188,7 @@ Object.defineProperty(Node.prototype, 'parent', {
     },
     set: function(value) {
         this.__.parent = value;
-        this.level = value === null ? 1 : value.level+1;
+        this.level = value === null ? 1 : value.level + 1;
         this.model = value === null ? null : value.model;
     }
 });
@@ -2001,7 +2223,7 @@ Node.prototype.drop = function() {
     }
 
     if (!this.isRoot()) {
-        this.parent._dropNode(this);
+        this.parent._removeNode(this);
         this.parent = null;
     }
 };
@@ -2014,8 +2236,8 @@ Node.prototype.drop = function() {
 Node.prototype.moveAfter = function(node) {
     if (this.isRoot()) return;
 
-    this.parent._dropNode(this);
-    node.parent._addNode(this, node.getPos()+1);
+    this._move(node.parent, node.getPos() + 1);
+
     return this;
 };
 
@@ -2031,8 +2253,8 @@ Node.prototype.moveAtBegin = function(target) {
         target = this.parent;
     }
 
-    this.parent._dropNode(this);
-    target._addNode(this, 0);
+    this._move(target, 0);
+
     return this;
 };
 
@@ -2048,9 +2270,23 @@ Node.prototype.moveAtEnd = function(target) {
         target = this.parent;
     }
 
-    this.parent._dropNode(this);
-    target._addNode(this, target.length());
+    this._move(target, target.length());
+
     return this;
+};
+
+/**
+ * Move itself at specific position of Group
+ * @param {Group}
+ * @param {int}
+ */
+Node.prototype._move = function(group, index) {
+    this.parent._removeNode(this);
+    group._appendNode(this, index, false);
+
+    if (this.model !== null) {
+        this.model.trigger('move', this, group, index);
+    }
 };
 
 
@@ -2107,9 +2343,10 @@ Group.prototype.length = function() {
  * Add a Node at specified index
  * @param {Node}
  * @param {int,optional}
+ * @param {boolean,optional}
  * @return {Node} the inserted node
  */
-Group.prototype._addNode = function(node, index) {
+Group.prototype._appendNode = function(node, index, trigger) {
     if (index === undefined) {
         index = this.length();
     }
@@ -2117,7 +2354,7 @@ Group.prototype._addNode = function(node, index) {
     this.rules.splice(index, 0, node);
     node.parent = this;
 
-    if (this.model !== null) {
+    if (trigger && this.model !== null) {
         this.model.trigger('add', node, index);
     }
 
@@ -2131,7 +2368,7 @@ Group.prototype._addNode = function(node, index) {
  * @return {Group} the inserted group
  */
 Group.prototype.addGroup = function($el, index) {
-    return this._addNode(new Group(this, $el), index);
+    return this._appendNode(new Group(this, $el), index, true);
 };
 
 /**
@@ -2141,7 +2378,7 @@ Group.prototype.addGroup = function($el, index) {
  * @return {Rule} the inserted rule
  */
 Group.prototype.addRule = function($el, index) {
-    return this._addNode(new Rule(this, $el), index);
+    return this._appendNode(new Rule(this, $el), index, true);
 };
 
 /**
@@ -2149,7 +2386,7 @@ Group.prototype.addRule = function($el, index) {
  * @param {Node}
  * @return {Group} self
  */
-Group.prototype._dropNode = function(node) {
+Group.prototype._removeNode = function(node) {
     var index = this.getNodePos(node);
     if (index !== -1) {
         node.parent = null;
@@ -2176,7 +2413,7 @@ Group.prototype.getNodePos = function(node) {
  * @return {boolean}
  */
 Group.prototype.each = function(reverse, cbRule, cbGroup, context) {
-    if (typeof reverse === 'function') {
+    if (typeof reverse == 'function') {
         context = cbGroup;
         cbGroup = cbRule;
         cbRule = reverse;
@@ -2184,13 +2421,13 @@ Group.prototype.each = function(reverse, cbRule, cbGroup, context) {
     }
     context = context === undefined ? null : context;
 
-    var i = reverse ? this.rules.length-1 : 0,
-        l = reverse ? 0 : this.rules.length-1,
-        c = reverse ? -1 : 1,
-        next = function(){ return reverse ? i>=l : i<=l; },
-        stop = false;
+    var i = reverse ? this.rules.length - 1 : 0;
+    var l = reverse ? 0 : this.rules.length - 1;
+    var c = reverse ? -1 : 1;
+    var next = function() { return reverse ? i >= l : i <= l; };
+    var stop = false;
 
-    for (; next(); i+=c) {
+    for (; next(); i+= c) {
         if (this.rules[i] instanceof Group) {
             if (cbGroup !== undefined) {
                 stop = cbGroup.call(context, this.rules[i]) === false;
@@ -2254,11 +2491,14 @@ var Rule = function(parent, $el) {
 Rule.prototype = Object.create(Node.prototype);
 Rule.prototype.constructor = Rule;
 
-defineModelProperties(Rule, ['filter', 'operator', 'flags', 'value']);
+defineModelProperties(Rule, ['filter', 'operator', 'value']);
 
 
+// EXPORT
+// ===============================
 QueryBuilder.Group = Group;
 QueryBuilder.Rule = Rule;
+
 
 var Utils = QueryBuilder.utils = {};
 
@@ -2298,23 +2538,28 @@ Utils.iterateOptions = function(options, tpl) {
 /**
  * Replaces {0}, {1}, ... in a string
  * @param str {string}
- * @param args,... {string|int|float}
+ * @param args,... {mixed}
  * @return {string}
  */
-Utils.fmt = function(str, args) {
-    args = Array.prototype.slice.call(arguments);
+Utils.fmt = function(str/*, args*/) {
+    var args = Array.prototype.slice.call(arguments, 1);
 
     return str.replace(/{([0-9]+)}/g, function(m, i) {
-        return args[parseInt(i)+1];
+        return args[parseInt(i)];
     });
 };
 
 /**
- * Output internal error with jQuery.error
- * @see fmt
+ * Throw an Error object with custom name
+ * @param type {string}
+ * @param message {string}
+ * @param args,... {mixed}
  */
-Utils.error = function() {
-    $.error(Utils.fmt.apply(null, arguments));
+Utils.error = function(type, message/*, args*/) {
+    var err = new Error(Utils.fmt.apply(null, Array.prototype.slice.call(arguments, 1)));
+    err.name = type + 'Error';
+    err.args = Array.prototype.slice.call(arguments, 2);
+    throw err;
 };
 
 /**
@@ -2329,8 +2574,8 @@ Utils.changeType = function(value, type, boolAsInt) {
         case 'integer': return parseInt(value);
         case 'double': return parseFloat(value);
         case 'boolean':
-            var bool = value.trim().toLowerCase() === "true" || value.trim() === '1' || value === 1;
-            return  boolAsInt ? (bool ? 1 : 0) : bool;
+            var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
+            return boolAsInt ? (bool ? 1 : 0) : bool;
         default: return value;
     }
 };
@@ -2341,13 +2586,13 @@ Utils.changeType = function(value, type, boolAsInt) {
  * @return {string}
  */
 Utils.escapeString = function(value) {
-    if (typeof value !== 'string') {
+    if (typeof value != 'string') {
         return value;
     }
 
     return value
       .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
-          switch(s) {
+          switch (s) {
               case '\0': return '\\0';
               case '\n': return '\\n';
               case '\r': return '\\r';
@@ -2366,16 +2611,51 @@ Utils.escapeString = function(value) {
  * @return {string}
  */
 Utils.escapeRegExp = function(str) {
-    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 };
+
+/**
+ * Sort objects by grouping them by {key}, preserving initial order when possible
+ * @param {object[]} items
+ * @param {string} key
+ * @returns {object[]}
+ */
+Utils.groupSort = function(items, key) {
+    var optgroups = [];
+    var newItems = [];
+
+    items.forEach(function(item) {
+        var idx;
+
+        if (item[key]) {
+            idx = optgroups.lastIndexOf(item[key]);
+
+            if (idx == -1) {
+                idx = optgroups.length;
+            }
+            else {
+                idx++;
+            }
+        }
+        else {
+            idx = optgroups.length;
+        }
+
+        optgroups.splice(idx, 0, item[key]);
+        newItems.splice(idx, 0, item);
+    });
+
+    return newItems;
+};
+
 
 $.fn.queryBuilder = function(option) {
     if (this.length > 1) {
-        Utils.error('Unable to initialize on multiple target');
+        Utils.error('Config', 'Unable to initialize on multiple target');
     }
 
-    var data = this.data('queryBuilder'),
-        options = (typeof option == 'object' && option) || {};
+    var data = this.data('queryBuilder');
+    var options = (typeof option == 'object' && option) || {};
 
     if (!data && option == 'destroy') {
         return this;
@@ -2396,10 +2676,10 @@ $.fn.queryBuilder.extend = QueryBuilder.extend;
 $.fn.queryBuilder.define = QueryBuilder.define;
 $.fn.queryBuilder.regional = QueryBuilder.regional;
 
+
 /*!
  * jQuery QueryBuilder Awesome Bootstrap Checkbox
  * Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 QueryBuilder.define('bt-checkbox', function(options) {
@@ -2431,17 +2711,17 @@ QueryBuilder.define('bt-checkbox', function(options) {
                 filter.colors._def_ = filter.color;
             }
 
-            var style = filter.vertical ? ' style="display:block"' : '',
-                i = 0, color, id;
+            var style = filter.vertical ? ' style="display:block"' : '';
+            var i = 0;
 
             Utils.iterateOptions(filter.values, function(key, val) {
-                color = filter.colors[key] || filter.colors._def_ || options.color;
-                id = name +'_'+ (i++);
+                var color = filter.colors[key] || filter.colors._def_ || options.color;
+                var id = name + '_' + (i++);
 
                 h.value+= '\
-<div'+ style +' class="'+ filter.input +' '+ filter.input +'-'+ color +'"> \
-  <input type="'+ filter.input +'" name="'+ name +'" id="'+ id +'" value="'+ key +'"> \
-  <label for="'+ id +'">'+ val +'</label> \
+<div' + style + ' class="' + filter.input + ' ' + filter.input + '-' + color + '"> \
+  <input type="' + filter.input + '" name="' + name + '" id="' + id + '" value="' + key + '"> \
+  <label for="' + id + '">' + val + '</label> \
 </div>';
             });
         }
@@ -2451,15 +2731,18 @@ QueryBuilder.define('bt-checkbox', function(options) {
     color: 'default'
 });
 
+
 /*!
  * jQuery QueryBuilder Bootstrap Selectpicker
  * Applies Bootstrap Select on filters and operators combo-boxes.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
+/**
+ * @throws ConfigError
+ */
 QueryBuilder.define('bt-selectpicker', function(options) {
     if (!$.fn.selectpicker || !$.fn.selectpicker.Constructor) {
-        Utils.error('Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');
+        Utils.error('MissingLibrary', 'Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');
     }
 
     // init selectpicker
@@ -2486,15 +2769,18 @@ QueryBuilder.define('bt-selectpicker', function(options) {
     showIcon: false
 });
 
+
 /*!
  * jQuery QueryBuilder Bootstrap Tooltip errors
  * Applies Bootstrap Tooltips on validation error messages.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
+/**
+ * @throws ConfigError
+ */
 QueryBuilder.define('bt-tooltip-errors', function(options) {
     if (!$.fn.tooltip || !$.fn.tooltip.Constructor || !$.fn.tooltip.Constructor.prototype.fixTitle) {
-        Utils.error('Bootstrap Tooltip is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
+        Utils.error('MissingLibrary', 'Bootstrap Tooltip is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
     }
 
     var self = this;
@@ -2519,20 +2805,21 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
     placement: 'right'
 });
 
+
 /*!
  * jQuery QueryBuilder Change Filters
  * Allows to change available filters after plugin initialization.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 QueryBuilder.extend({
     /**
      * Change the filters of the builder
+     * @throws ChangeFilterError
      * @param {boolean,optional} delete rules using old filters
      * @param {object[]} new filters
      */
     setFilters: function(delete_orphans, filters) {
-        var that = this;
+        var self = this;
 
         if (filters === undefined) {
             filters = delete_orphans;
@@ -2540,6 +2827,7 @@ QueryBuilder.extend({
         }
 
         filters = this.checkFilters(filters);
+        filters = this.change('setFilters', filters);
 
         var filtersIds = filters.map(function(filter) {
             return filter.id;
@@ -2549,12 +2837,12 @@ QueryBuilder.extend({
         if (!delete_orphans) {
             (function checkOrphans(node) {
                 node.each(
-                  function(rule) {
-                      if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
-                          Utils.error('A rule is using filter "{0}"', rule.filter.id);
-                      }
-                  },
-                  checkOrphans
+                    function(rule) {
+                        if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
+                            Utils.error('ChangeFilter', 'A rule is using filter "{0}"', rule.filter.id);
+                        }
+                    },
+                    checkOrphans
                 );
             }(this.model.root));
         }
@@ -2570,7 +2858,7 @@ QueryBuilder.extend({
                       rule.drop();
                   }
                   else {
-                      that.createRuleFilters(rule);
+                      self.createRuleFilters(rule);
 
                       rule.$el.find(Selectors.rule_filter).val(rule.filter ? rule.filter.id : '-1');
                   }
@@ -2580,22 +2868,34 @@ QueryBuilder.extend({
         }(this.model.root));
 
         // update plugins
-        if (that.settings.plugins) {
-            if (that.settings.plugins['unique-filter']) {
+        if (this.settings.plugins) {
+            if (this.settings.plugins['unique-filter']) {
                 this.updateDisabledFilters();
             }
-            else if (this.settings.plugins['bt-selectpicker']) {
+            if (this.settings.plugins['bt-selectpicker']) {
                 this.$el.find(Selectors.rule_filter).selectpicker('render');
             }
         }
+
+        // reset the default_filter if does not exist anymore
+        if (this.settings.default_filter) {
+            try {
+                this.getFilterById(this.settings.default_filter);
+            }
+            catch (e) {
+                this.settings.default_filter = null;
+            }
+        }
+
+        this.trigger('afterSetFilters', filters);
     },
 
     /**
      * Adds a new filter to the builder
-     * @param {object} the new filter
+     * @param {object|object[]} the new filter
      * @param {mixed,optional} numeric index or '#start' or '#end'
      */
-    addFilter: function(filter, position) {
+    addFilter: function(new_filters, position) {
         if (position === undefined || position == '#end') {
             position = this.filters.length;
         }
@@ -2603,25 +2903,29 @@ QueryBuilder.extend({
             position = 0;
         }
 
+        if (!$.isArray(new_filters)) {
+            new_filters = [new_filters];
+        }
+
         var filters = $.extend(true, [], this.filters);
 
         // numeric position
         if (parseInt(position) == position) {
-            filters.splice(position, 0, filter);
+            Array.prototype.splice.apply(filters, [position, 0].concat(new_filters));
         }
         else {
             // after filter by its id
             if (this.filters.some(function(filter, index) {
                 if (filter.id == position) {
-                    position = index+1;
+                    position = index + 1;
                     return true;
                 }
             })) {
-                filters.splice(position, 0, filter);
+                Array.prototype.splice.apply(filters, [position, 0].concat(new_filters));
             }
             // defaults to end of list
             else {
-                filters.push(filter);
+                Array.prototype.push.apply(filters, new_filters);
             }
         }
 
@@ -2629,27 +2933,33 @@ QueryBuilder.extend({
     },
 
     /**
-     * Removes a filters the builder
-     * @param {string} the filter id
+     * Removes a filter from the builder
+     * @param {string|string[]} the filter id
      * @param {boolean,optional} delete rules using old filters
      */
-    removeFilter: function(filter_id, delete_orphans) {
+    removeFilter: function(filter_ids, delete_orphans) {
         var filters = $.extend(true, [], this.filters);
+        if (typeof filter_ids === 'string') {
+            filter_ids = [filter_ids];
+        }
 
         filters = filters.filter(function(filter) {
-            return filter.id != filter_id;
+            return filter_ids.indexOf(filter.id) === -1;
         });
 
         this.setFilters(delete_orphans, filters);
     }
 });
 
+
 /*!
  * jQuery QueryBuilder Filter Description
  * Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
+/**
+ * @throws ConfigError
+ */
 QueryBuilder.define('filter-description', function(options) {
     /**
      * INLINE
@@ -2679,7 +2989,7 @@ QueryBuilder.define('filter-description', function(options) {
      */
     else if (options.mode === 'popover') {
         if (!$.fn.popover || !$.fn.popover.Constructor || !$.fn.popover.Constructor.prototype.fixTitle) {
-            Utils.error('Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
+            Utils.error('MissingLibrary', 'Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
         }
 
         this.on('afterUpdateRuleFilter', function(e, rule) {
@@ -2724,7 +3034,7 @@ QueryBuilder.define('filter-description', function(options) {
      */
     else if (options.mode === 'bootbox') {
         if (!('bootbox' in window)) {
-            Utils.error('Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
+            Utils.error('MissingLibrary', 'Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
         }
 
         this.on('afterUpdateRuleFilter', function(e, rule) {
@@ -2752,10 +3062,10 @@ QueryBuilder.define('filter-description', function(options) {
     mode: 'popover'
 });
 
+
 /*!
  * jQuery QueryBuilder Invert
  * Allows to invert a rule operator, a group condition or the entire builder.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 QueryBuilder.defaults({
@@ -2789,21 +3099,21 @@ QueryBuilder.defaults({
 });
 
 QueryBuilder.define('invert', function(options) {
-    var that = this;
+    var self = this;
 
     /**
      * Bind events
      */
     this.on('afterInit', function() {
-        that.$el.on('click.queryBuilder', '[data-invert=group]', function() {
+        self.$el.on('click.queryBuilder', '[data-invert=group]', function() {
             var $group = $(this).closest(Selectors.group_container);
-            that.invert(Model($group), options);
+            self.invert(Model($group), options);
         });
 
         if (options.display_rules_button && options.invert_rules) {
-            that.$el.on('click.queryBuilder', '[data-invert=rule]', function() {
+            self.$el.on('click.queryBuilder', '[data-invert=rule]', function() {
                 var $rule = $(this).closest(Selectors.rule_container);
-                that.invert(Model($rule), options);
+                self.invert(Model($rule), options);
             });
         }
     });
@@ -2813,28 +3123,29 @@ QueryBuilder.define('invert', function(options) {
      */
     this.on('getGroupTemplate.filter', function(h, level) {
         var $h = $(h.value);
-        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> '+ that.lang.invert +'</button>');
+        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> ' + self.lang.invert + '</button>');
         h.value = $h.prop('outerHTML');
     });
 
     if (options.display_rules_button && options.invert_rules) {
         this.on('getRuleTemplate.filter', function(h) {
             var $h = $(h.value);
-            $h.find(Selectors.rule_actions).prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> '+ that.lang.invert +'</button>');
+            $h.find(Selectors.rule_actions).prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> ' + self.lang.invert + '</button>');
             h.value = $h.prop('outerHTML');
         });
     }
 }, {
-  icon: 'glyphicon glyphicon-random',
-  recursive: true,
-  invert_rules: true,
-  display_rules_button: false,
-  silent_fail: false
+    icon: 'glyphicon glyphicon-random',
+    recursive: true,
+    invert_rules: true,
+    display_rules_button: false,
+    silent_fail: false
 });
 
 QueryBuilder.extend({
     /**
      * Invert a Group, a Rule or the whole builder
+     * @throws InvertConditionError, InvertOperatorError
      * @param {Node,optional}
      * @param {object,optional}
      */
@@ -2849,6 +3160,7 @@ QueryBuilder.extend({
         if (options.recursive === undefined) options.recursive = true;
         if (options.invert_rules === undefined) options.invert_rules = true;
         if (options.silent_fail === undefined) options.silent_fail = false;
+        if (options.trigger === undefined) options.trigger = true;
 
         if (node instanceof Group) {
             // invert group condition
@@ -2856,17 +3168,18 @@ QueryBuilder.extend({
                 node.condition = this.settings.conditionOpposites[node.condition];
             }
             else if (!options.silent_fail) {
-                Utils.error('Unknown inverse of condition "{0}"', node.condition);
+                Utils.error('InvertCondition', 'Unknown inverse of condition "{0}"', node.condition);
             }
 
             // recursive call
             if (options.recursive) {
+                var tempOpts = $.extend({}, options, { trigger: false });
                 node.each(function(rule) {
                     if (options.invert_rules) {
-                        this.invert(rule, options);
+                        this.invert(rule, tempOpts);
                     }
                 }, function(group) {
-                    this.invert(group, options);
+                    this.invert(group, tempOpts);
                 }, this);
             }
         }
@@ -2880,44 +3193,48 @@ QueryBuilder.extend({
                         node.operator = this.getOperatorByType(invert);
                     }
                 }
-                else  if (!options.silent_fail){
-                    Utils.error('Unknown inverse of operator "{0}"', node.operator.type);
+                else if (!options.silent_fail) {
+                    Utils.error('InvertOperator', 'Unknown inverse of operator "{0}"', node.operator.type);
                 }
             }
+        }
+
+        if (options.trigger) {
+            this.trigger('afterInvert', node, options);
         }
     }
 });
 
+
 /*!
  * jQuery QueryBuilder MongoDB Support
  * Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 // DEFAULT CONFIG
 // ===============================
 QueryBuilder.defaults({
     mongoOperators: {
-        equal:            function(v){ return v[0]; },
-        not_equal:        function(v){ return {'$ne': v[0]}; },
-        in:               function(v){ return {'$in': v}; },
-        not_in:           function(v){ return {'$nin': v}; },
-        less:             function(v){ return {'$lt': v[0]}; },
-        less_or_equal:    function(v){ return {'$lte': v[0]}; },
-        greater:          function(v){ return {'$gt': v[0]}; },
-        greater_or_equal: function(v){ return {'$gte': v[0]}; },
-        between:          function(v){ return {'$gte': v[0], '$lte': v[1]}; },
-        not_between:      function(v){ return {'$lt': v[0], '$gt': v[1]}; },
-        begins_with:      function(v){ return {'$regex': '^' + Utils.escapeRegExp(v[0])}; },
-        not_begins_with:  function(v){ return {'$regex': '^(?!' + Utils.escapeRegExp(v[0]) + ')'}; },
-        contains:         function(v){ return {'$regex': Utils.escapeRegExp(v[0])}; },
-        not_contains:     function(v){ return {'$regex': '^((?!' + Utils.escapeRegExp(v[0]) + ').)*$', '$options': 's'}; },
-        ends_with:        function(v){ return {'$regex': Utils.escapeRegExp(v[0]) + '$'}; },
-        not_ends_with:    function(v){ return {'$regex': '(?<!' + Utils.escapeRegExp(v[0]) + ')$'}; },
-        is_empty:         function(v){ return ''; },
-        is_not_empty:     function(v){ return {'$ne': ''}; },
-        is_null:          function(v){ return null; },
-        is_not_null:      function(v){ return {'$ne': null}; }
+        equal:            function(v) { return v[0]; },
+        not_equal:        function(v) { return { '$ne': v[0] }; },
+        in:               function(v) { return { '$in': v }; },
+        not_in:           function(v) { return { '$nin': v }; },
+        less:             function(v) { return { '$lt': v[0] }; },
+        less_or_equal:    function(v) { return { '$lte': v[0] }; },
+        greater:          function(v) { return { '$gt': v[0] }; },
+        greater_or_equal: function(v) { return { '$gte': v[0] }; },
+        between:          function(v) { return { '$gte': v[0], '$lte': v[1] }; },
+        not_between:      function(v) { return { '$lt': v[0], '$gt': v[1] }; },
+        begins_with:      function(v) { return { '$regex': '^' + Utils.escapeRegExp(v[0]) }; },
+        not_begins_with:  function(v) { return { '$regex': '^(?!' + Utils.escapeRegExp(v[0]) + ')' }; },
+        contains:         function(v) { return { '$regex': Utils.escapeRegExp(v[0]) }; },
+        not_contains:     function(v) { return { '$regex': '^((?!' + Utils.escapeRegExp(v[0]) + ').)*$', '$options': 's' }; },
+        ends_with:        function(v) { return { '$regex': Utils.escapeRegExp(v[0]) + '$' }; },
+        not_ends_with:    function(v) { return { '$regex': '(?<!' + Utils.escapeRegExp(v[0]) + ')$' }; },
+        is_empty:         function(v) { return ''; },
+        is_not_empty:     function(v) { return { '$ne': '' }; },
+        is_null:          function(v) { return null; },
+        is_not_null:      function(v) { return { '$ne': null }; }
     },
 
     mongoRuleOperators: {
@@ -2936,33 +3253,33 @@ QueryBuilder.defaults({
         },
         $regex: function(v) {
             v = v.$regex;
-            if (v.slice(0,4) == '^(?!' && v.slice(-1) == ')') {
-                return { 'val': v.slice(4,-1), 'op': 'not_begins_with' };
+            if (v.slice(0, 4) == '^(?!' && v.slice(-1) == ')') {
+                return { 'val': v.slice(4, -1), 'op': 'not_begins_with' };
             }
-            else if (v.slice(0,5) == '^((?!' && v.slice(-5) == ').)*$') {
-                return { 'val': v.slice(5,-5), 'op': 'not_contains' };
+            else if (v.slice(0, 5) == '^((?!' && v.slice(-5) == ').)*$') {
+                return { 'val': v.slice(5, -5), 'op': 'not_contains' };
             }
-            else if (v.slice(0,4) == '(?<!' && v.slice(-2) == ')$') {
-                return { 'val': v.slice(4,-2), 'op': 'not_ends_with' };
+            else if (v.slice(0, 4) == '(?<!' && v.slice(-2) == ')$') {
+                return { 'val': v.slice(4, -2), 'op': 'not_ends_with' };
             }
             else if (v.slice(-1) == '$') {
-                return { 'val': v.slice(0,-1), 'op': 'ends_with' };
+                return { 'val': v.slice(0, -1), 'op': 'ends_with' };
             }
-            else if (v.slice(0,1) == '^') {
+            else if (v.slice(0, 1) == '^') {
                 return { 'val': v.slice(1), 'op': 'begins_with' };
             }
             else {
                 return { 'val': v, 'op': 'contains' };
             }
         },
-        between : function(v) { return {'val': [v.$gte, v.$lte], 'op': 'between'}; },
-        not_between : function(v) { return {'val': [v.$lt, v.$gt], 'op': 'not_between'}; },
-        $in :     function(v) { return {'val': v.$in, 'op': 'in'}; },
-        $nin :    function(v) { return {'val': v.$nin, 'op': 'not_in'}; },
-        $lt :     function(v) { return {'val': v.$lt, 'op': 'less'}; },
-        $lte :    function(v) { return {'val': v.$lte, 'op': 'less_or_equal'}; },
-        $gt :     function(v) { return {'val': v.$gt, 'op': 'greater'}; },
-        $gte :    function(v) { return {'val': v.$gte, 'op': 'greater_or_equal'}; }
+        between:     function(v) { return { 'val': [v.$gte, v.$lte], 'op': 'between' }; },
+        not_between: function(v) { return { 'val': [v.$lt, v.$gt], 'op': 'not_between' }; },
+        $in:  function(v) { return { 'val': v.$in, 'op': 'in' }; },
+        $nin: function(v) { return { 'val': v.$nin, 'op': 'not_in' }; },
+        $lt:  function(v) { return { 'val': v.$lt, 'op': 'less' }; },
+        $lte: function(v) { return { 'val': v.$lte, 'op': 'less_or_equal' }; },
+        $gt:  function(v) { return { 'val': v.$gt, 'op': 'greater' }; },
+        $gte: function(v) { return { 'val': v.$gte, 'op': 'greater_or_equal' }; }
     }
 });
 
@@ -2972,20 +3289,21 @@ QueryBuilder.defaults({
 QueryBuilder.extend({
     /**
      * Get rules as MongoDB query
+     * @throws UndefinedMongoConditionError, UndefinedMongoOperatorError
      * @param data {object} (optional) rules
      * @return {object}
      */
     getMongo: function(data) {
-        data = (data===undefined) ? this.getRules() : data;
+        data = (data === undefined) ? this.getRules() : data;
 
-        var that = this;
+        var self = this;
 
         return (function parse(data) {
             if (!data.condition) {
-                data.condition = that.settings.default_condition;
+                data.condition = self.settings.default_condition;
             }
             if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                Utils.error('Unable to build MongoDB query with condition "{0}"', data.condition);
+                Utils.error('UndefinedMongoCondition', 'Unable to build MongoDB query with condition "{0}"', data.condition);
             }
 
             if (!data.rules) {
@@ -2995,16 +3313,16 @@ QueryBuilder.extend({
             var parts = [];
 
             data.rules.forEach(function(rule) {
-                if (rule.rules && rule.rules.length>0) {
+                if (rule.rules && rule.rules.length > 0) {
                     parts.push(parse(rule));
                 }
                 else {
-                    var mdb = that.settings.mongoOperators[rule.operator],
-                        ope = that.getOperatorByType(rule.operator),
-                        values = [];
+                    var mdb = self.settings.mongoOperators[rule.operator];
+                    var ope = self.getOperatorByType(rule.operator);
+                    var values = [];
 
                     if (mdb === undefined) {
-                        Utils.error('Unknown MongoDB operation for operator "{0}"', rule.operator);
+                        Utils.error('UndefinedMongoOperator', 'Unknown MongoDB operation for operator "{0}"', rule.operator);
                     }
 
                     if (ope.nb_inputs !== 0) {
@@ -3018,14 +3336,14 @@ QueryBuilder.extend({
                     }
 
                     var part = {};
-                    part[rule.field] = mdb.call(that, values);
+                    part[rule.field] = mdb.call(self, values);
                     parts.push(part);
                 }
             });
 
             var res = {};
             if (parts.length > 0) {
-                res['$'+data.condition.toLowerCase()] = parts;
+                res['$' + data.condition.toLowerCase()] = parts;
             }
             return res;
         }(data));
@@ -3033,6 +3351,7 @@ QueryBuilder.extend({
 
     /**
      * Convert MongoDB object to rules
+     * @throws MongoParseError, UndefinedMongoConditionError, UndefinedMongoOperatorError
      * @param data {object} query object
      * @return {object}
      */
@@ -3041,46 +3360,48 @@ QueryBuilder.extend({
             return null;
         }
 
-        var that = this,
-            conditions = ['$and','$or'];
+        var self = this;
+        var conditions = {
+            '$and': 'AND',
+            '$or': 'OR'
+        };
 
         return (function parse(data) {
             var topKeys = Object.keys(data);
 
             if (topKeys.length > 1) {
-                Utils.error('Invalid MongoDB query format.');
+                Utils.error('MongoParse', 'Invalid MongoDB query format');
             }
-            if (conditions.indexOf(topKeys[0].toLowerCase()) === -1) {
-                Utils.error('Unable to build Rule from MongoDB query with condition "{0}"', topKeys[0]);
+            if (!conditions[topKeys[0].toLowerCase()]) {
+                Utils.error('UndefinedMongoCondition', 'Unable to build MongoDB query with condition "{0}"', topKeys[0]);
             }
 
-            var condition = topKeys[0].toLowerCase() === conditions[0] ? 'AND' : 'OR',
-                rules = data[topKeys[0]],
-                parts = [];
+            var rules = data[topKeys[0]];
+            var parts = [];
 
             rules.forEach(function(rule) {
                 var keys = Object.keys(rule);
 
-                if (conditions.indexOf(keys[0].toLowerCase()) !== -1) {
+                if (conditions[keys[0].toLowerCase()]) {
                     parts.push(parse(rule));
                 }
                 else {
-                    var field = keys[0],
-                        value = rule[field];
+                    var field = keys[0];
+                    var value = rule[field];
 
-                    var operator = that.determineMongoOperator(value, field);
+                    var operator = determineMongoOperator(value, field);
                     if (operator === undefined) {
-                        Utils.error('Invalid MongoDB query format.');
+                        Utils.error('MongoParse', 'Invalid MongoDB query format');
                     }
 
-                    var mdbrl = that.settings.mongoRuleOperators[operator];
+                    var mdbrl = self.settings.mongoRuleOperators[operator];
                     if (mdbrl === undefined) {
-                        Utils.error('JSON Rule operation unknown for operator "{0}"', operator);
+                        Utils.error('UndefinedMongoOperator', 'JSON Rule operation unknown for operator "{0}"', operator);
                     }
 
-                    var opVal = mdbrl.call(that, value);
+                    var opVal = mdbrl.call(self, value);
                     parts.push({
-                        id: that.change('getMongoDBFieldID', field, value),
+                        id: self.change('getMongoDBFieldID', field, value),
                         field: field,
                         operator: opVal.op,
                         value: opVal.val
@@ -3090,44 +3411,11 @@ QueryBuilder.extend({
 
             var res = {};
             if (parts.length > 0) {
-                res.condition = condition;
+                res.condition = conditions[topKeys[0].toLowerCase()];
                 res.rules = parts;
             }
             return res;
         }(data));
-    },
-
-    /**
-     * Find which operator is used in a MongoDB sub-object
-     * @param {mixed} value
-     * @param {string} field
-     * @return {string|undefined}
-     */
-    determineMongoOperator: function(value, field) {
-        if (value !== null && typeof value === 'object') {
-            var subkeys = Object.keys(value);
-
-            if (subkeys.length === 1) {
-                return subkeys[0];
-            }
-            else {
-                if (value.$gte !==undefined && value.$lte !==undefined) {
-                    return 'between';
-                }
-                if (value.$lt !==undefined && value.$gt !==undefined) {
-                    return 'not_between';
-                }
-                else if (value.$regex !==undefined) { // optional $options
-                    return '$regex';
-                }
-                else {
-                    return;
-                }
-            }
-        }
-        else {
-            return 'eq';
-        }
     },
 
     /**
@@ -3139,10 +3427,43 @@ QueryBuilder.extend({
     }
 });
 
+/**
+ * Find which operator is used in a MongoDB sub-object
+ * @param {mixed} value
+ * @param {string} field
+ * @return {string|undefined}
+ */
+function determineMongoOperator(value, field) {
+    if (value !== null && typeof value == 'object') {
+        var subkeys = Object.keys(value);
+
+        if (subkeys.length === 1) {
+            return subkeys[0];
+        }
+        else {
+            if (value.$gte !== undefined && value.$lte !== undefined) {
+                return 'between';
+            }
+            if (value.$lt !== undefined && value.$gt !== undefined) {
+                return 'not_between';
+            }
+            else if (value.$regex !== undefined) { // optional $options
+                return '$regex';
+            }
+            else {
+                return;
+            }
+        }
+    }
+    else {
+        return 'eq';
+    }
+}
+
+
 /*!
  * jQuery QueryBuilder Sortable
  * Enables drag & drop sort of rules.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 Selectors.rule_and_group_containers = Selectors.rule_container + ', ' + Selectors.group_container;
@@ -3155,20 +3476,21 @@ QueryBuilder.define('sortable', function(options) {
         // configure jQuery to use dataTransfer
         $.event.props.push('dataTransfer');
 
-        var placeholder, src,
-            self = e.builder;
+        var placeholder;
+        var src;
+        var self = e.builder;
 
         // only add "draggable" attribute when hovering drag handle
         // preventing text select bug in Firefox
-        self.$el.on('mouseover', '.drag-handle', function() {
+        self.$el.on('mouseover.queryBuilder', '.drag-handle', function() {
             self.$el.find(Selectors.rule_and_group_containers).attr('draggable', true);
         });
-        self.$el.on('mouseout', '.drag-handle', function() {
+        self.$el.on('mouseout.queryBuilder', '.drag-handle', function() {
             self.$el.find(Selectors.rule_and_group_containers).removeAttr('draggable');
         });
 
         // dragstart: create placeholder and hide current element
-        self.$el.on('dragstart', '[draggable]', function(e) {
+        self.$el.on('dragstart.queryBuilder', '[draggable]', function(e) {
             e.stopPropagation();
 
             // notify drag and drop (only dummy text)
@@ -3190,7 +3512,7 @@ QueryBuilder.define('sortable', function(options) {
         });
 
         // dragenter: move the placeholder
-        self.$el.on('dragenter', '[draggable]', function(e) {
+        self.$el.on('dragenter.queryBuilder', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -3200,13 +3522,13 @@ QueryBuilder.define('sortable', function(options) {
         });
 
         // dragover: prevent glitches
-        self.$el.on('dragover', '[draggable]', function(e) {
+        self.$el.on('dragover.queryBuilder', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
         });
 
         // drop: move current element
-        self.$el.on('drop', function(e) {
+        self.$el.on('drop.queryBuilder', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -3214,16 +3536,18 @@ QueryBuilder.define('sortable', function(options) {
         });
 
         // dragend: show current element and delete placeholder
-        self.$el.on('dragend', '[draggable]', function(e) {
+        self.$el.on('dragend.queryBuilder', '[draggable]', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
             src.$el.show();
             placeholder.drop();
 
-            src = placeholder = null;
-
             self.$el.find(Selectors.rule_and_group_containers).removeAttr('draggable');
+
+            self.trigger('afterMove', src);
+
+            src = placeholder = null;
         });
     });
 
@@ -3246,7 +3570,7 @@ QueryBuilder.define('sortable', function(options) {
      * Modify templates
      */
     this.on('getGroupTemplate.filter', function(h, level) {
-        if (level>1) {
+        if (level > 1) {
             var $h = $(h.value);
             $h.find(Selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
             h.value = $h.prop('outerHTML');
@@ -3294,10 +3618,10 @@ function moveSortableToTarget(element, target) {
     }
 }
 
+
 /*!
  * jQuery QueryBuilder SQL Support
  * Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 // DEFAULT CONFIG
@@ -3307,20 +3631,20 @@ QueryBuilder.defaults({
     sqlOperators: {
         equal:            { op: '= ?' },
         not_equal:        { op: '!= ?' },
-        in:               { op: 'IN(?)',     sep: ', ' },
-        not_in:           { op: 'NOT IN(?)', sep: ', ' },
+        in:               { op: 'IN(?)',          sep: ', ' },
+        not_in:           { op: 'NOT IN(?)',      sep: ', ' },
         less:             { op: '< ?' },
         less_or_equal:    { op: '<= ?' },
         greater:          { op: '> ?' },
         greater_or_equal: { op: '>= ?' },
-        between:          { op: 'BETWEEN ?',     sep: ' AND ' },
-        not_between:      { op: 'NOT BETWEEN ?', sep: ' AND ' },
-        begins_with:      { op: 'LIKE(?)',     fn: function(v){ return v+'%'; } },
-        not_begins_with:  { op: 'NOT LIKE(?)', fn: function(v){ return v+'%'; } },
-        contains:         { op: 'LIKE(?)',     fn: function(v){ return '%'+v+'%'; } },
-        not_contains:     { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v+'%'; } },
-        ends_with:        { op: 'LIKE(?)',     fn: function(v){ return '%'+v; } },
-        not_ends_with:    { op: 'NOT LIKE(?)', fn: function(v){ return '%'+v; } },
+        between:          { op: 'BETWEEN ?',      sep: ' AND ' },
+        not_between:      { op: 'NOT BETWEEN ?',  sep: ' AND ' },
+        begins_with:      { op: 'LIKE(?)',        mod: '{0}%' },
+        not_begins_with:  { op: 'NOT LIKE(?)',    mod: '{0}%' },
+        contains:         { op: 'LIKE(?)',        mod: '%{0}%' },
+        not_contains:     { op: 'NOT LIKE(?)',    mod: '%{0}%' },
+        ends_with:        { op: 'LIKE(?)',        mod: '%{0}' },
+        not_ends_with:    { op: 'NOT LIKE(?)',    mod: '%{0}' },
         is_empty:         { op: '= \'\'' },
         is_not_empty:     { op: '!= \'\'' },
         is_null:          { op: 'IS NULL' },
@@ -3342,45 +3666,45 @@ QueryBuilder.defaults({
             };
         },
         'LIKE': function(v) {
-            if (v.slice(0,1)=='%' && v.slice(-1)=='%') {
+            if (v.slice(0, 1) == '%' && v.slice(-1) == '%') {
                 return {
-                    val: v.slice(1,-1),
+                    val: v.slice(1, -1),
                     op: 'contains'
                 };
             }
-            else if (v.slice(0,1)=='%') {
+            else if (v.slice(0, 1) == '%') {
                 return {
                     val: v.slice(1),
                     op: 'ends_with'
                 };
             }
-            else if (v.slice(-1)=='%') {
+            else if (v.slice(-1) == '%') {
                 return {
-                    val: v.slice(0,-1),
+                    val: v.slice(0, -1),
                     op: 'begins_with'
                 };
             }
             else {
-                Utils.error('Invalid value for LIKE operator');
+                Utils.error('SQLParse', 'Invalid value for LIKE operator "{0}"', v);
             }
         },
-        'IN':       function(v) { return { val: v, op: 'in' }; },
-        'NOT IN':   function(v) { return { val: v, op: 'not_in' }; },
-        '<':        function(v) { return { val: v, op: 'less' }; },
-        '<=':       function(v) { return { val: v, op: 'less_or_equal' }; },
-        '>':        function(v) { return { val: v, op: 'greater' }; },
-        '>=':       function(v) { return { val: v, op: 'greater_or_equal' }; },
-        'BETWEEN':  function(v) { return { val: v, op: 'between' }; },
-        'NOT BETWEEN': function(v) { return { val: v, op: 'not_between' }; },
-        'IS':       function(v) {
+        'IN':           function(v) { return { val: v, op: 'in' }; },
+        'NOT IN':       function(v) { return { val: v, op: 'not_in' }; },
+        '<':            function(v) { return { val: v, op: 'less' }; },
+        '<=':           function(v) { return { val: v, op: 'less_or_equal' }; },
+        '>':            function(v) { return { val: v, op: 'greater' }; },
+        '>=':           function(v) { return { val: v, op: 'greater_or_equal' }; },
+        'BETWEEN':      function(v) { return { val: v, op: 'between' }; },
+        'NOT BETWEEN':  function(v) { return { val: v, op: 'not_between' }; },
+        'IS': function(v) {
             if (v !== null) {
-                Utils.error('Invalid value for IS operator');
+                Utils.error('SQLParse', 'Invalid value for IS operator');
             }
             return { val: null, op: 'is_null' };
         },
-        'IS NOT':   function(v) {
+        'IS NOT': function(v) {
             if (v !== null) {
-                Utils.error('Invalid value for IS operator');
+                Utils.error('SQLParse', 'Invalid value for IS operator');
             }
             return { val: null, op: 'is_not_null' };
         }
@@ -3389,46 +3713,45 @@ QueryBuilder.defaults({
     /* statements for internal -> SQL conversion */
     sqlStatements: {
         'question_mark': function() {
-            var bind_params = [];
+            var params = [];
             return {
                 add: function(rule, value) {
-                    bind_params.push(value);
+                    params.push(value);
                     return '?';
                 },
                 run: function() {
-                    return bind_params;
+                    return params;
                 }
             };
         },
 
         'numbered': function() {
-            var bind_index = 0;
-            var bind_params = [];
+            var index = 0;
+            var params = [];
             return {
                 add: function(rule, value) {
-                    bind_params.push(value);
-                    bind_index++;
-                    return '$' + bind_index;
+                    params.push(value);
+                    index++;
+                    return '$' + index;
                 },
                 run: function() {
-                    return bind_params;
+                    return params;
                 }
             };
         },
 
         'named': function() {
-            var bind_index = {};
-            var bind_params = {};
+            var indexes = {};
+            var params = {};
             return {
                 add: function(rule, value) {
-                    if (!bind_index[rule.field]) bind_index[rule.field] = 0;
-                    bind_index[rule.field]++;
-                    var key = rule.field + '_' + bind_index[rule.field];
-                    bind_params[key] = value;
+                    if (!indexes[rule.field]) indexes[rule.field] = 1;
+                    var key = rule.field + '_' + (indexes[rule.field]++);
+                    params[key] = value;
                     return ':' + key;
                 },
                 run: function() {
-                    return bind_params;
+                    return params;
                 }
             };
         }
@@ -3437,17 +3760,10 @@ QueryBuilder.defaults({
     /* statements for SQL -> internal conversion */
     sqlRuleStatement: {
         'question_mark': function(values) {
-            var i = 0;
+            var index = 0;
             return {
-                get: function(v) {
-                    if ($.isArray(v)) {
-                        return v.map(function(v) {
-                            return v=='?' ? values[i++] : v;
-                        });
-                    }
-                    else {
-                        return v=='?' ? values[i++] : v;
-                    }
+                parse: function(v) {
+                    return v == '?' ? values[index++] : v;
                 },
                 esc: function(sql) {
                     return sql.replace(/\?/g, '\'?\'');
@@ -3457,15 +3773,8 @@ QueryBuilder.defaults({
 
         'numbered': function(values) {
             return {
-                get: function(v) {
-                    if ($.isArray(v)) {
-                        return v.map(function(v) {
-                            return /^\$[0-9]+$/.test(v) ? values[v.slice(1)-1] : v;
-                        });
-                    }
-                    else {
-                        return /^\$[0-9]+$/.test(v) ? values[v.slice(1)-1] : v;
-                    }
+                parse: function(v) {
+                    return /^\$[0-9]+$/.test(v) ? values[v.slice(1) - 1] : v;
                 },
                 esc: function(sql) {
                     return sql.replace(/\$([0-9]+)/g, '\'$$$1\'');
@@ -3475,15 +3784,8 @@ QueryBuilder.defaults({
 
         'named': function(values) {
             return {
-                get: function(v) {
-                    if ($.isArray(v)) {
-                        return v.map(function(v) {
-                            return /^:/.test(v) ? values[v.slice(1)] : v;
-                        });
-                    }
-                    else {
-                        return /^:/.test(v) ? values[v.slice(1)] : v;
-                    }
+                parse: function(v) {
+                    return /^:/.test(v) ? values[v.slice(1)] : v;
                 },
                 esc: function(sql) {
                     return sql.replace(new RegExp(':(' + Object.keys(values).join('|') + ')', 'g'), '\':$1\'');
@@ -3499,28 +3801,29 @@ QueryBuilder.defaults({
 QueryBuilder.extend({
     /**
      * Get rules as SQL query
+     * @throws UndefinedSQLConditionError, UndefinedSQLOperatorError
      * @param stmt {false|string} use prepared statements - false, 'question_mark' or 'numbered'
      * @param nl {bool} output with new lines
      * @param data {object} (optional) rules
      * @return {object}
      */
     getSQL: function(stmt, nl, data) {
-        data = (data===undefined) ? this.getRules() : data;
-        nl = (nl===true) ? '\n' : ' ';
+        data = (data === undefined) ? this.getRules() : data;
+        nl = (nl === true) ? '\n' : ' ';
 
-        if (stmt===true || stmt===undefined) stmt = 'question_mark';
+        if (stmt === true || stmt === undefined) stmt = 'question_mark';
         if (typeof stmt == 'string') stmt = this.settings.sqlStatements[stmt]();
 
-        var that = this,
-            bind_index = 1,
-            bind_params = [];
+        var self = this;
+        var bind_index = 1;
+        var bind_params = [];
 
         var sql = (function parse(data) {
             if (!data.condition) {
-                data.condition = that.settings.default_condition;
+                data.condition = self.settings.default_condition;
             }
             if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                Utils.error('Unable to build SQL query with condition "{0}"', data.condition);
+                Utils.error('UndefinedSQLCondition', 'Unable to build SQL query with condition "{0}"', data.condition);
             }
 
             if (!data.rules) {
@@ -3530,16 +3833,16 @@ QueryBuilder.extend({
             var parts = [];
 
             data.rules.forEach(function(rule) {
-                if (rule.rules && rule.rules.length>0) {
-                    parts.push('('+ nl + parse(rule) + nl +')'+ nl);
+                if (rule.rules && rule.rules.length > 0) {
+                    parts.push('(' + nl + parse(rule) + nl + ')' + nl);
                 }
                 else {
-                    var sql = that.settings.sqlOperators[rule.operator],
-                        ope = that.getOperatorByType(rule.operator),
-                        value = '';
+                    var sql = self.settings.sqlOperators[rule.operator];
+                    var ope = self.getOperatorByType(rule.operator);
+                    var value = '';
 
                     if (sql === undefined) {
-                        Utils.error('Unknown SQL operation for operator "{0}"', rule.operator);
+                        Utils.error('UndefinedSQLOperator', 'Unknown SQL operation for operator "{0}"', rule.operator);
                     }
 
                     if (ope.nb_inputs !== 0) {
@@ -3548,27 +3851,27 @@ QueryBuilder.extend({
                         }
 
                         rule.value.forEach(function(v, i) {
-                            if (i>0) {
+                            if (i > 0) {
                                 value+= sql.sep;
                             }
 
-                            if (rule.type=='integer' || rule.type=='double' || rule.type=='boolean') {
+                            if (rule.type == 'integer' || rule.type == 'double' || rule.type == 'boolean') {
                                 v = Utils.changeType(v, rule.type, true);
                             }
                             else if (!stmt) {
                                 v = Utils.escapeString(v);
                             }
 
-                            if (sql.fn) {
-                                v = sql.fn(v);
+                            if (sql.mod) {
+                                v = Utils.fmt(sql.mod, v);
                             }
 
                             if (stmt) {
                                 value+= stmt.add(rule, v);
                             }
                             else {
-                                if (typeof v === 'string') {
-                                    v = '\''+ v +'\'';
+                                if (typeof v == 'string') {
+                                    v = '\'' + v + '\'';
                                 }
 
                                 value+= v;
@@ -3576,11 +3879,11 @@ QueryBuilder.extend({
                         });
                     }
 
-                    parts.push(rule.field +' '+ sql.op.replace(/\?/, value));
+                    parts.push(rule.field + ' ' + sql.op.replace(/\?/, value));
                 }
             });
 
-            return parts.join(' '+ data.condition + nl);
+            return parts.join(' ' + data.condition + nl);
         }(data));
 
         if (stmt) {
@@ -3598,15 +3901,16 @@ QueryBuilder.extend({
 
     /**
      * Convert SQL to rules
+     * @throws ConfigError, SQLParseError, UndefinedSQLOperatorError
      * @param data {object} query object
      * @return {object}
      */
     getRulesFromSQL: function(data, stmt) {
         if (!('SQLParser' in window)) {
-            Utils.error('SQLParser is required to parse SQL queries. Get it here https://github.com/forward/sql-parser');
+            Utils.error('MissingLibrary', 'SQLParser is required to parse SQL queries. Get it here https://github.com/mistic100/sql-parser');
         }
 
-        var that = this;
+        var self = this;
 
         if (typeof data == 'string') {
             data = { sql: data };
@@ -3616,14 +3920,14 @@ QueryBuilder.extend({
             data.sql = stmt.esc(data.sql);
         }
 
-        if (!data.sql.toUpperCase().startsWith('SELECT')) {
+        if (data.sql.toUpperCase().indexOf('SELECT') !== 0) {
             data.sql = 'SELECT * FROM table WHERE ' + data.sql;
         }
 
         var parsed = SQLParser.parse(data.sql);
 
         if (!parsed.where) {
-            Utils.error('No WHERE clause found');
+            Utils.error('SQLParse', 'No WHERE clause found');
         }
 
         var out = {
@@ -3636,13 +3940,13 @@ QueryBuilder.extend({
             // it's a node
             if (['AND', 'OR'].indexOf(data.operation.toUpperCase()) !== -1) {
                 // create a sub-group if the condition is not the same and it's not the first level
-                if (i>0 && curr.condition != data.operation.toUpperCase()) {
+                if (i > 0 && curr.condition != data.operation.toUpperCase()) {
                     curr.rules.push({
-                        condition: that.settings.default_condition,
+                        condition: self.settings.default_condition,
                         rules: []
                     });
 
-                    curr = curr.rules[curr.rules.length-1];
+                    curr = curr.rules[curr.rules.length - 1];
                 }
 
                 curr.condition = data.operation.toUpperCase();
@@ -3658,11 +3962,11 @@ QueryBuilder.extend({
             // it's a leaf
             else {
                 if (data.left.value === undefined || data.right.value === undefined) {
-                    Utils.error('Missing field and/or value');
+                    Utils.error('SQLParse', 'Missing field and/or value');
                 }
 
                 if ($.isPlainObject(data.right.value)) {
-                    Utils.error('Value format not supported for {0}.', data.left.value);
+                    Utils.error('SQLParse', 'Value format not supported for {0}.', data.left.value);
                 }
 
                 // convert array
@@ -3678,7 +3982,12 @@ QueryBuilder.extend({
 
                 // get actual values
                 if (stmt) {
-                    value = stmt.get(value);
+                    if ($.isArray(value)) {
+                        value = value.map(stmt.parse);
+                    }
+                    else {
+                        value = stmt.parse(value);
+                    }
                 }
 
                 // convert operator
@@ -3687,22 +3996,24 @@ QueryBuilder.extend({
 
                 var sqlrl;
                 if (operator == 'NOT LIKE') {
-                    sqlrl = that.settings.sqlRuleOperator['LIKE'];
+                    sqlrl = self.settings.sqlRuleOperator['LIKE'];
                 }
                 else {
-                    sqlrl = that.settings.sqlRuleOperator[operator];
+                    sqlrl = self.settings.sqlRuleOperator[operator];
                 }
 
                 if (sqlrl === undefined) {
-                    Utils.error('Invalid SQL operation {0}.', data.operation);
+                    Utils.error('UndefinedSQLOperator', 'Invalid SQL operation "{0}".', data.operation);
                 }
 
                 var opVal = sqlrl.call(this, value, data.operation);
                 if (operator == 'NOT LIKE') opVal.op = 'not_' + opVal.op;
 
+                var left_value = data.left.values.join('.');
+
                 curr.rules.push({
-                    id: that.change('getSQLFieldID', data.left.value, value),
-                    field: data.left.value,
+                    id: self.change('getSQLFieldID', left_value, value),
+                    field: left_value,
                     operator: opVal.op,
                     value: opVal.val
                 });
@@ -3721,10 +4032,10 @@ QueryBuilder.extend({
     }
 });
 
+
 /*!
  * jQuery QueryBuilder Unique Filter
  * Allows to define some filters as "unique": ie which can be used for only one rule, globally or in the same group.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 QueryBuilder.define('unique-filter', function() {
@@ -3733,15 +4044,17 @@ QueryBuilder.define('unique-filter', function() {
     this.on('afterUpdateRuleFilter', this.updateDisabledFilters);
     this.on('afterDeleteRule', this.updateDisabledFilters);
     this.on('afterCreateRuleFilters', this.applyDisabledFilters);
+    this.on('afterReset', this.clearDisabledFilters);
+    this.on('afterClear', this.clearDisabledFilters);
 });
 
 QueryBuilder.extend({
     updateDisabledFilters: function(e) {
-        var that = e ? e.builder : this;
+        var self = e ? e.builder : this;
 
-        that.status.used_filters = {};
+        self.status.used_filters = {};
 
-        if (!that.model) {
+        if (!self.model) {
             return;
         }
 
@@ -3749,31 +4062,39 @@ QueryBuilder.extend({
         (function walk(group) {
             group.each(function(rule) {
                 if (rule.filter && rule.filter.unique) {
-                    if (!that.status.used_filters[rule.filter.id]) {
-                        that.status.used_filters[rule.filter.id] = [];
+                    if (!self.status.used_filters[rule.filter.id]) {
+                        self.status.used_filters[rule.filter.id] = [];
                     }
                     if (rule.filter.unique == 'group') {
-                        that.status.used_filters[rule.filter.id].push(rule.parent);
+                        self.status.used_filters[rule.filter.id].push(rule.parent);
                     }
                 }
             }, function(group) {
                 walk(group);
             });
-        }(that.model.root));
+        }(self.model.root));
 
-        that.applyDisabledFilters(e);
+        self.applyDisabledFilters(e);
+    },
+
+    clearDisabledFilters: function(e) {
+        var self = e ? e.builder : this;
+
+        self.status.used_filters = {};
+
+        self.applyDisabledFilters(e);
     },
 
     applyDisabledFilters: function(e) {
-        var that = e ? e.builder : this;
+        var self = e ? e.builder : this;
 
         // re-enable everything
-        that.$el.find(Selectors.filter_container + ' option').prop('disabled', false);
+        self.$el.find(Selectors.filter_container + ' option').prop('disabled', false);
 
         // disable some
-        $.each(that.status.used_filters, function(filterId, groups) {
+        $.each(self.status.used_filters, function(filterId, groups) {
             if (groups.length === 0) {
-                that.$el.find(Selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
+                self.$el.find(Selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
             }
             else {
                 groups.forEach(function(group) {
@@ -3785,14 +4106,15 @@ QueryBuilder.extend({
         });
 
         // update Selectpicker
-        if (that.settings.plugins && that.settings.plugins['bt-selectpicker']) {
-            that.$el.find(Selectors.rule_filter).selectpicker('render');
+        if (self.settings.plugins && self.settings.plugins['bt-selectpicker']) {
+            self.$el.find(Selectors.rule_filter).selectpicker('render');
         }
     }
 });
 
+
 /*!
- * jQuery QueryBuilder 2.3.0
+ * jQuery QueryBuilder 2.3.1
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)

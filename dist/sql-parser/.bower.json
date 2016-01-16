@@ -37,7 +37,6 @@
     "commit": "e1796a8b711351583211c4c7e570c90bc938a9cf"
   },
   "_source": "git://github.com/mistic100/sql-parser.git",
-  "_target": "~1.0.0",
-  "_originalSource": "sql-parser",
-  "_direct": true
+  "_target": "*",
+  "_originalSource": "sql-parser"
 }

@@ -62,10 +62,17 @@ $('#builder-widgets').queryBuilder({
       value: 0
     },
     valueSetter: function(rule, value) {
-      rule.$el.find('.rule-value-container input').slider('setValue', value);
+      if (rule.operator.nb_inputs == 1) value = [value];
+      rule.$el.find('.rule-value-container input').each(function(i) {
+        $(this).slider('setValue', value[i] || 0);
+      });
     },
     valueGetter: function(rule) {
-      return rule.$el.find('.rule-value-container input').slider('getValue');
+      var value = [];
+      rule.$el.find('.rule-value-container input').each(function() {
+        value.push($(this).slider('getValue'));
+      });
+      return rule.operator.nb_inputs == 1 ? value[0] : value;
     }
   }, {
     id: 'category',

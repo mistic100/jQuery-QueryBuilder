@@ -93,3 +93,21 @@
     height: 11px;
     background-position: -48px -11px;
 }
+
+.flag-ar {
+    width: 16px;
+    height: 11px;
+    background-position: -48px -33px;
+}
+
+.flag-tr {
+    width: 16px;
+    height: 11px;
+    background-position: 0 -44px;
+}
+
+.flag-zh-CN {
+    width: 16px;
+    height: 11px;
+    background-position: -16px -44px;
+}

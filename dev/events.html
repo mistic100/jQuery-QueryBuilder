@@ -220,11 +220,35 @@ $('#builder').on('validationError.queryBuilder', function(e, rule, error, value)
           <td>afterClear<small>.queryBuilder</small></td>
           <td>After <code>clear</code> method.</td>
         </tr>
+        <tr>
+          <td>afterMove<small>.queryBuilder</small></td>
+          <td>After a Rule or Group has been moved by the <a href="../plugins.html#sortable">Sortable rules</a> plugin.
+            <ul>
+              <li><code>node</code> The <b>Group</b> or <b>Rule</b></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterSetFilters<small>.queryBuilder</small></td>
+          <td>After <code>setFilters</code> method from <a href="../plugins.html#change-filters">Change filters</a> plugin.
+            <ul>
+              <li><code>filters</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>afterInvert<small>.queryBuilder</small></td>
+          <td>After a Rule or Group has been inverted by the <a href="../plugins.html#invert">Invert</a> plugin.
+            <ul>
+              <li><code>node</code> The main <b>Group</b> or <b>Rule</b> that has been inverted</li>
+              <li><code>options</code></li>
+            </ul>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
 </section>
-
 
 <section class="bs-docs-section">
   <h1 id="changers">Changers</h1>
@@ -359,6 +383,14 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
               <li><code>e.value</code> HTML string</li>
               <li><code>rule</code> <b>Rule</b> object</li>
               <li><code>name</code> of the input</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>setFilters<small>.queryBuilder.filter</small></td>
+          <td>Modifies the new filters applied by the <a href="../plugins.html#change-filters">Change filters</a> plugin.
+            <ul>
+              <li><code>e.value</code> List of filters</li>
             </ul>
           </td>
         </tr>

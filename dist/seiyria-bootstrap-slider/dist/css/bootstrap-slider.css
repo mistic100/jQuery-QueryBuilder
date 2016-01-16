@@ -1,5 +1,5 @@
 /*! =======================================================
-                      VERSION  4.5.6              
+                      VERSION  6.0.6              
 ========================================================= */
 /*! =========================================================
  * bootstrap-slider.js
@@ -64,9 +64,10 @@
 }
 .slider.slider-horizontal .slider-tick-label-container {
   white-space: nowrap;
+  margin-top: 20px;
 }
 .slider.slider-horizontal .slider-tick-label-container .slider-tick-label {
-  margin-top: 24px;
+  padding-top: 4px;
   display: inline-block;
   text-align: center;
 }
@@ -105,6 +106,12 @@
   height: 1px;
   border-left-color: #0480be;
   margin-left: 0;
+}
+.slider.slider-vertical .slider-tick-label-container {
+  white-space: nowrap;
+}
+.slider.slider-vertical .slider-tick-label-container .slider-tick-label {
+  padding-left: 4px;
 }
 .slider.slider-disabled .slider-handle {
   background-image: -webkit-linear-gradient(top, #dfdfdf 0%, #bebebe 100%);
