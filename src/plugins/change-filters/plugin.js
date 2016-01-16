@@ -1,7 +1,6 @@
 /*!
  * jQuery QueryBuilder Change Filters
  * Allows to change available filters after plugin initialization.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 QueryBuilder.extend({

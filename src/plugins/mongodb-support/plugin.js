@@ -1,7 +1,6 @@
 /*!
  * jQuery QueryBuilder MongoDB Support
  * Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 // DEFAULT CONFIG

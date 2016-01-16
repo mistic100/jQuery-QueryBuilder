@@ -1,7 +1,6 @@
 /*!
  * jQuery QueryBuilder Awesome Bootstrap Checkbox
  * Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 QueryBuilder.define('bt-checkbox', function(options) {

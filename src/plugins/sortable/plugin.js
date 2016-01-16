@@ -1,7 +1,6 @@
 /*!
  * jQuery QueryBuilder Sortable
  * Enables drag & drop sort of rules.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 Selectors.rule_and_group_containers = Selectors.rule_container + ', ' + Selectors.group_container;

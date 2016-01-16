@@ -1,7 +1,6 @@
 /*!
  * jQuery QueryBuilder Bootstrap Selectpicker
  * Applies Bootstrap Select on filters and operators combo-boxes.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 /**

@@ -10,12 +10,12 @@ $placeholder-border: 1px dashed $placeholder-border-color;
   }
 
   .dragged {
-    opacity: 0.5;
+    opacity: .5;
   }
 
   .rule-placeholder {
     @extend %base-container;
     border: $placeholder-border;
-    opacity: 0.7;
+    opacity: .7;
   }
 }

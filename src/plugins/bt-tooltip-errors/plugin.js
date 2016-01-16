@@ -1,7 +1,6 @@
 /*!
  * jQuery QueryBuilder Bootstrap Tooltip errors
  * Applies Bootstrap Tooltips on validation error messages.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 /**

@@ -1,7 +1,6 @@
 /*!
  * jQuery QueryBuilder Invert
  * Allows to invert a rule operator, a group condition or the entire builder.
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  */
 
 QueryBuilder.defaults({
