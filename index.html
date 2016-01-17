@@ -194,7 +194,7 @@ optgroups: {
           <td>display_empty_filter</td>
           <td>boolean</td>
           <td>true</td>
-          <td>Add an empty option with <code>select_placeholder</code> code to the filter dropdowns. If the empty filter is disabled and no <code>default_filter</code> is defined, the first filter will be loaded when adding a rule.</td>
+          <td>Add an empty option with <code>select_placeholder</code> string to the filter dropdowns. If the empty filter is disabled and no <code>default_filter</code> is defined, the first filter will be loaded when adding a rule.</td>
         </tr>
         <tr>
           <td>select_placeholder</td>
@@ -348,7 +348,7 @@ values: [
           <td>input_event</td>
           <td>string</td>
           <td>'change'</td>
-          <td>Space separated list of DOM events which the build should listen to detect value changes.</td>
+          <td>Space separated list of DOM events which the builder should listen to detect value changes.</td>
         </tr>
         <tr>
           <td>size</td>
@@ -456,12 +456,6 @@ values: [
               <li><code>rule</code> the <b>Rule</b> object</li>
             </ul>
           </td>
-        </tr>
-        <tr>
-          <td>valueParser</td>
-          <td>function</td>
-          <td>null</td>
-          <td><span class="label label-warning">deprecated</span> use <code>valueGetter</code> instead</td>
         </tr>
       </tbody>
     </table>
