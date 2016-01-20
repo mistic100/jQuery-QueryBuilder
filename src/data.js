@@ -309,7 +309,7 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
         var $value = rule.$el.find(Selectors.value_container);
 
         for (var i = 0; i < operator.nb_inputs; i++) {
-            var name = rule.id + '_value_' + i;
+            var name = Utils.escapeElementId(rule.id + '_value_' + i);
             var tmp;
 
             switch (filter.input) {
@@ -379,7 +379,7 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
         }
 
         for (var i = 0; i < operator.nb_inputs; i++) {
-            var name = rule.id + '_value_' + i;
+            var name = Utils.escapeElementId(rule.id + '_value_' + i);
 
             switch (filter.input) {
                 case 'radio':

@@ -113,6 +113,20 @@ Utils.escapeRegExp = function(str) {
 };
 
 /**
+ * Escape HTML element id
+ * @param value {string}
+ * @return {string}
+ */
+Utils.escapeElementId = function(str) {
+    // Regex based on that suggested by:
+    // https://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
+    // - escapes : . [ ] ,
+    // - avoids escaping already escaped values
+    return (str) ? str.replace(/(\\)?([:.\[\],])/g,
+            function( $0, $1, $2 ) { return $1 ? $0 : '\\' + $2; }) : str;
+};
+
+/**
  * Sort objects by grouping them by {key}, preserving initial order when possible
  * @param {object[]} items
  * @param {string} key
