@@ -1,5 +1,7 @@
 {
   "__locale": "Ukrainian (ua)",
+  "__author": "Megaplan, mborisv <bm@megaplan.ru>",
+
   "add_rule": "Додати",
   "add_group": "Додати групу",
   "delete_rule": "Видалити",

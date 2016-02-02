@@ -1,5 +1,7 @@
 {
   "__locale": "Čeština (cs)",
+  "__author": "Megaplan, mborisv <bm@megaplan.ru>",
+
   "add_rule": "Přidat",
   "add_group": "Přidat skupinu",
   "delete_rule": "Odstranit",

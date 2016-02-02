@@ -1,5 +1,7 @@
 {
   "__locale": "Azerbaijan (az)",
+  "__author": "Megaplan, mborisv <bm@megaplan.ru>",
+
   "add_rule": "Əlavə etmək",
   "add_group": "Qrup əlavə etmək",
   "delete_rule": "Silmək",
