@@ -345,6 +345,7 @@ QueryBuilder.prototype.setRoot = function(addRule, data) {
     this.model.root = new Group(null, $group);
     this.model.root.model = this.model;
     this.model.root.condition = this.settings.default_condition;
+    this.model.root.flags = $.extend({}, this.settings.default_group_flags);
 
     if (data !== undefined) {
         this.model.root.data = data;
@@ -362,9 +363,10 @@ QueryBuilder.prototype.setRoot = function(addRule, data) {
  * @param parent {Group}
  * @param addRule {bool,optional} add a default empty rule
  * @param data {mixed,optional} group custom data
+ * @param {object,optional} flags to apply to the group
  * @return group {Group}
  */
-QueryBuilder.prototype.addGroup = function(parent, addRule, data) {
+QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     addRule = (addRule === undefined || addRule === true);
 
     var level = parent.level + 1;
@@ -381,6 +383,8 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data) {
     if (data !== undefined) {
         model.data = data;
     }
+
+    model.flags = $.extend({}, this.settings.default_group_flags, flags);
 
     this.trigger('afterAddGroup', model);
 
@@ -442,9 +446,10 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
  * Add a new rule
  * @param parent {Group}
  * @param data {mixed,optional} rule custom data
+ * @param flags {object,optional} flags to apply to the rule
  * @return rule {Rule}
  */
-QueryBuilder.prototype.addRule = function(parent, data) {
+QueryBuilder.prototype.addRule = function(parent, data, flags) {
     var e = this.trigger('beforeAddRule', parent);
     if (e.isDefaultPrevented()) {
         return null;
@@ -457,6 +462,8 @@ QueryBuilder.prototype.addRule = function(parent, data) {
     if (data !== undefined) {
         model.data = data;
     }
+
+    model.flags = $.extend({}, this.settings.default_rule_flags, flags);
 
     this.trigger('afterAddRule', model);
 
