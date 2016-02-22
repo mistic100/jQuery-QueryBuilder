@@ -8,12 +8,17 @@ title: Create plugins
     Introduction
   </h1>
 
-  <p>QueryBuilder uses jQuery events and some piece of code from <a href="http://brianreavis.github.io/selectize.js">selectize.js</a> to offer a plugins system.</p>
+  <p>QueryBuilder uses jQuery events and some piece of code from <a href="http://brianreavis.github.io/selectize.js">selectize.js</a>
+    to offer a plugins system.</p>
   <p>Plugins can simply add public methods or make use of events to change the behavior of the builder.</p>
 
-  <p>Each plugin is a folder in <code>plugins</code> directory, it contains at least a <code>plugin.js</code> file and optionally a <code>plugin.scss</code> file and a <code>i18n</code> folder. Everything needed to the plugin operation must be contained in these two files (but third-party dependencies of course).</p>
+  <p>Each plugin is a folder in <code>plugins</code> directory, it contains at least a <code>plugin.js</code> file and
+    optionally a <code>plugin.scss</code> file and a <code>i18n</code> folder. Everything needed to the plugin operation
+    must be contained in these two files (but third-party dependencies of course).</p>
 
-  <p>Plugins are included in the <code>dist</code> files by the Grunt task (depending on <b>plugins</b> build option) with everything needed for production (CommonJS factory, SCSS imports + CSS build), thus making plugin creation very easy.</p>
+  <p>Plugins are included in the <code>dist</code> files by the Grunt task (depending on <b>plugins</b> build option)
+    with everything needed for production (CommonJS factory, SCSS imports + CSS build), thus making plugin creation very
+    easy.</p>
 </section>
 
 
@@ -24,26 +29,34 @@ title: Create plugins
 
   <h2 id="api">API</h2>
 
-  <p>QueryBuilder exposes some utilities to ease plugins creation, all available in the <code>QueryBuilder</code> variable.</p>
+  <p>QueryBuilder exposes some utilities to ease plugins creation, all available in the <code>QueryBuilder</code>
+    variable.</p>
 
   <h3>defaults</h3>
   <p>Use <code>QueryBuilder.defaults</code> to extend the library configuration.</p>
 
+  <!-- @formatter:off -->
 {% highlight javascript %}
 QueryBuilder.defaults({
   my_new_option: /* value */
 });
 {% endhighlight %}
+<!-- @formatter:on -->
 
-  <p><code>QueryBuilder.defaults</code> can also be used as a getter to return a <b>copy</b> of the default configuration.</p>
+  <p><code>QueryBuilder.defaults</code> can also be used as a getter to return a <b>copy</b> of the default
+    configuration.</p>
 
+  <!-- @formatter:off -->
 {% highlight javascript %}
 var qb_defaults = QueryBuilder.defaults();
 {% endhighlight %}
+<!-- @formatter:on -->
 
   <h3>extend</h3>
-  <p><code>QueryBuilder.extend</code> is used to add new functions to the prototype of the library (eg: public methods).</p>
+  <p><code>QueryBuilder.extend</code> is used to add new functions to the prototype of the library (eg: public methods).
+  </p>
 
+  <!-- @formatter:off -->
 {% highlight javascript %}
 QueryBuilder.extend({
   mySuperMethod: function() {
@@ -51,10 +64,13 @@ QueryBuilder.extend({
   }
 });
 {% endhighlight %}
+<!-- @formatter:on -->
 
   <h3>define</h3>
-  <p><code>QueryBuilder.define</code> is used to declare a plugin which will be initialized with the builder, optionally with a configuration object. It corresponds to plugins loaded with <code>plugins</code> option.</p>
+  <p><code>QueryBuilder.define</code> is used to declare a plugin which will be initialized with the builder, optionally
+    with a configuration object. It corresponds to plugins loaded with <code>plugins</code> option.</p>
 
+  <!-- @formatter:off -->
 {% highlight javascript %}
 QueryBuilder.define('my_plugin', function(options) {
   /* "this" is the QueryBuilder instance */
@@ -62,17 +78,23 @@ QueryBuilder.define('my_plugin', function(options) {
   /* optional default plugin configuration */
 });
 {% endhighlight %}
+<!-- @formatter:on -->
 
   <div class="bs-callout bs-callout-info">
     <h4>"Standalone" plugin</h4>
-    <p>The <code>QueryBuilder</code> variable is private to the CommonJS factory, thus you can't use it if you want to create a plugin which will not be included in the main build (separated JS/CSS files).<br>
-    To solve this issue, use <code>$.fn.queryBuilder</code> instead.</p>
+    <p>The <code>QueryBuilder</code> variable is private to the CommonJS factory, thus you can't use it if you want to
+      create a plugin which will not be included in the main build (separated JS/CSS files).<br>
+      To solve this issue, use <code>$.fn.queryBuilder</code> instead.</p>
   </div>
 
   <h2 id="events-system">Events system</h2>
 
-  <p>What you will generally do in your plugin body is to bind callbacks to QueryBuilder events in order to modify default behavior. Callbacks are binded with the <code>on</code> method. Check <a href="{{site.github.url}}/dev/events.html">this page</a> for more information about the two types of events and a complete list of available events.</p>
+  <p>What you will generally do in your plugin body is to bind callbacks to QueryBuilder events in order to modify
+    default behavior. Callbacks are binded with the <code>on</code> method. Check <a
+      href="{{site.github.url}}/dev/events.html">this page</a> for more information about the two types of events and a
+    complete list of available events.</p>
 
+  <!-- @formatter:off -->
 {% highlight javascript %}
 this.on('validationError', function(e, node, error, value) {
   /* do something when a validation error occurs */
@@ -82,11 +104,15 @@ this.on('getRuleTemplate.filter', function(e) {
   /* modify the rule HTML (e.value) */
 });
 {% endhighlight %}
+<!-- @formatter:on -->
 
   <h2 id="overwrite">Overwrite methods</h2>
 
-  <p>If the events are not sufficient for you, you can still override existing QueryBuilder methods. You only need to access it from <code>QueryBuilder.prototype</code> (<code>$.fn.queryBuilder.constructor.prototype</code> for public access).</p>
+  <p>If the events are not sufficient for you, you can still override existing QueryBuilder methods. You only need to
+    access it from <code>QueryBuilder.prototype</code> (<code>$.fn.queryBuilder.constructor.prototype</code> for public
+    access).</p>
 
+  <!-- @formatter:off -->
 {% highlight javascript %}
 // keep a pointer to the original method
 var originalInit = QueryBuilder.prototype.init;
@@ -99,6 +125,7 @@ QueryBuilder.extend({
   }
 });
 {% endhighlight %}
+<!-- @formatter:on -->
 </section>
 
 
@@ -107,11 +134,16 @@ QueryBuilder.extend({
     plugin.scss
   </h1>
 
-  <p>If your plugin needs additional CSS rules, you can add a <code>.scss</code>, file in the plugin directory, <b>nor <code>.css</code> nor <code>.sass</code> files are allowed</b> (of course you can use plain CSS in the SCSS file).</p>
+  <p>If your plugin needs additional CSS rules, you can add a <code>.scss</code>, file in the plugin directory, <b>nor
+    <code>.css</code> nor <code>.sass</code> files are allowed</b> (of course you can use plain CSS in the SCSS file).
+  </p>
 
-  <p>The plugins' SCSS files are imported at the end of the core SCSS, allowing you to use all defined variable. One interesting variable is <code>$theme-name</code> which contains... the theme name (currently "default" or "dark") you can use to make conditionnal formating.</p>
+  <p>The plugins' SCSS files are imported at the end of the core SCSS, allowing you to use all defined variable. One
+    interesting variable is <code>$theme-name</code> which contains... the theme name (currently "default" or "dark")
+    you can use to make conditionnal formating.</p>
 
   <b>Basic SCSS from Filter Description plugin :</b>
+  <!-- @formatter:off -->
 {% highlight scss %}
 $description-text-color: #31708F;
 
@@ -123,6 +155,7 @@ $description-text-color: #31708F;
   color: $description-text-color;
 }
 {% endhighlight %}
+<!-- @formatter:on -->
 </section>
 
 <section class="bs-docs-section">
@@ -130,9 +163,12 @@ $description-text-color: #31708F;
     Localization
   </h1>
 
-  <p>If your plugin adds readable text you might want to enable translations for these text strings. This can be done by adding a <code>i18n</code> folder in your plugin directory, containing one <code>.json</code> file for each language. The translations you define here will be merged with the core translations at build time.</p>
+  <p>If your plugin adds readable text you might want to enable translations for these text strings. This can be done by
+    adding a <code>i18n</code> folder in your plugin directory, containing one <code>.json</code> file for each
+    language. The translations you define here will be merged with the core translations at build time.</p>
 
   <b>Example of plugin language file :</b>
+  <!-- @formatter:off -->
 {% highlight json %}
 {
   "buttons": {
@@ -141,10 +177,13 @@ $description-text-color: #31708F;
   }
 }
 {% endhighlight %}
+<!-- @formatter:on -->
 
   <div class="bs-callout bs-callout-warning">
     <h4>Default translations</h4>
-    <p>Don't forget to define the default translations (English) in the <code>en.json</code> file. It will be merged with the core translation by the Grunt task.</p>
-    <p>If your plugin is intended to be standalone, you can extend <code>$.fn.queryBuilder.regional</code> object instead, keys are language codes.</p>
+    <p>Don't forget to define the default translations (English) in the <code>en.json</code> file. It will be merged
+      with the core translation by the Grunt task.</p>
+    <p>If your plugin is intended to be standalone, you can extend <code>$.fn.queryBuilder.regional</code> object
+      instead, keys are language codes.</p>
   </div>
 </section>

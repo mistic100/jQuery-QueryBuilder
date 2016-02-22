@@ -107,7 +107,25 @@
 }
 
 .flag-zh-CN {
-    width: 16px;
-    height: 11px;
-    background-position: -16px -44px;
+  width: 16px;
+  height: 11px;
+  background-position: -16px -44px;
+}
+
+.flag-az {
+  width: 16px;
+  height: 11px;
+  background-position: -32px -44px;
+}
+
+.flag-cs {
+  width: 16px;
+  height: 11px;
+  background-position: -48px -44px;
+}
+
+.flag-ua {
+  width: 16px;
+  height: 11px;
+  background-position: 0 -55px;
 }
