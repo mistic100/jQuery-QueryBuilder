@@ -13,7 +13,7 @@ jQuery plugin offering an simple interface to create complex queries.
 http://querybuilder.js.org
 
 ### Dependencies
- * jQuery >= 1.9
+ * jQuery >= 1.10
  * Bootstrap >= 3.1 (CSS only)
  * [jQuery.extendext](https://github.com/mistic100/jQuery.extendext)
  * [doT.js](http://olado.github.io/doT) (@master until the author decide to publish a new version)

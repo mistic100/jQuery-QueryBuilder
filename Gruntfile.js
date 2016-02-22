@@ -10,21 +10,21 @@ module.exports = function(grunt) {
 
     function removeJshint(src) {
         return src
-          .replace(/\/\*jshint [a-z:]+ \*\/\r?\n\r?\n?/g, '')
-          .replace(/\/\*jshint -[EWI]{1}[0-9]{3} \*\/\r?\n\r?\n?/g, '');
+            .replace(/\/\*jshint [a-z:]+ \*\/\r?\n\r?\n?/g, '')
+            .replace(/\/\*jshint -[EWI]{1}[0-9]{3} \*\/\r?\n\r?\n?/g, '');
     }
 
     function process_lang(file, src, wrapper) {
         var lang = file.split(/[\/\.]/)[2];
         var content = JSON.parse(src);
-        wrapper = wrapper || ['',''];
+        wrapper = wrapper || ['', ''];
 
         grunt.config.set('lang_locale', content.__locale || lang);
         grunt.config.set('lang_author', content.__author);
         var header = grunt.template.process('<%= langBanner %>');
 
         loaded_plugins.forEach(function(p) {
-            var plugin_file = 'src/plugins/'+ p +'/i18n/'+ lang +'.json';
+            var plugin_file = 'src/plugins/' + p + '/i18n/' + lang + '.json';
 
             if (grunt.file.exists(plugin_file)) {
                 content = deepmerge(content, grunt.file.readJSON(plugin_file));
@@ -32,13 +32,13 @@ module.exports = function(grunt) {
         });
 
         return header
-          + '\n\n'
-          + wrapper[0]
-          + 'QueryBuilder.regional[\'' + lang + '\'] = '
-          + JSON.stringify(content, null, 2)
-          + ';\n\n'
-          + 'QueryBuilder.defaults({ lang_code: \'' + lang + '\' });'
-          + wrapper[1];
+            + '\n\n'
+            + wrapper[0]
+            + 'QueryBuilder.regional[\'' + lang + '\'] = '
+            + JSON.stringify(content, null, 2)
+            + ';\n\n'
+            + 'QueryBuilder.defaults({ lang_code: \'' + lang + '\' });'
+            + wrapper[1];
     }
 
 
@@ -66,19 +66,19 @@ module.exports = function(grunt) {
         ];
 
 
-    (function(){
+    (function() {
         // list available plugins and languages
         grunt.file.expand('src/plugins/**/plugin.js')
-        .forEach(function(f) {
-            var n = f.split('/')[2];
-            all_plugins[n] = f;
-        });
+            .forEach(function(f) {
+                var n = f.split('/')[2];
+                all_plugins[n] = f;
+            });
 
         grunt.file.expand('src/i18n/*.json')
-        .forEach(function(f) {
-            var n = f.split(/[\/\.]/)[2];
-            all_langs[n] = f;
-        });
+            .forEach(function(f) {
+                var n = f.split(/[\/\.]/)[2];
+                all_langs[n] = f;
+            });
 
         // fill all js files
         for (var p in all_plugins) {
@@ -94,7 +94,7 @@ module.exports = function(grunt) {
                     loaded_plugins.push(p);
                 }
                 else {
-                    grunt.fail.warn('Plugin '+ p +' unknown');
+                    grunt.fail.warn('Plugin ' + p + ' unknown');
                 }
             });
         }
@@ -120,7 +120,7 @@ module.exports = function(grunt) {
                     }
                 }
                 else {
-                    grunt.fail.warn('Language '+ l +' unknown');
+                    grunt.fail.warn('Language ' + l + ' unknown');
                 }
             });
         }
@@ -131,19 +131,19 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         banner:
-            '/*!\n'+
-            ' * jQuery QueryBuilder <%= pkg.version %>\n'+
-            ' * Copyright 2014-<%= grunt.template.today("yyyy") %> Damien "Mistic" Sorel (http://www.strangeplanet.fr)\n'+
-            ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n'+
-            ' */',
+        '/*!\n' +
+        ' * jQuery QueryBuilder <%= pkg.version %>\n' +
+        ' * Copyright 2014-<%= grunt.template.today("yyyy") %> Damien "Mistic" Sorel (http://www.strangeplanet.fr)\n' +
+        ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n' +
+        ' */',
 
         langBanner:
-            '/*!\n'+
-            ' * jQuery QueryBuilder <%= pkg.version %>\n'+
-            ' * Locale: <%= lang_locale %>\n'+
-            '<% if (lang_author) { %> * Author: <%= lang_author %>\n<% } %>'+
-            ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n'+
-            ' */',
+        '/*!\n' +
+        ' * jQuery QueryBuilder <%= pkg.version %>\n' +
+        ' * Locale: <%= lang_locale %>\n' +
+        '<% if (lang_author) { %> * Author: <%= lang_author %>\n<% } %>' +
+        ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n' +
+        ' */',
 
         // bump version
         bump: {
@@ -155,8 +155,21 @@ module.exports = function(grunt) {
             }
         },
 
+        // serve folder content
+        connect: {
+            dev: {
+                options: {
+                    port: 9000,
+                    livereload: true
+                }
+            }
+        },
+
         // watchers
         watch: {
+            options: {
+                livereload: true
+            },
             js: {
                 files: ['src/*.js', 'src/plugins/**/plugin.js'],
                 tasks: ['build_js']
@@ -168,6 +181,17 @@ module.exports = function(grunt) {
             lang: {
                 files: ['src/i18n/*.json', 'src/plugins/**/i18n/*.json'],
                 tasks: ['build_lang']
+            },
+            example: {
+                files: ['examples/**'],
+                tasks: []
+            }
+        },
+
+        // open example
+        open: {
+            dev: {
+                path: 'http://localhost:<%= connect.dev.options.port%>/examples/index.html'
             }
         },
 
@@ -184,7 +208,7 @@ module.exports = function(grunt) {
             sass_plugins: {
                 files: loaded_plugins.map(function(name) {
                     return {
-                        src: 'src/plugins/'+ name +'/plugin.scss',
+                        src: 'src/plugins/' + name + '/plugin.scss',
                         dest: 'dist/scss/plugins/' + name + '.scss'
                     };
                 })
@@ -215,8 +239,8 @@ module.exports = function(grunt) {
                         var name = file.match(/([^\/]+?).js$/)[1];
 
                         return removeJshint(src)
-                          .replace(/\r\n/g, '\n')
-                          .replace(/define\((.*?)\);/, 'define(\'' + name + '\', $1);');
+                            .replace(/\r\n/g, '\n')
+                            .replace(/define\((.*?)\);/, 'define(\'' + name + '\', $1);');
                     }
                 }
             },
@@ -224,7 +248,7 @@ module.exports = function(grunt) {
             lang: {
                 files: Object.keys(all_langs).map(function(name) {
                     return {
-                        src: 'src/i18n/'+ name +'.json',
+                        src: 'src/i18n/' + name + '.json',
                         dest: 'dist/i18n/query-builder.' + name + '.js'
                     };
                 }),
@@ -235,11 +259,11 @@ module.exports = function(grunt) {
                     }
                 }
             },
-            // compîle language files without wrapper
+            // compile language files without wrapper
             lang_temp: {
                 files: Object.keys(all_langs).map(function(name) {
                     return {
-                        src: 'src/i18n/'+ name +'.json',
+                        src: 'src/i18n/' + name + '.json',
                         dest: '.temp/i18n/' + name + '.js'
                     };
                 }),
@@ -293,7 +317,7 @@ module.exports = function(grunt) {
                     wrapper: function() {
                         return ['', loaded_plugins.reduce(function(wrapper, name) {
                             if (grunt.file.exists('dist/scss/plugins/' + name + '.scss')) {
-                                wrapper+= '\n@import \'plugins/' + name + '\';';
+                                wrapper += '\n@import \'plugins/' + name + '\';';
                             }
                             return wrapper;
                         }, '\n')];
@@ -402,13 +426,13 @@ module.exports = function(grunt) {
                             var scripts = '\n';
 
                             js_core_files.forEach(function(file) {
-                                scripts+= '<script src="../' + file + '" data-cover></script>\n';
+                                scripts += '<script src="../' + file + '" data-cover></script>\n';
                             });
 
-                            scripts+= '\n';
+                            scripts += '\n';
 
                             for (var p in all_plugins) {
-                                scripts+= '<script src="../' + all_plugins[p] + '" data-cover></script>\n';
+                                scripts += '<script src="../' + all_plugins[p] + '" data-cover></script>\n';
                             }
 
                             return m1 + scripts + m2;
@@ -419,7 +443,7 @@ module.exports = function(grunt) {
                             var scripts = '\n';
 
                             grunt.file.expand('tests/*.module.js').forEach(function(file) {
-                                scripts+= '<script src="../' + file + '"></script>\n';
+                                scripts += '<script src="../' + file + '"></script>\n';
                             });
 
                             return m1 + scripts + m2;
@@ -493,7 +517,7 @@ module.exports = function(grunt) {
             grunt.log.write(t['cyan'] + ' ' + triggers[t].type['magenta']);
             if (triggers[t].prevent) grunt.log.write(' (*)'['yellow']);
             grunt.log.write('\n');
-            grunt.log.writeln('   ' + (triggers[t].file +':'+ triggers[t].line)['red'] + ' ' + triggers[t].args);
+            grunt.log.writeln('   ' + (triggers[t].file + ':' + triggers[t].line)['red'] + ' ' + triggers[t].args);
             grunt.log.write('\n');
         }
 
@@ -525,12 +549,12 @@ module.exports = function(grunt) {
         grunt.log.write('\n');
 
         for (var e in errors) {
-            grunt.log.writeln((e+'Error')['cyan']);
+            grunt.log.writeln((e + 'Error')['cyan']);
             errors[e].forEach(function(error) {
                 var message = error.message.replace(/{([0-9]+)}/g, function(m, i) {
                     return error.args[parseInt(i)]['yellow'];
                 });
-                grunt.log.writeln('   ' + (error.file +':'+ error.line)['red']);
+                grunt.log.writeln('   ' + (error.file + ':' + error.line)['red']);
                 grunt.log.writeln('      ' + message);
             });
             grunt.log.write('\n');
@@ -599,5 +623,12 @@ module.exports = function(grunt) {
         'string-replace:test',
         'qunit_blanket_lcov',
         'qunit'
+    ]);
+
+    grunt.registerTask('serve', [
+        'default',
+        'open',
+        'connect',
+        'watch'
     ]);
 };

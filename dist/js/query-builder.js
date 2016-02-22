@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.3.1
+ * jQuery QueryBuilder 2.3.2
  * Copyright 2014-2016 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -665,6 +665,7 @@ QueryBuilder.prototype.setRoot = function(addRule, data) {
     this.model.root = new Group(null, $group);
     this.model.root.model = this.model;
     this.model.root.condition = this.settings.default_condition;
+    this.model.root.flags = $.extend({}, this.settings.default_group_flags);
 
     if (data !== undefined) {
         this.model.root.data = data;
@@ -682,9 +683,10 @@ QueryBuilder.prototype.setRoot = function(addRule, data) {
  * @param parent {Group}
  * @param addRule {bool,optional} add a default empty rule
  * @param data {mixed,optional} group custom data
+ * @param {object,optional} flags to apply to the group
  * @return group {Group}
  */
-QueryBuilder.prototype.addGroup = function(parent, addRule, data) {
+QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     addRule = (addRule === undefined || addRule === true);
 
     var level = parent.level + 1;
@@ -701,6 +703,8 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data) {
     if (data !== undefined) {
         model.data = data;
     }
+
+    model.flags = $.extend({}, this.settings.default_group_flags, flags);
 
     this.trigger('afterAddGroup', model);
 
@@ -762,9 +766,10 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
  * Add a new rule
  * @param parent {Group}
  * @param data {mixed,optional} rule custom data
+ * @param flags {object,optional} flags to apply to the rule
  * @return rule {Rule}
  */
-QueryBuilder.prototype.addRule = function(parent, data) {
+QueryBuilder.prototype.addRule = function(parent, data, flags) {
     var e = this.trigger('beforeAddRule', parent);
     if (e.isDefaultPrevented()) {
         return null;
@@ -777,6 +782,8 @@ QueryBuilder.prototype.addRule = function(parent, data) {
     if (data !== undefined) {
         model.data = data;
     }
+
+    model.flags = $.extend({}, this.settings.default_rule_flags, flags);
 
     this.trigger('afterAddRule', model);
 
@@ -1645,7 +1652,7 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
         var $value = rule.$el.find(Selectors.value_container);
 
         for (var i = 0; i < operator.nb_inputs; i++) {
-            var name = rule.id + '_value_' + i;
+            var name = Utils.escapeElementId(rule.id + '_value_' + i);
             var tmp;
 
             switch (filter.input) {
@@ -1715,7 +1722,7 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
         }
 
         for (var i = 0; i < operator.nb_inputs; i++) {
-            var name = rule.id + '_value_' + i;
+            var name = Utils.escapeElementId(rule.id + '_value_' + i);
 
             switch (filter.input) {
                 case 'radio':
@@ -2612,6 +2619,20 @@ Utils.escapeString = function(value) {
  */
 Utils.escapeRegExp = function(str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+};
+
+/**
+ * Escape HTML element id
+ * @param value {string}
+ * @return {string}
+ */
+Utils.escapeElementId = function(str) {
+    // Regex based on that suggested by:
+    // https://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
+    // - escapes : . [ ] ,
+    // - avoids escaping already escaped values
+    return (str) ? str.replace(/(\\)?([:.\[\],])/g,
+            function( $0, $1, $2 ) { return $1 ? $0 : '\\' + $2; }) : str;
 };
 
 /**
@@ -4114,7 +4135,7 @@ QueryBuilder.extend({
 
 
 /*!
- * jQuery QueryBuilder 2.3.1
+ * jQuery QueryBuilder 2.3.2
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)

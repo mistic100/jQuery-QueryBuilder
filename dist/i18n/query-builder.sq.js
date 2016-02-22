@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.3.1
+ * jQuery QueryBuilder 2.3.2
  * Locale: Albanian (sq)
  * Author: Tomor Pupovci
  * Licensed under MIT (http://opensource.org/licenses/MIT)
