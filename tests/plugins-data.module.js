@@ -25,8 +25,23 @@ $(function(){
             params: [10.25, 'mo', 'mu', '1234-azer-5678']
         };
 
+        var basic_rules_sql_stmt_num_at = {
+            sql: 'price < @1 AND name IS NULL AND ( category IN(@2, @3) OR id != @4 ) ',
+            params: [10.25, 'mo', 'mu', '1234-azer-5678']
+        };
+
         var basic_rules_sql_stmt_named = {
             sql: 'price < :price_1 AND name IS NULL AND ( category IN(:category_1, :category_2) OR id != :id_1 ) ',
+            params: {
+                price_1: 10.25,
+                category_1: 'mo',
+                category_2: 'mu',
+                id_1: '1234-azer-5678'
+            }
+        };
+
+        var basic_rules_sql_stmt_named_at = {
+            sql: 'price < @price_1 AND name IS NULL AND ( category IN(@category_1, @category_2) OR id != @id_1 ) ',
             params: {
                 price_1: 10.25,
                 category_1: 'mo',
@@ -55,13 +70,25 @@ $(function(){
         assert.deepEqual(
             $b.queryBuilder('getSQL', 'numbered'),
             basic_rules_sql_stmt_num,
-            'Should create SQL query with statements (numbered)'
+            'Should create SQL query with statements ($ numbered)'
+        );
+
+        assert.deepEqual(
+            $b.queryBuilder('getSQL', 'numbered(@)'),
+            basic_rules_sql_stmt_num_at,
+            'Should create SQL query with statements (@ numbered)'
         );
 
         assert.deepEqual(
             $b.queryBuilder('getSQL', 'named'),
             basic_rules_sql_stmt_named,
-            'Should create SQL query with statements (named)'
+            'Should create SQL query with statements (: named)'
+        );
+
+        assert.deepEqual(
+            $b.queryBuilder('getSQL', 'named(@)'),
+            basic_rules_sql_stmt_named_at,
+            'Should create SQL query with statements (@ named)'
         );
 
         $b.queryBuilder('setRulesFromSQL', basic_rules_sql_raw);
@@ -82,14 +109,28 @@ $(function(){
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
             basic_rules,
-            'Should parse SQL query with statements (numbered)'
+            'Should parse SQL query with statements ($ numbered)'
+        );
+
+        $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_num_at, 'numbered(@)');
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            basic_rules,
+            'Should parse SQL query with statements (@ numbered)'
         );
 
         $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_named, 'named');
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
             basic_rules,
-            'Should parse SQL query with statements (named)'
+            'Should parse SQL query with statements (: named)'
+        );
+
+        $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_named_at, 'named(@)');
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            basic_rules,
+            'Should parse SQL query with statements (@ named)'
         );
 
         $b.queryBuilder('destroy');
