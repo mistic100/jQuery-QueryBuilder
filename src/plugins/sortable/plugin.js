@@ -104,6 +104,21 @@ QueryBuilder.define('sortable', function(options) {
     });
 
     /**
+     * Remove drag handle from non-sortable groups
+     */
+    this.on('parseGroupFlags.filter', function(flags) {
+        if (flags.value.no_sortable === undefined) {
+            flags.value.no_sortable = options.default_no_sortable;
+        }
+    });
+
+    this.on('afterApplyGroupFlags', function(e, group) {
+        if (group.flags.no_sortable) {
+            group.$el.find('.drag-handle').remove();
+        }
+    });
+
+    /**
      * Modify templates
      */
     this.on('getGroupTemplate.filter', function(h, level) {
