@@ -1,12 +1,12 @@
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['jquery', 'microevent', 'jQuery.extendext'], factory);
+        define(['jquery', 'uevent', 'jQuery.extendext'], factory);
     }
     else {
-        factory(root.jQuery, root.MicroEvent);
+        factory(root.jQuery, root.uEvent);
     }
-}(this, function($, MicroEvent) {
+}(this, function($, uEvent) {
     "use strict";
-  
+
     @@js
 }));

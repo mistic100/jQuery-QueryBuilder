@@ -43,7 +43,7 @@
         this.init(options);
     };
 
-    MicroEvent.mixin(QueryBuilder);
+    uEvent.mixin(QueryBuilder);
 
 
     // DEFAULT CONFIG
@@ -1404,7 +1404,7 @@
         <i class="' + this.icons.add_group + '"></i> '+ this.lang.add_group +' \
       </button>'
     :'') +' \
-    '+ (level>1 ? 
+    '+ (level>1 ?
       '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
         <i class="' + this.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
       </button>'

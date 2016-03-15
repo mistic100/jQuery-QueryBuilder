@@ -1,6 +1,6 @@
 {
     "name": "mistic100/jquery-querybuilder",
-    "version": "1.4.2",
+    "version": "1.4.3",
     "description": "jQuery plugin for user friendly query/filter creator",
     "keywords": [
         "jquery",
@@ -23,4 +23,4 @@
         "twbs/bootstrap": "3.2.*@dev"
     },
     "license": "MIT"
-} 
+}

@@ -17,15 +17,15 @@
 <div class="container">
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
     <p><a href="http://www.eyecon.ro/bootstrap-slider">Bootstrap Slider</a> and <a href="http://bootboxjs.com">Bootbox</a> must be installed with Bower to run this demo.</p>
-    
+
     <div id="builder"></div>
-    
+
     <div class="btn-group">
       <button class="btn btn-warning reset">Reset</button>
       <button class="btn btn-success set">Set rules</button>
       <button class="btn btn-success set-mongo">Set rules from MongoDB</button>
     </div>
-    
+
     <div class="btn-group">
       <button class="btn btn-primary parse-json">JSON</button>
       <button class="btn btn-primary parse-sql" data-stmt="question_mark">SQL (question mark)</button>
@@ -42,7 +42,7 @@
 </div>
 
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="../bower_components/microevent-mistic100/microevent.js"></script>
+<script src="../bower_components/uevent/uevent.js"></script>
 <script src="../bower_components/jquery-extendext/jQuery.extendext.js"></script>
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../src/query-builder.js"></script>
@@ -58,17 +58,17 @@
 // define filters
 $('#builder').queryBuilder({
   allow_empty: true,
-  
+
   onValidationError: function($target, err) {
       console.error(err, $target);
   },
-  
+
   plugins: {
     'bt-tooltip-errors': { delay: 100},
     'sortable': null,
     'filter-description': { mode: 'bootbox' }
   },
-  
+
   filters: [
   /*
    * basic
@@ -139,7 +139,7 @@ $('#builder').queryBuilder({
       min: 0,
       step: 0.01
     }
-  }, 
+  },
   /*
    * slider
    */
@@ -162,7 +162,7 @@ $('#builder').queryBuilder({
       input.slider('setValue', value);
       input.val(value); // don't know why I need it
     }
-  }, 
+  },
   /*
    * placeholder and regex validation
    */
@@ -197,10 +197,10 @@ $('#builder').queryBuilder({
     },
     input: function($rule, filter) {
       var $container = $rule.find('.rule-value-container');
-      
+
       $container.on('change', '[name=coord_1]', function(){
         var h = '';
-        
+
         switch ($(this).val()) {
           case 'A':
             h = '<option value="-1">-</option> <option value="1">1</option> <option value="2">2</option>';
@@ -212,10 +212,10 @@ $('#builder').queryBuilder({
             h = '<option value="-1">-</option> <option value="5">5</option> <option value="6">6</option>';
             break;
         }
-        
+
         $container.find('[name=coord_2]').html(h).toggle(h!='');
       });
-      
+
       return '\
       <select name="coord_1"> \
         <option value="-1">-</option> \
@@ -232,7 +232,7 @@ $('#builder').queryBuilder({
     onAfterSetValue: function($rule, value, filter, operator) {
       if (operator.accept_values) {
         var val = value[0].split('.');
-        
+
         $rule.find('[name=coord_1]').val(val[0]).trigger('change');
         $rule.find('[name=coord_2]').val(val[1]);
       }

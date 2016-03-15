@@ -1,6 +1,6 @@
 {
   "name": "jQuery-QueryBuilder",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "authors": [{
     "name": "Damien \"Mistic\" Sorel",
     "homepage": "http://www.strangeplanet.fr"
@@ -14,7 +14,7 @@
     "jquery": ">= 1.9.0",
     "bootstrap": "^3.1.0",
     "momentjs": "^2.6.0",
-    "microevent-mistic100": "^2.0.0",
+    "uevent": "^1.0.0",
     "jquery-extendext": "^0.1.1"
   },
   "keywords": [
