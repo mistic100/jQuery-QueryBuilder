@@ -1,20 +1,20 @@
 /*!
- * jQuery QueryBuilder 1.4.2
- * Copyright 2014-2015 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * jQuery QueryBuilder 1.4.3
+ * Copyright 2014-2016 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
 // Modules: bt-selectpicker, bt-tooltip-errors, filter-description, loopback-support, mongodb-support, sortable, sql-support
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['jquery', 'microevent', 'jQuery.extendext'], factory);
+        define(['jquery', 'uevent', 'jQuery.extendext'], factory);
     }
     else {
-        factory(root.jQuery, root.MicroEvent);
+        factory(root.jQuery, root.uEvent);
     }
-}(this, function($, MicroEvent) {
+}(this, function($, uEvent) {
     "use strict";
-  
+
     var types = [
             'string',
             'integer',
@@ -44,7 +44,7 @@
         this.init(options);
     };
 
-    MicroEvent.mixin(QueryBuilder);
+    uEvent.mixin(QueryBuilder);
 
 
     QueryBuilder.DEFAULTS = {
@@ -1391,7 +1391,7 @@
         <i class="' + this.icons.add_group + '"></i> '+ this.lang.add_group +' \
       </button>'
     :'') +' \
-    '+ (level>1 ? 
+    '+ (level>1 ?
       '<button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
         <i class="' + this.icons.remove_group + '"></i> '+ this.lang.delete_group +' \
       </button>'
@@ -1691,6 +1691,7 @@
             return args[parseInt(i)+1];
         });
     }
+
 
 $.fn.queryBuilder.define('bt-selectpicker', function(options) {
         if (!$.fn.selectpicker || !$.fn.selectpicker.Constructor) {
