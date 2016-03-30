@@ -576,6 +576,84 @@ $(function(){
     });
 
     /**
+     * Test filters ordering
+     */
+    QUnit.test('Sort filters', function(assert) {
+        $b.queryBuilder({
+            filters: [{
+                id: '3',
+                label: {
+                    fr: 'ccc',
+                    en: 'Ccc'
+                }
+            }, {
+                id: '1',
+                label: 'AAA'
+            }, {
+                id: '5',
+                label: 'eee'
+            }, {
+                id: '2',
+                label: 'bbb'
+            }, {
+                id: '4',
+                label: {
+                    fr: 'ddd',
+                    en: 'Ddd'
+                }
+            }],
+            sort_filters: true,
+            lang_code: 'fr'
+        });
+
+        var options = [];
+        $('[name=builder_rule_0_filter]>*').each(function() {
+            options.push($(this).val());
+        });
+
+        assert.deepEqual(
+            options,
+            ['-1', '1', '2', '3', '4', '5'],
+            'Filters should be sorted by alphabetical order'
+        );
+
+        $b.queryBuilder('destroy');
+
+        $b.queryBuilder({
+            filters: [{
+                id: '3',
+                label: 'ccc'
+            }, {
+                id: '1',
+                label: 'AAA'
+            }, {
+                id: '5',
+                label: 'eee'
+            }, {
+                id: '2',
+                label: 'bbb'
+            }, {
+                id: '4',
+                label: 'ddd'
+            }],
+            sort_filters: function(a, b) {
+                return parseInt(b.id) - parseInt(a.id);
+            }
+        });
+
+        options = [];
+        $('[name=builder_rule_0_filter]>*').each(function() {
+            options.push($(this).val());
+        });
+
+        assert.deepEqual(
+            options,
+            ['-1', '5', '4', '3', '2', '1'],
+            'Filters should be sorted by custom order'
+        );
+    });
+
+    /**
      * Test access to defaults
      */
     QUnit.test('Access to defaults', function(assert) {

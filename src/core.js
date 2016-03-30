@@ -150,6 +150,18 @@ QueryBuilder.prototype.checkFilters = function(filters) {
         }
     }, this);
 
+    if (this.settings.sort_filters) {
+        if (typeof this.settings.sort_filters == 'function') {
+            filters.sort(this.settings.sort_filters);
+        }
+        else {
+            var self = this;
+            filters.sort(function(a, b) {
+                return self.translateLabel(a.label).localeCompare(self.translateLabel(b.label));
+            });
+        }
+    }
+
     if (this.status.has_optgroup) {
         filters = Utils.groupSort(filters, 'optgroup');
     }

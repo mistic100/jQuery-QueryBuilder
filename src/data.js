@@ -497,5 +497,5 @@ QueryBuilder.prototype.getGroupFlags = function(flags, all) {
  * @return string
  */
 QueryBuilder.prototype.translateLabel = function(label) {
-    return typeof label == 'string' ? label : label[this.settings.lang_code] || label['en'];
+    return typeof label == 'object' ? (label[this.settings.lang_code] || label['en']) : label;
 };
