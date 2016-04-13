@@ -97,7 +97,7 @@ var Node = function(parent, $el) {
 
     $el.data('queryBuilderModel', this);
 
-    this.__.level = 0;
+    this.__.level = 1;
     this.__.error = null;
     this.__.data = undefined;
     this.$el = $el;
@@ -145,13 +145,14 @@ Node.prototype.getPos = function() {
  * Delete self
  */
 Node.prototype.drop = function() {
-    if (this.model !== null) {
-        this.model.trigger('drop', this);
-    }
+    var model = this.model;
 
     if (!this.isRoot()) {
         this.parent._removeNode(this);
-        this.parent = null;
+    }
+
+    if (model !== null) {
+        model.trigger('drop', this);
     }
 };
 

@@ -61,12 +61,12 @@ $ticks-position: 5px, 10px !default;
     margin-bottom: $group-padding;
 
     .group-conditions {
-      .btn.disabled:not(.active),
+      .btn.readonly:not(.active),
       input[name$=_cond] {
         display: none;
       }
 
-      .btn.disabled {
+      .btn.readonly {
         border-radius: 3px;
       }
     }

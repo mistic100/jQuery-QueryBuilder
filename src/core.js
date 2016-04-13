@@ -279,6 +279,7 @@ QueryBuilder.prototype.bindEvents = function() {
     this.model.on({
         'drop': function(e, node) {
             node.$el.remove();
+            self.refreshGroupsConditions();
         },
         'add': function(e, node, index) {
             if (index === 0) {
@@ -287,6 +288,7 @@ QueryBuilder.prototype.bindEvents = function() {
             else {
                 node.$el.insertAfter(node.parent.rules[index - 1].$el);
             }
+            self.refreshGroupsConditions();
         },
         'move': function(e, node, group, index) {
             node.$el.detach();
@@ -297,6 +299,7 @@ QueryBuilder.prototype.bindEvents = function() {
             else {
                 node.$el.insertAfter(group.rules[index - 1].$el);
             }
+            self.refreshGroupsConditions();
         },
         'update': function(e, node, field, value, oldValue) {
             if (node instanceof Rule) {
@@ -452,6 +455,20 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
     });
 
     this.trigger('afterUpdateGroupCondition', group);
+};
+
+/**
+ * Update visibility of conditions based on number of rules inside each group
+ */
+QueryBuilder.prototype.refreshGroupsConditions = function() {
+    (function walk(group) {
+        group.$el.find('>' + Selectors.group_condition).prop('disabled', group.rules.length <= 1)
+            .parent().toggleClass('disabled', group.rules.length <= 1);
+
+        group.each(function(rule) {}, function(group) {
+            walk(group);
+        }, this);
+    }(this.model.root));
 };
 
 /**
@@ -677,7 +694,7 @@ QueryBuilder.prototype.applyGroupFlags = function(group) {
     var flags = group.flags;
 
     if (flags.condition_readonly) {
-        group.$el.find('>' + Selectors.condition_container + ' .btn').addClass('disabled');
+        group.$el.find('>' + Selectors.condition_container + ' .btn').addClass('readonly');
         group.$el.find('>' + Selectors.group_condition).prop('disabled', true);
     }
     if (flags.no_delete) {
