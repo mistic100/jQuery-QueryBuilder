@@ -10,7 +10,7 @@ title: Plugins
 
   <p>Plugins are used to extend the possibilities of QueryBuilder either by adding new public method or by modifying
     default behaviour.</p>
-  <p>Some plugins like <b>Mongo support</b> and <b>SQL support</b> don't require any configuration and are useable as
+  <p>Some plugins like <b>Mongo support</b> and <b>SQL support</b> don't require any configuration and are usable as
     long as they are loaded. Other plugins must be manually activated with the <code>plugins</code> option. This option
     is an object where keys are plugin names and values are plugin configuration (or <code>null</code>).</p>
 
@@ -26,7 +26,7 @@ $('#builder').queryBuilder({
 <!-- @formatter:on -->
 
   <p>You can find bellow the plugins shipped by default with QueryBuilder, with their identifiers.</p>
-  <p><b>Want to create a new plugin ?</b> Check our <a href="{{site.github.url}}/dev/plugins.html">developper doc</a>.
+  <p><b>Want to create a new plugin ?</b> Check our <a href="{{site.github.url}}/dev/plugins.html">developer doc</a>.
   </p>
 </section>
 
@@ -152,7 +152,7 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
 
     <h3>Operators</h3>
     <p>The MongoDB module requires special configuration of operators to convert rules to a valid Mongo JSON and
-      vis-versa. This configuration is stored in the <code>mongoOperators</code> and <code>mongoRuleOperators</code>
+      vice-versa. This configuration is stored in the <code>mongoOperators</code> and <code>mongoRuleOperators</code>
       options, the keys are the operators types and the values are formatting functions, see <a
         href="{{site.blobUrl}}/src/plugins/mongodb-support/plugin.js#L10-L31"><i class="glyphicon glyphicon-file"></i>
         the source code</a> for more details.</p>
@@ -233,7 +233,7 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
     </h2>
 
     <p>Provides three ways to display a description about a filter: inline, <a
-      href="http://getbootstrap.com/javascript/#popovers">Bootsrap Popover</a> or <a
+      href="http://getbootstrap.com/javascript/#popovers">Bootstrap Popover</a> or <a
       href="http://bootboxjs.com">Bootbox</a>.</p>
     <p>The description is defined in the <code>description</code> attribute of each filter. It can contain HTML.</p>
     <!-- @formatter:off -->
