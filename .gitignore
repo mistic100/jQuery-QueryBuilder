@@ -1,6 +1,7 @@
 /_site
 Gemfile.lock
 /.idea
+/*.iml
 
 # commit minimum dependencies
 /dist/**/*.map
