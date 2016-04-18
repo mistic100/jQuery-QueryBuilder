@@ -159,13 +159,16 @@ $(function(){
             filters: basic_filters
         });
 
-        $('#builder_group_0>.rules-group-header>.group-conditions [value=OR]').trigger('click');
+        $('#builder_group_0>.rules-group-header>.group-actions [data-add=rule]').trigger('click');
         $('[name=builder_rule_0_filter]').val('name').trigger('change');
         $('[name=builder_rule_0_operator]').val('not_equal').trigger('change');
         $('[name=builder_rule_0_value_0]').val('foo').trigger('change');
+        $('[name=builder_rule_1_filter]').val('category').trigger('change');
+        $('[name=builder_rule_1_operator]').val('is_null').trigger('change');
+        $('#builder_group_0>.rules-group-header>.group-conditions [value=OR]').trigger('click');
         $('#builder_group_0>.rules-group-header>.group-actions [data-add=rule]').trigger('click');
         $('#builder_group_0>.rules-group-header>.group-actions [data-add=group]').trigger('click');
-        $('#builder_rule_1 [data-delete=rule]').trigger('click');
+        $('#builder_rule_2 [data-delete=rule]').trigger('click');
         $('#builder_group_1 [data-delete=group]').trigger('click');
 
         assert.rulesMatch(
@@ -176,6 +179,10 @@ $(function(){
                     id: 'name',
                     operator: 'not_equal',
                     value: 'foo'
+                }, {
+                    id: 'category',
+                    operator: 'is_null',
+                    value: null
                 }]
             },
             'Should return correct rules after UI events'

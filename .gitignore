@@ -3,3 +3,4 @@ node_modules
 .sass-cache
 .coverage-results
 .idea
+*.iml

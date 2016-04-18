@@ -462,8 +462,10 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
  */
 QueryBuilder.prototype.refreshGroupsConditions = function() {
     (function walk(group) {
-        group.$el.find('>' + Selectors.group_condition).prop('disabled', group.rules.length <= 1)
-            .parent().toggleClass('disabled', group.rules.length <= 1);
+        if (!group.flags || (group.flags && !group.flags.condition_readonly)) {
+            group.$el.find('>' + Selectors.group_condition).prop('disabled', group.rules.length <= 1)
+                .parent().toggleClass('disabled', group.rules.length <= 1);
+        }
 
         group.each(function(rule) {}, function(group) {
             walk(group);
@@ -694,8 +696,8 @@ QueryBuilder.prototype.applyGroupFlags = function(group) {
     var flags = group.flags;
 
     if (flags.condition_readonly) {
-        group.$el.find('>' + Selectors.condition_container + ' .btn').addClass('readonly');
-        group.$el.find('>' + Selectors.group_condition).prop('disabled', true);
+        group.$el.find('>' + Selectors.group_condition).prop('disabled', true)
+            .parent().addClass('readonly');
     }
     if (flags.no_delete) {
         group.$el.find(Selectors.delete_group).remove();
