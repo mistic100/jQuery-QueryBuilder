@@ -109,6 +109,14 @@ QueryBuilder.prototype.checkFilters = function(filters) {
             Utils.error('Config', 'Invalid input "{0}"', filter.input);
         }
 
+        if (filter.operators) {
+            filter.operators.forEach(function(operator) {
+                if (typeof operator != 'string') {
+                    Utils.error('Config', 'Filter operators must be global operators types (string)');
+                }
+            });
+        }
+
         if (!filter.field) {
             filter.field = filter.id;
         }

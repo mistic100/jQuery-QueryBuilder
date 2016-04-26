@@ -56,6 +56,15 @@ $(function(){
             ]},
             /Placeholder of filter "foo" overlaps with one of its values/
         );
+
+        assert.initError($b,
+            {filters: [
+                {id: 'foo', operators: ['equal',
+                    {type: 'geo', nb_inputs: 3, multiple: false, apply_to: ['string'] }
+                ]}
+            ]},
+            /Filter operators must be global operators types \(string\)/
+        );
     });
 
     /**
