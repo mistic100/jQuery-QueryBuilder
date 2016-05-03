@@ -37,6 +37,8 @@ QueryBuilder.regional['de'] = {
     "less_or_equal": "kleiner gleich",
     "greater": "größer",
     "greater_or_equal": "größer gleich",
+    "between": "zwischen",
+    "not_between": "nicht zwischen",
     "begins_with": "beginnt mit",
     "not_begins_with": "beginnt nicht mit",
     "contains": "enthält",
