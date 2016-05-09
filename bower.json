@@ -1,6 +1,6 @@
 {
   "name": "jQuery-QueryBuilder",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "authors": [{
     "name": "Damien \"Mistic\" Sorel",
     "email": "contact@git.strangeplanet.fr",
@@ -20,9 +20,9 @@
   },
   "devDependencies": {
     "blanket": "^1.1.0",
-    "qunit": "^1.17.0",
-    "bootstrap-select": "^1.6.0",
-    "bootbox": "^4.3.0",
+    "qunit": "^1.23.0",
+    "bootstrap-select": "^1.10.0",
+    "bootbox": "^4.4.0",
     "awesome-bootstrap-checkbox": "^0.3.0",
     "sql-parser": "^1.0.0"
   },

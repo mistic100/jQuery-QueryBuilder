@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.3.2
+ * jQuery QueryBuilder 2.3.3
  * Copyright 2014-2016 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -30,11 +30,11 @@
 .query-builder .rules-group-header {
   margin-bottom: 10px;
 }
-.query-builder .rules-group-header .group-conditions .btn.disabled:not(.active),
+.query-builder .rules-group-header .group-conditions .btn.readonly:not(.active),
 .query-builder .rules-group-header .group-conditions input[name$=_cond] {
   display: none;
 }
-.query-builder .rules-group-header .group-conditions .btn.disabled {
+.query-builder .rules-group-header .group-conditions .btn.readonly {
   border-radius: 3px;
 }
 .query-builder .rules-list {
@@ -100,7 +100,7 @@
   color: #F22 !important;
 }
 
-.query-builder .filter-description {
+.query-builder p.filter-description {
   margin: 5px 0 0 0;
   background: rgba(0, 170, 255, 0.2);
   border: 1px solid #346F7B;

@@ -145,16 +145,6 @@ module.exports = function(grunt) {
         ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n' +
         ' */',
 
-        // bump version
-        bump: {
-            options: {
-                files: ['package.json', 'bower.json', 'composer.json'],
-                createTag: false,
-                commit: false,
-                push: false
-            }
-        },
-
         // serve folder content
         connect: {
             dev: {

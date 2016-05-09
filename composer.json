@@ -1,6 +1,6 @@
 {
   "name": "mistic100/jquery-querybuilder",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "authors": [{
     "name": "Damien \"Mistic\" Sorel",
     "email": "contact@git.strangeplanet.fr",
@@ -23,4 +23,4 @@
   "support": {
     "issues": "https://github.com/mistic100/jQuery-QueryBuilder/issues"
   }
-} 
+}

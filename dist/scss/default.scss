@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.3.2
+ * jQuery QueryBuilder 2.3.3
  * Copyright 2014-2016 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -67,12 +67,12 @@ $ticks-position: 5px, 10px !default;
     margin-bottom: $group-padding;
 
     .group-conditions {
-      .btn.disabled:not(.active),
+      .btn.readonly:not(.active),
       input[name$=_cond] {
         display: none;
       }
 
-      .btn.disabled {
+      .btn.readonly {
         border-radius: 3px;
       }
     }

@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.3.2
+ * jQuery QueryBuilder 2.3.3
  * Locale: Russian (ru)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */

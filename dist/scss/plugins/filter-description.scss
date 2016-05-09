@@ -10,7 +10,7 @@ $description-text-color: #31708F;
 
 $description-border: 1px solid $description-border-color;
 
-.query-builder .filter-description {
+.query-builder p.filter-description {
   margin: $rule-padding 0 0 0;
   background: $description-background-color;
   border: $description-border;

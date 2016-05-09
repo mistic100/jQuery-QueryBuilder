@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.bootstrap3.css">
 
   <link rel="stylesheet" href="../dist/css/query-builder.default.css" id="qb-theme">
-  
+
   <link rel="stylesheet" href="http://mistic100.github.io/jQuery-QueryBuilder/assets/flags/flags.css">
   <style>
     .flag { display: inline-block; }
@@ -39,10 +39,10 @@
     <div class="well well-sm">
       <label>Theme:</label>
       <div class="btn-group">
-        <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.default.min.css" data-bt="bower_components/bootstrap/dist/css/bootstrap.min.css">Default</button>
+        <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.default.min.css" data-bt="../bower_components/bootstrap/dist/css/bootstrap.min.css">Default</button>
         <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.dark.min.css" data-bt="bower_components/bootswatch-dist/css/bootstrap.min.css">Dark</button>
       </div>
-      
+
       <label>Language:</label>
       <select name="language" class="selectpicker show-tick show-menu-arrow" data-width="auto">
         <option value="sq" data-icon="flag flag-al">Albanian</option>
@@ -117,9 +117,10 @@ var $b = $('#builder');
 
 var options = {
   allow_empty: true,
-  
-  default_filter: 'state',
-  
+
+  default_filter: 'name',
+  sort_filters: true,
+
   optgroups: {
     core: {
       en: 'Core',
@@ -402,6 +403,7 @@ var options = {
 $('#builder').queryBuilder(options);
 
 $('#builder').on('afterCreateRuleInput.queryBuilder', function(e, rule) {
+    console.log(rule);
     if (rule.filter.plugin == 'selectize') {
         rule.$el.find('.rule-value-container').css('min-width', '200px')
           .find('.selectize-control').removeClass('form-control');
@@ -411,7 +413,7 @@ $('#builder').on('afterCreateRuleInput.queryBuilder', function(e, rule) {
 // change language
 $('[name=language]').selectpicker().on('change', function() {
   var lang = $(this).val();
-  
+
   var done = function() {
     var rules = $b.queryBuilder('getRules');
     if (!$.isEmptyObject(rules)) {
@@ -421,7 +423,7 @@ $('[name=language]').selectpicker().on('change', function() {
     $b.queryBuilder('destroy');
     $('#builder').queryBuilder(options);
   };
-  
+
   if ($.fn.queryBuilder.regional[lang] === undefined) {
     $.getScript('../dist/i18n/query-builder.' + lang + '.js', done);
   }
@@ -535,7 +537,7 @@ $('.parse-mongo').on('click', function() {
 $('.set-filters').on('click', function() {
   $(this).prop('disabled', true);
   $(this).tooltip('hide');
-  
+
   // add a new filter after 'state'
   $('#builder').queryBuilder('addFilter',
     {
@@ -545,13 +547,13 @@ $('.set-filters').on('click', function() {
     },
     'state'
   );
-  
+
   // remove filter 'coord'
   $('#builder').queryBuilder('removeFilter',
     ['coord', 'state', 'bson'],
     true
   );
-  
+
   // also available : 'setFilters'
 });
 </script>
