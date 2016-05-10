@@ -403,7 +403,6 @@ var options = {
 $('#builder').queryBuilder(options);
 
 $('#builder').on('afterCreateRuleInput.queryBuilder', function(e, rule) {
-    console.log(rule);
     if (rule.filter.plugin == 'selectize') {
         rule.$el.find('.rule-value-container').css('min-width', '200px')
           .find('.selectize-control').removeClass('form-control');

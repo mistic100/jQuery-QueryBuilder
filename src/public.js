@@ -217,9 +217,7 @@ QueryBuilder.prototype.setRules = function(data) {
     }
 
     this.clear();
-    this.setRoot(false, data.data);
-
-    this.model.root.flags = this.parseGroupFlags(data);
+    this.setRoot(false, data.data, this.parseGroupFlags(data));
 
     data = this.change('setRules', data);
 
@@ -247,12 +245,10 @@ QueryBuilder.prototype.setRules = function(data) {
                     Utils.error('RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
                 }
                 else {
-                    model = self.addGroup(group, false, item.data);
+                    model = self.addGroup(group, false, item.data, self.parseGroupFlags(item));
                     if (model === null) {
                         return;
                     }
-
-                    model.flags = self.parseGroupFlags(item);
 
                     add(item, model);
                 }

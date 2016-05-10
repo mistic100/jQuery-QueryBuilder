@@ -944,9 +944,10 @@ QueryBuilder.prototype.bindEvents = function() {
  * Create the root group
  * @param addRule {bool,optional} add a default empty rule
  * @param data {mixed,optional} group custom data
+ * @param flags {object,optional} flags to apply to the group
  * @return group {Root}
  */
-QueryBuilder.prototype.setRoot = function(addRule, data) {
+QueryBuilder.prototype.setRoot = function(addRule, data, flags) {
     addRule = (addRule === undefined || addRule === true);
 
     var group_id = this.nextGroupId();
@@ -955,12 +956,13 @@ QueryBuilder.prototype.setRoot = function(addRule, data) {
     this.$el.append($group);
     this.model.root = new Group(null, $group);
     this.model.root.model = this.model;
-    this.model.root.condition = this.settings.default_condition;
-    this.model.root.flags = $.extend({}, this.settings.default_group_flags);
 
-    if (data !== undefined) {
-        this.model.root.data = data;
-    }
+    this.model.root.data = data;
+    this.model.root.flags = $.extend({}, this.settings.default_group_flags, flags);
+
+    this.trigger('afterAddGroup', this.model.root);
+
+    this.model.root.condition = this.settings.default_condition;
 
     if (addRule) {
         this.addRule(this.model.root);
@@ -974,7 +976,7 @@ QueryBuilder.prototype.setRoot = function(addRule, data) {
  * @param parent {Group}
  * @param addRule {bool,optional} add a default empty rule
  * @param data {mixed,optional} group custom data
- * @param {object,optional} flags to apply to the group
+ * @param flags {object,optional} flags to apply to the group
  * @return group {Group}
  */
 QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
@@ -991,10 +993,7 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     var $group = $(this.getGroupTemplate(group_id, level));
     var model = parent.addGroup($group);
 
-    if (data !== undefined) {
-        model.data = data;
-    }
-
+    model.data = data;
     model.flags = $.extend({}, this.settings.default_group_flags, flags);
 
     this.trigger('afterAddGroup', model);
@@ -1583,9 +1582,7 @@ QueryBuilder.prototype.setRules = function(data) {
     }
 
     this.clear();
-    this.setRoot(false, data.data);
-
-    this.model.root.flags = this.parseGroupFlags(data);
+    this.setRoot(false, data.data, this.parseGroupFlags(data));
 
     data = this.change('setRules', data);
 
@@ -1613,12 +1610,10 @@ QueryBuilder.prototype.setRules = function(data) {
                     Utils.error('RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
                 }
                 else {
-                    model = self.addGroup(group, false, item.data);
+                    model = self.addGroup(group, false, item.data, self.parseGroupFlags(item));
                     if (model === null) {
                         return;
                     }
-
-                    model.flags = self.parseGroupFlags(item);
 
                     add(item, model);
                 }
