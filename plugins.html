@@ -10,6 +10,7 @@ title: Plugins
 
   <p>Plugins are used to extend the possibilities of QueryBuilder either by adding new public method or by modifying
     default behaviour.</p>
+
   <p>Some plugins like <b>Mongo support</b> and <b>SQL support</b> don't require any configuration and are usable as
     long as they are loaded. Other plugins must be manually activated with the <code>plugins</code> option. This option
     is an object where keys are plugin names and values are plugin configuration (or <code>null</code>).</p>
@@ -26,6 +27,7 @@ $('#builder').queryBuilder({
 <!-- @formatter:on -->
 
   <p>You can find bellow the plugins shipped by default with QueryBuilder, with their identifiers.</p>
+
   <p><b>Want to create a new plugin ?</b> Check our <a href="{{site.github.url}}/dev/plugins.html">developer doc</a>.
   </p>
 </section>
@@ -51,28 +53,61 @@ $('#builder').queryBuilder({
     <h3>New methods</h3>
 
     <h4><code>.getSQL([mode [, linebreaks]])</code></h4>
+
     <p>Performs validation and returns the rules as a valid SQL WHERE statement. See the <a
       href="{{site.github.url}}/demo.html">demo</a> for output example. The first parameter can be:</p>
-    <ul>
-      <li><code>false</code> to output plain SQL</li>
-      <li><code>'question_mark'</code> to output prepared statement with <code>?</code> placeholders</li>
-      <li><code>'numbered'</code> to output prepared statement with numbered (<code>$1</code>, <code>$2</code>, ...)
-        placeholders
-      </li>
-      <li><code>'named'</code> to output prepared statement with named (<code>:id</code>, <code>:category</code>, ...)
-        placeholders
-      </li>
-    </ul>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+          <td><code>false</code></td>
+          <td>outputs plain SQL</td>
+        </tr>
+        <tr>
+          <td><code>'question_mark'</code></td>
+          <td>outputs prepared statement with <code>?</code> placeholders</td>
+        </tr>
+        <tr>
+          <td><code>'numbered'</code></td>
+          <td>outputs prepared statement with numbered (<code>$1</code>, <code>$2</code>, ...) placeholders</td>
+        </tr>
+        <tr>
+          <td><code>'named'</code></td>
+          <td>outputs prepared statement with named (<code>:id</code>, <code>:category</code>, ...) placeholders</td>
+        </tr>
+        <tr>
+          <td><code>'numbered([char])'</code></td>
+          <td>outputs prepared statement with numbered placeholders with a custom prefix (one char only, example: <code>numbered(@)</code>,
+            <code>numbered(:)</code>)
+          </td>
+        </tr>
+        <tr>
+          <td><code>'named([char])'</code></td>
+          <td>outputs prepared statement with named placeholders with a custom prefix (one char only, example: <code>named(@)</code>,
+            <code>named($)</code>)
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
     <p>Set the second parameter to <code>true</code> to enable new lines in output.</p>
     <!-- @formatter:off -->
 {% highlight javascript %}
+// prepared statements with question mark params
 var sql_stmt = $('#builder').queryBuilder('getSQL', 'question_mark');
+
+// prepared statement with custom named params
+var sql_stmt_cust = $('#builder').queryBuilder('getSQL', 'named(@)');
+
+// plan SQL with linebreaks
 var sql_raw = $('#builder').queryBuilder('getSQL', false, true);
 {% endhighlight %}
 <!-- @formatter:on -->
 
     <h4><code>.setRulesFromSQL(sql [, mode])</code></h4>
+
     <p>Clears the builder and set new rules from an SQL query. This method requires <a
       href="https://github.com/mistic100/sql-parser">SQLParser</a> to be loaded. The second parameter is used to inform
       the parser which kind of prepared statements are used (if any).</p>
@@ -108,6 +143,7 @@ $('#builder').queryBuilder('setRulesFromSQL', {
 <!-- @formatter:on -->
 
     <h3>Operators</h3>
+
     <p>The SQL plugin requires special configuration for operators to convert rules to a valid SQL query. This
       configuration is stored in the <code>sqlOperators</code> option, see <a
         href="{{site.blobUrl}}/src/plugins/sql-support/plugin.js#L11-L32"><i class="glyphicon glyphicon-file"></i> the
@@ -115,6 +151,7 @@ $('#builder').queryBuilder('setRulesFromSQL', {
 
     <div class="bs-callout bs-callout-warning">
       <h4>About filters' id</h4>
+
       <p><code>setRulesFromSQL</code> assumes that you have only one filter by database field and that the
         <code>id</code> is the same as the <code>field</code>. If this is not the case, you can use the <code>getSQLFieldID</code>
         <a href="{{site.github.url}}/dev/events.html#changers">changer</a> to determine the filter's id, this event take
@@ -133,6 +170,7 @@ $('#builder').queryBuilder('setRulesFromSQL', {
     <h3>New methods</h3>
 
     <h4><code>.getMongo()</code></h4>
+
     <p>Performs validation and returns the rules as a valid MongoDB find object. See the <a
       href="{{site.github.url}}/demo.html">demo</a> for output example.</p>
     <!-- @formatter:off -->
@@ -142,6 +180,7 @@ var mongo = $('#builder').queryBuilder('getMongo');
 <!-- @formatter:on -->
 
     <h4><code>.setRulesFromMongo(query)</code></h4>
+
     <p>Clears the builder and set new rules from a MongoDB find object. The general rules syntax must be the same as
       what <code>getMongo</code> outputs.</p>
     <!-- @formatter:off -->
@@ -151,6 +190,7 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
 <!-- @formatter:on -->
 
     <h3>Operators</h3>
+
     <p>The MongoDB module requires special configuration of operators to convert rules to a valid Mongo JSON and
       vice-versa. This configuration is stored in the <code>mongoOperators</code> and <code>mongoRuleOperators</code>
       options, the keys are the operators types and the values are formatting functions, see <a
@@ -159,6 +199,7 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
 
     <div class="bs-callout bs-callout-warning">
       <h4>About filters' id</h4>
+
       <p><code>setRulesFromMongo</code> assumes that you have only one filter by database field and that the
         <code>id</code> is the same as the <code>field</code>. If this is not the case, you can use the <code>getMongoDBFieldID</code>
         <a href="{{site.github.url}}/dev/events.html#changers">changer</a> to determine the filter's id, this event take
@@ -194,10 +235,12 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
     </h2>
 
     <p>Enables drag &amp; drop sort of rules.</p>
+
     <p>The plugin also adds a new rule flag useable with <a href="{{site.github.url}}/index.html#methods">setRules</a>
       method: <code>no_sortable</code>, set it to <code>true</code> to remove the drag handle of a rule.</p>
 
     <h3>Options</h3>
+
     <div class="table-responsive">
       <table class="table table-bordered table-striped">
         <thead>
@@ -235,6 +278,7 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
     <p>Provides three ways to display a description about a filter: inline, <a
       href="http://getbootstrap.com/javascript/#popovers">Bootstrap Popover</a> or <a
       href="http://bootboxjs.com">Bootbox</a>.</p>
+
     <p>The description is defined in the <code>description</code> attribute of each filter. It can contain HTML.</p>
     <!-- @formatter:off -->
 {% highlight javascript %}
@@ -258,6 +302,7 @@ filters: [{
 <!-- @formatter:on -->
 
     <h3>Options</h3>
+
     <div class="table-responsive">
       <table class="table table-bordered table-striped">
         <thead>
@@ -294,6 +339,7 @@ filters: [{
 
     <p>Allows to define some filters as "unique": which can be used for only one rule, globally or in the same
       group.</p>
+
     <p>The plugin adds a new filter attribute named <code>unique</code>, set it to <code>true</code> to define the
       filter globally unique, or to <code>group</code> to define the filter unique inside its group.</p>
     <!-- @formatter:off -->
@@ -320,6 +366,7 @@ filters: [
 
     <p>Adds a button in each group & rule to easily "invert" a part of the builder, that means transform "AND" into
       "OR", "equal" into "not equal", and so on.</p>
+
     <p>If a filter must never be inverted, set it's <code>no_invert</code> option to <b>false</b>.</p>
     <!-- @formatter:off -->
 {% highlight javascript %}
@@ -333,8 +380,10 @@ filters: [{
     <h3>New methods</h3>
 
     <h4><code>.invert([options])</code></h4>
+
     <p>Performs invertion programatically on the whole builder or on a particular <b>Node</b>. It also takes an
       optionnal object of behavioral options similar to the plugin's options.</p>
+
     <p><i>This method is available even if the plugin is not initialized in the builder (<code>plugins</code> builder
       option).</i></p>
     <!-- @formatter:off -->
@@ -354,6 +403,7 @@ $('#builder').queryBuilder('invert', group, {/* ... */});
 <!-- @formatter:on -->
 
     <h3>Options</h3>
+
     <p>The plugin uses the <code>operatorOpposites</code> and <code>conditionOpposites</code> builder options to map
       each condition/operator to its invert. You must update it if you add new operators and conditions. Set <code>silent_fail</code>
       plugin option to <b>false</b> if one of your new condition/operator has no invert value.</p>
@@ -416,6 +466,7 @@ $('#builder').queryBuilder('invert', group, {/* ... */});
     <h3>New methods</h3>
 
     <h4><code>.setFilters([force,] filters)</code></h4>
+
     <p>Replace all filters by new ones. If a rule is using an old filter an error will be throw, unless you set the
       first parameter to <code>true</code>, in which case such rules will be deleted.</p>
     <!-- @formatter:off -->
@@ -429,6 +480,7 @@ $('#builder').queryBuilder('setFilters', true, [ /* ... */ ]);
 <!-- @formatter:on -->
 
     <h4><code>.addFilter(filter|filters [, position])</code></h4>
+
     <p>Adds one or more new filters at a specific position.</p>
     <!-- @formatter:off -->
 {% highlight javascript %}
@@ -450,6 +502,7 @@ $('#builder').queryBuilder('addFilter', { /* ... */ }, 4);
 <!-- @formatter:on -->
 
     <h4><code>.removeFilter(filterName|filtersNames [, force])</code></h4>
+
     <p>Removes one or more filters by their identifier.</p>
     <!-- @formatter:off -->
 {% highlight javascript %}
@@ -488,6 +541,7 @@ $('#builder').queryBuilder('setFilters', ['name', 'age'], true);
 <!-- @formatter:on -->
 
     <h3>Options</h3>
+
     <p><i>All options supported by the tooltips plugin.</i></p>
   </div>
 
@@ -510,6 +564,7 @@ $('#builder').queryBuilder('setFilters', ['name', 'age'], true);
 <!-- @formatter:on -->
 
     <h3>Options</h3>
+
     <p><i>All options supported by the selectpicker plugin.</i></p>
   </div>
 
@@ -521,6 +576,7 @@ $('#builder').queryBuilder('setFilters', ['name', 'age'], true);
 
     <p>Applies <a href="http://awesome-bootstrap-checkbox.okendoken.com/demo/index.html">Awesome Bootstrap Checkbox</a>
       to <code>checkbox</code> and <code>radio</code> inputs.</p>
+
     <p>The input color (all 6 Bootstrap colors) can be configured globally but also per-filter or even per-value with
       the <code>colors</code> filter attribute.</p>
     <!-- @formatter:off -->
@@ -552,6 +608,7 @@ filters: [
 <!-- @formatter:on -->
 
     <h3>Options</h3>
+
     <div class="table-responsive">
       <table class="table table-bordered table-striped">
         <thead>

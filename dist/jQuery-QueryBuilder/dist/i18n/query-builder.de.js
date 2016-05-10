@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.3.1
+ * jQuery QueryBuilder 2.3.3
  * Locale: German (de)
  * Author: "raimu"
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -37,6 +37,8 @@ QueryBuilder.regional['de'] = {
     "less_or_equal": "kleiner gleich",
     "greater": "größer",
     "greater_or_equal": "größer gleich",
+    "between": "zwischen",
+    "not_between": "nicht zwischen",
     "begins_with": "beginnt mit",
     "not_begins_with": "beginnt nicht mit",
     "contains": "enthält",

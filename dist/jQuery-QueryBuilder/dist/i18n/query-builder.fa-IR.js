@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.3.1
+ * jQuery QueryBuilder 2.3.3
  * Locale: Farsi (fa-ir)
  * Author: Behzad Sedighzade, behzad.sedighzade@gmail.com
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -17,7 +17,7 @@
 
 var QueryBuilder = $.fn.queryBuilder;
 
-QueryBuilder.regional['fa-ir'] = {
+QueryBuilder.regional['fa-IR'] = {
   "__locale": "Farsi (fa-ir)",
   "__author": "Behzad Sedighzade, behzad.sedighzade@gmail.com",
   "add_rule": "افزودن قاعده",
@@ -74,5 +74,5 @@ QueryBuilder.regional['fa-ir'] = {
   }
 };
 
-QueryBuilder.defaults({ lang_code: 'fa-ir' });
+QueryBuilder.defaults({ lang_code: 'fa-IR' });
 }));

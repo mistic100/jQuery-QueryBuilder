@@ -26,6 +26,7 @@ isHome: true
 
 <section>
   <b>But let's look at a live example !</b>
+
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
     <div id="builder-basic"></div>
     <p class="text-center">The full code of this example can be found <a href="{{site.github.url}}/demo.html">here</a>.
@@ -60,10 +61,12 @@ isHome: true
 
   <div class="bs-callout">
     <h4>Don't want to use Bootstrap ?</h4>
+
     <p>Let's see <a href="{{site.github.url}}/dev/no-bootstrap.html">what we can do for you</a>.</p>
   </div>
 
   <h3 id="letsgo">Let's go!</h3>
+
   <p>Include <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css" target="_blank"><i
     class="glyphicon glyphicon-file"></i> query-builder.css</a> in your page head and <a
     href="{{site.rawUrl}}/dist/js/query-builder.min.js" target="_blank"><i class="glyphicon glyphicon-file"></i>
@@ -105,6 +108,7 @@ require(['jquery', 'query-builder'], function($) {
   </h1>
 
   <h3 id="options">Options</h3>
+
   <div class="table-responsive">
     <table class="table table-bordered table-striped">
       <thead>
@@ -146,6 +150,7 @@ require(['jquery', 'query-builder'], function($) {
           href="#operators">operators</a> configuration). It can be a simple <i>id => label</i> map or contains
           localized strings.
           <a data-bootbox="optgroups_details"><i class="glyphicon glyphicon-info-sign"></i> More details</a>
+
           <div id="optgroups_details" class="hidden" title="Optgroups definition">
             <p>Simple <i>id => label</i> map :</p>
             <!-- @formatter:off -->
@@ -177,6 +182,12 @@ optgroups: {
         <td>string</td>
         <td>null</td>
         <td>The <code>id</code> of the default filter for any new rule.</td>
+      </tr>
+      <tr>
+        <td>sort_filters</td>
+        <td>boolean|function</td>
+        <td>false</td>
+        <td>Sort filters alphabetically, or with a custom function (passed to <code>Array.sort</code>).</td>
       </tr>
       <tr>
         <td>allow_groups</td>
@@ -268,8 +279,10 @@ optgroups: {
   </div>
 
   <h3 id="filters">Filters</h3>
+
   <p>The <code>filters</code> option is an array of plain objects defining the rules possible contents. Here are the
     available attributes:</p>
+
   <div class="table-responsive">
     <table class="table table-bordered table-striped">
       <thead>
@@ -299,6 +312,7 @@ optgroups: {
         <td><code>=field</code></td>
         <td>Label used to display the filter. It can be simple string or a map for localization.
           <a data-bootbox="filter_label_details"><i class="glyphicon glyphicon-info-sign"></i> More details</a>
+
           <div id="filter_label_details" class="hidden" title="Filter localization">
             <p>Define <code>label</code> as a map to translate the filter (<code>en</code> is mandatory) :</p>
             <!-- @formatter:off -->
@@ -349,6 +363,7 @@ label: {
         <td><i>Required for <code>radio</code> and <code>checkbox</code> inputs. Generally needed for
           <code>select</code> inputs.</i>
           <a data-bootbox="filter_values_details"><i class="glyphicon glyphicon-info-sign"></i> More details</a>
+
           <div id="filter_values_details" class="hidden" title="Filter values">
             <p>Three forms are allowed for the <code>values</code> object.</p>
             <ol>
@@ -443,6 +458,7 @@ values: [
         <td></td>
         <td>Array of operators types to use for this filter. If empty the filter will use all applicable operators.
           <a data-bootbox="default_operators"><i class="glyphicon glyphicon-info-sign"></i> Show all operators</a>
+
           <div id="default_operators" title="All operators" class="hidden">
             <ul>
               <li>equal</li>
@@ -515,8 +531,10 @@ values: [
   </div>
 
   <h3 id="validation">Validation</h3>
+
   <p>QueryBuilder integrates a configurable validation system triggered when <code>validate()</code> or
-    <code>getRules()</code> methods are called. The default validator checks for emptyness and can be extended with format
+    <code>getRules()</code> methods are called. The default validator checks for emptyness and can be extended with
+    format
     check and bounds.<br>
     Optionally you can define a custom validation callback.</p>
 
@@ -614,12 +632,14 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
 
   <div class="bs-callout">
     <h4><code>.validate()</code></h4>
+
     <p>Returns a boolean whereas the builder is valid or not. Use the <code>validationError</code> event to catch
       per-rule validation errors. If <code>display_errors</code> is enabled the invalid rules will turn red.</p>
   </div>
 
   <div class="bs-callout">
     <h4><code>.getRules([options])</code></h4>
+
     <p>Performs validation and returns the rules as a plain JSON object. See the <a
       href="{{site.github.url}}/demo.html">demo</a> for output example. The method takes an optional object of options.
     </p>
@@ -659,6 +679,7 @@ $('#builder').queryBuilder('getRules', { get_flags: true });
 
     <div class="bs-callout bs-callout-info">
       <h4>Other formats</h4>
+
       <p>For other output formats like <b>SQL</b> and <b>MongoDB</b>, please refer to the <a
         href="{{site.github.url}}/plugins.html#import-export">plugins</a> page.</p>
     </div>
@@ -666,6 +687,7 @@ $('#builder').queryBuilder('getRules', { get_flags: true });
 
   <div class="bs-callout">
     <h4><code>.setRules(rules)</code></h4>
+
     <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>.
       <a data-bootbox="rules_format"> <i class="glyphicon glyphicon-info-sign"></i> See an example</a></p>
     <!-- @formatter:off -->
@@ -815,6 +837,7 @@ $('#builder').queryBuilder('setRules', { ... });
 
   <div class="bs-callout">
     <h4><code>.getModel([element])</code></h4>
+
     <p>Given a group or rule DOM element, returns the associated <b>Group</b> or <b>Rule</b> object. Useful to perform
       manual operations on the builder (see <a href="#inside_the_box">Inside the box</a>). Without parameters it returns
       the root group model.</p>
@@ -829,6 +852,7 @@ var last_node_model = $('#builder').queryBuilder('getModel', $('#builder .rule-c
 
   <div class="bs-callout">
     <h4><code>.reset()</code></h4>
+
     <p>Removes all rules.</p>
     <!-- @formatter:off -->
 {% highlight javascript %}
@@ -839,6 +863,7 @@ $('#builder').queryBuilder('reset');
 
   <div class="bs-callout">
     <h4><code>.destroy()</code></h4>
+
     <p>Completely destroy the builder and it's data.</p>
     <!-- @formatter:off -->
 {% highlight javascript %}
@@ -848,12 +873,14 @@ $('#builder').queryBuilder('destroy');
   </div>
 
   <h3 id="events">Events</h3>
+
   <p>QueryBuilder uses events to notify the "outer world" about various things happening, like adding a rule or when a
     validation error happens. The events system is also used by plugins.</p>
 
   <p><a class="btn btn-link btn-outline" href="{{site.github.url}}/dev/events.html">Read more about events</a></p>
 
   <h3 id="themes">Themes</h3>
+
   <p>QueryBuilder comes with two colors-schemes: <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css"
                                                     target="_blank"><i class="glyphicon glyphicon-file"></i> default</a>
     (clear) and <a href="{{site.rawUrl}}/dist/css/query-builder.dark.min.css" target="_blank"><i
@@ -867,6 +894,7 @@ $('#builder').queryBuilder('destroy');
   </h1>
 
   <h3 id="operators">Operators</h3>
+
   <p>QueryBuilder is bundle with an <a data-bootbox="default_operators"><i class="glyphicon glyphicon-info-sign"></i>
     extensive list of operators</a>. You can change which operators are available for each filter (see <a
     href="#filters">filters</a> configuration) but you can also modify/reorder the operators globally and even add new
@@ -874,6 +902,7 @@ $('#builder').queryBuilder('destroy');
 
   <p>The <code>operators</code> config property is an array of strings (existing operators) or object (existing and new
     operators). The operators properties are :</p>
+
   <div class="table-responsive">
     <table class="table table-bordered table-striped">
       <thead>
@@ -942,9 +971,11 @@ operators: [
 <!-- @formatter:on -->
 
   <h3 id="lang">Translation</h3>
+
   <p>Translation files are available in the <a href="{{site.treeUrl}}/dist/i18n"><i
     class="glyphicon glyphicon-file"></i> i18n</a> folder. Just include one of the files after the main JavaScript to
     use it.
+
   <p>
 
   <p>You can load multiple translation files and use the <code>lang_code</code> option to choose which language to use.
@@ -997,7 +1028,9 @@ operators: [
       the source code</a>.</p>
 
   <h3 id="icons">Icons</h3>
+
   <p>The <code>icons</code> option provides a way of using alternate icons sets. Available attributes:</p>
+
   <div class="table-responsive">
     <table class="table table-bordered table-striped">
       <thead>
@@ -1045,6 +1078,7 @@ operators: [
 
   <div class="bs-callout bs-callout-danger">
     <h4>Very advanced feature</h4>
+
     <p>Modifying templates can leads to a not functionnal builder if the general layout differs too much. Particularly
       you should keep all CSS classes which are not part of Bootstrap.</p>
   </div>
@@ -1064,6 +1098,7 @@ operators: [
 
   <div class="bs-callout">
     <h4>group</h4>
+
     <p>The template used to build an empty group. Other variables available :</p>
     <ul>
       <li><code>group_id</code> unique identifier of the group</li>
@@ -1074,6 +1109,7 @@ operators: [
 
   <div class="bs-callout">
     <h4>rule</h4>
+
     <p>The template used to build an empty rule. Other variables available :</p>
     <ul>
       <li><code>rule_id</code> unique identifier of the rule</li>
@@ -1082,6 +1118,7 @@ operators: [
 
   <div class="bs-callout">
     <h4>filterSelect</h4>
+
     <p>The template used to build the filters selectbox. Other variables available :</p>
     <ul>
       <li><code>rule</code> a <b>Rule</b> object</li>
@@ -1092,6 +1129,7 @@ operators: [
 
   <div class="bs-callout">
     <h4>operatorSelect</h4>
+
     <p>The template used to build the operators selectbox. Other variables available :</p>
     <ul>
       <li><code>rule</code> a <b>Rule</b> object</li>
@@ -1101,6 +1139,7 @@ operators: [
   </div>
 
   <h3 id="inside_the_box">Inside the box</h3>
+
   <p>You might have noticed that callbacks and events reffer to two objects <b>Rule</b> and <b>Group</b>. These objects
     are part of the data model with partial data-binding used internally by QueryBuilder. Here the structure of these
     two objects. Most attributes will live-update the builder when modified.</p>
