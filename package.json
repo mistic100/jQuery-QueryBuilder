@@ -1,11 +1,12 @@
 {
-  "name": "jQuery-QueryBuilder",
+  "name": "jquery-query-builder",
   "version": "2.3.3",
   "author": {
     "name": "Damien \"Mistic\" Sorel",
     "email": "contact@git.strangeplanet.fr",
     "url": "http://www.strangeplanet.fr"
   },
+  "main": "index.js",
   "description": "jQuery plugin for user friendly query/filter creator",
   "devDependencies": {
     "deepmerge": "^0.2.0",
