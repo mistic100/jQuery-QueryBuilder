@@ -1901,7 +1901,7 @@ require('jquery-extendext');
         </button> \
       {{?}} \
       {{? it.level>1 }} \
-        <button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
+        <button type="button" class="btn btn-xs btn-danger remove-group" data-delete="group"> \
           <i class="{{= it.icons.remove_group }}"></i> {{= it.lang.delete_group }} \
         </button> \
       {{?}} \
@@ -1926,7 +1926,7 @@ require('jquery-extendext');
 <li id="{{= it.rule_id }}" class="rule-container"> \
   <div class="rule-header"> \
     <div class="btn-group pull-right rule-actions"> \
-      <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
+      <button type="button" class="btn btn-xs btn-danger remove-rule" data-delete="rule"> \
         <i class="{{= it.icons.remove_rule }}"></i> {{= it.lang.delete_rule }} \
       </button> \
     </div> \
