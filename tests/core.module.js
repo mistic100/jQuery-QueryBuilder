@@ -400,6 +400,14 @@ $(function(){
                         value: '1234-azer-5678',
                         readonly: true
                     }]
+                }, {
+                    condition: 'AND',
+                    readonly: true,
+                    rules: [{
+                        id: 'name',
+                        operator: 'equal',
+                        value: 'foo'
+                    }]
                 }]
             }
         });
@@ -429,6 +437,11 @@ $(function(){
             'Should disable inputs of "readonly" rule'
         );
 
+        assert.ok(
+            $('#builder_group_2').find('[data-delete=group], [data-add=rule], [data-add=group]').length ==0,
+            'Should hide all buttons of "readonly" group'
+        );
+
         $('#builder_group_1 [data-delete=group]').click();
 
         assert.rulesMatch(
@@ -445,6 +458,13 @@ $(function(){
                         id: 'id',
                         operator: 'not_equal',
                         value: '1234-azer-5678'
+                    }]
+                }, {
+                    condition: 'AND',
+                    rules: [{
+                        id: 'name',
+                        operator: 'equal',
+                        value: 'foo'
                     }]
                 }]
             },

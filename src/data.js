@@ -459,6 +459,8 @@ QueryBuilder.prototype.parseGroupFlags = function(group) {
     if (group.readonly) {
         $.extend(flags, {
             condition_readonly: true,
+            no_add_rule: true,
+            no_add_group: true,
             no_delete: true
         });
     }

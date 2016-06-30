@@ -127,6 +127,8 @@ QueryBuilder.DEFAULTS = {
 
     default_group_flags: {
         condition_readonly: false,
+        no_add_rule: false,
+        no_add_group: false,
         no_delete: false
     },
 

@@ -262,6 +262,7 @@ $(function(){
                 }
             }, {
                 condition: 'OR',
+                readonly: true,
                 rules: [{
                     id: 'id',
                     operator: 'not_equal',
@@ -271,9 +272,30 @@ $(function(){
             }]
         };
 
-        var rules_all_flags = $.extend(true, {}, rules_readonly);
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: rules_readonly
+        });
+
+        var rules_changed_flags = $.extend(true, {}, rules_readonly);
+        rules_changed_flags.rules[1].flags = {
+            condition_readonly: true,
+            no_add_rule: true,
+            no_add_group: true,
+            no_delete: true
+        };
+        rules_changed_flags.rules[1].rules[0].flags = {
+            filter_readonly: true,
+            operator_readonly: true,
+            value_readonly: true,
+            no_delete: true
+        };
+
+        var rules_all_flags = $.extend(true, {}, rules_changed_flags);
         rules_all_flags.flags = {
             condition_readonly: true,
+            no_add_rule: false,
+            no_add_group: false,
             no_delete: false
         };
         rules_all_flags.rules[0].flags = {
@@ -282,25 +304,10 @@ $(function(){
             value_readonly: false,
             no_delete: true
         };
-        rules_all_flags.rules[1].flags = {
-            condition_readonly: false,
-            no_delete: false
-        };
-        rules_all_flags.rules[1].rules[0].flags = {
-            filter_readonly: true,
-            operator_readonly: true,
-            value_readonly: true,
-            no_delete: true
-        };
-
-        $b.queryBuilder({
-            filters: basic_filters,
-            rules: rules_readonly
-        });
 
         assert.rulesMatch(
             $b.queryBuilder('getRules', {get_flags: true}),
-            rules_readonly,
+            rules_changed_flags,
             'Should export rules with changed flags'
         );
 

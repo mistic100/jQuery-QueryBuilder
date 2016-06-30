@@ -706,6 +706,12 @@ QueryBuilder.prototype.applyGroupFlags = function(group) {
         group.$el.find('>' + Selectors.group_condition).prop('disabled', true)
             .parent().addClass('readonly');
     }
+    if (flags.no_add_rule) {
+        group.$el.find(Selectors.add_rule).remove();
+    }
+    if (flags.no_add_group) {
+        group.$el.find(Selectors.add_group).remove();
+    }
     if (flags.no_delete) {
         group.$el.find(Selectors.delete_group).remove();
     }
