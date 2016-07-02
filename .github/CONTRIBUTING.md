@@ -1,14 +1,9 @@
-# Asking for help and features
-Though I am really happy to provide help, I am not your mom nor your instructor. Any request without enough detail and any bug report without a code example (live example is preferred) won't get any answer.
-
-Be exhaustive, describe your needs, show what you tried, it's the best way to get a rapid answer/bug fix.
-
-# How to contribute
+# Guidelines for contributing
 
 ## Core vs Plugins
 I want to keep the core clean of extra (and certainly awesome) functionalities. That includes, but is not limited to, export/import plugins, visual aids, etc.
 
-Check the doc about [creating plugins](http://mistic100.github.io/jQuery-QueryBuilder/dev/plugins.html).
+Check the doc about [creating plugins](http://querybuilder.js.org/dev/plugins.html) and [use events](http://querybuilder.js.org/dev/events.html).
 
 I reserve the right to refuse any plugin I think is not useful for many people. Particularly, only import/export plugins for mainstream data storages will be integrated in the main repository. Others should be in a separated repository. But it's totally possible to add a link to your repository in the documentation.
 
