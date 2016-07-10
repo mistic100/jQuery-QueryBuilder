@@ -198,7 +198,7 @@ Node.prototype.moveAtEnd = function(target) {
         target = this.parent;
     }
 
-    this._move(target, target.length() - 1);
+    this._move(target, target.length() === 0 ? 0 : target.length() - 1);
 
     return this;
 };
