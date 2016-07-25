@@ -71,9 +71,15 @@
         // rule filter change
         this.$el.on('change.queryBuilder', '.rule-filter-container select[name$=_filter]', function() {
             var $this = $(this),
-                $rule = $this.closest('li');
+                $rule = $this.closest('li'),
+                filter = that.getFilterById(that.getRuleFilter($rule));
 
             that.createRuleOperators($rule, $this.val());
+            
+            // Page filter plugin
+            if ( filter.plugin == 'page_filter' )
+                that.createPageDropDown($rule, $this.val());
+                
             that.createRuleInput($rule, $this.val());
         });
 
@@ -84,7 +90,16 @@
 
             that.updateRuleOperator($rule, $this.val());
         });
-
+        
+        // page filter change
+        this.$el.on('change.queryBuilder', '.rule-page-container select', function() {
+            var $this = $(this),
+                $rule = $this.closest('li'),
+                filter = that.getFilterById(that.getRuleFilter($rule));
+            if ( $this.val() != null )
+                that.filterPageAnswers( $rule, filter, $this.val() );
+        });
+        
         // add rule button
         this.$el.on('click.queryBuilder', '[data-add=rule]', function() {
             var $this = $(this),
@@ -308,7 +323,6 @@
      */
     QueryBuilder.prototype.setRules = function(data) {
         this.clear();
-
         var $container = this.$el,
             that = this;
 
@@ -343,10 +357,31 @@
                     var $rule = that.addRule($ul),
                         filter = that.getFilterById(rule.id),
                         $value = $rule.find('.rule-value-container');
-
+                    
+                    
+                    
+                    
                     $rule.find('.rule-filter-container select[name$=_filter]').val(rule.id).trigger('change');
                     $rule.find('.rule-operator-container select[name$=_operator]').val(rule.operator).trigger('change');
-
+                    
+                    if ( filter.plugin == 'page_filter' ) {
+                        var rule_page_id = 0;
+                        $.each( filter.plugin_config.pages, function( page_id, page ) {
+                            $.each( page, function( index, answer ) {
+                                if ( answer.page_answer_id == rule.value ) {
+                                    rule_page_id = answer.page_id;
+                                }
+                            });
+                        });
+                        if ( rule_page_id > 0) {
+                            $rule.find('.rule-page-container select').val(rule_page_id).trigger('change');
+                        }
+                    }
+                    
+                    if ( filter.plugin == 'page' ) {
+                        
+                    }
+                    
                     switch (filter.input) {
                         case 'radio':
                             $value.find('input[name$=_value][value="'+ rule.value +'"]').prop('checked', true).trigger('change');
@@ -504,6 +539,30 @@
 
         $rule.find('.rule-operator-container').html(h);
     };
+    
+    /**
+     * Create create a page dropdown for page answer
+
+     */
+    QueryBuilder.prototype.createPageDropDown = function($rule, filterId) {
+        
+        if (filterId == '-1') {
+            return;
+        }
+
+        var $page_container = $rule.find('.rule-page-container').empty(),
+            rule_id = $rule.attr('id'),
+            filter = this.getFilterById( filterId ),
+            operator = this.getOperator(this.getRuleOperator($rule));
+
+        if (!operator.accept_values) {
+            return;
+        }
+    
+        $page_container.html($('<select name="'+ rule_id +'_value"></select>')).show();
+        
+        this.populatePagesAnswered( $rule, filter );
+    };
 
     /**
      * Create main <input> for a rule
@@ -531,10 +590,54 @@
         if (filter.onAfterCreateRuleInput) {
             filter.onAfterCreateRuleInput.call(this, $rule, filter);
         }
-
         // init external jquery plugin
         if (filter.plugin) {
-            $value_container.find(filter.input=='select' ? 'select' : 'input')[filter.plugin](filter.plugin_config || {});
+            $rule.find('.rule-page-container').show();
+            $rule.find('.rule-operator-container').hide();
+            $rule.find('.rule-value-container').hide();
+            
+            this.populatePagesAnswered( $rule, filter );
+        }
+    };
+    
+    /**
+     * Populates the pages_answered drop down
+     */
+    QueryBuilder.prototype.populatePagesAnswered = function( $rule, filter ) {
+        var $page_container = $rule.find('.rule-page-container');
+        var h = '';
+        
+        $.each(filter.plugin_config.pages, function(key, page) {
+            h+= '<option value="'+ key +'">' + key + ': ' + page[0].page_name + '</option> ';
+        });
+        
+        $page_container.find('select').html( h );
+
+        this.filterPageAnswers( $rule, filter, $page_container.find('option:selected').val() );
+    };
+    
+    /**
+     * Filters the page_answers by page_id
+     */
+    QueryBuilder.prototype.filterPageAnswers = function( $rule, filter, page_id ) {
+        var $value_container = $rule.find('.rule-value-container'),
+            page_answer_values = {};
+
+        if ( typeof filter.plugin_config.pages[page_id] !== 'undefined' ) {
+            $.each(filter.plugin_config.pages[page_id], function(key, answer) {
+                page_answer_values[answer.page_answer_id] = answer.page_answer_text;
+            });
+            var h = '';
+            
+            if (page_answer_values) {
+                $.each(page_answer_values, function(key, val) {
+                    h+= '<option value="'+ key +'"> '+ val +'</option> ';
+                });
+            }
+            
+            $value_container.find('select').html( h );
+            
+            $value_container.show();
         }
     };
 
@@ -556,7 +659,9 @@
             $value_container.show();
 
             if ($value_container.is(':empty')) {
-                this.createRuleInput($rule, this.getRulefilter($rule));
+                if ( filter.plugin && filter.plugin == 'page_filter' )
+                    this.createPageDropDown($rule, filter);
+                this.createRuleInput($rule, filter);
             }
         }
 
@@ -914,6 +1019,7 @@
   </div> \
   <div class="rule-filter-container">'+ this.getRuleFilterSelect(rule_id) +'</div> \
   <div class="rule-operator-container"></div> \
+  <div class="rule-page-container"></div> \
   <div class="rule-value-container"></div> \
 </li>';
     };
