@@ -378,10 +378,6 @@
                         }
                     }
                     
-                    if ( filter.plugin == 'page' ) {
-                        
-                    }
-                    
                     switch (filter.input) {
                         case 'radio':
                             $value.find('input[name$=_value][value="'+ rule.value +'"]').prop('checked', true).trigger('change');
