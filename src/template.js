@@ -68,8 +68,13 @@ QueryBuilder.templates.filterSelect = '\
 </select>';
 
 QueryBuilder.templates.operatorSelect = '\
+{{? it.operators.length === 1 }} \
+<span> \
+{{= it.lang.operators[it.operators[0].type] || it.operators[0].type }} \
+</span> \
+{{?}} \
 {{ var optgroup = null; }} \
-<select class="form-control" name="{{= it.rule.id }}_operator"> \
+<select class="form-control {{? it.operators.length === 1 }}hide{{?}}" name="{{= it.rule.id }}_operator"> \
   {{~ it.operators: operator }} \
     {{? optgroup !== operator.optgroup }} \
       {{? optgroup !== null }}</optgroup>{{?}} \
