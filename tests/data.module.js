@@ -245,6 +245,46 @@ $(function(){
     });
 
     /**
+     * Set an empty rule
+     */
+    QUnit.test('set empty rule', function(assert) {
+        var rules = [{
+            id: 'name',
+            value: 'Mistic'
+        }, {
+            empty: true
+        }, {
+            condition: 'OR',
+            rules: []
+        }];
+
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: rules
+        });
+
+        assert.validationError($b,
+            null,
+            /no_filter/
+        );
+
+        assert.equal(
+            $b[0].queryBuilder.model.root.rules.length, 3,
+            'Should have two rules and one group'
+        );
+
+        assert.equal(
+            $b[0].queryBuilder.model.root.rules[2].rules.length, 0,
+            'Group should be empty'
+        );
+
+        assert.equal(
+            $('[name=builder_rule_1_filter]').val(), '-1',
+            'Second rule should be empty'
+        );
+    });
+
+    /**
      * Test get flags with getRules
      */
     QUnit.test('get flags', function(assert) {

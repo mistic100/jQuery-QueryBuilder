@@ -118,7 +118,7 @@ var $b = $('#builder');
 var options = {
   allow_empty: true,
 
-  default_filter: 'name',
+  //default_filter: 'name',
   sort_filters: true,
 
   optgroups: {
@@ -473,6 +473,8 @@ $('.set').on('click', function() {
         operator: 'equal',
         value: 'B.3'
       }]
+    }, {
+        empty: true
     }]
   });
 });

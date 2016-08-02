@@ -239,7 +239,8 @@ QueryBuilder.prototype.setRules = function(data) {
 
         data.rules.forEach(function(item) {
             var model;
-            if (item.rules && item.rules.length > 0) {
+
+            if (item.rules !== undefined) {
                 if (self.settings.allow_groups !== -1 && self.settings.allow_groups < group.level) {
                     self.reset();
                     Utils.error('RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
@@ -254,11 +255,13 @@ QueryBuilder.prototype.setRules = function(data) {
                 }
             }
             else {
-                if (item.id === undefined) {
-                    Utils.error('RulesParse', 'Missing rule field id');
-                }
-                if (item.operator === undefined) {
-                    item.operator = 'equal';
+                if (!item.empty) {
+                    if (item.id === undefined) {
+                        Utils.error('RulesParse', 'Missing rule field id');
+                    }
+                    if (item.operator === undefined) {
+                        item.operator = 'equal';
+                    }
                 }
 
                 model = self.addRule(group, item.data);
@@ -266,13 +269,16 @@ QueryBuilder.prototype.setRules = function(data) {
                     return;
                 }
 
-                model.filter = self.getFilterById(item.id);
-                model.operator = self.getOperatorByType(item.operator);
-                model.flags = self.parseRuleFlags(item);
+                if (!item.empty) {
+                    model.filter = self.getFilterById(item.id);
+                    model.operator = self.getOperatorByType(item.operator);
 
-                if (model.operator.nb_inputs !== 0 && item.value !== undefined) {
-                    model.value = item.value;
+                    if (model.operator.nb_inputs !== 0 && item.value !== undefined) {
+                        model.value = item.value;
+                    }
                 }
+
+                model.flags = self.parseRuleFlags(item);
             }
         });
 

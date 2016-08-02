@@ -412,33 +412,33 @@ $(function(){
             }
         });
 
-        assert.ok(
-            $('#builder_group_0>.rules-group-header input:not(:disabled)').length == 0,
+        assert.equal(
+            $('#builder_group_0>.rules-group-header input:not(:disabled)').length, 0,
             'Should disable group condition radio buttons'
         );
 
-        assert.ok(
-            $('#builder_rule_0 [data-delete=rule]').length == 0,
+        assert.equal(
+            $('#builder_rule_0 [data-delete=rule]').length, 0,
             'Should hide delete button of "no_delete" rule'
         );
 
-        assert.ok(
-            $('#builder_rule_0').find('input:disabled, select:disabled').length == 0,
+        assert.equal(
+            $('#builder_rule_0').find('input:disabled, select:disabled').length, 0,
             'Should not disable inputs of "no_delete" rule'
         );
 
-        assert.ok(
-            $('#builder_rule_1 [data-delete=rule]').length == 0,
+        assert.equal(
+            $('#builder_rule_1 [data-delete=rule]').length, 0,
             'Should hide delete button of "readonly" rule'
         );
 
-        assert.ok(
-            $('#builder_rule_1').find('input:disabled, select:disabled').length == 3,
+        assert.equal(
+            $('#builder_rule_1').find('input:disabled, select:disabled').length, 3,
             'Should disable inputs of "readonly" rule'
         );
 
-        assert.ok(
-            $('#builder_group_2').find('[data-delete=group], [data-add=rule], [data-add=group]').length ==0,
+        assert.equal(
+            $('#builder_group_2').find('[data-delete=group], [data-add=rule], [data-add=group]').length, 0,
             'Should hide all buttons of "readonly" group'
         );
 
