@@ -13,16 +13,16 @@ linters:
 
   HexLength:
     enabled: false
-  
+
   HexNotation:
     style: uppercase
-    
+
   Shorthand:
-    allowed_shorthands: [1, 2]
-  
+    allowed_shorthands: [1, 2, 4]
+
   QualifyingElement:
     enabled: false
-  
+
   ImportantRule:
     enabled: false
 
