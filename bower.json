@@ -1,5 +1,5 @@
 {
-  "name": "jQuery-QueryBuilder",
+  "name": "querybuilder",
   "version": "2.3.3",
   "authors": [{
     "name": "Damien \"Mistic\" Sorel",
@@ -33,10 +33,10 @@
     "filter"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/mistic100/jQuery-QueryBuilder",
+  "homepage": "https://github.com/composity/querybuilder",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mistic100/jQuery-QueryBuilder.git"
+    "url": "git@github.com:composity/querybuilder.git"
   },
   "ignore": [
     "**/.*",
