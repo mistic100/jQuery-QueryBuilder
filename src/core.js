@@ -508,7 +508,10 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
     this.createRuleFilters(model);
 
     if (this.settings.default_filter || !this.settings.display_empty_filter) {
-        model.filter = this.getFilterById(this.settings.default_filter || this.filters[0].id);
+        model.filter = this.change('getDefaultFilter',
+            this.getFilterById(this.settings.default_filter || this.filters[0].id),
+            model
+        );
     }
 
     return model;

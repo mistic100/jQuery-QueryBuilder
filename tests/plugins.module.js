@@ -87,15 +87,12 @@ $(function(){
             '"Identifier" filter should be disabled everywhere'
         );
 
-        /*
-        FIXME: the test always fails in Grunt
         assert.ok(
              $('select[name=builder_rule_1_filter] option[value=price]').is(':disabled') &&
             !$('select[name=builder_rule_2_filter] option[value=price]').is(':disabled') &&
             !$('select[name=builder_rule_3_filter] option[value=price]').is(':disabled'),
             '"Price" filter should be disabled in his group only'
         );
-        */
     });
 
     /**

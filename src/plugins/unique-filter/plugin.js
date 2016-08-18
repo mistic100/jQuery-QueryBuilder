@@ -11,9 +11,37 @@ QueryBuilder.define('unique-filter', function() {
     this.on('afterCreateRuleFilters', this.applyDisabledFilters);
     this.on('afterReset', this.clearDisabledFilters);
     this.on('afterClear', this.clearDisabledFilters);
+
+    /**
+     * Ensure that the default filter is not already used if unique
+     * @throws UniqueFilterError
+     */
+    this.on('getDefaultFilter.filter', function(e, model) {
+        var self = e.builder;
+
+        self.updateDisabledFilters();
+
+        if (e.value.id in self.status.used_filters) {
+            var found = self.filters.some(function(filter) {
+                if (!(filter.id in self.status.used_filters) || self.status.used_filters[filter.id].length > 0 && self.status.used_filters[filter.id].indexOf(model.parent) === -1) {
+                    e.value = filter;
+                    return true;
+                }
+            });
+
+            if (!found) {
+                Utils.error('UniqueFilter', 'No more non-unique filters available');
+                e.value = undefined;
+            }
+        }
+    });
 });
 
 QueryBuilder.extend({
+    /**
+     * Update the list of used filters
+     * @param [e]
+     */
     updateDisabledFilters: function(e) {
         var self = e ? e.builder : this;
 
@@ -42,6 +70,10 @@ QueryBuilder.extend({
         self.applyDisabledFilters(e);
     },
 
+    /**
+     * Clear the list of used filters
+     * @param [e]
+     */
     clearDisabledFilters: function(e) {
         var self = e ? e.builder : this;
 
@@ -50,6 +82,10 @@ QueryBuilder.extend({
         self.applyDisabledFilters(e);
     },
 
+    /**
+     * Disabled filters depending on the list of used ones
+     * @param [e]
+     */
     applyDisabledFilters: function(e) {
         var self = e ? e.builder : this;
 
