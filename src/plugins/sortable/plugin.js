@@ -10,9 +10,6 @@ QueryBuilder.define('sortable', function(options) {
      * Init HTML5 drag and drop
      */
     this.on('afterInit', function(e) {
-        // configure jQuery to use dataTransfer
-        $.event.props.push('dataTransfer');
-
         var placeholder;
         var src;
         var self = e.builder;
@@ -31,7 +28,7 @@ QueryBuilder.define('sortable', function(options) {
             e.stopPropagation();
 
             // notify drag and drop (only dummy text)
-            e.dataTransfer.setData('text', 'drag');
+            e.originalEvent.dataTransfer.setData('text', 'drag');
 
             src = Model(e.target);
 
