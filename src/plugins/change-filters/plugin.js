@@ -53,6 +53,7 @@ QueryBuilder.extend({
                       self.createRuleFilters(rule);
 
                       rule.$el.find(Selectors.rule_filter).val(rule.filter ? rule.filter.id : '-1');
+                      self.trigger('afterUpdateRuleFilter', rule);
                   }
               },
               updateBuilder
