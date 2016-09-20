@@ -54,11 +54,11 @@ QueryBuilder.prototype.clear = function() {
  * @param {object}
  */
 QueryBuilder.prototype.setOptions = function(options) {
-    // use jQuery utils to filter options keys
-    $.makeArray($(Object.keys(options)).filter(QueryBuilder.modifiable_options))
-        .forEach(function(opt) {
-            this.settings[opt] = options[opt];
-        }, this);
+    $.each(options, function(opt, value) {
+        if (QueryBuilder.modifiable_options.indexOf(opt) !== -1) {
+            this.settings[opt] = value;
+        }
+    }.bind(this));
 };
 
 /**

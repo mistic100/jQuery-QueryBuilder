@@ -1,11 +1,13 @@
 {
   "name": "jQuery-QueryBuilder",
   "version": "2.3.3",
-  "authors": [{
-    "name": "Damien \"Mistic\" Sorel",
-    "email": "contact@git.strangeplanet.fr",
-    "homepage": "http://www.strangeplanet.fr"
-  }],
+  "authors": [
+    {
+      "name": "Damien \"Mistic\" Sorel",
+      "email": "contact@git.strangeplanet.fr",
+      "homepage": "http://www.strangeplanet.fr"
+    }
+  ],
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": [
     "dist/js/query-builder.js",
@@ -24,7 +26,8 @@
     "bootstrap-select": "^1.10.0",
     "bootbox": "^4.4.0",
     "awesome-bootstrap-checkbox": "^0.3.0",
-    "sql-parser": "^1.0.0"
+    "sql-parser": "^1.0.0",
+    "bind-polyfill": "~1.0.0"
   },
   "keywords": [
     "jquery",
