@@ -43,7 +43,7 @@
     "select_empty": "Nenhum valor selecionado",
     "string_empty": "Valor vazio",
     "string_exceed_min_length": "É necessário conter pelo menos {0} caracteres",
-    "string_exceed_max_length": "É necessário conterm mais de {0} caracteres",
+    "string_exceed_max_length": "É necessário conter mais de {0} caracteres",
     "string_invalid_format": "Formato inválido ({0})",
     "number_nan": "Não é um número",
     "number_not_integer": "Não é um número inteiro",
