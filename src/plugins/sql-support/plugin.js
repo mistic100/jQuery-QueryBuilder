@@ -267,7 +267,7 @@ QueryBuilder.extend({
                         });
                     }
 
-                    parts.push(rule.field + ' ' + sql.op.replace(/\?/, value));
+                    parts.push(self.change('getSQLField', rule.field, rule) + ' ' + sql.op.replace(/\?/, value));
                 }
             });
 
@@ -406,12 +406,13 @@ QueryBuilder.extend({
 
                 var left_value = data.left.values.join('.');
 
-                curr.rules.push({
+                var rule = self.change('getSQLRule', {
                     id: self.change('getSQLFieldID', left_value, value),
                     field: left_value,
                     operator: opVal.op,
                     value: opVal.val
                 });
+                curr.rules.push(rule);
             }
         }(parsed.where.conditions, 0));
 
