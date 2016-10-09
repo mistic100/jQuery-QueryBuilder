@@ -1,4 +1,7 @@
 $.fn.queryBuilder = function(option) {
+    if (this.length === 0) {
+        Utils.error('Config', 'No target defined');
+    }
     if (this.length > 1) {
         Utils.error('Config', 'Unable to initialize on multiple target');
     }
