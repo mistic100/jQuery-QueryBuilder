@@ -628,12 +628,12 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
 {% endhighlight %}
 <!-- @formatter:on -->
 
-  <p>Only main methods are described are.</p>
+  <p>Only main methods are described.</p>
 
   <div class="bs-callout">
     <h4><code>.validate()</code></h4>
 
-    <p>Returns a boolean whereas the builder is valid or not. Use the <code>validationError</code> event to catch
+    <p>Returns a boolean indicating whether the builder is valid or not. Use the <code>validationError</code> event to catch
       per-rule validation errors. If <code>display_errors</code> is enabled the invalid rules will turn red.</p>
   </div>
 
@@ -688,7 +688,7 @@ $('#builder').queryBuilder('getRules', { get_flags: true });
   <div class="bs-callout">
     <h4><code>.setRules(rules)</code></h4>
 
-    <p>Clears the builder and set new rules. The parameters must have the same structure has the output of <code>getRules</code>.
+    <p>Clears the builder and sets new rules. The parameters must have the same structure as the output of <code>getRules</code>.
       <a data-bootbox="rules_format"> <i class="glyphicon glyphicon-info-sign"></i> See an example</a></p>
     <!-- @formatter:off -->
 {% highlight javascript %}
@@ -884,8 +884,8 @@ $('#builder').queryBuilder('destroy');
   <p>QueryBuilder comes with two colors-schemes: <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css"
                                                     target="_blank"><i class="glyphicon glyphicon-file"></i> default</a>
     (clear) and <a href="{{site.rawUrl}}/dist/css/query-builder.dark.min.css" target="_blank"><i
-      class="glyphicon glyphicon-file"></i> dark</a>. Change the active theme by switching stylesheet, you cannot use
-    the two colors-schemes on the same page.</p>
+      class="glyphicon glyphicon-file"></i> dark</a>. Change the active theme by switching stylesheets. You cannot use
+    both color-schemes on the same page.</p>
 </section>
 
 <section class="bs-docs-section">
@@ -895,7 +895,7 @@ $('#builder').queryBuilder('destroy');
 
   <h3 id="operators">Operators</h3>
 
-  <p>QueryBuilder is bundle with an <a data-bootbox="default_operators"><i class="glyphicon glyphicon-info-sign"></i>
+  <p>QueryBuilder is bundled with an <a data-bootbox="default_operators"><i class="glyphicon glyphicon-info-sign"></i>
     extensive list of operators</a>. You can change which operators are available for each filter (see <a
     href="#filters">filters</a> configuration) but you can also modify/reorder the operators globally and even add new
     custom operators.</p>
@@ -916,7 +916,7 @@ $('#builder').queryBuilder('destroy');
       <tr>
         <td>type</td>
         <td>string</td>
-        <td>Identifier of the operator, use the <code>lang.operators</code> to translate give a human readable name to
+        <td>Identifier of the operator, use the <code>lang.operators</code> to translate or give a human readable name to
           your operator.
         </td>
       </tr>
@@ -1072,15 +1072,15 @@ operators: [
 
   <h3 id="templates">Templates</h3>
 
-  <p>For very custom customizations, QueryBuilder provides a way to completely overwrite de HTML templates used to
-    display rules and groups. It uses the <a href="http://olado.github.io/doT">doT.js</a> template engine by default but
+  <p>For very custom customizations, QueryBuilder provides a way to completely overwrite the HTML templates used to
+    display rules and groups. It uses the <a href="http://olado.github.io/doT">doT.js</a> template engine by default, but
     can be used with most JS template engines, like <i>underscore.js</i> one.</p>
 
   <div class="bs-callout bs-callout-danger">
     <h4>Very advanced feature</h4>
 
-    <p>Modifying templates can leads to a not functionnal builder if the general layout differs too much. Particularly
-      you should keep all CSS classes which are not part of Bootstrap.</p>
+    <p>Modifying templates can lead to a non-functionnal builder if the general layout differs too much. In particular,
+      non-Bootstrap CSS classes should not be removed.</p>
   </div>
 
   <p>Templates can be provided as a <a href="http://olado.github.io/doT/#samples">doT.js template string</a> or as a
@@ -1140,8 +1140,8 @@ operators: [
 
   <h3 id="inside_the_box">Inside the box</h3>
 
-  <p>You might have noticed that callbacks and events reffer to two objects <b>Rule</b> and <b>Group</b>. These objects
-    are part of the data model with partial data-binding used internally by QueryBuilder. Here the structure of these
+  <p>You might have noticed that callbacks and events refer to two objects <b>Rule</b> and <b>Group</b>. These objects
+    are part of the data model with partial data-binding used internally by QueryBuilder. Here are the structures of these
     two objects. Most attributes will live-update the builder when modified.</p>
 
   <div class="container-fluid">

@@ -12,8 +12,8 @@ title: Create plugins
     to offer a plugins system.</p>
   <p>Plugins can simply add public methods or make use of events to change the behavior of the builder.</p>
 
-  <p>Each plugin is a folder in <code>plugins</code> directory, it contains at least a <code>plugin.js</code> file and
-    optionally a <code>plugin.scss</code> file and a <code>i18n</code> folder. Everything needed to the plugin operation
+  <p>Each plugin is a folder in the <code>plugins</code> directory, which contains at least a <code>plugin.js</code> file and
+    optionally a <code>plugin.scss</code> file and a <code>i18n</code> folder. Everything needed for the plugin to operate
     must be contained in these two files (but third-party dependencies of course).</p>
 
   <p>Plugins are included in the <code>dist</code> files by the Grunt task (depending on <b>plugins</b> build option)
@@ -140,7 +140,7 @@ QueryBuilder.extend({
 
   <p>The plugins' SCSS files are imported at the end of the core SCSS, allowing you to use all defined variable. One
     interesting variable is <code>$theme-name</code> which contains... the theme name (currently "default" or "dark")
-    you can use to make conditionnal formating.</p>
+    you can use to make conditional formatting.</p>
 
   <b>Basic SCSS from Filter Description plugin :</b>
   <!-- @formatter:off -->
