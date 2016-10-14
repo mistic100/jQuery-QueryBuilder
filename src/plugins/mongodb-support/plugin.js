@@ -127,17 +127,15 @@ QueryBuilder.extend({
                         });
                     }
 
-                    var part = {};
-                    part[rule.field] = mdb.call(self, values);
-                    parts.push(part);
+                    var ruleExpression = {};
+                    ruleExpression[rule.field] = mdb.call(self, values);
+                    parts.push(self.change('ruleToMongo', ruleExpression, rule));
                 }
             });
 
-            var res = {};
-            if (parts.length > 0) {
-                res['$' + data.condition.toLowerCase()] = parts;
-            }
-            return res;
+            var groupExpression = {};
+            groupExpression['$' + data.condition.toLowerCase()] = parts;
+            return self.change('groupToMongo', groupExpression, data);
         }(data));
     },
 
@@ -153,33 +151,47 @@ QueryBuilder.extend({
         }
 
         var self = this;
-        var conditions = {
-            '$and': 'AND',
-            '$or': 'OR'
-        };
 
-        return (function parse(data) {
-            var topKeys = Object.keys(data);
+        // allow plugins to manually parse or handle special cases
+        data = self.change('parseMongoNode', data);
 
-            if (topKeys.length > 1) {
-                Utils.error('MongoParse', 'Invalid MongoDB query format');
-            }
-            if (!conditions[topKeys[0].toLowerCase()]) {
-                Utils.error('UndefinedMongoCondition', 'Unable to build MongoDB query with condition "{0}"', topKeys[0]);
-            }
+        // a plugin returned a group
+        if ('rules' in data && 'condition' in data) {
+            return data;
+        }
 
-            var rules = data[topKeys[0]];
+        var key = andOr(data);
+        if (!key) {
+            Utils.error('MongoParse', 'Invalid MongoDB query format');
+        }
+
+        return (function parse(data, topKey) {
+            var rules = data[topKey];
             var parts = [];
 
-            rules.forEach(function(rule) {
-                var keys = Object.keys(rule);
+            rules.forEach(function(data) {
+                // allow plugins to manually parse or handle special cases
+                data = self.change('parseMongoNode', data);
 
-                if (conditions[keys[0].toLowerCase()]) {
-                    parts.push(parse(rule));
+                // a plugin returned a group
+                if ('rules' in data && 'condition' in data) {
+                    parts.push(data);
+                    return;
+                }
+
+                // a plugin returned a rule
+                if ('id' in data && 'operator' in data && 'value' in data) {
+                    parts.push(data);
+                    return;
+                }
+
+                var key = andOr(data);
+                if (key) {
+                    parts.push(parse(data, key));
                 }
                 else {
-                    var field = keys[0];
-                    var value = rule[field];
+                    var field = Object.keys(data)[0];
+                    var value = data[field];
 
                     var operator = determineMongoOperator(value, field);
                     if (operator === undefined) {
@@ -192,22 +204,23 @@ QueryBuilder.extend({
                     }
 
                     var opVal = mdbrl.call(self, value);
-                    parts.push({
+
+                    var rule = self.change('mongoToRule', {
                         id: self.change('getMongoDBFieldID', field, value),
                         field: field,
                         operator: opVal.op,
                         value: opVal.val
-                    });
+                    }, data);
+
+                    parts.push(rule);
                 }
             });
 
-            var res = {};
-            if (parts.length > 0) {
-                res.condition = conditions[topKeys[0].toLowerCase()];
-                res.rules = parts;
-            }
-            return res;
-        }(data));
+            return self.change('mongoToGroup', {
+                condition: topKey.replace('$', '').toUpperCase(),
+                rules: parts
+            }, data);
+        }(data, key));
     },
 
     /**
@@ -250,4 +263,21 @@ function determineMongoOperator(value, field) {
     else {
         return 'eq';
     }
+}
+
+/**
+ * Returns the key corresponding to "$or" or "$and"
+ * @param {object} data
+ * @returns {string}
+ */
+function andOr(data) {
+    var keys = Object.keys(data);
+
+    for (var i = 0, l = keys.length; i < l; i++) {
+        if (keys[i].toLowerCase() == '$or' || keys[i].toLowerCase() == '$and') {
+            return keys[i];
+        }
+    }
+
+    return undefined;
 }

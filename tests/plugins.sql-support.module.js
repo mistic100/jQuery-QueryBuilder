@@ -1,55 +1,13 @@
-$(function(){
+$(function () {
     var $b = $('#builder');
 
-    QUnit.module('plugins-data', {
-        afterEach: function() {
+    QUnit.module('plugins.sql-support', {
+        afterEach: function () {
             $b.queryBuilder('destroy');
         }
     });
 
-    /**
-     * SQL import/export
-     */
-    QUnit.test('sql-support', function(assert) {
-        var basic_rules_sql_raw = {
-            sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
-        };
-
-        var basic_rules_sql_stmt = {
-            sql: 'price < ? AND name IS NULL AND ( category IN(?, ?) OR id != ? ) ',
-            params: [10.25, 'mo', 'mu', '1234-azer-5678']
-        };
-
-        var basic_rules_sql_stmt_num = {
-            sql: 'price < $1 AND name IS NULL AND ( category IN($2, $3) OR id != $4 ) ',
-            params: [10.25, 'mo', 'mu', '1234-azer-5678']
-        };
-
-        var basic_rules_sql_stmt_num_at = {
-            sql: 'price < @1 AND name IS NULL AND ( category IN(@2, @3) OR id != @4 ) ',
-            params: [10.25, 'mo', 'mu', '1234-azer-5678']
-        };
-
-        var basic_rules_sql_stmt_named = {
-            sql: 'price < :price_1 AND name IS NULL AND ( category IN(:category_1, :category_2) OR id != :id_1 ) ',
-            params: {
-                price_1: 10.25,
-                category_1: 'mo',
-                category_2: 'mu',
-                id_1: '1234-azer-5678'
-            }
-        };
-
-        var basic_rules_sql_stmt_named_at = {
-            sql: 'price < @price_1 AND name IS NULL AND ( category IN(@category_1, @category_2) OR id != @id_1 ) ',
-            params: {
-                price_1: 10.25,
-                category_1: 'mo',
-                category_2: 'mu',
-                id_1: '1234-azer-5678'
-            }
-        };
-
+    QUnit.test('Raw SQL', function (assert) {
         $b.queryBuilder({
             filters: basic_filters,
             rules: basic_rules
@@ -61,11 +19,45 @@ $(function(){
             'Should create SQL query'
         );
 
+        $b.queryBuilder('reset');
+
+        $b.queryBuilder('setRulesFromSQL', basic_rules_sql_raw);
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            basic_rules,
+            'Should parse SQL query'
+        );
+    });
+
+    QUnit.test('Placeholder SQL', function (assert) {
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
         assert.deepEqual(
             $b.queryBuilder('getSQL', 'question_mark'),
             basic_rules_sql_stmt,
             'Should create SQL query with statements (?)'
         );
+
+        $b.queryBuilder('reset');
+
+        $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt, 'question_mark');
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            basic_rules,
+            'Should parse SQL query with statements (?)'
+        );
+    });
+
+    QUnit.test('Numbered SQL', function (assert) {
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: basic_rules
+        });
 
         assert.deepEqual(
             $b.queryBuilder('getSQL', 'numbered'),
@@ -79,6 +71,33 @@ $(function(){
             'Should create SQL query with statements (@ numbered)'
         );
 
+        $b.queryBuilder('reset');
+
+        $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_num, 'numbered');
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            basic_rules,
+            'Should parse SQL query with statements ($ numbered)'
+        );
+
+        $b.queryBuilder('reset');
+
+        $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_num_at, 'numbered(@)');
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            basic_rules,
+            'Should parse SQL query with statements (@ numbered)'
+        );
+    });
+
+    QUnit.test('Named SQL', function (assert) {
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
         assert.deepEqual(
             $b.queryBuilder('getSQL', 'named'),
             basic_rules_sql_stmt_named,
@@ -91,49 +110,28 @@ $(function(){
             'Should create SQL query with statements (@ named)'
         );
 
-        $b.queryBuilder('setRulesFromSQL', basic_rules_sql_raw);
-        assert.rulesMatch(
-            $b.queryBuilder('getRules'),
-            basic_rules,
-            'Should parse SQL query'
-        );
-
-        $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt, 'question_mark');
-        assert.rulesMatch(
-            $b.queryBuilder('getRules'),
-            basic_rules,
-            'Should parse SQL query with statements (?)'
-        );
-
-        $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_num, 'numbered');
-        assert.rulesMatch(
-            $b.queryBuilder('getRules'),
-            basic_rules,
-            'Should parse SQL query with statements ($ numbered)'
-        );
-
-        $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_num_at, 'numbered(@)');
-        assert.rulesMatch(
-            $b.queryBuilder('getRules'),
-            basic_rules,
-            'Should parse SQL query with statements (@ numbered)'
-        );
+        $b.queryBuilder('reset');
 
         $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_named, 'named');
+
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
             basic_rules,
             'Should parse SQL query with statements (: named)'
         );
 
+        $b.queryBuilder('reset');
+
         $b.queryBuilder('setRulesFromSQL', basic_rules_sql_stmt_named_at, 'named(@)');
+
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
             basic_rules,
             'Should parse SQL query with statements (@ named)'
         );
+    });
 
-        $b.queryBuilder('destroy');
+    QUnit.test('All operators', function (assert) {
         $b.queryBuilder({
             filters: basic_filters,
             rules: all_operators_rules
@@ -145,14 +143,19 @@ $(function(){
             'Should convert all kind of operators to SQL'
         );
 
+        $b.queryBuilder('reset');
+
         $b.queryBuilder('setRulesFromSQL', all_operators_rules_sql, 'question_mark');
+
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
             all_operators_rules,
             'Should parse all kind of operators from SQL'
         );
+    });
 
-        $b.queryBuilder('destroy');
+    QUnit.test('Nested rules', function (assert) {
+
         $b.queryBuilder({
             filters: [
                 {id: 'a', type: 'integer'},
@@ -163,13 +166,17 @@ $(function(){
         });
 
         $b.queryBuilder('setRulesFromSQL', nested_rules_sql);
+
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
             nested_rules,
             'Should parse SQL with deep nested rules'
         );
 
+        $b.queryBuilder('reset');
+
         $b.queryBuilder('setRulesFromSQL', 'a = 5');
+
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
             {
@@ -184,56 +191,45 @@ $(function(){
         );
     });
 
-    /**
-     * MongoDB import/export
-     */
-    QUnit.test('mongo-support', function(assert) {
-        var basic_rules_mongodb = {'$and': [
-            {'price': { '$lt': 10.25 }},
-            {'name': null},
-            {'$or': [
-                {'category': {'$in': ['mo', 'mu']}},
-                {'id': {'$ne': '1234-azer-5678'}}
-            ]}
-        ]};
 
-        $b.queryBuilder({
-            filters: basic_filters,
-            rules: basic_rules
-        });
+    var basic_rules_sql_raw = {
+        sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
+    };
 
-        assert.deepEqual(
-            $b.queryBuilder('getMongo'),
-            basic_rules_mongodb,
-            'Should create MongoDB query'
-        );
+    var basic_rules_sql_stmt = {
+        sql: 'price < ? AND name IS NULL AND ( category IN(?, ?) OR id != ? ) ',
+        params: [10.25, 'mo', 'mu', '1234-azer-5678']
+    };
 
-        assert.deepEqual(
-            $b.queryBuilder('getRulesFromMongo', basic_rules_mongodb),
-            basic_rules,
-            'Should return rules object from MongoDB query'
-        );
+    var basic_rules_sql_stmt_num = {
+        sql: 'price < $1 AND name IS NULL AND ( category IN($2, $3) OR id != $4 ) ',
+        params: [10.25, 'mo', 'mu', '1234-azer-5678']
+    };
 
-        $b.queryBuilder('destroy');
-        $b.queryBuilder({
-            filters: basic_filters,
-            rules: all_operators_rules
-        });
+    var basic_rules_sql_stmt_num_at = {
+        sql: 'price < @1 AND name IS NULL AND ( category IN(@2, @3) OR id != @4 ) ',
+        params: [10.25, 'mo', 'mu', '1234-azer-5678']
+    };
 
-        assert.deepEqual(
-            $b.queryBuilder('getMongo'),
-            all_operators_rules_mongodb,
-            'Should successfully convert all kind of operators to MongoDB'
-        );
+    var basic_rules_sql_stmt_named = {
+        sql: 'price < :price_1 AND name IS NULL AND ( category IN(:category_1, :category_2) OR id != :id_1 ) ',
+        params: {
+            price_1: 10.25,
+            category_1: 'mo',
+            category_2: 'mu',
+            id_1: '1234-azer-5678'
+        }
+    };
 
-        $b.queryBuilder('setRulesFromMongo', all_operators_rules_mongodb);
-        assert.rulesMatch(
-            $b.queryBuilder('getRules'),
-            all_operators_rules,
-            'Should successfully parse all kind of operators from MongoDB'
-        );
-    });
-
+    var basic_rules_sql_stmt_named_at = {
+        sql: 'price < @price_1 AND name IS NULL AND ( category IN(@category_1, @category_2) OR id != @id_1 ) ',
+        params: {
+            price_1: 10.25,
+            category_1: 'mo',
+            category_2: 'mu',
+            id_1: '1234-azer-5678'
+        }
+    };
 
     var all_operators_rules = {
         condition: 'AND',
@@ -248,11 +244,11 @@ $(function(){
         }, {
             id: 'category',
             operator: 'in',
-            value: ['bk','mo']
+            value: ['bk', 'mo']
         }, {
             id: 'category',
             operator: 'not_in',
-            value: ['bk','mo']
+            value: ['bk', 'mo']
         }, {
             id: 'price',
             operator: 'less',
@@ -272,11 +268,11 @@ $(function(){
         }, {
             id: 'price',
             operator: 'between',
-            value: ['4','5']
+            value: ['4', '5']
         }, {
             id: 'price',
             operator: 'not_between',
-            value: ['4','5']
+            value: ['4', '5']
         }, {
             id: 'name',
             operator: 'begins_with',
@@ -321,27 +317,26 @@ $(function(){
     };
 
     var all_operators_rules_sql = {
-        sql:
-            'name = ? ' +
-            'AND name != ? ' +
-            'AND category IN(?, ?) ' +
-            'AND category NOT IN(?, ?) ' +
-            'AND price < ? ' +
-            'AND price <= ? ' +
-            'AND price > ? ' +
-            'AND price >= ? ' +
-            'AND price BETWEEN ? AND ? ' +
-            'AND price NOT BETWEEN ? AND ? ' +
-            'AND name LIKE(?) ' +
-            'AND name NOT LIKE(?) ' +
-            'AND name LIKE(?) ' +
-            'AND name NOT LIKE(?) ' +
-            'AND name LIKE(?) ' +
-            'AND name NOT LIKE(?) ' +
-            'AND name = \'\' ' +
-            'AND name != \'\' ' +
-            'AND name IS NULL ' +
-            'AND name IS NOT NULL',
+        sql: 'name = ? ' +
+        'AND name != ? ' +
+        'AND category IN(?, ?) ' +
+        'AND category NOT IN(?, ?) ' +
+        'AND price < ? ' +
+        'AND price <= ? ' +
+        'AND price > ? ' +
+        'AND price >= ? ' +
+        'AND price BETWEEN ? AND ? ' +
+        'AND price NOT BETWEEN ? AND ? ' +
+        'AND name LIKE(?) ' +
+        'AND name NOT LIKE(?) ' +
+        'AND name LIKE(?) ' +
+        'AND name NOT LIKE(?) ' +
+        'AND name LIKE(?) ' +
+        'AND name NOT LIKE(?) ' +
+        'AND name = \'\' ' +
+        'AND name != \'\' ' +
+        'AND name IS NULL ' +
+        'AND name IS NOT NULL',
         params: [
             'foo',
             'foo',
@@ -359,31 +354,6 @@ $(function(){
             '%foo%',
             '%foo',
             '%foo'
-        ]
-    };
-
-    var all_operators_rules_mongodb = {
-        $and: [
-            { name: 'foo' },
-            { name: {$ne: 'foo'} },
-            { category: { $in: ['bk','mo'] }},
-            { category: { $nin: ['bk','mo'] }},
-            { price: {$lt: 5} },
-            { price: {$lte: 5} },
-            { price: {$gt: 4} },
-            { price: {$gte: 4} },
-            { price: {$gte: 4, $lte: 5} },
-            { price: {$lt: 4, $gt: 5} },
-            { name: {$regex: '^foo'} },
-            { name: {$regex: '^(?!foo)'} },
-            { name: {$regex: 'foo'} },
-            { name: {$regex: '^((?!foo).)*$', $options: 's'} },
-            { name: {$regex: 'foo$'} },
-            { name: {$regex: '(?<!foo)$'} },
-            { name: '' },
-            { name: {$ne: ''} },
-            { name: null },
-            { name: {$ne: null} }
         ]
     };
 

@@ -67,6 +67,29 @@ QueryBuilder.defaults({
                 Utils.error('SQLParse', 'Invalid value for LIKE operator "{0}"', v);
             }
         },
+        'NOT LIKE': function(v) {
+            if (v.slice(0, 1) == '%' && v.slice(-1) == '%') {
+                return {
+                    val: v.slice(1, -1),
+                    op: 'not_contains'
+                };
+            }
+            else if (v.slice(0, 1) == '%') {
+                return {
+                    val: v.slice(1),
+                    op: 'not_ends_with'
+                };
+            }
+            else if (v.slice(-1) == '%') {
+                return {
+                    val: v.slice(0, -1),
+                    op: 'not_begins_with'
+                };
+            }
+            else {
+                Utils.error('SQLParse', 'Invalid value for NOT LIKE operator "{0}"', v);
+            }
+        },
         'IN':           function(v) { return { val: v, op: 'in' }; },
         'NOT IN':       function(v) { return { val: v, op: 'not_in' }; },
         '<':            function(v) { return { val: v, op: 'less' }; },
@@ -267,11 +290,13 @@ QueryBuilder.extend({
                         });
                     }
 
-                    parts.push(self.change('getSQLField', rule.field, rule) + ' ' + sql.op.replace(/\?/, value));
+                    var ruleExpression = self.change('getSQLField', rule.field, rule) + ' ' + sql.op.replace(/\?/, value);
+                    parts.push(self.change('ruleToSQL', ruleExpression, rule));
                 }
             });
 
-            return parts.join(' ' + data.condition + nl);
+            var groupExpression = parts.join(' ' + data.condition + nl);
+            return self.change('groupToSQL', groupExpression, data);
         }(data));
 
         if (stmt) {
@@ -325,23 +350,55 @@ QueryBuilder.extend({
             Utils.error('SQLParse', 'No WHERE clause found');
         }
 
-        var out = {
+        // allow plugins to manually parse or handle special cases
+        data = self.change('parseSQLNode', parsed.where.conditions);
+
+        // a plugin returned a group
+        if ('rules' in data && 'condition' in data) {
+            return data;
+        }
+
+        // create root group
+        var out = self.change('sqlToGroup', {
             condition: this.settings.default_condition,
             rules: []
-        };
+        }, data);
+
+        // keep track of current group
         var curr = out;
 
         (function flatten(data, i) {
+            // allow plugins to manually parse or handle special cases
+            data = self.change('parseSQLNode', data);
+
+            // a plugin returned a group
+            if ('rules' in data && 'condition' in data) {
+                curr.rules.push(data);
+                return;
+            }
+
+            // a plugin returned a rule
+            if ('id' in data && 'operator' in data && 'value' in data) {
+                curr.rules.push(data);
+                return;
+            }
+
+            // data must be a SQL parser node
+            if (!('left' in data) || !('right' in data) || !('operation' in data)) {
+                Utils.error('SQLParse', 'Unable to parse WHERE clause');
+            }
+
             // it's a node
             if (['AND', 'OR'].indexOf(data.operation.toUpperCase()) !== -1) {
                 // create a sub-group if the condition is not the same and it's not the first level
                 if (i > 0 && curr.condition != data.operation.toUpperCase()) {
-                    curr.rules.push({
+                    var group = self.change('sqlToGroup', {
                         condition: self.settings.default_condition,
                         rules: []
-                    });
+                    }, data);
 
-                    curr = curr.rules[curr.rules.length - 1];
+                    curr.rules.push(group);
+                    curr = group;
                 }
 
                 curr.condition = data.operation.toUpperCase();
@@ -387,34 +444,28 @@ QueryBuilder.extend({
 
                 // convert operator
                 var operator = data.operation.toUpperCase();
-                if (operator == '<>') operator = '!=';
-
-                var sqlrl;
-                if (operator == 'NOT LIKE') {
-                    sqlrl = self.settings.sqlRuleOperator['LIKE'];
-                }
-                else {
-                    sqlrl = self.settings.sqlRuleOperator[operator];
+                if (operator == '<>') {
+                    operator = '!=';
                 }
 
+                var sqlrl = self.settings.sqlRuleOperator[operator];
                 if (sqlrl === undefined) {
                     Utils.error('UndefinedSQLOperator', 'Invalid SQL operation "{0}".', data.operation);
                 }
 
                 var opVal = sqlrl.call(this, value, data.operation);
-                if (operator == 'NOT LIKE') opVal.op = 'not_' + opVal.op;
+                var field = data.left.values.join('.');
 
-                var left_value = data.left.values.join('.');
-
-                var rule = self.change('getSQLRule', {
-                    id: self.change('getSQLFieldID', left_value, value),
-                    field: left_value,
+                var rule = self.change('sqlToRule', {
+                    id: self.change('getSQLFieldID', field, value),
+                    field: field,
                     operator: opVal.op,
                     value: opVal.val
-                });
+                }, data);
+
                 curr.rules.push(rule);
             }
-        }(parsed.where.conditions, 0));
+        }(data, 0));
 
         return out;
     },
@@ -422,6 +473,7 @@ QueryBuilder.extend({
     /**
      * Set rules from SQL
      * @param data {object}
+     * @param stmt {boolean|string}
      */
     setRulesFromSQL: function(data, stmt) {
         this.setRules(this.getRulesFromSQL(data, stmt));

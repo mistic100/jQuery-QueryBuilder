@@ -186,13 +186,13 @@ QueryBuilder.prototype.getRules = function(options) {
                 }
             }
 
-            data.rules.push(rule);
+            data.rules.push(self.change('ruleToJson', rule, model));
 
         }, function(model) {
             data.rules.push(parse(model));
         });
 
-        return data;
+        return self.change('groupToJson', data, group);
 
     }(this.model.root));
 
@@ -279,8 +279,16 @@ QueryBuilder.prototype.setRules = function(data) {
                 }
 
                 model.flags = self.parseRuleFlags(item);
+
+                if (self.change('jsonToRule', model, item) != model) {
+                    Utils.error('RulesParse', 'Plugin tried to change rule reference');
+                }
             }
         });
+
+        if (self.change('jsonToGroup', group, data) != group) {
+            Utils.error('RulesParse', 'Plugin tried to change group reference');
+        }
 
     }(data, this.model.root));
 };

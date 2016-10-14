@@ -137,7 +137,8 @@ var options = {
     'bt-selectpicker': null,
     'unique-filter': null,
     'bt-checkbox': { color: 'primary' },
-    'invert': null
+    'invert': null,
+    'not-group': null
   },
 
   // standard operators in custom optgroups
@@ -463,6 +464,7 @@ $('.set').on('click', function() {
       value: 'AK'
     }, {
       condition: 'OR',
+      not: true,
       flags: {
         no_delete: true
       },
@@ -484,25 +486,27 @@ $('.set').on('click', function() {
 // set rules from MongoDB
 $('.set-mongo').on('click', function() {
   $('#builder').queryBuilder('setRulesFromMongo', {
-    "$and": [{
+    "$or": [{
       "name": {
         "$regex": "^(?!Mistic)"
       }
     }, {
       "price": { "$gte": 0, "$lte": 100 }
     }, {
-      "$or": [{
-        "category": 2
-      }, {
-        "category": { "$in": [4, 5] }
-      }]
+        "$nor": [{
+            "$and": [{
+                "category": 2
+            }, {
+                "category": {"$in": [4, 5]}
+            }]
+        }]
     }]
   });
 });
 
 // set rules from SQL
 $('.set-sql').on('click', function() {
-  $('#builder').queryBuilder('setRulesFromSQL', 'name NOT LIKE "Mistic%" AND price BETWEEN 100 AND 200 AND (category IN(1, 2) OR rate <= 2)');
+  $('#builder').queryBuilder('setRulesFromSQL', 'name NOT LIKE "Mistic%" OR price BETWEEN 100 OR 200 OR NOT (category IN(1, 2) AND rate <= 2)');
 });
 
 // reset builder

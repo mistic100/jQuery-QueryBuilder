@@ -59,7 +59,7 @@ Model.getModel = function(el) {
  * Define Node properties with getter and setter
  * Update events are emitted in the setter through root Model (if any)
  */
-function defineModelProperties(obj, fields) {
+Model.defineModelProperties = function(obj, fields) {
     fields.forEach(function(field) {
         Object.defineProperty(obj.prototype, field, {
             enumerable: true,
@@ -79,7 +79,7 @@ function defineModelProperties(obj, fields) {
             }
         });
     });
-}
+};
 
 
 // Node abstract CLASS
@@ -106,7 +106,7 @@ var Node = function(parent, $el) {
     this.parent = parent;
 };
 
-defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
+Model.defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
 
 Object.defineProperty(Node.prototype, 'parent', {
     enumerable: true,
@@ -238,7 +238,7 @@ var Group = function(parent, $el) {
 Group.prototype = Object.create(Node.prototype);
 Group.prototype.constructor = Group;
 
-defineModelProperties(Group, ['condition']);
+Model.defineModelProperties(Group, ['condition']);
 
 /**
  * Empty the Group
@@ -419,7 +419,7 @@ var Rule = function(parent, $el) {
 Rule.prototype = Object.create(Node.prototype);
 Rule.prototype.constructor = Rule;
 
-defineModelProperties(Rule, ['filter', 'operator', 'value']);
+Model.defineModelProperties(Rule, ['filter', 'operator', 'value']);
 
 
 // EXPORT
