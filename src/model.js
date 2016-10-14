@@ -221,7 +221,7 @@ Node.prototype._move = function(group, index) {
 // GROUP CLASS
 // ===============================
 /**
- * @param {Group}
+ * @param {Group|Section}
  * @param {jQuery}
  */
 var Group = function(parent, $el) {
@@ -232,6 +232,7 @@ var Group = function(parent, $el) {
     Node.call(this, parent, $el);
 
     this.rules = [];
+    this.section = null;
     this.__.condition = null;
 };
 
@@ -281,6 +282,9 @@ Group.prototype._appendNode = function(node, index, trigger) {
 
     this.rules.splice(index, 0, node);
     node.parent = this;
+    if (!(node instanceof Section)) {
+        node.section = this.section;
+    }
 
     if (trigger && this.model !== null) {
         this.model.trigger('add', node, index);
@@ -307,6 +311,17 @@ Group.prototype.addGroup = function($el, index) {
  */
 Group.prototype.addRule = function($el, index) {
     return this._appendNode(new Rule(this, $el), index, true);
+};
+
+/**
+ * Add a Section by jQuery element at specified index
+ * @param {jQuery}
+ * @param {int,optional}
+ * @return {Section} the inserted section
+ */
+Group.prototype.addSection = function($el, index) {
+    console.log($el);
+    return this._appendNode(new Section(this, $el), index, true);
 };
 
 /**
@@ -410,6 +425,8 @@ var Rule = function(parent, $el) {
 
     Node.call(this, parent, $el);
 
+    this.section = null;
+
     this.__.filter = null;
     this.__.operator = null;
     this.__.flags = {};
@@ -421,8 +438,55 @@ Rule.prototype.constructor = Rule;
 
 Model.defineModelProperties(Rule, ['filter', 'operator', 'value']);
 
+// Section CLASS
+// ===============================
+/**
+ * @param {Section}
+ * @param {jQuery}
+ */
+var Section = function(parent, $el) {
+    if (!(this instanceof Section)) {
+        return new Section(parent, $el);
+    }
+
+    Node.call(this, parent, $el);
+
+    this.group = null;
+    this.__.exists = null;
+};
+
+Section.prototype = Object.create(Node.prototype);
+Section.prototype.constructor = Section;
+
+defineModelProperties(Section, ['exists']);
+
+/**
+ * Set the root group of the section by jQuery element
+ * @param {jQuery}
+ * @return {Group} the new root group
+ */
+Section.prototype.setGroup = function($el) {
+    this.group = new Group(this, $el);
+    this.group.parent = this;
+    this.group.section = this;
+    if (this.model !== null) {
+        this.model.trigger('set', this.group);
+    }
+    return this.group;
+};
+
+/**
+ * Delete self
+ */
+Section.prototype.drop = function() {
+    this.group.empty();
+    Node.prototype.drop.call(this);
+};
+
 
 // EXPORT
 // ===============================
 QueryBuilder.Group = Group;
 QueryBuilder.Rule = Rule;
+QueryBuilder.Section = Section;
+

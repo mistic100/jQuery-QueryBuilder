@@ -213,6 +213,14 @@ QueryBuilder.prototype.nextRuleId = function() {
 };
 
 /**
+ * Returns an incremented section ID
+ * @return {string}
+ */
+QueryBuilder.prototype.nextSectionId = function() {
+    return this.status.id + '_section_' + (this.status.section_id++);
+};
+
+/**
  * Returns the operators for a filter
  * @param filter {string|object} (filter id name or filter object)
  * @return {object[]}

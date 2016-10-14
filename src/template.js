@@ -10,6 +10,11 @@ QueryBuilder.templates.group = '\
           <i class="{{= it.icons.add_group }}"></i> {{= it.lang.add_group }} \
         </button> \
       {{?}} \
+      {{? !it.in_section }} \
+        <button type="button" class="btn btn-xs btn-success" data-add="section"> \
+          <i class="{{= it.icons.add_section }}"></i> {{= it.lang.add_section }} \
+        </button> \
+      {{?}} \
       {{? it.level>1 }} \
         <button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
           <i class="{{= it.icons.remove_group }}"></i> {{= it.lang.delete_group }} \
@@ -29,6 +34,31 @@ QueryBuilder.templates.group = '\
   </dt> \
   <dd class=rules-group-body> \
     <ul class=rules-list></ul> \
+  </dd> \
+</dl>';
+
+QueryBuilder.templates.section = '\
+<dl id="{{= it.section_id }}" class="rules-section-container"> \
+  <dt class="rules-section-header"> \
+    <div class="btn-section pull-right section-actions"> \
+      {{? it.level>1 }} \
+        <button type="button" class="btn btn-xs btn-danger" data-delete="section"> \
+          <i class="{{= it.icons.remove_section }}"></i> {{= it.lang.delete_section }} \
+        </button> \
+      {{?}} \
+    </div> \
+    <div class="btn-group section-exist-options"> \
+      {{~ it.exist_options: option }} \
+        <label class="btn btn-xs btn-primary"> \
+          <input type="radio" name="{{= it.section_id }}_exists" value="{{= option }}"> {{= it.lang.exist_options[option] || option }} \
+        </label> \
+      {{~}} \
+    </div> \
+    {{? it.settings.display_errors }} \
+      <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
+    {{?}} \
+  </dt> \
+  <dd class="rules-section-body"> \
   </dd> \
 </dl>';
 
@@ -91,13 +121,16 @@ QueryBuilder.templates.operatorSelect = '\
  * Returns group HTML
  * @param group_id {string}
  * @param level {int}
+ * @param in_section {bool}
  * @return {string}
  */
-QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
+QueryBuilder.prototype.getGroupTemplate = function(group_id, level, in_section) {
+    console.log(in_section);
     var h = this.templates.group({
         builder: this,
         group_id: group_id,
         level: level,
+        in_section: in_section,
         conditions: this.settings.conditions,
         icons: this.icons,
         lang: this.lang,
@@ -122,6 +155,27 @@ QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
     });
 
     return this.change('getRuleTemplate', h);
+};
+
+/**
+ * Returns section HTML
+ * @param group_id {string}
+ * @param level {int}
+ * @param in_section {bool}
+ * @return {string}
+ */
+QueryBuilder.prototype.getSectionTemplate = function(section_id, level) {
+    var h = this.templates.section({
+        builder: this,
+        section_id: section_id,
+        level: level,
+        exist_options: this.settings.exist_options,
+        icons: this.icons,
+        lang: this.lang,
+        settings: this.settings
+    });
+
+    return this.change('getSectionTemplate', h);
 };
 
 /**
