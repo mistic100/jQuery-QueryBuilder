@@ -4,12 +4,19 @@
 
   "add_rule": "Add rule",
   "add_group": "Add group",
+  "add_section": "Add section",
   "delete_rule": "Delete",
   "delete_group": "Delete",
+  "delete_section": "Delete",
 
   "conditions": {
     "AND": "AND",
     "OR": "OR"
+  },
+
+  "exist_options": {
+    "EXISTS": "EXISTS",
+    "NOT EXISTS": "DOES NOT EXIST"
   },
 
   "operators": {

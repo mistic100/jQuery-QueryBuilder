@@ -9,9 +9,11 @@ QueryBuilder.prototype.init = function($el, options) {
     this.settings = $.extendext(true, 'replace', {}, QueryBuilder.DEFAULTS, options);
     this.model = new Model();
     this.status = {
+        section_id: 0,
         group_id: 0,
         rule_id: 0,
         generated_id: false,
+        has_sections: false,
         has_optgroup: false,
         has_operator_oprgroup: false,
         id: null,
@@ -28,6 +30,7 @@ QueryBuilder.prototype.init = function($el, options) {
 
     // SETTINGS SHORTCUTS
     this.filters = this.settings.filters;
+    this.sections = this.settings.sections;
     this.icons = this.settings.icons;
     this.operators = this.settings.operators;
     this.templates = this.settings.templates;
@@ -60,7 +63,13 @@ QueryBuilder.prototype.init = function($el, options) {
     this.$el.addClass('query-builder form-inline');
 
     this.filters = this.checkFilters(this.filters);
+    for (var k in this.sections) {
+        if (this.sections.hasOwnProperty(k)) {
+            this.sections[k].filters = this.checkFilters(this.sections[k].filters);
+        }
+    }
     this.operators = this.checkOperators(this.operators);
+
     this.bindEvents();
     this.initPlugins();
 
@@ -245,6 +254,14 @@ QueryBuilder.prototype.bindEvents = function() {
         }
     });
 
+    // section exists change
+    this.$el.on('change.queryBuilder', Selectors.section_exists, function() {
+        if ($(this).is(':checked')) {
+            var $section = $(this).closest(Selectors.section_exists);
+            Model($section).condition = $(this).val();
+        }
+    });
+
     // rule filter change
     this.$el.on('change.queryBuilder', Selectors.rule_filter, function() {
         var $rule = $(this).closest(Selectors.rule_container);
@@ -283,6 +300,20 @@ QueryBuilder.prototype.bindEvents = function() {
         });
     }
 
+    if (this.settings.allow_sections !== 0) {
+        // add section button
+        this.$el.on('click.queryBuilder', Selectors.add_section, function() {
+            var $section = $(this).closest(Selectors.group_container);
+            self.addSection(Model($section));
+        });
+
+        // delete section button
+        this.$el.on('click.queryBuilder', Selectors.delete_section, function() {
+            var $section = $(this).closest(Selectors.section_container);
+            self.deleteSection(Model($section));
+        });
+    }
+
     // model events
     this.model.on({
         'drop': function(e, node) {
@@ -297,6 +328,10 @@ QueryBuilder.prototype.bindEvents = function() {
                 node.$el.insertAfter(node.parent.rules[index - 1].$el);
             }
             self.refreshGroupsConditions();
+        },
+        'set': function(e, node) {
+            node.parent.$el.find('>' + Selectors.section_body).empty().append(node.$el);
+            self.updateSectionExistsFlag(node.section);
         },
         'move': function(e, node, group, index) {
             node.$el.detach();
@@ -402,8 +437,14 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     }
 
     var group_id = this.nextGroupId();
-    var $group = $(this.getGroupTemplate(group_id, level));
-    var model = parent.addGroup($group);
+    var $group = $(this.getGroupTemplate(group_id, level, parent instanceof Section || parent.section ? true : false));
+    console.log(parent);
+    if (parent instanceof Section) {
+        var model = parent.setGroup($group);
+    } else {
+        var model = parent.addGroup($group);
+    }
+    console.log(model);
 
     model.data = data;
     model.flags = $.extend({}, this.settings.default_group_flags, flags);
@@ -479,6 +520,79 @@ QueryBuilder.prototype.refreshGroupsConditions = function() {
         }, this);
     }(this.model.root));
 };
+
+//--section
+
+/**
+ * Add a new section
+ * @param parent {Group}
+ * @param addRule {bool,optional} add a default empty rule
+ * @param data {mixed,optional} section custom data
+ * @param flags {object,optional} flags to apply to the section
+ * @return section {Section}
+ */
+QueryBuilder.prototype.addSection = function(parent, addRule, data, flags) {
+    addRule = (addRule === undefined || addRule === true);
+
+    var level = parent.level + 1;
+
+    var e = this.trigger('beforeAddSection', parent, addRule, level);
+    if (e.isDefaultPrevented()) {
+        return null;
+    }
+
+    var section_id = this.nextSectionId();
+    var $section = $(this.getSectionTemplate(section_id, level));
+    var model = parent.addSection($section);
+
+    model.data = data;
+    model.flags = $.extend({}, this.settings.default_section_flags, flags);
+
+    this.trigger('afterAddSection', model);
+
+    model.exists = this.settings.default_exists;
+
+    this.addGroup(model, true, data, flags);
+
+    return model;
+};
+
+/**
+ * Tries to delete a section. The section is not deleted if at least one rule is no_delete.
+ * @param section {Section}
+ * @return {boolean} true if the section has been deleted
+ */
+QueryBuilder.prototype.deleteSection = function(section) {
+    var e = this.trigger('beforeDeleteSection', section);
+    if (e.isDefaultPrevented()) {
+        return false;
+    }
+
+    if (!this.deleteGroup(section.group)) {
+        return false;
+    }
+
+    section.drop();
+    this.trigger('afterDeleteSection');
+
+    return true;
+};
+
+/**
+ * Changes the exists setting of a section
+ * @param section {Section}
+ */
+QueryBuilder.prototype.updateSectionExistsFlag = function(section) {
+    section.$el.find('>' + Selectors.section_exists_flag).each(function() {
+        var $this = $(this);
+        $this.prop('checked', $this.val() === section.exists);
+        $this.parent().toggleClass('active', $this.val() === section.exists);
+    });
+
+    this.trigger('afterUpdateSectionExistsFlag', section);
+};
+
+//--section
 
 /**
  * Add a new rule

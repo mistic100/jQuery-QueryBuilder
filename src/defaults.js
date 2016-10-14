@@ -28,6 +28,7 @@ QueryBuilder.inputs = [
 QueryBuilder.modifiable_options = [
     'display_errors',
     'allow_groups',
+    'allow_sections',
     'allow_empty',
     'default_condition',
     'default_filter'
@@ -37,6 +38,7 @@ QueryBuilder.modifiable_options = [
  * CSS selectors for common components
  */
 var Selectors = QueryBuilder.selectors = {
+    section_container:    '.rules-section-container',
     group_container:      '.rules-group-container',
     rule_container:       '.rule-container',
     filter_container:     '.rule-filter-container',
@@ -45,13 +47,17 @@ var Selectors = QueryBuilder.selectors = {
     error_container:      '.error-container',
     condition_container:  '.rules-group-header .group-conditions',
 
-    rule_header:          '.rule-header',
+    section_header:       '.rules-section-header',
     group_header:         '.rules-group-header',
+    rule_header:          '.rule-header',
+    section_actions:      '.section-actions',
     group_actions:        '.group-actions',
     rule_actions:         '.rule-actions',
 
+    section_body:         '.rules-section-body',
     rules_list:           '.rules-group-body>.rules-list',
 
+    section_exists_flag:  '.rules-section-header [name$=_exists]',
     group_condition:      '.rules-group-header [name$=_cond]',
     rule_filter:          '.rule-filter-container [name$=_filter]',
     rule_operator:        '.rule-operator-container [name$=_operator]',
@@ -60,7 +66,9 @@ var Selectors = QueryBuilder.selectors = {
     add_rule:             '[data-add=rule]',
     delete_rule:          '[data-delete=rule]',
     add_group:            '[data-add=group]',
-    delete_group:         '[data-delete=group]'
+    delete_group:         '[data-delete=group]',
+    add_section:          '[data-add=section]',
+    delete_section:       '[data-delete=section]'
 };
 
 /**
@@ -104,14 +112,18 @@ QueryBuilder.OPERATORS = {
  */
 QueryBuilder.DEFAULTS = {
     filters: [],
+    sections: [],
     plugins: [],
 
     sort_filters: false,
     display_errors: true,
+    allow_sections: -1,
     allow_groups: -1,
     allow_empty: false,
     conditions: ['AND', 'OR'],
     default_condition: 'AND',
+    exist_options: ['EXISTS', 'DOES NOT EXIST'],
+    default_exists: 'EXISTS',
     inputs_separator: ' , ',
     select_placeholder: '------',
     display_empty_filter: true,
@@ -132,7 +144,15 @@ QueryBuilder.DEFAULTS = {
         no_delete: false
     },
 
+    default_section_flags: {
+        exists_readonly: false,
+        no_add_rule: false,
+        no_add_group: false,
+        no_delete: false
+    },
+
     templates: {
+        section: null,
         group: null,
         rule: null,
         filterSelect: null,
@@ -166,10 +186,12 @@ QueryBuilder.DEFAULTS = {
     ],
 
     icons: {
-        add_group:    'glyphicon glyphicon-plus-sign',
-        add_rule:     'glyphicon glyphicon-plus',
-        remove_group: 'glyphicon glyphicon-remove',
-        remove_rule:  'glyphicon glyphicon-remove',
-        error:        'glyphicon glyphicon-warning-sign'
+        add_section:    'glyphicon glyphicon-plus-sign',
+        add_group:      'glyphicon glyphicon-plus-sign',
+        add_rule:       'glyphicon glyphicon-plus',
+        remove_section: 'glyphicon glyphicon-remove',
+        remove_group:   'glyphicon glyphicon-remove',
+        remove_rule:    'glyphicon glyphicon-remove',
+        error:          'glyphicon glyphicon-warning-sign'
     }
 };
