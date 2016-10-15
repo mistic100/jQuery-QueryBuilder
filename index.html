@@ -40,13 +40,16 @@ isHome: true
     Installation
   </h1>
 
-  <div class="alert alert-info">
-    <b>Coming from version 1.4.x ?</b> Check the <a href="{{site.github.url}}/dev/migrate-14-20.html">migration
-    guide</a>.
-  </div>
+  <div class="bs-callout bs-callout-info">
+    <div class="pull-right">
+      <a href="http://www.jsdelivr.com/projects/jquery.query-builder">
+        <img width="190" src="{{site.github.url}}/assets/images/jsdelivr-logo.png"/>
+      </a>
+    </div>
 
-  <div class="alert alert-info">
-    <b>Coming from version 2.0.x ?</b> <a href="{{site.treeUrl}}/dist/i18n">i18n</a> file names changed.
+    <h4>Content Delivery Network</h4>
+
+    <p>jQuery-QueryBuilder is <a href="http://www.jsdelivr.com/projects/jquery.query-builder">available on jsDelivr</a>.</p>
   </div>
 
   <h3 id="dependencies">Dependencies</h3>
@@ -67,9 +70,9 @@ isHome: true
 
   <h3 id="letsgo">Let's go!</h3>
 
-  <p>Include <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css" target="_blank"><i
+  <p>Include <a href="{{site.cdnUrl}}/css/query-builder.default.min.css" target="_blank"><i
     class="glyphicon glyphicon-file"></i> query-builder.css</a> in your page head and <a
-    href="{{site.rawUrl}}/dist/js/query-builder.min.js" target="_blank"><i class="glyphicon glyphicon-file"></i>
+    href="{{site.cdnUrl}}/js/query-builder.min.js" target="_blank"><i class="glyphicon glyphicon-file"></i>
     query-builder.js</a> after the dependencies. Then add QueryBuilder to any <code>&lt;div></code> you want.</p>
 
   <!-- @formatter:off -->
@@ -96,9 +99,22 @@ require(['jquery', 'query-builder'], function($) {
 {% endhighlight %}
 <!-- @formatter:on -->
 
-  <p>A <a href="{{site.rawUrl}}/dist/js/query-builder.standalone.min.js" target="_blank"><i
+  <p>A <a href="{{site.cdnUrl}}/js/query-builder.standalone.min.js" target="_blank"><i
     class="glyphicon glyphicon-file"></i> standalone version</a> is available with <i>$.extendext</i> and <i>doT.js</i>
     included (you still need to add jQuery and Bootstrap).</p>
+
+  <h3 id="backends">Backends</h3>
+
+  <p>Aweome people implemented parsers in various language, check them out :</p>
+  <ul>
+    <li><b>.NET</b> <i class="glyphicon glyphicon-chevron-right"></i>
+      castle-it / <a href="https://github.com/castle-it/dynamic-linq-query-builder">dynamic-linq-query-builder</a></li>
+    <li><b>PHP</b> <i class="glyphicon glyphicon-chevron-right"></i>
+      fourlabsldn / <a href="https://github.com/fourlabsldn/QBJSParser">QBJSParser</a> &amp;
+      <a href="https://github.com/fourlabsldn/QBJSParserBundle">QBJSParserBundle</a></li>
+    <li><b>Rails</b> <i class="glyphicon glyphicon-chevron-right"></i>
+      SixiS / <a href="https://github.com/SixiS/jquery_query_builder-rails">jquery_query_builder-rails</a></li>
+  </ul>
 </section>
 
 
@@ -633,7 +649,8 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
   <div class="bs-callout">
     <h4><code>.validate()</code></h4>
 
-    <p>Returns a boolean indicating whether the builder is valid or not. Use the <code>validationError</code> event to catch
+    <p>Returns a boolean indicating whether the builder is valid or not. Use the <code>validationError</code> event to
+      catch
       per-rule validation errors. If <code>display_errors</code> is enabled the invalid rules will turn red.</p>
   </div>
 
@@ -881,11 +898,10 @@ $('#builder').queryBuilder('destroy');
 
   <h3 id="themes">Themes</h3>
 
-  <p>QueryBuilder comes with two colors-schemes: <a href="{{site.rawUrl}}/dist/css/query-builder.default.min.css"
-                                                    target="_blank"><i class="glyphicon glyphicon-file"></i> default</a>
-    (clear) and <a href="{{site.rawUrl}}/dist/css/query-builder.dark.min.css" target="_blank"><i
-      class="glyphicon glyphicon-file"></i> dark</a>. Change the active theme by switching stylesheets. You cannot use
-    both color-schemes on the same page.</p>
+  <p>QueryBuilder comes with two colors-schemes:
+    <a href="{{site.cdnUrl}}/css/query-builder.default.min.css" target="_blank"><i class="glyphicon glyphicon-file"></i> default</a>
+    (clear) and <a href="{{site.cdnUrl}}/css/query-builder.dark.min.css" target="_blank"><i class="glyphicon glyphicon-file"></i> dark</a>.
+    Change the active theme by switching stylesheets. You cannot use both color-schemes on the same page.</p>
 </section>
 
 <section class="bs-docs-section">
@@ -916,7 +932,8 @@ $('#builder').queryBuilder('destroy');
       <tr>
         <td>type</td>
         <td>string</td>
-        <td>Identifier of the operator, use the <code>lang.operators</code> to translate or give a human readable name to
+        <td>Identifier of the operator, use the <code>lang.operators</code> to translate or give a human readable name
+          to
           your operator.
         </td>
       </tr>
@@ -1073,7 +1090,8 @@ operators: [
   <h3 id="templates">Templates</h3>
 
   <p>For very custom customizations, QueryBuilder provides a way to completely overwrite the HTML templates used to
-    display rules and groups. It uses the <a href="http://olado.github.io/doT">doT.js</a> template engine by default, but
+    display rules and groups. It uses the <a href="http://olado.github.io/doT">doT.js</a> template engine by default,
+    but
     can be used with most JS template engines, like <i>underscore.js</i> one.</p>
 
   <div class="bs-callout bs-callout-danger">
@@ -1141,7 +1159,8 @@ operators: [
   <h3 id="inside_the_box">Inside the box</h3>
 
   <p>You might have noticed that callbacks and events refer to two objects <b>Rule</b> and <b>Group</b>. These objects
-    are part of the data model with partial data-binding used internally by QueryBuilder. Here are the structures of these
+    are part of the data model with partial data-binding used internally by QueryBuilder. Here are the structures of
+    these
     two objects. Most attributes will live-update the builder when modified.</p>
 
   <div class="container-fluid">

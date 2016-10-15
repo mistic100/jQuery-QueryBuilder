@@ -7,7 +7,7 @@ downloadUrl: https://github.com/mistic100/jQuery-QueryBuilder
 # links to file/dir viewers
 treeUrl: https://github.com/mistic100/jQuery-QueryBuilder/tree/master
 blobUrl: https://github.com/mistic100/jQuery-QueryBuilder/blob/master
-rawUrl: https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master
+cdnUrl: https://cdn.jsdelivr.net/jquery.query-builder/2.3.3
 # licence of the software
 license: MIT License
 licenseUrl: http://opensource.org/licenses/MIT

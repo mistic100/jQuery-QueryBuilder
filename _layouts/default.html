@@ -49,7 +49,7 @@
         {% else %}
           {% assign sorted_pages = site.pages | sort:"name" %}
           {% for p in sorted_pages %}
-            {% if p.isHome != true and p.hide != true and p.title !=  %}
+            {% if p.isHome != true and p.hide != true and p.title != ''  %}
             <li {% if page.title == p.title %}class="active"{% endif %}>
               <a href="{{site.github.url}}{{p.url}}">{{p.title}}</a>
             </li>
