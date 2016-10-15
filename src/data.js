@@ -25,7 +25,7 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
  * @throws ConfigError
  * @param rule {Rule}
  * @param value {string|string[]|undefined}
- * @return {array|true}
+ * @return {Array|boolean} error array or true
  */
 QueryBuilder.prototype.validateValueInternal = function(rule, value) {
     var filter = rule.filter;
@@ -36,9 +36,6 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
     if (rule.operator.nb_inputs === 1) {
         value = [value];
-    }
-    else {
-        value = value;
     }
 
     for (var i = 0; i < operator.nb_inputs; i++) {
@@ -89,13 +86,13 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         }
                         if (validation.min !== undefined) {
                             if (value[i].length < parseInt(validation.min)) {
-                                result = ['string_exceed_min_length', validation.min];
+                                result = [this.getValidationMessage(validation, 'min', 'string_exceed_min_length'), validation.min];
                                 break;
                             }
                         }
                         if (validation.max !== undefined) {
                             if (value[i].length > parseInt(validation.max)) {
-                                result = ['string_exceed_max_length', validation.max];
+                                result = [this.getValidationMessage(validation, 'max', 'string_exceed_max_length'), validation.max];
                                 break;
                             }
                         }
@@ -104,7 +101,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                                 validation.format = new RegExp(validation.format);
                             }
                             if (!validation.format.test(value[i])) {
-                                result = ['string_invalid_format', validation.format];
+                                result = [this.getValidationMessage(validation, 'format', 'string_invalid_format'), validation.format];
                                 break;
                             }
                         }
@@ -129,20 +126,20 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         }
                         if (validation.min !== undefined) {
                             if (value[i] < parseFloat(validation.min)) {
-                                result = ['number_exceed_min', validation.min];
+                                result = [this.getValidationMessage(validation, 'min', 'number_exceed_min'), validation.min];
                                 break;
                             }
                         }
                         if (validation.max !== undefined) {
                             if (value[i] > parseFloat(validation.max)) {
-                                result = ['number_exceed_max', validation.max];
+                                result = [this.getValidationMessage(validation, 'max', 'number_exceed_max'), validation.max];
                                 break;
                             }
                         }
                         if (validation.step !== undefined && validation.step !== 'any') {
                             var v = (value[i] / validation.step).toPrecision(14);
                             if (parseInt(v) != v) {
-                                result = ['number_wrong_step', validation.step];
+                                result = [this.getValidationMessage(validation, 'step', 'number_wrong_step'), validation.step];
                                 break;
                             }
                         }
@@ -162,19 +159,19 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
                             var datetime = moment(value[i], validation.format);
                             if (!datetime.isValid()) {
-                                result = ['datetime_invalid', validation.format];
+                                result = [this.getValidationMessage(validation, 'format', 'datetime_invalid'), validation.format];
                                 break;
                             }
                             else {
                                 if (validation.min) {
                                     if (datetime < moment(validation.min, validation.format)) {
-                                        result = ['datetime_exceed_min', validation.min];
+                                        result = [this.getValidationMessage(validation, 'min', 'datetime_exceed_min'), validation.min];
                                         break;
                                     }
                                 }
                                 if (validation.max) {
                                     if (datetime > moment(validation.max, validation.format)) {
-                                        result = ['datetime_exceed_max', validation.max];
+                                        result = [this.getValidationMessage(validation, 'max', 'datetime_exceed_max'), validation.max];
                                         break;
                                     }
                                 }
@@ -500,4 +497,15 @@ QueryBuilder.prototype.getGroupFlags = function(flags, all) {
  */
 QueryBuilder.prototype.translateLabel = function(label) {
     return typeof label == 'object' ? (label[this.settings.lang_code] || label['en']) : label;
+};
+
+/**
+ * Return a validation message
+ * @param {object} validation
+ * @param {string} type
+ * @param {string} def
+ * @returns {string}
+ */
+QueryBuilder.prototype.getValidationMessage = function(validation, type, def) {
+    return validation.messages && validation.messages[type] || def;
 };

@@ -754,14 +754,13 @@ QueryBuilder.prototype.displayError = function(node) {
             node.$el.removeClass('has-error');
         }
         else {
-            // translate the text without modifying event array
-            var error = $.extend([], node.error, [
-                this.lang.errors[node.error[0]] || node.error[0]
-            ]);
+            var errorMessage = this.lang.errors[node.error[0]] || node.error[0];
+            errorMessage = Utils.fmt(errorMessage, node.error.slice(1));
+            errorMessage = this.change('displayError', errorMessage, node.error, node);
 
             node.$el.addClass('has-error')
               .find(Selectors.error_container).eq(0)
-                .attr('title', Utils.fmt.apply(null, error));
+                .attr('title', errorMessage);
         }
     }
 };

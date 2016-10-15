@@ -36,11 +36,13 @@ Utils.iterateOptions = function(options, tpl) {
 /**
  * Replaces {0}, {1}, ... in a string
  * @param str {string}
- * @param args,... {mixed}
+ * @param args,... {Array|*}
  * @return {string}
  */
-Utils.fmt = function(str/*, args*/) {
-    var args = Array.prototype.slice.call(arguments, 1);
+Utils.fmt = function(str, args) {
+    if (!Array.isArray(args)) {
+        args = Array.prototype.slice.call(arguments, 1);
+    }
 
     return str.replace(/{([0-9]+)}/g, function(m, i) {
         return args[parseInt(i)];
@@ -51,12 +53,16 @@ Utils.fmt = function(str/*, args*/) {
  * Throw an Error object with custom name
  * @param type {string}
  * @param message {string}
- * @param args,... {mixed}
+ * @param args,... {Array|*}
  */
-Utils.error = function(type, message/*, args*/) {
-    var err = new Error(Utils.fmt.apply(null, Array.prototype.slice.call(arguments, 1)));
+Utils.error = function(type, message, args) {
+    if (!Array.isArray(args)) {
+        args = Array.prototype.slice.call(arguments, 2);
+    }
+
+    var err = new Error(Utils.fmt(message, args));
     err.name = type + 'Error';
-    err.args = Array.prototype.slice.call(arguments, 2);
+    err.args = args;
     throw err;
 };
 
@@ -69,12 +75,14 @@ Utils.error = function(type, message/*, args*/) {
  */
 Utils.changeType = function(value, type, boolAsInt) {
     switch (type) {
+        // @formatter:off
         case 'integer': return parseInt(value);
         case 'double': return parseFloat(value);
         case 'boolean':
             var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
             return boolAsInt ? (bool ? 1 : 0) : bool;
         default: return value;
+        // @formatter:on
     }
 };
 
@@ -89,13 +97,15 @@ Utils.escapeString = function(value) {
     }
 
     return value
-      .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
-          switch (s) {
-              case '\0': return '\\0';
-              case '\n': return '\\n';
-              case '\r': return '\\r';
-              case '\b': return '\\b';
-              default:   return '\\' + s;
+        .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
+            switch (s) {
+                // @formatter:off
+                case '\0': return '\\0';
+                case '\n': return '\\n';
+                case '\r': return '\\r';
+                case '\b': return '\\b';
+                default:   return '\\' + s;
+                // @formatter:off
           }
       })
       // uglify compliant

@@ -286,7 +286,10 @@ var basic_filters = [{
     placeholder: '____-____-____',
     operators: ['equal', 'not_equal'],
     validation: {
-        format: /^.{4}-.{4}-.{4}$/
+        format: /^.{4}-.{4}-.{4}$/,
+        messages: {
+            format: 'Custom format error message'
+        }
     }
 }];
 

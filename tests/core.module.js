@@ -690,6 +690,47 @@ $(function(){
     });
 
     /**
+     * Test custom error messages
+     */
+    QUnit.test('Custom error messages', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: [
+                {
+                    id: 'id',
+                    operator: 'equal',
+                    value: 'azerty'
+                },
+                {
+                    id: 'price',
+                    operator: 'equal',
+                    value: -10
+                }
+            ]
+        });
+
+        $b.on('displayError.queryBuilder.filter', function(e, error, node) {
+            if (node.filter.id == 'price' && error[0] == 'number_exceed_min') {
+                e.value = 'Custom min error message';
+            }
+        });
+
+        $b.queryBuilder('validate');
+
+        assert.equal(
+            $b.find('.error-container').eq(1).attr('title'),
+            'Custom format error message',
+            'Should apply custom message from config'
+        );
+
+        assert.equal(
+            $b.find('.error-container').eq(2).attr('title'),
+            'Custom min error message',
+            'Should apply custom message from event'
+        );
+    });
+
+    /**
      * Test access to defaults
      */
     QUnit.test('Access to defaults', function(assert) {
