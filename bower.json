@@ -27,7 +27,8 @@
     "bootbox": "^4.4.0",
     "awesome-bootstrap-checkbox": "^0.3.0",
     "sql-parser": "^1.0.0",
-    "bind-polyfill": "~1.0.0"
+    "bind-polyfill": "~1.0.0",
+    "interact": "^1.2.6"
   },
   "keywords": [
     "jquery",

@@ -4,85 +4,117 @@
  */
 
 Selectors.rule_and_group_containers = Selectors.rule_container + ', ' + Selectors.group_container;
+Selectors.drag_handle = '.drag-handle';
 
 QueryBuilder.define('sortable', function(options) {
+    if (!('interact' in window)) {
+        Utils.error('MissingLibrary', 'interact.js is required to use "sortable" plugin. Get it here: http://interactjs.io');
+    }
+
+    // recompute drop-zones during drag (when a rule is hidden)
+    interact.dynamicDrop(true);
+
+    // set move threshold to 10px
+    interact.pointerMoveTolerance(10);
+
+    var placeholder;
+    var ghost;
+    var src;
+
     /**
-     * Init HTML5 drag and drop
+     * Init drag and drop
      */
-    this.on('afterInit', function(e) {
-        var placeholder;
-        var src;
-        var self = e.builder;
+    this.on('afterAddRule afterAddGroup', function(e, node) {
+        if (node == placeholder) {
+            return;
+        }
 
-        // only add "draggable" attribute when hovering drag handle
-        // preventing text select bug in Firefox
-        self.$el.on('mouseover.queryBuilder', '.drag-handle', function() {
-            self.$el.find(Selectors.rule_and_group_containers).attr('draggable', true);
-        });
-        self.$el.on('mouseout.queryBuilder', '.drag-handle', function() {
-            self.$el.find(Selectors.rule_and_group_containers).removeAttr('draggable');
-        });
+        /**
+         * Configure drag
+         */
+        interact(node.$el[0])
+            .allowFrom(Selectors.drag_handle)
+            .draggable({
+                onstart: function(event) {
+                    // get model of dragged element
+                    src = Model(event.target);
 
-        // dragstart: create placeholder and hide current element
-        self.$el.on('dragstart.queryBuilder', '[draggable]', function(e) {
-            e.stopPropagation();
+                    // create ghost
+                    ghost = src.$el.clone()
+                        .appendTo(src.$el.parent())
+                        .width(src.$el.outerWidth())
+                        .addClass('dragging');
 
-            // notify drag and drop (only dummy text)
-            e.originalEvent.dataTransfer.setData('text', 'drag');
+                    // create drop placeholder
+                    var ph = $('<div class="rule-placeholder">&nbsp;</div>')
+                        .height(src.$el.outerHeight());
 
-            src = Model(e.target);
+                    placeholder = src.parent.addRule(ph, src.getPos());
 
-            // Chrome glitchs
-            // - helper invisible if hidden immediately
-            // - "dragend" is called immediately if we modify the DOM directly
-            setTimeout(function() {
-                var ph = $('<div class="rule-placeholder">&nbsp;</div>');
-                ph.css('min-height', src.$el.height());
+                    // hide dragged element
+                    src.$el.hide();
+                },
+                onmove: function(event) {
+                    // make the ghost follow the cursor
+                    ghost[0].style.top = event.clientY - 15 + 'px';
+                    ghost[0].style.left = event.clientX - 15 + 'px';
+                },
+                onend: function(event) {
+                    // remove ghost
+                    ghost.remove();
+                    ghost = undefined;
 
-                placeholder = src.parent.addRule(ph, src.getPos());
+                    // remove placeholder
+                    placeholder.drop();
+                    placeholder = undefined;
 
-                src.$el.hide();
-            }, 0);
-        });
+                    // show element
+                    src.$el.show();
+                }
+            });
 
-        // dragenter: move the placeholder
-        self.$el.on('dragenter.queryBuilder', '[draggable]', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        /**
+         * Configure drop on groups and rules
+         */
+        interact(node.$el[0])
+            .dropzone({
+                accept: Selectors.rule_and_group_containers,
+                ondragenter: function(event) {
+                    moveSortableToTarget(placeholder, $(event.target));
+                },
+                ondrop: function(event) {
+                    moveSortableToTarget(src, $(event.target));
+                }
+            });
 
-            if (placeholder) {
-                moveSortableToTarget(placeholder, $(e.target));
+        /**
+         * Configure drop on group headers
+         */
+        if (node instanceof Group) {
+            interact(node.$el.find(Selectors.group_header)[0])
+                .dropzone({
+                    accept: Selectors.rule_and_group_containers,
+                    ondragenter: function(event) {
+                        moveSortableToTarget(placeholder, $(event.target));
+                    },
+                    ondrop: function(event) {
+                        moveSortableToTarget(src, $(event.target));
+                    }
+                });
+        }
+    });
+
+    /**
+     * Detach interactables
+     */
+    this.on('beforeDeleteRule beforeDeleteGroup', function(e, node) {
+        if (!e.isDefaultPrevented()) {
+            interact(node.$el[0]).unset();
+
+            if (node instanceof Group) {
+                interact(node.$el.find(Selectors.group_header)[0]).unset();
             }
-        });
-
-        // dragover: prevent glitches
-        self.$el.on('dragover.queryBuilder', '[draggable]', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        });
-
-        // drop: move current element
-        self.$el.on('drop.queryBuilder', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            moveSortableToTarget(src, $(e.target));
-        });
-
-        // dragend: show current element and delete placeholder
-        self.$el.on('dragend.queryBuilder', '[draggable]', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            src.$el.show();
-            placeholder.drop();
-
-            self.$el.find(Selectors.rule_and_group_containers).removeAttr('draggable');
-
-            self.trigger('afterMove', src);
-
-            src = placeholder = null;
-        });
+        }
     });
 
     /**
@@ -138,16 +170,16 @@ QueryBuilder.define('sortable', function(options) {
 
 /**
  * Move an element (placeholder or actual object) depending on active target
- * @param {Node}
- * @param {jQuery}
+ * @param {Node} node
+ * @param {jQuery} target
  */
-function moveSortableToTarget(element, target) {
+function moveSortableToTarget(node, target) {
     var parent;
 
     // on rule
     parent = target.closest(Selectors.rule_container);
     if (parent.length) {
-        element.moveAfter(Model(parent));
+        node.moveAfter(Model(parent));
         return;
     }
 
@@ -155,14 +187,14 @@ function moveSortableToTarget(element, target) {
     parent = target.closest(Selectors.group_header);
     if (parent.length) {
         parent = target.closest(Selectors.group_container);
-        element.moveAtBegin(Model(parent));
+        node.moveAtBegin(Model(parent));
         return;
     }
 
     // on group
     parent = target.closest(Selectors.group_container);
     if (parent.length) {
-        element.moveAtEnd(Model(parent));
+        node.moveAtEnd(Model(parent));
         return;
     }
 }

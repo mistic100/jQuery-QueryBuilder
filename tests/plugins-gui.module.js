@@ -188,36 +188,4 @@ $(function(){
             'Rule should contain a new button enabled with Bootbox'
         );
     });
-
-    /**
-     * Test sortable
-     */
-    QUnit.test('sortable', function(assert) {
-        var sorted_rules = $.extend(true, {}, basic_rules);
-        sorted_rules.rules.splice(2, 0, sorted_rules.rules[2].rules.pop());
-
-        assert.expect(1);
-        var done = assert.async();
-
-        $b.queryBuilder({
-            plugins: ['sortable'],
-            filters: basic_filters,
-            rules: basic_rules
-        });
-
-        $('#builder_rule_3').simulateDragDrop({
-            dropTarget: $('#builder_rule_1'),
-            start: function() {
-                $(this).find('.drag-handle').trigger('mouseover');
-            },
-            done: function() {
-                assert.rulesMatch(
-                    $b.queryBuilder('getRules'),
-                    sorted_rules,
-                    'Should have moved "Identifier" rule'
-                );
-                done();
-            }
-        });
-    });
 });

@@ -75,14 +75,14 @@ Utils.error = function(type, message, args) {
  */
 Utils.changeType = function(value, type, boolAsInt) {
     switch (type) {
-        // @formatter:off
-        case 'integer': return parseInt(value);
-        case 'double': return parseFloat(value);
-        case 'boolean':
-            var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
-            return boolAsInt ? (bool ? 1 : 0) : bool;
-        default: return value;
-        // @formatter:on
+    // @formatter:off
+    case 'integer': return parseInt(value);
+    case 'double': return parseFloat(value);
+    case 'boolean':
+        var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
+        return boolAsInt ? (bool ? 1 : 0) : bool;
+    default: return value;
+    // @formatter:on
     }
 };
 
@@ -99,18 +99,18 @@ Utils.escapeString = function(value) {
     return value
         .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
             switch (s) {
-                // @formatter:off
-                case '\0': return '\\0';
-                case '\n': return '\\n';
-                case '\r': return '\\r';
-                case '\b': return '\\b';
-                default:   return '\\' + s;
-                // @formatter:off
-          }
-      })
-      // uglify compliant
-      .replace(/\t/g, '\\t')
-      .replace(/\x1a/g, '\\Z');
+            // @formatter:off
+            case '\0': return '\\0';
+            case '\n': return '\\n';
+            case '\r': return '\\r';
+            case '\b': return '\\b';
+            default:   return '\\' + s;
+            // @formatter:off
+            }
+        })
+        // uglify compliant
+        .replace(/\t/g, '\\t')
+        .replace(/\x1a/g, '\\Z');
 };
 
 /**

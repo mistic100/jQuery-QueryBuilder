@@ -9,7 +9,7 @@ var QueryBuilder = function($el, options) {
 // ===============================
 $.extend(QueryBuilder.prototype, {
     change: function(type, value) {
-        var event = new $.Event(type + '.queryBuilder.filter', {
+        var event = new $.Event(this.tojQueryEvent(type, true), {
             builder: this,
             value: value
         });
@@ -20,7 +20,7 @@ $.extend(QueryBuilder.prototype, {
     },
 
     trigger: function(type) {
-        var event = new $.Event(type + '.queryBuilder', {
+        var event = new $.Event(this.tojQueryEvent(type), {
             builder: this
         });
 
@@ -30,18 +30,24 @@ $.extend(QueryBuilder.prototype, {
     },
 
     on: function(type, cb) {
-        this.$el.on(type + '.queryBuilder', cb);
+        this.$el.on(this.tojQueryEvent(type), cb);
         return this;
     },
 
     off: function(type, cb) {
-        this.$el.off(type + '.queryBuilder', cb);
+        this.$el.off(this.tojQueryEvent(type), cb);
         return this;
     },
 
     once: function(type, cb) {
-        this.$el.one(type + '.queryBuilder', cb);
+        this.$el.one(this.tojQueryEvent(type), cb);
         return this;
+    },
+
+    tojQueryEvent: function(name, filter) {
+        return name.split(' ').map(function(type) {
+            return type + '.queryBuilder' + (filter ? '.filter' : '');
+        }).join(' ');
     }
 });
 
