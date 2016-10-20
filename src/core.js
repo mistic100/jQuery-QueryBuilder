@@ -496,6 +496,8 @@ QueryBuilder.prototype.deleteGroup = function(group) {
         del&= this.deleteRule(rule);
     }, function(group) {
         del&= this.deleteGroup(group);
+    }, function (section) {
+        del&= this.deleteSection(section);
     }, this);
 
     if (del) {
@@ -532,6 +534,10 @@ QueryBuilder.prototype.refreshGroupsConditions = function() {
 
         group.each(function(rule) {}, function(group) {
             walk(group);
+        }, function(section) {
+            if (section.group) {
+                walk(section.group);
+            }
         }, this);
     }(this.model.root));
 };
@@ -928,6 +934,8 @@ QueryBuilder.prototype.clearErrors = function(node) {
             rule.error = null;
         }, function(group) {
             this.clearErrors(group);
+        }, function(section) {
+            this.clearErrors(section.group);
         }, this);
     }
 };
