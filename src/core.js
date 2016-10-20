@@ -542,8 +542,6 @@ QueryBuilder.prototype.refreshGroupsConditions = function() {
     }(this.model.root));
 };
 
-//--section
-
 /**
  * Add a new section
  * @param parent {Group}
@@ -650,12 +648,11 @@ QueryBuilder.prototype.refreshSection = function(model) {
     });
     if (!ok) {
         model.empty();
+        this.addRule(model.group);
     }
 
     this.trigger('afterRefreshSection', model);
 };
-
-//--section
 
 /**
  * Add a new rule
