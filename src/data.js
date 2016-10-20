@@ -221,6 +221,26 @@ QueryBuilder.prototype.nextSectionId = function() {
 };
 
 /**
+ * Returns a particular section by its id
+ * @throws UndefinedSectionError
+ * @param sectionId {string}
+ * @return {object|null}
+ */
+QueryBuilder.prototype.getSectionById = function(id) {
+    if (id == '-1') {
+        return null;
+    }
+
+    for (var i = 0, l = this.sections.length; i < l; i++) {
+        if (this.sections[i].id == id) {
+            return this.sections[i];
+        }
+    }
+
+    Utils.error('UndefinedSection', 'Undefined section "{0}"', id);
+};
+
+/**
  * Returns the operators for a filter
  * @param filter {string|object} (filter id name or filter object)
  * @return {object[]}
@@ -261,16 +281,25 @@ QueryBuilder.prototype.getOperators = function(filter) {
  * Returns a particular filter by its id
  * @throws UndefinedFilterError
  * @param filterId {string}
+ * @param sectionId {string|null}
  * @return {object|null}
  */
-QueryBuilder.prototype.getFilterById = function(id) {
+QueryBuilder.prototype.getFilterById = function(id, sectionId) {
     if (id == '-1') {
         return null;
     }
 
-    for (var i = 0, l = this.filters.length; i < l; i++) {
-        if (this.filters[i].id == id) {
-            return this.filters[i];
+    if (sectionId) {
+        console.log('on getFilterById');
+        console.log(sectionId);
+        var s = this.getSectionById(sectionId);
+        var filters = s ? s.filters : [];
+    } else {
+        var filters = this.filters;
+    }
+    for (var i = 0, l = filters.length; i < l; i++) {
+        if (filters[i].id == id) {
+            return filters[i];
         }
     }
 
