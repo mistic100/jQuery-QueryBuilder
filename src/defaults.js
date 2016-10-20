@@ -41,6 +41,7 @@ var Selectors = QueryBuilder.selectors = {
     section_container:    '.rules-section-container',
     group_container:      '.rules-group-container',
     rule_container:       '.rule-container',
+    stype_container:      '.rule-stype-container',
     filter_container:     '.rule-filter-container',
     operator_container:   '.rule-operator-container',
     value_container:      '.rule-value-container',
@@ -59,6 +60,7 @@ var Selectors = QueryBuilder.selectors = {
 
     section_exists_flag:  '.rules-section-header [name$=_exists]',
     group_condition:      '.rules-group-header [name$=_cond]',
+    rule_stype:           '.rule-stype-container [name$=_section_type]',
     rule_filter:          '.rule-filter-container [name$=_filter]',
     rule_operator:        '.rule-operator-container [name$=_operator]',
     rule_value:           '.rule-value-container [name*=_value_]',
@@ -153,6 +155,7 @@ QueryBuilder.DEFAULTS = {
 
     templates: {
         section: null,
+        stypeSelect: null,
         group: null,
         rule: null,
         filterSelect: null,

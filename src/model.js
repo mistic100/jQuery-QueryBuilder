@@ -232,7 +232,7 @@ var Group = function(parent, $el) {
     Node.call(this, parent, $el);
 
     this.rules = [];
-    this.section = null;
+    this.section_id = null;
     this.__.condition = null;
 };
 
@@ -283,7 +283,7 @@ Group.prototype._appendNode = function(node, index, trigger) {
     this.rules.splice(index, 0, node);
     node.parent = this;
     if (!(node instanceof Section)) {
-        node.section = this.section;
+        node.section_id = this.section_id;
     }
 
     if (trigger && this.model !== null) {
@@ -320,7 +320,6 @@ Group.prototype.addRule = function($el, index) {
  * @return {Section} the inserted section
  */
 Group.prototype.addSection = function($el, index) {
-    console.log($el);
     return this._appendNode(new Section(this, $el), index, true);
 };
 
@@ -425,7 +424,7 @@ var Rule = function(parent, $el) {
 
     Node.call(this, parent, $el);
 
-    this.section = null;
+    this.section_id = null;
 
     this.__.filter = null;
     this.__.operator = null;
@@ -452,6 +451,7 @@ var Section = function(parent, $el) {
     Node.call(this, parent, $el);
 
     this.group = null;
+    this.__.id = null;
     this.__.exists = null;
 };
 
@@ -468,11 +468,18 @@ defineModelProperties(Section, ['exists']);
 Section.prototype.setGroup = function($el) {
     this.group = new Group(this, $el);
     this.group.parent = this;
-    this.group.section = this;
+    this.group.section_id = this.id;
     if (this.model !== null) {
         this.model.trigger('set', this.group);
     }
     return this.group;
+};
+
+/**
+ * Clear out all rules
+ */
+Section.prototype.empty = function() {
+    this.group.empty();
 };
 
 /**

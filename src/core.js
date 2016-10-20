@@ -262,10 +262,20 @@ QueryBuilder.prototype.bindEvents = function() {
         }
     });
 
+    // section type change
+    this.$el.on('change.queryBuilder', Selectors.rule_stype, function() {
+        var sid = $(this).val();
+        var $section = $(this).closest(Selectors.section_container);
+        var model = Model($section)
+        model.id = sid;
+        self.refreshSection(model);
+    });
+
     // rule filter change
     this.$el.on('change.queryBuilder', Selectors.rule_filter, function() {
         var $rule = $(this).closest(Selectors.rule_container);
-        Model($rule).filter = self.getFilterById($(this).val());
+        var m = Model($rule);
+        m.filter = self.getFilterById($(this).val(), m.section_id);
     });
 
     // rule operator change
@@ -331,7 +341,7 @@ QueryBuilder.prototype.bindEvents = function() {
         },
         'set': function(e, node) {
             node.parent.$el.find('>' + Selectors.section_body).empty().append(node.$el);
-            self.updateSectionExistsFlag(node.section);
+            self.updateSectionExistsFlag(node.parent);
         },
         'move': function(e, node, group, index) {
             node.$el.detach();
@@ -437,14 +447,12 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     }
 
     var group_id = this.nextGroupId();
-    var $group = $(this.getGroupTemplate(group_id, level, parent instanceof Section || parent.section ? true : false));
-    console.log(parent);
+    var $group = $(this.getGroupTemplate(group_id, level, parent instanceof Section || parent.section_id ? true : false));
     if (parent instanceof Section) {
         var model = parent.setGroup($group);
     } else {
         var model = parent.addGroup($group);
     }
-    console.log(model);
 
     model.data = data;
     model.flags = $.extend({}, this.settings.default_group_flags, flags);
@@ -552,6 +560,14 @@ QueryBuilder.prototype.addSection = function(parent, addRule, data, flags) {
 
     model.exists = this.settings.default_exists;
 
+    this.createSectionTypes(model);
+
+    if (this.settings.default_section) {
+        model.id = this.settings.default_section;
+    } else {
+        model.id = this.sections[0].id;
+    }
+
     this.addGroup(model, true, data, flags);
 
     return model;
@@ -590,6 +606,40 @@ QueryBuilder.prototype.updateSectionExistsFlag = function(section) {
     });
 
     this.trigger('afterUpdateSectionExistsFlag', section);
+};
+
+/**
+ * Create the type <select> for a section
+ * @param section {Section}
+ */
+QueryBuilder.prototype.createSectionTypes = function(section) {
+    var stypes = this.change('getSectionTypes', this.sections, section);
+    var $stypesSelect = $(this.getSectionTypeSelect(section, stypes));
+
+    section.$el.find(Selectors.stype_container).html($stypesSelect);
+
+    this.trigger('afterCreateSectionStypes', section);
+};
+
+/**
+ * Refreshes a section after a type change
+ * @param section {Section}
+ */
+QueryBuilder.prototype.refreshSection = function(model) {
+
+    // Clear out the section if there's any rule that don't belong
+    var ok = true;
+    model.$el.find(Selectors.rule_container).each(function() {
+        var rule = Model($(this));
+        if (rule.section_id != model.id) {
+            ok = false;
+        }
+    });
+    if (!ok) {
+        model.empty();
+    }
+
+    this.trigger('afterRefreshSection', model);
 };
 
 //--section
@@ -658,7 +708,18 @@ QueryBuilder.prototype.deleteRule = function(rule) {
  * @param rule {Rule}
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
-    var filters = this.change('getRuleFilters', this.filters, rule);
+    if (rule.section_id) {
+        console.log('on create rule filters');
+        console.log(rule.section_id);
+        var section = this.getSectionById(rule.section_id);
+        if (section) {
+            var filters = this.change('getRuleFilters', section.filters, rule);
+        } else {
+            var filters = this.change('getRuleFilters', [], rule);
+        }
+    } else {
+        var filters = this.change('getRuleFilters', this.filters, rule);
+    }
     var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
 
     rule.$el.find(Selectors.filter_container).html($filterSelect);

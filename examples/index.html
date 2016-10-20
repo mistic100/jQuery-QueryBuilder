@@ -123,6 +123,126 @@ var options = {
   //default_filter: 'name',
   sort_filters: true,
 
+  sections: [
+    {
+      id: 'subquery-a',
+      label: 'Subquery A',
+      filters: [
+        {
+          id: 'sqa-name',
+          label: {
+            en: 'Subquery A Name',
+            fr: 'Nom'
+          },
+          type: 'string',
+          optgroup: 'core',
+          default_value: 'Subquery Name',
+          size: 30,
+          unique: true
+        },
+        {
+          id: 'sqa-category',
+          label: 'Subquery A Category',
+          type: 'integer',
+          input: 'checkbox',
+          optgroup: 'core',
+          values: {
+            1: 'Books',
+            2: 'Movies',
+            3: 'Music',
+            4: 'Tools',
+            5: 'Goodies',
+            6: 'Clothes'
+          },
+          colors: {
+            1: 'foo',
+            2: 'warning',
+            5: 'success'
+          },
+          operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
+        }
+      ]
+    },
+    {
+      id: 'subquery-b',
+      label: 'Subquery B',
+      filters: [
+        {
+          id: 'sqb-name',
+          label: {
+            en: 'Subquery B Name',
+            fr: 'Nom'
+          },
+          type: 'string',
+          optgroup: 'core',
+          default_value: 'Subquery Name',
+          size: 30,
+          unique: true
+        },
+        {
+          id: 'sqb-category',
+          label: 'Subquery B Category',
+          type: 'integer',
+          input: 'checkbox',
+          optgroup: 'core',
+          values: {
+            1: 'Books',
+            2: 'Movies',
+            3: 'Music',
+            4: 'Tools',
+            5: 'Goodies',
+            6: 'Clothes'
+          },
+          colors: {
+            1: 'foo',
+            2: 'warning',
+            5: 'success'
+          },
+          operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
+        }
+      ]
+    },
+    {
+      id: 'subquery-c',
+      label: 'Subquery C',
+      filters: [
+        {
+          id: 'sqc-name',
+          label: {
+            en: 'Subquery C Name',
+            fr: 'Nom'
+          },
+          type: 'string',
+          optgroup: 'core',
+          default_value: 'Subquery Name',
+          size: 30,
+          unique: true
+        },
+        {
+          id: 'sqc-category',
+          label: 'Subquery C Category',
+          type: 'integer',
+          input: 'checkbox',
+          optgroup: 'core',
+          values: {
+            1: 'Books',
+            2: 'Movies',
+            3: 'Music',
+            4: 'Tools',
+            5: 'Goodies',
+            6: 'Clothes'
+          },
+          colors: {
+            1: 'foo',
+            2: 'warning',
+            5: 'success'
+          },
+          operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
+        }
+      ]
+    }
+  ],
+
   optgroups: {
     core: {
       en: 'Core',
@@ -400,6 +520,7 @@ var options = {
     }
   }]
 };
+console.log(options);
 
 // init
 $('#builder').queryBuilder(options);

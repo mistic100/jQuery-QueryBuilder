@@ -47,7 +47,7 @@ QueryBuilder.templates.section = '\
         </button> \
       {{?}} \
     </div> \
-    <div class="btn-group section-exist-options"> \
+    <div class="btn-group section-exists-options"> \
       {{~ it.exist_options: option }} \
         <label class="btn btn-xs btn-primary"> \
           <input type="radio" name="{{= it.section_id }}_exists" value="{{= option }}"> {{= it.lang.exist_options[option] || option }} \
@@ -58,9 +58,20 @@ QueryBuilder.templates.section = '\
       <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
     {{?}} \
   </dt> \
+  <div class="rule-stype-container"></div> \
   <dd class="rules-section-body"> \
   </dd> \
 </dl>';
+
+QueryBuilder.templates.stypeSelect = '\
+<select class="form-control" name="{{= it.section.id }}_section_type"> \
+  {{? it.settings.display_empty_stype_filter }} \
+    <option value="-1">{{= it.settings.select_placeholder }}</option> \
+  {{?}} \
+  {{~ it.stypes: stype }} \
+    <option value="{{= stype.id }}">{{= it.translate(stype.label) }}</option> \
+  {{~}} \
+</select>';
 
 QueryBuilder.templates.rule = '\
 <li id="{{= it.rule_id }}" class="rule-container"> \
@@ -125,7 +136,6 @@ QueryBuilder.templates.operatorSelect = '\
  * @return {string}
  */
 QueryBuilder.prototype.getGroupTemplate = function(group_id, level, in_section) {
-    console.log(in_section);
     var h = this.templates.group({
         builder: this,
         group_id: group_id,
@@ -176,6 +186,26 @@ QueryBuilder.prototype.getSectionTemplate = function(section_id, level) {
     });
 
     return this.change('getSectionTemplate', h);
+};
+
+/**
+ * Returns section type <select> HTML
+ * @param section {Section}
+ * @param stypes {array}
+ * @return {string}
+ */
+QueryBuilder.prototype.getSectionTypeSelect = function(section, stypes) {
+    var h = this.templates.stypeSelect({
+        builder: this,
+        section: section,
+        stypes: stypes,
+        icons: this.icons,
+        lang: this.lang,
+        settings: this.settings,
+        translate: this.translateLabel
+    });
+
+    return this.change('getSectionTypeSelect', h, section);
 };
 
 /**
