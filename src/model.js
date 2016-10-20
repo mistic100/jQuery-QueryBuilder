@@ -249,6 +249,8 @@ Group.prototype.empty = function() {
         rule.drop();
     }, function(group) {
         group.drop();
+    }, function(section) {
+        section.drop();
     });
 };
 
@@ -352,11 +354,13 @@ Group.prototype.getNodePos = function(node) {
  * @param {boolean,optional} iterate in reverse order, required if you delete nodes
  * @param {function} callback for Rules
  * @param {function,optional} callback for Groups
+ * @param {function,optional} callback for Sections
  * @return {boolean}
  */
-Group.prototype.each = function(reverse, cbRule, cbGroup, context) {
+Group.prototype.each = function(reverse, cbRule, cbGroup, cbSection, context) {
     if (typeof reverse == 'function') {
-        context = cbGroup;
+        context = cbSection;
+        cbSection = cbGroup;
         cbGroup = cbRule;
         cbRule = reverse;
         reverse = false;
@@ -373,6 +377,11 @@ Group.prototype.each = function(reverse, cbRule, cbGroup, context) {
         if (this.rules[i] instanceof Group) {
             if (cbGroup !== undefined) {
                 stop = cbGroup.call(context, this.rules[i]) === false;
+            }
+        }
+        else if (this.rules[i] instanceof Section) {
+            if (cbSection !== undefined) {
+                stop = cbSection.call(context, this.rules[i]) === false;
             }
         }
         else {
@@ -406,6 +415,8 @@ Group.prototype.contains = function(node, deep) {
             return true;
         }, function(group) {
             return !group.contains(node, true);
+        }, function(section) {
+            return !section.group.contains(node, true);
         });
     }
 };

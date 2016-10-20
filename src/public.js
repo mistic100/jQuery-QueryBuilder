@@ -109,6 +109,13 @@ QueryBuilder.prototype.validate = function() {
             else {
                 errors++;
             }
+        }, function(section) {
+            if (parse(section.group)) {
+                done++;
+            }
+            else {
+                errors++;
+            }
         });
 
         if (errors > 0) {
@@ -190,6 +197,13 @@ QueryBuilder.prototype.getRules = function(options) {
 
         }, function(model) {
             data.rules.push(parse(model));
+        }, function(model) {
+            var rule = {
+                section: model.id,
+                exists: model.exists,
+            };
+            rule.group = parse(model.group);
+            data.rules.push(rule);
         });
 
         return data;
