@@ -479,6 +479,7 @@ Section.prototype.setGroup = function($el) {
  * Clear out all rules
  */
 Section.prototype.empty = function() {
+    this.group.section_id = this.id;
     this.group.empty();
 };
 
