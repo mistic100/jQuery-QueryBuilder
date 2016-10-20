@@ -255,10 +255,10 @@ QueryBuilder.prototype.bindEvents = function() {
     });
 
     // section exists change
-    this.$el.on('change.queryBuilder', Selectors.section_exists, function() {
+    this.$el.on('change.queryBuilder', Selectors.section_exists_flag, function() {
         if ($(this).is(':checked')) {
-            var $section = $(this).closest(Selectors.section_exists);
-            Model($section).condition = $(this).val();
+            var $section = $(this).closest(Selectors.section_container);
+            Model($section).exists = $(this).val();
         }
     });
 
@@ -378,7 +378,7 @@ QueryBuilder.prototype.bindEvents = function() {
                         break;
                 }
             }
-            else {
+            else if (node instanceof Group) {
                 switch (field) {
                     case 'error':
                         self.displayError(node);
@@ -390,6 +390,13 @@ QueryBuilder.prototype.bindEvents = function() {
 
                     case 'condition':
                         self.updateGroupCondition(node);
+                        break;
+                }
+            }
+            else if (node instanceof Section) {
+                switch (field) {
+                    case 'exists':
+                        self.updateSectionExistsFlag(node);
                         break;
                 }
             }
@@ -709,8 +716,6 @@ QueryBuilder.prototype.deleteRule = function(rule) {
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
     if (rule.section_id) {
-        console.log('on create rule filters');
-        console.log(rule.section_id);
         var section = this.getSectionById(rule.section_id);
         if (section) {
             var filters = this.change('getRuleFilters', section.filters, rule);

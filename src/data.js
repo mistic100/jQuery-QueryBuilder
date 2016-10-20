@@ -293,8 +293,6 @@ QueryBuilder.prototype.getFilterById = function(id, sectionId) {
     }
 
     if (sectionId) {
-        console.log('on getFilterById');
-        console.log(sectionId);
         var s = this.getSectionById(sectionId);
         var filters = s ? s.filters : [];
     } else {
