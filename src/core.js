@@ -321,7 +321,7 @@ QueryBuilder.prototype.bindEvents = function() {
                         break;
 
                     case 'filter':
-                        self.updateRuleFilter(node);
+                        self.updateRuleFilter(node, oldValue);
                         break;
 
                     case 'operator':
@@ -625,12 +625,18 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
 /**
  * Perform action when rule's filter is changed
  * @param rule {Rule}
+ * @param previousFilter {object}
  */
-QueryBuilder.prototype.updateRuleFilter = function(rule) {
+QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
     this.createRuleOperators(rule);
     this.createRuleInput(rule);
 
     rule.$el.find(Selectors.rule_filter).val(rule.filter ? rule.filter.id : '-1');
+
+    // clear rule data if the filter changed
+    if (previousFilter && rule.filter && previousFilter.id !== rule.filter.id) {
+        rule.data = undefined;
+    }
 
     this.trigger('afterUpdateRuleFilter', rule);
 };
