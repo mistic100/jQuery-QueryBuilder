@@ -229,21 +229,21 @@ QueryBuilder.extend({
 
         var self = this;
 
-        var sql = (function parse(data) {
-            if (!data.condition) {
-                data.condition = self.settings.default_condition;
+        var sql = (function parse(group) {
+            if (!group.condition) {
+                group.condition = self.settings.default_condition;
             }
-            if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                Utils.error('UndefinedSQLCondition', 'Unable to build SQL query with condition "{0}"', data.condition);
+            if (['AND', 'OR'].indexOf(group.condition.toUpperCase()) === -1) {
+                Utils.error('UndefinedSQLCondition', 'Unable to build SQL query with condition "{0}"', group.condition);
             }
 
-            if (!data.rules) {
+            if (!group.rules) {
                 return '';
             }
 
             var parts = [];
 
-            data.rules.forEach(function(rule) {
+            group.rules.forEach(function(rule) {
                 if (rule.rules && rule.rules.length > 0) {
                     parts.push('(' + nl + parse(rule) + nl + ')' + nl);
                 }
@@ -295,8 +295,8 @@ QueryBuilder.extend({
                 }
             });
 
-            var groupExpression = parts.join(' ' + data.condition + nl);
-            return self.change('groupToSQL', groupExpression, data);
+            var groupExpression = parts.join(' ' + group.condition + nl);
+            return self.change('groupToSQL', groupExpression, group);
         }(data));
 
         if (stmt) {

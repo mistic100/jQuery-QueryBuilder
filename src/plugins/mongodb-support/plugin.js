@@ -90,21 +90,21 @@ QueryBuilder.extend({
 
         var self = this;
 
-        return (function parse(data) {
-            if (!data.condition) {
-                data.condition = self.settings.default_condition;
+        return (function parse(group) {
+            if (!group.condition) {
+                group.condition = self.settings.default_condition;
             }
-            if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
-                Utils.error('UndefinedMongoCondition', 'Unable to build MongoDB query with condition "{0}"', data.condition);
+            if (['AND', 'OR'].indexOf(group.condition.toUpperCase()) === -1) {
+                Utils.error('UndefinedMongoCondition', 'Unable to build MongoDB query with condition "{0}"', group.condition);
             }
 
-            if (!data.rules) {
+            if (!group.rules) {
                 return {};
             }
 
             var parts = [];
 
-            data.rules.forEach(function(rule) {
+            group.rules.forEach(function(rule) {
                 if (rule.rules && rule.rules.length > 0) {
                     parts.push(parse(rule));
                 }
@@ -128,14 +128,15 @@ QueryBuilder.extend({
                     }
 
                     var ruleExpression = {};
-                    ruleExpression[rule.field] = mdb.call(self, values);
+                    var field = self.change('getMongoDBField', rule.field, rule);
+                    ruleExpression[field] = mdb.call(self, values);
                     parts.push(self.change('ruleToMongo', ruleExpression, rule));
                 }
             });
 
             var groupExpression = {};
-            groupExpression['$' + data.condition.toLowerCase()] = parts;
-            return self.change('groupToMongo', groupExpression, data);
+            groupExpression['$' + group.condition.toLowerCase()] = parts;
+            return self.change('groupToMongo', groupExpression, group);
         }(data));
     },
 

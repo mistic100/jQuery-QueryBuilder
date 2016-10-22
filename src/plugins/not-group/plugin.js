@@ -130,5 +130,7 @@ QueryBuilder.extend({
         group.$el.find('>' + Selectors.group_not)
             .toggleClass('active', group.not)
             .find('i').attr('class', group.not ? options.icon_checked : options.icon_unchecked);
+
+        this.trigger('afterUpdateGroupNot', group);
     }
 });

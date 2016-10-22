@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.4.0
  * Copyright 2014-2016 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -119,8 +119,13 @@
   vertical-align: middle;
   margin-left: 5px;
 }
-.query-builder .dragged {
+.query-builder .dragging {
+  position: fixed;
   opacity: .5;
+  z-index: 100;
+}
+.query-builder .dragging::before, .query-builder .dragging::after {
+  display: none;
 }
 .query-builder .rule-placeholder {
   border: 1px dashed #BBB;

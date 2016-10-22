@@ -144,55 +144,55 @@ QueryBuilder.prototype.getRules = function(options) {
     var self = this;
 
     var out = (function parse(group) {
-        var data = {
+        var groupData = {
             condition: group.condition,
             rules: []
         };
 
         if (group.data) {
-            data.data = $.extendext(true, 'replace', {}, group.data);
+            groupData.data = $.extendext(true, 'replace', {}, group.data);
         }
 
         if (options.get_flags) {
             var flags = self.getGroupFlags(group.flags, options.get_flags === 'all');
             if (!$.isEmptyObject(flags)) {
-                data.flags = flags;
+                groupData.flags = flags;
             }
         }
 
-        group.each(function(model) {
+        group.each(function(rule) {
             var value = null;
-            if (model.operator.nb_inputs !== 0) {
-                value = model.value;
+            if (rule.operator.nb_inputs !== 0) {
+                value = rule.value;
             }
 
-            var rule = {
-                id: model.filter.id,
-                field: model.filter.field,
-                type: model.filter.type,
-                input: model.filter.input,
-                operator: model.operator.type,
+            var ruleData = {
+                id: rule.filter.id,
+                field: rule.filter.field,
+                type: rule.filter.type,
+                input: rule.filter.input,
+                operator: rule.operator.type,
                 value: value
             };
 
-            if (model.filter.data || model.data) {
-                rule.data = $.extendext(true, 'replace', {}, model.filter.data, model.data);
+            if (rule.filter.data || rule.data) {
+                ruleData.data = $.extendext(true, 'replace', {}, rule.filter.data, rule.data);
             }
 
             if (options.get_flags) {
-                var flags = self.getRuleFlags(model.flags, options.get_flags === 'all');
+                var flags = self.getRuleFlags(rule.flags, options.get_flags === 'all');
                 if (!$.isEmptyObject(flags)) {
-                    rule.flags = flags;
+                    ruleData.flags = flags;
                 }
             }
 
-            data.rules.push(self.change('ruleToJson', rule, model));
+            groupData.rules.push(self.change('ruleToJson', ruleData, rule));
 
         }, function(model) {
-            data.rules.push(parse(model));
-        });
+            groupData.rules.push(parse(model));
+        }, this);
 
-        return self.change('groupToJson', data, group);
+        return self.change('groupToJson', groupData, group);
 
     }(this.model.root));
 
