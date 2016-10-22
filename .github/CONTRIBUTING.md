@@ -1,5 +1,11 @@
 # Guidelines for contributing
 
+## Work on `dev`
+Any merge request should be created from and issued to the `dev` branch.
+
+## dist files
+Keep it simple, don't commit any files in the `dist` directory, I build these files only before a release.
+
 ## Core vs Plugins
 I want to keep the core clean of extra (and certainly awesome) functionalities. That includes, but is not limited to, export/import plugins, visual aids, etc.
 
@@ -11,9 +17,6 @@ I reserve the right to refuse any plugin I think is not useful for many people. 
 Any big feature must have it's own QUnit tests suite. Of course existing tests must still pass after changes.
 
 I won't merge any branch not passing the TravisCI build, including JShint/JSCS/SCSSlint compliance.
-
-## dist files
-Keep it simple, don't commit any files in the `dist` directory, I build these files only before a release.
 
 ## Translations
 Source language files are plain JSON files which will be converted to executable JS files by the build task. The `__locale` key must be filled with the international name of the language + 2-chars code and the `__author` key can be used to give information about the translator.
