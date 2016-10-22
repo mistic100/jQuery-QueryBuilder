@@ -26,9 +26,10 @@ $('#builder-plugins').queryBuilder({
     'bt-tooltip-errors',
     'bt-selectpicker',
     'bt-checkbox',
-    'invert'
+    'invert',
+    'not-group'
   ],
-  
+
   filters: [{
     id: 'name',
     label: 'Name',
@@ -87,7 +88,7 @@ $('#btn-set').on('click', function() {
 
 $('#btn-get').on('click', function() {
   var result = $('#builder-plugins').queryBuilder('getRules');
-  
+
   if (!$.isEmptyObject(result)) {
     alert(JSON.stringify(result, null, 2));
   }

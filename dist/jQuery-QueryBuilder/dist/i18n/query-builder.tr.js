@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.4.0
  * Locale: Turkish (tr)
  * Author: Aykut Alpgiray Ateş
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -65,7 +65,7 @@ QueryBuilder.regional['tr'] = {
     "number_not_double": "Ondalıklı sayı değil",
     "number_exceed_min": "Sayı {0}'den/dan daha büyük olmalı",
     "number_exceed_max": "Sayı {0}'den/dan daha küçük olmalı",
-    "number_wrong_step": "Must be a multiple of {0}",
+    "number_wrong_step": "{0} veya katı olmalı",
     "datetime_empty": "Tarih Seçilmemiş",
     "datetime_invalid": "Uygun olmayan tarih formatı ({0})",
     "datetime_exceed_min": "{0} Tarihinden daha sonrası olmalı.",

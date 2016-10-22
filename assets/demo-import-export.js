@@ -13,8 +13,11 @@ var mongo_import_export = {
 }
 
 $('#builder-import_export').queryBuilder({
-  plugins: ['bt-tooltip-errors'],
-  
+  plugins: [
+    'bt-tooltip-errors',
+    'not-group'
+  ],
+
   filters: [{
     id: 'name',
     label: 'Name',
@@ -77,7 +80,7 @@ $('#btn-set-mongo').on('click', function() {
 
 $('#btn-get-sql').on('click', function() {
   var result = $('#builder-import_export').queryBuilder('getSQL', 'question_mark');
-  
+
   if (result.sql.length) {
     alert(result.sql + '\n\n' + JSON.stringify(result.params, null, 2));
   }
@@ -85,7 +88,7 @@ $('#btn-get-sql').on('click', function() {
 
 $('#btn-get-mongo').on('click', function() {
   var result = $('#builder-import_export').queryBuilder('getMongo');
-  
+
   if (!$.isEmptyObject(result)) {
     alert(JSON.stringify(result, null, 2));
   }

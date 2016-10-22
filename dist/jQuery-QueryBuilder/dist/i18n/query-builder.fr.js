@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.4.0
  * Locale: French (fr)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -73,7 +73,8 @@ QueryBuilder.regional['fr'] = {
     "boolean_not_valid": "N'est pas un booléen",
     "operator_not_multiple": "L'opérateur {0} ne peut utiliser plusieurs valeurs"
   },
-  "invert": "Inverser"
+  "invert": "Inverser",
+  "NOT": "NON"
 };
 
 QueryBuilder.defaults({ lang_code: 'fr' });

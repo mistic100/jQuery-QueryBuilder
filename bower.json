@@ -1,6 +1,5 @@
 {
   "name": "jquery-querybuilder-doc",
-  "version": "0.0.0",
   "dependencies": {
     "jQuery-QueryBuilder": "git://github.com/mistic100/jQuery-QueryBuilder.git#master",
     "bootstrap-datepicker": "latest",
@@ -9,6 +8,7 @@
     "bootstrap-treeview": "latest",
     "awesome-bootstrap-checkbox": "latest",
     "bootstrap-select": "latest",
-    "sql-parser": "latest"
+    "sql-parser": "latest",
+    "interact": "^1.2.6"
   }
 }

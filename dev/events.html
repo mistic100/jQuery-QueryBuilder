@@ -27,6 +27,11 @@ title: Events
     <p>Read <a href="{{site.github.url}}/index.html#inside_the_box">Inside the box</a> to learn more about the Rule and
       Group objects.</p>
   </div>
+
+  <div class="bs-callout bs-callout-warning">
+    <h4>Plugins events</h4>
+    <p>Events added by <a href="{{site.github.url}}/plugins.html">plugins</a> are detailed in their respective sections.</p>
+  </div>
 </section>
 
 
@@ -290,6 +295,16 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
       </thead>
       <tbody>
       <tr>
+        <td>displayError<small>.queryBuilder.filter</small></td>
+        <td>Modified an error message before display.
+          <ul>
+            <li><code>e.value</code> the error message (translated and formatted)</li>
+            <li><code>error</code> The raw error array (error code and optional arguments)</li>
+            <li><code>node</code> <b>Group</b> or <b>Rule</b> object</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
         <td>validate<small>.queryBuilder.filter</small></td>
         <td>Modifies the result of <code>validate</code> method.
           <ul>
@@ -306,10 +321,46 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
         </td>
       </tr>
       <tr>
+        <td>ruleToJson<small>.queryBuilder.filter</small></td>
+        <td>Modifies the JSON generated from the <b>Rule</b> object
+          <ul>
+            <li><code>e.value</code> JSON object</li>
+            <li><code>rule</code> <b>Rule</b> object</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>groupToJson<small>.queryBuilder.filter</small></td>
+        <td>Modifies the JSON generated from the <b>Group</b> object
+          <ul>
+            <li><code>e.value</code> JSON object</li>
+            <li><code>group</code> <b>Group</b> object</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
         <td>setRules<small>.queryBuilder.filter</small></td>
         <td>Modifies data before <code>setRules</code> method.
           <ul>
             <li><code>e.value</code> rules object</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>jsonToRule<small>.queryBuilder.filter</small></td>
+        <td>Modifies the <b>Rule</b> object generated from the JSON
+          <ul>
+            <li><code>e.value</code> <b>Rule</b> object</li>
+            <li><code>data</code> JSON object</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>jsonToGroup<small>.queryBuilder.filter</small></td>
+        <td>Modifies the <b>Group</b> object generated from the JSON
+          <ul>
+            <li><code>e.value</code> <b>Group</b> object</li>
+            <li><code>data</code> JSON object</li>
           </ul>
         </td>
       </tr>
@@ -405,10 +456,11 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
         </td>
       </tr>
       <tr>
-        <td>setFilters<small>.queryBuilder.filter</small></td>
-        <td>Modifies the new filters applied by the <a href="../plugins.html#change-filters">Change filters</a> plugin.
+        <td>getDefaultFilter<small>.queryBuilder.filter</small></td>
+        <td>When <code>default_filter</code> is set or <code>display_empty_filter = false</code>, modifies the default filter of a rule.
           <ul>
-            <li><code>e.value</code> List of filters</li>
+            <li><code>e.value</code> default filter id</li>
+            <li><code>rule</code> <b>Rule</b> object</li>
           </ul>
         </td>
       </tr>

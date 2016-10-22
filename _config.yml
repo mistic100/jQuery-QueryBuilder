@@ -1,13 +1,13 @@
 # name of the software
 name: jQuery QueryBuilder
 # current version of the software
-version: 2.3.3
+version: 2.4.0
 # url of the download button
 downloadUrl: https://github.com/mistic100/jQuery-QueryBuilder
 # links to file/dir viewers
 treeUrl: https://github.com/mistic100/jQuery-QueryBuilder/tree/master
 blobUrl: https://github.com/mistic100/jQuery-QueryBuilder/blob/master
-cdnUrl: https://cdn.jsdelivr.net/jquery.query-builder/2.3.3
+cdnUrl: https://cdn.jsdelivr.net/jquery.query-builder/2.4.0
 # licence of the software
 license: MIT License
 licenseUrl: http://opensource.org/licenses/MIT

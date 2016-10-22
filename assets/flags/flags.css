@@ -1,7 +1,7 @@
 .flag {
     background-image: url(flags.png);
     background-repeat: no-repeat;
-    display: block;
+    display: inline-block;
 }
 
 .flag-al {
@@ -128,4 +128,16 @@
   width: 16px;
   height: 11px;
   background-position: 0 -55px;
+}
+
+.flag-bg {
+  width: 16px;
+  height: 11px;
+  background-position: -16px -55px;
+}
+
+.flag-el {
+  width: 16px;
+  height: 11px;
+  background-position: -32px -55px;
 }

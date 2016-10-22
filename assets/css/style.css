@@ -34,3 +34,7 @@
 a[data-bootbox] {
   cursor: pointer;
 }
+
+h5 {
+  font-weight: bold;
+}

@@ -49,7 +49,8 @@ isHome: true
 
     <h4>Content Delivery Network</h4>
 
-    <p>jQuery-QueryBuilder is <a href="http://www.jsdelivr.com/projects/jquery.query-builder">available on jsDelivr</a>.</p>
+    <p>jQuery-QueryBuilder is <a href="http://www.jsdelivr.com/projects/jquery.query-builder">available on jsDelivr</a>.
+    </p>
   </div>
 
   <h3 id="dependencies">Dependencies</h3>
@@ -59,7 +60,7 @@ isHome: true
     <li><a href="https://github.com/mistic100/jQuery.extendext">$.extendext</a></li>
     <li><a href="http://olado.github.io/doT">doT.js</a> (@master until the author decides to publish a new version)</li>
     <li><a href="http://momentjs.com">MomentJS</a> (optional, for Date/Time validation)</li>
-    <li>Other Bootstrap/jQuery plugins used by plugins</li>
+    <li>Other libraries used by plugins</li>
   </ul>
 
   <div class="bs-callout">
@@ -346,7 +347,7 @@ label: {
       <tr>
         <td>optgroup</td>
         <td>string|object</td>
-        <td>null</td>
+        <td></td>
         <td>Optional id of an <code>&lt;optgroup&gt;</code> in the filters dropdown. If the optgroup does not exist in
           the <a href="#options">global optgroups</a> map, it will be created with label=id for all languages.
         </td>
@@ -414,6 +415,14 @@ values: [
               </li>
             </ol>
           </div>
+        </td>
+      </tr>
+      <tr>
+        <td>value_separator</td>
+        <td>string</td>
+        <td></td>
+        <td>Used the split and join the value when a <code>text</code> input is used with an operator allowing multiple
+          values (<code>between</code> for example).
         </td>
       </tr>
       <tr>
@@ -504,27 +513,28 @@ values: [
       <tr>
         <td>plugin</td>
         <td>string</td>
-        <td>null</td>
+        <td></td>
         <td>Name of a jQuery plugin to apply on the input.</td>
       </tr>
       <tr>
         <td>plugin_config</td>
         <td>object</td>
-        <td>{}</td>
+        <td></td>
         <td>Object of parameters to pass to the plugin.</td>
       </tr>
       <tr>
         <td>data</td>
         <td>object</td>
         <td></td>
-        <td>Additional data not use by QueryBuilder but that will be added to the output rules object. Use this to store
+        <td>Additional data not used by QueryBuilder but that will be added to the output rules object. Use this to
+          store
           any functional data you need.
         </td>
       </tr>
       <tr>
         <td>valueSetter</td>
         <td>function</td>
-        <td>null</td>
+        <td></td>
         <td>Function used to set the input(s) value. If provided the default function is not run. It takes 2 parameters:
           <ul>
             <li><code>rule</code> the <b>Rule</b> object</li>
@@ -535,7 +545,7 @@ values: [
       <tr>
         <td>valueGetter</td>
         <td>function</td>
-        <td>null</td>
+        <td></td>
         <td>Function used to get the input(s) value. If provided the default function is not run. It takes 1 parameter:
           <ul>
             <li><code>rule</code> the <b>Rule</b> object</li>
@@ -607,10 +617,27 @@ values: [
         <td>
           <ul>
             <li>For <code>integer</code>, <code>double</code>: step value (for <code>double</code> you should always
-              provide this value in order to pass the browser validation on <code>number</code> inputs).<br>
+              provide this value in order to pass the browser validation on <code>&lt;number&gt;</code> inputs).<br>
               <b>any</b> is allowed to bypass browser validation.
             </li>
           </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>messages</td>
+        <td>object</td>
+        <td>
+          Custom error messages for the standard validations, keys are validation names.
+          <!-- @formatter:off -->
+{% highlight js %}
+validation: {
+  format: /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/,
+  messages: {
+    format: 'The provided IP is not valid'
+  }
+}
+{% endhighlight %}
+<!-- @formatter:on -->
         </td>
       </tr>
       <tr>
@@ -645,6 +672,12 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
 <!-- @formatter:on -->
 
   <p>Only main methods are described.</p>
+
+  <div class="bs-callout bs-callout-warning">
+    <h4>Plugins methods</h4>
+    <p>Methods added by <a href="{{site.github.url}}/plugins.html">plugins</a> are detailed in their respective
+      sections.</p>
+  </div>
 
   <div class="bs-callout">
     <h4><code>.validate()</code></h4>
@@ -755,8 +788,55 @@ $('#builder').queryBuilder('setRules', { ... });
 <!-- @formatter:on -->
     </div>
 
+    <h5>User data</h5>
+
     <p>Each rule and group can have an additional <code>data</code> parameter which will be merged with the filter data
       (for rules only) when calling <code>getRules</code>.</p>
+    <!-- @formatter:off -->
+{% highlight javascript %}
+$('#builder').queryBuilder('setRules', {
+  condition: 'AND',
+  data: { // group data
+    foo: 'bar'
+  },
+  rules: [
+    {
+      /* rule definition */
+      data: { // rule data
+        foo: 'bar'
+      }
+    }
+  ]
+});
+{% endhighlight %}
+<!-- @formatter:on -->
+
+    <div class="alert alert-warning">The rule's data will be removed if the filter of the rule is changed. You can use
+      the <code>flags</code> (see bellow) to lock the filter of a rule.
+    </div>
+
+    <h5>Empty rules</h5>
+
+    <p>The <code>setRules</code> method will throw an error if a rule has no filter. If for some reason you want to
+      populate the builder with an empty rule, use the <code>empty</code> keyword.</p>
+    <!-- @formatter:off -->
+{% highlight javascript %}
+$('#builder').queryBuilder('setRules', {
+  condition: 'AND',
+  rules: [
+    {
+      /* standard rule */
+    },
+    {
+      /* empty rule */
+      empty: true
+    }
+  ]
+});
+{% endhighlight %}
+<!-- @formatter:on -->
+
+    <h5>Flags</h5>
 
     <p>Each rule can have an additional <code>flags</code> parameter which will control the editability of the rule.</p>
 
@@ -832,6 +912,18 @@ $('#builder').queryBuilder('setRules', { ... });
           <td>The group condition can't be changed.</td>
         </tr>
         <tr>
+          <td>no_add_rule</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>The "Add rule" button is disabled.</td>
+        </tr>
+        <tr>
+          <td>no_add_group</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>The "Add group" button is disabled.</td>
+        </tr>
+        <tr>
           <td>no_delete</td>
           <td>boolean</td>
           <td>false</td>
@@ -846,6 +938,8 @@ $('#builder').queryBuilder('setRules', { ... });
 {% highlight javascript %}
 {
   condition_readonly: true,
+  no_add_rule: true,
+  no_add_group: true,
   no_delete: true
 }
 {% endhighlight %}
@@ -899,8 +993,10 @@ $('#builder').queryBuilder('destroy');
   <h3 id="themes">Themes</h3>
 
   <p>QueryBuilder comes with two colors-schemes:
-    <a href="{{site.cdnUrl}}/css/query-builder.default.min.css" target="_blank"><i class="glyphicon glyphicon-file"></i> default</a>
-    (clear) and <a href="{{site.cdnUrl}}/css/query-builder.dark.min.css" target="_blank"><i class="glyphicon glyphicon-file"></i> dark</a>.
+    <a href="{{site.cdnUrl}}/css/query-builder.default.min.css" target="_blank"><i class="glyphicon glyphicon-file"></i>
+      default</a>
+    (clear) and <a href="{{site.cdnUrl}}/css/query-builder.dark.min.css" target="_blank"><i
+      class="glyphicon glyphicon-file"></i> dark</a>.
     Change the active theme by switching stylesheets. You cannot use both color-schemes on the same page.</p>
 </section>
 
@@ -1000,49 +1096,38 @@ operators: [
 
   <p>Available languages are (some are partially translated) :</p>
 
-  <table class="table table-bordered langs-table">
-    <tr>
-      <td><i class="flag flag-al"></i> Albanian</td>
-      <td><i class="flag flag-ar"></i> Arabic</td>
-      <td><i class="flag flag-az"></i> Azerbaijani</td>
-      <td><i class="flag flag-cs"></i> Czech</td>
-    </tr>
-    <tr>
-      <td><i class="flag flag-de"></i> German</td>
-      <td><i class="flag flag-dk"></i> Danish</td>
-      <td><i class="flag flag-es"></i> Spanish</td>
-      <td><i class="flag flag-gb"></i> English</td>
-    </tr>
-    <tr>
-      <td><i class="flag flag-fr"></i> French</td>
-      <td><i class="flag flag-it"></i> Italian</td>
-      <td><i class="flag flag-ir"></i> Farsi</td>
-      <td><i class="flag flag-nl"></i> Dutch</td>
-    </tr>
-    <tr>
-      <td><i class="flag flag-no"></i> Norwegian</td>
-      <td><i class="flag flag-pl"></i> Polish</td>
-      <td><i class="flag flag-pt-PT"></i> Portuguese</td>
-      <td><i class="flag flag-pt-BR"></i> Brazilian Portuguese</td>
-    </tr>
-    <tr>
-      <td><i class="flag flag-ro"></i> Romanian</td>
-      <td><i class="flag flag-ru"></i> Russian</td>
-      <td><i class="flag flag-tr"></i> Turkish</td>
-      <td><i class="flag flag-ua"></i> Ukrainian</td>
-    </tr>
-    <tr>
-      <td><i class="flag flag-zh-CN"></i> Simplified Chinese</td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
+  <div class="languages-list clearfix">
+    <span><i class="flag flag-al"></i> Albanian</span>
+    <span><i class="flag flag-ar"></i> Arabic</span>
+    <span><i class="flag flag-az"></i> Azerbaijani</span>
+    <span><i class="flag flag-bg"></i> Bulgarian</span>
+    <span><i class="flag flag-zh-CN"></i> Simplified Chinese</span>
+    <span><i class="flag flag-cs"></i> Czech</span>
+    <span><i class="flag flag-dk"></i> Danish</span>
+    <span><i class="flag flag-nl"></i> Dutch</span>
+    <span><i class="flag flag-gb"></i> English</span>
+    <span><i class="flag flag-ir"></i> Farsi</span>
+    <span><i class="flag flag-fr"></i> French</span>
+    <span><i class="flag flag-de"></i> German</span>
+    <span><i class="flag flag-el"></i> Greek</span>
+    <span><i class="flag flag-it"></i> Italian</span>
+    <span><i class="flag flag-no"></i> Norwegian</span>
+    <span><i class="flag flag-pl"></i> Polish</span>
+    <span><i class="flag flag-pt-PT"></i> Portuguese</span>
+    <span><i class="flag flag-pt-BR"></i> Brazilian Portuguese</span>
+    <span><i class="flag flag-ro"></i> Romanian</span>
+    <span><i class="flag flag-ru"></i> Russian</span>
+    <span><i class="flag flag-es"></i> Spanish</span>
+    <span><i class="flag flag-tr"></i> Turkish</span>
+    <span><i class="flag flag-ua"></i> Ukrainian</span>
+  </div>
 
   <p>Alternatively you can overwrite some translations with the <code>lang</code> option. It is very useful for custom
     operators and conditions.<br>
-    Default English strings are <a href="{{site.blobUrl}}/src/i18n/en.json"><i class="glyphicon glyphicon-file"></i> in
-      the source code</a>.</p>
+    Default English strings are
+    <a href="https://github.com/mistic100/jQuery-QueryBuilder/search?q=en.json+in:path">
+      <i class="glyphicon glyphicon-file"></i> in the source code
+    </a>.</p>
 
   <h3 id="icons">Icons</h3>
 
@@ -1089,7 +1174,7 @@ operators: [
 
   <h3 id="templates">Templates</h3>
 
-  <p>For very custom customizations, QueryBuilder provides a way to completely overwrite the HTML templates used to
+  <p>For very specific customizations, QueryBuilder provides a way to completely overwrite the HTML templates used to
     display rules and groups. It uses the <a href="http://olado.github.io/doT">doT.js</a> template engine by default,
     but
     can be used with most JS template engines, like <i>underscore.js</i> one.</p>
@@ -1180,19 +1265,14 @@ operators: [
 <link href="{{site.github.url}}/assets/flags/flags.css" rel="stylesheet">
 
 <style>
-  .langs-table {
-    layout: fixed;
-    border: none !important;
+  .languages-list {
+    margin-bottom: 1em;
   }
 
-  .langs-table td {
+  .languages-list span {
+    float: left;
+    display: block;
     width: 25%;
-    border: none !important;
-    padding: 0 !important;
-  }
-
-  .langs-table .flag {
-    display: inline-block;
   }
 
   .treeview .expand-collapse {
