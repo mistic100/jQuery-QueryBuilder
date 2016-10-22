@@ -244,7 +244,8 @@ QUnit.assert.match = function(actual, regex, message) {
 var basic_filters = [{
     id: 'name',
     label: 'Name',
-    type: 'string'
+    type: 'string',
+    value_separator: ','
 }, {
     id: 'category',
     label: 'Category',

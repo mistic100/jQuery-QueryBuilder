@@ -358,6 +358,35 @@ $(function(){
         );
     });
 
+    /**
+     * Test value separator
+     */
+    QUnit.test('value separator', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: [{
+                id: 'name',
+                operator: 'equal',
+                value: 'Mistic,Damien'
+            }]
+        });
+
+        $('[name=builder_rule_0_operator]').val('in').trigger('change');
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            {
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'in',
+                    value: ['Mistic', 'Damien']
+                }]
+            },
+            'Should split values on comma'
+        );
+    });
+
 
     var validation_filters = [{
         id: 'radio',

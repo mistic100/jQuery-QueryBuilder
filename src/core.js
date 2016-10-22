@@ -667,6 +667,8 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     }
 
     this.trigger('afterUpdateRuleOperator', rule);
+
+    this.updateRuleValue(rule);
 };
 
 /**

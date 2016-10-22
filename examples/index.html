@@ -176,6 +176,7 @@ var options = {
       en: 'Name',
       fr: 'Nom'
     },
+    value_separator: ',',
     type: 'string',
     optgroup: 'core',
     default_value: 'Mistic',
@@ -481,6 +482,10 @@ $('.set').on('click', function() {
         operator: 'equal',
         value: 'B.3'
       }]
+    }, {
+        id: 'name',
+        operator: 'in',
+        value: ['Mistic', 'Damien']
     }, {
         empty: true
     }]

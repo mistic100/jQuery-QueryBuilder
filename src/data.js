@@ -340,6 +340,12 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
             }
         }
 
+        if (operator.multiple && filter.value_separator) {
+            value = value.map(function(val) {
+                return val.split(filter.value_separator);
+            });
+        }
+
         if (operator.nb_inputs === 1) {
             value = value[0];
         }
@@ -393,6 +399,9 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
                     break;
 
                 default:
+                    if (operator.multiple && filter.value_separator && $.isArray(value[i])) {
+                        value[i] = value[i].join(filter.value_separator);
+                    }
                     $value.find('[name=' + name + ']').val(value[i]).trigger('change');
                     break;
             }
