@@ -119,11 +119,12 @@ QueryBuilder.DEFAULTS = {
 
     sort_filters: false,
     display_errors: true,
-    allow_sections: -1,
     allow_groups: -1,
     allow_empty: false,
     conditions: ['AND', 'OR'],
     default_condition: 'AND',
+    allow_sections: false,
+    default_section: null,
     exist_options: ['EXISTS', 'DOES NOT EXIST'],
     default_exists: 'EXISTS',
     inputs_separator: ' , ',
