@@ -41,11 +41,9 @@ QueryBuilder.templates.section = '\
 <dl id="{{= it.section_id }}" class="rules-section-container"> \
   <dt class="rules-section-header"> \
     <div class="btn-section pull-right section-actions"> \
-      {{? it.level>1 }} \
-        <button type="button" class="btn btn-xs btn-danger" data-delete="section"> \
-          <i class="{{= it.icons.remove_section }}"></i> {{= it.lang.delete_section }} \
-        </button> \
-      {{?}} \
+      <button type="button" class="btn btn-xs btn-danger" data-delete="section"> \
+        <i class="{{= it.icons.remove_section }}"></i> {{= it.lang.delete_section }} \
+      </button> \
     </div> \
     <div class="btn-group section-exists-options"> \
       {{~ it.exist_options: option }} \
