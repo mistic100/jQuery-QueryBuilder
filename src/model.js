@@ -147,7 +147,7 @@ Node.prototype.getPos = function() {
 Node.prototype.drop = function() {
     var model = this.model;
 
-    if (!this.isRoot()) {
+    if (!this.isRoot() && this.parent instanceof Group) {
         this.parent._removeNode(this);
     }
 
@@ -490,15 +490,15 @@ Section.prototype.setGroup = function($el) {
  * Clear out all rules
  */
 Section.prototype.empty = function() {
-    this.group.section_id = this.id;
-    this.group.empty();
+    this.group.drop();
+    this.group = null;
 };
 
 /**
  * Delete self
  */
 Section.prototype.drop = function() {
-    this.group.empty();
+    this.group.drop();
     Node.prototype.drop.call(this);
 };
 

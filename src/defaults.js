@@ -130,6 +130,7 @@ QueryBuilder.DEFAULTS = {
     inputs_separator: ' , ',
     select_placeholder: '------',
     display_empty_filter: true,
+    display_empty_stype_filter: true,
     default_filter: null,
     optgroups: {},
 

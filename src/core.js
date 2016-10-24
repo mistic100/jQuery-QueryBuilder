@@ -579,11 +579,8 @@ QueryBuilder.prototype.addSection = function(parent, addRule, data, flags) {
 
     if (this.settings.default_section) {
         model.id = this.settings.default_section;
-    } else {
-        model.id = this.sections[0].id;
+        this.addGroup(model, true, data, flags);
     }
-
-    this.addGroup(model, true, data, flags);
 
     return model;
 };
@@ -642,17 +639,31 @@ QueryBuilder.prototype.createSectionTypes = function(section) {
  */
 QueryBuilder.prototype.refreshSection = function(model) {
 
-    // Clear out the section if there's any rule that don't belong
-    var ok = true;
-    model.$el.find(Selectors.rule_container).each(function() {
-        var rule = Model($(this));
-        if (rule.section_id != model.id) {
-            ok = false;
+    if (model.id) {
+        // Clear out the section if there's any group or rule that don't belong
+        var ok = true;
+        model.$el.find(Selectors.group_container).each(function() {
+            var group = Model($(this));
+            if (group.section_id != model.id) {
+                ok = false;
+            }
+        });
+        if (ok) {
+            model.$el.find(Selectors.rule_container).each(function() {
+                var rule = Model($(this));
+                if (rule.section_id != model.id) {
+                    ok = false;
+                }
+            });
         }
-    });
-    if (!ok) {
+        if (!ok) {
+            model.empty();
+        }
+        if (!model.group) {
+            var group = this.addGroup(model, true);
+        }
+    } else {
         model.empty();
-        this.addRule(model.group);
     }
 
     this.trigger('afterRefreshSection', model);
