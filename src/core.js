@@ -314,8 +314,8 @@ QueryBuilder.prototype.bindEvents = function() {
 
         // add section button
         this.$el.on('click.queryBuilder', Selectors.add_section, function() {
-            var $section = $(this).closest(Selectors.group_container);
-            self.addSection(Model($section));
+            var $group = $(this).closest(Selectors.group_container);
+            self.addSection(Model($group));
         });
 
         // delete section button

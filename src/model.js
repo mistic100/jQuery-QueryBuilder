@@ -469,61 +469,7 @@ var Section = function(parent, $el) {
 Section.prototype = Object.create(Node.prototype);
 Section.prototype.constructor = Section;
 
-defineModelProperties(Section, ['exists']);
-
-/**
- * Set the root group of the section by jQuery element
- * @param {jQuery}
- * @return {Group} the new root group
- */
-Section.prototype.setGroup = function($el) {
-    this.group = new Group(this, $el);
-    this.group.parent = this;
-    this.group.section_id = this.id;
-    if (this.model !== null) {
-        this.model.trigger('set', this.group);
-    }
-    return this.group;
-};
-
-/**
- * Clear out all rules
- */
-Section.prototype.empty = function() {
-    this.group.drop();
-    this.group = null;
-};
-
-/**
- * Delete self
- */
-Section.prototype.drop = function() {
-    this.group.drop();
-    Node.prototype.drop.call(this);
-};
-
-// Section CLASS
-// ===============================
-/**
- * @param {Section}
- * @param {jQuery}
- */
-var Section = function(parent, $el) {
-    if (!(this instanceof Section)) {
-        return new Section(parent, $el);
-    }
-
-    Node.call(this, parent, $el);
-
-    this.group = null;
-    this.__.id = null;
-    this.__.exists = null;
-};
-
-Section.prototype = Object.create(Node.prototype);
-Section.prototype.constructor = Section;
-
-defineModelProperties(Section, ['exists']);
+Model.defineModelProperties(Section, ['exists']);
 
 /**
  * Set the root group of the section by jQuery element
