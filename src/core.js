@@ -13,7 +13,6 @@ QueryBuilder.prototype.init = function($el, options) {
         group_id: 0,
         rule_id: 0,
         generated_id: false,
-        has_sections: false,
         has_optgroup: false,
         has_operator_oprgroup: false,
         id: null,
@@ -63,9 +62,11 @@ QueryBuilder.prototype.init = function($el, options) {
     this.$el.addClass('query-builder form-inline');
 
     this.filters = this.checkFilters(this.filters);
-    for (var k in this.sections) {
-        if (this.sections.hasOwnProperty(k)) {
-            this.sections[k].filters = this.checkFilters(this.sections[k].filters);
+    if (this.settings.allow_sections) {
+        for (var k in this.sections) {
+            if (this.sections.hasOwnProperty(k)) {
+                this.sections[k].filters = this.checkFilters(this.sections[k].filters);
+            }
         }
     }
     this.operators = this.checkOperators(this.operators);
@@ -254,23 +255,6 @@ QueryBuilder.prototype.bindEvents = function() {
         }
     });
 
-    // section exists change
-    this.$el.on('change.queryBuilder', Selectors.section_exists_flag, function() {
-        if ($(this).is(':checked')) {
-            var $section = $(this).closest(Selectors.section_container);
-            Model($section).exists = $(this).val();
-        }
-    });
-
-    // section type change
-    this.$el.on('change.queryBuilder', Selectors.rule_stype, function() {
-        var sid = $(this).val();
-        var $section = $(this).closest(Selectors.section_container);
-        var model = Model($section)
-        model.id = sid;
-        self.refreshSection(model);
-    });
-
     // rule filter change
     this.$el.on('change.queryBuilder', Selectors.rule_filter, function() {
         var $rule = $(this).closest(Selectors.rule_container);
@@ -310,7 +294,24 @@ QueryBuilder.prototype.bindEvents = function() {
         });
     }
 
-    if (this.settings.allow_sections !== 0) {
+    if (this.settings.allow_sections) {
+        // section exists change
+        this.$el.on('change.queryBuilder', Selectors.section_exists_flag, function() {
+            if ($(this).is(':checked')) {
+                var $section = $(this).closest(Selectors.section_container);
+                Model($section).exists = $(this).val();
+            }
+        });
+
+        // section type change
+        this.$el.on('change.queryBuilder', Selectors.rule_stype, function() {
+            var sid = $(this).val();
+            var $section = $(this).closest(Selectors.section_container);
+            var model = Model($section)
+            model.id = sid;
+            self.refreshSection(model);
+        });
+
         // add section button
         this.$el.on('click.queryBuilder', Selectors.add_section, function() {
             var $section = $(this).closest(Selectors.group_container);
@@ -397,6 +398,9 @@ QueryBuilder.prototype.bindEvents = function() {
                 switch (field) {
                     case 'exists':
                         self.updateSectionExistsFlag(node);
+                        break;
+                    case 'flags':
+                        self.applySectionFlags(node);
                         break;
                 }
             }
@@ -903,6 +907,33 @@ QueryBuilder.prototype.applyGroupFlags = function(group) {
     }
 
     this.trigger('afterApplyGroupFlags', group);
+};
+
+/**
+ * Change section properties depending on flags.
+ * @param section {Section}
+ */
+QueryBuilder.prototype.applySectionFlags = function(section) {
+    var flags = section.flags;
+
+    if (flags.exists_readonly) {
+        section.$el.find('>' + Selectors.section_exists_flag).prop('disabled', true)
+            .parent().addClass('readonly');
+    }
+    if (flags.no_add_rule) {
+        section.$el.find(Selectors.add_rule).remove();
+    }
+    if (flags.no_add_group) {
+        section.$el.find(Selectors.add_group).remove();
+    }
+    if (flags.no_delete) {
+        section.$el.find(Selectors.delete_section).remove();
+    }
+    this.trigger('afterApplySectionFlags', section);
+
+    if (section.group) {
+        this.applyGroupFlags(section.group);
+    }
 };
 
 /**
