@@ -200,7 +200,7 @@ QueryBuilder.prototype.getRules = function(options) {
         }, function(model) {
             var rule = {
                 section: model.id,
-                exists: model.exists,
+                exists: model.exists
             };
             rule.group = parse(model.group);
             groupData.rules.push(rule);

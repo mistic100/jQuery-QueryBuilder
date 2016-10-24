@@ -289,11 +289,13 @@ QueryBuilder.prototype.getFilterById = function(id, sectionId) {
         return null;
     }
 
+    var filters = [];
     if (sectionId) {
         var s = this.getSectionById(sectionId);
-        var filters = s ? s.filters : [];
-    } else {
-        var filters = this.filters;
+        filters = s ? s.filters : [];
+    }
+    else {
+        filters = this.filters;
     }
     for (var i = 0, l = filters.length; i < l; i++) {
         if (filters[i].id == id) {

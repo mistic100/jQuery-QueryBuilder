@@ -307,7 +307,7 @@ QueryBuilder.prototype.bindEvents = function() {
         this.$el.on('change.queryBuilder', Selectors.rule_stype, function() {
             var sid = $(this).val();
             var $section = $(this).closest(Selectors.section_container);
-            var model = Model($section)
+            var model = Model($section);
             model.id = sid;
             self.refreshSection(model);
         });
@@ -459,10 +459,12 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
 
     var group_id = this.nextGroupId();
     var $group = $(this.getGroupTemplate(group_id, level, parent instanceof Section || parent.section_id ? true : false));
+    var model = null;
     if (parent instanceof Section) {
-        var model = parent.setGroup($group);
-    } else {
-        var model = parent.addGroup($group);
+        model = parent.setGroup($group);
+    }
+    else {
+        model = parent.addGroup($group);
     }
 
     model.data = data;
@@ -500,7 +502,7 @@ QueryBuilder.prototype.deleteGroup = function(group) {
         del&= this.deleteRule(rule);
     }, function(group) {
         del&= this.deleteGroup(group);
-    }, function (section) {
+    }, function(section) {
         del&= this.deleteSection(section);
     }, this);
 
@@ -662,7 +664,8 @@ QueryBuilder.prototype.refreshSection = function(model) {
         if (!model.group) {
             var group = this.addGroup(model, true);
         }
-    } else {
+    }
+    else {
         model.empty();
     }
 
@@ -733,15 +736,18 @@ QueryBuilder.prototype.deleteRule = function(rule) {
  * @param rule {Rule}
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
+    var filters = [];
     if (rule.section_id) {
         var section = this.getSectionById(rule.section_id);
         if (section) {
-            var filters = this.change('getRuleFilters', section.filters, rule);
-        } else {
-            var filters = this.change('getRuleFilters', [], rule);
+            filters = this.change('getRuleFilters', section.filters, rule);
         }
-    } else {
-        var filters = this.change('getRuleFilters', this.filters, rule);
+        else {
+            filters = this.change('getRuleFilters', [], rule);
+        }
+    }
+    else {
+        filters = this.change('getRuleFilters', this.filters, rule);
     }
     var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
 
