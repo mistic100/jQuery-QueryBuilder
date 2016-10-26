@@ -719,7 +719,8 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
             var d = s.default_filter || s.filters[0].id;
             model.filter = this.change('getDefaultFilter', this.getFilterById(d, s.id), model);
         }
-    } else {
+    }
+    else {
         if (this.settings.default_filter || !this.settings.display_empty_filter) {
             model.filter = this.change('getDefaultFilter',
                 this.getFilterById(this.settings.default_filter || this.filters[0].id),

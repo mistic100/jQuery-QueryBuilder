@@ -121,7 +121,7 @@ QueryBuilder.prototype.validate = function() {
         if (errors > 0) {
             return false;
         }
-        else if (done === 0 && (!self.settings.allow_empty || !group.isRoot() || !group.parent instanceof Section)) {
+        else if (done === 0 && (!self.settings.allow_empty || !group.isRoot() || !(group.parent instanceof Section))) {
             self.triggerValidationError(group, 'empty_group', null);
             return false;
         }
