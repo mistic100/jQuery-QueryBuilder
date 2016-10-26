@@ -259,7 +259,7 @@ QueryBuilder.prototype.bindEvents = function() {
     this.$el.on('change.queryBuilder', Selectors.rule_filter, function() {
         var $rule = $(this).closest(Selectors.rule_container);
         var m = Model($rule);
-        m.filter = self.getFilterById($(this).val(), m.section_id);
+        m.filter = self.getFilterById($(this).val(), m.section_type_id);
     });
 
     // rule operator change
@@ -396,6 +396,9 @@ QueryBuilder.prototype.bindEvents = function() {
             }
             else if (node instanceof Section) {
                 switch (field) {
+                    case 'type_id':
+                        self.updateSectionTypeId(node);
+                        break;
                     case 'exists':
                         self.updateSectionExistsFlag(node);
                         break;
@@ -458,7 +461,9 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     }
 
     var group_id = this.nextGroupId();
-    var $group = $(this.getGroupTemplate(group_id, level, parent instanceof Section || parent.section_id ? true : false));
+    var section_root = parent instanceof Section;
+    var in_section = section_root || parent.section_type_id;
+    var $group = $(this.getGroupTemplate(group_id, level, in_section, section_root));
     var model = null;
     if (parent instanceof Section) {
         model = parent.setGroup($group);
@@ -487,7 +492,7 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
  * @return {boolean} true if the group has been deleted
  */
 QueryBuilder.prototype.deleteGroup = function(group) {
-    if (group.isRoot()) {
+    if (group.isRoot() || group.parent instanceof Section) {
         return false;
     }
 
@@ -579,9 +584,9 @@ QueryBuilder.prototype.addSection = function(parent, addRule, data, flags) {
 
     this.createSectionTypes(model);
 
-    if (this.settings.default_section) {
-        model.id = this.settings.default_section;
-        this.addGroup(model, true, data, flags);
+    if (addRule && this.settings.default_section) {
+        model.type_id = this.settings.default_section;
+        this.addGroup(model, true);
     }
 
     return model;
@@ -606,6 +611,15 @@ QueryBuilder.prototype.deleteSection = function(section) {
     this.trigger('afterDeleteSection');
 
     return true;
+};
+
+/**
+ * Changes the type setting of a section
+ * @param section {Section}
+ */
+QueryBuilder.prototype.updateSectionTypeId = function(section) {
+    section.$el.find(Selectors.rule_stype).val(section.type_id ? section.type_id : '-1');
+    this.trigger('afterUpdateSectionTypeId', section);
 };
 
 /**
@@ -646,14 +660,14 @@ QueryBuilder.prototype.refreshSection = function(model) {
         var ok = true;
         model.$el.find(Selectors.group_container).each(function() {
             var group = Model($(this));
-            if (group.section_id != model.id) {
+            if (group.section_type_id != model.type_id) {
                 ok = false;
             }
         });
         if (ok) {
             model.$el.find(Selectors.rule_container).each(function() {
                 var rule = Model($(this));
-                if (rule.section_id != model.id) {
+                if (rule.section_type_id != model.type_id) {
                     ok = false;
                 }
             });
@@ -699,11 +713,19 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
 
     this.createRuleFilters(model);
 
-    if (this.settings.default_filter || !this.settings.display_empty_filter) {
-        model.filter = this.change('getDefaultFilter',
-            this.getFilterById(this.settings.default_filter || this.filters[0].id),
-            model
-        );
+    if (model.section_type_id) {
+        var s = this.getSectionById(model.section_type_id);
+        if (s.default_filter || !this.settings.display_empty_filter) {
+            var d = s.default_filter || s.filters[0].id;
+            model.filter = this.change('getDefaultFilter', this.getFilterById(d, s.id), model);
+        }
+    } else {
+        if (this.settings.default_filter || !this.settings.display_empty_filter) {
+            model.filter = this.change('getDefaultFilter',
+                this.getFilterById(this.settings.default_filter || this.filters[0].id),
+                model
+            );
+        }
     }
 
     return model;
@@ -737,8 +759,8 @@ QueryBuilder.prototype.deleteRule = function(rule) {
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
     var filters = [];
-    if (rule.section_id) {
-        var section = this.getSectionById(rule.section_id);
+    if (rule.section_type_id) {
+        var section = this.getSectionById(rule.section_type_id);
         if (section) {
             filters = this.change('getRuleFilters', section.filters, rule);
         }
@@ -767,7 +789,7 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
         return;
     }
 
-    var operators = this.getOperators(rule.filter);
+    var operators = this.getOperators(rule.filter, rule.section_type_id);
     var $operatorSelect = $(this.getRuleOperatorSelect(rule, operators));
 
     $operatorContainer.html($operatorSelect);

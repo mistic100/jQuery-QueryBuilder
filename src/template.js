@@ -15,7 +15,7 @@ QueryBuilder.templates.group = '\
           <i class="{{= it.icons.add_section }}"></i> {{= it.lang.add_section }} \
         </button> \
       {{?}} \
-      {{? it.level>1 }} \
+      {{? it.level>1 && !it.section_root }} \
         <button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
           <i class="{{= it.icons.remove_group }}"></i> {{= it.lang.delete_group }} \
         </button> \
@@ -133,12 +133,13 @@ QueryBuilder.templates.operatorSelect = '\
  * @param in_section {bool}
  * @return {string}
  */
-QueryBuilder.prototype.getGroupTemplate = function(group_id, level, in_section) {
+QueryBuilder.prototype.getGroupTemplate = function(group_id, level, in_section, section_root) {
     var h = this.templates.group({
         builder: this,
         group_id: group_id,
         level: level,
         in_section: in_section,
+        section_root: section_root,
         conditions: this.settings.conditions,
         icons: this.icons,
         lang: this.lang,
@@ -167,9 +168,8 @@ QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
 
 /**
  * Returns section HTML
- * @param group_id {string}
+ * @param section_id {string}
  * @param level {int}
- * @param in_section {bool}
  * @return {string}
  */
 QueryBuilder.prototype.getSectionTemplate = function(section_id, level) {

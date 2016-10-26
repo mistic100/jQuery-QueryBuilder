@@ -567,8 +567,7 @@ $('.change-theme').on('click', function() {
 });
 
 // set rules
-$('.set').on('click', function() {
-  $('#builder').queryBuilder('setRules', {
+var json_rules = {
     condition: 'AND',
     flags: {
       condition_readonly: true
@@ -583,6 +582,21 @@ $('.set').on('click', function() {
       },
       data: {
         unit: '€'
+      }
+    }, {
+      section: 'subquery-a',
+      exists: 'EXISTS',
+      group: {
+        condition: 'AND',
+        rules: [{
+          id: 'sqa-name',
+          operator: 'equal',
+          value: 'Name Within Subquery A'
+        }, {
+          id: 'sqa-category',
+          operator: 'in',
+          value: [2,3]
+        }]
       }
     }, {
       id: 'state',
@@ -610,7 +624,10 @@ $('.set').on('click', function() {
     }, {
         empty: true
     }]
-  });
+  };
+
+$('.set').on('click', function() {
+  $('#builder').queryBuilder('setRules', json_rules);
 });
 
 // set rules from MongoDB

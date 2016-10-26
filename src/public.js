@@ -121,7 +121,7 @@ QueryBuilder.prototype.validate = function() {
         if (errors > 0) {
             return false;
         }
-        else if (done === 0 && (!self.settings.allow_empty || !group.isRoot())) {
+        else if (done === 0 && (!self.settings.allow_empty || !group.isRoot() || !group.parent instanceof Section)) {
             self.triggerValidationError(group, 'empty_group', null);
             return false;
         }
@@ -199,7 +199,7 @@ QueryBuilder.prototype.getRules = function(options) {
             groupData.rules.push(parse(model));
         }, function(model) {
             var rule = {
-                section: model.id,
+                section: model.type_id,
                 exists: model.exists
             };
             rule.group = parse(model.group);
@@ -268,6 +268,27 @@ QueryBuilder.prototype.setRules = function(data) {
                     add(item, model);
                 }
             }
+            else if (item.section !== undefined) {
+                if (!self.settings.allow_sections) {
+                    self.reset();
+                    Utils.error('RulesParse', 'No sections are allowed');
+                }
+                else {
+                    var section = self.addSection(group, false, item.data, self.parseSectionFlags(item));
+                    if (section === null) {
+                        return;
+                    }
+                    section.type_id = item.section;
+                    section.exists = item.exists;
+                    if (item.group !== undefined) {
+                        var gmodel = self.addGroup(section, false, item.group.data, self.parseGroupFlags(item.group));
+                        if (gmodel === null) {
+                            return;
+                        }
+                        add(item.group, gmodel);
+                    }
+                }
+            }
             else {
                 if (!item.empty) {
                     if (item.id === undefined) {
@@ -284,7 +305,7 @@ QueryBuilder.prototype.setRules = function(data) {
                 }
 
                 if (!item.empty) {
-                    model.filter = self.getFilterById(item.id);
+                    model.filter = self.getFilterById(item.id, group.section_type_id);
                     model.operator = self.getOperatorByType(item.operator);
 
                     if (model.operator.nb_inputs !== 0 && item.value !== undefined) {

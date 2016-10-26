@@ -245,9 +245,9 @@ QueryBuilder.prototype.getSectionById = function(id) {
  * @param filter {string|object} (filter id name or filter object)
  * @return {object[]}
  */
-QueryBuilder.prototype.getOperators = function(filter) {
+QueryBuilder.prototype.getOperators = function(filter, sectionId) {
     if (typeof filter == 'string') {
-        filter = this.getFilterById(filter);
+        filter = this.getFilterById(filter, sectionId);
     }
 
     var result = [];
@@ -528,6 +528,51 @@ QueryBuilder.prototype.getGroupFlags = function(flags, all) {
     else {
         var ret = {};
         $.each(this.settings.default_group_flags, function(key, value) {
+            if (flags[key] !== value) {
+                ret[key] = flags[key];
+            }
+        });
+        return ret;
+    }
+};
+
+/**
+ * Clean section flags.
+ * @param section {object}
+ * @return {object}
+ */
+QueryBuilder.prototype.parseSectionFlags = function(section) {
+    var flags = $.extend({}, this.settings.default_section_flags);
+
+    if (section.readonly) {
+        $.extend(flags, {
+            exists_readonly: true,
+            no_add_rule: true,
+            no_add_group: true,
+            no_delete: true
+        });
+    }
+
+    if (section.flags) {
+        $.extend(flags, section.flags);
+    }
+
+    return this.change('parseSectionFlags', flags, section);
+};
+
+/**
+ * Get a copy of flags of a section.
+ * @param {object} flags
+ * @param {boolean} all - true to return all flags, false to return only changes from default
+ * @returns {object}
+ */
+QueryBuilder.prototype.getSectionFlags = function(flags, all) {
+    if (all) {
+        return $.extend({}, flags);
+    }
+    else {
+        var ret = {};
+        $.each(this.settings.default_section_flags, function(key, value) {
             if (flags[key] !== value) {
                 ret[key] = flags[key];
             }

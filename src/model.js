@@ -232,7 +232,7 @@ var Group = function(parent, $el) {
     Node.call(this, parent, $el);
 
     this.rules = [];
-    this.section_id = null;
+    this.section_type_id = null;
     this.__.condition = null;
 };
 
@@ -285,7 +285,7 @@ Group.prototype._appendNode = function(node, index, trigger) {
     this.rules.splice(index, 0, node);
     node.parent = this;
     if (!(node instanceof Section)) {
-        node.section_id = this.section_id;
+        node.section_type_id = this.section_type_id;
     }
 
     if (trigger && this.model !== null) {
@@ -435,7 +435,7 @@ var Rule = function(parent, $el) {
 
     Node.call(this, parent, $el);
 
-    this.section_id = null;
+    this.section_type_id = null;
 
     this.__.filter = null;
     this.__.operator = null;
@@ -462,14 +462,14 @@ var Section = function(parent, $el) {
     Node.call(this, parent, $el);
 
     this.group = null;
-    this.__.id = null;
+    this.__.type_id = null;
     this.__.exists = null;
 };
 
 Section.prototype = Object.create(Node.prototype);
 Section.prototype.constructor = Section;
 
-Model.defineModelProperties(Section, ['exists']);
+Model.defineModelProperties(Section, ['type_id', 'exists']);
 
 /**
  * Set the root group of the section by jQuery element
@@ -479,7 +479,7 @@ Model.defineModelProperties(Section, ['exists']);
 Section.prototype.setGroup = function($el) {
     this.group = new Group(this, $el);
     this.group.parent = this;
-    this.group.section_id = this.id;
+    this.group.section_type_id = this.type_id;
     if (this.model !== null) {
         this.model.trigger('set', this.group);
     }
