@@ -44,6 +44,7 @@
 
   "errors": {
     "no_filter": "No filter selected",
+    "no_type": "No section type selected",
     "empty_group": "The group is empty",
     "radio_empty": "No value selected",
     "checkbox_empty": "No value selected",

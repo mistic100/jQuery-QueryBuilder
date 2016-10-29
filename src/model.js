@@ -416,7 +416,12 @@ Group.prototype.contains = function(node, deep) {
         }, function(group) {
             return !group.contains(node, true);
         }, function(section) {
-            return !section.group.contains(node, true);
+            if (section.group) {
+                return !section.group.contains(node, true);
+            }
+            else {
+                return true;
+            }
         });
     }
 };
@@ -490,7 +495,9 @@ Section.prototype.setGroup = function($el) {
  * Clear out all rules
  */
 Section.prototype.empty = function() {
-    this.group.drop();
+    if (this.group) {
+        this.group.drop();
+    }
     this.group = null;
 };
 
@@ -498,7 +505,9 @@ Section.prototype.empty = function() {
  * Delete self
  */
 Section.prototype.drop = function() {
-    this.group.drop();
+    if (this.group) {
+        this.group.drop();
+    }
     Node.prototype.drop.call(this);
 };
 

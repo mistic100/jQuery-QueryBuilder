@@ -308,7 +308,7 @@ QueryBuilder.prototype.bindEvents = function() {
             var sid = $(this).val();
             var $section = $(this).closest(Selectors.section_container);
             var model = Model($section);
-            model.id = sid;
+            model.type_id = sid;
             self.refreshSection(model);
         });
 
@@ -492,7 +492,7 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
  * @return {boolean} true if the group has been deleted
  */
 QueryBuilder.prototype.deleteGroup = function(group) {
-    if (group.isRoot() || group.parent instanceof Section) {
+    if (group.isRoot()) {
         return false;
     }
 
@@ -603,8 +603,10 @@ QueryBuilder.prototype.deleteSection = function(section) {
         return false;
     }
 
-    if (!this.deleteGroup(section.group)) {
-        return false;
+    if (section.group) {
+        if (!this.deleteGroup(section.group)) {
+            return false;
+        }
     }
 
     section.drop();
@@ -655,7 +657,7 @@ QueryBuilder.prototype.createSectionTypes = function(section) {
  */
 QueryBuilder.prototype.refreshSection = function(model) {
 
-    if (model.id) {
+    if (model.type_id && model.type_id != '-1') {
         // Clear out the section if there's any group or rule that don't belong
         var ok = true;
         model.$el.find(Selectors.group_container).each(function() {
@@ -1003,7 +1005,9 @@ QueryBuilder.prototype.clearErrors = function(node) {
         }, function(group) {
             this.clearErrors(group);
         }, function(section) {
-            this.clearErrors(section.group);
+            if (section.group) {
+                this.clearErrors(section.group);
+            }
         }, this);
     }
 };

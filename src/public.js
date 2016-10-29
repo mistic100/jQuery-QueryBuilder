@@ -110,6 +110,11 @@ QueryBuilder.prototype.validate = function() {
                 errors++;
             }
         }, function(section) {
+            if (!section.type_id || section.type_id == '-1' || !section.group) {
+                self.triggerValidationError(section, 'no_type', null);
+                errors++;
+                return;
+            }
             if (parse(section.group)) {
                 done++;
             }
@@ -121,7 +126,7 @@ QueryBuilder.prototype.validate = function() {
         if (errors > 0) {
             return false;
         }
-        else if (done === 0 && (!self.settings.allow_empty || !group.isRoot() || !(group.parent instanceof Section))) {
+        else if (done === 0 && (!self.settings.allow_empty || !group.isRoot())) {
             self.triggerValidationError(group, 'empty_group', null);
             return false;
         }
@@ -202,7 +207,12 @@ QueryBuilder.prototype.getRules = function(options) {
                 section: model.type_id,
                 exists: model.exists
             };
-            rule.group = parse(model.group);
+            if (model.group) {
+                rule.group = parse(model.group);
+            }
+            else {
+                rule.group = null;
+            }
             groupData.rules.push(rule);
         });
 
