@@ -30,6 +30,11 @@ QueryBuilder.defaults({
     conditionOpposites: {
         'AND': 'OR',
         'OR': 'AND'
+    },
+
+    existsOpposites: {
+        'EXISTS': 'DOES NOT EXIST',
+        'DOES NOT EXIST': 'EXISTS'
     }
 });
 
@@ -115,6 +120,8 @@ QueryBuilder.extend({
                     }
                 }, function(group) {
                     this.invert(group, tempOpts);
+                }, function(section) {
+                    this.invert(section, tempOpts);
                 }, this);
             }
         }
@@ -131,6 +138,21 @@ QueryBuilder.extend({
                 else if (!options.silent_fail) {
                     Utils.error('InvertOperator', 'Unknown inverse of operator "{0}"', node.operator.type);
                 }
+            }
+        }
+        else if (node instanceof Section) {
+            // invert exists setting
+            if (this.settings.existsOpposites[node.exists]) {
+                node.exists = this.settings.existsOpposites[node.exists];
+            }
+            else if (!options.silent_fail) {
+                Utils.error('InvertExists', 'Unknown inverse of exists "{0}"', node.exists);
+            }
+
+            // recursive call
+            if (options.recursive && node.group) {
+                var tempOpts = $.extend({}, options, { trigger: false });
+                this.invert(node.group, tempOpts);
             }
         }
 
