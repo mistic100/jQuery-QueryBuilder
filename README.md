@@ -16,7 +16,7 @@ http://querybuilder.js.org
  * jQuery >= 1.10
  * Bootstrap >= 3.1 (CSS only)
  * [jQuery.extendext](https://github.com/mistic100/jQuery.extendext)
- * [doT.js](http://olado.github.io/doT) (@master until the author decide to publish a new version)
+ * [doT.js >= 1.0.3](http://olado.github.io/doT)
  * [MomentJS](http://momentjs.com) (optional, for Date/Time validation)
  * Other Bootstrap/jQuery plugins used by plugins
 

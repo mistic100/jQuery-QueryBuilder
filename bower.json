@@ -13,11 +13,11 @@
     "dist/css/query-builder.default.css"
   ],
   "dependencies": {
-    "jquery": ">= 1.9.0",
-    "bootstrap": ">= 3.1.0",
-    "moment": ">= 2.6.0",
-    "jquery-extendext": ">= 0.1.2",
-    "doT": "master"
+    "jquery": ">=1.9.0",
+    "bootstrap": ">=3.1.0",
+    "moment": ">=2.6.0",
+    "jquery-extendext": ">=0.1.2",
+    "doT": ">=1.0.3"
   },
   "devDependencies": {
     "blanket": "^1.1.0",
