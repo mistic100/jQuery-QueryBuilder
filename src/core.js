@@ -62,13 +62,7 @@ QueryBuilder.prototype.init = function($el, options) {
     this.$el.addClass('query-builder form-inline');
 
     this.filters = this.checkFilters(this.filters);
-    if (this.settings.allow_sections) {
-        for (var k in this.sections) {
-            if (this.sections.hasOwnProperty(k)) {
-                this.sections[k].filters = this.checkFilters(this.sections[k].filters);
-            }
-        }
-    }
+    this.sections = this.checkSections(this.sections);
     this.operators = this.checkOperators(this.operators);
 
     this.bindEvents();
@@ -89,19 +83,20 @@ QueryBuilder.prototype.init = function($el, options) {
  * Checks the configuration of each filter
  * @throws ConfigError
  */
-QueryBuilder.prototype.checkFilters = function(filters) {
+QueryBuilder.prototype.checkFilters = function(filters, section) {
     var definedFilters = [];
+    var sectiontag = function (i) { if (section) { return ' [section: {' + i + '}]'; } };
 
     if (!filters || filters.length === 0) {
-        Utils.error('Config', 'Missing filters list');
+        Utils.error('Config', 'Missing filters list' + sectiontag(0), section);
     }
 
     filters.forEach(function(filter, i) {
         if (!filter.id) {
-            Utils.error('Config', 'Missing filter {0} id', i);
+            Utils.error('Config', 'Missing filter {0} id' + sectiontag(1), i, section);
         }
         if (definedFilters.indexOf(filter.id) != -1) {
-            Utils.error('Config', 'Filter "{0}" already defined', filter.id);
+            Utils.error('Config', 'Filter "{0}" already defined' + sectiontag(1), filter.id, section);
         }
         definedFilters.push(filter.id);
 
@@ -109,20 +104,20 @@ QueryBuilder.prototype.checkFilters = function(filters) {
             filter.type = 'string';
         }
         else if (!QueryBuilder.types[filter.type]) {
-            Utils.error('Config', 'Invalid type "{0}"', filter.type);
+            Utils.error('Config', 'Invalid type "{0}"' + sectiontag(1), filter.type, section);
         }
 
         if (!filter.input) {
             filter.input = 'text';
         }
         else if (typeof filter.input != 'function' && QueryBuilder.inputs.indexOf(filter.input) == -1) {
-            Utils.error('Config', 'Invalid input "{0}"', filter.input);
+            Utils.error('Config', 'Invalid input "{0}"' + sectiontag(1), filter.input, section);
         }
 
         if (filter.operators) {
             filter.operators.forEach(function(operator) {
                 if (typeof operator != 'string') {
-                    Utils.error('Config', 'Filter operators must be global operators types (string)');
+                    Utils.error('Config', 'Filter operators must be global operators types (string)' + sectiontag(0), section);
                 }
             });
         }
@@ -149,7 +144,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
         switch (filter.input) {
             case 'radio': case 'checkbox':
                 if (!filter.values || filter.values.length < 1) {
-                    Utils.error('Config', 'Missing filter "{0}" values', filter.id);
+                    Utils.error('Config', 'Missing filter "{0}" values' + sectiontag(1), filter.id, section);
                 }
                 break;
 
@@ -160,7 +155,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
                     }
                     Utils.iterateOptions(filter.values, function(key) {
                         if (key == filter.placeholder_value) {
-                            Utils.error('Config', 'Placeholder of filter "{0}" overlaps with one of its values', filter.id);
+                            Utils.error('Config', 'Placeholder of filter "{0}" overlaps with one of its values' + sectiontag(1), filter.id, section);
                         }
                     });
                 }
@@ -186,6 +181,36 @@ QueryBuilder.prototype.checkFilters = function(filters) {
 
     return filters;
 };
+
+/**
+ * Checks the configuration of each section
+ * @throws ConfigError
+ */
+QueryBuilder.prototype.checkSections = function(sections) {
+    if (!this.settings.allow_sections) {
+        return [];
+    }
+
+    var definedSections = [];
+
+    if (!sections || sections.length === 0) {
+        Utils.error('Config', 'Missing sections list');
+    }
+
+    sections.forEach(function(section, i) {
+        if (!section.id) {
+            Utils.error('Config', 'Missing section {0} id', i);
+        }
+        if (definedSections.indexOf(section.id) != -1) {
+            Utils.error('Config', 'Section "{0}" already defined', section.id);
+        }
+        sections[i].filters = this.checkFilters(sections[i].filters, sections[i].id);
+        definedSections.push(section.id);
+    }, this);
+
+    return sections;
+};
+
 
 /**
  * Checks the configuration of each operator
