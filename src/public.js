@@ -264,21 +264,7 @@ QueryBuilder.prototype.setRules = function(data) {
         data.rules.forEach(function(item) {
             var model;
 
-            if (item.rules !== undefined) {
-                if (self.settings.allow_groups !== -1 && self.settings.allow_groups < group.level) {
-                    self.reset();
-                    Utils.error('RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
-                }
-                else {
-                    model = self.addGroup(group, false, item.data, self.parseGroupFlags(item));
-                    if (model === null) {
-                        return;
-                    }
-
-                    add(item, model);
-                }
-            }
-            else if (item.section !== undefined) {
+            if (item.section !== undefined) {
                 if (!self.settings.allow_sections) {
                     self.reset();
                     Utils.error('RulesParse', 'No sections are allowed');
@@ -297,6 +283,20 @@ QueryBuilder.prototype.setRules = function(data) {
                         }
                         add(item.group, gmodel);
                     }
+                }
+            }
+            else if (item.rules !== undefined) {
+                if (self.settings.allow_groups !== -1 && self.settings.allow_groups < group.level) {
+                    self.reset();
+                    Utils.error('RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
+                }
+                else {
+                    model = self.addGroup(group, false, item.data, self.parseGroupFlags(item));
+                    if (model === null) {
+                        return;
+                    }
+
+                    add(item, model);
                 }
             }
             else {
