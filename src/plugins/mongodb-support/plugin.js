@@ -7,6 +7,7 @@
 // ===============================
 QueryBuilder.defaults({
     mongoOperators: {
+        // @formatter:off
         equal:            function(v) { return v[0]; },
         not_equal:        function(v) { return { '$ne': v[0] }; },
         in:               function(v) { return { '$in': v }; },
@@ -27,6 +28,7 @@ QueryBuilder.defaults({
         is_not_empty:     function(v) { return { '$ne': '' }; },
         is_null:          function(v) { return null; },
         is_not_null:      function(v) { return { '$ne': null }; }
+        // @formatter:on
     },
 
     mongoRuleOperators: {
@@ -130,7 +132,7 @@ QueryBuilder.extend({
                     var ruleExpression = {};
                     var field = self.change('getMongoDBField', rule.field, rule);
                     ruleExpression[field] = mdb.call(self, values);
-                    parts.push(self.change('ruleToMongo', ruleExpression, rule));
+                    parts.push(self.change('ruleToMongo', ruleExpression, rule, values, mdb));
                 }
             });
 
