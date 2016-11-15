@@ -10,7 +10,7 @@ QueryBuilder.templates.group = '\
           <i class="{{= it.icons.add_group }}"></i> {{= it.lang.add_group }} \
         </button> \
       {{?}} \
-      {{? it.settings.allow_sections && !it.in_section }} \
+      {{? it.settings.allow_sections && it.settings.has_sections && !it.in_section }} \
         <button type="button" class="btn btn-xs btn-success" data-add="section"> \
           <i class="{{= it.icons.add_section }}"></i> {{= it.lang.add_section }} \
         </button> \

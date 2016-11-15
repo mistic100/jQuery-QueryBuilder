@@ -265,7 +265,7 @@ QueryBuilder.prototype.setRules = function(data) {
             var model;
 
             if (item.section !== undefined) {
-                if (!self.settings.allow_sections) {
+                if (!self.settings.allow_sections || !self.settings.has_sections) {
                     self.reset();
                     Utils.error('RulesParse', 'No sections are allowed');
                 }

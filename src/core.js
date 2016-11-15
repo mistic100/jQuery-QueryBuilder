@@ -65,6 +65,10 @@ QueryBuilder.prototype.init = function($el, options) {
     this.sections = this.checkSections(this.sections);
     this.operators = this.checkOperators(this.operators);
 
+    if (this.sections.length > 0) {
+        this.settings.has_sections = true;
+    }
+
     this.bindEvents();
     this.initPlugins();
 
@@ -193,10 +197,6 @@ QueryBuilder.prototype.checkSections = function(sections) {
 
     var definedSections = [];
 
-    if (!sections || sections.length === 0) {
-        Utils.error('Config', 'Missing sections list');
-    }
-
     sections.forEach(function(section, i) {
         if (!section.id) {
             Utils.error('Config', 'Missing section {0} id', i);
@@ -319,7 +319,7 @@ QueryBuilder.prototype.bindEvents = function() {
         });
     }
 
-    if (this.settings.allow_sections) {
+    if (this.settings.allow_sections && this.settings.has_sections) {
         // section exists change
         this.$el.on('change.queryBuilder', Selectors.section_exists_flag, function() {
             if ($(this).is(':checked')) {
