@@ -232,7 +232,7 @@ var Group = function(parent, $el) {
     Node.call(this, parent, $el);
 
     this.rules = [];
-    this.section_type_id = null;
+    this.__.section_type_id = null;
     this.__.condition = null;
 };
 
@@ -440,8 +440,7 @@ var Rule = function(parent, $el) {
 
     Node.call(this, parent, $el);
 
-    this.section_type_id = null;
-
+    this.__.section_type_id = null;
     this.__.filter = null;
     this.__.operator = null;
     this.__.flags = {};

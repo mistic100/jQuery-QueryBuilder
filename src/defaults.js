@@ -47,6 +47,7 @@ var Selectors = QueryBuilder.selectors = {
     value_container:      '.rule-value-container',
     error_container:      '.error-container',
     condition_container:  '.rules-group-header .group-conditions',
+    exists_container:     '.rules-section-header .section-exists-options',
 
     section_header:       '.rules-section-header',
     group_header:         '.rules-group-header',

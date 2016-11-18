@@ -1,5 +1,5 @@
 QueryBuilder.templates.group = '\
-<dl id="{{= it.group_id }}" class="rules-group-container"> \
+<dl id="{{= it.group_id }}" class="rules-group-container" data-stype="{{= it.section_type || "" }}"> \
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right group-actions"> \
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
@@ -38,7 +38,7 @@ QueryBuilder.templates.group = '\
 </dl>';
 
 QueryBuilder.templates.section = '\
-<dl id="{{= it.section_id }}" class="rules-section-container"> \
+<dl id="{{= it.section_id }}" class="rules-section-container" data-stype=""> \
   <dt class="rules-section-header"> \
     <div class="btn-section pull-right section-actions"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="section"> \
@@ -72,7 +72,7 @@ QueryBuilder.templates.stypeSelect = '\
 </select>';
 
 QueryBuilder.templates.rule = '\
-<li id="{{= it.rule_id }}" class="rule-container"> \
+<li id="{{= it.rule_id }}" class="rule-container" data-stype="{{= it.section_type || "" }}"> \
   <div class="rule-header"> \
     <div class="btn-group pull-right rule-actions"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
@@ -130,14 +130,17 @@ QueryBuilder.templates.operatorSelect = '\
  * Returns group HTML
  * @param group_id {string}
  * @param level {int}
+ * @param section_type {string}
  * @param in_section {bool}
+ * @param section_root {bool}
  * @return {string}
  */
-QueryBuilder.prototype.getGroupTemplate = function(group_id, level, in_section, section_root) {
+QueryBuilder.prototype.getGroupTemplate = function(group_id, level, section_type, in_section, section_root) {
     var h = this.templates.group({
         builder: this,
         group_id: group_id,
         level: level,
+        section_type: section_type,
         in_section: in_section,
         section_root: section_root,
         conditions: this.settings.conditions,
@@ -146,24 +149,26 @@ QueryBuilder.prototype.getGroupTemplate = function(group_id, level, in_section, 
         settings: this.settings
     });
 
-    return this.change('getGroupTemplate', h, level);
+    return this.change('getGroupTemplate', h, level, section_type, in_section, section_root);
 };
 
 /**
  * Returns rule HTML
  * @param rule_id {string}
+ * @param section_type {string}
  * @return {string}
  */
-QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
+QueryBuilder.prototype.getRuleTemplate = function(rule_id, section_type) {
     var h = this.templates.rule({
         builder: this,
         rule_id: rule_id,
+        section_type: section_type,
         icons: this.icons,
         lang: this.lang,
         settings: this.settings
     });
 
-    return this.change('getRuleTemplate', h);
+    return this.change('getRuleTemplate', h, section_type);
 };
 
 /**

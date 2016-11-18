@@ -402,6 +402,10 @@ QueryBuilder.prototype.bindEvents = function() {
                     case 'value':
                         self.updateRuleValue(node);
                         break;
+
+                    case 'section_type_id':
+                        self.updateRuleSectionTypeId(node);
+                        break;
                 }
             }
             else if (node instanceof Group) {
@@ -416,6 +420,10 @@ QueryBuilder.prototype.bindEvents = function() {
 
                     case 'condition':
                         self.updateGroupCondition(node);
+                        break;
+
+                    case 'section_type_id':
+                        self.updateGroupSectionTypeId(node);
                         break;
                 }
             }
@@ -487,8 +495,9 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
 
     var group_id = this.nextGroupId();
     var section_root = parent instanceof Section;
-    var in_section = section_root || parent.section_type_id;
-    var $group = $(this.getGroupTemplate(group_id, level, in_section, section_root));
+    var stype = section_root ? parent.type_id : parent.section_type_id;
+    var in_section = section_root || stype != undefined;
+    var $group = $(this.getGroupTemplate(group_id, level, stype, in_section, section_root));
     var model = null;
     if (parent instanceof Section) {
         model = parent.setGroup($group);
@@ -646,7 +655,26 @@ QueryBuilder.prototype.deleteSection = function(section) {
  */
 QueryBuilder.prototype.updateSectionTypeId = function(section) {
     section.$el.find(Selectors.rule_stype).val(section.type_id ? section.type_id : '-1');
+    section.$el.attr('data-stype', section.type_id);
     this.trigger('afterUpdateSectionTypeId', section);
+};
+
+/**
+ * Changes the section type setting of a group
+ * @param section {Section}
+ */
+QueryBuilder.prototype.updateGroupSectionTypeId = function(group) {
+    group.$el.attr('data-stype', group.section_type_id);
+    this.trigger('afterUpdateGroupSectionTypeId', group);
+};
+
+/**
+ * Changes the section type setting of a rule
+ * @param section {Section}
+ */
+QueryBuilder.prototype.updateRuleSectionTypeId = function(rule) {
+    rule.$el.attr('data-stype', rule.section_type_id);
+    this.trigger('afterUpdateRuleSectionTypeId', rule);
 };
 
 /**
@@ -727,7 +755,7 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
     }
 
     var rule_id = this.nextRuleId();
-    var $rule = $(this.getRuleTemplate(rule_id));
+    var $rule = $(this.getRuleTemplate(rule_id, parent.section_type_id));
     var model = parent.addRule($rule);
 
     if (data !== undefined) {
