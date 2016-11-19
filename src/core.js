@@ -429,12 +429,18 @@ QueryBuilder.prototype.bindEvents = function() {
             }
             else if (node instanceof Section) {
                 switch (field) {
+                    case 'error':
+                        self.displayError(node);
+                        break;
+
                     case 'type_id':
                         self.updateSectionTypeId(node);
                         break;
+
                     case 'exists':
                         self.updateSectionExistsFlag(node);
                         break;
+
                     case 'flags':
                         self.applySectionFlags(node);
                         break;
