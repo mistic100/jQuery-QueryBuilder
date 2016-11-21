@@ -144,20 +144,15 @@ $(function(){
      * Test change filters
      */
     QUnit.test('change-filters', function(assert) {
-        var filter_a = {
-            id: 'a',
-            type: 'string'
-        };
+        var filter_a = { id: 'a', type: 'string' };
+        var filter_b = { id: 'b', type: 'string' };
+        var filter_c = { id: 'c', type: 'string' };
+        var filter_d = { id: 'd', type: 'string' };
+        var filter_e = { id: 'e', type: 'string' };
+        var filter_f = { id: 'f', type: 'string' };
 
-        var filter_b = {
-            id: 'b',
-            type: 'string'
-        };
-
-        var filter_c = {
-            id: 'c',
-            type: 'string'
-        };
+        var section_a = { id: 'a', label: 'sec a', filters: [filter_d ] };
+        var section_b = { id: 'b', label: 'sec b', filters: [filter_e ] };
 
         var rule_a = {
             id: 'a',
@@ -165,7 +160,6 @@ $(function(){
             operator: 'equal',
             value: 'foo'
         };
-
         var rule_b = {
             id: 'b',
             field: 'b',
@@ -175,6 +169,7 @@ $(function(){
 
         $b.queryBuilder({
             filters: [filter_a, filter_b],
+            sections: [section_a, section_b],
             rules: [rule_a, rule_b]
         });
 
@@ -209,5 +204,17 @@ $(function(){
             ['-1', filter_c.id, filter_a.id, filter_b.id],
             'Should have added filter "a" after "c"'
         );
+
+        $('#builder_group_0>.rules-group-header>.group-actions [data-add=section]').trigger('click');
+        $('[name=builder_section_0_section_type]').val('a').trigger('change');
+
+        $b.queryBuilder('addFilter', filter_f, 0, 'a');
+
+        assert.optionsMatch(
+            $('#builder_rule_2 [name$=_filter] option'),
+            ['-1', filter_f.id, filter_d.id],
+            'Should have added filter "f" at begining for section "a"'
+        );
+
     });
 });
