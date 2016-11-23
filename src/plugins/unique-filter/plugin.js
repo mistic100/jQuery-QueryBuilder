@@ -5,6 +5,7 @@
 
 QueryBuilder.define('unique-filter', function() {
     this.status.used_filters = {};
+    this.status.used_filters_by_section = {};
 
     this.on('afterUpdateRuleFilter', this.updateDisabledFilters);
     this.on('afterDeleteRule', this.updateDisabledFilters);
@@ -21,9 +22,27 @@ QueryBuilder.define('unique-filter', function() {
 
         self.updateDisabledFilters();
 
-        if (e.value.id in self.status.used_filters) {
-            var found = self.filters.some(function(filter) {
-                if (!(filter.id in self.status.used_filters) || self.status.used_filters[filter.id].length > 0 && self.status.used_filters[filter.id].indexOf(model.parent) === -1) {
+        if (model.section_type_id === undefined) {
+            var used = self.status.used_filters;
+            var available = self.filters;
+        }
+        else {
+            var s = this.getSectionById(model.section_type_id);
+            if (s === undefined) {
+                Utils.error('UniqueFilter', 'Unknown section "${0}"', model.section_type_id);
+                e.value = undefined;
+                return;
+            }
+            if (self.status.used_filters_by_section[s.id] === undefined) {
+                self.status.used_filters_by_section[s.id] = {};
+            }
+            var used = self.status.used_filters_by_section[s.id];
+            var available = s.filters;
+        }
+
+        if (e.value.id in used) {
+            var found = available.some(function(filter) {
+                if (!(filter.id in used) || used[filter.id].length > 0 && used[filter.id].indexOf(model.parent) === -1) {
                     e.value = filter;
                     return true;
                 }
@@ -55,15 +74,32 @@ QueryBuilder.extend({
         (function walk(group) {
             group.each(function(rule) {
                 if (rule.filter && rule.filter.unique) {
-                    if (!self.status.used_filters[rule.filter.id]) {
-                        self.status.used_filters[rule.filter.id] = [];
+                    if (rule.section_type_id) {
+                        if (!self.status.used_filters_by_section[rule.section_type_id]) {
+                            self.status.used_filters_by_section[rule.section_type_id] = {};
+                        }
+                        if (!self.status.used_filters_by_section[rule.section_type_id][rule.filter.id]) {
+                            self.status.used_filters_by_section[rule.section_type_id][rule.filter.id] = [];
+                        }
+                        if (rule.filter.unique == 'group') {
+                            self.status.used_filters_by_section[rule.section_type_id][rule.filter.id].push(rule.parent);
+                        }
                     }
-                    if (rule.filter.unique == 'group') {
-                        self.status.used_filters[rule.filter.id].push(rule.parent);
+                    else {
+                        if (!self.status.used_filters[rule.filter.id]) {
+                            self.status.used_filters[rule.filter.id] = [];
+                        }
+                        if (rule.filter.unique == 'group') {
+                            self.status.used_filters[rule.filter.id].push(rule.parent);
+                        }
                     }
                 }
             }, function(group) {
                 walk(group);
+            }, function(section) {
+                if (section.group) {
+                    walk(section.group);
+                }
             });
         }(self.model.root));
 
@@ -78,6 +114,7 @@ QueryBuilder.extend({
         var self = e ? e.builder : this;
 
         self.status.used_filters = {};
+        self.status.used_filters_by_section = {};
 
         self.applyDisabledFilters(e);
     },
@@ -104,6 +141,20 @@ QueryBuilder.extend({
                     });
                 });
             }
+        });
+        $.each(self.status.used_filters_by_section, function(section_id, filters) {
+            $.each(filters, function(filterId, groups) {
+                if (groups.length === 0) {
+                    self.$el.find(Selectors.section_container + '[data-stype=' + section_id + '] ' + Selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
+                }
+                else {
+                    groups.forEach(function(group) {
+                        group.each(function(rule) {
+                            rule.$el.find(Selectors.section_container + '[data-stype=' + section_id + '] ' + Selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
+                        });
+                    });
+                }
+            });
         });
 
         // update Selectpicker
