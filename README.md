@@ -4,6 +4,7 @@
 [![CDN](https://img.shields.io/badge/cdn-jsdelivr-%23EB4C36.svg?style=flat-square)](http://www.jsdelivr.com/projects/jquery.query-builder)
 [![Build Status](https://img.shields.io/travis/mistic100/jQuery-QueryBuilder.svg?style=flat-square)](https://travis-ci.org/mistic100/jQuery-QueryBuilder)
 [![Coverage Status](https://img.shields.io/coveralls/mistic100/jQuery-QueryBuilder/master.svg?style=flat-square)](https://coveralls.io/r/mistic100/jQuery-QueryBuilder)
+[![Say thanks](https://img.shields.io/badge/SayThanks.io-%E2%98%80-1EAEDB.svg?style=flat-square)](https://saythanks.io/to/mistic100)
 
 jQuery plugin offering an simple interface to create complex queries.
 
