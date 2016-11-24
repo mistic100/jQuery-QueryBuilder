@@ -247,6 +247,11 @@ QueryBuilder.extend({
                 if (rule.rules && rule.rules.length > 0) {
                     parts.push('(' + nl + parse(rule) + nl + ')' + nl);
                 }
+                else if (rule.section) {
+                    var info = self.getSectionById(rule.section);
+                    var base_sql = info.base_sql !== undefined ? info.base_sql : 'SELECT * FROM ' + rule.section + ' WHERE ';
+                    parts.push('( ' + rule.exists + ' ( ' + base_sql + parse(rule.group) + ' ) )');
+                }
                 else {
                     var sql = self.settings.sqlOperators[rule.operator];
                     var ope = self.getOperatorByType(rule.operator);

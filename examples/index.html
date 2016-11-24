@@ -128,9 +128,10 @@ var options = {
     {
       id: 'subquery-a',
       label: 'Subquery A',
+      base_sql: 'SELECT a_id FROM section_a WHERE parent_id = 10 AND ',
       filters: [
         {
-          id: 'sqa-name',
+          id: 'sqa_name',
           label: {
             en: 'Subquery A Name',
             fr: 'Nom'
@@ -142,7 +143,7 @@ var options = {
           unique: true
         },
         {
-          id: 'sqa-category',
+          id: 'sqa_category',
           label: 'Subquery A Category',
           type: 'integer',
           input: 'checkbox',
@@ -169,7 +170,7 @@ var options = {
       label: 'Subquery B',
       filters: [
         {
-          id: 'sqb-name',
+          id: 'sqb_name',
           label: {
             en: 'Subquery B Name',
             fr: 'Nom'
@@ -181,7 +182,7 @@ var options = {
           unique: true
         },
         {
-          id: 'sqb-category',
+          id: 'sqb_category',
           label: 'Subquery B Category',
           type: 'integer',
           input: 'checkbox',
@@ -208,7 +209,7 @@ var options = {
       label: 'Subquery C',
       filters: [
         {
-          id: 'sqc-name',
+          id: 'sqc_name',
           label: {
             en: 'Subquery C Name',
             fr: 'Nom'
@@ -220,7 +221,7 @@ var options = {
           unique: true
         },
         {
-          id: 'sqc-category',
+          id: 'sqc_category',
           label: 'Subquery C Category',
           type: 'integer',
           input: 'checkbox',
