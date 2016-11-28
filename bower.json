@@ -17,7 +17,8 @@
     "bootstrap": ">=3.1.0",
     "moment": ">=2.6.0",
     "jquery-extendext": ">=0.1.2",
-    "doT": ">=1.0.3"
+    "doT": ">=1.0.3",
+    "interact": "^1.2.6"
   },
   "devDependencies": {
     "blanket": "^1.1.0",
@@ -26,8 +27,7 @@
     "bootbox": "^4.4.0",
     "awesome-bootstrap-checkbox": "^0.3.0",
     "sql-parser": "^1.1.0",
-    "bind-polyfill": "~1.0.0",
-    "interact": "^1.2.6"
+    "bind-polyfill": "~1.0.0"
   },
   "keywords": [
     "jquery",
