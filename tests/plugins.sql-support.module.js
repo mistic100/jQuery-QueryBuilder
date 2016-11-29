@@ -191,6 +191,41 @@ $(function () {
         );
     });
 
+    QUnit.test('Subqueries', function (assert) {
+
+        $b.queryBuilder({
+            filters: basic_filters,
+            sections: basic_sections,
+        });
+
+        // TODO: start here
+
+        $b.queryBuilder('setRulesFromSQL', nested_rules_sql);
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            nested_rules,
+            'Should parse SQL with deep nested rules'
+        );
+
+        $b.queryBuilder('reset');
+
+        $b.queryBuilder('setRulesFromSQL', 'a = 5');
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            {
+                condition: 'AND',
+                rules: [{
+                    id: 'a',
+                    operator: 'equal',
+                    value: 5
+                }]
+            },
+            'Should parse SQL with one rule'
+        );
+    });
+
 
     var basic_rules_sql_raw = {
         sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
