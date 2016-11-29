@@ -39,6 +39,20 @@ $(function(){
         );
     });
 
+    QUnit.test('Sections not allowed', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters,
+            sections: basic_sections,
+            rules: section_rules
+        });
+
+        assert.throws(
+            function(){ $b.queryBuilder('getMongo'); },
+            /Sections are not currently supported for MongoDB queries/,
+            'Should throw "Not supported" error'
+        );
+    });
+
     QUnit.test('All operators', function(assert) {
         $b.queryBuilder({
             filters: basic_filters,
