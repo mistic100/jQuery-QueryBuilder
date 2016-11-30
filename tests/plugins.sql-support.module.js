@@ -191,6 +191,84 @@ $(function () {
         );
     });
 
+    QUnit.test('Custom export/parsing', function (assert) {
+        var rules = {
+            condition: 'AND',
+            rules: [
+                {
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                },
+                {
+                    id: 'last_days',
+                    operator: 'greater',
+                    value: 5
+                }
+            ]
+        };
+
+        var sql = 'name = \'Mistic\' AND display_date > DATE_SUB(NOW(), INTERVAL 5 DAY)';
+
+        $b.queryBuilder({
+            filters: [
+                {
+                    id: 'name',
+                    type: 'string'
+                },
+                {
+                    id: 'last_days',
+                    field: 'display_date',
+                    type: 'integer',
+                    operators: ['greater']
+                }
+            ]
+        });
+
+        $b.on('ruleToSQL.queryBuilder.filter', function (e, rule, sqlValue, sqlOperator) {
+            if (rule.id === 'last_days') {
+                e.value = rule.field + ' ' + sqlOperator('DATE_SUB(NOW(), INTERVAL ' + sqlValue + ' DAY)');
+            }
+        });
+
+        $b.on('parseSQLNode.queryBuilder.filter', function (e) {
+            var data = e.value;
+            // left must be the field name and right must be the date_sub function
+            if (data.left && data.left.value == 'display_date' && data.operation == '>' && data.right && data.right.name == 'DATE_SUB') {
+                var right = data.right;
+                // 1st argument is "NOW()" and 2nd argument is a list
+                if (right.arguments.value.length === 2 && right.arguments.value[1].value.length === 3) {
+                    var params = right.arguments.value[1].value;
+                    // 1st item is "INTERVAL", 2nd item is the value, 3rd item is "DAY"
+                    if (params[0].value == 'INTERVAL' && params[2].value == 'DAY') {
+                        e.value = {
+                            id: 'last_days',
+                            operator: 'greater',
+                            value: params[1].value
+                        };
+                    }
+                }
+            }
+        });
+
+        $b.queryBuilder('setRules', rules);
+
+        assert.equal(
+            $b.queryBuilder('getSQL').sql,
+            sql,
+            'Should export custom date_sub function'
+        );
+
+        $b.queryBuilder('reset');
+        $b.queryBuilder('setRulesFromSQL', sql);
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            rules,
+            'Should parse date_sub function'
+        );
+    });
+
     QUnit.test('Get SQL with subqueries', function (assert) {
 
         $b.queryBuilder({

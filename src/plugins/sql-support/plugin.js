@@ -295,8 +295,12 @@ QueryBuilder.extend({
                         });
                     }
 
-                    var ruleExpression = self.change('getSQLField', rule.field, rule) + ' ' + sql.op.replace(/\?/, value);
-                    parts.push(self.change('ruleToSQL', ruleExpression, rule));
+                    var sqlFn = function(v) {
+                        return sql.op.replace(/\?/, v);
+                    };
+
+                    var ruleExpression = self.change('getSQLField', rule.field, rule) + ' ' + sqlFn(value);
+                    parts.push(self.change('ruleToSQL', ruleExpression, rule, value, sqlFn));
                 }
             });
 
@@ -463,10 +467,6 @@ QueryBuilder.extend({
             }
             // it's a leaf
             else {
-                if (data.left.value === undefined || data.right.value === undefined) {
-                    Utils.error('SQLParse', 'Missing field and/or value');
-                }
-
                 if ($.isPlainObject(data.right.value)) {
                     Utils.error('SQLParse', 'Value format not supported for {0}.', data.left.value);
                 }

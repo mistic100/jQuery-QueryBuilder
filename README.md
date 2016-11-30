@@ -4,6 +4,7 @@
 [![CDN](https://img.shields.io/badge/cdn-jsdelivr-%23EB4C36.svg?style=flat-square)](http://www.jsdelivr.com/projects/jquery.query-builder)
 [![Build Status](https://img.shields.io/travis/mistic100/jQuery-QueryBuilder.svg?style=flat-square)](https://travis-ci.org/mistic100/jQuery-QueryBuilder)
 [![Coverage Status](https://img.shields.io/coveralls/mistic100/jQuery-QueryBuilder/master.svg?style=flat-square)](https://coveralls.io/r/mistic100/jQuery-QueryBuilder)
+[![Say thanks](https://img.shields.io/badge/SayThanks.io-%E2%98%80-1EAEDB.svg?style=flat-square)](https://saythanks.io/to/mistic100)
 
 jQuery plugin offering an simple interface to create complex queries.
 
@@ -16,7 +17,7 @@ http://querybuilder.js.org
  * jQuery >= 1.10
  * Bootstrap >= 3.1 (CSS only)
  * [jQuery.extendext](https://github.com/mistic100/jQuery.extendext)
- * [doT.js](http://olado.github.io/doT) (@master until the author decide to publish a new version)
+ * [doT.js >= 1.0.3](http://olado.github.io/doT)
  * [MomentJS](http://momentjs.com) (optional, for Date/Time validation)
  * Other Bootstrap/jQuery plugins used by plugins
 

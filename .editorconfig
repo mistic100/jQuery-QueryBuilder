@@ -13,3 +13,6 @@ insert_final_newline = false
 
 [*.scss]
 indent_size = 2
+
+[*.html]
+indent_size = 2
