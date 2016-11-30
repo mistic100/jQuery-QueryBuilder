@@ -395,8 +395,7 @@ QueryBuilder.extend({
             }
 
             // data must be a SQL parser node
-            if ((!('operator' in data) && !('operand' in data))
-                && (!('operation' in data) || !('left' in data) || !('right' in data))) {
+            if ((!('operator' in data) && !('operand' in data)) && (!('operation' in data) || !('left' in data) || !('right' in data))) {
                 Utils.error('SQLParse', 'Unable to parse WHERE clause');
             }
 
@@ -426,14 +425,12 @@ QueryBuilder.extend({
             // it's a subquery
             else if (('operator') in data && ['EXISTS', 'NOT EXISTS'].indexOf(data.operator.toUpperCase()) !== -1) {
                 // find the section name
-                if (!('select' in data.operand) || !('source' in data.operand.select)
-                    || !('name' in data.operand.select.source)
-                    || !('value' in data.operand.select.source.name)) {
+                if (!('select' in data.operand) || !('source' in data.operand.select) || !('name' in data.operand.select.source) || !('value' in data.operand.select.source.name)) {
                     Utils.error('SQLParse', 'Unable to parse subquery: missing table name');
                 }
                 var section = self.change('sqlToSection', {
                     section: data.operand.select.source.name.value,
-                    exists: data.operator.toUpperCase(),
+                    exists: data.operator.toUpperCase()
                 }, data);
 
                 // find the where clause

@@ -22,9 +22,11 @@ QueryBuilder.define('unique-filter', function() {
 
         self.updateDisabledFilters();
 
+        var used = [];
+        var available = [];
         if (model.section_type_id === undefined) {
-            var used = self.status.used_filters;
-            var available = self.filters;
+            used = self.status.used_filters;
+            available = self.filters;
         }
         else {
             var s = this.getSectionById(model.section_type_id);
@@ -36,8 +38,8 @@ QueryBuilder.define('unique-filter', function() {
             if (self.status.used_filters_by_section[s.id] === undefined) {
                 self.status.used_filters_by_section[s.id] = {};
             }
-            var used = self.status.used_filters_by_section[s.id];
-            var available = s.filters;
+            used = self.status.used_filters_by_section[s.id];
+            available = s.filters;
         }
 
         if (e.value.id in used) {

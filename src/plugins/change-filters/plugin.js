@@ -47,7 +47,8 @@ QueryBuilder.extend({
         // replace filters
         if (section_id === undefined) {
             this.filters = filters;
-        } else {
+        }
+        else {
             var found = false;
             for (var i = 0; i < this.sections.length; i++) {
                 if (this.sections[i].id === section_id) {
@@ -78,7 +79,7 @@ QueryBuilder.extend({
                   }
               },
               updateBuilder,
-              function (section) {
+              function(section) {
                   if (section.group) {
                       updateBuilder(section.group);
                   }
@@ -127,13 +128,15 @@ QueryBuilder.extend({
             new_filters = [new_filters];
         }
 
+        var filters = [];
         if (section_id === undefined) {
-            var filters = $.extend(true, [], this.filters);
-        } else {
+            filters = $.extend(true, [], this.filters);
+        }
+        else {
             var found = false;
             for (var i = 0; i < this.sections.length; i++) {
                 if (this.sections[i].id === section_id) {
-                    var filters = $.extend(true, [], this.sections[i].filters);
+                    filters = $.extend(true, [], this.sections[i].filters);
                     found = true;
                 }
             }
@@ -172,13 +175,15 @@ QueryBuilder.extend({
      * @param {string,optional} remove these filters from a particular section
      */
     removeFilter: function(filter_ids, delete_orphans, section_id) {
+        var filters = [];
         if (section_id === undefined) {
-            var filters = $.extend(true, [], this.filters);
-        } else {
+            filters = $.extend(true, [], this.filters);
+        }
+        else {
             var found = false;
             for (var i = 0; i < this.sections.length; i++) {
                 if (this.sections[i].id === section_id) {
-                    var filters = $.extend(true, [], this.sections[i].filters);
+                    filters = $.extend(true, [], this.sections[i].filters);
                     found = true;
                 }
             }

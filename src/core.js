@@ -89,7 +89,7 @@ QueryBuilder.prototype.init = function($el, options) {
  */
 QueryBuilder.prototype.checkFilters = function(filters, section) {
     var definedFilters = [];
-    var sectiontag = function (i) { if (section) { return ' [section: {' + i + '}]'; } };
+    var sectiontag = function(i) { if (section) { return ' [section: {' + i + '}]'; } };
 
     if (!filters || filters.length === 0) {
         Utils.error('Config', 'Missing filters list' + sectiontag(0), section);
@@ -502,7 +502,7 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     var group_id = this.nextGroupId();
     var section_root = parent instanceof Section;
     var stype = section_root ? parent.type_id : parent.section_type_id;
-    var in_section = section_root || stype != undefined;
+    var in_section = section_root || stype !== undefined;
     var $group = $(this.getGroupTemplate(group_id, level, stype, in_section, section_root));
     var model = null;
     if (parent instanceof Section) {

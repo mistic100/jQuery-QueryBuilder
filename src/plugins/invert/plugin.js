@@ -151,8 +151,8 @@ QueryBuilder.extend({
 
             // recursive call
             if (options.recursive && node.group) {
-                var tempOpts = $.extend({}, options, { trigger: false });
-                this.invert(node.group, tempOpts);
+                var sectOpts = $.extend({}, options, { trigger: false });
+                this.invert(node.group, sectOpts);
             }
         }
 

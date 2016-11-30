@@ -24,10 +24,12 @@ QueryBuilder.define('sortable', function(options) {
         if (node instanceof Section) {
             return Selectors.rule_container + '[data-stype="' + node.type_id + '"], ' +
                 Selectors.group_container + '[data-stype="' + node.type_id + '"]';
-        } else if (node.section_type_id != undefined) {
+        }
+        else if (node.section_type_id !== undefined) {
             return Selectors.rule_container + '[data-stype="' + node.section_type_id + '"], ' +
                 Selectors.group_container + '[data-stype="' + node.section_type_id + '"]';
-        } else {
+        }
+        else {
             return Selectors.rule_container + '[data-stype=""], ' +
                 Selectors.group_container + '[data-stype=""], ' +
                 Selectors.section_container;
