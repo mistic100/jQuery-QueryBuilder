@@ -368,5 +368,13 @@ $(function(){
             'Should have added filter "f" at begining for section "a"'
         );
 
+        $b.queryBuilder('removeFilter', 'd', false, 'a');
+
+        assert.optionsMatch(
+            $('#builder_rule_2 [name$=_filter] option'),
+            ['-1', filter_f.id],
+            'Should have removed filter "d" for section "a"'
+        );
+
     });
 });
