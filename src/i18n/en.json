@@ -4,12 +4,19 @@
 
   "add_rule": "Add rule",
   "add_group": "Add group",
+  "add_section": "Add section",
   "delete_rule": "Delete",
   "delete_group": "Delete",
+  "delete_section": "Delete",
 
   "conditions": {
     "AND": "AND",
     "OR": "OR"
+  },
+
+  "exist_options": {
+    "EXISTS": "EXISTS",
+    "NOT EXISTS": "DOES NOT EXIST"
   },
 
   "operators": {
@@ -37,6 +44,7 @@
 
   "errors": {
     "no_filter": "No filter selected",
+    "no_type": "No section type selected",
     "empty_group": "The group is empty",
     "radio_empty": "No value selected",
     "checkbox_empty": "No value selected",

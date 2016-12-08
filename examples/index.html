@@ -124,6 +124,127 @@ var options = {
   //default_filter: 'name',
   sort_filters: true,
 
+  sections: [
+    {
+      id: 'subquery-a',
+      label: 'Subquery A',
+      base_sql: 'SELECT a_id FROM section_a WHERE parent_id = 10 AND ',
+      filters: [
+        {
+          id: 'sqa_name',
+          label: {
+            en: 'Subquery A Name',
+            fr: 'Nom'
+          },
+          type: 'string',
+          optgroup: 'core',
+          default_value: 'Subquery Name',
+          size: 30,
+          unique: true
+        },
+        {
+          id: 'sqa_category',
+          label: 'Subquery A Category',
+          type: 'integer',
+          input: 'checkbox',
+          optgroup: 'core',
+          values: {
+            1: 'Books',
+            2: 'Movies',
+            3: 'Music',
+            4: 'Tools',
+            5: 'Goodies',
+            6: 'Clothes'
+          },
+          colors: {
+            1: 'foo',
+            2: 'warning',
+            5: 'success'
+          },
+          operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
+        }
+      ]
+    },
+    {
+      id: 'subquery-b',
+      label: 'Subquery B',
+      filters: [
+        {
+          id: 'sqb_name',
+          label: {
+            en: 'Subquery B Name',
+            fr: 'Nom'
+          },
+          type: 'string',
+          optgroup: 'core',
+          default_value: 'Subquery Name',
+          size: 30,
+          unique: true
+        },
+        {
+          id: 'sqb_category',
+          label: 'Subquery B Category',
+          type: 'integer',
+          input: 'checkbox',
+          optgroup: 'core',
+          values: {
+            1: 'Books',
+            2: 'Movies',
+            3: 'Music',
+            4: 'Tools',
+            5: 'Goodies',
+            6: 'Clothes'
+          },
+          colors: {
+            1: 'foo',
+            2: 'warning',
+            5: 'success'
+          },
+          operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
+        }
+      ]
+    },
+    {
+      id: 'subquery-c',
+      label: 'Subquery C',
+      filters: [
+        {
+          id: 'sqc_name',
+          label: {
+            en: 'Subquery C Name',
+            fr: 'Nom'
+          },
+          type: 'string',
+          optgroup: 'core',
+          default_value: 'Subquery Name',
+          size: 30,
+          unique: true
+        },
+        {
+          id: 'sqc_category',
+          label: 'Subquery C Category',
+          type: 'integer',
+          input: 'checkbox',
+          optgroup: 'core',
+          values: {
+            1: 'Books',
+            2: 'Movies',
+            3: 'Music',
+            4: 'Tools',
+            5: 'Goodies',
+            6: 'Clothes'
+          },
+          colors: {
+            1: 'foo',
+            2: 'warning',
+            5: 'success'
+          },
+          operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
+        }
+      ]
+    }
+  ],
+
   optgroups: {
     core: {
       en: 'Core',
@@ -446,8 +567,7 @@ $('.change-theme').on('click', function() {
 });
 
 // set rules
-$('.set').on('click', function() {
-  $('#builder').queryBuilder('setRules', {
+var json_rules = {
     condition: 'AND',
     flags: {
       condition_readonly: true
@@ -462,6 +582,21 @@ $('.set').on('click', function() {
       },
       data: {
         unit: '€'
+      }
+    }, {
+      section: 'subquery-a',
+      exists: 'EXISTS',
+      group: {
+        condition: 'AND',
+        rules: [{
+          id: 'sqa-name',
+          operator: 'equal',
+          value: 'Name Within Subquery A'
+        }, {
+          id: 'sqa-category',
+          operator: 'in',
+          value: [2,3]
+        }]
       }
     }, {
       id: 'state',
@@ -489,7 +624,10 @@ $('.set').on('click', function() {
     }, {
         empty: true
     }]
-  });
+  };
+
+$('.set').on('click', function() {
+  $('#builder').queryBuilder('setRules', json_rules);
 });
 
 // set rules from MongoDB

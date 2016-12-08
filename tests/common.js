@@ -294,6 +294,58 @@ var basic_filters = [{
     }
 }];
 
+var basic_sections = [{
+    id: 'partner',
+    label: 'Partner',
+    filters: [{
+        id: 'name',
+        label: 'Partner Name',
+        type: 'string'
+    }, {
+        id: 'status',
+        label: 'Partnership Status',
+        type: 'string',
+        input: 'select',
+        multiple: true,
+        values: {
+            'ac': 'Active',
+            'in': 'Inactive',
+            'tr': 'Terminated'
+        }
+    }]
+}, {
+    id: 'related',
+    label: 'Releated Products',
+    filters: [{
+        id: 'name',
+        label: 'Name',
+        type: 'string'
+    }, {
+        id: 'price',
+        label: 'Price',
+        type: 'double',
+        validation: {
+            min: 0,
+            step: 0.01
+        }
+    }, {
+        id: 'category',
+        label: 'Category',
+        type: 'string',
+        input: 'select',
+        multiple: true,
+        values: {
+            'bk': 'Books',
+            'mo': 'Movies',
+            'mu': 'Music',
+            'to': 'Tools',
+            'go': 'Goodies',
+            'cl': 'Clothes'
+        },
+        operators: ['in', 'not_in', 'equal', 'not_equal', 'is_null', 'is_not_null']
+    }]
+}];
+
 var basic_rules = {
     condition: 'AND',
     rules: [{
@@ -319,5 +371,31 @@ var basic_rules = {
             operator: 'not_equal',
             value: '1234-azer-5678'
         }]
+    }]
+};
+
+var section_rules = {
+    condition: 'AND',
+    rules: [{
+        id: 'price',
+        field: 'price',
+        operator: 'less',
+        value: 10.25
+    }, {
+        section: 'partner',
+        group: {
+            condition: 'AND',
+            rules: [{
+                id: 'name',
+                field: 'name',
+                operator: 'begins_with',
+                value: 'Best'
+            }, {
+                id: 'status',
+                field: 'status',
+                operator: 'in',
+                value: [ 'ac', 'in' ]
+            }]
+        }
     }]
 };

@@ -147,7 +147,7 @@ Node.prototype.getPos = function() {
 Node.prototype.drop = function() {
     var model = this.model;
 
-    if (!this.isRoot()) {
+    if (!this.isRoot() && this.parent instanceof Group) {
         this.parent._removeNode(this);
     }
 
@@ -221,7 +221,7 @@ Node.prototype._move = function(group, index) {
 // GROUP CLASS
 // ===============================
 /**
- * @param {Group}
+ * @param {Group|Section}
  * @param {jQuery}
  */
 var Group = function(parent, $el) {
@@ -232,6 +232,7 @@ var Group = function(parent, $el) {
     Node.call(this, parent, $el);
 
     this.rules = [];
+    this.__.section_type_id = null;
     this.__.condition = null;
 };
 
@@ -248,6 +249,8 @@ Group.prototype.empty = function() {
         rule.drop();
     }, function(group) {
         group.drop();
+    }, function(section) {
+        section.drop();
     });
 };
 
@@ -281,6 +284,9 @@ Group.prototype._appendNode = function(node, index, trigger) {
 
     this.rules.splice(index, 0, node);
     node.parent = this;
+    if (!(node instanceof Section)) {
+        node.section_type_id = this.section_type_id;
+    }
 
     if (trigger && this.model !== null) {
         this.model.trigger('add', node, index);
@@ -307,6 +313,16 @@ Group.prototype.addGroup = function($el, index) {
  */
 Group.prototype.addRule = function($el, index) {
     return this._appendNode(new Rule(this, $el), index, true);
+};
+
+/**
+ * Add a Section by jQuery element at specified index
+ * @param {jQuery}
+ * @param {int,optional}
+ * @return {Section} the inserted section
+ */
+Group.prototype.addSection = function($el, index) {
+    return this._appendNode(new Section(this, $el), index, true);
 };
 
 /**
@@ -338,11 +354,13 @@ Group.prototype.getNodePos = function(node) {
  * @param {boolean,optional} iterate in reverse order, required if you delete nodes
  * @param {function} callback for Rules
  * @param {function,optional} callback for Groups
+ * @param {function,optional} callback for Sections
  * @return {boolean}
  */
-Group.prototype.each = function(reverse, cbRule, cbGroup, context) {
+Group.prototype.each = function(reverse, cbRule, cbGroup, cbSection, context) {
     if (typeof reverse == 'function') {
-        context = cbGroup;
+        context = cbSection;
+        cbSection = cbGroup;
         cbGroup = cbRule;
         cbRule = reverse;
         reverse = false;
@@ -359,6 +377,11 @@ Group.prototype.each = function(reverse, cbRule, cbGroup, context) {
         if (this.rules[i] instanceof Group) {
             if (cbGroup !== undefined) {
                 stop = cbGroup.call(context, this.rules[i]) === false;
+            }
+        }
+        else if (this.rules[i] instanceof Section) {
+            if (cbSection !== undefined) {
+                stop = cbSection.call(context, this.rules[i]) === false;
             }
         }
         else {
@@ -392,6 +415,13 @@ Group.prototype.contains = function(node, deep) {
             return true;
         }, function(group) {
             return !group.contains(node, true);
+        }, function(section) {
+            if (section.group) {
+                return !section.group.contains(node, true);
+            }
+            else {
+                return true;
+            }
         });
     }
 };
@@ -410,6 +440,7 @@ var Rule = function(parent, $el) {
 
     Node.call(this, parent, $el);
 
+    this.__.section_type_id = null;
     this.__.filter = null;
     this.__.operator = null;
     this.__.flags = {};
@@ -421,8 +452,68 @@ Rule.prototype.constructor = Rule;
 
 Model.defineModelProperties(Rule, ['filter', 'operator', 'value']);
 
+// Section CLASS
+// ===============================
+/**
+ * @param {Section}
+ * @param {jQuery}
+ */
+var Section = function(parent, $el) {
+    if (!(this instanceof Section)) {
+        return new Section(parent, $el);
+    }
+
+    Node.call(this, parent, $el);
+
+    this.group = null;
+    this.__.type_id = null;
+    this.__.exists = null;
+};
+
+Section.prototype = Object.create(Node.prototype);
+Section.prototype.constructor = Section;
+
+Model.defineModelProperties(Section, ['type_id', 'exists']);
+
+/**
+ * Set the root group of the section by jQuery element
+ * @param {jQuery}
+ * @return {Group} the new root group
+ */
+Section.prototype.setGroup = function($el) {
+    this.group = new Group(this, $el);
+    this.group.parent = this;
+    this.group.section_type_id = this.type_id;
+    if (this.model !== null) {
+        this.model.trigger('set', this.group);
+    }
+    return this.group;
+};
+
+/**
+ * Clear out all rules
+ */
+Section.prototype.empty = function() {
+    if (this.group) {
+        this.group.drop();
+    }
+    this.group = null;
+};
+
+/**
+ * Delete self
+ */
+Section.prototype.drop = function() {
+    if (this.group) {
+        this.group.drop();
+    }
+    Node.prototype.drop.call(this);
+};
+
 
 // EXPORT
 // ===============================
 QueryBuilder.Group = Group;
 QueryBuilder.Rule = Rule;
+QueryBuilder.Section = Section;
+

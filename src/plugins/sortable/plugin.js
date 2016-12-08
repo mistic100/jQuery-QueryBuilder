@@ -3,7 +3,6 @@
  * Enables drag & drop sort of rules.
  */
 
-Selectors.rule_and_group_containers = Selectors.rule_container + ', ' + Selectors.group_container;
 Selectors.drag_handle = '.drag-handle';
 
 QueryBuilder.define('sortable', function(options) {
@@ -21,10 +20,26 @@ QueryBuilder.define('sortable', function(options) {
     var ghost;
     var src;
 
+    var acceptable = function(node) {
+        if (node instanceof Section) {
+            return Selectors.rule_container + '[data-stype="' + node.type_id + '"], ' +
+                Selectors.group_container + '[data-stype="' + node.type_id + '"]';
+        }
+        else if (node.section_type_id !== undefined) {
+            return Selectors.rule_container + '[data-stype="' + node.section_type_id + '"], ' +
+                Selectors.group_container + '[data-stype="' + node.section_type_id + '"]';
+        }
+        else {
+            return Selectors.rule_container + '[data-stype=""], ' +
+                Selectors.group_container + '[data-stype=""], ' +
+                Selectors.section_container;
+        }
+    };
+
     /**
      * Init drag and drop
      */
-    this.on('afterAddRule afterAddGroup', function(e, node) {
+    this.on('afterAddRule afterAddGroup afterAddSection', function(e, node) {
         if (node == placeholder) {
             return;
         }
@@ -76,16 +91,18 @@ QueryBuilder.define('sortable', function(options) {
         /**
          * Configure drop on groups and rules
          */
-        interact(node.$el[0])
-            .dropzone({
-                accept: Selectors.rule_and_group_containers,
-                ondragenter: function(event) {
-                    moveSortableToTarget(placeholder, $(event.target));
-                },
-                ondrop: function(event) {
-                    moveSortableToTarget(src, $(event.target));
-                }
-            });
+        if (!(node instanceof Section)) {
+            interact(node.$el[0])
+                .dropzone({
+                    accept: acceptable(node),
+                    ondragenter: function(event) {
+                        moveSortableToTarget(placeholder, $(event.target));
+                    },
+                    ondrop: function(event) {
+                        moveSortableToTarget(src, $(event.target));
+                    }
+                });
+        }
 
         /**
          * Configure drop on group headers
@@ -93,7 +110,7 @@ QueryBuilder.define('sortable', function(options) {
         if (node instanceof Group) {
             interact(node.$el.find(Selectors.group_header)[0])
                 .dropzone({
-                    accept: Selectors.rule_and_group_containers,
+                    accept: acceptable(node),
                     ondragenter: function(event) {
                         moveSortableToTarget(placeholder, $(event.target));
                     },
@@ -107,7 +124,7 @@ QueryBuilder.define('sortable', function(options) {
     /**
      * Detach interactables
      */
-    this.on('beforeDeleteRule beforeDeleteGroup', function(e, node) {
+    this.on('beforeDeleteRule beforeDeleteGroup beforeDeleteSection', function(e, node) {
         if (!e.isDefaultPrevented()) {
             interact(node.$el[0]).unset();
 
@@ -148,10 +165,25 @@ QueryBuilder.define('sortable', function(options) {
     });
 
     /**
+     * Remove drag handle from non-sortable sections
+     */
+    this.on('parseSectionFlags.filter', function(flags) {
+        if (flags.value.no_sortable === undefined) {
+            flags.value.no_sortable = options.default_no_sortable;
+        }
+    });
+
+    this.on('afterApplySectionFlags', function(e, group) {
+        if (group.flags.no_sortable) {
+            group.$el.find('.drag-handle').remove();
+        }
+    });
+
+    /**
      * Modify templates
      */
-    this.on('getGroupTemplate.filter', function(h, level) {
-        if (level > 1) {
+    this.on('getGroupTemplate.filter', function(h, level, in_section, section_root) {
+        if (level > 1 && !section_root) {
             var $h = $(h.value);
             $h.find(Selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
             h.value = $h.prop('outerHTML');
@@ -161,6 +193,12 @@ QueryBuilder.define('sortable', function(options) {
     this.on('getRuleTemplate.filter', function(h) {
         var $h = $(h.value);
         $h.find(Selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+        h.value = $h.prop('outerHTML');
+    });
+
+    this.on('getSectionTemplate.filter', function(h) {
+        var $h = $(h.value);
+        $h.find(Selectors.exists_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
         h.value = $h.prop('outerHTML');
     });
 }, {

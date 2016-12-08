@@ -9,6 +9,7 @@ QueryBuilder.prototype.init = function($el, options) {
     this.settings = $.extendext(true, 'replace', {}, QueryBuilder.DEFAULTS, options);
     this.model = new Model();
     this.status = {
+        section_id: 0,
         group_id: 0,
         rule_id: 0,
         generated_id: false,
@@ -28,6 +29,7 @@ QueryBuilder.prototype.init = function($el, options) {
 
     // SETTINGS SHORTCUTS
     this.filters = this.settings.filters;
+    this.sections = this.settings.sections;
     this.icons = this.settings.icons;
     this.operators = this.settings.operators;
     this.templates = this.settings.templates;
@@ -60,7 +62,13 @@ QueryBuilder.prototype.init = function($el, options) {
     this.$el.addClass('query-builder form-inline');
 
     this.filters = this.checkFilters(this.filters);
+    this.sections = this.checkSections(this.sections);
     this.operators = this.checkOperators(this.operators);
+
+    if (this.sections.length > 0) {
+        this.settings.has_sections = true;
+    }
+
     this.bindEvents();
     this.initPlugins();
 
@@ -79,19 +87,20 @@ QueryBuilder.prototype.init = function($el, options) {
  * Checks the configuration of each filter
  * @throws ConfigError
  */
-QueryBuilder.prototype.checkFilters = function(filters) {
+QueryBuilder.prototype.checkFilters = function(filters, section) {
     var definedFilters = [];
+    var sectiontag = function(i) { if (section) { return ' [section: {' + i + '}]'; } };
 
     if (!filters || filters.length === 0) {
-        Utils.error('Config', 'Missing filters list');
+        Utils.error('Config', 'Missing filters list' + sectiontag(0), section);
     }
 
     filters.forEach(function(filter, i) {
         if (!filter.id) {
-            Utils.error('Config', 'Missing filter {0} id', i);
+            Utils.error('Config', 'Missing filter {0} id' + sectiontag(1), i, section);
         }
         if (definedFilters.indexOf(filter.id) != -1) {
-            Utils.error('Config', 'Filter "{0}" already defined', filter.id);
+            Utils.error('Config', 'Filter "{0}" already defined' + sectiontag(1), filter.id, section);
         }
         definedFilters.push(filter.id);
 
@@ -99,20 +108,20 @@ QueryBuilder.prototype.checkFilters = function(filters) {
             filter.type = 'string';
         }
         else if (!QueryBuilder.types[filter.type]) {
-            Utils.error('Config', 'Invalid type "{0}"', filter.type);
+            Utils.error('Config', 'Invalid type "{0}"' + sectiontag(1), filter.type, section);
         }
 
         if (!filter.input) {
             filter.input = 'text';
         }
         else if (typeof filter.input != 'function' && QueryBuilder.inputs.indexOf(filter.input) == -1) {
-            Utils.error('Config', 'Invalid input "{0}"', filter.input);
+            Utils.error('Config', 'Invalid input "{0}"' + sectiontag(1), filter.input, section);
         }
 
         if (filter.operators) {
             filter.operators.forEach(function(operator) {
                 if (typeof operator != 'string') {
-                    Utils.error('Config', 'Filter operators must be global operators types (string)');
+                    Utils.error('Config', 'Filter operators must be global operators types (string)' + sectiontag(0), section);
                 }
             });
         }
@@ -139,7 +148,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
         switch (filter.input) {
             case 'radio': case 'checkbox':
                 if (!filter.values || filter.values.length < 1) {
-                    Utils.error('Config', 'Missing filter "{0}" values', filter.id);
+                    Utils.error('Config', 'Missing filter "{0}" values' + sectiontag(1), filter.id, section);
                 }
                 break;
 
@@ -150,7 +159,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
                     }
                     Utils.iterateOptions(filter.values, function(key) {
                         if (key == filter.placeholder_value) {
-                            Utils.error('Config', 'Placeholder of filter "{0}" overlaps with one of its values', filter.id);
+                            Utils.error('Config', 'Placeholder of filter "{0}" overlaps with one of its values' + sectiontag(1), filter.id, section);
                         }
                     });
                 }
@@ -176,6 +185,32 @@ QueryBuilder.prototype.checkFilters = function(filters) {
 
     return filters;
 };
+
+/**
+ * Checks the configuration of each section
+ * @throws ConfigError
+ */
+QueryBuilder.prototype.checkSections = function(sections) {
+    if (!this.settings.allow_sections) {
+        return [];
+    }
+
+    var definedSections = [];
+
+    sections.forEach(function(section, i) {
+        if (!section.id) {
+            Utils.error('Config', 'Missing section {0} id', i);
+        }
+        if (definedSections.indexOf(section.id) != -1) {
+            Utils.error('Config', 'Section "{0}" already defined', section.id);
+        }
+        sections[i].filters = this.checkFilters(sections[i].filters, sections[i].id);
+        definedSections.push(section.id);
+    }, this);
+
+    return sections;
+};
+
 
 /**
  * Checks the configuration of each operator
@@ -248,7 +283,8 @@ QueryBuilder.prototype.bindEvents = function() {
     // rule filter change
     this.$el.on('change.queryBuilder', Selectors.rule_filter, function() {
         var $rule = $(this).closest(Selectors.rule_container);
-        Model($rule).filter = self.getFilterById($(this).val());
+        var m = Model($rule);
+        m.filter = self.getFilterById($(this).val(), m.section_type_id);
     });
 
     // rule operator change
@@ -283,6 +319,37 @@ QueryBuilder.prototype.bindEvents = function() {
         });
     }
 
+    if (this.settings.allow_sections && this.settings.has_sections) {
+        // section exists change
+        this.$el.on('change.queryBuilder', Selectors.section_exists_flag, function() {
+            if ($(this).is(':checked')) {
+                var $section = $(this).closest(Selectors.section_container);
+                Model($section).exists = $(this).val();
+            }
+        });
+
+        // section type change
+        this.$el.on('change.queryBuilder', Selectors.rule_stype, function() {
+            var sid = $(this).val();
+            var $section = $(this).closest(Selectors.section_container);
+            var model = Model($section);
+            model.type_id = sid;
+            self.refreshSection(model);
+        });
+
+        // add section button
+        this.$el.on('click.queryBuilder', Selectors.add_section, function() {
+            var $group = $(this).closest(Selectors.group_container);
+            self.addSection(Model($group));
+        });
+
+        // delete section button
+        this.$el.on('click.queryBuilder', Selectors.delete_section, function() {
+            var $section = $(this).closest(Selectors.section_container);
+            self.deleteSection(Model($section));
+        });
+    }
+
     // model events
     this.model.on({
         'drop': function(e, node) {
@@ -297,6 +364,10 @@ QueryBuilder.prototype.bindEvents = function() {
                 node.$el.insertAfter(node.parent.rules[index - 1].$el);
             }
             self.refreshGroupsConditions();
+        },
+        'set': function(e, node) {
+            node.parent.$el.find('>' + Selectors.section_body).empty().append(node.$el);
+            self.updateSectionExistsFlag(node.parent);
         },
         'move': function(e, node, group, index) {
             node.$el.detach();
@@ -331,9 +402,13 @@ QueryBuilder.prototype.bindEvents = function() {
                     case 'value':
                         self.updateRuleValue(node);
                         break;
+
+                    case 'section_type_id':
+                        self.updateRuleSectionTypeId(node);
+                        break;
                 }
             }
-            else {
+            else if (node instanceof Group) {
                 switch (field) {
                     case 'error':
                         self.displayError(node);
@@ -345,6 +420,29 @@ QueryBuilder.prototype.bindEvents = function() {
 
                     case 'condition':
                         self.updateGroupCondition(node);
+                        break;
+
+                    case 'section_type_id':
+                        self.updateGroupSectionTypeId(node);
+                        break;
+                }
+            }
+            else if (node instanceof Section) {
+                switch (field) {
+                    case 'error':
+                        self.displayError(node);
+                        break;
+
+                    case 'type_id':
+                        self.updateSectionTypeId(node);
+                        break;
+
+                    case 'exists':
+                        self.updateSectionExistsFlag(node);
+                        break;
+
+                    case 'flags':
+                        self.applySectionFlags(node);
                         break;
                 }
             }
@@ -402,8 +500,17 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     }
 
     var group_id = this.nextGroupId();
-    var $group = $(this.getGroupTemplate(group_id, level));
-    var model = parent.addGroup($group);
+    var section_root = parent instanceof Section;
+    var stype = section_root ? parent.type_id : parent.section_type_id;
+    var in_section = section_root || stype !== undefined;
+    var $group = $(this.getGroupTemplate(group_id, level, stype, in_section, section_root));
+    var model = null;
+    if (parent instanceof Section) {
+        model = parent.setGroup($group);
+    }
+    else {
+        model = parent.addGroup($group);
+    }
 
     model.data = data;
     model.flags = $.extend({}, this.settings.default_group_flags, flags);
@@ -440,6 +547,8 @@ QueryBuilder.prototype.deleteGroup = function(group) {
         del&= this.deleteRule(rule);
     }, function(group) {
         del&= this.deleteGroup(group);
+    }, function(section) {
+        del&= this.deleteSection(section);
     }, this);
 
     if (del) {
@@ -476,8 +585,166 @@ QueryBuilder.prototype.refreshGroupsConditions = function() {
 
         group.each(function(rule) {}, function(group) {
             walk(group);
+        }, function(section) {
+            if (section.group) {
+                walk(section.group);
+            }
         }, this);
     }(this.model.root));
+};
+
+/**
+ * Add a new section
+ * @param parent {Group}
+ * @param addRule {bool,optional} add a default empty rule
+ * @param data {mixed,optional} section custom data
+ * @param flags {object,optional} flags to apply to the section
+ * @return section {Section}
+ */
+QueryBuilder.prototype.addSection = function(parent, addRule, data, flags) {
+    addRule = (addRule === undefined || addRule === true);
+
+    var level = parent.level + 1;
+
+    var e = this.trigger('beforeAddSection', parent, addRule, level);
+    if (e.isDefaultPrevented()) {
+        return null;
+    }
+
+    var section_id = this.nextSectionId();
+    var $section = $(this.getSectionTemplate(section_id, level));
+    var model = parent.addSection($section);
+
+    model.data = data;
+    model.flags = $.extend({}, this.settings.default_section_flags, flags);
+
+    this.trigger('afterAddSection', model);
+
+    model.exists = this.settings.default_exists;
+
+    this.createSectionTypes(model);
+
+    if (addRule && this.settings.default_section) {
+        model.type_id = this.settings.default_section;
+        this.addGroup(model, true);
+    }
+
+    return model;
+};
+
+/**
+ * Tries to delete a section. The section is not deleted if at least one rule is no_delete.
+ * @param section {Section}
+ * @return {boolean} true if the section has been deleted
+ */
+QueryBuilder.prototype.deleteSection = function(section) {
+    var e = this.trigger('beforeDeleteSection', section);
+    if (e.isDefaultPrevented()) {
+        return false;
+    }
+
+    if (section.group) {
+        if (!this.deleteGroup(section.group)) {
+            return false;
+        }
+    }
+
+    section.drop();
+    this.trigger('afterDeleteSection');
+
+    return true;
+};
+
+/**
+ * Changes the type setting of a section
+ * @param section {Section}
+ */
+QueryBuilder.prototype.updateSectionTypeId = function(section) {
+    section.$el.find(Selectors.rule_stype).val(section.type_id ? section.type_id : '-1');
+    section.$el.attr('data-stype', section.type_id);
+    this.trigger('afterUpdateSectionTypeId', section);
+};
+
+/**
+ * Changes the section type setting of a group
+ * @param section {Section}
+ */
+QueryBuilder.prototype.updateGroupSectionTypeId = function(group) {
+    group.$el.attr('data-stype', group.section_type_id);
+    this.trigger('afterUpdateGroupSectionTypeId', group);
+};
+
+/**
+ * Changes the section type setting of a rule
+ * @param section {Section}
+ */
+QueryBuilder.prototype.updateRuleSectionTypeId = function(rule) {
+    rule.$el.attr('data-stype', rule.section_type_id);
+    this.trigger('afterUpdateRuleSectionTypeId', rule);
+};
+
+/**
+ * Changes the exists setting of a section
+ * @param section {Section}
+ */
+QueryBuilder.prototype.updateSectionExistsFlag = function(section) {
+    section.$el.find('>' + Selectors.section_exists_flag).each(function() {
+        var $this = $(this);
+        $this.prop('checked', $this.val() === section.exists);
+        $this.parent().toggleClass('active', $this.val() === section.exists);
+    });
+
+    this.trigger('afterUpdateSectionExistsFlag', section);
+};
+
+/**
+ * Create the type <select> for a section
+ * @param section {Section}
+ */
+QueryBuilder.prototype.createSectionTypes = function(section) {
+    var stypes = this.change('getSectionTypes', this.sections, section);
+    var $stypesSelect = $(this.getSectionTypeSelect(section, stypes));
+
+    section.$el.find(Selectors.stype_container).html($stypesSelect);
+
+    this.trigger('afterCreateSectionStypes', section);
+};
+
+/**
+ * Refreshes a section after a type change
+ * @param section {Section}
+ */
+QueryBuilder.prototype.refreshSection = function(model) {
+
+    if (model.type_id && model.type_id != '-1') {
+        // Clear out the section if there's any group or rule that don't belong
+        var ok = true;
+        model.$el.find(Selectors.group_container).each(function() {
+            var group = Model($(this));
+            if (group.section_type_id != model.type_id) {
+                ok = false;
+            }
+        });
+        if (ok) {
+            model.$el.find(Selectors.rule_container).each(function() {
+                var rule = Model($(this));
+                if (rule.section_type_id != model.type_id) {
+                    ok = false;
+                }
+            });
+        }
+        if (!ok) {
+            model.empty();
+        }
+        if (!model.group) {
+            var group = this.addGroup(model, true);
+        }
+    }
+    else {
+        model.empty();
+    }
+
+    this.trigger('afterRefreshSection', model);
 };
 
 /**
@@ -494,7 +761,7 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
     }
 
     var rule_id = this.nextRuleId();
-    var $rule = $(this.getRuleTemplate(rule_id));
+    var $rule = $(this.getRuleTemplate(rule_id, parent.section_type_id));
     var model = parent.addRule($rule);
 
     if (data !== undefined) {
@@ -507,11 +774,20 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
 
     this.createRuleFilters(model);
 
-    if (this.settings.default_filter || !this.settings.display_empty_filter) {
-        model.filter = this.change('getDefaultFilter',
-            this.getFilterById(this.settings.default_filter || this.filters[0].id),
-            model
-        );
+    if (model.section_type_id) {
+        var s = this.getSectionById(model.section_type_id);
+        if (s.default_filter || !this.settings.display_empty_filter) {
+            var d = s.default_filter || s.filters[0].id;
+            model.filter = this.change('getDefaultFilter', this.getFilterById(d, s.id), model);
+        }
+    }
+    else {
+        if (this.settings.default_filter || !this.settings.display_empty_filter) {
+            model.filter = this.change('getDefaultFilter',
+                this.getFilterById(this.settings.default_filter || this.filters[0].id),
+                model
+            );
+        }
     }
 
     return model;
@@ -544,7 +820,19 @@ QueryBuilder.prototype.deleteRule = function(rule) {
  * @param rule {Rule}
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
-    var filters = this.change('getRuleFilters', this.filters, rule);
+    var filters = [];
+    if (rule.section_type_id) {
+        var section = this.getSectionById(rule.section_type_id);
+        if (section) {
+            filters = this.change('getRuleFilters', section.filters, rule);
+        }
+        else {
+            filters = this.change('getRuleFilters', [], rule);
+        }
+    }
+    else {
+        filters = this.change('getRuleFilters', this.filters, rule);
+    }
     var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
 
     rule.$el.find(Selectors.filter_container).html($filterSelect);
@@ -563,7 +851,7 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
         return;
     }
 
-    var operators = this.getOperators(rule.filter);
+    var operators = this.getOperators(rule.filter, rule.section_type_id);
     var $operatorSelect = $(this.getRuleOperatorSelect(rule, operators));
 
     $operatorContainer.html($operatorSelect);
@@ -731,6 +1019,33 @@ QueryBuilder.prototype.applyGroupFlags = function(group) {
 };
 
 /**
+ * Change section properties depending on flags.
+ * @param section {Section}
+ */
+QueryBuilder.prototype.applySectionFlags = function(section) {
+    var flags = section.flags;
+
+    if (flags.exists_readonly) {
+        section.$el.find('>' + Selectors.section_exists_flag).prop('disabled', true)
+            .parent().addClass('readonly');
+    }
+    if (flags.no_add_rule) {
+        section.$el.find(Selectors.add_rule).remove();
+    }
+    if (flags.no_add_group) {
+        section.$el.find(Selectors.add_group).remove();
+    }
+    if (flags.no_delete) {
+        section.$el.find(Selectors.delete_section).remove();
+    }
+    this.trigger('afterApplySectionFlags', section);
+
+    if (section.group) {
+        this.applyGroupFlags(section.group);
+    }
+};
+
+/**
  * Clear all errors markers
  * @param node {Node,optional} default is root Group
  */
@@ -748,6 +1063,10 @@ QueryBuilder.prototype.clearErrors = function(node) {
             rule.error = null;
         }, function(group) {
             this.clearErrors(group);
+        }, function(section) {
+            if (section.group) {
+                this.clearErrors(section.group);
+            }
         }, this);
     }
 };

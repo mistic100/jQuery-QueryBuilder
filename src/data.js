@@ -213,13 +213,41 @@ QueryBuilder.prototype.nextRuleId = function() {
 };
 
 /**
+ * Returns an incremented section ID
+ * @return {string}
+ */
+QueryBuilder.prototype.nextSectionId = function() {
+    return this.status.id + '_section_' + (this.status.section_id++);
+};
+
+/**
+ * Returns a particular section by its id
+ * @throws UndefinedSectionError
+ * @param sectionId {string}
+ * @return {object|null}
+ */
+QueryBuilder.prototype.getSectionById = function(id) {
+    if (id == '-1') {
+        return null;
+    }
+
+    for (var i = 0, l = this.sections.length; i < l; i++) {
+        if (this.sections[i].id == id) {
+            return this.sections[i];
+        }
+    }
+
+    Utils.error('UndefinedSection', 'Undefined section "{0}"', id);
+};
+
+/**
  * Returns the operators for a filter
  * @param filter {string|object} (filter id name or filter object)
  * @return {object[]}
  */
-QueryBuilder.prototype.getOperators = function(filter) {
+QueryBuilder.prototype.getOperators = function(filter, sectionId) {
     if (typeof filter == 'string') {
-        filter = this.getFilterById(filter);
+        filter = this.getFilterById(filter, sectionId);
     }
 
     var result = [];
@@ -253,16 +281,25 @@ QueryBuilder.prototype.getOperators = function(filter) {
  * Returns a particular filter by its id
  * @throws UndefinedFilterError
  * @param filterId {string}
+ * @param sectionId {string|null}
  * @return {object|null}
  */
-QueryBuilder.prototype.getFilterById = function(id) {
+QueryBuilder.prototype.getFilterById = function(id, sectionId) {
     if (id == '-1') {
         return null;
     }
 
-    for (var i = 0, l = this.filters.length; i < l; i++) {
-        if (this.filters[i].id == id) {
-            return this.filters[i];
+    var filters = [];
+    if (sectionId) {
+        var s = this.getSectionById(sectionId);
+        filters = s ? s.filters : [];
+    }
+    else {
+        filters = this.filters;
+    }
+    for (var i = 0, l = filters.length; i < l; i++) {
+        if (filters[i].id == id) {
+            return filters[i];
         }
     }
 
@@ -491,6 +528,51 @@ QueryBuilder.prototype.getGroupFlags = function(flags, all) {
     else {
         var ret = {};
         $.each(this.settings.default_group_flags, function(key, value) {
+            if (flags[key] !== value) {
+                ret[key] = flags[key];
+            }
+        });
+        return ret;
+    }
+};
+
+/**
+ * Clean section flags.
+ * @param section {object}
+ * @return {object}
+ */
+QueryBuilder.prototype.parseSectionFlags = function(section) {
+    var flags = $.extend({}, this.settings.default_section_flags);
+
+    if (section.readonly) {
+        $.extend(flags, {
+            exists_readonly: true,
+            no_add_rule: true,
+            no_add_group: true,
+            no_delete: true
+        });
+    }
+
+    if (section.flags) {
+        $.extend(flags, section.flags);
+    }
+
+    return this.change('parseSectionFlags', flags, section);
+};
+
+/**
+ * Get a copy of flags of a section.
+ * @param {object} flags
+ * @param {boolean} all - true to return all flags, false to return only changes from default
+ * @returns {object}
+ */
+QueryBuilder.prototype.getSectionFlags = function(flags, all) {
+    if (all) {
+        return $.extend({}, flags);
+    }
+    else {
+        var ret = {};
+        $.each(this.settings.default_section_flags, function(key, value) {
             if (flags[key] !== value) {
                 ret[key] = flags[key];
             }

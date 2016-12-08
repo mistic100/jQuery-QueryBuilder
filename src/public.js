@@ -39,6 +39,7 @@ QueryBuilder.prototype.reset = function() {
 QueryBuilder.prototype.clear = function() {
     this.status.group_id = 0;
     this.status.rule_id = 0;
+    this.status.section_id = 0;
 
     if (this.model.root) {
         this.model.root.drop();
@@ -104,6 +105,18 @@ QueryBuilder.prototype.validate = function() {
 
         }, function(group) {
             if (parse(group)) {
+                done++;
+            }
+            else {
+                errors++;
+            }
+        }, function(section) {
+            if (!section.type_id || section.type_id == '-1' || !section.group) {
+                self.triggerValidationError(section, 'no_type', null);
+                errors++;
+                return;
+            }
+            if (parse(section.group)) {
                 done++;
             }
             else {
@@ -190,7 +203,27 @@ QueryBuilder.prototype.getRules = function(options) {
 
         }, function(model) {
             groupData.rules.push(parse(model));
-        }, this);
+        }, function(model) {
+            var sectionData = {
+                section: model.type_id,
+                exists: model.exists
+            };
+            if (model.group) {
+                sectionData.group = parse(model.group);
+            }
+            else {
+                sectionData.group = null;
+            }
+
+            if (options.get_flags) {
+                var flags = self.getRuleFlags(model.flags, options.get_flags === 'all');
+                if (!$.isEmptyObject(flags)) {
+                    sectionData.flags = flags;
+                }
+            }
+
+            groupData.rules.push(sectionData);
+        });
 
         return self.change('groupToJson', groupData, group);
 
@@ -240,7 +273,31 @@ QueryBuilder.prototype.setRules = function(data) {
         data.rules.forEach(function(item) {
             var model;
 
-            if (item.rules !== undefined) {
+            if (item.section !== undefined) {
+                if (!self.settings.allow_sections || !self.settings.has_sections) {
+                    self.reset();
+                    Utils.error('RulesParse', 'No sections are allowed');
+                }
+                else {
+                    var section = self.addSection(group, false, item.data, self.parseSectionFlags(item));
+                    if (section === null) {
+                        return;
+                    }
+                    section.type_id = item.section;
+                    if (item.exists === undefined) {
+                        item.exists = self.settings.default_exists;
+                    }
+                    section.exists = item.exists;
+                    if (item.group !== undefined) {
+                        var gmodel = self.addGroup(section, false, item.group.data, self.parseGroupFlags(item.group));
+                        if (gmodel === null) {
+                            return;
+                        }
+                        add(item.group, gmodel);
+                    }
+                }
+            }
+            else if (item.rules !== undefined) {
                 if (self.settings.allow_groups !== -1 && self.settings.allow_groups < group.level) {
                     self.reset();
                     Utils.error('RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
@@ -270,7 +327,7 @@ QueryBuilder.prototype.setRules = function(data) {
                 }
 
                 if (!item.empty) {
-                    model.filter = self.getFilterById(item.id);
+                    model.filter = self.getFilterById(item.id, group.section_type_id);
                     model.operator = self.getOperatorByType(item.operator);
 
                     if (model.operator.nb_inputs !== 0 && item.value !== undefined) {

@@ -10,6 +10,12 @@ $group-border-color: #DCC896 !default;
 $group-border: 1px solid $group-border-color !default;
 $group-padding: 10px !default;
 
+// sections
+$section-background-color: rgba(196, 173, 237, .5) !default;
+$section-border-color: #AD92DB !default;
+$section-border: 1px solid $section-border-color !default;
+$section-padding: 10px !default;
+
 // rules
 $rule-background-color: rgba(255, 255, 255, .9) !default;
 $rule-border-color: #EEE !default;
@@ -112,6 +118,31 @@ $ticks-position: 5px, 10px !default;
 
     select, input[type=text], input[type=number] {
       padding: 1px;
+    }
+  }
+
+  // SECTIONS
+  .rules-section-container {
+    @extend %base-container;
+
+    padding: $section-padding;
+    padding-bottom: #{$section-padding - $item-vertical-spacing};
+    border: $section-border;
+    background: $section-background-color;
+  }
+
+  .rules-section-header {
+    margin-bottom: $section-padding;
+
+    .section-exists-options {
+      .btn.readonly:not(.active),
+      input[name$=_exists] {
+        display: none;
+      }
+
+      .btn.readonly {
+        border-radius: 3px;
+      }
     }
   }
 

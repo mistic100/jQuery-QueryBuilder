@@ -247,6 +247,11 @@ QueryBuilder.extend({
                 if (rule.rules && rule.rules.length > 0) {
                     parts.push('(' + nl + parse(rule) + nl + ')' + nl);
                 }
+                else if (rule.section) {
+                    var info = self.getSectionById(rule.section);
+                    var base_sql = 'SELECT * FROM ' + rule.section + ' WHERE ';
+                    parts.push('( ' + rule.exists + ' ( ' + base_sql + parse(rule.group) + ' ) )');
+                }
                 else {
                     var sql = self.settings.sqlOperators[rule.operator];
                     var ope = self.getOperatorByType(rule.operator);
@@ -381,6 +386,12 @@ QueryBuilder.extend({
                 return;
             }
 
+            // a plugin returned a section
+            if ('section' in data && 'exists' in data && 'group' in data) {
+                curr.rules.push(data);
+                return;
+            }
+
             // a plugin returned a rule
             if ('id' in data && 'operator' in data && 'value' in data) {
                 curr.rules.push(data);
@@ -388,12 +399,12 @@ QueryBuilder.extend({
             }
 
             // data must be a SQL parser node
-            if (!('left' in data) || !('right' in data) || !('operation' in data)) {
+            if ((!('operator' in data) && !('operand' in data)) && (!('operation' in data) || !('left' in data) || !('right' in data))) {
                 Utils.error('SQLParse', 'Unable to parse WHERE clause');
             }
 
             // it's a node
-            if (['AND', 'OR'].indexOf(data.operation.toUpperCase()) !== -1) {
+            if (('operation') in data && ['AND', 'OR'].indexOf(data.operation.toUpperCase()) !== -1) {
                 // create a sub-group if the condition is not the same and it's not the first level
                 if (i > 0 && curr.condition != data.operation.toUpperCase()) {
                     var group = self.change('sqlToGroup', {
@@ -414,6 +425,45 @@ QueryBuilder.extend({
 
                 curr = next;
                 flatten(data.right, i);
+            }
+            // it's a subquery
+            else if (('operator') in data && ['EXISTS', 'NOT EXISTS'].indexOf(data.operator.toUpperCase()) !== -1) {
+                // find the section name
+                if (!('select' in data.operand) || !('source' in data.operand.select) || !('name' in data.operand.select.source) || !('value' in data.operand.select.source.name)) {
+                    Utils.error('SQLParse', 'Unable to parse subquery: missing table name');
+                }
+                var section = self.change('sqlToSection', {
+                    section: data.operand.select.source.name.value,
+                    exists: data.operator.toUpperCase()
+                }, data);
+
+                // find the where clause
+                if (!('where' in data.operand.select) || !('conditions' in data.operand.select.where)) {
+                    Utils.error('SQLParse', 'Unable to parse subquery: no where clause found');
+                }
+
+                // allow plugins to manually parse or handle special cases
+                var sdata = self.change('parseSQLNode', data.operand.select.where.conditions);
+
+                // a plugin returned a group
+                if ('rules' in sdata && 'condition' in sdata) {
+                    section.group = sdata;
+                }
+                // create root group for section
+                else {
+                    var sgroup = self.change('sqlToGroup', {
+                        condition: self.settings.default_condition,
+                        rules: []
+                    }, sdata);
+                    section.group = sgroup;
+                }
+
+                // push the section
+                curr.rules.push(section);
+                curr = section.group;
+
+                // parse each part of the group
+                flatten(sdata);
             }
             // it's a leaf
             else {

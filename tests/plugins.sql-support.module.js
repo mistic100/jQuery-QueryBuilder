@@ -269,6 +269,42 @@ $(function () {
         );
     });
 
+    QUnit.test('Get SQL with subqueries', function (assert) {
+
+        $b.queryBuilder({
+            filters: basic_filters,
+            sections: basic_sections,
+            rules: section_rules
+        });
+
+        assert.deepEqual(
+            $b.queryBuilder('getSQL', false),
+            section_rules_sql,
+            'Should create SQL query with sections'
+        );
+    });
+
+    QUnit.test('Set from SQL with subqueries', function (assert) {
+
+        $b.queryBuilder({
+            filters: basic_filters,
+            sections: basic_sections
+        });
+
+        $b.queryBuilder('setRulesFromSQL', section_rules_sql);
+
+        var result = $b.queryBuilder('getRules');
+        assert.rulesMatch(
+            result,
+            section_rules,
+            'Should parse SQL with rules that include sections'
+        );
+        assert.rulesMatch(
+            result.rules[1].group.rules,
+            section_rules.rules[1].group.rules,
+            'Should parse SQL with rules that include sections'
+        );
+    });
 
     var basic_rules_sql_raw = {
         sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '
@@ -307,6 +343,33 @@ $(function () {
             category_2: 'mu',
             id_1: '1234-azer-5678'
         }
+    };
+
+    var section_rules_sql = {
+        sql: 'name IS NOT NULL AND ( EXISTS ( SELECT * FROM partner WHERE name LIKE(\'%foo%\') AND status NOT IN(\'in\', \'tr\') ) )'
+    };
+
+    var section_rules = {
+        condition: 'AND',
+        rules: [{
+            id: 'name',
+            operator: 'is_not_null',
+        },{
+            section: 'partner',
+            exists: 'EXISTS',
+            group: {
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'contains',
+                    value: 'foo'
+                }, {
+                    id: 'status',
+                    operator: 'not_in',
+                    value: ['in', 'tr']
+                }]
+            }
+        }]
     };
 
     var all_operators_rules = {

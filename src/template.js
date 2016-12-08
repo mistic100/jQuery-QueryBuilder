@@ -1,5 +1,5 @@
 QueryBuilder.templates.group = '\
-<dl id="{{= it.group_id }}" class="rules-group-container"> \
+<dl id="{{= it.group_id }}" class="rules-group-container" data-stype="{{= it.section_type || "" }}"> \
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right group-actions"> \
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
@@ -10,7 +10,12 @@ QueryBuilder.templates.group = '\
           <i class="{{= it.icons.add_group }}"></i> {{= it.lang.add_group }} \
         </button> \
       {{?}} \
-      {{? it.level>1 }} \
+      {{? it.settings.allow_sections && it.settings.has_sections && !it.in_section }} \
+        <button type="button" class="btn btn-xs btn-success" data-add="section"> \
+          <i class="{{= it.icons.add_section }}"></i> {{= it.lang.add_section }} \
+        </button> \
+      {{?}} \
+      {{? it.level>1 && !it.section_root }} \
         <button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
           <i class="{{= it.icons.remove_group }}"></i> {{= it.lang.delete_group }} \
         </button> \
@@ -32,8 +37,42 @@ QueryBuilder.templates.group = '\
   </dd> \
 </dl>';
 
+QueryBuilder.templates.section = '\
+<dl id="{{= it.section_id }}" class="rules-section-container" data-stype=""> \
+  <dt class="rules-section-header"> \
+    <div class="btn-section pull-right section-actions"> \
+      <button type="button" class="btn btn-xs btn-danger" data-delete="section"> \
+        <i class="{{= it.icons.remove_section }}"></i> {{= it.lang.delete_section }} \
+      </button> \
+    </div> \
+    <div class="btn-group section-exists-options"> \
+      {{~ it.exist_options: option }} \
+        <label class="btn btn-xs btn-primary"> \
+          <input type="radio" name="{{= it.section_id }}_exists" value="{{= option }}"> {{= it.lang.exist_options[option] || option }} \
+        </label> \
+      {{~}} \
+    </div> \
+    {{? it.settings.display_errors }} \
+      <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
+    {{?}} \
+  </dt> \
+  <div class="rule-stype-container"></div> \
+  <dd class="rules-section-body"> \
+  </dd> \
+</dl>';
+
+QueryBuilder.templates.stypeSelect = '\
+<select class="form-control" name="{{= it.section.id }}_section_type"> \
+  {{? it.settings.display_empty_stype_filter }} \
+    <option value="-1">{{= it.settings.select_placeholder }}</option> \
+  {{?}} \
+  {{~ it.stypes: stype }} \
+    <option value="{{= stype.id }}">{{= it.translate(stype.label) }}</option> \
+  {{~}} \
+</select>';
+
 QueryBuilder.templates.rule = '\
-<li id="{{= it.rule_id }}" class="rule-container"> \
+<li id="{{= it.rule_id }}" class="rule-container" data-stype="{{= it.section_type || "" }}"> \
   <div class="rule-header"> \
     <div class="btn-group pull-right rule-actions"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
@@ -91,37 +130,85 @@ QueryBuilder.templates.operatorSelect = '\
  * Returns group HTML
  * @param group_id {string}
  * @param level {int}
+ * @param section_type {string}
+ * @param in_section {bool}
+ * @param section_root {bool}
  * @return {string}
  */
-QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
+QueryBuilder.prototype.getGroupTemplate = function(group_id, level, section_type, in_section, section_root) {
     var h = this.templates.group({
         builder: this,
         group_id: group_id,
         level: level,
+        section_type: section_type,
+        in_section: in_section,
+        section_root: section_root,
         conditions: this.settings.conditions,
         icons: this.icons,
         lang: this.lang,
         settings: this.settings
     });
 
-    return this.change('getGroupTemplate', h, level);
+    return this.change('getGroupTemplate', h, level, section_type, in_section, section_root);
 };
 
 /**
  * Returns rule HTML
  * @param rule_id {string}
+ * @param section_type {string}
  * @return {string}
  */
-QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
+QueryBuilder.prototype.getRuleTemplate = function(rule_id, section_type) {
     var h = this.templates.rule({
         builder: this,
         rule_id: rule_id,
+        section_type: section_type,
         icons: this.icons,
         lang: this.lang,
         settings: this.settings
     });
 
-    return this.change('getRuleTemplate', h);
+    return this.change('getRuleTemplate', h, section_type);
+};
+
+/**
+ * Returns section HTML
+ * @param section_id {string}
+ * @param level {int}
+ * @return {string}
+ */
+QueryBuilder.prototype.getSectionTemplate = function(section_id, level) {
+    var h = this.templates.section({
+        builder: this,
+        section_id: section_id,
+        level: level,
+        exist_options: this.settings.exist_options,
+        icons: this.icons,
+        lang: this.lang,
+        settings: this.settings
+    });
+
+    return this.change('getSectionTemplate', h);
+};
+
+/**
+ * Returns section type <select> HTML
+ * @param section {Section}
+ * @param stypes {array}
+ * @return {string}
+ */
+QueryBuilder.prototype.getSectionTypeSelect = function(section, stypes) {
+    var h = this.templates.stypeSelect({
+        builder: this,
+        section: section,
+        stypes: stypes,
+        icons: this.icons,
+        lang: this.lang,
+        settings: this.settings,
+        translate: this.translateLabel
+    });
+
+    return this.change('getSectionTypeSelect', h, section);
 };
 
 /**

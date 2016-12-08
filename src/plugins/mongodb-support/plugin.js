@@ -83,7 +83,7 @@ QueryBuilder.defaults({
 QueryBuilder.extend({
     /**
      * Get rules as MongoDB query
-     * @throws UndefinedMongoConditionError, UndefinedMongoOperatorError
+     * @throws UndefinedMongoConditionError, UndefinedMongoBehavior, UndefinedMongoOperatorError
      * @param data {object} (optional) rules
      * @return {object}
      */
@@ -109,6 +109,9 @@ QueryBuilder.extend({
             group.rules.forEach(function(rule) {
                 if (rule.rules && rule.rules.length > 0) {
                     parts.push(parse(rule));
+                }
+                else if (rule.section) {
+                    Utils.error('UndefinedMongoBehavior', 'Sections are not currently supported for MongoDB queries');
                 }
                 else {
                     var mdb = self.settings.mongoOperators[rule.operator];
