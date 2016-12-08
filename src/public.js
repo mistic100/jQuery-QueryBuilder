@@ -39,6 +39,7 @@ QueryBuilder.prototype.reset = function() {
 QueryBuilder.prototype.clear = function() {
     this.status.group_id = 0;
     this.status.rule_id = 0;
+    this.status.section_id = 0;
 
     if (this.model.root) {
         this.model.root.drop();

@@ -297,6 +297,46 @@ $(function(){
             expected.rules[1].group,
             'Should return correct section group after UI events'
         );
+
+        // change the section type and set the first rule
+        $('[name=builder_section_0_section_type]').val('related').trigger('change');
+        $('[name=builder_rule_5_filter]').val('name').trigger('change');
+        $('[name=builder_rule_5_operator]').val('begins_with').trigger('change');
+        $('[name=builder_rule_5_value_0]').val('bar').trigger('change');
+
+        // confirm that the old section rules are gone and the new one is in place
+        var generated = $b.queryBuilder('getRules');
+        var expected = {
+            condition: 'AND',
+            rules: [{
+                id: 'name',
+                operator: 'not_equal',
+                value: 'foo'
+            }, {
+                section: 'related',
+                exists: 'DOES NOT EXIST',
+                group: {
+                    condition: 'AND',
+                    rules: [{
+                        id: 'name',
+                        operator: 'begins_with',
+                        value: 'bar'
+                    }]
+                }
+            }]
+        };
+
+        assert.rulesMatch(
+            generated,
+            expected,
+            'Should return correct rules after UI events'
+        );
+        assert.rulesMatch(
+            generated.rules != undefined && generated.rules[1] != undefined ? generated.rules[1].group : 'missing',
+            expected.rules[1].group,
+            'Should return correct section group after UI events'
+        );
+
     });
 
     /**

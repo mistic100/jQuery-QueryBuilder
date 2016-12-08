@@ -93,6 +93,98 @@ $(function(){
             !$('select[name=builder_rule_3_filter] option[value=price]').is(':disabled'),
             '"Price" filter should be disabled in his group only'
         );
+
+        $b.queryBuilder('destroy');
+
+        var unique_sections = $.extend(true, [], basic_sections);
+        unique_sections[0].filters[0].unique = true; // partner -> name
+        unique_sections[1].filters[1].unique = 'group';    // related -> price
+
+        var unique_rules = {
+            condition: 'AND',
+            rules: [{
+                id: 'price',
+                field: 'price',
+                operator: 'less',
+                value: 10.25
+            }, {
+                section: 'partner',
+                group: {
+                    condition: 'OR',
+                    rules: [{
+                        condition: 'AND',
+                        rules: [{
+                            id: 'name',
+                            field: 'name',
+                            operator: 'begins_with',
+                            value: 'Best'
+                        }, {
+                            id: 'status',
+                            field: 'status',
+                            operator: 'equal',
+                            value: 'ac'
+                        }]
+                    }, {
+                        condition: 'AND',
+                        rules: [{
+                            id: 'name',
+                            field: 'name',
+                            operator: 'begins_with',
+                            value: 'Worst'
+                        }, {
+                            id: 'status',
+                            field: 'status',
+                            operator: 'in',
+                            value: [ 'in', 'tr' ]
+                        }]
+                    }]
+                }
+            }, {
+                section: 'related',
+                group: {
+                    condition: 'OR',
+                    rules: [{
+                        id: 'category',
+                        field: 'category',
+                        operator: 'in',
+                        value: [ 'bk', 'mo', 'mu' ]
+                    },{
+                        condition: 'AND',
+                        rules: [{
+                            id: 'category',
+                            field: 'category',
+                            operator: 'equal',
+                            value: 'cl'
+                        }, {
+                            id: 'price',
+                            field: 'price',
+                            operator: 'greater',
+                            value: 10.00
+                        }]
+                    }]
+                }
+            }]
+        };
+
+        $b.queryBuilder({
+            plugins: ['unique-filter'],
+            filters: basic_filters,
+            sections: unique_sections,
+            rules: unique_rules
+        });
+
+        assert.ok(
+            $('#builder_section_0 select[name=builder_rule_2_filter] option[value=name]').is(':disabled') &&
+            $('#builder_section_0 select[name=builder_rule_4_filter] option[value=name]').is(':disabled'),
+            '"Name" filter in "partner" section should be disabled everywhere'
+        );
+
+        assert.ok(
+            !$('#builder_section_1 select[name=builder_rule_5_filter] option[value=price]').is(':disabled') &&
+             $('#builder_section_1 select[name=builder_rule_6_filter] option[value=price]').is(':disabled'),
+            '"Price" filter in "related" section should be disabled in his group only'
+        );
+
     });
 
     /**

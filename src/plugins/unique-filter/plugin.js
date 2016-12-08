@@ -132,7 +132,7 @@ QueryBuilder.extend({
         self.$el.find(Selectors.filter_container + ' option').prop('disabled', false);
 
         // disable some
-        $.each(self.status.used_filters, function(filterId, groups) {
+        var disableSome = function(filterId, groups) {
             if (groups.length === 0) {
                 self.$el.find(Selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
             }
@@ -143,20 +143,10 @@ QueryBuilder.extend({
                     });
                 });
             }
-        });
+        };
+        $.each(self.status.used_filters, disableSome);
         $.each(self.status.used_filters_by_section, function(section_id, filters) {
-            $.each(filters, function(filterId, groups) {
-                if (groups.length === 0) {
-                    self.$el.find(Selectors.section_container + '[data-stype=' + section_id + '] ' + Selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
-                }
-                else {
-                    groups.forEach(function(group) {
-                        group.each(function(rule) {
-                            rule.$el.find(Selectors.section_container + '[data-stype=' + section_id + '] ' + Selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
-                        });
-                    });
-                }
-            });
+            $.each(filters, disableSome);
         });
 
         // update Selectpicker
