@@ -29,7 +29,7 @@ QueryBuilder.define('unique-filter', function() {
             available = self.filters;
         }
         else {
-            var s = this.getSectionById(model.section_type_id);
+            var s = self.getSectionById(model.section_type_id);
             if (s === undefined) {
                 Utils.error('UniqueFilter', 'Unknown section "${0}"', model.section_type_id);
                 e.value = undefined;

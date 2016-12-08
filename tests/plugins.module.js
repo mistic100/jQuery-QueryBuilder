@@ -77,7 +77,8 @@ $(function(){
         $b.queryBuilder({
             plugins: ['unique-filter'],
             filters: unique_filters,
-            rules: basic_rules
+            rules: basic_rules,
+            default_filter: 'id'
         });
 
         assert.ok(
@@ -94,11 +95,20 @@ $(function(){
             '"Price" filter should be disabled in his group only'
         );
 
+        $('#builder_group_0>.rules-group-header>.group-actions [data-add=rule]').trigger('click');
+
+        assert.ok(
+             $('select[name=builder_rule_4_filter] option[value=id]').is(':disabled') &&
+            !$('select[name=builder_rule_4_filter] option[value=id]').is(':selected'),
+            '"Identifier" filter should be disabled and not selected'
+        );
+
         $b.queryBuilder('destroy');
 
         var unique_sections = $.extend(true, [], basic_sections);
+        unique_sections[0].default_filter = 'name'; // partner -> name is the default
         unique_sections[0].filters[0].unique = true; // partner -> name
-        unique_sections[1].filters[1].unique = 'group';    // related -> price
+        unique_sections[1].filters[1].unique = 'group'; // related -> price
 
         var unique_rules = {
             condition: 'AND',
@@ -183,6 +193,14 @@ $(function(){
             !$('#builder_section_1 select[name=builder_rule_5_filter] option[value=price]').is(':disabled') &&
              $('#builder_section_1 select[name=builder_rule_6_filter] option[value=price]').is(':disabled'),
             '"Price" filter in "related" section should be disabled in his group only'
+        );
+
+        $('#builder_group_1>.rules-group-header>.group-actions [data-add=rule]').trigger('click');
+
+        assert.ok(
+             $('select[name=builder_rule_8_filter] option[value=name]').is(':disabled') &&
+            !$('select[name=builder_rule_8_filter] option[value=name]').is(':selected'),
+            '"Name" filter in "partner" section should be disabled and not selected'
         );
 
     });
