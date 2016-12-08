@@ -276,6 +276,9 @@ QueryBuilder.prototype.setRules = function(data) {
                         return;
                     }
                     section.type_id = item.section;
+                    if (item.exists === undefined) {
+                        item.exists = self.settings.default_exists;
+                    }
                     section.exists = item.exists;
                     if (item.group !== undefined) {
                         var gmodel = self.addGroup(section, false, item.group.data, self.parseGroupFlags(item.group));

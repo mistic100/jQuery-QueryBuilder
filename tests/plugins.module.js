@@ -230,6 +230,48 @@ $(function(){
             },
             'Should have inverted all conditions and operators'
         );
+
+        $b.queryBuilder('destroy');
+
+        $b.queryBuilder({
+            plugins: ['invert'],
+            filters: basic_filters,
+            sections: basic_sections,
+            rules: section_rules
+        });
+
+        $b.queryBuilder('invert');
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            {
+                condition: 'OR',
+                rules: [{
+                    id: 'price',
+                    field: 'price',
+                    operator: 'greater_or_equal',
+                    value: 10.25
+                }, {
+                    section: 'partner',
+                    exists: 'NOT EXISTS',
+                    group: {
+                        condition: 'OR',
+                        rules: [{
+                            id: 'name',
+                            field: 'name',
+                            operator: 'not_begins_with',
+                            value: 'Best'
+                        }, {
+                            id: 'status',
+                            field: 'status',
+                            operator: 'not_in',
+                            value: [ 'ac', 'in' ]
+                        }]
+                    }
+                }]
+            },
+            'Should have inverted all exist checks, conditions, and operators'
+        );
     });
 
     /**
