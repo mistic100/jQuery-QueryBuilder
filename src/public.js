@@ -204,17 +204,25 @@ QueryBuilder.prototype.getRules = function(options) {
         }, function(model) {
             groupData.rules.push(parse(model));
         }, function(model) {
-            var rule = {
+            var sectionData = {
                 section: model.type_id,
                 exists: model.exists
             };
             if (model.group) {
-                rule.group = parse(model.group);
+                sectionData.group = parse(model.group);
             }
             else {
-                rule.group = null;
+                sectionData.group = null;
             }
-            groupData.rules.push(rule);
+
+            if (options.get_flags) {
+                var flags = self.getRuleFlags(model.flags, options.get_flags === 'all');
+                if (!$.isEmptyObject(flags)) {
+                    sectionData.flags = flags;
+                }
+            }
+
+            groupData.rules.push(sectionData);
         });
 
         return self.change('groupToJson', groupData, group);

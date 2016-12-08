@@ -164,7 +164,7 @@ $(function(){
         });
 
         assert.rulesMatch(
-            $b.queryBuilder('getRules'),
+            $b.queryBuilder('getRules', { get_flags: true }),
             section_rules,
             'Should return object with rules for sections'
         );
