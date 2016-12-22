@@ -252,10 +252,11 @@ QueryBuilder.prototype.getOperators = function(filter) {
 /**
  * Returns a particular filter by its id
  * @throws UndefinedFilterError
- * @param filterId {string}
+ * @param id {string}
+ * @param [doThrow=true] {boolean}
  * @return {object|null}
  */
-QueryBuilder.prototype.getFilterById = function(id) {
+QueryBuilder.prototype.getFilterById = function(id, doThrow) {
     if (id == '-1') {
         return null;
     }
@@ -266,16 +267,19 @@ QueryBuilder.prototype.getFilterById = function(id) {
         }
     }
 
-    Utils.error('UndefinedFilter', 'Undefined filter "{0}"', id);
+    Utils.error(doThrow !== false, 'UndefinedFilter', 'Undefined filter "{0}"', id);
+
+    return null;
 };
 
 /**
  * Return a particular operator by its type
  * @throws UndefinedOperatorError
  * @param type {string}
+ * @param [doThrow=true] {boolean}
  * @return {object|null}
  */
-QueryBuilder.prototype.getOperatorByType = function(type) {
+QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
     if (type == '-1') {
         return null;
     }
@@ -286,7 +290,9 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
         }
     }
 
-    Utils.error('UndefinedOperator', 'Undefined operator "{0}"', type);
+    Utils.error(doThrow !== false, 'UndefinedOperator', 'Undefined operator "{0}"', type);
+
+    return null;
 };
 
 /**
@@ -367,6 +373,10 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
 QueryBuilder.prototype.setRuleValue = function(rule, value) {
     var filter = rule.filter;
     var operator = rule.operator;
+
+    if (!filter || !operator) {
+        return;
+    }
 
     if (filter.valueSetter) {
         filter.valueSetter.call(this, rule, value);

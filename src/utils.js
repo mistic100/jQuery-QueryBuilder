@@ -50,20 +50,28 @@ Utils.fmt = function(str, args) {
 };
 
 /**
- * Throw an Error object with custom name
+ * Throw an Error object with custom name or logs an error
+ * @param [doThrow=true] {boolean}
  * @param type {string}
  * @param message {string}
  * @param args,... {Array|*}
  */
-Utils.error = function(type, message, args) {
-    if (!Array.isArray(args)) {
-        args = Array.prototype.slice.call(arguments, 2);
-    }
+Utils.error = function() {
+    var i = 0;
+    var doThrow = typeof arguments[i] === 'boolean' ? arguments[i++] : true;
+    var type = arguments[i++];
+    var message = arguments[i++];
+    var args = Array.isArray(arguments[i]) ? arguments[i] : Array.prototype.slice.call(arguments, i);
 
-    var err = new Error(Utils.fmt(message, args));
-    err.name = type + 'Error';
-    err.args = args;
-    throw err;
+    if (doThrow) {
+        var err = new Error(Utils.fmt(message, args));
+        err.name = type + 'Error';
+        err.args = args;
+        throw err;
+    }
+    else {
+        console.error(type + 'Error: ' + Utils.fmt(message, args));
+    }
 };
 
 /**

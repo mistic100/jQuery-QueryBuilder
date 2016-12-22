@@ -387,6 +387,50 @@ $(function(){
         );
     });
 
+    /**
+     * Test allow_invalid option
+     */
+    QUnit.test('allow invalid', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters
+        });
+
+        $b.queryBuilder('setRules', {
+            condition: 'XOR',
+            rules: [{
+                id: 'name',
+                operator: 'unkown_ope',
+                value: 'Mistic'
+            }, {
+                id: 'unknown_id',
+                operator: 'equal',
+                value: 123
+            }]
+        }, {
+            allow_invalid: true
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules', {
+                allow_invalid: true
+            }),
+            {
+                valid: false,
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }, {
+                    id: null,
+                    operator: null,
+                    value: null
+                }]
+            },
+            'Should allow invalid rules for setRules and getRules'
+        );
+    });
+
 
     var validation_filters = [{
         id: 'radio',
