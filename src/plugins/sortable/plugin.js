@@ -29,6 +29,8 @@ QueryBuilder.define('sortable', function(options) {
             return;
         }
 
+        var self = e.builder;
+
         /**
          * Configure drag
          */
@@ -59,7 +61,7 @@ QueryBuilder.define('sortable', function(options) {
                     ghost[0].style.top = event.clientY - 15 + 'px';
                     ghost[0].style.left = event.clientX - 15 + 'px';
                 },
-                onend: function(event) {
+                onend: function() {
                     // remove ghost
                     ghost.remove();
                     ghost = undefined;
@@ -70,6 +72,8 @@ QueryBuilder.define('sortable', function(options) {
 
                     // show element
                     src.$el.show();
+
+                    self.trigger('afterMove', src);
                 }
             });
 
