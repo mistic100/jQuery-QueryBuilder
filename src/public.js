@@ -249,10 +249,8 @@ QueryBuilder.prototype.setRules = function(data, options) {
             data.condition = self.settings.default_condition;
         }
         else if (self.settings.conditions.indexOf(data.condition) == -1) {
-            if (options.allow_invalid) {
-                data.condition = self.settings.default_condition;
-            }
             Utils.error(!options.allow_invalid, 'UndefinedCondition', 'Invalid condition "{0}"', data.condition);
+            data.condition = self.settings.default_condition;
         }
 
         group.condition = data.condition;
@@ -262,10 +260,8 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
             if (item.rules !== undefined) {
                 if (self.settings.allow_groups !== -1 && self.settings.allow_groups < group.level) {
-                    if (!options.allow_invalid) {
-                        self.reset();
-                    }
                     Utils.error(!options.allow_invalid, 'RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
+                    self.reset();
                 }
                 else {
                     model = self.addGroup(group, false, item.data, self.parseGroupFlags(item));
@@ -279,10 +275,8 @@ QueryBuilder.prototype.setRules = function(data, options) {
             else {
                 if (!item.empty) {
                     if (item.id === undefined) {
-                        if (options.allow_invalid) {
-                            item.empty = true;
-                        }
                         Utils.error(!options.allow_invalid, 'RulesParse', 'Missing rule field id');
+                        item.empty = true;
                     }
                     if (item.operator === undefined) {
                         item.operator = 'equal';

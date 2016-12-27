@@ -156,11 +156,6 @@ $(function(){
         );
 
         assert.validationError($b,
-            { id: 'double', value: 'abc' },
-            /number_not_double/
-        );
-
-        assert.validationError($b,
             { id: 'integer', value: -15 },
             /number_exceed_min/
         );
@@ -431,6 +426,27 @@ $(function(){
         );
     });
 
+    /**
+     * Test allow_empty_value option
+     */
+    QUnit.test('allow empty value', function(assert) {
+        var filters = $.extend(true, [], basic_filters);
+        filters.forEach(function(filter) {
+           filter.allow_empty_value = true;
+        });
+
+        $b.queryBuilder({
+            filters: filters,
+            rules: empty_rules
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            empty_rules,
+            'Should allow empty value for all filters'
+        );
+    });
+
 
     var validation_filters = [{
         id: 'radio',
@@ -502,4 +518,25 @@ $(function(){
             }
         }
     }];
+
+    var empty_rules = {
+        condition: 'AND',
+        rules: [{
+            id: 'name',
+            operator: 'equal',
+            value: ''
+        }, {
+            id: 'category',
+            operator: 'equal',
+            value: []
+        }, {
+            id: 'in_stock',
+            operator: 'equal',
+            value: undefined
+        }, {
+            id: 'price',
+            operator: 'equal',
+            value: ''
+        }]
+    };
 });
