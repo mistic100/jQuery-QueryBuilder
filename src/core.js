@@ -370,7 +370,7 @@ QueryBuilder.prototype.setRoot = function(addRule, data, flags) {
     this.model.root.model = this.model;
 
     this.model.root.data = data;
-    this.model.root.flags = $.extend({}, this.settings.default_group_flags, flags);
+    this.model.root.__.flags = $.extend({}, this.settings.default_group_flags, flags);
 
     this.trigger('afterAddGroup', this.model.root);
 
@@ -406,7 +406,7 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     var model = parent.addGroup($group);
 
     model.data = data;
-    model.flags = $.extend({}, this.settings.default_group_flags, flags);
+    model.__.flags = $.extend({}, this.settings.default_group_flags, flags);
 
     this.trigger('afterAddGroup', model);
 
@@ -501,7 +501,7 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
         model.data = data;
     }
 
-    model.flags = $.extend({}, this.settings.default_rule_flags, flags);
+    model.__.flags = $.extend({}, this.settings.default_rule_flags, flags);
 
     this.trigger('afterAddRule', model);
 

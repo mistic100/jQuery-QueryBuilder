@@ -235,6 +235,7 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
     this.clear();
     this.setRoot(false, data.data, this.parseGroupFlags(data));
+    this.applyGroupFlags(this.model.root);
 
     data = this.change('setRules', data);
 
@@ -269,6 +270,8 @@ QueryBuilder.prototype.setRules = function(data, options) {
                         return;
                     }
 
+                    self.applyGroupFlags(model);
+
                     add(item, model);
                 }
             }
@@ -283,7 +286,7 @@ QueryBuilder.prototype.setRules = function(data, options) {
                     }
                 }
 
-                model = self.addRule(group, item.data);
+                model = self.addRule(group, item.data, self.parseRuleFlags(item));
                 if (model === null) {
                     return;
                 }
@@ -304,7 +307,7 @@ QueryBuilder.prototype.setRules = function(data, options) {
                     }
                 }
 
-                model.flags = self.parseRuleFlags(item);
+                self.applyRuleFlags(model);
 
                 if (self.change('jsonToRule', model, item) != model) {
                     Utils.error('RulesParse', 'Plugin tried to change rule reference');

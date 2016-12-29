@@ -331,13 +331,33 @@ $(function(){
             condition_readonly: true,
             no_add_rule: false,
             no_add_group: false,
-            no_delete: false
+            no_delete: false,
+            no_sortable: false,
+            no_drop: false
         };
         rules_all_flags.rules[0].flags = {
             filter_readonly: false,
             operator_readonly: false,
             value_readonly: false,
-            no_delete: true
+            no_delete: true,
+            no_sortable: false,
+            no_drop: false
+        };
+        rules_all_flags.rules[1].flags = {
+            condition_readonly: true,
+            no_add_rule: true,
+            no_add_group: true,
+            no_delete: true,
+            no_sortable: false,
+            no_drop: false
+        };
+        rules_all_flags.rules[1].rules[0].flags = {
+            filter_readonly: true,
+            operator_readonly: true,
+            value_readonly: true,
+            no_delete: true,
+            no_sortable: false,
+            no_drop: false
         };
 
         assert.rulesMatch(
