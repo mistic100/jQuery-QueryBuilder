@@ -310,11 +310,11 @@ QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
 };
 
 /**
- * Returns rule value
+ * Returns rule's input value
  * @param rule {Rule}
  * @return {mixed}
  */
-QueryBuilder.prototype.getRuleValue = function(rule) {
+QueryBuilder.prototype.getRuleInputValue = function(rule) {
     var filter = rule.filter;
     var operator = rule.operator;
     var value = [];
@@ -380,17 +380,19 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
 };
 
 /**
- * Sets the value of a rule.
+ * Sets the value of a rule's input.
  * @param rule {Rule}
  * @param value {mixed}
  */
-QueryBuilder.prototype.setRuleValue = function(rule, value) {
+QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
     var filter = rule.filter;
     var operator = rule.operator;
 
     if (!filter || !operator) {
         return;
     }
+
+    this._updating_input = true;
 
     if (filter.valueSetter) {
         filter.valueSetter.call(this, rule, value);
@@ -400,9 +402,6 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
 
         if (operator.nb_inputs == 1) {
             value = [value];
-        }
-        else {
-            value = value;
         }
 
         for (var i = 0; i < operator.nb_inputs; i++) {
@@ -431,6 +430,8 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
             }
         }
     }
+
+    this._updating_input = false;
 };
 
 /**

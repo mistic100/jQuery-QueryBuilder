@@ -116,7 +116,7 @@ QueryBuilder.define('sortable', function(options) {
                         moveSortableToTarget(placeholder, $(event.target));
                     },
                     ondrop: function(event) {
-                        moveSortableToTarget(src, $(event.target));
+                        moveSortableToTarget(src, $(event.target), self);
                     }
                 });
 
@@ -131,7 +131,7 @@ QueryBuilder.define('sortable', function(options) {
                             moveSortableToTarget(placeholder, $(event.target));
                         },
                         ondrop: function(event) {
-                            moveSortableToTarget(src, $(event.target));
+                            moveSortableToTarget(src, $(event.target), self);
                         }
                     });
             }
@@ -186,29 +186,40 @@ QueryBuilder.define('sortable', function(options) {
  * Move an element (placeholder or actual object) depending on active target
  * @param {Node} node
  * @param {jQuery} target
+ * @param {QueryBuilder} [builder]
  */
-function moveSortableToTarget(node, target) {
-    var parent;
+function moveSortableToTarget(node, target, builder) {
+    var parent, method;
 
     // on rule
     parent = target.closest(Selectors.rule_container);
     if (parent.length) {
-        node.moveAfter(Model(parent));
-        return;
+        method = 'moveAfter';
     }
 
     // on group header
-    parent = target.closest(Selectors.group_header);
-    if (parent.length) {
-        parent = target.closest(Selectors.group_container);
-        node.moveAtBegin(Model(parent));
-        return;
+    if (!method) {
+        parent = target.closest(Selectors.group_header);
+        if (parent.length) {
+            parent = target.closest(Selectors.group_container);
+            method = 'moveAtBegin';
+        }
     }
 
     // on group
-    parent = target.closest(Selectors.group_container);
-    if (parent.length) {
-        node.moveAtEnd(Model(parent));
-        return;
+    if (!method) {
+        parent = target.closest(Selectors.group_container);
+        if (parent.length) {
+            method = 'moveAtEnd';
+        }
+    }
+
+    if (method) {
+        node[method](Model(parent));
+
+        // refresh radio value
+        if (builder && node instanceof Rule) {
+            builder.setRuleInputValue(node, node.value);
+        }
     }
 }
