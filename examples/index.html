@@ -365,10 +365,10 @@ var options = {
     validation: {
       format: /^[A-C]{1}.[1-6]{1}$/
     },
-    input: function(rule) {
+    input: function(rule, name) {
       var $container = rule.$el.find('.rule-value-container');
 
-      $container.on('change', '[name=coord_1]', function(){
+      $container.on('change', '[name='+ name +'_1]', function(){
         var h = '';
 
         switch ($(this).val()) {
@@ -383,27 +383,30 @@ var options = {
             break;
         }
 
-        $container.find('[name=coord_2]').html(h).toggle(h!='');
+        $container.find('[name$=_2]')
+          .html(h).toggle(!!h)
+          .val('-1').trigger('change');
       });
 
       return '\
-      <select name="coord_1" class="form-control"> \
+      <select name="'+ name +'_1"> \
         <option value="-1">-</option> \
         <option value="A">A</option> \
         <option value="B">B</option> \
         <option value="C">C</option> \
       </select> \
-      <select name="coord_2" class="form-control" style="display:none;"></select>';
+      <select name="'+ name +'_2" style="display:none;"></select>';
     },
-    valueParser: function(rule, value) {
-      return rule.$el.find('[name=coord_1]').val()
-        +'.'+rule.$el.find('[name=coord_2]').val();
+    valueGetter: function(rule) {
+      return rule.$el.find('.rule-value-container [name$=_1]').val()
+        +'.'+ rule.$el.find('.rule-value-container [name$=_2]').val();
     },
     valueSetter: function(rule, value) {
-      if (rule.operator.nb_inputs !== 0) {
+      if (rule.operator.nb_inputs > 0) {
         var val = value.split('.');
-        rule.$el.find('[name=coord_1]').val(val[0]).trigger('change');
-        rule.$el.find('[name=coord_2]').val(val[1]);
+
+        rule.$el.find('.rule-value-container [name$=_1]').val(val[0]).trigger('change');
+        rule.$el.find('.rule-value-container [name$=_2]').val(val[1]).trigger('change');
       }
     }
   }]
