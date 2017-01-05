@@ -117,10 +117,10 @@ $('#builder-widgets').queryBuilder({
     },
     input: function(rule, name) {
       var $container = rule.$el.find('.rule-value-container');
-      
+
       $container.on('change', '[name='+ name +'_1]', function(){
         var h = '';
-        
+
         switch ($(this).val()) {
           case 'A':
             h = '<option value="-1">-</option> <option value="1">1</option> <option value="2">2</option>';
@@ -132,10 +132,12 @@ $('#builder-widgets').queryBuilder({
             h = '<option value="-1">-</option> <option value="5">5</option> <option value="6">6</option>';
             break;
         }
-        
-        $container.find('[name='+ name +'_2]').html(h).toggle(h!='');
+
+        $container.find('[name$=_2]')
+          .html(h).toggle(!!h)
+          .val('-1').trigger('change');
       });
-      
+
       return '\
       <select name="'+ name +'_1"> \
         <option value="-1">-</option> \
@@ -152,7 +154,7 @@ $('#builder-widgets').queryBuilder({
     valueSetter: function(rule, value) {
       if (rule.operator.nb_inputs > 0) {
         var val = value.split('.');
-        
+
         rule.$el.find('.rule-value-container [name$=_1]').val(val[0]).trigger('change');
         rule.$el.find('.rule-value-container [name$=_2]').val(val[1]).trigger('change');
       }
@@ -172,7 +174,7 @@ $('#btn-set').on('click', function() {
 
 $('#btn-get').on('click', function() {
   var result = $('#builder-widgets').queryBuilder('getRules');
-  
+
   if (!$.isEmptyObject(result)) {
     alert(JSON.stringify(result, null, 2));
   }
