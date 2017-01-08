@@ -1,5 +1,6 @@
 bower_components
 node_modules
+dist
 .sass-cache
 .coverage-results
 .idea
