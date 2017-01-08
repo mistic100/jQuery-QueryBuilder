@@ -418,11 +418,11 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
       <small>sortable</small>
     </h2>
 
-    <p>Enables drag &amp; drop sort of rules. It is based on <a href="http://interactjs.io">interact.js</a> to offer
+    <p>Enables drag &amp; drop sort of rules and groups. It is based on <a href="http://interactjs.io">interact.js</a> to offer
       touch screen support.</p>
 
-    <p>The plugin also adds a new rule flag useable with <a href="{{site.github.url}}/index.html#methods">setRules</a>
-      method: <code>no_sortable</code>, set it to <code>true</code> to remove the drag handle of a rule.</p>
+    <p>The plugin also adds two new rule/group flags useable with <a href="{{site.github.url}}/index.html#methods">setRules</a>
+      method: <code>no_sortable</code> and <code>no_drop</code>.</p>
 
     <h3>Requirements</h3>
     <!-- @formatter:off -->
@@ -452,10 +452,16 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
           <td>The font-icon used as drag handle</td>
         </tr>
         <tr>
-          <td>default_no_sortable</td>
+          <td>inherit_no_sortable</td>
           <td>boolean</td>
-          <td>false</td>
-          <td>Default value of <code>no_sortable</code> flag</td>
+          <td>true</td>
+          <td>When a group is <code>no_sortable</code>, should its rules and sub-groups be no_sortable too.</td>
+        </tr>
+        <tr>
+          <td>inherit_no_drop</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>When a group is <code>no_drop</code>, should its rules and sub-groups be no_drop too.</td>
         </tr>
         </tbody>
       </table>

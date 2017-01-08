@@ -558,11 +558,12 @@ values: [
 
   <h3 id="validation">Validation</h3>
 
-  <p>QueryBuilder integrates a configurable validation system triggered when <code>validate()</code> or
+  <p>
+    QueryBuilder integrates a configurable validation system triggered when <code>validate()</code> or
     <code>getRules()</code> methods are called. The default validator checks for emptyness and can be extended with
-    format
-    check and bounds.<br>
-    Optionally you can define a custom validation callback.</p>
+    format check and bounds.<br>
+    Optionally you can define a custom validation callback.
+  </p>
 
   <p>Here are the available attributes of the <code>validation</code> field of each filter:</p>
 
@@ -641,6 +642,11 @@ validation: {
         </td>
       </tr>
       <tr>
+        <td>allow_empty_value</td>
+        <td>boolean</td>
+        <td><code>true</code> to allow empty user input for this filter</td>
+      </tr>
+      <tr>
         <td>callback</td>
         <td>function</td>
         <td>A function used to perform the validation. If provided, the default validation will not be performed. It
@@ -713,6 +719,12 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
             to return all rule and group flags.
           </td>
         </tr>
+        <tr>
+          <td>allow_invalid</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td><code>true</code> to return the rules evn though the validation fails. The returned object has an additional `valid` property.</td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -736,10 +748,32 @@ $('#builder').queryBuilder('getRules', { get_flags: true });
   </div>
 
   <div class="bs-callout">
-    <h4><code>.setRules(rules)</code></h4>
+    <h4><code>.setRules(rules [, options])</code></h4>
 
     <p>Clears the builder and sets new rules. The parameters must have the same structure as the output of <code>getRules</code>.
       <a data-bootbox="rules_format"> <i class="glyphicon glyphicon-info-sign"></i> See an example</a></p>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th style="width: 130px;">Option</th>
+          <th style="width: 100px;">type</th>
+          <th style="width: 100px;">default</th>
+          <th>description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>allow_invalid</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td><code>true</code> to allow loading invalid and/or incomplete rules (no operator, no value, etc.).</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
     <!-- @formatter:off -->
 {% highlight javascript %}
 $('#builder').queryBuilder('setRules', { ... });
@@ -1110,6 +1144,7 @@ operators: [
     <span><i class="flag flag-fr"></i> French</span>
     <span><i class="flag flag-de"></i> German</span>
     <span><i class="flag flag-el"></i> Greek</span>
+    <span><i class="flag flag-he"></i> Hebrew</span>
     <span><i class="flag flag-it"></i> Italian</span>
     <span><i class="flag flag-no"></i> Norwegian</span>
     <span><i class="flag flag-pl"></i> Polish</span>
