@@ -410,6 +410,9 @@ var Rule = function(parent, $el) {
 
     Node.call(this, parent, $el);
 
+    this._updating_value = false;
+    this._updating_input = false;
+
     this.__.filter = null;
     this.__.operator = null;
     this.__.flags = {};

@@ -3,9 +3,6 @@
 ## Work on `dev`
 Any merge request should be created from and issued to the `dev` branch.
 
-## dist files
-Keep it simple, don't commit any files in the `dist` directory, I build these files only before a release.
-
 ## Core vs Plugins
 I want to keep the core clean of extra (and certainly awesome) functionalities. That includes, but is not limited to, export/import plugins, visual aids, etc.
 

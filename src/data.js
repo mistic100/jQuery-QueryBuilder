@@ -41,15 +41,19 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
     for (var i = 0; i < operator.nb_inputs; i++) {
         switch (filter.input) {
             case 'radio':
-                if (value[i] === undefined) {
-                    result = ['radio_empty'];
+                if (value[i] === undefined || value[i].length === 0) {
+                    if (!validation.allow_empty_value) {
+                        result = ['radio_empty'];
+                    }
                     break;
                 }
                 break;
 
             case 'checkbox':
                 if (value[i] === undefined || value[i].length === 0) {
-                    result = ['checkbox_empty'];
+                    if (!validation.allow_empty_value) {
+                        result = ['checkbox_empty'];
+                    }
                     break;
                 }
                 else if (!operator.multiple && value[i].length > 1) {
@@ -59,21 +63,15 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                 break;
 
             case 'select':
-                if (filter.multiple) {
-                    if (value[i] === undefined || value[i].length === 0 || (filter.placeholder && value[i] == filter.placeholder_value)) {
+                if (value[i] === undefined || value[i].length === 0 || (filter.placeholder && value[i] == filter.placeholder_value)) {
+                    if (!validation.allow_empty_value) {
                         result = ['select_empty'];
-                        break;
                     }
-                    else if (!operator.multiple && value[i].length > 1) {
-                        result = ['operator_not_multiple', operator.type];
-                        break;
-                    }
+                    break;
                 }
-                else {
-                    if (value[i] === undefined || (filter.placeholder && value[i] == filter.placeholder_value)) {
-                        result = ['select_empty'];
-                        break;
-                    }
+                if (filter.multiple && !operator.multiple && value[i].length > 1) {
+                    result = ['operator_not_multiple', operator.type];
+                    break;
                 }
                 break;
 
@@ -81,7 +79,9 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                 switch (QueryBuilder.types[filter.type]) {
                     case 'string':
                         if (value[i] === undefined || value[i].length === 0) {
-                            result = ['string_empty'];
+                            if (!validation.allow_empty_value) {
+                                result = ['string_empty'];
+                            }
                             break;
                         }
                         if (validation.min !== undefined) {
@@ -108,7 +108,13 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         break;
 
                     case 'number':
-                        if (value[i] === undefined || isNaN(value[i])) {
+                        if (value[i] === undefined || value[i].length === 0) {
+                            if (!validation.allow_empty_value) {
+                                result = ['number_nan'];
+                            }
+                            break;
+                        }
+                        if (isNaN(value[i])) {
                             result = ['number_nan'];
                             break;
                         }
@@ -147,7 +153,9 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
                     case 'datetime':
                         if (value[i] === undefined || value[i].length === 0) {
-                            result = ['datetime_empty'];
+                            if (!validation.allow_empty_value) {
+                                result = ['datetime_empty'];
+                            }
                             break;
                         }
 
@@ -180,7 +188,13 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                         break;
 
                     case 'boolean':
-                        tmp = value[i].trim().toLowerCase();
+                        if (value[i] === undefined || value[i].length === 0) {
+                            if (!validation.allow_empty_value) {
+                                result = ['boolean_not_valid'];
+                            }
+                            break;
+                        }
+                        tmp = ('' + value[i]).trim().toLowerCase();
                         if (tmp !== 'true' && tmp !== 'false' && tmp !== '1' && tmp !== '0' && value[i] !== 1 && value[i] !== 0) {
                             result = ['boolean_not_valid'];
                             break;
@@ -252,10 +266,11 @@ QueryBuilder.prototype.getOperators = function(filter) {
 /**
  * Returns a particular filter by its id
  * @throws UndefinedFilterError
- * @param filterId {string}
+ * @param id {string}
+ * @param [doThrow=true] {boolean}
  * @return {object|null}
  */
-QueryBuilder.prototype.getFilterById = function(id) {
+QueryBuilder.prototype.getFilterById = function(id, doThrow) {
     if (id == '-1') {
         return null;
     }
@@ -266,16 +281,19 @@ QueryBuilder.prototype.getFilterById = function(id) {
         }
     }
 
-    Utils.error('UndefinedFilter', 'Undefined filter "{0}"', id);
+    Utils.error(doThrow !== false, 'UndefinedFilter', 'Undefined filter "{0}"', id);
+
+    return null;
 };
 
 /**
  * Return a particular operator by its type
  * @throws UndefinedOperatorError
  * @param type {string}
+ * @param [doThrow=true] {boolean}
  * @return {object|null}
  */
-QueryBuilder.prototype.getOperatorByType = function(type) {
+QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
     if (type == '-1') {
         return null;
     }
@@ -286,15 +304,17 @@ QueryBuilder.prototype.getOperatorByType = function(type) {
         }
     }
 
-    Utils.error('UndefinedOperator', 'Undefined operator "{0}"', type);
+    Utils.error(doThrow !== false, 'UndefinedOperator', 'Undefined operator "{0}"', type);
+
+    return null;
 };
 
 /**
- * Returns rule value
+ * Returns rule's input value
  * @param rule {Rule}
  * @return {mixed}
  */
-QueryBuilder.prototype.getRuleValue = function(rule) {
+QueryBuilder.prototype.getRuleInputValue = function(rule) {
     var filter = rule.filter;
     var operator = rule.operator;
     var value = [];
@@ -360,13 +380,19 @@ QueryBuilder.prototype.getRuleValue = function(rule) {
 };
 
 /**
- * Sets the value of a rule.
+ * Sets the value of a rule's input.
  * @param rule {Rule}
  * @param value {mixed}
  */
-QueryBuilder.prototype.setRuleValue = function(rule, value) {
+QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
     var filter = rule.filter;
     var operator = rule.operator;
+
+    if (!filter || !operator) {
+        return;
+    }
+
+    this._updating_input = true;
 
     if (filter.valueSetter) {
         filter.valueSetter.call(this, rule, value);
@@ -376,9 +402,6 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
 
         if (operator.nb_inputs == 1) {
             value = [value];
-        }
-        else {
-            value = value;
         }
 
         for (var i = 0; i < operator.nb_inputs; i++) {
@@ -407,6 +430,8 @@ QueryBuilder.prototype.setRuleValue = function(rule, value) {
             }
         }
     }
+
+    this._updating_input = false;
 };
 
 /**

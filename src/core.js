@@ -14,8 +14,7 @@ QueryBuilder.prototype.init = function($el, options) {
         generated_id: false,
         has_optgroup: false,
         has_operator_oprgroup: false,
-        id: null,
-        updating_value: false
+        id: null
     };
 
     // "allow_groups" can be boolean or int
@@ -370,7 +369,7 @@ QueryBuilder.prototype.setRoot = function(addRule, data, flags) {
     this.model.root.model = this.model;
 
     this.model.root.data = data;
-    this.model.root.flags = $.extend({}, this.settings.default_group_flags, flags);
+    this.model.root.__.flags = $.extend({}, this.settings.default_group_flags, flags);
 
     this.trigger('afterAddGroup', this.model.root);
 
@@ -406,7 +405,7 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     var model = parent.addGroup($group);
 
     model.data = data;
-    model.flags = $.extend({}, this.settings.default_group_flags, flags);
+    model.__.flags = $.extend({}, this.settings.default_group_flags, flags);
 
     this.trigger('afterAddGroup', model);
 
@@ -501,7 +500,7 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
         model.data = data;
     }
 
-    model.flags = $.extend({}, this.settings.default_rule_flags, flags);
+    model.__.flags = $.extend({}, this.settings.default_rule_flags, flags);
 
     this.trigger('afterAddRule', model);
 
@@ -601,9 +600,11 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     $valueContainer.show();
 
     $inputs.on('change ' + (filter.input_event || ''), function() {
-        self.status.updating_value = true;
-        rule.value = self.getRuleValue(rule);
-        self.status.updating_value = false;
+        if (!this._updating_input) {
+            rule._updating_value = true;
+            rule.value = self.getRuleInputValue(rule);
+            rule._updating_value = false;
+        }
     });
 
     if (filter.plugin) {
@@ -616,9 +617,9 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         rule.value = filter.default_value;
     }
     else {
-        self.status.updating_value = true;
-        rule.value = self.getRuleValue(rule);
-        self.status.updating_value = false;
+        rule._updating_value = true;
+        rule.value = self.getRuleInputValue(rule);
+        rule._updating_value = false;
     }
 };
 
@@ -657,7 +658,7 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     else {
         $valueContainer.show();
 
-        if ($valueContainer.is(':empty') || rule.operator.nb_inputs !== previousOperator.nb_inputs) {
+        if ($valueContainer.is(':empty') || !previousOperator || rule.operator.nb_inputs !== previousOperator.nb_inputs) {
             this.createRuleInput(rule);
         }
     }
@@ -676,8 +677,8 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
  * @param rule {Rule}
  */
 QueryBuilder.prototype.updateRuleValue = function(rule) {
-    if (!this.status.updating_value) {
-        this.setRuleValue(rule, rule.value);
+    if (!rule._updating_value) {
+        this.setRuleInputValue(rule, rule.value);
     }
 
     this.trigger('afterUpdateRuleValue', rule);

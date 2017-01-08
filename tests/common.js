@@ -43,6 +43,10 @@ QUnit.assert.rulesMatch = function(actual, expected, message) {
     var ok = (function match(a, b){
         var ok = true;
 
+        if (a.hasOwnProperty('valid') && b.hasOwnProperty('valid')) {
+            ok = QUnit.equiv(a.valid, b.valid);
+        }
+
         if (b.hasOwnProperty('data')) {
             if (!a.hasOwnProperty('data')) {
                 ok = false;

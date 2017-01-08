@@ -156,11 +156,6 @@ $(function(){
         );
 
         assert.validationError($b,
-            { id: 'double', value: 'abc' },
-            /number_not_double/
-        );
-
-        assert.validationError($b,
             { id: 'integer', value: -15 },
             /number_exceed_min/
         );
@@ -336,13 +331,33 @@ $(function(){
             condition_readonly: true,
             no_add_rule: false,
             no_add_group: false,
-            no_delete: false
+            no_delete: false,
+            no_sortable: false,
+            no_drop: false
         };
         rules_all_flags.rules[0].flags = {
             filter_readonly: false,
             operator_readonly: false,
             value_readonly: false,
-            no_delete: true
+            no_delete: true,
+            no_sortable: false,
+            no_drop: false
+        };
+        rules_all_flags.rules[1].flags = {
+            condition_readonly: true,
+            no_add_rule: true,
+            no_add_group: true,
+            no_delete: true,
+            no_sortable: false,
+            no_drop: false
+        };
+        rules_all_flags.rules[1].rules[0].flags = {
+            filter_readonly: true,
+            operator_readonly: true,
+            value_readonly: true,
+            no_delete: true,
+            no_sortable: false,
+            no_drop: false
         };
 
         assert.rulesMatch(
@@ -384,6 +399,71 @@ $(function(){
                 }]
             },
             'Should split values on comma'
+        );
+    });
+
+    /**
+     * Test allow_invalid option
+     */
+    QUnit.test('allow invalid', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters
+        });
+
+        $b.queryBuilder('setRules', {
+            condition: 'XOR',
+            rules: [{
+                id: 'name',
+                operator: 'unkown_ope',
+                value: 'Mistic'
+            }, {
+                id: 'unknown_id',
+                operator: 'equal',
+                value: 123
+            }]
+        }, {
+            allow_invalid: true
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules', {
+                allow_invalid: true
+            }),
+            {
+                valid: false,
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }, {
+                    id: null,
+                    operator: null,
+                    value: null
+                }]
+            },
+            'Should allow invalid rules for setRules and getRules'
+        );
+    });
+
+    /**
+     * Test allow_empty_value option
+     */
+    QUnit.test('allow empty value', function(assert) {
+        var filters = $.extend(true, [], basic_filters);
+        filters.forEach(function(filter) {
+            filter.validation = $.extend({allow_empty_value: true}, filter.validation);
+        });
+
+        $b.queryBuilder({
+            filters: filters,
+            rules: empty_rules
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            empty_rules,
+            'Should allow empty value for all filters'
         );
     });
 
@@ -458,4 +538,25 @@ $(function(){
             }
         }
     }];
+
+    var empty_rules = {
+        condition: 'AND',
+        rules: [{
+            id: 'name',
+            operator: 'equal',
+            value: ''
+        }, {
+            id: 'category',
+            operator: 'equal',
+            value: []
+        }, {
+            id: 'in_stock',
+            operator: 'equal',
+            value: undefined
+        }, {
+            id: 'price',
+            operator: 'equal',
+            value: ''
+        }]
+    };
 });

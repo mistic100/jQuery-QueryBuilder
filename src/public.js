@@ -90,6 +90,12 @@ QueryBuilder.prototype.validate = function() {
                 return;
             }
 
+            if (!rule.operator) {
+                self.triggerValidationError(rule, 'no_operator', null);
+                errors++;
+                return;
+            }
+
             if (rule.operator.nb_inputs !== 0) {
                 var valid = self.validateValue(rule, rule.value);
 
@@ -130,15 +136,18 @@ QueryBuilder.prototype.validate = function() {
  * Get an object representing current rules
  * @param {object} options
  *      - get_flags: false[default] | true(only changes from default flags) | 'all'
+ *      - allow_invalid: false[default] | true(returns rules even if they are invalid)
  * @return {object}
  */
 QueryBuilder.prototype.getRules = function(options) {
     options = $.extend({
-        get_flags: false
+        get_flags: false,
+        allow_invalid: false
     }, options);
 
-    if (!this.validate()) {
-        return {};
+    var valid = this.validate();
+    if (!valid && !options.allow_invalid) {
+        return null;
     }
 
     var self = this;
@@ -162,20 +171,20 @@ QueryBuilder.prototype.getRules = function(options) {
 
         group.each(function(rule) {
             var value = null;
-            if (rule.operator.nb_inputs !== 0) {
+            if (!rule.operator || rule.operator.nb_inputs !== 0) {
                 value = rule.value;
             }
 
             var ruleData = {
-                id: rule.filter.id,
-                field: rule.filter.field,
-                type: rule.filter.type,
-                input: rule.filter.input,
-                operator: rule.operator.type,
+                id: rule.filter ? rule.filter.id : null,
+                field: rule.filter ? rule.filter.field : null,
+                type: rule.filter ? rule.filter.type : null,
+                input: rule.filter ? rule.filter.input : null,
+                operator: rule.operator ? rule.operator.type : null,
                 value: value
             };
 
-            if (rule.filter.data || rule.data) {
+            if (rule.filter && rule.filter.data || rule.data) {
                 ruleData.data = $.extendext(true, 'replace', {}, rule.filter.data, rule.data);
             }
 
@@ -196,6 +205,8 @@ QueryBuilder.prototype.getRules = function(options) {
 
     }(this.model.root));
 
+    out.valid = valid;
+
     return this.change('getRules', out);
 };
 
@@ -203,8 +214,14 @@ QueryBuilder.prototype.getRules = function(options) {
  * Set rules from object
  * @throws RulesError, UndefinedConditionError
  * @param data {object}
+ * @param {object} options
+ *      - allow_invalid: false[default] | true(silent-fail if the data are invalid)
  */
-QueryBuilder.prototype.setRules = function(data) {
+QueryBuilder.prototype.setRules = function(data, options) {
+    options = $.extend({
+        allow_invalid: false
+    }, options);
+
     if ($.isArray(data)) {
         data = {
             condition: this.settings.default_condition,
@@ -218,6 +235,7 @@ QueryBuilder.prototype.setRules = function(data) {
 
     this.clear();
     this.setRoot(false, data.data, this.parseGroupFlags(data));
+    this.applyGroupFlags(this.model.root);
 
     data = this.change('setRules', data);
 
@@ -232,7 +250,8 @@ QueryBuilder.prototype.setRules = function(data) {
             data.condition = self.settings.default_condition;
         }
         else if (self.settings.conditions.indexOf(data.condition) == -1) {
-            Utils.error('UndefinedCondition', 'Invalid condition "{0}"', data.condition);
+            Utils.error(!options.allow_invalid, 'UndefinedCondition', 'Invalid condition "{0}"', data.condition);
+            data.condition = self.settings.default_condition;
         }
 
         group.condition = data.condition;
@@ -242,8 +261,8 @@ QueryBuilder.prototype.setRules = function(data) {
 
             if (item.rules !== undefined) {
                 if (self.settings.allow_groups !== -1 && self.settings.allow_groups < group.level) {
+                    Utils.error(!options.allow_invalid, 'RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
                     self.reset();
-                    Utils.error('RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
                 }
                 else {
                     model = self.addGroup(group, false, item.data, self.parseGroupFlags(item));
@@ -251,34 +270,44 @@ QueryBuilder.prototype.setRules = function(data) {
                         return;
                     }
 
+                    self.applyGroupFlags(model);
+
                     add(item, model);
                 }
             }
             else {
                 if (!item.empty) {
                     if (item.id === undefined) {
-                        Utils.error('RulesParse', 'Missing rule field id');
+                        Utils.error(!options.allow_invalid, 'RulesParse', 'Missing rule field id');
+                        item.empty = true;
                     }
                     if (item.operator === undefined) {
                         item.operator = 'equal';
                     }
                 }
 
-                model = self.addRule(group, item.data);
+                model = self.addRule(group, item.data, self.parseRuleFlags(item));
                 if (model === null) {
                     return;
                 }
 
                 if (!item.empty) {
-                    model.filter = self.getFilterById(item.id);
-                    model.operator = self.getOperatorByType(item.operator);
+                    model.filter = self.getFilterById(item.id, !options.allow_invalid);
 
-                    if (model.operator.nb_inputs !== 0 && item.value !== undefined) {
-                        model.value = item.value;
+                    if (model.filter) {
+                        model.operator = self.getOperatorByType(item.operator, !options.allow_invalid);
+
+                        if (!model.operator) {
+                            model.operator = self.getOperators(model.filter)[0];
+                        }
+
+                        if (model.operator && model.operator.nb_inputs !== 0 && item.value !== undefined) {
+                            model.value = item.value;
+                        }
                     }
                 }
 
-                model.flags = self.parseRuleFlags(item);
+                self.applyRuleFlags(model);
 
                 if (self.change('jsonToRule', model, item) != model) {
                     Utils.error('RulesParse', 'Plugin tried to change rule reference');

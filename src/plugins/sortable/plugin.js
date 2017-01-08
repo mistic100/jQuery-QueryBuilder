@@ -6,9 +6,25 @@
 Selectors.rule_and_group_containers = Selectors.rule_container + ', ' + Selectors.group_container;
 Selectors.drag_handle = '.drag-handle';
 
+QueryBuilder.defaults({
+    default_rule_flags: {
+        no_sortable: false,
+        no_drop: false
+    },
+    default_group_flags: {
+        no_sortable: false,
+        no_drop: false
+    }
+});
+
 QueryBuilder.define('sortable', function(options) {
     if (!('interact' in window)) {
         Utils.error('MissingLibrary', 'interact.js is required to use "sortable" plugin. Get it here: http://interactjs.io');
+    }
+
+    if (options.default_no_sortable !== undefined) {
+        Utils.error(false, 'Config', 'Sortable plugin : "default_no_sortable" options is deprecated, use standard "default_rule_flags" and "default_group_flags" instead');
+        this.settings.default_rule_flags.no_sortable = this.settings.default_group_flags.no_sortable = options.default_no_sortable;
     }
 
     // recompute drop-zones during drag (when a rule is hidden)
@@ -29,78 +45,96 @@ QueryBuilder.define('sortable', function(options) {
             return;
         }
 
+        var self = e.builder;
+
+        /**
+         * Inherit flags
+         */
+        if (options.inherit_no_sortable && node.parent && node.parent.flags.no_sortable) {
+            node.flags.no_sortable = true;
+        }
+        if (options.inherit_no_drop && node.parent && node.parent.flags.no_drop) {
+            node.flags.no_drop = true;
+        }
+
         /**
          * Configure drag
          */
-        interact(node.$el[0])
-            .allowFrom(Selectors.drag_handle)
-            .draggable({
-                onstart: function(event) {
-                    // get model of dragged element
-                    src = Model(event.target);
+        if (!node.flags.no_sortable) {
+            interact(node.$el[0])
+                .allowFrom(Selectors.drag_handle)
+                .draggable({
+                    onstart: function(event) {
+                        // get model of dragged element
+                        src = Model(event.target);
 
-                    // create ghost
-                    ghost = src.$el.clone()
-                        .appendTo(src.$el.parent())
-                        .width(src.$el.outerWidth())
-                        .addClass('dragging');
+                        // create ghost
+                        ghost = src.$el.clone()
+                            .appendTo(src.$el.parent())
+                            .width(src.$el.outerWidth())
+                            .addClass('dragging');
 
-                    // create drop placeholder
-                    var ph = $('<div class="rule-placeholder">&nbsp;</div>')
-                        .height(src.$el.outerHeight());
+                        // create drop placeholder
+                        var ph = $('<div class="rule-placeholder">&nbsp;</div>')
+                            .height(src.$el.outerHeight());
 
-                    placeholder = src.parent.addRule(ph, src.getPos());
+                        placeholder = src.parent.addRule(ph, src.getPos());
 
-                    // hide dragged element
-                    src.$el.hide();
-                },
-                onmove: function(event) {
-                    // make the ghost follow the cursor
-                    ghost[0].style.top = event.clientY - 15 + 'px';
-                    ghost[0].style.left = event.clientX - 15 + 'px';
-                },
-                onend: function(event) {
-                    // remove ghost
-                    ghost.remove();
-                    ghost = undefined;
+                        // hide dragged element
+                        src.$el.hide();
+                    },
+                    onmove: function(event) {
+                        // make the ghost follow the cursor
+                        ghost[0].style.top = event.clientY - 15 + 'px';
+                        ghost[0].style.left = event.clientX - 15 + 'px';
+                    },
+                    onend: function() {
+                        // remove ghost
+                        ghost.remove();
+                        ghost = undefined;
 
-                    // remove placeholder
-                    placeholder.drop();
-                    placeholder = undefined;
+                        // remove placeholder
+                        placeholder.drop();
+                        placeholder = undefined;
 
-                    // show element
-                    src.$el.show();
-                }
-            });
+                        // show element
+                        src.$el.show();
 
-        /**
-         * Configure drop on groups and rules
-         */
-        interact(node.$el[0])
-            .dropzone({
-                accept: Selectors.rule_and_group_containers,
-                ondragenter: function(event) {
-                    moveSortableToTarget(placeholder, $(event.target));
-                },
-                ondrop: function(event) {
-                    moveSortableToTarget(src, $(event.target));
-                }
-            });
+                        self.trigger('afterMove', src);
+                    }
+                });
+        }
 
-        /**
-         * Configure drop on group headers
-         */
-        if (node instanceof Group) {
-            interact(node.$el.find(Selectors.group_header)[0])
+        if (!node.flags.no_drop) {
+            /**
+             * Configure drop on groups and rules
+             */
+            interact(node.$el[0])
                 .dropzone({
                     accept: Selectors.rule_and_group_containers,
                     ondragenter: function(event) {
                         moveSortableToTarget(placeholder, $(event.target));
                     },
                     ondrop: function(event) {
-                        moveSortableToTarget(src, $(event.target));
+                        moveSortableToTarget(src, $(event.target), self);
                     }
                 });
+
+            /**
+             * Configure drop on group headers
+             */
+            if (node instanceof Group) {
+                interact(node.$el.find(Selectors.group_header)[0])
+                    .dropzone({
+                        accept: Selectors.rule_and_group_containers,
+                        ondragenter: function(event) {
+                            moveSortableToTarget(placeholder, $(event.target));
+                        },
+                        ondrop: function(event) {
+                            moveSortableToTarget(src, $(event.target), self);
+                        }
+                    });
+            }
         }
     });
 
@@ -118,32 +152,11 @@ QueryBuilder.define('sortable', function(options) {
     });
 
     /**
-     * Remove drag handle from non-sortable rules
+     * Remove drag handle from non-sortable items
      */
-    this.on('parseRuleFlags.filter', function(flags) {
-        if (flags.value.no_sortable === undefined) {
-            flags.value.no_sortable = options.default_no_sortable;
-        }
-    });
-
-    this.on('afterApplyRuleFlags', function(e, rule) {
-        if (rule.flags.no_sortable) {
-            rule.$el.find('.drag-handle').remove();
-        }
-    });
-
-    /**
-     * Remove drag handle from non-sortable groups
-     */
-    this.on('parseGroupFlags.filter', function(flags) {
-        if (flags.value.no_sortable === undefined) {
-            flags.value.no_sortable = options.default_no_sortable;
-        }
-    });
-
-    this.on('afterApplyGroupFlags', function(e, group) {
-        if (group.flags.no_sortable) {
-            group.$el.find('.drag-handle').remove();
+    this.on('afterApplyRuleFlags afterApplyGroupFlags', function(e, node) {
+        if (node.flags.no_sortable) {
+            node.$el.find('.drag-handle').remove();
         }
     });
 
@@ -164,7 +177,8 @@ QueryBuilder.define('sortable', function(options) {
         h.value = $h.prop('outerHTML');
     });
 }, {
-    default_no_sortable: false,
+    inherit_no_sortable: true,
+    inherit_no_drop: true,
     icon: 'glyphicon glyphicon-sort'
 });
 
@@ -172,29 +186,40 @@ QueryBuilder.define('sortable', function(options) {
  * Move an element (placeholder or actual object) depending on active target
  * @param {Node} node
  * @param {jQuery} target
+ * @param {QueryBuilder} [builder]
  */
-function moveSortableToTarget(node, target) {
-    var parent;
+function moveSortableToTarget(node, target, builder) {
+    var parent, method;
 
     // on rule
     parent = target.closest(Selectors.rule_container);
     if (parent.length) {
-        node.moveAfter(Model(parent));
-        return;
+        method = 'moveAfter';
     }
 
     // on group header
-    parent = target.closest(Selectors.group_header);
-    if (parent.length) {
-        parent = target.closest(Selectors.group_container);
-        node.moveAtBegin(Model(parent));
-        return;
+    if (!method) {
+        parent = target.closest(Selectors.group_header);
+        if (parent.length) {
+            parent = target.closest(Selectors.group_container);
+            method = 'moveAtBegin';
+        }
     }
 
     // on group
-    parent = target.closest(Selectors.group_container);
-    if (parent.length) {
-        node.moveAtEnd(Model(parent));
-        return;
+    if (!method) {
+        parent = target.closest(Selectors.group_container);
+        if (parent.length) {
+            method = 'moveAtEnd';
+        }
+    }
+
+    if (method) {
+        node[method](Model(parent));
+
+        // refresh radio value
+        if (builder && node instanceof Rule) {
+            builder.setRuleInputValue(node, node.value);
+        }
     }
 }

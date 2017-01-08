@@ -86,9 +86,9 @@ $(function(){
             );
         });
 
-        assert.deepEqual(
+        assert.equal(
             $b.queryBuilder('getRules'),
-            {},
+            null,
             'Should return empty object'
         );
 
@@ -98,7 +98,7 @@ $(function(){
 
         assert.deepEqual(
             $b.queryBuilder('getRules'),
-            { condition: 'AND', rules: [] },
+            { condition: 'AND', rules: [], valid: true},
             'Should return object with no rules'
         );
     });
@@ -762,7 +762,9 @@ $(function(){
             filter_readonly: true,
             operator_readonly: false,
             value_readonly: true,
-            no_delete: false
+            no_delete: false,
+            no_sortable: true,
+            no_drop: false
         };
 
         QueryBuilder.defaults({ default_rule_flags: flags });
