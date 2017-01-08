@@ -42,7 +42,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
         switch (filter.input) {
             case 'radio':
                 if (value[i] === undefined || value[i].length === 0) {
-                    if (!filter.allow_empty_value) {
+                    if (!validation.allow_empty_value) {
                         result = ['radio_empty'];
                     }
                     break;
@@ -51,7 +51,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
             case 'checkbox':
                 if (value[i] === undefined || value[i].length === 0) {
-                    if (!filter.allow_empty_value) {
+                    if (!validation.allow_empty_value) {
                         result = ['checkbox_empty'];
                     }
                     break;
@@ -64,7 +64,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
             case 'select':
                 if (value[i] === undefined || value[i].length === 0 || (filter.placeholder && value[i] == filter.placeholder_value)) {
-                    if (!filter.allow_empty_value) {
+                    if (!validation.allow_empty_value) {
                         result = ['select_empty'];
                     }
                     break;
@@ -79,7 +79,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                 switch (QueryBuilder.types[filter.type]) {
                     case 'string':
                         if (value[i] === undefined || value[i].length === 0) {
-                            if (!filter.allow_empty_value) {
+                            if (!validation.allow_empty_value) {
                                 result = ['string_empty'];
                             }
                             break;
@@ -109,7 +109,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
                     case 'number':
                         if (value[i] === undefined || value[i].length === 0) {
-                            if (!filter.allow_empty_value) {
+                            if (!validation.allow_empty_value) {
                                 result = ['number_nan'];
                             }
                             break;
@@ -153,7 +153,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
                     case 'datetime':
                         if (value[i] === undefined || value[i].length === 0) {
-                            if (!filter.allow_empty_value) {
+                            if (!validation.allow_empty_value) {
                                 result = ['datetime_empty'];
                             }
                             break;
@@ -189,7 +189,7 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
                     case 'boolean':
                         if (value[i] === undefined || value[i].length === 0) {
-                            if (!filter.allow_empty_value) {
+                            if (!validation.allow_empty_value) {
                                 result = ['boolean_not_valid'];
                             }
                             break;

@@ -452,7 +452,7 @@ $(function(){
     QUnit.test('allow empty value', function(assert) {
         var filters = $.extend(true, [], basic_filters);
         filters.forEach(function(filter) {
-           filter.allow_empty_value = true;
+            filter.validation = $.extend({allow_empty_value: true}, filter.validation);
         });
 
         $b.queryBuilder({
