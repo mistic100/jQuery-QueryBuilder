@@ -30,40 +30,39 @@
 
   <script src="common.js"></script>
 
-<!-- qunit:imports -->
-<script src="../src/main.js" data-cover></script>
-<script src="../src/defaults.js" data-cover></script>
-<script src="../src/core.js" data-cover></script>
-<script src="../src/public.js" data-cover></script>
-<script src="../src/data.js" data-cover></script>
-<script src="../src/template.js" data-cover></script>
-<script src="../src/model.js" data-cover></script>
-<script src="../src/utils.js" data-cover></script>
-<script src="../src/jquery.js" data-cover></script>
+  <!-- injector:src -->
+  <script src="../src/main.js" data-cover></script>
+  <script src="../src/defaults.js" data-cover></script>
+  <script src="../src/core.js" data-cover></script>
+  <script src="../src/public.js" data-cover></script>
+  <script src="../src/data.js" data-cover></script>
+  <script src="../src/template.js" data-cover></script>
+  <script src="../src/model.js" data-cover></script>
+  <script src="../src/utils.js" data-cover></script>
+  <script src="../src/jquery.js" data-cover></script>
+  <script src="../src/plugins/bt-checkbox/plugin.js" data-cover></script>
+  <script src="../src/plugins/bt-selectpicker/plugin.js" data-cover></script>
+  <script src="../src/plugins/bt-tooltip-errors/plugin.js" data-cover></script>
+  <script src="../src/plugins/change-filters/plugin.js" data-cover></script>
+  <script src="../src/plugins/filter-description/plugin.js" data-cover></script>
+  <script src="../src/plugins/invert/plugin.js" data-cover></script>
+  <script src="../src/plugins/mongodb-support/plugin.js" data-cover></script>
+  <script src="../src/plugins/not-group/plugin.js" data-cover></script>
+  <script src="../src/plugins/sortable/plugin.js" data-cover></script>
+  <script src="../src/plugins/sql-support/plugin.js" data-cover></script>
+  <script src="../src/plugins/unique-filter/plugin.js" data-cover></script>
+  <!-- endinjector -->
 
-<script src="../src/plugins/bt-checkbox/plugin.js" data-cover></script>
-<script src="../src/plugins/bt-selectpicker/plugin.js" data-cover></script>
-<script src="../src/plugins/bt-tooltip-errors/plugin.js" data-cover></script>
-<script src="../src/plugins/change-filters/plugin.js" data-cover></script>
-<script src="../src/plugins/filter-description/plugin.js" data-cover></script>
-<script src="../src/plugins/invert/plugin.js" data-cover></script>
-<script src="../src/plugins/mongodb-support/plugin.js" data-cover></script>
-<script src="../src/plugins/not-group/plugin.js" data-cover></script>
-<script src="../src/plugins/sortable/plugin.js" data-cover></script>
-<script src="../src/plugins/sql-support/plugin.js" data-cover></script>
-<script src="../src/plugins/unique-filter/plugin.js" data-cover></script>
-<!-- /qunit:imports -->
-
-<!-- qunit:modules -->
-<script src="../tests/core.module.js"></script>
-<script src="../tests/data.module.js"></script>
-<script src="../tests/plugins-gui.module.js"></script>
-<script src="../tests/plugins.module.js"></script>
-<script src="../tests/plugins.mongo-support.module.js"></script>
-<script src="../tests/plugins.not-group.module.js"></script>
-<script src="../tests/plugins.sql-support.module.js"></script>
-<script src="../tests/utils.module.js"></script>
-<!-- /qunit:modules -->
+  <!-- injector:modules -->
+  <script src="core.module.js"></script>
+  <script src="data.module.js"></script>
+  <script src="plugins-gui.module.js"></script>
+  <script src="plugins.module.js"></script>
+  <script src="plugins.mongo-support.module.js"></script>
+  <script src="plugins.not-group.module.js"></script>
+  <script src="plugins.sql-support.module.js"></script>
+  <script src="utils.module.js"></script>
+  <!-- endinjector -->
 </head>
 
 <body class="container" style="padding:15px;">
