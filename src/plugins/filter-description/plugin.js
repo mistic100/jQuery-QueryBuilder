@@ -11,10 +11,11 @@ QueryBuilder.define('filter-description', function(options) {
      * INLINE
      */
     if (options.mode === 'inline') {
-        this.on('afterUpdateRuleFilter', function(e, rule) {
+        this.on('afterUpdateRuleFilter afterUpdateRuleOperator', function(e, rule) {
             var $p = rule.$el.find('p.filter-description');
+            var description = e.builder.getFilterDescription(rule.filter, rule);
 
-            if (!rule.filter || !rule.filter.description) {
+            if (!description) {
                 $p.hide();
             }
             else {
@@ -26,7 +27,7 @@ QueryBuilder.define('filter-description', function(options) {
                     $p.show();
                 }
 
-                $p.html('<i class="' + options.icon + '"></i> ' + rule.filter.description);
+                $p.html('<i class="' + options.icon + '"></i> ' + description);
             }
         });
     }
@@ -38,10 +39,11 @@ QueryBuilder.define('filter-description', function(options) {
             Utils.error('MissingLibrary', 'Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
         }
 
-        this.on('afterUpdateRuleFilter', function(e, rule) {
+        this.on('afterUpdateRuleFilter afterUpdateRuleOperator', function(e, rule) {
             var $b = rule.$el.find('button.filter-description');
+            var description = e.builder.getFilterDescription(rule.filter, rule);
 
-            if (!rule.filter || !rule.filter.description) {
+            if (!description) {
                 $b.hide();
 
                 if ($b.data('bs.popover')) {
@@ -67,7 +69,7 @@ QueryBuilder.define('filter-description', function(options) {
                     $b.show();
                 }
 
-                $b.data('bs.popover').options.content = rule.filter.description;
+                $b.data('bs.popover').options.content = description;
 
                 if ($b.attr('aria-describedby')) {
                     $b.popover('show');
@@ -83,10 +85,11 @@ QueryBuilder.define('filter-description', function(options) {
             Utils.error('MissingLibrary', 'Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
         }
 
-        this.on('afterUpdateRuleFilter', function(e, rule) {
+        this.on('afterUpdateRuleFilter afterUpdateRuleOperator', function(e, rule) {
             var $b = rule.$el.find('button.filter-description');
+            var description = e.builder.getFilterDescription(rule.filter, rule);
 
-            if (!rule.filter || !rule.filter.description) {
+            if (!description) {
                 $b.hide();
             }
             else {
@@ -99,11 +102,31 @@ QueryBuilder.define('filter-description', function(options) {
                     });
                 }
 
-                $b.data('description', rule.filter.description);
+                $b.data('description', description);
             }
         });
     }
 }, {
     icon: 'glyphicon glyphicon-info-sign',
     mode: 'popover'
+});
+
+QueryBuilder.extend({
+    /**
+     * Returns the description of a filter for a particular rule (if present)
+     * @param {object} filter
+     * @param {Rule} [rule]
+     * @returns {string}
+     */
+    getFilterDescription: function(filter, rule) {
+        if (!filter) {
+            return undefined;
+        }
+        else if (typeof filter.description == 'function') {
+            return filter.description.call(this, rule);
+        }
+        else {
+            return filter.description;
+        }
+    }
 });

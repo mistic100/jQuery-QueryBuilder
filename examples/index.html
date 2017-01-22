@@ -232,7 +232,11 @@
         input: 'text',
         value_separator: '|',
         optgroup: 'core',
-        description: 'Use a pipe (|) to separate multiple values with "in" and "not in" operators'
+        description: function(rule) {
+          if (rule.operator && ['in', 'not_in'].indexOf(rule.operator.type) !== -1) {
+            return 'Use a pipe (|) to separate multiple values with "in" and "not in" operators';
+          }
+        }
       },
       /*
        * textarea
