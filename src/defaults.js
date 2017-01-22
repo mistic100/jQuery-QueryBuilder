@@ -16,6 +16,7 @@ QueryBuilder.types = {
  */
 QueryBuilder.inputs = [
     'text',
+    'number',
     'textarea',
     'radio',
     'checkbox',

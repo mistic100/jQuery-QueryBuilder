@@ -32,13 +32,18 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
     var operator = rule.operator;
     var validation = filter.validation || {};
     var result = true;
-    var tmp;
+    var tmp, tempValue;
 
     if (rule.operator.nb_inputs === 1) {
         value = [value];
     }
 
     for (var i = 0; i < operator.nb_inputs; i++) {
+        if (!operator.multiple && $.isArray(value[i]) && value[i].length > 1) {
+            result = ['operator_not_multiple', operator.type];
+            break;
+        }
+
         switch (filter.input) {
             case 'radio':
                 if (value[i] === undefined || value[i].length === 0) {
@@ -56,10 +61,6 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                     }
                     break;
                 }
-                else if (!operator.multiple && value[i].length > 1) {
-                    result = ['operator_not_multiple', operator.type];
-                    break;
-                }
                 break;
 
             case 'select':
@@ -69,136 +70,140 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
                     }
                     break;
                 }
-                if (filter.multiple && !operator.multiple && value[i].length > 1) {
-                    result = ['operator_not_multiple', operator.type];
-                    break;
-                }
                 break;
 
             default:
-                switch (QueryBuilder.types[filter.type]) {
-                    case 'string':
-                        if (value[i] === undefined || value[i].length === 0) {
-                            if (!validation.allow_empty_value) {
-                                result = ['string_empty'];
+                tempValue = $.isArray(value[i]) ? value[i] : [value[i]];
+
+                for (var j = 0; j < tempValue.length; j++) {
+                    switch (QueryBuilder.types[filter.type]) {
+                        case 'string':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['string_empty'];
+                                }
+                                break;
+                            }
+                            if (validation.min !== undefined) {
+                                if (tempValue[j].length < parseInt(validation.min)) {
+                                    result = [this.getValidationMessage(validation, 'min', 'string_exceed_min_length'), validation.min];
+                                    break;
+                                }
+                            }
+                            if (validation.max !== undefined) {
+                                if (tempValue[j].length > parseInt(validation.max)) {
+                                    result = [this.getValidationMessage(validation, 'max', 'string_exceed_max_length'), validation.max];
+                                    break;
+                                }
+                            }
+                            if (validation.format) {
+                                if (typeof validation.format == 'string') {
+                                    validation.format = new RegExp(validation.format);
+                                }
+                                if (!validation.format.test(tempValue[j])) {
+                                    result = [this.getValidationMessage(validation, 'format', 'string_invalid_format'), validation.format];
+                                    break;
+                                }
                             }
                             break;
-                        }
-                        if (validation.min !== undefined) {
-                            if (value[i].length < parseInt(validation.min)) {
-                                result = [this.getValidationMessage(validation, 'min', 'string_exceed_min_length'), validation.min];
-                                break;
-                            }
-                        }
-                        if (validation.max !== undefined) {
-                            if (value[i].length > parseInt(validation.max)) {
-                                result = [this.getValidationMessage(validation, 'max', 'string_exceed_max_length'), validation.max];
-                                break;
-                            }
-                        }
-                        if (validation.format) {
-                            if (typeof validation.format == 'string') {
-                                validation.format = new RegExp(validation.format);
-                            }
-                            if (!validation.format.test(value[i])) {
-                                result = [this.getValidationMessage(validation, 'format', 'string_invalid_format'), validation.format];
-                                break;
-                            }
-                        }
-                        break;
 
-                    case 'number':
-                        if (value[i] === undefined || value[i].length === 0) {
-                            if (!validation.allow_empty_value) {
+                        case 'number':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['number_nan'];
+                                }
+                                break;
+                            }
+                            if (isNaN(tempValue[j])) {
                                 result = ['number_nan'];
-                            }
-                            break;
-                        }
-                        if (isNaN(value[i])) {
-                            result = ['number_nan'];
-                            break;
-                        }
-                        if (filter.type == 'integer') {
-                            if (parseInt(value[i]) != value[i]) {
-                                result = ['number_not_integer'];
                                 break;
                             }
-                        }
-                        else {
-                            if (parseFloat(value[i]) != value[i]) {
-                                result = ['number_not_double'];
-                                break;
-                            }
-                        }
-                        if (validation.min !== undefined) {
-                            if (value[i] < parseFloat(validation.min)) {
-                                result = [this.getValidationMessage(validation, 'min', 'number_exceed_min'), validation.min];
-                                break;
-                            }
-                        }
-                        if (validation.max !== undefined) {
-                            if (value[i] > parseFloat(validation.max)) {
-                                result = [this.getValidationMessage(validation, 'max', 'number_exceed_max'), validation.max];
-                                break;
-                            }
-                        }
-                        if (validation.step !== undefined && validation.step !== 'any') {
-                            var v = (value[i] / validation.step).toPrecision(14);
-                            if (parseInt(v) != v) {
-                                result = [this.getValidationMessage(validation, 'step', 'number_wrong_step'), validation.step];
-                                break;
-                            }
-                        }
-                        break;
-
-                    case 'datetime':
-                        if (value[i] === undefined || value[i].length === 0) {
-                            if (!validation.allow_empty_value) {
-                                result = ['datetime_empty'];
-                            }
-                            break;
-                        }
-
-                        // we need MomentJS
-                        if (validation.format) {
-                            if (!('moment' in window)) {
-                                Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
-                            }
-
-                            var datetime = moment(value[i], validation.format);
-                            if (!datetime.isValid()) {
-                                result = [this.getValidationMessage(validation, 'format', 'datetime_invalid'), validation.format];
-                                break;
+                            if (filter.type == 'integer') {
+                                if (parseInt(tempValue[j]) != tempValue[j]) {
+                                    result = ['number_not_integer'];
+                                    break;
+                                }
                             }
                             else {
-                                if (validation.min) {
-                                    if (datetime < moment(validation.min, validation.format)) {
-                                        result = [this.getValidationMessage(validation, 'min', 'datetime_exceed_min'), validation.min];
-                                        break;
-                                    }
-                                }
-                                if (validation.max) {
-                                    if (datetime > moment(validation.max, validation.format)) {
-                                        result = [this.getValidationMessage(validation, 'max', 'datetime_exceed_max'), validation.max];
-                                        break;
-                                    }
+                                if (parseFloat(tempValue[j]) != tempValue[j]) {
+                                    result = ['number_not_double'];
+                                    break;
                                 }
                             }
-                        }
-                        break;
+                            if (validation.min !== undefined) {
+                                if (tempValue[j] < parseFloat(validation.min)) {
+                                    result = [this.getValidationMessage(validation, 'min', 'number_exceed_min'), validation.min];
+                                    break;
+                                }
+                            }
+                            if (validation.max !== undefined) {
+                                if (tempValue[j] > parseFloat(validation.max)) {
+                                    result = [this.getValidationMessage(validation, 'max', 'number_exceed_max'), validation.max];
+                                    break;
+                                }
+                            }
+                            if (validation.step !== undefined && validation.step !== 'any') {
+                                var v = (tempValue[j] / validation.step).toPrecision(14);
+                                if (parseInt(v) != v) {
+                                    result = [this.getValidationMessage(validation, 'step', 'number_wrong_step'), validation.step];
+                                    break;
+                                }
+                            }
+                            break;
 
-                    case 'boolean':
-                        if (value[i] === undefined || value[i].length === 0) {
-                            if (!validation.allow_empty_value) {
-                                result = ['boolean_not_valid'];
+                        case 'datetime':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['datetime_empty'];
+                                }
+                                break;
+                            }
+
+                            // we need MomentJS
+                            if (validation.format) {
+                                if (!('moment' in window)) {
+                                    Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
+                                }
+
+                                var datetime = moment(tempValue[j], validation.format);
+                                if (!datetime.isValid()) {
+                                    result = [this.getValidationMessage(validation, 'format', 'datetime_invalid'), validation.format];
+                                    break;
+                                }
+                                else {
+                                    if (validation.min) {
+                                        if (datetime < moment(validation.min, validation.format)) {
+                                            result = [this.getValidationMessage(validation, 'min', 'datetime_exceed_min'), validation.min];
+                                            break;
+                                        }
+                                    }
+                                    if (validation.max) {
+                                        if (datetime > moment(validation.max, validation.format)) {
+                                            result = [this.getValidationMessage(validation, 'max', 'datetime_exceed_max'), validation.max];
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                             break;
-                        }
-                        tmp = ('' + value[i]).trim().toLowerCase();
-                        if (tmp !== 'true' && tmp !== 'false' && tmp !== '1' && tmp !== '0' && value[i] !== 1 && value[i] !== 0) {
-                            result = ['boolean_not_valid'];
-                            break;
-                        }
+
+                        case 'boolean':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['boolean_not_valid'];
+                                }
+                                break;
+                            }
+                            tmp = ('' + tempValue[j]).trim().toLowerCase();
+                            if (tmp !== 'true' && tmp !== 'false' && tmp !== '1' && tmp !== '0' && tempValue[j] !== 1 && tempValue[j] !== 0) {
+                                result = ['boolean_not_valid'];
+                                break;
+                            }
+                    }
+
+                    if (result !== true) {
+                        break;
+                    }
                 }
         }
 

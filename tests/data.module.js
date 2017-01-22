@@ -383,10 +383,15 @@ $(function(){
                 id: 'name',
                 operator: 'equal',
                 value: 'Mistic,Damien'
+            }, {
+                id: 'age',
+                operator: 'not_equal',
+                value: '16|17|18'
             }]
         });
 
         $('[name=builder_rule_0_operator]').val('in').trigger('change');
+        $('[name=builder_rule_1_operator]').val('not_in').trigger('change');
 
         assert.rulesMatch(
             $b.queryBuilder('getRules'),
@@ -396,9 +401,13 @@ $(function(){
                     id: 'name',
                     operator: 'in',
                     value: ['Mistic', 'Damien']
+                }, {
+                    id: 'age',
+                    operator: 'not_in',
+                    value: ['16', '17', '18']
                 }]
             },
-            'Should split values on comma'
+            'Should split values on comma and pipe'
         );
     });
 

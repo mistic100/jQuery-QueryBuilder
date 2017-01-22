@@ -102,7 +102,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
         }
 
         if (!filter.input) {
-            filter.input = 'text';
+            filter.input = QueryBuilder.types[filter.type] === 'number' ? 'number' : 'text';
         }
         else if (typeof filter.input != 'function' && QueryBuilder.inputs.indexOf(filter.input) == -1) {
             Utils.error('Config', 'Invalid input "{0}"', filter.input);

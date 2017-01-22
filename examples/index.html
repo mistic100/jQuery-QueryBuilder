@@ -204,7 +204,7 @@
 
     filters: [
       /*
-       * basic
+       * string with separator
        */
       {
         id: 'name',
@@ -221,6 +221,18 @@
           allow_empty_value: true
         },
         unique: true
+      },
+      /*
+       * integer with separator for 'in' and 'not_in'
+       */
+      {
+        id: 'age',
+        label: 'Age',
+        type: 'integer',
+        input: 'text',
+        value_separator: '|',
+        optgroup: 'core',
+        description: 'Use a pipe (|) to separate multiple values with "in" and "not in" operators'
       },
       /*
        * textarea
@@ -533,6 +545,10 @@
         id: 'name',
         operator: 'in',
         value: ['Mistic', 'Damien']
+      }, {
+        id: 'age',
+        operator: 'in',
+        value: [20,21,22]
       }, {
         empty: true
       }]

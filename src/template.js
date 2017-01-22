@@ -210,26 +210,23 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 h+= '></textarea>';
                 break;
 
-            default:
-                switch (QueryBuilder.types[filter.type]) {
-                    case 'number':
-                        h+= '<input class="form-control" type="number" name="' + name + '"';
-                        if (validation.step !== undefined) h+= ' step="' + validation.step + '"';
-                        if (validation.min !== undefined) h+= ' min="' + validation.min + '"';
-                        if (validation.max !== undefined) h+= ' max="' + validation.max + '"';
-                        if (filter.placeholder) h+= ' placeholder="' + filter.placeholder + '"';
-                        if (filter.size) h+= ' size="' + filter.size + '"';
-                        h+= '>';
-                        break;
+            case 'number':
+                h+= '<input class="form-control" type="number" name="' + name + '"';
+                if (validation.step !== undefined) h+= ' step="' + validation.step + '"';
+                if (validation.min !== undefined) h+= ' min="' + validation.min + '"';
+                if (validation.max !== undefined) h+= ' max="' + validation.max + '"';
+                if (filter.placeholder) h+= ' placeholder="' + filter.placeholder + '"';
+                if (filter.size) h+= ' size="' + filter.size + '"';
+                h+= '>';
+                break;
 
-                    default:
-                        h+= '<input class="form-control" type="text" name="' + name + '"';
-                        if (filter.placeholder) h+= ' placeholder="' + filter.placeholder + '"';
-                        if (filter.type === 'string' && validation.min !== undefined) h+= ' minlength="' + validation.min + '"';
-                        if (filter.type === 'string' && validation.max !== undefined) h+= ' maxlength="' + validation.max + '"';
-                        if (filter.size) h+= ' size="' + filter.size + '"';
-                        h+= '>';
-                }
+            default:
+                h+= '<input class="form-control" type="text" name="' + name + '"';
+                if (filter.placeholder) h+= ' placeholder="' + filter.placeholder + '"';
+                if (filter.type === 'string' && validation.min !== undefined) h+= ' minlength="' + validation.min + '"';
+                if (filter.type === 'string' && validation.max !== undefined) h+= ' maxlength="' + validation.max + '"';
+                if (filter.size) h+= ' size="' + filter.size + '"';
+                h+= '>';
         }
     }
 

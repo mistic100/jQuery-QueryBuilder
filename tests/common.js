@@ -296,6 +296,12 @@ var basic_filters = [{
             format: 'Custom format error message'
         }
     }
+}, {
+    id: 'age',
+    label: 'Age',
+    type: 'integer',
+    input: 'text',
+    value_separator: '|'
 }];
 
 var basic_rules = {
