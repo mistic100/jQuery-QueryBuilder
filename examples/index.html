@@ -595,7 +595,10 @@
   $('.parse-json').on('click', function() {
     $('#result').removeClass('hide')
       .find('pre').html(JSON.stringify(
-      $('#builder').queryBuilder('getRules', { get_flags: true }),
+      $('#builder').queryBuilder('getRules', {
+        get_flags: true,
+        skip_empty: true
+      }),
       undefined, 2
     ));
   });

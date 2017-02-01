@@ -72,9 +72,15 @@ QueryBuilder.prototype.getModel = function(target) {
 
 /**
  * Validate the whole builder
+ * @param {object} options
+ *        - skip_empty: false[default] | true(skips validating rules that have no filter selected)
  * @return {boolean}
  */
-QueryBuilder.prototype.validate = function() {
+QueryBuilder.prototype.validate = function(options) {
+    options = $.extend({
+        skip_empty: false
+    }, options);
+
     this.clearErrors();
 
     var self = this;
@@ -84,6 +90,10 @@ QueryBuilder.prototype.validate = function() {
         var errors = 0;
 
         group.each(function(rule) {
+            if (!rule.filter && options.skip_empty) {
+                return;
+            }
+
             if (!rule.filter) {
                 self.triggerValidationError(rule, 'no_filter', null);
                 errors++;
@@ -109,16 +119,20 @@ QueryBuilder.prototype.validate = function() {
             done++;
 
         }, function(group) {
-            if (parse(group)) {
+            var res = parse(group);
+            if (res === true) {
                 done++;
             }
-            else {
+            else if (res === false) {
                 errors++;
             }
         });
 
         if (errors > 0) {
             return false;
+        }
+        else if (done === 0 && !group.isRoot() && options.skip_empty) {
+            return null;
         }
         else if (done === 0 && (!self.settings.allow_empty || !group.isRoot())) {
             self.triggerValidationError(group, 'empty_group', null);
@@ -137,15 +151,17 @@ QueryBuilder.prototype.validate = function() {
  * @param {object} options
  *      - get_flags: false[default] | true(only changes from default flags) | 'all'
  *      - allow_invalid: false[default] | true(returns rules even if they are invalid)
+ *      - skip_empty: false[default] | true(remove rules that have no filter selected)
  * @return {object}
  */
 QueryBuilder.prototype.getRules = function(options) {
     options = $.extend({
         get_flags: false,
-        allow_invalid: false
+        allow_invalid: false,
+        skip_empty: false
     }, options);
 
-    var valid = this.validate();
+    var valid = this.validate(options);
     if (!valid && !options.allow_invalid) {
         return null;
     }
@@ -170,6 +186,10 @@ QueryBuilder.prototype.getRules = function(options) {
         }
 
         group.each(function(rule) {
+            if (!rule.filter && options.skip_empty) {
+                return;
+            }
+
             var value = null;
             if (!rule.operator || rule.operator.nb_inputs !== 0) {
                 value = rule.value;
@@ -198,7 +218,10 @@ QueryBuilder.prototype.getRules = function(options) {
             groupData.rules.push(self.change('ruleToJson', ruleData, rule));
 
         }, function(model) {
-            groupData.rules.push(parse(model));
+            var data = parse(model);
+            if (data.rules.length !== 0 || !options.skip_empty) {
+                groupData.rules.push(data);
+            }
         }, this);
 
         return self.change('groupToJson', groupData, group);

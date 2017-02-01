@@ -1,4 +1,4 @@
-$(function(){
+$(function() {
     var $b = $('#builder');
 
     QUnit.module('data', {
@@ -31,9 +31,9 @@ $(function(){
                 type: 'string',
                 input: 'select',
                 values: [
-                    {one: 'One'},
-                    {two: 'Two'},
-                    {three: 'Three'}
+                    { one: 'One' },
+                    { two: 'Two' },
+                    { three: 'Three' }
                 ]
             }],
             rules: {
@@ -207,7 +207,7 @@ $(function(){
     QUnit.test('custom data', function(assert) {
         var rules = {
             condition: 'AND',
-            data: [1,2,3],
+            data: [1, 2, 3],
             rules: [{
                 id: 'name',
                 value: 'Mistic',
@@ -361,13 +361,13 @@ $(function(){
         };
 
         assert.rulesMatch(
-            $b.queryBuilder('getRules', {get_flags: true}),
+            $b.queryBuilder('getRules', { get_flags: true }),
             rules_changed_flags,
             'Should export rules with changed flags'
         );
 
         assert.rulesMatch(
-            $b.queryBuilder('getRules', {get_flags: 'all'}),
+            $b.queryBuilder('getRules', { get_flags: 'all' }),
             rules_all_flags,
             'Should export rules with all flags'
         );
@@ -456,12 +456,47 @@ $(function(){
     });
 
     /**
+     * Test skip_empty option
+     */
+    QUnit.test('skip empty', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters
+        });
+
+        $b.queryBuilder('setRules', {
+            condition: 'AND',
+            rules: [{
+                id: 'name',
+                operator: 'equal',
+                value: 'Mistic'
+            }, {
+                empty: true
+            }]
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules', {
+                skip_empty: true
+            }),
+            {
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }]
+            },
+            'Should skip empty rules for getRules'
+        );
+    });
+
+    /**
      * Test allow_empty_value option
      */
     QUnit.test('allow empty value', function(assert) {
         var filters = $.extend(true, [], basic_filters);
         filters.forEach(function(filter) {
-            filter.validation = $.extend({allow_empty_value: true}, filter.validation);
+            filter.validation = $.extend({ allow_empty_value: true }, filter.validation);
         });
 
         $b.queryBuilder({
