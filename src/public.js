@@ -72,9 +72,11 @@ QueryBuilder.prototype.getModel = function(target) {
 
 /**
  * Validate the whole builder
+ * @param {object} options
+ *		- skip_empty: false[default] | true(skips validating rules that have no filter selected)
  * @return {boolean}
  */
-QueryBuilder.prototype.validate = function() {
+QueryBuilder.prototype.validate = function(options) {
     this.clearErrors();
 
     var self = this;
@@ -84,6 +86,11 @@ QueryBuilder.prototype.validate = function() {
         var errors = 0;
 
         group.each(function(rule) {
+			if(!rule.filter && !rule.operator && options.skip_empty){
+				done++;
+				return;
+			}
+			
             if (!rule.filter) {
                 self.triggerValidationError(rule, 'no_filter', null);
                 errors++;
@@ -137,15 +144,17 @@ QueryBuilder.prototype.validate = function() {
  * @param {object} options
  *      - get_flags: false[default] | true(only changes from default flags) | 'all'
  *      - allow_invalid: false[default] | true(returns rules even if they are invalid)
+ *		- skip_empty: false[default] | true(skips validating rules that have no filter selected)
  * @return {object}
  */
 QueryBuilder.prototype.getRules = function(options) {
     options = $.extend({
         get_flags: false,
-        allow_invalid: false
+        allow_invalid: false,
+		skip_empty : false
     }, options);
 
-    var valid = this.validate();
+    var valid = this.validate(options);
     if (!valid && !options.allow_invalid) {
         return null;
     }
@@ -194,7 +203,9 @@ QueryBuilder.prototype.getRules = function(options) {
                     ruleData.flags = flags;
                 }
             }
-
+			if( options.skip_empty && !ruleData.id && !ruleData.field && !ruleData.type && !ruleData.operator){
+				return;//we want to skip rules that are empty. Don't return them.
+			}
             groupData.rules.push(self.change('ruleToJson', ruleData, rule));
 
         }, function(model) {
