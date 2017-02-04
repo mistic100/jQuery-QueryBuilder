@@ -1,0 +1,67 @@
+<div class="row">
+  {% if site.download.url %}
+  <div class="col-sm-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">Manual download</div>
+      <div class="panel-body">
+        <p>Compiled and minified files with examples and sources.</p>
+        <a href="{{site.download.url}}" class="btn btn-lg btn-outline">
+          <i class="glyphicon glyphicon-save"></i>
+          Download
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if site.download.cdn and site.download.cdn.url %}
+  <div class="col-sm-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">Content Delivery Network</div>
+      <div class="panel-body">
+        <p>The package is available on {{site.download.cdn.name}}.</p>
+        {% if site.download.cdn.img %}
+        <a href="{{site.download.cdn.url}}" class="btn btn-lg btn-outline" style="max-width: 50%">
+          <img src="{{site.download.cdn.img}}" class="img-responsive"/>
+        </a>
+        {% else %}
+        <a href="{{site.download.cdn.url}}" class="btn btn-lg btn-outline">Download</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if site.download.bower %}
+  <div class="col-sm-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">Install with Bower</div>
+      <div class="panel-body">
+        <p>You can also get all necessary files and dependencies with <a href="http://bower.io">Bower</a>.</p>
+        <!-- @formatter:off -->
+{% highlight bash %}
+$ bower install {{site.download.bower}}
+{% endhighlight %}
+<!-- @formatter:on -->
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if site.download.npm %}
+  <div class="col-sm-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">Install with npm</div>
+      <div class="panel-body">
+        <p>You can also get all necessary files and dependencies with <a href="https://www.npmjs.com">npm</a>.</p>
+        <!-- @formatter:off -->
+{% highlight bash %}
+$ npm install {{site.download.npm}}
+{% endhighlight %}
+<!-- @formatter:on -->
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
