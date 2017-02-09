@@ -5,7 +5,7 @@ description: jQuery plugin for user friendly query/filter creator
 isHome: true
 ---
 
-<section class="bs-docs-section clearfix">
+<section class="bs-docs-section">
   <h1 id="overview" class="page-header">
     Overview
   </h1>
@@ -24,7 +24,7 @@ isHome: true
   </ul>
 </section>
 
-<section>
+<section class="clearfix">
   <b>But let's look at a live example !</b>
 
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
@@ -677,7 +677,7 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
   </div>
 
   <div class="bs-callout">
-    <h4><code>.validate()</code></h4>
+    <h4 id="method-validate"><code>.validate()</code></h4>
 
     <p>Returns a boolean indicating whether the builder is valid or not. Use the <code>validationError</code> event to
       catch
@@ -685,7 +685,7 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
   </div>
 
   <div class="bs-callout">
-    <h4><code>.getRules([options])</code></h4>
+    <h4 id="method-getRules"><code>.getRules([options])</code></h4>
 
     <p>Performs validation and returns the rules as a plain JSON object. See the <a
       href="{{site.github.url}}/demo.html">demo</a> for output example. The method takes an optional object of options.
@@ -739,7 +739,7 @@ $('#builder').queryBuilder('getRules', { get_flags: true });
   </div>
 
   <div class="bs-callout">
-    <h4><code>.setRules(rules [, options])</code></h4>
+    <h4 id="method-setRules"><code>.setRules(rules [, options])</code></h4>
 
     <p>Clears the builder and sets new rules. The parameters must have the same structure as the output of <code>getRules</code>.
       <a data-bootbox="rules_format"> <i class="glyphicon glyphicon-info-sign"></i> See an example</a></p>
@@ -972,7 +972,7 @@ $('#builder').queryBuilder('setRules', {
   </div>
 
   <div class="bs-callout">
-    <h4><code>.getModel([element])</code></h4>
+    <h4 id="method-getModel"><code>.getModel([element])</code></h4>
 
     <p>Given a group or rule DOM element, returns the associated <b>Group</b> or <b>Rule</b> object. Useful to perform
       manual operations on the builder (see <a href="#inside_the_box">Inside the box</a>). Without parameters it returns
@@ -987,7 +987,7 @@ var last_node_model = $('#builder').queryBuilder('getModel', $('#builder .rule-c
   </div>
 
   <div class="bs-callout">
-    <h4><code>.reset()</code></h4>
+    <h4 id="method-reset"><code>.reset()</code></h4>
 
     <p>Removes all rules.</p>
     <!-- @formatter:off -->
@@ -998,7 +998,7 @@ $('#builder').queryBuilder('reset');
   </div>
 
   <div class="bs-callout">
-    <h4><code>.destroy()</code></h4>
+    <h4 id="method-destroy"><code>.destroy()</code></h4>
 
     <p>Completely destroy the builder and it's data.</p>
     <!-- @formatter:off -->

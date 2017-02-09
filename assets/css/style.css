@@ -1,40 +1,59 @@
 .bs-docs-masthead {
-  padding-top:50px;
-  padding-bottom:40px;
-  margin-bottom:20px;
+  padding-top: 50px;
+  padding-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .bs-docs-header h1, .bs-docs-header p {
-  margin-right:0px;
+  margin-right: 0px;
 }
 
 .bs-docs-sidebar .nav > li > a {
-  font-size:15px;
+  font-size: 15px;
 }
+
 .bs-docs-sidebar .nav .nav > li > a {
-  font-size:14px;
+  font-size: 14px;
 }
+
 .back-top-top {
-  font-size:13px;
+  font-size: 13px;
 }
 
 #content {
-  position:relative;
+  position: relative;
 }
+
 #content:after {
-  content:"";
-  position:absolute;
-  bottom:0px;
-  right:0px;
-  height:50px;
-  width:30%;
-  background:linear-gradient(135deg, transparent 50px, white 50px);
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  height: 50px;
+  width: 30%;
+  min-width: 300px;
+  background: linear-gradient(135deg, transparent 50px, white 50px);
 }
 
-a[data-bootbox] {
-  cursor: pointer;
+.anchor-link {
+  opacity: 0;
+  position: absolute;
+  margin-left: -1em;
+  padding-right: 1em;
+  font-size: 0.8em;
+  line-height: 1.3em;
+  color: #999;
+  transition: opacity 0.1s ease-in-out;
 }
 
-h5 {
-  font-weight: bold;
+.anchor-link:hover {
+  text-decoration: none;
+}
+
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link {
+  opacity: 1;
 }
