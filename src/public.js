@@ -23,6 +23,8 @@ QueryBuilder.prototype.destroy = function() {
  * Reset the plugin
  */
 QueryBuilder.prototype.reset = function() {
+    this.trigger('beforeReset');
+
     this.status.group_id = 1;
     this.status.rule_id = 0;
 
@@ -37,6 +39,8 @@ QueryBuilder.prototype.reset = function() {
  * Clear the plugin
  */
 QueryBuilder.prototype.clear = function() {
+    this.trigger('beforeClear');
+
     this.status.group_id = 0;
     this.status.rule_id = 0;
 
