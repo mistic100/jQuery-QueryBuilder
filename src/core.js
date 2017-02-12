@@ -658,7 +658,10 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     else {
         $valueContainer.show();
 
-        if ($valueContainer.is(':empty') || !previousOperator || rule.operator.nb_inputs !== previousOperator.nb_inputs) {
+        if ($valueContainer.is(':empty') || !previousOperator ||
+            rule.operator.nb_inputs !== previousOperator.nb_inputs ||
+            rule.operator.optgroup !== previousOperator.optgroup
+        ) {
             this.createRuleInput(rule);
         }
     }
