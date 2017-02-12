@@ -1,6 +1,12 @@
-/*!
- * jQuery QueryBuilder Invert
+/**
  * Allows to invert a rule operator, a group condition or the entire builder.
+ * @class InvertPlugin
+ * @param {object} [options]
+ * @param {string} [options.icon='glyphicon glyphicon-random]
+ * @param {boolean} [options.recursive=true]
+ * @param {boolean} [options.invert_rules=true]
+ * @param {boolean} [options.display_rules_button=false]
+ * @param {boolean} [options.silent_fail=false]
  */
 
 QueryBuilder.defaults({
@@ -35,6 +41,7 @@ QueryBuilder.defaults({
 
 QueryBuilder.define('invert', function(options) {
     var self = this;
+    var Selectors = QueryBuilder.selectors;
 
     /**
      * Bind events
@@ -42,13 +49,13 @@ QueryBuilder.define('invert', function(options) {
     this.on('afterInit', function() {
         self.$el.on('click.queryBuilder', '[data-invert=group]', function() {
             var $group = $(this).closest(Selectors.group_container);
-            self.invert(Model($group), options);
+            self.invert(self.getModel($group), options);
         });
 
         if (options.display_rules_button && options.invert_rules) {
             self.$el.on('click.queryBuilder', '[data-invert=rule]', function() {
                 var $rule = $(this).closest(Selectors.rule_container);
-                self.invert(Model($rule), options);
+                self.invert(self.getModel($rule), options);
             });
         }
     });
@@ -77,12 +84,13 @@ QueryBuilder.define('invert', function(options) {
     silent_fail: false
 });
 
-QueryBuilder.extend({
+QueryBuilder.extend(/** @lends InvertPlugin.prototype */ {
     /**
      * Invert a Group, a Rule or the whole builder
+     * @param {Node} [node]
+     * @param {object} [options] {@link InvertPlugin}
+     * @fires InvertPlugin#afterInvert
      * @throws InvertConditionError, InvertOperatorError
-     * @param {Node,optional}
-     * @param {object,optional}
      */
     invert: function(node, options) {
         if (!(node instanceof Node)) {
@@ -135,6 +143,11 @@ QueryBuilder.extend({
         }
 
         if (options.trigger) {
+            /**
+             * @event InvertPlugin#afterInvert
+             * @param {Node} node
+             * @param {object} options
+             */
             this.trigger('afterInvert', node, options);
         }
     }

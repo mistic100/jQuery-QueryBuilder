@@ -1,15 +1,37 @@
-// CLASS DEFINITION
-// ===============================
+/**
+ * @param {jQuery} $el
+ * @param {object} options - see {@link http://querybuilder.js.org/#options}
+ * @constructor
+ * @fires QueryBuilder#afterInit
+ */
 var QueryBuilder = function($el, options) {
     this.init($el, options);
 };
 
+$.extend(QueryBuilder.prototype, /** @lends QueryBuilder.prototype */ {
+    /**
+     * Triggers an event on the builder container
+     * @param {string} type
+     * @returns {$.Event}
+     */
+    trigger: function(type) {
+        var event = new $.Event(this._tojQueryEvent(type), {
+            builder: this
+        });
 
-// EVENTS SYSTEM
-// ===============================
-$.extend(QueryBuilder.prototype, {
+        this.$el.triggerHandler(event, Array.prototype.slice.call(arguments, 1));
+
+        return event;
+    },
+
+    /**
+     * Triggers an event on the builder container and returns the modified value
+     * @param {string} type
+     * @param {*} value
+     * @returns {*}
+     */
     change: function(type, value) {
-        var event = new $.Event(this.tojQueryEvent(type, true), {
+        var event = new $.Event(this._tojQueryEvent(type, true), {
             builder: this,
             value: value
         });
@@ -19,47 +41,69 @@ $.extend(QueryBuilder.prototype, {
         return event.value;
     },
 
-    trigger: function(type) {
-        var event = new $.Event(this.tojQueryEvent(type), {
-            builder: this
-        });
-
-        this.$el.triggerHandler(event, Array.prototype.slice.call(arguments, 1));
-
-        return event;
-    },
-
+    /**
+     * Attaches an event listener on the builder container
+     * @param {string} type
+     * @param {function} cb
+     * @returns {QueryBuilder}
+     */
     on: function(type, cb) {
-        this.$el.on(this.tojQueryEvent(type), cb);
+        this.$el.on(this._tojQueryEvent(type), cb);
         return this;
     },
 
+    /**
+     * Removes an event listener from the builder container
+     * @param {string} type
+     * @param {function} [cb]
+     * @returns {QueryBuilder}
+     */
     off: function(type, cb) {
-        this.$el.off(this.tojQueryEvent(type), cb);
+        this.$el.off(this._tojQueryEvent(type), cb);
         return this;
     },
 
+    /**
+     * Attaches an event listener called once on the builder container
+     * @param {string} type
+     * @param {function} cb
+     * @returns {QueryBuilder}
+     */
     once: function(type, cb) {
-        this.$el.one(this.tojQueryEvent(type), cb);
+        this.$el.one(this._tojQueryEvent(type), cb);
         return this;
     },
 
-    tojQueryEvent: function(name, filter) {
+    /**
+     * Appends `.queryBuilder` and optionally `.filter` to the events names
+     * @param {string} name
+     * @param {boolean} [filter=false]
+     * @returns {string}
+     * @private
+     */
+    _tojQueryEvent: function(name, filter) {
         return name.split(' ').map(function(type) {
             return type + '.queryBuilder' + (filter ? '.filter' : '');
         }).join(' ');
     }
 });
 
+/**
+ * @typedef {object} QueryBuilder#Plugin
+ * @property {object} def - default options
+ * @property {function} fct - init function
+ */
 
-// PLUGINS SYSTEM
-// ===============================
+/**
+ * Definition of available plugins
+ * @type {object.<String, QueryBuilder#Plugin>}
+ */
 QueryBuilder.plugins = {};
 
 /**
- * Get or extend the default configuration
- * @param options {object,optional} new configuration, leave undefined to get the default config
- * @return {undefined|object} nothing or configuration object (copy)
+ * Gets or extends the default configuration
+ * @param {object} [options] - new configuration
+ * @returns {undefined|object} nothing or configuration object (copy)
  */
 QueryBuilder.defaults = function(options) {
     if (typeof options == 'object') {
@@ -79,10 +123,10 @@ QueryBuilder.defaults = function(options) {
 };
 
 /**
- * Define a new plugin
- * @param {string}
- * @param {function}
- * @param {object,optional} default configuration
+ * Registers a new plugin
+ * @param {string} name
+ * @param {function} fct - init function
+ * @param {object} [def] - default options
  */
 QueryBuilder.define = function(name, fct, def) {
     QueryBuilder.plugins[name] = {
@@ -92,41 +136,9 @@ QueryBuilder.define = function(name, fct, def) {
 };
 
 /**
- * Add new methods
- * @param {object}
+ * Adds new methods to QueryBuilder prototypes
+ * @param {object.<string, function>} methods
  */
 QueryBuilder.extend = function(methods) {
     $.extend(QueryBuilder.prototype, methods);
-};
-
-/**
- * Init plugins for an instance
- * @throws ConfigError
- */
-QueryBuilder.prototype.initPlugins = function() {
-    if (!this.plugins) {
-        return;
-    }
-
-    if ($.isArray(this.plugins)) {
-        var tmp = {};
-        this.plugins.forEach(function(plugin) {
-            tmp[plugin] = null;
-        });
-        this.plugins = tmp;
-    }
-
-    Object.keys(this.plugins).forEach(function(plugin) {
-        if (plugin in QueryBuilder.plugins) {
-            this.plugins[plugin] = $.extend(true, {},
-                QueryBuilder.plugins[plugin].def,
-                this.plugins[plugin] || {}
-            );
-
-            QueryBuilder.plugins[plugin].fct.call(this, this.plugins[plugin]);
-        }
-        else {
-            Utils.error('Config', 'Unable to find plugin "{0}"', plugin);
-        }
-    }, this);
 };

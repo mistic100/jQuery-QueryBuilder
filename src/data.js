@@ -1,10 +1,9 @@
-/*jshint loopfunc:true */
-
 /**
- * Check if a value is correct for a filter
- * @param rule {Rule}
- * @param value {string|string[]|undefined}
- * @return {array|true}
+ * Performs value validation
+ * @param {Rule} rule
+ * @param {string|string[]} value
+ * @returns {array|boolean} true or error array
+ * @fires QueryBuilder#filter:validateValue
  */
 QueryBuilder.prototype.validateValue = function(rule, value) {
     var validation = rule.filter.validation || {};
@@ -14,20 +13,28 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
         result = validation.callback.call(this, value, rule);
     }
     else {
-        result = this.validateValueInternal(rule, value);
+        result = this._validateValue(rule, value);
     }
 
+    /**
+     * @event QueryBuilder#filter:validateValue
+     * @param {array|boolean} result
+     * @param {*} value
+     * @param {Rule} rule
+     * @returns {array|boolean}
+     */
     return this.change('validateValue', result, value, rule);
 };
 
 /**
  * Default validation function
+ * @param {Rule} rule
+ * @param {string|string[]} value
+ * @returns {array|boolean} true or error array
  * @throws ConfigError
- * @param rule {Rule}
- * @param value {string|string[]|undefined}
- * @return {Array|boolean} error array or true
+ * @private
  */
-QueryBuilder.prototype.validateValueInternal = function(rule, value) {
+QueryBuilder.prototype._validateValue = function(rule, value) {
     var filter = rule.filter;
     var operator = rule.operator;
     var validation = filter.validation || {};
@@ -217,7 +224,8 @@ QueryBuilder.prototype.validateValueInternal = function(rule, value) {
 
 /**
  * Returns an incremented group ID
- * @return {string}
+ * @returns {string}
+ * @private
  */
 QueryBuilder.prototype.nextGroupId = function() {
     return this.status.id + '_group_' + (this.status.group_id++);
@@ -225,7 +233,8 @@ QueryBuilder.prototype.nextGroupId = function() {
 
 /**
  * Returns an incremented rule ID
- * @return {string}
+ * @returns {string}
+ * @private
  */
 QueryBuilder.prototype.nextRuleId = function() {
     return this.status.id + '_rule_' + (this.status.rule_id++);
@@ -233,8 +242,10 @@ QueryBuilder.prototype.nextRuleId = function() {
 
 /**
  * Returns the operators for a filter
- * @param filter {string|object} (filter id name or filter object)
- * @return {object[]}
+ * @param {string|object} filter - filter id or filter object
+ * @returns {object[]}
+ * @fires QueryBuilder#filter:getOperators
+ * @private
  */
 QueryBuilder.prototype.getOperators = function(filter) {
     if (typeof filter == 'string') {
@@ -265,15 +276,22 @@ QueryBuilder.prototype.getOperators = function(filter) {
         });
     }
 
+    /**
+     * QueryBuilder#filter:getOperators
+     * @param {object[]} operators
+     * @param {object} filter
+     * @returns {object[]}
+     */
     return this.change('getOperators', result, filter);
 };
 
 /**
  * Returns a particular filter by its id
+ * @param {string} id
+ * @param {boolean} [doThrow=true]
+ * @returns {object|null}
  * @throws UndefinedFilterError
- * @param id {string}
- * @param [doThrow=true] {boolean}
- * @return {object|null}
+ * @private
  */
 QueryBuilder.prototype.getFilterById = function(id, doThrow) {
     if (id == '-1') {
@@ -292,11 +310,12 @@ QueryBuilder.prototype.getFilterById = function(id, doThrow) {
 };
 
 /**
- * Return a particular operator by its type
+ * Returns a particular operator by its type
+ * @param {string} type
+ * @param {boolean} [doThrow=true]
+ * @returns {object|null}
  * @throws UndefinedOperatorError
- * @param type {string}
- * @param [doThrow=true] {boolean}
- * @return {object|null}
+ * @private
  */
 QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
     if (type == '-1') {
@@ -315,9 +334,11 @@ QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
 };
 
 /**
- * Returns rule's input value
- * @param rule {Rule}
- * @return {mixed}
+ * Returns rule's current input value
+ * @param {Rule} rule
+ * @returns {*}
+ * @fires QueryBuilder#filter:getRuleValue
+ * @private
  */
 QueryBuilder.prototype.getRuleInputValue = function(rule) {
     var filter = rule.filter;
@@ -328,7 +349,7 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
         value = filter.valueGetter.call(this, rule);
     }
     else {
-        var $value = rule.$el.find(Selectors.value_container);
+        var $value = rule.$el.find(QueryBuilder.selectors.value_container);
 
         for (var i = 0; i < operator.nb_inputs; i++) {
             var name = Utils.escapeElementId(rule.id + '_value_' + i);
@@ -341,18 +362,22 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
 
                 case 'checkbox':
                     tmp = [];
+                    // jshint loopfunc:true
                     $value.find('[name=' + name + ']:checked').each(function() {
                         tmp.push($(this).val());
                     });
+                    // jshint loopfunc:false
                     value.push(tmp);
                     break;
 
                 case 'select':
                     if (filter.multiple) {
                         tmp = [];
+                        // jshint loopfunc:true
                         $value.find('[name=' + name + '] option:selected').each(function() {
                             tmp.push($(this).val());
                         });
+                        // jshint loopfunc:false
                         value.push(tmp);
                     }
                     else {
@@ -381,13 +406,20 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
         }
     }
 
+    /**
+     * @event QueryBuilder#filter:getRuleValue
+     * @param {*} value
+     * @param {Rule} rule
+     * @returns {*}
+     */
     return this.change('getRuleValue', value, rule);
 };
 
 /**
- * Sets the value of a rule's input.
- * @param rule {Rule}
- * @param value {mixed}
+ * Sets the value of a rule's input
+ * @param {Rule} rule
+ * @param {*} value
+ * @private
  */
 QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
     var filter = rule.filter;
@@ -403,7 +435,7 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
         filter.valueSetter.call(this, rule, value);
     }
     else {
-        var $value = rule.$el.find(Selectors.value_container);
+        var $value = rule.$el.find(QueryBuilder.selectors.value_container);
 
         if (operator.nb_inputs == 1) {
             value = [value];
@@ -421,9 +453,11 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
                     if (!$.isArray(value[i])) {
                         value[i] = [value[i]];
                     }
+                    // jshint loopfunc:true
                     value[i].forEach(function(value) {
                         $value.find('[name=' + name + '][value="' + value + '"]').prop('checked', true).trigger('change');
                     });
+                    // jshint loopfunc:false
                     break;
 
                 default:
@@ -440,9 +474,11 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
 };
 
 /**
- * Clean rule flags.
- * @param rule {object}
- * @return {object}
+ * Parses rule flags
+ * @param {object} rule
+ * @returns {object}
+ * @fires QueryBuilder#filter:parseRuleFlags
+ * @private
  */
 QueryBuilder.prototype.parseRuleFlags = function(rule) {
     var flags = $.extend({}, this.settings.default_rule_flags);
@@ -460,14 +496,21 @@ QueryBuilder.prototype.parseRuleFlags = function(rule) {
         $.extend(flags, rule.flags);
     }
 
+    /**
+     * @event QueryBuilder#filter:parseRuleFlags
+     * @param {object} flags
+     * @param {object} rule
+     * @returns {object}
+     */
     return this.change('parseRuleFlags', flags, rule);
 };
 
 /**
- * Get a copy of flags of a rule.
+ * Gets a copy of flags of a rule
  * @param {object} flags
- * @param {boolean} all - true to return all flags, false to return only changes from default
+ * @param {boolean} [all=false] - return all flags or only changes from default flags
  * @returns {object}
+ * @private
  */
 QueryBuilder.prototype.getRuleFlags = function(flags, all) {
     if (all) {
@@ -485,9 +528,11 @@ QueryBuilder.prototype.getRuleFlags = function(flags, all) {
 };
 
 /**
- * Clean group flags.
- * @param group {object}
- * @return {object}
+ * Parses group flags
+ * @param {object} group
+ * @returns {object}
+ * @fires QueryBuilder#filter:parseGroupFlags
+ * @private
  */
 QueryBuilder.prototype.parseGroupFlags = function(group) {
     var flags = $.extend({}, this.settings.default_group_flags);
@@ -505,14 +550,21 @@ QueryBuilder.prototype.parseGroupFlags = function(group) {
         $.extend(flags, group.flags);
     }
 
+    /**
+     * @event QueryBuilder#filter:parseGroupFlags
+     * @param {object} flags
+     * @param {object} group
+     * @returns {object}
+     */
     return this.change('parseGroupFlags', flags, group);
 };
 
 /**
- * Get a copy of flags of a group.
+ * Gets a copy of flags of a group
  * @param {object} flags
- * @param {boolean} all - true to return all flags, false to return only changes from default
+ * @param {boolean} [all=false] - return all flags or only changes from default flags
  * @returns {object}
+ * @private
  */
 QueryBuilder.prototype.getGroupFlags = function(flags, all) {
     if (all) {
@@ -530,20 +582,22 @@ QueryBuilder.prototype.getGroupFlags = function(flags, all) {
 };
 
 /**
- * Translate a label
- * @param label {string|object}
- * @return string
+ * Translates a label
+ * @param {string|object} label
+ * @returns {string}
+ * @private
  */
-QueryBuilder.prototype.translateLabel = function(label) {
+QueryBuilder.prototype.getTranslatedLabel = function(label) {
     return typeof label == 'object' ? (label[this.settings.lang_code] || label['en']) : label;
 };
 
 /**
- * Return a validation message
+ * Returns a validation message
  * @param {object} validation
  * @param {string} type
  * @param {string} def
  * @returns {string}
+ * @private
  */
 QueryBuilder.prototype.getValidationMessage = function(validation, type, def) {
     return validation.messages && validation.messages[type] || def;

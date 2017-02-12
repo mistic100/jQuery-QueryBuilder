@@ -1,11 +1,21 @@
-/*!
- * jQuery QueryBuilder Not
+/**
  * Adds a "Not" checkbox in front of group conditions.
+ * @class NotGroupPlugin
+ * @param {object} [options]
+ * @param {string} [options.icon_checked=glyphicon glyphicon-checked]
+ * @param {string} [options.icon_unchecked=glyphicon glyphicon-unchecked]
  */
 
-Selectors.group_not = Selectors.group_header + ' [data-not=group]';
-
+/**
+ * From {@link NotGroupPlugin}
+ * @name not
+ * @member {boolean}
+ * @memberof Group
+ * @instance
+ */
 Model.defineModelProperties(Group, ['not']);
+
+QueryBuilder.selectors.group_not = QueryBuilder.selectors.group_header + ' [data-not=group]';
 
 QueryBuilder.define('not-group', function(options) {
     var self = this;
@@ -15,8 +25,8 @@ QueryBuilder.define('not-group', function(options) {
      */
     this.on('afterInit', function() {
         self.$el.on('click.queryBuilder', '[data-not=group]', function() {
-            var $group = $(this).closest(Selectors.group_container);
-            var group = Model($group);
+            var $group = $(this).closest(QueryBuilder.selectors.group_container);
+            var group = self.getModel($group);
             group.not = !group.not;
         });
 
@@ -39,7 +49,7 @@ QueryBuilder.define('not-group', function(options) {
      */
     this.on('getGroupTemplate.filter', function(h, level) {
         var $h = $(h.value);
-        $h.find(Selectors.condition_container).prepend(
+        $h.find(QueryBuilder.selectors.condition_container).prepend(
             '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
             '<i class="' + options.icon_unchecked + '"></i> ' + self.lang.NOT +
             '</button>'
@@ -120,17 +130,23 @@ QueryBuilder.define('not-group', function(options) {
     icon_checked: 'glyphicon glyphicon-check'
 });
 
-QueryBuilder.extend({
+QueryBuilder.extend(/** @lends NotGroupPlugin.prototype */ {
     /**
-     * Apply the "not" property to the DOM
-     * @param group
+     * Performs actions when a group's not changes
+     * @param {Group} group
+     * @fires NotGroupPlugin#afterUpdateGroupNot
+     * @private
      */
     updateGroupNot: function(group) {
         var options = this.plugins['not-group'];
-        group.$el.find('>' + Selectors.group_not)
+        group.$el.find('>' + QueryBuilder.selectors.group_not)
             .toggleClass('active', group.not)
             .find('i').attr('class', group.not ? options.icon_checked : options.icon_unchecked);
 
+        /**
+         * @event NotGroupPlugin#afterUpdateGroupNot
+         * @param {Group} group
+         */
         this.trigger('afterUpdateGroupNot', group);
     }
 });

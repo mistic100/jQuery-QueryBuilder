@@ -1,10 +1,9 @@
-/*!
- * jQuery QueryBuilder Bootstrap Tooltip errors
- * Applies Bootstrap Tooltips on validation error messages.
- */
-
 /**
- * @throws ConfigError
+ * Applies Bootstrap Tooltips on validation error messages.
+ * @class BtTooltipErrorsPlugin
+ * @param {object} [options]
+ * @param {string} [options.placement=right]
+ * @throws MissingLibraryError
  */
 QueryBuilder.define('bt-tooltip-errors', function(options) {
     if (!$.fn.tooltip || !$.fn.tooltip.Constructor || !$.fn.tooltip.Constructor.prototype.fixTitle) {
@@ -16,14 +15,14 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
     // add BT Tooltip data
     this.on('getRuleTemplate.filter getGroupTemplate.filter', function(h) {
         var $h = $(h.value);
-        $h.find(Selectors.error_container).attr('data-toggle', 'tooltip');
+        $h.find(QueryBuilder.selectors.error_container).attr('data-toggle', 'tooltip');
         h.value = $h.prop('outerHTML');
     });
 
     // init/refresh tooltip when title changes
     this.model.on('update', function(e, node, field) {
         if (field == 'error' && self.settings.display_errors) {
-            node.$el.find(Selectors.error_container).eq(0)
+            node.$el.find(QueryBuilder.selectors.error_container).eq(0)
               .tooltip(options)
               .tooltip('hide')
               .tooltip('fixTitle');

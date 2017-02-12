@@ -1,5 +1,7 @@
 /**
  * Allowed types and their internal representation
+ * @type {object.<string, string>}
+ * @readonly
  */
 QueryBuilder.types = {
     'string':   'string',
@@ -13,6 +15,8 @@ QueryBuilder.types = {
 
 /**
  * Allowed inputs
+ * @type {string[]}
+ * @readonly
  */
 QueryBuilder.inputs = [
     'text',
@@ -24,7 +28,9 @@ QueryBuilder.inputs = [
 ];
 
 /**
- * Runtime modifiable options with `setOptions` method
+ * Runtime modifiable options with <code>setOptions<code> method
+ * @type {string[]}
+ * @readonly
  */
 QueryBuilder.modifiable_options = [
     'display_errors',
@@ -36,8 +42,10 @@ QueryBuilder.modifiable_options = [
 
 /**
  * CSS selectors for common components
+ * @type {object.<string, string>}
+ * @readonly
  */
-var Selectors = QueryBuilder.selectors = {
+QueryBuilder.selectors = {
     group_container:      '.rules-group-container',
     rule_container:       '.rule-container',
     filter_container:     '.rule-filter-container',
@@ -65,17 +73,23 @@ var Selectors = QueryBuilder.selectors = {
 };
 
 /**
- * Template strings (see `template.js`)
+ * Template strings (see template.js)
+ * @type {object.<string, string>}
+ * @readonly
  */
 QueryBuilder.templates = {};
 
 /**
- * Localized strings (see `i18n/`)
+ * Localized strings (see i18n/)
+ * @type {object.<string, object>}
+ * @readonly
  */
 QueryBuilder.regional = {};
 
 /**
  * Default operators
+ * @type {object.<string, object>}
+ * @readonly
  */
 QueryBuilder.OPERATORS = {
     equal:            { type: 'equal',            nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] },
@@ -102,6 +116,8 @@ QueryBuilder.OPERATORS = {
 
 /**
  * Default configuration
+ * @type {object}
+ * @readonly
  */
 QueryBuilder.DEFAULTS = {
     filters: [],

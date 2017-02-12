@@ -11,7 +11,7 @@ jQuery plugin offering an simple interface to create complex queries.
 [![screenshot](https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/examples/screenshot.png)](http://querybuilder.js.org)
 
 ## Documentation
-http://querybuilder.js.org
+[querybuilder.js.org](http://querybuilder.js.org)
 
 ### Dependencies
  * jQuery >= 1.10

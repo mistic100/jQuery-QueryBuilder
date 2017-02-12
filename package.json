@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "deepmerge": "^0.2.0",
+    "docdash": "^0.4.0",
     "grunt": "^1.0.0",
     "grunt-banner": "^0.6.0",
     "grunt-contrib-clean": "^1.0.0",
@@ -31,6 +32,7 @@
     "grunt-coveralls": "^1.0.0",
     "grunt-injector": "^1.1.0",
     "grunt-jscs": "^2.8.0",
+    "grunt-jsdoc": "^2.1.0",
     "grunt-open": "^0.2.3",
     "grunt-qunit-blanket-lcov": "^0.3.0",
     "grunt-sass-injection": "^1.0.3",

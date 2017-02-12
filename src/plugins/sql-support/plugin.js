@@ -1,33 +1,31 @@
-/*!
- * jQuery QueryBuilder SQL Support
+/**
  * Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.
+ * @class SqlSupportPlugin
  */
 
-// DEFAULT CONFIG
-// ===============================
 QueryBuilder.defaults({
     /* operators for internal -> SQL conversion */
     sqlOperators: {
-        equal:            { op: '= ?' },
-        not_equal:        { op: '!= ?' },
-        in:               { op: 'IN(?)',          sep: ', ' },
-        not_in:           { op: 'NOT IN(?)',      sep: ', ' },
-        less:             { op: '< ?' },
-        less_or_equal:    { op: '<= ?' },
-        greater:          { op: '> ?' },
+        equal: { op: '= ?' },
+        not_equal: { op: '!= ?' },
+        in: { op: 'IN(?)', sep: ', ' },
+        not_in: { op: 'NOT IN(?)', sep: ', ' },
+        less: { op: '< ?' },
+        less_or_equal: { op: '<= ?' },
+        greater: { op: '> ?' },
         greater_or_equal: { op: '>= ?' },
-        between:          { op: 'BETWEEN ?',      sep: ' AND ' },
-        not_between:      { op: 'NOT BETWEEN ?',  sep: ' AND ' },
-        begins_with:      { op: 'LIKE(?)',        mod: '{0}%' },
-        not_begins_with:  { op: 'NOT LIKE(?)',    mod: '{0}%' },
-        contains:         { op: 'LIKE(?)',        mod: '%{0}%' },
-        not_contains:     { op: 'NOT LIKE(?)',    mod: '%{0}%' },
-        ends_with:        { op: 'LIKE(?)',        mod: '%{0}' },
-        not_ends_with:    { op: 'NOT LIKE(?)',    mod: '%{0}' },
-        is_empty:         { op: '= \'\'' },
-        is_not_empty:     { op: '!= \'\'' },
-        is_null:          { op: 'IS NULL' },
-        is_not_null:      { op: 'IS NOT NULL' }
+        between: { op: 'BETWEEN ?', sep: ' AND ' },
+        not_between: { op: 'NOT BETWEEN ?', sep: ' AND ' },
+        begins_with: { op: 'LIKE(?)', mod: '{0}%' },
+        not_begins_with: { op: 'NOT LIKE(?)', mod: '{0}%' },
+        contains: { op: 'LIKE(?)', mod: '%{0}%' },
+        not_contains: { op: 'NOT LIKE(?)', mod: '%{0}%' },
+        ends_with: { op: 'LIKE(?)', mod: '%{0}' },
+        not_ends_with: { op: 'NOT LIKE(?)', mod: '%{0}' },
+        is_empty: { op: '= \'\'' },
+        is_not_empty: { op: '!= \'\'' },
+        is_null: { op: 'IS NULL' },
+        is_not_null: { op: 'IS NOT NULL' }
     },
 
     /* operators for SQL -> internal conversion */
@@ -90,14 +88,30 @@ QueryBuilder.defaults({
                 Utils.error('SQLParse', 'Invalid value for NOT LIKE operator "{0}"', v);
             }
         },
-        'IN':           function(v) { return { val: v, op: 'in' }; },
-        'NOT IN':       function(v) { return { val: v, op: 'not_in' }; },
-        '<':            function(v) { return { val: v, op: 'less' }; },
-        '<=':           function(v) { return { val: v, op: 'less_or_equal' }; },
-        '>':            function(v) { return { val: v, op: 'greater' }; },
-        '>=':           function(v) { return { val: v, op: 'greater_or_equal' }; },
-        'BETWEEN':      function(v) { return { val: v, op: 'between' }; },
-        'NOT BETWEEN':  function(v) { return { val: v, op: 'not_between' }; },
+        'IN': function(v) {
+            return { val: v, op: 'in' };
+        },
+        'NOT IN': function(v) {
+            return { val: v, op: 'not_in' };
+        },
+        '<': function(v) {
+            return { val: v, op: 'less' };
+        },
+        '<=': function(v) {
+            return { val: v, op: 'less_or_equal' };
+        },
+        '>': function(v) {
+            return { val: v, op: 'greater' };
+        },
+        '>=': function(v) {
+            return { val: v, op: 'greater_or_equal' };
+        },
+        'BETWEEN': function(v) {
+            return { val: v, op: 'between' };
+        },
+        'NOT BETWEEN': function(v) {
+            return { val: v, op: 'not_between' };
+        },
         'IS': function(v) {
             if (v !== null) {
                 Utils.error('SQLParse', 'Invalid value for IS operator');
@@ -205,21 +219,27 @@ QueryBuilder.defaults({
     }
 });
 
+/**
+ * @typedef {object} SqlSupportPlugin#SqlQuery
+ * @property {string} sql
+ * @property {object} params
+ */
 
-// PUBLIC METHODS
-// ===============================
-QueryBuilder.extend({
+QueryBuilder.extend(/** @lends SqlSupportPlugin.prototype */ {
     /**
-     * Get rules as SQL query
+     * Returns rules as a SQL query
+     * @param {boolean|string} [stmt] - use prepared statements: false, 'question_mark', 'numbered', 'numbered(@)', 'named', 'named(@)'
+     * @param {boolean} [nl=false] output with new lines
+     * @param {object} [data] - current rules by default
+     * @returns {SqlSupportPlugin#SqlQuery}
+     * @fires SqlSupportPlugin#filter:getSQLField
+     * @fires SqlSupportPlugin#filter:ruleToSQL
+     * @fires SqlSupportPlugin#filter:groupToSQL
      * @throws UndefinedSQLConditionError, UndefinedSQLOperatorError
-     * @param stmt {boolean|string} use prepared statements - false, 'question_mark', 'numbered', 'numbered(@)', 'named', 'named(@)'
-     * @param nl {bool} output with new lines
-     * @param data {object} (optional) rules
-     * @return {object}
      */
     getSQL: function(stmt, nl, data) {
         data = (data === undefined) ? this.getRules() : data;
-        nl = (nl === true) ? '\n' : ' ';
+        nl = !!nl ? '\n' : ' ';
 
         if (stmt === true) stmt = 'question_mark';
         if (typeof stmt == 'string') {
@@ -263,7 +283,7 @@ QueryBuilder.extend({
 
                         rule.value.forEach(function(v, i) {
                             if (i > 0) {
-                                value+= sql.sep;
+                                value += sql.sep;
                             }
 
                             if (rule.type == 'integer' || rule.type == 'double' || rule.type == 'boolean') {
@@ -278,14 +298,14 @@ QueryBuilder.extend({
                             }
 
                             if (stmt) {
-                                value+= stmt.add(rule, v);
+                                value += stmt.add(rule, v);
                             }
                             else {
                                 if (typeof v == 'string') {
                                     v = '\'' + v + '\'';
                                 }
 
-                                value+= v;
+                                value += v;
                             }
                         });
                     }
@@ -294,12 +314,36 @@ QueryBuilder.extend({
                         return sql.op.replace(/\?/, v);
                     };
 
-                    var ruleExpression = self.change('getSQLField', rule.field, rule) + ' ' + sqlFn(value);
+                    /**
+                     * @event SqlSupportPlugin#filter:getSQLField
+                     * @param {string} field
+                     * @param {Rule} rule
+                     * @returns {string}
+                     */
+                    var field = self.change('getSQLField', rule.field, rule);
+
+                    var ruleExpression = field + ' ' + sqlFn(value);
+
+                    /**
+                     * @event SqlSupportPlugin#filter:ruleToSQL
+                     * @param {string} expression
+                     * @param {Rule} rule
+                     * @param {*} value
+                     * @param {function} valueWrapper
+                     * @returns {string}
+                     */
                     parts.push(self.change('ruleToSQL', ruleExpression, rule, value, sqlFn));
                 }
             });
 
             var groupExpression = parts.join(' ' + group.condition + nl);
+
+            /**
+             * @event SqlSupportPlugin#filter:groupToSQL
+             * @param {string} expression
+             * @param {Group} group
+             * @returns {string}
+             */
             return self.change('groupToSQL', groupExpression, group);
         }(data));
 
@@ -317,56 +361,73 @@ QueryBuilder.extend({
     },
 
     /**
-     * Convert SQL to rules
-     * @throws ConfigError, SQLParseError, UndefinedSQLOperatorError
-     * @param data {object} query object
-     * @param stmt {boolean|string} use prepared statements - false, 'question_mark', 'numbered', 'numbered(@)', 'named', 'named(@)'
-     * @return {object}
+     * Convert a SQL query to rules
+     * @param {string|SqlSupportPlugin#SqlQuery} query
+     * @param {boolean|string} stmt
+     * @returns {object}
+     * @fires SqlSupportPlugin#filter:parseSQLNode
+     * @fires SqlSupportPlugin#filter:getSQLFieldID
+     * @fires SqlSupportPlugin#filter:sqlToRule
+     * @fires SqlSupportPlugin#filter:sqlToGroup
+     * @throws MissingLibraryError, SQLParseError, UndefinedSQLOperatorError
      */
-    getRulesFromSQL: function(data, stmt) {
+    getRulesFromSQL: function(query, stmt) {
         if (!('SQLParser' in window)) {
             Utils.error('MissingLibrary', 'SQLParser is required to parse SQL queries. Get it here https://github.com/mistic100/sql-parser');
         }
 
         var self = this;
 
-        if (typeof data == 'string') {
-            data = { sql: data };
+        if (typeof query == 'string') {
+            query = { sql: query };
         }
 
         if (stmt === true) stmt = 'question_mark';
         if (typeof stmt == 'string') {
             var config = getStmtConfig(stmt);
-            stmt = this.settings.sqlRuleStatement[config[1]](data.params, config[2]);
+            stmt = this.settings.sqlRuleStatement[config[1]](query.params, config[2]);
         }
 
         if (stmt) {
-            data.sql = stmt.esc(data.sql);
+            query.sql = stmt.esc(query.sql);
         }
 
-        if (data.sql.toUpperCase().indexOf('SELECT') !== 0) {
-            data.sql = 'SELECT * FROM table WHERE ' + data.sql;
+        if (query.sql.toUpperCase().indexOf('SELECT') !== 0) {
+            query.sql = 'SELECT * FROM table WHERE ' + query.sql;
         }
 
-        var parsed = SQLParser.parse(data.sql);
+        var parsed = SQLParser.parse(query.sql);
 
         if (!parsed.where) {
             Utils.error('SQLParse', 'No WHERE clause found');
         }
 
-        // allow plugins to manually parse or handle special cases
-        data = self.change('parseSQLNode', parsed.where.conditions);
+        /**
+         * Allow plugins to manually parse or handle special cases
+         * @event SqlSupportPlugin#filter:parseSQLNode
+         * @param {object} AST
+         * @returns {object} tree, rule or group
+         */
+        query = self.change('parseSQLNode', parsed.where.conditions);
 
         // a plugin returned a group
-        if ('rules' in data && 'condition' in data) {
-            return data;
+        if ('rules' in query && 'condition' in query) {
+            return query;
+        }
+
+        // a plugin returned a rule
+        if ('id' in query && 'operator' in query && 'value' in query) {
+            return {
+                condition: this.settings.default_condition,
+                rules: [query]
+            };
         }
 
         // create root group
         var out = self.change('sqlToGroup', {
             condition: this.settings.default_condition,
             rules: []
-        }, data);
+        }, query);
 
         // keep track of current group
         var curr = out;
@@ -396,6 +457,12 @@ QueryBuilder.extend({
             if (['AND', 'OR'].indexOf(data.operation.toUpperCase()) !== -1) {
                 // create a sub-group if the condition is not the same and it's not the first level
                 if (i > 0 && curr.condition != data.operation.toUpperCase()) {
+                    /**
+                     * @event SqlSupportPlugin#filter:sqlToGroup
+                     * @param {object} group
+                     * @param {object} AST
+                     * @returns {object}
+                     */
                     var group = self.change('sqlToGroup', {
                         condition: self.settings.default_condition,
                         rules: []
@@ -456,8 +523,22 @@ QueryBuilder.extend({
                 var opVal = sqlrl.call(this, value, data.operation);
                 var field = data.left.values.join('.');
 
+                /**
+                 * @event SqlSupportPlugin#filter:getSQLFieldID
+                 * @param {string} field
+                 * @param {*} value
+                 * @returns {string}
+                 */
+                var id = self.change('getSQLFieldID', field, value);
+
+                /**
+                 * @event SqlSupportPlugin#filter:sqlToRule
+                 * @param {object} rule
+                 * @param {object} AST
+                 * @retunrs {object}
+                 */
                 var rule = self.change('sqlToRule', {
-                    id: self.change('getSQLFieldID', field, value),
+                    id: id,
                     field: field,
                     operator: opVal.op,
                     value: opVal.val
@@ -465,21 +546,27 @@ QueryBuilder.extend({
 
                 curr.rules.push(rule);
             }
-        }(data, 0));
+        }(query, 0));
 
         return out;
     },
 
     /**
-     * Set rules from SQL
-     * @param data {object}
-     * @param stmt {boolean|string}
+     * Sets the rules from a SQL query
+     * @see SqlSupportPlugin#getRulesFromSQL
      */
-    setRulesFromSQL: function(data, stmt) {
-        this.setRules(this.getRulesFromSQL(data, stmt));
+    setRulesFromSQL: function(query, stmt) {
+        this.setRules(this.getRulesFromSQL(query, stmt));
     }
 });
 
+/**
+ * Parses the statement configuration
+ * @param {string} stmt
+ * @returns {Array} null, mode, option
+ * @memberof SqlSupportPlugin
+ * @private
+ */
 function getStmtConfig(stmt) {
     var config = stmt.match(/(question_mark|numbered|named)(?:\((.)\))?/);
     if (!config) config = [null, 'question_mark', undefined];

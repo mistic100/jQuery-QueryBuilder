@@ -300,6 +300,19 @@ module.exports = function(grunt) {
             }
         },
 
+        // jsDoc generation
+        jsdoc: {
+            lib: {
+                src: ['src/**/*.js', '!src/**/.wrapper.js'],
+                dest: 'doc',
+                options: {
+                    private: false,
+                    template: 'node_modules/docdash',
+                    readme: 'README.md'
+                }
+            }
+        },
+
         // inject sources files and tests modules in demo and test
         injector: {
             options: {

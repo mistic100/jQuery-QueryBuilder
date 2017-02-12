@@ -1,10 +1,15 @@
-/*!
- * jQuery QueryBuilder Sortable
+/**
  * Enables drag & drop sort of rules.
+ * @class SortablePlugin
+ * @param {object} [options]
+ * @param {boolean} [options.inherit_no_drop=true]
+ * @param {boolean} [options.inherit_no_sortable=true]
+ * @param {string} [options.icon=glyphicon glyphicon-sort]
+ * @throws MissingLibraryError, ConfigError
  */
 
-Selectors.rule_and_group_containers = Selectors.rule_container + ', ' + Selectors.group_container;
-Selectors.drag_handle = '.drag-handle';
+QueryBuilder.selectors.rule_and_group_containers = QueryBuilder.selectors.rule_container + ', ' + QueryBuilder.selectors.group_container;
+QueryBuilder.selectors.drag_handle = '.drag-handle';
 
 QueryBuilder.defaults({
     default_rule_flags: {
@@ -62,11 +67,11 @@ QueryBuilder.define('sortable', function(options) {
          */
         if (!node.flags.no_sortable) {
             interact(node.$el[0])
-                .allowFrom(Selectors.drag_handle)
+                .allowFrom(QueryBuilder.selectors.drag_handle)
                 .draggable({
                     onstart: function(event) {
                         // get model of dragged element
-                        src = Model(event.target);
+                        src = self.getModel(event.target);
 
                         // create ghost
                         ghost = src.$el.clone()
@@ -100,6 +105,10 @@ QueryBuilder.define('sortable', function(options) {
                         // show element
                         src.$el.show();
 
+                        /**
+                         * @event SortablePlugin#afterMove
+                         * @param {Node} node
+                         */
                         self.trigger('afterMove', src);
                     }
                 });
@@ -111,7 +120,7 @@ QueryBuilder.define('sortable', function(options) {
              */
             interact(node.$el[0])
                 .dropzone({
-                    accept: Selectors.rule_and_group_containers,
+                    accept: QueryBuilder.selectors.rule_and_group_containers,
                     ondragenter: function(event) {
                         moveSortableToTarget(placeholder, $(event.target));
                     },
@@ -124,9 +133,9 @@ QueryBuilder.define('sortable', function(options) {
              * Configure drop on group headers
              */
             if (node instanceof Group) {
-                interact(node.$el.find(Selectors.group_header)[0])
+                interact(node.$el.find(QueryBuilder.selectors.group_header)[0])
                     .dropzone({
-                        accept: Selectors.rule_and_group_containers,
+                        accept: QueryBuilder.selectors.rule_and_group_containers,
                         ondragenter: function(event) {
                             moveSortableToTarget(placeholder, $(event.target));
                         },
@@ -146,7 +155,7 @@ QueryBuilder.define('sortable', function(options) {
             interact(node.$el[0]).unset();
 
             if (node instanceof Group) {
-                interact(node.$el.find(Selectors.group_header)[0]).unset();
+                interact(node.$el.find(QueryBuilder.selectors.group_header)[0]).unset();
             }
         }
     });
@@ -166,14 +175,14 @@ QueryBuilder.define('sortable', function(options) {
     this.on('getGroupTemplate.filter', function(h, level) {
         if (level > 1) {
             var $h = $(h.value);
-            $h.find(Selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+            $h.find(QueryBuilder.selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
             h.value = $h.prop('outerHTML');
         }
     });
 
     this.on('getRuleTemplate.filter', function(h) {
         var $h = $(h.value);
-        $h.find(Selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+        $h.find(QueryBuilder.selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
         h.value = $h.prop('outerHTML');
     });
 }, {
@@ -183,13 +192,16 @@ QueryBuilder.define('sortable', function(options) {
 });
 
 /**
- * Move an element (placeholder or actual object) depending on active target
+ * Moves an element (placeholder or actual object) depending on active target
  * @param {Node} node
  * @param {jQuery} target
  * @param {QueryBuilder} [builder]
+ * @memberof SortablePlugin
+ * @private
  */
 function moveSortableToTarget(node, target, builder) {
     var parent, method;
+    var Selectors = QueryBuilder.selectors;
 
     // on rule
     parent = target.closest(Selectors.rule_container);
@@ -215,7 +227,7 @@ function moveSortableToTarget(node, target, builder) {
     }
 
     if (method) {
-        node[method](Model(parent));
+        node[method](builder.getModel(parent));
 
         // refresh radio value
         if (builder && node instanceof Rule) {

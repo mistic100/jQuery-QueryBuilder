@@ -88,10 +88,12 @@ QueryBuilder.templates.operatorSelect = '\
 </select>';
 
 /**
- * Returns group HTML
- * @param group_id {string}
- * @param level {int}
- * @return {string}
+ * Returns group's HTML
+ * @param {string} group_id
+ * @param {int} level
+ * @returns {string}
+ * @fires QueryBuilder#filter:getGroupTemplate
+ * @private
  */
 QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
     var h = this.templates.group({
@@ -104,13 +106,21 @@ QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
         settings: this.settings
     });
 
+    /**
+     * @event QueryBuilder#filter:getGroupTemplate
+     * @param {string} html
+     * @param {int} level
+     * @returns {string}
+     */
     return this.change('getGroupTemplate', h, level);
 };
 
 /**
- * Returns rule HTML
- * @param rule_id {string}
- * @return {string}
+ * Returns rule's HTML
+ * @param {string} rule_id
+ * @returns {string}
+ * @fires QueryBuilder#filter:getRuleTemplate
+ * @private
  */
 QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
     var h = this.templates.rule({
@@ -121,14 +131,21 @@ QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
         settings: this.settings
     });
 
+    /**
+     * @event QueryBuilder#filter:getRuleTemplate
+     * @param {string} html
+     * @returns {string}
+     */
     return this.change('getRuleTemplate', h);
 };
 
 /**
- * Returns rule filter <select> HTML
- * @param rule {Rule}
- * @param filters {array}
- * @return {string}
+ * Returns rule's filter HTML
+ * @param {Rule} rule
+ * @param {object[]} filters
+ * @returns {string}
+ * @fires QueryBuilder#filter:getRuleFilterTemplate
+ * @private
  */
 QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
     var h = this.templates.filterSelect({
@@ -138,17 +155,25 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
         icons: this.icons,
         lang: this.lang,
         settings: this.settings,
-        translate: this.translateLabel
+        translate: this.getTranslatedLabel
     });
 
+    /**
+     * @event QueryBuilder#filter:getRuleFilterTemplate
+     * @param {string} html
+     * @param {Rule} rule
+     * @returns {string}
+     */
     return this.change('getRuleFilterSelect', h, rule);
 };
 
 /**
- * Returns rule operator <select> HTML
- * @param rule {Rule}
- * @param operators {object}
- * @return {string}
+ * Returns rule's operator HTML
+ * @param {Rule} rule
+ * @param {object[]} operators
+ * @returns {string}
+ * @fires QueryBuilder#filter:getRuleOperatorTemplate
+ * @private
  */
 QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
     var h = this.templates.operatorSelect({
@@ -158,18 +183,25 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
         icons: this.icons,
         lang: this.lang,
         settings: this.settings,
-        translate: this.translateLabel
+        translate: this.getTranslatedLabel
     });
 
+    /**
+     * @event QueryBuilder#filter:getRuleOperatorTemplate
+     * @param {string} html
+     * @param {Rule} rule
+     * @returns {string}
+     */
     return this.change('getRuleOperatorSelect', h, rule);
 };
 
 /**
- * Return the rule value HTML
- * @param rule {Rule}
- * @param filter {object}
- * @param value_id {int}
- * @return {string}
+ * Returns the rule's value HTML
+ * @param {Rule} rule
+ * @param {int} value_id
+ * @returns {string}
+ * @fires QueryBuilder#filter:getRuleInput
+ * @private
  */
 QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
     var filter = rule.filter;
@@ -183,52 +215,60 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
     }
     else {
         switch (filter.input) {
-            case 'radio': case 'checkbox':
+            case 'radio':
+            case 'checkbox':
                 Utils.iterateOptions(filter.values, function(key, val) {
-                    h+= '<label' + c + '><input type="' + filter.input + '" name="' + name + '" value="' + key + '"> ' + val + '</label> ';
+                    h += '<label' + c + '><input type="' + filter.input + '" name="' + name + '" value="' + key + '"> ' + val + '</label> ';
                 });
                 break;
 
             case 'select':
-                h+= '<select class="form-control" name="' + name + '"' + (filter.multiple ? ' multiple' : '') + '>';
+                h += '<select class="form-control" name="' + name + '"' + (filter.multiple ? ' multiple' : '') + '>';
                 if (filter.placeholder) {
-                    h+= '<option value="' + filter.placeholder_value + '" disabled selected>' + filter.placeholder + '</option>';
+                    h += '<option value="' + filter.placeholder_value + '" disabled selected>' + filter.placeholder + '</option>';
                 }
                 Utils.iterateOptions(filter.values, function(key, val) {
-                    h+= '<option value="' + key + '">' + val + '</option> ';
+                    h += '<option value="' + key + '">' + val + '</option> ';
                 });
-                h+= '</select>';
+                h += '</select>';
                 break;
 
             case 'textarea':
-                h+= '<textarea class="form-control" name="' + name + '"';
-                if (filter.size) h+= ' cols="' + filter.size + '"';
-                if (filter.rows) h+= ' rows="' + filter.rows + '"';
-                if (validation.min !== undefined) h+= ' minlength="' + validation.min + '"';
-                if (validation.max !== undefined) h+= ' maxlength="' + validation.max + '"';
-                if (filter.placeholder) h+= ' placeholder="' + filter.placeholder + '"';
-                h+= '></textarea>';
+                h += '<textarea class="form-control" name="' + name + '"';
+                if (filter.size) h += ' cols="' + filter.size + '"';
+                if (filter.rows) h += ' rows="' + filter.rows + '"';
+                if (validation.min !== undefined) h += ' minlength="' + validation.min + '"';
+                if (validation.max !== undefined) h += ' maxlength="' + validation.max + '"';
+                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                h += '></textarea>';
                 break;
 
             case 'number':
-                h+= '<input class="form-control" type="number" name="' + name + '"';
-                if (validation.step !== undefined) h+= ' step="' + validation.step + '"';
-                if (validation.min !== undefined) h+= ' min="' + validation.min + '"';
-                if (validation.max !== undefined) h+= ' max="' + validation.max + '"';
-                if (filter.placeholder) h+= ' placeholder="' + filter.placeholder + '"';
-                if (filter.size) h+= ' size="' + filter.size + '"';
-                h+= '>';
+                h += '<input class="form-control" type="number" name="' + name + '"';
+                if (validation.step !== undefined) h += ' step="' + validation.step + '"';
+                if (validation.min !== undefined) h += ' min="' + validation.min + '"';
+                if (validation.max !== undefined) h += ' max="' + validation.max + '"';
+                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                if (filter.size) h += ' size="' + filter.size + '"';
+                h += '>';
                 break;
 
             default:
-                h+= '<input class="form-control" type="text" name="' + name + '"';
-                if (filter.placeholder) h+= ' placeholder="' + filter.placeholder + '"';
-                if (filter.type === 'string' && validation.min !== undefined) h+= ' minlength="' + validation.min + '"';
-                if (filter.type === 'string' && validation.max !== undefined) h+= ' maxlength="' + validation.max + '"';
-                if (filter.size) h+= ' size="' + filter.size + '"';
-                h+= '>';
+                h += '<input class="form-control" type="text" name="' + name + '"';
+                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                if (filter.type === 'string' && validation.min !== undefined) h += ' minlength="' + validation.min + '"';
+                if (filter.type === 'string' && validation.max !== undefined) h += ' maxlength="' + validation.max + '"';
+                if (filter.size) h += ' size="' + filter.size + '"';
+                h += '>';
         }
     }
 
+    /**
+     * @event QueryBuilder#filter:getRuleInput
+     * @param {string} html
+     * @param {Rule} rule
+     * @param {string} name
+     * @returns {string}
+     */
     return this.change('getRuleInput', h, rule, name);
 };

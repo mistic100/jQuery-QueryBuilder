@@ -1,7 +1,11 @@
 /**
- * Destroy the plugin
+ * Destroys the builder
+ * @fires QueryBuilder#beforeDestroy
  */
 QueryBuilder.prototype.destroy = function() {
+    /**
+     * @event QueryBuilder#beforeDestroy
+     */
     this.trigger('beforeDestroy');
 
     if (this.status.generated_id) {
@@ -20,10 +24,19 @@ QueryBuilder.prototype.destroy = function() {
 };
 
 /**
- * Reset the plugin
+ * Clear all rules and resets the root group
+ * @fires QueryBuilder#beforeReset
+ * @fires QueryBuilder#afterReset
  */
 QueryBuilder.prototype.reset = function() {
-    this.trigger('beforeReset');
+    /**
+     * Preventable
+     * @event QueryBuilder#beforeReset
+     */
+    var e = this.trigger('beforeReset');
+    if (e.isDefaultPrevented()) {
+        return;
+    }
 
     this.status.group_id = 1;
     this.status.rule_id = 0;
@@ -32,14 +45,26 @@ QueryBuilder.prototype.reset = function() {
 
     this.addRule(this.model.root);
 
+    /**
+     * @event QueryBuilder#afterReset
+     */
     this.trigger('afterReset');
 };
 
 /**
- * Clear the plugin
+ * Clears all rules and removes the root group
+ * @fires QueryBuilder#beforeClear
+ * @fires QueryBuilder#afterClear
  */
 QueryBuilder.prototype.clear = function() {
-    this.trigger('beforeClear');
+    /**
+     * Preventable
+     * @event QueryBuilder#beforeClear
+     */
+    var e = this.trigger('beforeClear');
+    if (e.isDefaultPrevented()) {
+        return;
+    }
 
     this.status.group_id = 0;
     this.status.rule_id = 0;
@@ -49,13 +74,16 @@ QueryBuilder.prototype.clear = function() {
         this.model.root = null;
     }
 
+    /**
+     * @event QueryBuilder#afterClear
+     */
     this.trigger('afterClear');
 };
 
 /**
- * Modify the builder configuration
+ * Modifies the builder configuration.<br>
  * Only options defined in QueryBuilder.modifiable_options are modifiable
- * @param {object}
+ * @param {object} options
  */
 QueryBuilder.prototype.setOptions = function(options) {
     $.each(options, function(opt, value) {
@@ -66,19 +94,28 @@ QueryBuilder.prototype.setOptions = function(options) {
 };
 
 /**
- * Return the model associated to a DOM object, or root model
- * @param {jQuery,optional}
- * @return {Node}
+ * Returns the model associated to a DOM object, or the root model
+ * @param {jQuery} [target]
+ * @returns {Node}
  */
 QueryBuilder.prototype.getModel = function(target) {
-    return !target ? this.model.root : Model(target);
+    if (!target) {
+        return this.model.root;
+    }
+    else if (target instanceof Node) {
+        return target;
+    }
+    else {
+        return $(target).data('queryBuilderModel');
+    }
 };
 
 /**
- * Validate the whole builder
- * @param {object} options
- *        - skip_empty: false[default] | true(skips validating rules that have no filter selected)
- * @return {boolean}
+ * Validates the whole builder
+ * @param {object} [options]
+ * @param {boolean} [options.skip_empty=false] - skips validating rules that have no filter selected
+ * @returns {boolean}
+ * @fires QueryBuilder#filter:validate
  */
 QueryBuilder.prototype.validate = function(options) {
     options = $.extend({
@@ -147,16 +184,24 @@ QueryBuilder.prototype.validate = function(options) {
 
     }(this.model.root));
 
+    /**
+     * @event QueryBuilder#filter:validate
+     * @param {boolean} valid
+     * @returns {boolean}
+     */
     return this.change('validate', valid);
 };
 
 /**
- * Get an object representing current rules
- * @param {object} options
- *      - get_flags: false[default] | true(only changes from default flags) | 'all'
- *      - allow_invalid: false[default] | true(returns rules even if they are invalid)
- *      - skip_empty: false[default] | true(remove rules that have no filter selected)
- * @return {object}
+ * Gets an object representing current rules
+ * @param {object} [options]
+ * @param {boolean|string} [options.get_flags=false] - export flags, true: only changes from default flags or 'all'
+ * @param {boolean} [options.allow_invalid=false] - returns rules even if they are invalid
+ * @param {boolean} [options.skip_empty=false] - remove rules that have no filter selected
+ * @returns {object}
+ * @fires QueryBuilder#filter:ruleToJson
+ * @fires QueryBuilder#filter:groupToJson
+ * @fires QueryBuilder#filter:getRules
  */
 QueryBuilder.prototype.getRules = function(options) {
     options = $.extend({
@@ -219,6 +264,12 @@ QueryBuilder.prototype.getRules = function(options) {
                 }
             }
 
+            /**
+             * @event QueryBuilder#filter:ruleToJson
+             * @param {object} json
+             * @param {Rule} rule
+             * @returns {object}
+             */
             groupData.rules.push(self.change('ruleToJson', ruleData, rule));
 
         }, function(model) {
@@ -228,21 +279,36 @@ QueryBuilder.prototype.getRules = function(options) {
             }
         }, this);
 
+        /**
+         * @event QueryBuilder#filter:groupToJson
+         * @param {object} json
+         * @param {Group} group
+         * @returns {object}
+         */
         return self.change('groupToJson', groupData, group);
 
     }(this.model.root));
 
     out.valid = valid;
 
+    /**
+     * @avant QueryBuilder#filter:getRules
+     * @param {object} json
+     * @returns {object}
+     */
     return this.change('getRules', out);
 };
 
 /**
- * Set rules from object
+ * Sets rules from object
+ * @param {object} data
+ * @param {object} [options]
+ * @param {boolean} [options.allow_invalid=false] - silent-fail if the data are invalid
  * @throws RulesError, UndefinedConditionError
- * @param data {object}
- * @param {object} options
- *      - allow_invalid: false[default] | true(silent-fail if the data are invalid)
+ * @fires QueryBuilder#filter:setRules
+ * @fires QueryBuilder#filter:jsonToRule
+ * @fires QueryBuilder#filter:jsonToGroup
+ * @fires QueryBuilder#afterSetRules
  */
 QueryBuilder.prototype.setRules = function(data, options) {
     options = $.extend({
@@ -264,6 +330,11 @@ QueryBuilder.prototype.setRules = function(data, options) {
     this.setRoot(false, data.data, this.parseGroupFlags(data));
     this.applyGroupFlags(this.model.root);
 
+    /**
+     * @event QueryBuilder#filter:setRules
+     * @param {object} json
+     * @returns {object}
+     */
     data = this.change('setRules', data);
 
     var self = this;
@@ -336,15 +407,30 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
                 self.applyRuleFlags(model);
 
+                /**
+                 * @event QueryBuilder#filter:jsonToRule
+                 * @param {Rule} rule
+                 * @param {object} json
+                 */
                 if (self.change('jsonToRule', model, item) != model) {
                     Utils.error('RulesParse', 'Plugin tried to change rule reference');
                 }
             }
         });
 
+        /**
+         * @event QueryBuilder#filter:jsonToGroup
+         * @param {Group} group
+         * @param {object} json
+         */
         if (self.change('jsonToGroup', group, data) != group) {
             Utils.error('RulesParse', 'Plugin tried to change group reference');
         }
 
     }(data, this.model.root));
+
+    /**
+     * @event QueryBuilder#afterSetRules
+     */
+    this.trigger('afterSetRules');
 };

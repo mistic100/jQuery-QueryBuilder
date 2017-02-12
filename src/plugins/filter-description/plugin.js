@@ -1,9 +1,9 @@
-/*!
- * jQuery QueryBuilder Filter Description
- * Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.
- */
-
 /**
+ * Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.
+ * @class FilterDescriptionPlugin
+ * @param {object} [options]
+ * @param {string} [options.icon=glyphicon glyphicon-info-sign]
+ * @param {string} [options.mode=popover] - inline, popover or bootbox
  * @throws ConfigError
  */
 QueryBuilder.define('filter-description', function(options) {
@@ -53,7 +53,7 @@ QueryBuilder.define('filter-description', function(options) {
             else {
                 if ($b.length === 0) {
                     $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="popover"><i class="' + options.icon + '"></i></button>');
-                    $b.prependTo(rule.$el.find(Selectors.rule_actions));
+                    $b.prependTo(rule.$el.find(QueryBuilder.selectors.rule_actions));
 
                     $b.popover({
                         placement: 'left',
@@ -95,7 +95,7 @@ QueryBuilder.define('filter-description', function(options) {
             else {
                 if ($b.length === 0) {
                     $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="bootbox"><i class="' + options.icon + '"></i></button>');
-                    $b.prependTo(rule.$el.find(Selectors.rule_actions));
+                    $b.prependTo(rule.$el.find(QueryBuilder.selectors.rule_actions));
 
                     $b.on('click', function() {
                         bootbox.alert($b.data('description'));
@@ -111,7 +111,7 @@ QueryBuilder.define('filter-description', function(options) {
     mode: 'popover'
 });
 
-QueryBuilder.extend({
+QueryBuilder.extend(/** @lends FilterDescriptionPlugin.prototype */ {
     /**
      * Returns the description of a filter for a particular rule (if present)
      * @param {object} filter
