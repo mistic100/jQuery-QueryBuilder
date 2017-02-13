@@ -62,10 +62,8 @@ grunt --languages=fr,it
 #### Other commands
 
  * `grunt test` to run jshint/jscs/scsslint and the QUnit test suite.
- * `grunt list_modules` to get the list of available plugins and languages.
- * `grunt describe_triggers` to get the list of all triggers.
- * `grunt describe_errors` to get the list of all fatal errors.
- * `grunt watch` to automatically build the library when modifying the source files.
+ * `grunt serve` to open the example page with automatic build and livereload.
+ * `grunt jsdoc` to generate the documentation.
 
 ### Inspiration
  * [Knockout Query Builder](http://kindohm.github.io/knockout-query-builder/)

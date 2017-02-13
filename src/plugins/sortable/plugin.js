@@ -106,6 +106,7 @@ QueryBuilder.define('sortable', function(options) {
                         src.$el.show();
 
                         /**
+                         * After a node has been moved with {@link SortablePlugin}
                          * @event SortablePlugin#afterMove
                          * @param {Node} node
                          */

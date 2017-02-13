@@ -84,6 +84,7 @@ Model.defineModelProperties = function(obj, fields) {
 
                 if (this.model !== null) {
                     /**
+                     * After a value of the model changed
                      * @event Model#model:update
                      * @param {Node} node
                      * @param {string} field
@@ -166,7 +167,7 @@ var Node = function(parent, $el) {
     this.model = null;
 
     /**
-     * @member {Node}
+     * @member {Group}
      * @readonly
      */
     this.parent = parent;
@@ -222,6 +223,7 @@ Node.prototype.drop = function() {
 
     if (model !== null) {
         /**
+         * After a node of the model has been removed
          * @event Model#model:drop
          * @param {Node} node
          */
@@ -288,6 +290,7 @@ Node.prototype.move = function(target, index) {
 
         if (this.model !== null) {
             /**
+             * After a node of the model has been moved
              * @event Model#model:move
              * @param {Node} node
              * @param {Node} target
@@ -378,6 +381,7 @@ Group.prototype.insertNode = function(node, index, trigger) {
 
     if (trigger && this.model !== null) {
         /**
+         * After a node of the model has been added
          * @event Model#model:add
          * @param {Node} parent
          * @param {Node} node
@@ -524,7 +528,7 @@ var Rule = function(parent, $el) {
 
     /**
      * @name filter
-     * @member {object}
+     * @member {QueryBuilder#Filter}
      * @memberof Rule
      * @instance
      */
@@ -532,7 +536,7 @@ var Rule = function(parent, $el) {
 
     /**
      * @name operator
-     * @member {object}
+     * @member {QueryBuilder#Operator}
      * @memberof Rule
      * @instance
      */
@@ -561,6 +565,16 @@ Rule.prototype.isRoot = function() {
 };
 
 
-// export
+/**
+ * @member {function}
+ * @memberof QueryBuilder
+ * @see Group
+ */
 QueryBuilder.Group = Group;
+
+/**
+ * @member {function}
+ * @memberof QueryBuilder
+ * @see Rule
+ */
 QueryBuilder.Rule = Rule;

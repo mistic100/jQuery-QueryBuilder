@@ -107,6 +107,7 @@ QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
     });
 
     /**
+     * Modifies the raw HTML of a group
      * @event QueryBuilder#filter:getGroupTemplate
      * @param {string} html
      * @param {int} level
@@ -132,6 +133,7 @@ QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
     });
 
     /**
+     * Modifies the raw HTML of a rule
      * @event QueryBuilder#filter:getRuleTemplate
      * @param {string} html
      * @returns {string}
@@ -159,12 +161,14 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
     });
 
     /**
+     * Modifies the raw HTML of the rule's filter dropdown
      * @event QueryBuilder#filter:getRuleFilterTemplate
      * @param {string} html
      * @param {Rule} rule
+     * @param {QueryBuilder#Filter[]} filters
      * @returns {string}
      */
-    return this.change('getRuleFilterSelect', h, rule);
+    return this.change('getRuleFilterSelect', h, rule, filters);
 };
 
 /**
@@ -187,12 +191,14 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
     });
 
     /**
+     * Modifies the raw HTML of the rule's operator dropdown
      * @event QueryBuilder#filter:getRuleOperatorTemplate
      * @param {string} html
      * @param {Rule} rule
+     * @param {QueryBuilder#Operator[]} operators
      * @returns {string}
      */
-    return this.change('getRuleOperatorSelect', h, rule);
+    return this.change('getRuleOperatorSelect', h, rule, operators);
 };
 
 /**
@@ -264,10 +270,11 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
     }
 
     /**
+     * Modifies the raw HTML of the rule's input
      * @event QueryBuilder#filter:getRuleInput
      * @param {string} html
      * @param {Rule} rule
-     * @param {string} name
+     * @param {string} name - the name that the input must have
      * @returns {string}
      */
     return this.change('getRuleInput', h, rule, name);

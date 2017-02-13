@@ -1,3 +1,15 @@
+/**
+ * The {@link http://learn.jquery.com/plugins/|jQuery Plugins} namespace
+ * @external "jQuery.fn"
+ */
+
+/**
+ * Instanciates or accesses the {@link QueryBuilder} on an element
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @param {*} option - initial configuration or method name
+ * @param {...*} args - method arguments
+ */
 $.fn.queryBuilder = function(option) {
     if (this.length === 0) {
         Utils.error('Config', 'No target defined');
@@ -22,8 +34,37 @@ $.fn.queryBuilder = function(option) {
     return this;
 };
 
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @see QueryBuilder
+ */
 $.fn.queryBuilder.constructor = QueryBuilder;
+
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @see QueryBuilder.defaults
+ */
 $.fn.queryBuilder.defaults = QueryBuilder.defaults;
+
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @see QueryBuilder.defaults
+ */
 $.fn.queryBuilder.extend = QueryBuilder.extend;
+
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @see QueryBuilder.define
+ */
 $.fn.queryBuilder.define = QueryBuilder.define;
+
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @see QueryBuilder.regional
+ */
 $.fn.queryBuilder.regional = QueryBuilder.regional;

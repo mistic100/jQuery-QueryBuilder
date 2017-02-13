@@ -6,7 +6,7 @@ QueryBuilder.extend(/** @lends ChangeFiltersPlugin.prototype */ {
     /**
      * Change the filters of the builder
      * @param {boolean} [deleteOrphans=false] - delete rules using old filters
-     * @param {object[]} filters
+     * @param {QueryBuilder#Filter[]} filters
      * @fires ChangeFiltersPlugin#afterSetFilters
      * @throws ChangeFilterError
      */
@@ -21,9 +21,10 @@ QueryBuilder.extend(/** @lends ChangeFiltersPlugin.prototype */ {
         filters = this.checkFilters(filters);
 
         /**
+         * Modifies the filters before {@link ChangeFiltersPlugin#setFilters} method
          * @event ChangeFiltersPlugin#filter:setFilters
-         * @param {object[]} filters
-         * @returns {object[]}
+         * @param {QueryBuilder#Filter[]} filters
+         * @returns {QueryBuilder#Filter[]}
          */
         filters = this.change('setFilters', filters);
 
@@ -87,16 +88,17 @@ QueryBuilder.extend(/** @lends ChangeFiltersPlugin.prototype */ {
         }
 
         /**
+         * After {@link ChangeFiltersPlugin#setFilters} method
          * @event ChangeFiltersPlugin#afterSetFilters
-         * @param {object[]} filters
+         * @param {QueryBuilder#Filter[]} filters
          */
         this.trigger('afterSetFilters', filters);
     },
 
     /**
      * Adds a new filter to the builder
-     * @param {object|object[]} newFilters
-     * @param {*} [position=#end] - numeric index or '#start' or '#end'
+     * @param {QueryBuilder#Filter|QueryBuilder#Filter[]} newFilters
+     * @param {int|string} [position=#end] - index or '#start' or '#end'
      * @fires ChangeFiltersPlugin#afterSetFilters
      * @throws ChangeFilterError
      */

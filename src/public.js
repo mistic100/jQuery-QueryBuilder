@@ -4,6 +4,7 @@
  */
 QueryBuilder.prototype.destroy = function() {
     /**
+     * Before the {@link QueryBuilder#destroy} method
      * @event QueryBuilder#beforeDestroy
      */
     this.trigger('beforeDestroy');
@@ -30,7 +31,7 @@ QueryBuilder.prototype.destroy = function() {
  */
 QueryBuilder.prototype.reset = function() {
     /**
-     * Preventable
+     * Before the {@link QueryBuilder#reset} method, can be prevented
      * @event QueryBuilder#beforeReset
      */
     var e = this.trigger('beforeReset');
@@ -46,6 +47,7 @@ QueryBuilder.prototype.reset = function() {
     this.addRule(this.model.root);
 
     /**
+     * After the {@link QueryBuilder#reset} method
      * @event QueryBuilder#afterReset
      */
     this.trigger('afterReset');
@@ -58,7 +60,7 @@ QueryBuilder.prototype.reset = function() {
  */
 QueryBuilder.prototype.clear = function() {
     /**
-     * Preventable
+     * Before the {@link QueryBuilder#clear} method, can be prevented
      * @event QueryBuilder#beforeClear
      */
     var e = this.trigger('beforeClear');
@@ -75,6 +77,7 @@ QueryBuilder.prototype.clear = function() {
     }
 
     /**
+     * After the {@link QueryBuilder#clear} method
      * @event QueryBuilder#afterClear
      */
     this.trigger('afterClear');
@@ -185,6 +188,7 @@ QueryBuilder.prototype.validate = function(options) {
     }(this.model.root));
 
     /**
+     * Modifies the result of the {@link QueryBuilder#validate} method
      * @event QueryBuilder#filter:validate
      * @param {boolean} valid
      * @returns {boolean}
@@ -265,6 +269,7 @@ QueryBuilder.prototype.getRules = function(options) {
             }
 
             /**
+             * Modifies the JSON generated from a Rule object
              * @event QueryBuilder#filter:ruleToJson
              * @param {object} json
              * @param {Rule} rule
@@ -280,6 +285,7 @@ QueryBuilder.prototype.getRules = function(options) {
         }, this);
 
         /**
+         * Modifies the JSON generated from a Group object
          * @event QueryBuilder#filter:groupToJson
          * @param {object} json
          * @param {Group} group
@@ -331,11 +337,13 @@ QueryBuilder.prototype.setRules = function(data, options) {
     this.applyGroupFlags(this.model.root);
 
     /**
+     * Modifies data before the {@link QueryBuilder#setRules} method
      * @event QueryBuilder#filter:setRules
      * @param {object} json
+     * @param {object} options
      * @returns {object}
      */
-    data = this.change('setRules', data);
+    data = this.change('setRules', data, options);
 
     var self = this;
 
@@ -408,9 +416,11 @@ QueryBuilder.prototype.setRules = function(data, options) {
                 self.applyRuleFlags(model);
 
                 /**
+                 * Modifies the Rule object generated from the JSON
                  * @event QueryBuilder#filter:jsonToRule
                  * @param {Rule} rule
                  * @param {object} json
+                 * @returns {Rule} the same rule
                  */
                 if (self.change('jsonToRule', model, item) != model) {
                     Utils.error('RulesParse', 'Plugin tried to change rule reference');
@@ -419,9 +429,11 @@ QueryBuilder.prototype.setRules = function(data, options) {
         });
 
         /**
+         * Modifies the Group object generated from the JSON
          * @event QueryBuilder#filter:jsonToGroup
          * @param {Group} group
          * @param {object} json
+         * @returns {Group} the same group
          */
         if (self.change('jsonToGroup', group, data) != group) {
             Utils.error('RulesParse', 'Plugin tried to change group reference');
@@ -430,6 +442,7 @@ QueryBuilder.prototype.setRules = function(data, options) {
     }(data, this.model.root));
 
     /**
+     * After the {@link QueryBuilder#setRules} method
      * @event QueryBuilder#afterSetRules
      */
     this.trigger('afterSetRules');

@@ -1,87 +1,4 @@
 /**
- * Inits the builder
- * @param {jQuery} $el
- * @param {object} options
- * @fires QueryBuilder#afterInit
- * @private
- */
-QueryBuilder.prototype.init = function($el, options) {
-    $el[0].queryBuilder = this;
-    this.$el = $el;
-
-    // PROPERTIES
-    this.settings = $.extendext(true, 'replace', {}, QueryBuilder.DEFAULTS, options);
-    this.model = new Model();
-    this.status = {
-        group_id: 0,
-        rule_id: 0,
-        generated_id: false,
-        has_optgroup: false,
-        has_operator_oprgroup: false,
-        id: null
-    };
-
-    // "allow_groups" can be boolean or int
-    if (this.settings.allow_groups === false) {
-        this.settings.allow_groups = 0;
-    }
-    else if (this.settings.allow_groups === true) {
-        this.settings.allow_groups = -1;
-    }
-
-    // SETTINGS SHORTCUTS
-    this.filters = this.settings.filters;
-    this.icons = this.settings.icons;
-    this.operators = this.settings.operators;
-    this.templates = this.settings.templates;
-    this.plugins = this.settings.plugins;
-
-    // translations : english << 'lang_code' << custom
-    if (QueryBuilder.regional['en'] === undefined) {
-        Utils.error('Config', '"i18n/en.js" not loaded.');
-    }
-    this.lang = $.extendext(true, 'replace', {}, QueryBuilder.regional['en'], QueryBuilder.regional[this.settings.lang_code], this.settings.lang);
-
-    // init templates
-    Object.keys(this.templates).forEach(function(tpl) {
-        if (!this.templates[tpl]) {
-            this.templates[tpl] = QueryBuilder.templates[tpl];
-        }
-        if (typeof this.templates[tpl] == 'string') {
-            this.templates[tpl] = doT.template(this.templates[tpl]);
-        }
-    }, this);
-
-    // ensure we have a container id
-    if (!this.$el.attr('id')) {
-        this.$el.attr('id', 'qb_' + Math.floor(Math.random() * 99999));
-        this.status.generated_id = true;
-    }
-    this.status.id = this.$el.attr('id');
-
-    // INIT
-    this.$el.addClass('query-builder form-inline');
-
-    this.filters = this.checkFilters(this.filters);
-    this.operators = this.checkOperators(this.operators);
-    this.bindEvents();
-    this.initPlugins();
-
-    /**
-     * @event QueryBuilder#afterInit
-     */
-    this.trigger('afterInit');
-
-    if (options.rules) {
-        this.setRules(options.rules);
-        delete this.settings.rules;
-    }
-    else {
-        this.setRoot(true);
-    }
-};
-
-/**
  * Initializes plugins for an instance
  * @throws ConfigError
  * @private
@@ -116,8 +33,8 @@ QueryBuilder.prototype.initPlugins = function() {
 
 /**
  * Checks the configuration of each filter
- * @param {object[]} filters
- * @returns {object[]}
+ * @param {QueryBuilder#Filter[]} filters
+ * @returns {QueryBuilder#Filter[]}
  * @throws ConfigError
  */
 QueryBuilder.prototype.checkFilters = function(filters) {
@@ -221,8 +138,8 @@ QueryBuilder.prototype.checkFilters = function(filters) {
 
 /**
  * Checks the configuration of each operator
- * @param {object[]} operators
- * @returns {object[]}
+ * @param {QueryBuilder#Operator[]} operators
+ * @returns {QueryBuilder#Operator[]}
  * @throws ConfigError
  */
 QueryBuilder.prototype.checkOperators = function(operators) {
@@ -446,11 +363,11 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     var level = parent.level + 1;
 
     /**
-     * Preventable
+     * Just before adding a group, can be prevented.
      * @event QueryBuilder#beforeAddGroup
      * @param {Group} parent
-     * @param {boolean} addRule
-     * @param {int} level
+     * @param {boolean} addRule - if an empty rule will be added in the group
+     * @param {int} level - nesting level of the group, 1 is the root group
      */
     var e = this.trigger('beforeAddGroup', parent, addRule, level);
     if (e.isDefaultPrevented()) {
@@ -465,6 +382,7 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     model.__.flags = $.extend({}, this.settings.default_group_flags, flags);
 
     /**
+     * Just after adding a group
      * @event QueryBuilder#afterAddGroup
      * @param {Group} group
      */
@@ -492,7 +410,7 @@ QueryBuilder.prototype.deleteGroup = function(group) {
     }
 
     /**
-     * Preventable
+     * Just before deleting a group, can be prevented
      * @event QueryBuilder#beforeDeleteGroup
      * @param {Group} parent
      */
@@ -513,6 +431,7 @@ QueryBuilder.prototype.deleteGroup = function(group) {
         group.drop();
 
         /**
+         * Just after deleting a group
          * @event QueryBuilder#afterDeleteGroup
          */
         this.trigger('afterDeleteGroup');
@@ -535,6 +454,7 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
     });
 
     /**
+     * After the group condition has been modified
      * @event QueryBuilder#afterUpdateGroupCondition
      * @param {Group} group
      */
@@ -566,10 +486,11 @@ QueryBuilder.prototype.refreshGroupsConditions = function() {
  * @returns {Rule}
  * @fires QueryBuilder#beforeAddRule
  * @fires QueryBuilder#afterAddRule
+ * @fires QueryBuilder#filter:getDefaultFilter
  */
 QueryBuilder.prototype.addRule = function(parent, data, flags) {
     /**
-     * Preventable
+     * Just before adding a rule, can be prevented
      * @event QueryBuilder#beforeAddRule
      * @param {Group} parent
      */
@@ -589,6 +510,7 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
     model.__.flags = $.extend({}, this.settings.default_rule_flags, flags);
 
     /**
+     * Just after adding a rule
      * @event QueryBuilder#afterAddRule
      * @param {Rule} rule
      */
@@ -597,6 +519,13 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
     this.createRuleFilters(model);
 
     if (this.settings.default_filter || !this.settings.display_empty_filter) {
+        /**
+         * Modifies the default filter for a rule
+         * @event QueryBuilder#filter:getDefaultFilter
+         * @param {QueryBuilder#Filter} filter
+         * @param {Rule} rule
+         * @returns {QueryBuilder#Filter}
+         */
         model.filter = this.change('getDefaultFilter',
             this.getFilterById(this.settings.default_filter || this.filters[0].id),
             model
@@ -619,7 +548,7 @@ QueryBuilder.prototype.deleteRule = function(rule) {
     }
 
     /**
-     * Preventable
+     * Just before deleting a rule, can be prevented
      * @event QueryBuilder#beforeDeleteRule
      * @param {Rule} rule
      */
@@ -631,6 +560,7 @@ QueryBuilder.prototype.deleteRule = function(rule) {
     rule.drop();
 
     /**
+     * Just after deleting a rule
      * @event QueryBuilder#afterDeleteRule
      */
     this.trigger('afterDeleteRule');
@@ -641,16 +571,24 @@ QueryBuilder.prototype.deleteRule = function(rule) {
 /**
  * Creates the filters for a rule
  * @param {Rule} rule
+ * @fires QueryBuilder#filter:getRuleFilters
  * @fires QueryBuilder#afterCreateRuleFilters
  * @private
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
+    /**
+     * Modified the list a filters available for a rule
+     * @param {QueryBuilder#Filter[]} filters
+     * @param {Rule} rule
+     * @returns {QueryBuilder#Filter[]}
+     */
     var filters = this.change('getRuleFilters', this.filters, rule);
     var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
 
     rule.$el.find(QueryBuilder.selectors.filter_container).html($filterSelect);
 
     /**
+     * After creating the dropdown for filters
      * @event QueryBuilder#afterCreateRuleFilters
      * @param {Rule} rule
      */
@@ -679,9 +617,10 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
     rule.__.operator = operators[0];
 
     /**
+     * After creating the dropdown for operators
      * @event QueryBuilder#afterCreateRuleOperators
      * @param {Rule} rule
-     * @param {object[]} operators
+     * @param {QueryBuilder#Operator[]} operators - allowed operators for this rule
      */
     this.trigger('afterCreateRuleOperators', rule, operators);
 };
@@ -727,6 +666,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     }
 
     /**
+     * After creating the input for a rule and initializing optional plugin
      * @event QueryBuilder#afterCreateRuleInput
      * @param {Rule} rule
      */
@@ -761,6 +701,7 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
     }
 
     /**
+     * After the filter has been updated and the operators and input re-created
      * @event QueryBuilder#afterUpdateRuleFilter
      * @param {Rule} rule
      */
@@ -798,6 +739,7 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     }
 
     /**
+     *  After the operator has been updated and the input optionally re-created
      * @event QueryBuilder#afterUpdateRuleOperator
      * @param {Rule} rule
      */
@@ -818,6 +760,7 @@ QueryBuilder.prototype.updateRuleValue = function(rule) {
     }
 
     /**
+     * After the rule value has been modified
      * @event QueryBuilder#afterUpdateRuleValue
      * @param {Rule} rule
      */
@@ -848,6 +791,7 @@ QueryBuilder.prototype.applyRuleFlags = function(rule) {
     }
 
     /**
+     * After rule's flags has been applied
      * @event QueryBuilder#afterApplyRuleFlags
      * @param {Rule} rule
      */
@@ -879,6 +823,7 @@ QueryBuilder.prototype.applyGroupFlags = function(group) {
     }
 
     /**
+     * After group's flags has been applied
      * @event QueryBuilder#afterApplyGroupFlags
      * @param {Group} group
      */
@@ -923,9 +868,10 @@ QueryBuilder.prototype.updateError = function(node) {
             errorMessage = Utils.fmt(errorMessage, node.error.slice(1));
 
             /**
+             * Modifies an error message before display
              * @event QueryBuilder#filter:displayError
-             * @param {string} errorMessage
-             * @param {array} error
+             * @param {string} errorMessage - the error message (translated and formatted)
+             * @param {array} error - the raw error array (error code and optional arguments)
              * @param {Node} node
              * @returns {string}
              */
@@ -952,10 +898,10 @@ QueryBuilder.prototype.triggerValidationError = function(node, error, value) {
     }
 
     /**
-     * Preventable
+     * Fired when a validation error occurred, can be prevented
      * @event QueryBuilder#validationError
      * @param {Node} node
-     * @param {string} node
+     * @param {string} error
      * @param {*} value
      */
     var e = this.trigger('validationError', node, error, value);

@@ -2,9 +2,6 @@ var initConfig = require('./build/initConfig');
 var processLang = require('./build/processLang');
 var removeJshint = require('./build/removeJshint');
 var cleanLn = require('./build/cleanLn');
-var taskDescribeTriggers = require('./build/tasks/describeTriggers');
-var taskDescribeErrors = require('./build/tasks/describeErrors');
-var taskListModules = require('./build/tasks/listModules');
 
 module.exports = function(grunt) {
     require('time-grunt')(grunt);
@@ -375,12 +372,6 @@ module.exports = function(grunt) {
             }
         }
     });
-
-
-    // custom tasks
-    taskDescribeTriggers(grunt, config);
-    taskDescribeErrors(grunt, config);
-    taskListModules(grunt, config);
 
 
     grunt.registerTask('build_js', [

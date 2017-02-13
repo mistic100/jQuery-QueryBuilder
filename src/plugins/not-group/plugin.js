@@ -144,6 +144,7 @@ QueryBuilder.extend(/** @lends NotGroupPlugin.prototype */ {
             .find('i').attr('class', group.not ? options.icon_checked : options.icon_unchecked);
 
         /**
+         * After the group's not flag has been modified
          * @event NotGroupPlugin#afterUpdateGroupNot
          * @param {Group} group
          */

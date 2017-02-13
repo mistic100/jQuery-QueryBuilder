@@ -144,8 +144,9 @@ QueryBuilder.extend(/** @lends InvertPlugin.prototype */ {
 
         if (options.trigger) {
             /**
+             * After {@link InvertPlugin#invert} method
              * @event InvertPlugin#afterInvert
-             * @param {Node} node
+             * @param {Node} node - the main group or rule that has been modified
              * @param {object} options
              */
             this.trigger('afterInvert', node, options);

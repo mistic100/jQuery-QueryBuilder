@@ -144,6 +144,7 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
                     }
 
                     /**
+                     * Modifies the MongoDB field used by a rule
                      * @event MongoDbSupportPlugin#filter:getMongoDBField
                      * @param {string} field
                      * @param {Rule} rule
@@ -155,11 +156,12 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
                     ruleExpression[field] = mdb.call(self, values);
 
                     /**
+                     * Modifies the MongoDB expression generated for a rul
                      * @event MongoDbSupportPlugin#filter:ruleToMongo
                      * @param {object} expression
                      * @param {Rule} rule
                      * @param {*} value
-                     * @param {function} valueWrapper
+                     * @param {function} valueWrapper - function that takes the value and adds the operator
                      * @returns {object}
                      */
                     parts.push(self.change('ruleToMongo', ruleExpression, rule, values, mdb));
@@ -170,6 +172,7 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
             groupExpression['$' + group.condition.toLowerCase()] = parts;
 
             /**
+             * Modifies the MongoDB expression generated for a group
              * @event MongoDbSupportPlugin#filter:groupToMongo
              * @param {object} expression
              * @param {Group} group
@@ -197,7 +200,7 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
         var self = this;
 
         /**
-         * Allow plugins to manually parse or handle special cases
+         * Custom parsing of a MongoDB expression, you can return a sub-part of the expression, or a well formed group or rule JSON
          * @event MongoDbSupportPlugin#filter:parseMongoNode
          * @param {object} expression
          * @returns {object} expression, rule or group
@@ -263,6 +266,7 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
                     var opVal = mdbrl.call(self, value);
 
                     /**
+                     * Returns a filter identifier from the MongoDB field
                      * @event MongoDbSupportPlugin#filter:getMongoDBFieldID
                      * @param {string} field
                      * @param {*} value
@@ -271,6 +275,7 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
                     var id = self.change('getMongoDBFieldID', field, value);
 
                     /**
+                     * Modifies the rule generated from the MongoDB expression
                      * @event MongoDbSupportPlugin#filter:mongoToRule
                      * @param {object} rule
                      * @param {object} expression
@@ -288,9 +293,10 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
             });
 
             /**
+             * Modifies the group generated from the MongoDB expression
              * @event MongoDbSupportPlugin#filter:mongoToGroup
              * @param {object} group
-             * @param {object} {expression}
+             * @param {object} expression
              * @returns {object}
              */
             return self.change('mongoToGroup', {
