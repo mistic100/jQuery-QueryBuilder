@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Migrate from 1.4.x to 2.x
+hide: true
 ---
 
 <p>Though there were major architectural changes in QueryBuilder 2, basic usage remains the same. The only big change is about callbacks: <b>there are no more callbacks !</b> everything is done via events, which also changed a bit.</p>
@@ -9,9 +10,9 @@ title: Migrate from 1.4.x to 2.x
   <h1 id="events" class="page-header">
     Changes in events
   </h1>
-  
+
   <p>There were previously only 5 events, all five have been modified, four of them have been renamed and 15 new were added !</p>
-  
+
   <b>The renamed events are :</b>
   <ul>
     <li>addGroup.queryBuilder <i class="glyphicon glyphicon-arrow-right"></i> beforeAddGroup.queryBuilder</li>
@@ -19,18 +20,18 @@ title: Migrate from 1.4.x to 2.x
     <li>addRule.queryBuilder <i class="glyphicon glyphicon-arrow-right"></i> beforeAddRule.queryBuilder</li>
     <li>deleteRule.queryBuilder <i class="glyphicon glyphicon-arrow-right"></i> beforeDeleteRule.queryBuilder</li>
   </ul>
-  
+
   <p>Be sure to check the documentation about <a href="{{site.github.url}}/dev/events.html">events</a> to know the new usages.</p>
 </section>
-  
+
 <section class="bs-docs-section">
   <h1 id="callbacks" class="page-header">
    Migrate callbacks
   </h1>
-  
+
   <p>In the following I will illustrate how to convert each 1.4 callback to 2.0 events.</p>
 
-  
+
   <h2 id="onValidationError">onValidationError</h2>
 
   <h3>1.4.x</h3>

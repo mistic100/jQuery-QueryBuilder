@@ -1,0 +1,861 @@
+<!-- start:source.tmpl.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+		<title>data.js</title>
+		<!--[if lt IE 9]>
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
+		<link type="text/css" rel="stylesheet" href="css/template.min.css">
+			<style>
+				.page-header,
+				pre.code-toolbar > .toolbar:hover {
+					background-color: #004482;
+				}
+				.callout-primary,
+				.toc .nav > li > a:hover,
+				.toc .nav > li > a:focus,
+				.toc .nav > li.active > a,
+				.toc .nav > li.active > a:hover,
+				.toc .nav > li.active > a:focus,
+				pre.code-toolbar > .toolbar:hover {
+					border-left-color: #004482;
+				}
+				pre.code-toolbar > .toolbar:hover {
+					border-bottom-color: #004482;
+				}
+				.callout-primary h5,
+				.symbol-title.collapsible-symbol .toggle-icon,
+				.breadcrumb li a,
+				.toc .nav > li > a:hover,
+				.toc .nav > li > a:focus,
+				.toc .nav > li.active > a,
+				.toc .nav > li.active > a:hover,
+				.toc .nav > li.active > a:focus {
+					color: #004482;
+				}
+			</style>
+		<script type="text/javascript">
+			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Plugins","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"readmeTargets":[],"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
+			window.DOCLET_TOC_ENABLED = false;
+		</script>
+</head>
+<body>
+	<!-- start:navbar.hbs -->
+	<header class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="index.html">
+					jQuery QueryBuilder API
+				</a>
+				<!-- displayed on small devices -->
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse" id="topNavigation">
+				<ul class="nav navbar-nav">
+							<li class="dropdown">
+								<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="Group.html">Group</a></li>
+										<li><a href="Model.html">Model</a></li>
+										<li><a href="Node.html">Node</a></li>
+										<li><a href="QueryBuilder.html">QueryBuilder</a></li>
+										<li><a href="Rule.html">Rule</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_event.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="global.html#undefinedevent:changer:getRules">changer:getRules</a></li>
+										<li><a href="Model.html#.event:model:add">Model.model:add</a></li>
+										<li><a href="Model.html#.event:model:drop">Model.model:drop</a></li>
+										<li><a href="Model.html#.event:model:move">Model.model:move</a></li>
+										<li><a href="Model.html#.event:model:update">Model.model:update</a></li>
+										<li><a href="module-ChangeFiltersPlugin.html#.event:changer:setFilters">ChangeFiltersPlugin.changer:setFilters</a></li>
+										<li><a href="module-ChangeFiltersPlugin.html#.event:afterSetFilters">ChangeFiltersPlugin.afterSetFilters</a></li>
+										<li><a href="module-InvertPlugin.html#.event:afterInvert">InvertPlugin.afterInvert</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBField">MongoDbSupportPlugin.changer:getMongoDBField</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBFieldID">MongoDbSupportPlugin.changer:getMongoDBFieldID</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:groupToMongo">MongoDbSupportPlugin.changer:groupToMongo</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToGroup">MongoDbSupportPlugin.changer:mongoToGroup</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToRule">MongoDbSupportPlugin.changer:mongoToRule</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:parseMongoNode">MongoDbSupportPlugin.changer:parseMongoNode</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:ruleToMongo">MongoDbSupportPlugin.changer:ruleToMongo</a></li>
+										<li><a href="module-NotGroupPlugin.html#.event:afterUpdateGroupNot">NotGroupPlugin.afterUpdateGroupNot</a></li>
+										<li><a href="module-SortablePlugin.html#.event:afterMove">SortablePlugin.afterMove</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:getSQLField">SqlSupportPlugin.changer:getSQLField</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:getSQLFieldID">SqlSupportPlugin.changer:getSQLFieldID</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:groupToSQL">SqlSupportPlugin.changer:groupToSQL</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:parseSQLNode">SqlSupportPlugin.changer:parseSQLNode</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:ruleToSQL">SqlSupportPlugin.changer:ruleToSQL</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:sqlToGroup">SqlSupportPlugin.changer:sqlToGroup</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:sqlToRule">SqlSupportPlugin.changer:sqlToRule</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:displayError">QueryBuilder.changer:displayError</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getDefaultFilter">QueryBuilder.changer:getDefaultFilter</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getGroupTemplate">QueryBuilder.changer:getGroupTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getOperators">QueryBuilder.changer:getOperators</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleFilters">QueryBuilder.changer:getRuleFilters</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate">QueryBuilder.changer:getRuleFilterTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleInput">QueryBuilder.changer:getRuleInput</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate">QueryBuilder.changer:getRuleOperatorTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:jsonToGroup">QueryBuilder.changer:jsonToGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:jsonToRule">QueryBuilder.changer:jsonToRule</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:parseGroupFlags">QueryBuilder.changer:parseGroupFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:parseRuleFlags">QueryBuilder.changer:parseRuleFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:ruleToJson">QueryBuilder.changer:ruleToJson</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:setRules">QueryBuilder.changer:setRules</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:validate">QueryBuilder.changer:validate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:validateValue">QueryBuilder.changer:validateValue</a></li>
+										<li><a href="QueryBuilder.html#.event:afterAddGroup">QueryBuilder.afterAddGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:afterAddRule">QueryBuilder.afterAddRule</a></li>
+										<li><a href="QueryBuilder.html#.event:afterApplyGroupFlags">QueryBuilder.afterApplyGroupFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:afterApplyRuleFlags">QueryBuilder.afterApplyRuleFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:afterClear">QueryBuilder.afterClear</a></li>
+										<li><a href="QueryBuilder.html#.event:afterCreateRuleFilters">QueryBuilder.afterCreateRuleFilters</a></li>
+										<li><a href="QueryBuilder.html#.event:afterCreateRuleInput">QueryBuilder.afterCreateRuleInput</a></li>
+										<li><a href="QueryBuilder.html#.event:afterCreateRuleOperators">QueryBuilder.afterCreateRuleOperators</a></li>
+										<li><a href="QueryBuilder.html#.event:afterDeleteGroup">QueryBuilder.afterDeleteGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:afterDeleteRule">QueryBuilder.afterDeleteRule</a></li>
+										<li><a href="QueryBuilder.html#.event:afterInit">QueryBuilder.afterInit</a></li>
+										<li><a href="QueryBuilder.html#.event:afterReset">QueryBuilder.afterReset</a></li>
+										<li><a href="QueryBuilder.html#.event:afterSetRules">QueryBuilder.afterSetRules</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateGroupCondition">QueryBuilder.afterUpdateGroupCondition</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateRuleFilter">QueryBuilder.afterUpdateRuleFilter</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateRuleOperator">QueryBuilder.afterUpdateRuleOperator</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateRuleValue">QueryBuilder.afterUpdateRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeAddGroup">QueryBuilder.beforeAddGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeAddRule">QueryBuilder.beforeAddRule</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeClear">QueryBuilder.beforeClear</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeDeleteGroup">QueryBuilder.beforeDeleteGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeDeleteRule">QueryBuilder.beforeDeleteRule</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeDestroy">QueryBuilder.beforeDestroy</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeReset">QueryBuilder.beforeReset</a></li>
+										<li><a href="QueryBuilder.html#.event:validationError">QueryBuilder.validationError</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_external.html" class="dropdown-toggle" data-toggle="dropdown">Externals<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="external-_jQuery.fn_.html">jQuery.fn</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_module.html" class="dropdown-toggle" data-toggle="dropdown">Plugins<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="module-BtCheckboxPlugin.html">BtCheckboxPlugin</a></li>
+										<li><a href="module-BtSelectpickerPlugin.html">BtSelectpickerPlugin</a></li>
+										<li><a href="module-BtTooltipErrorsPlugin.html">BtTooltipErrorsPlugin</a></li>
+										<li><a href="module-ChangeFiltersPlugin.html">ChangeFiltersPlugin</a></li>
+										<li><a href="module-FilterDescriptionPlugin.html">FilterDescriptionPlugin</a></li>
+										<li><a href="module-InvertPlugin.html">InvertPlugin</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html">MongoDbSupportPlugin</a></li>
+										<li><a href="module-NotGroupPlugin.html">NotGroupPlugin</a></li>
+										<li><a href="module-SortablePlugin.html">SortablePlugin</a></li>
+										<li><a href="module-SqlSupportPlugin.html">SqlSupportPlugin</a></li>
+										<li><a href="module-UniqueFilterPlugin.html">UniqueFilterPlugin</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_namespace.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="Utils.html">Utils</a></li>
+								</ul>
+							</li>
+				</ul>
+					<!-- start:lunr-search-navbar.hbs -->
+					<form class="navbar-form navbar-right" role="search">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Search" id="lunr-search-input">
+							<div class="input-group-btn">
+								<button class="btn btn-default" id="lunr-search-submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					<!-- start:lunr-search-navbar.hbs -->		</div>
+		</div>
+	</header>
+	<!-- end:navbar.hbs -->		<div class="page-header">
+			<div class="container">
+				<span class="kind">source</span>
+				<h1><span class="name">data.js</span></h1>
+			</div>
+		</div>
+	<div class="container content">
+		<div class="row">
+			<div class="col-md-12 main-content">
+		<section class="source-section">
+			<article></article>
+			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/**
+ * Performs value validation
+ * @param {Rule} rule
+ * @param {string|string[]} value
+ * @returns {array|boolean} true or error array
+ * @fires QueryBuilder#changer:validateValue
+ */
+QueryBuilder.prototype.validateValue = function(rule, value) {
+    var validation = rule.filter.validation || {};
+    var result = true;
+
+    if (validation.callback) {
+        result = validation.callback.call(this, value, rule);
+    }
+    else {
+        result = this._validateValue(rule, value);
+    }
+
+    /**
+     * Modifies the result of the rule validation method
+     * @event changer:validateValue
+     * @memberof QueryBuilder
+     * @param {array|boolean} result - true or an error array
+     * @param {*} value
+     * @param {Rule} rule
+     * @returns {array|boolean}
+     */
+    return this.change('validateValue', result, value, rule);
+};
+
+/**
+ * Default validation function
+ * @param {Rule} rule
+ * @param {string|string[]} value
+ * @returns {array|boolean} true or error array
+ * @throws ConfigError
+ * @private
+ */
+QueryBuilder.prototype._validateValue = function(rule, value) {
+    var filter = rule.filter;
+    var operator = rule.operator;
+    var validation = filter.validation || {};
+    var result = true;
+    var tmp, tempValue;
+
+    if (rule.operator.nb_inputs === 1) {
+        value = [value];
+    }
+
+    for (var i = 0; i &lt; operator.nb_inputs; i++) {
+        if (!operator.multiple &amp;&amp; $.isArray(value[i]) &amp;&amp; value[i].length > 1) {
+            result = ['operator_not_multiple', operator.type];
+            break;
+        }
+
+        switch (filter.input) {
+            case 'radio':
+                if (value[i] === undefined || value[i].length === 0) {
+                    if (!validation.allow_empty_value) {
+                        result = ['radio_empty'];
+                    }
+                    break;
+                }
+                break;
+
+            case 'checkbox':
+                if (value[i] === undefined || value[i].length === 0) {
+                    if (!validation.allow_empty_value) {
+                        result = ['checkbox_empty'];
+                    }
+                    break;
+                }
+                break;
+
+            case 'select':
+                if (value[i] === undefined || value[i].length === 0 || (filter.placeholder &amp;&amp; value[i] == filter.placeholder_value)) {
+                    if (!validation.allow_empty_value) {
+                        result = ['select_empty'];
+                    }
+                    break;
+                }
+                break;
+
+            default:
+                tempValue = $.isArray(value[i]) ? value[i] : [value[i]];
+
+                for (var j = 0; j &lt; tempValue.length; j++) {
+                    switch (QueryBuilder.types[filter.type]) {
+                        case 'string':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['string_empty'];
+                                }
+                                break;
+                            }
+                            if (validation.min !== undefined) {
+                                if (tempValue[j].length &lt; parseInt(validation.min)) {
+                                    result = [this.getValidationMessage(validation, 'min', 'string_exceed_min_length'), validation.min];
+                                    break;
+                                }
+                            }
+                            if (validation.max !== undefined) {
+                                if (tempValue[j].length > parseInt(validation.max)) {
+                                    result = [this.getValidationMessage(validation, 'max', 'string_exceed_max_length'), validation.max];
+                                    break;
+                                }
+                            }
+                            if (validation.format) {
+                                if (typeof validation.format == 'string') {
+                                    validation.format = new RegExp(validation.format);
+                                }
+                                if (!validation.format.test(tempValue[j])) {
+                                    result = [this.getValidationMessage(validation, 'format', 'string_invalid_format'), validation.format];
+                                    break;
+                                }
+                            }
+                            break;
+
+                        case 'number':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['number_nan'];
+                                }
+                                break;
+                            }
+                            if (isNaN(tempValue[j])) {
+                                result = ['number_nan'];
+                                break;
+                            }
+                            if (filter.type == 'integer') {
+                                if (parseInt(tempValue[j]) != tempValue[j]) {
+                                    result = ['number_not_integer'];
+                                    break;
+                                }
+                            }
+                            else {
+                                if (parseFloat(tempValue[j]) != tempValue[j]) {
+                                    result = ['number_not_double'];
+                                    break;
+                                }
+                            }
+                            if (validation.min !== undefined) {
+                                if (tempValue[j] &lt; parseFloat(validation.min)) {
+                                    result = [this.getValidationMessage(validation, 'min', 'number_exceed_min'), validation.min];
+                                    break;
+                                }
+                            }
+                            if (validation.max !== undefined) {
+                                if (tempValue[j] > parseFloat(validation.max)) {
+                                    result = [this.getValidationMessage(validation, 'max', 'number_exceed_max'), validation.max];
+                                    break;
+                                }
+                            }
+                            if (validation.step !== undefined &amp;&amp; validation.step !== 'any') {
+                                var v = (tempValue[j] / validation.step).toPrecision(14);
+                                if (parseInt(v) != v) {
+                                    result = [this.getValidationMessage(validation, 'step', 'number_wrong_step'), validation.step];
+                                    break;
+                                }
+                            }
+                            break;
+
+                        case 'datetime':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['datetime_empty'];
+                                }
+                                break;
+                            }
+
+                            // we need MomentJS
+                            if (validation.format) {
+                                if (!('moment' in window)) {
+                                    Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
+                                }
+
+                                var datetime = moment(tempValue[j], validation.format);
+                                if (!datetime.isValid()) {
+                                    result = [this.getValidationMessage(validation, 'format', 'datetime_invalid'), validation.format];
+                                    break;
+                                }
+                                else {
+                                    if (validation.min) {
+                                        if (datetime &lt; moment(validation.min, validation.format)) {
+                                            result = [this.getValidationMessage(validation, 'min', 'datetime_exceed_min'), validation.min];
+                                            break;
+                                        }
+                                    }
+                                    if (validation.max) {
+                                        if (datetime > moment(validation.max, validation.format)) {
+                                            result = [this.getValidationMessage(validation, 'max', 'datetime_exceed_max'), validation.max];
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+
+                        case 'boolean':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['boolean_not_valid'];
+                                }
+                                break;
+                            }
+                            tmp = ('' + tempValue[j]).trim().toLowerCase();
+                            if (tmp !== 'true' &amp;&amp; tmp !== 'false' &amp;&amp; tmp !== '1' &amp;&amp; tmp !== '0' &amp;&amp; tempValue[j] !== 1 &amp;&amp; tempValue[j] !== 0) {
+                                result = ['boolean_not_valid'];
+                                break;
+                            }
+                    }
+
+                    if (result !== true) {
+                        break;
+                    }
+                }
+        }
+
+        if (result !== true) {
+            break;
+        }
+    }
+
+    return result;
+};
+
+/**
+ * Returns an incremented group ID
+ * @returns {string}
+ * @private
+ */
+QueryBuilder.prototype.nextGroupId = function() {
+    return this.status.id + '_group_' + (this.status.group_id++);
+};
+
+/**
+ * Returns an incremented rule ID
+ * @returns {string}
+ * @private
+ */
+QueryBuilder.prototype.nextRuleId = function() {
+    return this.status.id + '_rule_' + (this.status.rule_id++);
+};
+
+/**
+ * Returns the operators for a filter
+ * @param {string|object} filter - filter id or filter object
+ * @returns {object[]}
+ * @fires QueryBuilder#changer:getOperators
+ * @private
+ */
+QueryBuilder.prototype.getOperators = function(filter) {
+    if (typeof filter == 'string') {
+        filter = this.getFilterById(filter);
+    }
+
+    var result = [];
+
+    for (var i = 0, l = this.operators.length; i &lt; l; i++) {
+        // filter operators check
+        if (filter.operators) {
+            if (filter.operators.indexOf(this.operators[i].type) == -1) {
+                continue;
+            }
+        }
+        // type check
+        else if (this.operators[i].apply_to.indexOf(QueryBuilder.types[filter.type]) == -1) {
+            continue;
+        }
+
+        result.push(this.operators[i]);
+    }
+
+    // keep sort order defined for the filter
+    if (filter.operators) {
+        result.sort(function(a, b) {
+            return filter.operators.indexOf(a.type) - filter.operators.indexOf(b.type);
+        });
+    }
+
+    /**
+     * Modifies the operators available for a filter
+     * @event changer:getOperators
+     * @memberof QueryBuilder
+     * @param {QueryBuilder.Operator[]} operators
+     * @param {QueryBuilder.Filter} filter
+     * @returns {QueryBuilder.Operator[]}
+     */
+    return this.change('getOperators', result, filter);
+};
+
+/**
+ * Returns a particular filter by its id
+ * @param {string} id
+ * @param {boolean} [doThrow=true]
+ * @returns {object|null}
+ * @throws UndefinedFilterError
+ * @private
+ */
+QueryBuilder.prototype.getFilterById = function(id, doThrow) {
+    if (id == '-1') {
+        return null;
+    }
+
+    for (var i = 0, l = this.filters.length; i &lt; l; i++) {
+        if (this.filters[i].id == id) {
+            return this.filters[i];
+        }
+    }
+
+    Utils.error(doThrow !== false, 'UndefinedFilter', 'Undefined filter "{0}"', id);
+
+    return null;
+};
+
+/**
+ * Returns a particular operator by its type
+ * @param {string} type
+ * @param {boolean} [doThrow=true]
+ * @returns {object|null}
+ * @throws UndefinedOperatorError
+ * @private
+ */
+QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
+    if (type == '-1') {
+        return null;
+    }
+
+    for (var i = 0, l = this.operators.length; i &lt; l; i++) {
+        if (this.operators[i].type == type) {
+            return this.operators[i];
+        }
+    }
+
+    Utils.error(doThrow !== false, 'UndefinedOperator', 'Undefined operator "{0}"', type);
+
+    return null;
+};
+
+/**
+ * Returns rule's current input value
+ * @param {Rule} rule
+ * @returns {*}
+ * @fires QueryBuilder#changer:getRuleValue
+ * @private
+ */
+QueryBuilder.prototype.getRuleInputValue = function(rule) {
+    var filter = rule.filter;
+    var operator = rule.operator;
+    var value = [];
+
+    if (filter.valueGetter) {
+        value = filter.valueGetter.call(this, rule);
+    }
+    else {
+        var $value = rule.$el.find(QueryBuilder.selectors.value_container);
+
+        for (var i = 0; i &lt; operator.nb_inputs; i++) {
+            var name = Utils.escapeElementId(rule.id + '_value_' + i);
+            var tmp;
+
+            switch (filter.input) {
+                case 'radio':
+                    value.push($value.find('[name=' + name + ']:checked').val());
+                    break;
+
+                case 'checkbox':
+                    tmp = [];
+                    // jshint loopfunc:true
+                    $value.find('[name=' + name + ']:checked').each(function() {
+                        tmp.push($(this).val());
+                    });
+                    // jshint loopfunc:false
+                    value.push(tmp);
+                    break;
+
+                case 'select':
+                    if (filter.multiple) {
+                        tmp = [];
+                        // jshint loopfunc:true
+                        $value.find('[name=' + name + '] option:selected').each(function() {
+                            tmp.push($(this).val());
+                        });
+                        // jshint loopfunc:false
+                        value.push(tmp);
+                    }
+                    else {
+                        value.push($value.find('[name=' + name + '] option:selected').val());
+                    }
+                    break;
+
+                default:
+                    value.push($value.find('[name=' + name + ']').val());
+            }
+        }
+
+        if (operator.multiple &amp;&amp; filter.value_separator) {
+            value = value.map(function(val) {
+                return val.split(filter.value_separator);
+            });
+        }
+
+        if (operator.nb_inputs === 1) {
+            value = value[0];
+        }
+
+        // @deprecated
+        if (filter.valueParser) {
+            value = filter.valueParser.call(this, rule, value);
+        }
+    }
+
+    /**
+     * Modifies the rule's value grabbed from the DOM
+     * @event changer:getRuleValue
+     * @memberof QueryBuilder
+     * @param {*} value
+     * @param {Rule} rule
+     * @returns {*}
+     */
+    return this.change('getRuleValue', value, rule);
+};
+
+/**
+ * Sets the value of a rule's input
+ * @param {Rule} rule
+ * @param {*} value
+ * @private
+ */
+QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
+    var filter = rule.filter;
+    var operator = rule.operator;
+
+    if (!filter || !operator) {
+        return;
+    }
+
+    this._updating_input = true;
+
+    if (filter.valueSetter) {
+        filter.valueSetter.call(this, rule, value);
+    }
+    else {
+        var $value = rule.$el.find(QueryBuilder.selectors.value_container);
+
+        if (operator.nb_inputs == 1) {
+            value = [value];
+        }
+
+        for (var i = 0; i &lt; operator.nb_inputs; i++) {
+            var name = Utils.escapeElementId(rule.id + '_value_' + i);
+
+            switch (filter.input) {
+                case 'radio':
+                    $value.find('[name=' + name + '][value="' + value[i] + '"]').prop('checked', true).trigger('change');
+                    break;
+
+                case 'checkbox':
+                    if (!$.isArray(value[i])) {
+                        value[i] = [value[i]];
+                    }
+                    // jshint loopfunc:true
+                    value[i].forEach(function(value) {
+                        $value.find('[name=' + name + '][value="' + value + '"]').prop('checked', true).trigger('change');
+                    });
+                    // jshint loopfunc:false
+                    break;
+
+                default:
+                    if (operator.multiple &amp;&amp; filter.value_separator &amp;&amp; $.isArray(value[i])) {
+                        value[i] = value[i].join(filter.value_separator);
+                    }
+                    $value.find('[name=' + name + ']').val(value[i]).trigger('change');
+                    break;
+            }
+        }
+    }
+
+    this._updating_input = false;
+};
+
+/**
+ * Parses rule flags
+ * @param {object} rule
+ * @returns {object}
+ * @fires QueryBuilder#changer:parseRuleFlags
+ * @private
+ */
+QueryBuilder.prototype.parseRuleFlags = function(rule) {
+    var flags = $.extend({}, this.settings.default_rule_flags);
+
+    if (rule.readonly) {
+        $.extend(flags, {
+            filter_readonly: true,
+            operator_readonly: true,
+            value_readonly: true,
+            no_delete: true
+        });
+    }
+
+    if (rule.flags) {
+        $.extend(flags, rule.flags);
+    }
+
+    /**
+     * Modifies the consolidated rule's flags
+     * @event changer:parseRuleFlags
+     * @memberof QueryBuilder
+     * @param {object} flags
+     * @param {object} rule - &lt;b>not&lt;/b> a Rule object
+     * @returns {object}
+     */
+    return this.change('parseRuleFlags', flags, rule);
+};
+
+/**
+ * Gets a copy of flags of a rule
+ * @param {object} flags
+ * @param {boolean} [all=false] - return all flags or only changes from default flags
+ * @returns {object}
+ * @private
+ */
+QueryBuilder.prototype.getRuleFlags = function(flags, all) {
+    if (all) {
+        return $.extend({}, flags);
+    }
+    else {
+        var ret = {};
+        $.each(this.settings.default_rule_flags, function(key, value) {
+            if (flags[key] !== value) {
+                ret[key] = flags[key];
+            }
+        });
+        return ret;
+    }
+};
+
+/**
+ * Parses group flags
+ * @param {object} group
+ * @returns {object}
+ * @fires QueryBuilder#changer:parseGroupFlags
+ * @private
+ */
+QueryBuilder.prototype.parseGroupFlags = function(group) {
+    var flags = $.extend({}, this.settings.default_group_flags);
+
+    if (group.readonly) {
+        $.extend(flags, {
+            condition_readonly: true,
+            no_add_rule: true,
+            no_add_group: true,
+            no_delete: true
+        });
+    }
+
+    if (group.flags) {
+        $.extend(flags, group.flags);
+    }
+
+    /**
+     * Modifies the consolidated group's flags
+     * @event changer:parseGroupFlags
+     * @memberof QueryBuilder
+     * @param {object} flags
+     * @param {object} group - &lt;b>not&lt;/b> a Group object
+     * @returns {object}
+     */
+    return this.change('parseGroupFlags', flags, group);
+};
+
+/**
+ * Gets a copy of flags of a group
+ * @param {object} flags
+ * @param {boolean} [all=false] - return all flags or only changes from default flags
+ * @returns {object}
+ * @private
+ */
+QueryBuilder.prototype.getGroupFlags = function(flags, all) {
+    if (all) {
+        return $.extend({}, flags);
+    }
+    else {
+        var ret = {};
+        $.each(this.settings.default_group_flags, function(key, value) {
+            if (flags[key] !== value) {
+                ret[key] = flags[key];
+            }
+        });
+        return ret;
+    }
+};
+
+/**
+ * Translates a label
+ * @param {string|object} label
+ * @returns {string}
+ * @private
+ */
+QueryBuilder.prototype.getTranslatedLabel = function(label) {
+    return typeof label == 'object' ? (label[this.settings.lang_code] || label['en']) : label;
+};
+
+/**
+ * Returns a validation message
+ * @param {object} validation
+ * @param {string} type
+ * @param {string} def
+ * @returns {string}
+ * @private
+ */
+QueryBuilder.prototype.getValidationMessage = function(validation, type, def) {
+    return validation.messages &amp;&amp; validation.messages[type] || def;
+};
+</code></pre>
+		</section>
+			</div>
+		</div>
+	</div>
+	<footer>
+				<div class="copyright">Licensed under MIT License, documentation under CC BY 3.0.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+	</footer>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/clipboard.min.js"></script>
+	<script src="js/prism.min.js"></script>
+	<script src="js/template.min.js"></script>
+		<!-- start:lunr-search-modal.hbs -->
+		<div class="modal fade" id="lunr-search-modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Search results</h4>
+					</div>
+					<div class="modal-body" id="lunr-search-body">
+					</div>
+					<div class="modal-footer" id="lunr-search-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+		<!-- end:lunr-search-modal.hbs -->		<script src="js/lunr.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js"></script>
+		<script src="js/custom.js"></script>
+	
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-28192323-3', 'auto');
+			ga('send', 'pageview');
+		</script>
+	
+</body>
+</html>
+<!-- end:source.tmpl.hbs -->

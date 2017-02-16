@@ -1,0 +1,834 @@
+<!-- start:source.tmpl.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+		<title>model.js</title>
+		<!--[if lt IE 9]>
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
+		<link type="text/css" rel="stylesheet" href="css/template.min.css">
+			<style>
+				.page-header,
+				pre.code-toolbar > .toolbar:hover {
+					background-color: #004482;
+				}
+				.callout-primary,
+				.toc .nav > li > a:hover,
+				.toc .nav > li > a:focus,
+				.toc .nav > li.active > a,
+				.toc .nav > li.active > a:hover,
+				.toc .nav > li.active > a:focus,
+				pre.code-toolbar > .toolbar:hover {
+					border-left-color: #004482;
+				}
+				pre.code-toolbar > .toolbar:hover {
+					border-bottom-color: #004482;
+				}
+				.callout-primary h5,
+				.symbol-title.collapsible-symbol .toggle-icon,
+				.breadcrumb li a,
+				.toc .nav > li > a:hover,
+				.toc .nav > li > a:focus,
+				.toc .nav > li.active > a,
+				.toc .nav > li.active > a:hover,
+				.toc .nav > li.active > a:focus {
+					color: #004482;
+				}
+			</style>
+		<script type="text/javascript">
+			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Plugins","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"readmeTargets":[],"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
+			window.DOCLET_TOC_ENABLED = false;
+		</script>
+</head>
+<body>
+	<!-- start:navbar.hbs -->
+	<header class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="index.html">
+					jQuery QueryBuilder API
+				</a>
+				<!-- displayed on small devices -->
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse" id="topNavigation">
+				<ul class="nav navbar-nav">
+							<li class="dropdown">
+								<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="Group.html">Group</a></li>
+										<li><a href="Model.html">Model</a></li>
+										<li><a href="Node.html">Node</a></li>
+										<li><a href="QueryBuilder.html">QueryBuilder</a></li>
+										<li><a href="Rule.html">Rule</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_event.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="global.html#undefinedevent:changer:getRules">changer:getRules</a></li>
+										<li><a href="Model.html#.event:model:add">Model.model:add</a></li>
+										<li><a href="Model.html#.event:model:drop">Model.model:drop</a></li>
+										<li><a href="Model.html#.event:model:move">Model.model:move</a></li>
+										<li><a href="Model.html#.event:model:update">Model.model:update</a></li>
+										<li><a href="module-ChangeFiltersPlugin.html#.event:changer:setFilters">ChangeFiltersPlugin.changer:setFilters</a></li>
+										<li><a href="module-ChangeFiltersPlugin.html#.event:afterSetFilters">ChangeFiltersPlugin.afterSetFilters</a></li>
+										<li><a href="module-InvertPlugin.html#.event:afterInvert">InvertPlugin.afterInvert</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBField">MongoDbSupportPlugin.changer:getMongoDBField</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBFieldID">MongoDbSupportPlugin.changer:getMongoDBFieldID</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:groupToMongo">MongoDbSupportPlugin.changer:groupToMongo</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToGroup">MongoDbSupportPlugin.changer:mongoToGroup</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToRule">MongoDbSupportPlugin.changer:mongoToRule</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:parseMongoNode">MongoDbSupportPlugin.changer:parseMongoNode</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:ruleToMongo">MongoDbSupportPlugin.changer:ruleToMongo</a></li>
+										<li><a href="module-NotGroupPlugin.html#.event:afterUpdateGroupNot">NotGroupPlugin.afterUpdateGroupNot</a></li>
+										<li><a href="module-SortablePlugin.html#.event:afterMove">SortablePlugin.afterMove</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:getSQLField">SqlSupportPlugin.changer:getSQLField</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:getSQLFieldID">SqlSupportPlugin.changer:getSQLFieldID</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:groupToSQL">SqlSupportPlugin.changer:groupToSQL</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:parseSQLNode">SqlSupportPlugin.changer:parseSQLNode</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:ruleToSQL">SqlSupportPlugin.changer:ruleToSQL</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:sqlToGroup">SqlSupportPlugin.changer:sqlToGroup</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:sqlToRule">SqlSupportPlugin.changer:sqlToRule</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:displayError">QueryBuilder.changer:displayError</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getDefaultFilter">QueryBuilder.changer:getDefaultFilter</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getGroupTemplate">QueryBuilder.changer:getGroupTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getOperators">QueryBuilder.changer:getOperators</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleFilters">QueryBuilder.changer:getRuleFilters</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate">QueryBuilder.changer:getRuleFilterTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleInput">QueryBuilder.changer:getRuleInput</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate">QueryBuilder.changer:getRuleOperatorTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:jsonToGroup">QueryBuilder.changer:jsonToGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:jsonToRule">QueryBuilder.changer:jsonToRule</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:parseGroupFlags">QueryBuilder.changer:parseGroupFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:parseRuleFlags">QueryBuilder.changer:parseRuleFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:ruleToJson">QueryBuilder.changer:ruleToJson</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:setRules">QueryBuilder.changer:setRules</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:validate">QueryBuilder.changer:validate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:validateValue">QueryBuilder.changer:validateValue</a></li>
+										<li><a href="QueryBuilder.html#.event:afterAddGroup">QueryBuilder.afterAddGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:afterAddRule">QueryBuilder.afterAddRule</a></li>
+										<li><a href="QueryBuilder.html#.event:afterApplyGroupFlags">QueryBuilder.afterApplyGroupFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:afterApplyRuleFlags">QueryBuilder.afterApplyRuleFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:afterClear">QueryBuilder.afterClear</a></li>
+										<li><a href="QueryBuilder.html#.event:afterCreateRuleFilters">QueryBuilder.afterCreateRuleFilters</a></li>
+										<li><a href="QueryBuilder.html#.event:afterCreateRuleInput">QueryBuilder.afterCreateRuleInput</a></li>
+										<li><a href="QueryBuilder.html#.event:afterCreateRuleOperators">QueryBuilder.afterCreateRuleOperators</a></li>
+										<li><a href="QueryBuilder.html#.event:afterDeleteGroup">QueryBuilder.afterDeleteGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:afterDeleteRule">QueryBuilder.afterDeleteRule</a></li>
+										<li><a href="QueryBuilder.html#.event:afterInit">QueryBuilder.afterInit</a></li>
+										<li><a href="QueryBuilder.html#.event:afterReset">QueryBuilder.afterReset</a></li>
+										<li><a href="QueryBuilder.html#.event:afterSetRules">QueryBuilder.afterSetRules</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateGroupCondition">QueryBuilder.afterUpdateGroupCondition</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateRuleFilter">QueryBuilder.afterUpdateRuleFilter</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateRuleOperator">QueryBuilder.afterUpdateRuleOperator</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateRuleValue">QueryBuilder.afterUpdateRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeAddGroup">QueryBuilder.beforeAddGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeAddRule">QueryBuilder.beforeAddRule</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeClear">QueryBuilder.beforeClear</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeDeleteGroup">QueryBuilder.beforeDeleteGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeDeleteRule">QueryBuilder.beforeDeleteRule</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeDestroy">QueryBuilder.beforeDestroy</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeReset">QueryBuilder.beforeReset</a></li>
+										<li><a href="QueryBuilder.html#.event:validationError">QueryBuilder.validationError</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_external.html" class="dropdown-toggle" data-toggle="dropdown">Externals<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="external-_jQuery.fn_.html">jQuery.fn</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_module.html" class="dropdown-toggle" data-toggle="dropdown">Plugins<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="module-BtCheckboxPlugin.html">BtCheckboxPlugin</a></li>
+										<li><a href="module-BtSelectpickerPlugin.html">BtSelectpickerPlugin</a></li>
+										<li><a href="module-BtTooltipErrorsPlugin.html">BtTooltipErrorsPlugin</a></li>
+										<li><a href="module-ChangeFiltersPlugin.html">ChangeFiltersPlugin</a></li>
+										<li><a href="module-FilterDescriptionPlugin.html">FilterDescriptionPlugin</a></li>
+										<li><a href="module-InvertPlugin.html">InvertPlugin</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html">MongoDbSupportPlugin</a></li>
+										<li><a href="module-NotGroupPlugin.html">NotGroupPlugin</a></li>
+										<li><a href="module-SortablePlugin.html">SortablePlugin</a></li>
+										<li><a href="module-SqlSupportPlugin.html">SqlSupportPlugin</a></li>
+										<li><a href="module-UniqueFilterPlugin.html">UniqueFilterPlugin</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_namespace.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="Utils.html">Utils</a></li>
+								</ul>
+							</li>
+				</ul>
+					<!-- start:lunr-search-navbar.hbs -->
+					<form class="navbar-form navbar-right" role="search">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Search" id="lunr-search-input">
+							<div class="input-group-btn">
+								<button class="btn btn-default" id="lunr-search-submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					<!-- start:lunr-search-navbar.hbs -->		</div>
+		</div>
+	</header>
+	<!-- end:navbar.hbs -->		<div class="page-header">
+			<div class="container">
+				<span class="kind">source</span>
+				<h1><span class="name">model.js</span></h1>
+			</div>
+		</div>
+	<div class="container content">
+		<div class="row">
+			<div class="col-md-12 main-content">
+		<section class="source-section">
+			<article></article>
+			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/**
+ * Main object storing data model and emitting model events
+ * @constructor
+ */
+function Model() {
+    /**
+     * @member {Group}
+     * @readonly
+     */
+    this.root = null;
+
+    /**
+     * Base for event emitting
+     * @member {jQuery}
+     * @readonly
+     * @private
+     */
+    this.$ = $(this);
+}
+
+$.extend(Model.prototype, /** @lends Model.prototype */ {
+    /**
+     * Triggers an event on the model
+     * @param {string} type
+     * @returns {$.Event}
+     */
+    trigger: function(type) {
+        var event = new $.Event(type);
+        this.$.triggerHandler(event, Array.prototype.slice.call(arguments, 1));
+        return event;
+    },
+
+    /**
+     * Attaches an event listener on the model
+     * @param {string} type
+     * @param {function} cb
+     * @returns {Model}
+     */
+    on: function() {
+        this.$.on.apply(this.$, Array.prototype.slice.call(arguments));
+        return this;
+    },
+
+    /**
+     * Removes an event listener from the model
+     * @param {string} type
+     * @param {function} [cb]
+     * @returns {Model}
+     */
+    off: function() {
+        this.$.off.apply(this.$, Array.prototype.slice.call(arguments));
+        return this;
+    },
+
+    /**
+     * Attaches an event listener called once on the model
+     * @param {string} type
+     * @param {function} cb
+     * @returns {Model}
+     */
+    once: function() {
+        this.$.one.apply(this.$, Array.prototype.slice.call(arguments));
+        return this;
+    }
+});
+
+/**
+ * Defines properties on an Node prototype with getter and setter.&lt;br>
+ *     Update events are emitted in the setter through root Model (if any).&lt;br>
+ *     The object must have a `__` object, non enumerable property to store values.
+ * @param {function} obj
+ * @param {string[]} fields
+ */
+Model.defineModelProperties = function(obj, fields) {
+    fields.forEach(function(field) {
+        Object.defineProperty(obj.prototype, field, {
+            enumerable: true,
+            get: function() {
+                return this.__[field];
+            },
+            set: function(value) {
+                var previousValue = (this.__[field] !== null &amp;&amp; typeof this.__[field] == 'object') ?
+                    $.extend({}, this.__[field]) :
+                    this.__[field];
+
+                this.__[field] = value;
+
+                if (this.model !== null) {
+                    /**
+                     * After a value of the model changed
+                     * @event model:update
+                     * @memberof Model
+                     * @param {Node} node
+                     * @param {string} field
+                     * @param {*} value
+                     * @param {*} previousValue
+                     */
+                    this.model.trigger('update', this, field, value, previousValue);
+                }
+            }
+        });
+    });
+};
+
+
+/**
+ * Root abstract object
+ * @constructor
+ * @param {Node} [parent]
+ * @param {jQuery} $el
+ */
+var Node = function(parent, $el) {
+    if (!(this instanceof Node)) {
+        return new Node(parent, $el);
+    }
+
+    Object.defineProperty(this, '__', { value: {} });
+
+    $el.data('queryBuilderModel', this);
+
+    /**
+     * @name level
+     * @member {int}
+     * @memberof Node
+     * @instance
+     * @readonly
+     */
+    this.__.level = 1;
+
+    /**
+     * @name error
+     * @member {string}
+     * @memberof Node
+     * @instance
+     */
+    this.__.error = null;
+
+    /**
+     * @name flags
+     * @member {object}
+     * @memberof Node
+     * @instance
+     * @readonly
+     */
+    this.__.flags = {};
+
+    /**
+     * @name data
+     * @member {object}
+     * @memberof Node
+     * @instance
+     */
+    this.__.data = undefined;
+
+    /**
+     * @member {jQuery}
+     * @readonly
+     */
+    this.$el = $el;
+
+    /**
+     * @member {string}
+     * @readonly
+     */
+    this.id = $el[0].id;
+
+    /**
+     * @member {Model}
+     * @readonly
+     */
+    this.model = null;
+
+    /**
+     * @member {Group}
+     * @readonly
+     */
+    this.parent = parent;
+};
+
+Model.defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
+
+Object.defineProperty(Node.prototype, 'parent', {
+    enumerable: true,
+    get: function() {
+        return this.__.parent;
+    },
+    set: function(value) {
+        this.__.parent = value;
+        this.level = value === null ? 1 : value.level + 1;
+        this.model = value === null ? null : value.model;
+    }
+});
+
+/**
+ * Checks if this Node is the root
+ * @returns {boolean}
+ */
+Node.prototype.isRoot = function() {
+    return (this.level === 1);
+};
+
+/**
+ * Returns the node position inside its parent
+ * @returns {int}
+ */
+Node.prototype.getPos = function() {
+    if (this.isRoot()) {
+        return -1;
+    }
+    else {
+        return this.parent.getNodePos(this);
+    }
+};
+
+/**
+ * Deletes self
+ * @fires Model#model:drop
+ */
+Node.prototype.drop = function() {
+    var model = this.model;
+
+    if (!!this.parent) {
+        this.parent.removeNode(this);
+    }
+
+    this.$el.removeData('queryBuilderModel');
+
+    if (model !== null) {
+        /**
+         * After a node of the model has been removed
+         * @event model:drop
+         * @memberof Model
+         * @param {Node} node
+         */
+        model.trigger('drop', this);
+    }
+};
+
+/**
+ * Moves itself after another Node
+ * @param {Node} target
+ * @fires Model#model:move
+ */
+Node.prototype.moveAfter = function(target) {
+    if (!this.isRoot()) {
+        this.move(target.parent, target.getPos() + 1);
+    }
+};
+
+/**
+ * Moves itself at the beginning of parent or another Group
+ * @param {Group} [target]
+ * @fires Model#model:move
+ */
+Node.prototype.moveAtBegin = function(target) {
+    if (!this.isRoot()) {
+        if (target === undefined) {
+            target = this.parent;
+        }
+
+        this.move(target, 0);
+    }
+};
+
+/**
+ * Moves itself at the end of parent or another Group
+ * @param {Group} [target]
+ * @fires Model#model:move
+ */
+Node.prototype.moveAtEnd = function(target) {
+    if (!this.isRoot()) {
+        if (target === undefined) {
+            target = this.parent;
+        }
+
+        this.move(target, target.length() === 0 ? 0 : target.length() - 1);
+    }
+};
+
+/**
+ * Moves itself at specific position of Group
+ * @param {Group} target
+ * @param {int} index
+ * @fires Model#model:move
+ */
+Node.prototype.move = function(target, index) {
+    if (!this.isRoot()) {
+        if (typeof target === 'number') {
+            index = target;
+            target = this.parent;
+        }
+
+        this.parent.removeNode(this);
+        target.insertNode(this, index, false);
+
+        if (this.model !== null) {
+            /**
+             * After a node of the model has been moved
+             * @event model:move
+             * @memberof Model
+             * @param {Node} node
+             * @param {Node} target
+             * @param {int} index
+             */
+            this.model.trigger('move', this, target, index);
+        }
+    }
+};
+
+
+/**
+ * Group object
+ * @constructor
+ * @extends Node
+ * @param {Group} [parent]
+ * @param {jQuery} $el
+ */
+var Group = function(parent, $el) {
+    if (!(this instanceof Group)) {
+        return new Group(parent, $el);
+    }
+
+    Node.call(this, parent, $el);
+
+    /**
+     * @member {object[]}
+     * @readonly
+     */
+    this.rules = [];
+
+    /**
+     * @name condition
+     * @member {string}
+     * @memberof Group
+     * @instance
+     */
+    this.__.condition = null;
+};
+
+Group.prototype = Object.create(Node.prototype);
+Group.prototype.constructor = Group;
+
+Model.defineModelProperties(Group, ['condition']);
+
+/**
+ * Removes group's content
+ */
+Group.prototype.empty = function() {
+    this.each('reverse', function(rule) {
+        rule.drop();
+    }, function(group) {
+        group.drop();
+    });
+};
+
+/**
+ * Deletes self
+ */
+Group.prototype.drop = function() {
+    this.empty();
+    Node.prototype.drop.call(this);
+};
+
+/**
+ * Returns the number of children
+ * @returns {int}
+ */
+Group.prototype.length = function() {
+    return this.rules.length;
+};
+
+/**
+ * Adds a Node at specified index
+ * @param {Node} node
+ * @param {int} [index=end]
+ * @param {boolean} [trigger=false] - fire 'add' event
+ * @returns {Node} the inserted node
+ * @fires Model#model:add
+ */
+Group.prototype.insertNode = function(node, index, trigger) {
+    if (index === undefined) {
+        index = this.length();
+    }
+
+    this.rules.splice(index, 0, node);
+    node.parent = this;
+
+    if (trigger &amp;&amp; this.model !== null) {
+        /**
+         * After a node of the model has been added
+         * @event model:add
+         * @memberof Model
+         * @param {Node} parent
+         * @param {Node} node
+         * @param {int} index
+         */
+        this.model.trigger('add', this, node, index);
+    }
+
+    return node;
+};
+
+/**
+ * Adds a new Group at specified index
+ * @param {jQuery} $el
+ * @param {int} [index=end]
+ * @returns {Group}
+ * @fires Model#model:add
+ */
+Group.prototype.addGroup = function($el, index) {
+    return this.insertNode(new Group(this, $el), index, true);
+};
+
+/**
+ * Adds a new Rule at specified index
+ * @param {jQuery} $el
+ * @param {int} [index=end]
+ * @returns {Rule}
+ * @fires Model#model:add
+ */
+Group.prototype.addRule = function($el, index) {
+    return this.insertNode(new Rule(this, $el), index, true);
+};
+
+/**
+ * Deletes a specific Node
+ * @param {Node} node
+ */
+Group.prototype.removeNode = function(node) {
+    var index = this.getNodePos(node);
+    if (index !== -1) {
+        node.parent = null;
+        this.rules.splice(index, 1);
+    }
+};
+
+/**
+ * Returns the position of a child Node
+ * @param {Node} node
+ * @returns {int}
+ */
+Group.prototype.getNodePos = function(node) {
+    return this.rules.indexOf(node);
+};
+
+/**
+ * @callback Model#GroupIteratee
+ * @param {Node} node
+ * @returns {boolean} stop the iteration
+ */
+
+/**
+ * Iterate over all Nodes
+ * @param {boolean} [reverse=false] - iterate in reverse order, required if you delete nodes
+ * @param {Model#GroupIteratee} cbRule - callback for Rules (can be `null` but not omitted)
+ * @param {Model#GroupIteratee} [cbGroup] - callback for Groups
+ * @param {object} [context] - context for callbacks
+ * @returns {boolean} if the iteration has been stopped by a callback
+ */
+Group.prototype.each = function(reverse, cbRule, cbGroup, context) {
+    if (typeof reverse !== 'boolean' &amp;&amp; typeof reverse !== 'string') {
+        context = cbGroup;
+        cbGroup = cbRule;
+        cbRule = reverse;
+        reverse = false;
+    }
+    context = context === undefined ? null : context;
+
+    var i = reverse ? this.rules.length - 1 : 0;
+    var l = reverse ? 0 : this.rules.length - 1;
+    var c = reverse ? -1 : 1;
+    var next = function() {
+        return reverse ? i >= l : i &lt;= l;
+    };
+    var stop = false;
+
+    for (; next(); i += c) {
+        if (this.rules[i] instanceof Group) {
+            if (!!cbGroup) {
+                stop = cbGroup.call(context, this.rules[i]) === false;
+            }
+        }
+        else if (!!cbRule) {
+            stop = cbRule.call(context, this.rules[i]) === false;
+        }
+
+        if (stop) {
+            break;
+        }
+    }
+
+    return !stop;
+};
+
+/**
+ * Checks if the group contains a particular Node
+ * @param {Node} node
+ * @param {boolean} [recursive=false]
+ * @returns {boolean}
+ */
+Group.prototype.contains = function(node, recursive) {
+    if (this.getNodePos(node) !== -1) {
+        return true;
+    }
+    else if (!recursive) {
+        return false;
+    }
+    else {
+        // the loop will return with false as soon as the Node is found
+        return !this.each(function() {
+            return true;
+        }, function(group) {
+            return !group.contains(node, true);
+        });
+    }
+};
+
+
+/**
+ * Rule object
+ * @constructor
+ * @extends Node
+ * @param {Group} parent
+ * @param {jQuery} $el
+ */
+var Rule = function(parent, $el) {
+    if (!(this instanceof Rule)) {
+        return new Rule(parent, $el);
+    }
+
+    Node.call(this, parent, $el);
+
+    this._updating_value = false;
+    this._updating_input = false;
+
+    /**
+     * @name filter
+     * @member {QueryBuilder.Filter}
+     * @memberof Rule
+     * @instance
+     */
+    this.__.filter = null;
+
+    /**
+     * @name operator
+     * @member {QueryBuilder.Operator}
+     * @memberof Rule
+     * @instance
+     */
+    this.__.operator = null;
+
+    /**
+     * @name value
+     * @member {*}
+     * @memberof Rule
+     * @instance
+     */
+    this.__.value = undefined;
+};
+
+Rule.prototype = Object.create(Node.prototype);
+Rule.prototype.constructor = Rule;
+
+Model.defineModelProperties(Rule, ['filter', 'operator', 'value']);
+
+/**
+ * Checks if this Node is the root
+ * @returns {boolean} always false
+ */
+Rule.prototype.isRoot = function() {
+    return false;
+};
+
+
+/**
+ * @member {function}
+ * @memberof QueryBuilder
+ * @see Group
+ */
+QueryBuilder.Group = Group;
+
+/**
+ * @member {function}
+ * @memberof QueryBuilder
+ * @see Rule
+ */
+QueryBuilder.Rule = Rule;
+</code></pre>
+		</section>
+			</div>
+		</div>
+	</div>
+	<footer>
+				<div class="copyright">Licensed under MIT License, documentation under CC BY 3.0.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+	</footer>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/clipboard.min.js"></script>
+	<script src="js/prism.min.js"></script>
+	<script src="js/template.min.js"></script>
+		<!-- start:lunr-search-modal.hbs -->
+		<div class="modal fade" id="lunr-search-modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Search results</h4>
+					</div>
+					<div class="modal-body" id="lunr-search-body">
+					</div>
+					<div class="modal-footer" id="lunr-search-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+		<!-- end:lunr-search-modal.hbs -->		<script src="js/lunr.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js"></script>
+		<script src="js/custom.js"></script>
+	
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-28192323-3', 'auto');
+			ga('send', 'pageview');
+		</script>
+	
+</body>
+</html>
+<!-- end:source.tmpl.hbs -->

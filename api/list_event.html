@@ -1,0 +1,4550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+		<title>Events</title>
+		<!--[if lt IE 9]>
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
+		<link type="text/css" rel="stylesheet" href="css/template.min.css">
+			<style>
+				.page-header,
+				pre.code-toolbar > .toolbar:hover {
+					background-color: #004482;
+				}
+				.callout-primary,
+				.toc .nav > li > a:hover,
+				.toc .nav > li > a:focus,
+				.toc .nav > li.active > a,
+				.toc .nav > li.active > a:hover,
+				.toc .nav > li.active > a:focus,
+				pre.code-toolbar > .toolbar:hover {
+					border-left-color: #004482;
+				}
+				pre.code-toolbar > .toolbar:hover {
+					border-bottom-color: #004482;
+				}
+				.callout-primary h5,
+				.symbol-title.collapsible-symbol .toggle-icon,
+				.breadcrumb li a,
+				.toc .nav > li > a:hover,
+				.toc .nav > li > a:focus,
+				.toc .nav > li.active > a,
+				.toc .nav > li.active > a:hover,
+				.toc .nav > li.active > a:focus {
+					color: #004482;
+				}
+			</style>
+		<script type="text/javascript">
+			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Plugins","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"readmeTargets":[],"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
+			window.DOCLET_TOC_ENABLED = true;
+		</script>
+</head>
+<body>
+	<!-- start:navbar.hbs -->
+	<header class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="index.html">
+					jQuery QueryBuilder API
+				</a>
+				<!-- displayed on small devices -->
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse" id="topNavigation">
+				<ul class="nav navbar-nav">
+							<li class="dropdown">
+								<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="Group.html">Group</a></li>
+										<li><a href="Model.html">Model</a></li>
+										<li><a href="Node.html">Node</a></li>
+										<li><a href="QueryBuilder.html">QueryBuilder</a></li>
+										<li><a href="Rule.html">Rule</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_event.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="global.html#undefinedevent:changer:getRules">changer:getRules</a></li>
+										<li><a href="Model.html#.event:model:add">Model.model:add</a></li>
+										<li><a href="Model.html#.event:model:drop">Model.model:drop</a></li>
+										<li><a href="Model.html#.event:model:move">Model.model:move</a></li>
+										<li><a href="Model.html#.event:model:update">Model.model:update</a></li>
+										<li><a href="module-ChangeFiltersPlugin.html#.event:changer:setFilters">ChangeFiltersPlugin.changer:setFilters</a></li>
+										<li><a href="module-ChangeFiltersPlugin.html#.event:afterSetFilters">ChangeFiltersPlugin.afterSetFilters</a></li>
+										<li><a href="module-InvertPlugin.html#.event:afterInvert">InvertPlugin.afterInvert</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBField">MongoDbSupportPlugin.changer:getMongoDBField</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBFieldID">MongoDbSupportPlugin.changer:getMongoDBFieldID</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:groupToMongo">MongoDbSupportPlugin.changer:groupToMongo</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToGroup">MongoDbSupportPlugin.changer:mongoToGroup</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToRule">MongoDbSupportPlugin.changer:mongoToRule</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:parseMongoNode">MongoDbSupportPlugin.changer:parseMongoNode</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:ruleToMongo">MongoDbSupportPlugin.changer:ruleToMongo</a></li>
+										<li><a href="module-NotGroupPlugin.html#.event:afterUpdateGroupNot">NotGroupPlugin.afterUpdateGroupNot</a></li>
+										<li><a href="module-SortablePlugin.html#.event:afterMove">SortablePlugin.afterMove</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:getSQLField">SqlSupportPlugin.changer:getSQLField</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:getSQLFieldID">SqlSupportPlugin.changer:getSQLFieldID</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:groupToSQL">SqlSupportPlugin.changer:groupToSQL</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:parseSQLNode">SqlSupportPlugin.changer:parseSQLNode</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:ruleToSQL">SqlSupportPlugin.changer:ruleToSQL</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:sqlToGroup">SqlSupportPlugin.changer:sqlToGroup</a></li>
+										<li><a href="module-SqlSupportPlugin.html#.event:changer:sqlToRule">SqlSupportPlugin.changer:sqlToRule</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:displayError">QueryBuilder.changer:displayError</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getDefaultFilter">QueryBuilder.changer:getDefaultFilter</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getGroupTemplate">QueryBuilder.changer:getGroupTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getOperators">QueryBuilder.changer:getOperators</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleFilters">QueryBuilder.changer:getRuleFilters</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate">QueryBuilder.changer:getRuleFilterTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleInput">QueryBuilder.changer:getRuleInput</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate">QueryBuilder.changer:getRuleOperatorTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:jsonToGroup">QueryBuilder.changer:jsonToGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:jsonToRule">QueryBuilder.changer:jsonToRule</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:parseGroupFlags">QueryBuilder.changer:parseGroupFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:parseRuleFlags">QueryBuilder.changer:parseRuleFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:ruleToJson">QueryBuilder.changer:ruleToJson</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:setRules">QueryBuilder.changer:setRules</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:validate">QueryBuilder.changer:validate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:validateValue">QueryBuilder.changer:validateValue</a></li>
+										<li><a href="QueryBuilder.html#.event:afterAddGroup">QueryBuilder.afterAddGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:afterAddRule">QueryBuilder.afterAddRule</a></li>
+										<li><a href="QueryBuilder.html#.event:afterApplyGroupFlags">QueryBuilder.afterApplyGroupFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:afterApplyRuleFlags">QueryBuilder.afterApplyRuleFlags</a></li>
+										<li><a href="QueryBuilder.html#.event:afterClear">QueryBuilder.afterClear</a></li>
+										<li><a href="QueryBuilder.html#.event:afterCreateRuleFilters">QueryBuilder.afterCreateRuleFilters</a></li>
+										<li><a href="QueryBuilder.html#.event:afterCreateRuleInput">QueryBuilder.afterCreateRuleInput</a></li>
+										<li><a href="QueryBuilder.html#.event:afterCreateRuleOperators">QueryBuilder.afterCreateRuleOperators</a></li>
+										<li><a href="QueryBuilder.html#.event:afterDeleteGroup">QueryBuilder.afterDeleteGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:afterDeleteRule">QueryBuilder.afterDeleteRule</a></li>
+										<li><a href="QueryBuilder.html#.event:afterInit">QueryBuilder.afterInit</a></li>
+										<li><a href="QueryBuilder.html#.event:afterReset">QueryBuilder.afterReset</a></li>
+										<li><a href="QueryBuilder.html#.event:afterSetRules">QueryBuilder.afterSetRules</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateGroupCondition">QueryBuilder.afterUpdateGroupCondition</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateRuleFilter">QueryBuilder.afterUpdateRuleFilter</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateRuleOperator">QueryBuilder.afterUpdateRuleOperator</a></li>
+										<li><a href="QueryBuilder.html#.event:afterUpdateRuleValue">QueryBuilder.afterUpdateRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeAddGroup">QueryBuilder.beforeAddGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeAddRule">QueryBuilder.beforeAddRule</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeClear">QueryBuilder.beforeClear</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeDeleteGroup">QueryBuilder.beforeDeleteGroup</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeDeleteRule">QueryBuilder.beforeDeleteRule</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeDestroy">QueryBuilder.beforeDestroy</a></li>
+										<li><a href="QueryBuilder.html#.event:beforeReset">QueryBuilder.beforeReset</a></li>
+										<li><a href="QueryBuilder.html#.event:validationError">QueryBuilder.validationError</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_external.html" class="dropdown-toggle" data-toggle="dropdown">Externals<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="external-_jQuery.fn_.html">jQuery.fn</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_module.html" class="dropdown-toggle" data-toggle="dropdown">Plugins<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="module-BtCheckboxPlugin.html">BtCheckboxPlugin</a></li>
+										<li><a href="module-BtSelectpickerPlugin.html">BtSelectpickerPlugin</a></li>
+										<li><a href="module-BtTooltipErrorsPlugin.html">BtTooltipErrorsPlugin</a></li>
+										<li><a href="module-ChangeFiltersPlugin.html">ChangeFiltersPlugin</a></li>
+										<li><a href="module-FilterDescriptionPlugin.html">FilterDescriptionPlugin</a></li>
+										<li><a href="module-InvertPlugin.html">InvertPlugin</a></li>
+										<li><a href="module-MongoDbSupportPlugin.html">MongoDbSupportPlugin</a></li>
+										<li><a href="module-NotGroupPlugin.html">NotGroupPlugin</a></li>
+										<li><a href="module-SortablePlugin.html">SortablePlugin</a></li>
+										<li><a href="module-SqlSupportPlugin.html">SqlSupportPlugin</a></li>
+										<li><a href="module-UniqueFilterPlugin.html">UniqueFilterPlugin</a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="list_namespace.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="Utils.html">Utils</a></li>
+								</ul>
+							</li>
+				</ul>
+					<!-- start:lunr-search-navbar.hbs -->
+					<form class="navbar-form navbar-right" role="search">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Search" id="lunr-search-input">
+							<div class="input-group-btn">
+								<button class="btn btn-default" id="lunr-search-submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					<!-- start:lunr-search-navbar.hbs -->		</div>
+		</div>
+	</header>
+	<!-- end:navbar.hbs -->		<div class="page-header">
+			<div class="container">
+				<span class="kind">list</span>
+				<h1><span class="name">Events</span></h1>
+				<div class="summary"><p>All documented events.</p></div>			</div>
+		</div>
+	<div class="container content">
+		<div class="row">
+			<div class="col-md-9 main-content">
+						<ol class="breadcrumb">
+							<li><a href="index.html">Home</a></li>
+							<li class="active">Events</li>
+						</ol>
+					<section>
+		<h2><span class="name">Events</span></h2>
+		<article class="secondary">
+				<dl class="symbol">
+						
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id="undefinedevent:changer:getRules" class="event"><a href="global.html#undefinedevent:changer:getRules"><span class="name">changer:getRules</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the result of the <a href="QueryBuilder.html#getRules"><code>QueryBuilder#getRules</code></a> method</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>json</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-308">line 308</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:model:add" class="event"><a href="Model.html#.event:model:add"><span class="ancestors">Model.</span><span class="name">model:add</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After a node of the model has been added</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>parent</code></td>
+							<td><span class="param-type"><a href="Node.html">Node</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>node</code></td>
+							<td><span class="param-type"><a href="Node.html">Node</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>index</code></td>
+							<td><span class="param-type">int</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-389">line 389</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:model:drop" class="event"><a href="Model.html#.event:model:drop"><span class="ancestors">Model.</span><span class="name">model:drop</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After a node of the model has been removed</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>node</code></td>
+							<td><span class="param-type"><a href="Node.html">Node</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-229">line 229</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:model:move" class="event"><a href="Model.html#.event:model:move"><span class="ancestors">Model.</span><span class="name">model:move</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After a node of the model has been moved</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>node</code></td>
+							<td><span class="param-type"><a href="Node.html">Node</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>target</code></td>
+							<td><span class="param-type"><a href="Node.html">Node</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>index</code></td>
+							<td><span class="param-type">int</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-297">line 297</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:model:update" class="event"><a href="Model.html#.event:model:update"><span class="ancestors">Model.</span><span class="name">model:update</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After a value of the model changed</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>node</code></td>
+							<td><span class="param-type"><a href="Node.html">Node</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>field</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>value</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>previousValue</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-89">line 89</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:setFilters" class="event"><a href="module-ChangeFiltersPlugin.html#.event:changer:setFilters"><span class="ancestors">ChangeFiltersPlugin.</span><span class="name">changer:setFilters</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the filters before <a href="module-ChangeFiltersPlugin.html#.setFilters"><code>module:ChangeFiltersPlugin.setFilters</code></a> method</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>filters</code></td>
+							<td><span class="param-type">Array.&lt;<a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a>></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">Array.&lt;<a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a>></span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_change-filters_plugin.js.html">plugins/change-filters/plugin.js</a>, <a href="plugins_change-filters_plugin.js.html#line-25">line 25</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterSetFilters" class="event"><a href="module-ChangeFiltersPlugin.html#.event:afterSetFilters"><span class="ancestors">ChangeFiltersPlugin.</span><span class="name">afterSetFilters</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After <a href="module-ChangeFiltersPlugin.html#.setFilters"><code>module:ChangeFiltersPlugin.setFilters</code></a> method</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>filters</code></td>
+							<td><span class="param-type">Array.&lt;<a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a>></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_change-filters_plugin.js.html">plugins/change-filters/plugin.js</a>, <a href="plugins_change-filters_plugin.js.html#line-93">line 93</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterInvert" class="event"><a href="module-InvertPlugin.html#.event:afterInvert"><span class="ancestors">InvertPlugin.</span><span class="name">afterInvert</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After <a href="module-InvertPlugin.html#.invert"><code>module:InvertPlugin.invert</code></a> method</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>node</code></td>
+							<td><span class="param-type"><a href="Node.html">Node</a></span></td>
+							<td class="last">
+									<p>the main group or rule that has been modified</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>options</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_invert_plugin.js.html">plugins/invert/plugin.js</a>, <a href="plugins_invert_plugin.js.html#line-147">line 147</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getMongoDBField" class="event"><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBField"><span class="ancestors">MongoDbSupportPlugin.</span><span class="name">changer:getMongoDBField</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the MongoDB field used by a rule</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>field</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-147">line 147</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getMongoDBFieldID" class="event"><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBFieldID"><span class="ancestors">MongoDbSupportPlugin.</span><span class="name">changer:getMongoDBFieldID</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Returns a filter identifier from the MongoDB field</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>field</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>value</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-274">line 274</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:groupToMongo" class="event"><a href="module-MongoDbSupportPlugin.html#.event:changer:groupToMongo"><span class="ancestors">MongoDbSupportPlugin.</span><span class="name">changer:groupToMongo</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the MongoDB expression generated for a group</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>expression</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-177">line 177</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:mongoToGroup" class="event"><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToGroup"><span class="ancestors">MongoDbSupportPlugin.</span><span class="name">changer:mongoToGroup</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the group generated from the MongoDB expression</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>expression</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-303">line 303</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:mongoToRule" class="event"><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToRule"><span class="ancestors">MongoDbSupportPlugin.</span><span class="name">changer:mongoToRule</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the rule generated from the MongoDB expression</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>expression</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-284">line 284</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:parseMongoNode" class="event"><a href="module-MongoDbSupportPlugin.html#.event:changer:parseMongoNode"><span class="ancestors">MongoDbSupportPlugin.</span><span class="name">changer:parseMongoNode</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Custom parsing of a MongoDB expression, you can return a sub-part of the expression, or a well formed group or rule JSON</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>expression</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"><p>expression, rule or group</p></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-207">line 207</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:ruleToMongo" class="event"><a href="module-MongoDbSupportPlugin.html#.event:changer:ruleToMongo"><span class="ancestors">MongoDbSupportPlugin.</span><span class="name">changer:ruleToMongo</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the MongoDB expression generated for a rul</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>expression</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>value</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>valueWrapper</code></td>
+							<td><span class="param-type">function</span></td>
+							<td class="last">
+									<p>function that takes the value and adds the operator</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-160">line 160</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterUpdateGroupNot" class="event"><a href="module-NotGroupPlugin.html#.event:afterUpdateGroupNot"><span class="ancestors">NotGroupPlugin.</span><span class="name">afterUpdateGroupNot</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the group's not flag has been modified</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_not-group_plugin.js.html">plugins/not-group/plugin.js</a>, <a href="plugins_not-group_plugin.js.html#line-129">line 129</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterMove" class="event"><a href="module-SortablePlugin.html#.event:afterMove"><span class="ancestors">SortablePlugin.</span><span class="name">afterMove</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After a node has been moved with <a href="module-SortablePlugin.html"><code>module:SortablePlugin</code></a></p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>node</code></td>
+							<td><span class="param-type"><a href="Node.html">Node</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_sortable_plugin.js.html">plugins/sortable/plugin.js</a>, <a href="plugins_sortable_plugin.js.html#line-106">line 106</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getSQLField" class="event"><a href="module-SqlSupportPlugin.html#.event:changer:getSQLField"><span class="ancestors">SqlSupportPlugin.</span><span class="name">changer:getSQLField</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the SQL field used by a rule</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>field</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-319">line 319</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getSQLFieldID" class="event"><a href="module-SqlSupportPlugin.html#.event:changer:getSQLFieldID"><span class="ancestors">SqlSupportPlugin.</span><span class="name">changer:getSQLFieldID</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Returns a filter identifier from the SQL field</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>field</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>value</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-538">line 538</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:groupToSQL" class="event"><a href="module-SqlSupportPlugin.html#.event:changer:groupToSQL"><span class="ancestors">SqlSupportPlugin.</span><span class="name">changer:groupToSQL</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the SQL generated for a group</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>expression</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-347">line 347</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:parseSQLNode" class="event"><a href="module-SqlSupportPlugin.html#.event:changer:parseSQLNode"><span class="ancestors">SqlSupportPlugin.</span><span class="name">changer:parseSQLNode</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Custom parsing of an AST node generated by SQLParser, you can return a sub-part of the tree, or a well formed group or rule JSON</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>AST</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+									<p>node</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"><p>tree, rule or group</p></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-414">line 414</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:ruleToSQL" class="event"><a href="module-SqlSupportPlugin.html#.event:changer:ruleToSQL"><span class="ancestors">SqlSupportPlugin.</span><span class="name">changer:ruleToSQL</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the SQL generated for a rule</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>expression</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>value</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>valueWrapper</code></td>
+							<td><span class="param-type">function</span></td>
+							<td class="last">
+									<p>function that takes the value and adds the operator</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-331">line 331</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:sqlToGroup" class="event"><a href="module-SqlSupportPlugin.html#.event:changer:sqlToGroup"><span class="ancestors">SqlSupportPlugin.</span><span class="name">changer:sqlToGroup</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the group generated from the SQL expression (this is called before the group is filled with rules)</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>AST</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-470">line 470</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:sqlToRule" class="event"><a href="module-SqlSupportPlugin.html#.event:changer:sqlToRule"><span class="ancestors">SqlSupportPlugin.</span><span class="name">changer:sqlToRule</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the rule generated from the SQL expression</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>AST</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-548">line 548</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:displayError" class="event"><a href="QueryBuilder.html#.event:changer:displayError"><span class="ancestors">QueryBuilder.</span><span class="name">changer:displayError</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies an error message before display</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>errorMessage</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>the error message (translated and formatted)</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>error</code></td>
+							<td><span class="param-type">array</span></td>
+							<td class="last">
+									<p>the raw error array (error code and optional arguments)</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>node</code></td>
+							<td><span class="param-type"><a href="Node.html">Node</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-890">line 890</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getDefaultFilter" class="event"><a href="QueryBuilder.html#.event:changer:getDefaultFilter"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getDefaultFilter</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the default filter for a rule</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>filter</code></td>
+							<td><span class="param-type"><a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type"><a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a></span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-529">line 529</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getGroupTemplate" class="event"><a href="QueryBuilder.html#.event:changer:getGroupTemplate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getGroupTemplate</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of a group</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>html</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>level</code></td>
+							<td><span class="param-type">int</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-109">line 109</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getOperators" class="event"><a href="QueryBuilder.html#.event:changer:getOperators"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getOperators</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the operators available for a filter</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>operators</code></td>
+							<td><span class="param-type">Array.&lt;<a href="QueryBuilder.html#.Operator">QueryBuilder.Operator</a>></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>filter</code></td>
+							<td><span class="param-type"><a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">Array.&lt;<a href="QueryBuilder.html#.Operator">QueryBuilder.Operator</a>></span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-281">line 281</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getRuleFilters" class="event"><a href="QueryBuilder.html#.event:changer:getRuleFilters"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleFilters</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the list a filters available for a rule</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>filters</code></td>
+							<td><span class="param-type">Array.&lt;<a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a>></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">Array.&lt;<a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a>></span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-589">line 589</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getRuleFilterTemplate" class="event"><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleFilterTemplate</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of the rule's filter dropdown</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>html</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>filters</code></td>
+							<td><span class="param-type">Array.&lt;<a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a>></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-165">line 165</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getRuleInput" class="event"><a href="QueryBuilder.html#.event:changer:getRuleInput"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleInput</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of the rule's input</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>html</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>name</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>the name that the input must have</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-276">line 276</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getRuleOperatorTemplate" class="event"><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleOperatorTemplate</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of the rule's operator dropdown</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>html</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>operators</code></td>
+							<td><span class="param-type">Array.&lt;<a href="QueryBuilder.html#.Operator">QueryBuilder.Operator</a>></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-196">line 196</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getRuleTemplate" class="event"><a href="QueryBuilder.html#.event:changer:getRuleTemplate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleTemplate</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of a rule</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>html</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-136">line 136</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:getRuleValue" class="event"><a href="QueryBuilder.html#.event:changer:getRuleValue"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleValue</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the rule's value grabbed from the DOM</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>value</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">*</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-413">line 413</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:groupToJson" class="event"><a href="QueryBuilder.html#.event:changer:groupToJson"><span class="ancestors">QueryBuilder.</span><span class="name">changer:groupToJson</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the JSON generated from a Group object</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>json</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-294">line 294</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:jsonToGroup" class="event"><a href="QueryBuilder.html#.event:changer:jsonToGroup"><span class="ancestors">QueryBuilder.</span><span class="name">changer:jsonToGroup</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the Group object generated from the JSON</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>json</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type"><a href="Group.html">Group</a></span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"><p>the same group</p></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-442">line 442</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:jsonToRule" class="event"><a href="QueryBuilder.html#.event:changer:jsonToRule"><span class="ancestors">QueryBuilder.</span><span class="name">changer:jsonToRule</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the Rule object generated from the JSON</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>json</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type"><a href="Rule.html">Rule</a></span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"><p>the same rule</p></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-428">line 428</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:parseGroupFlags" class="event"><a href="QueryBuilder.html#.event:changer:parseGroupFlags"><span class="ancestors">QueryBuilder.</span><span class="name">changer:parseGroupFlags</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the consolidated group's flags</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>flags</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+									<p><b>not</b> a Group object</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-561">line 561</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:parseRuleFlags" class="event"><a href="QueryBuilder.html#.event:changer:parseRuleFlags"><span class="ancestors">QueryBuilder.</span><span class="name">changer:parseRuleFlags</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the consolidated rule's flags</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>flags</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+									<p><b>not</b> a Rule object</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-505">line 505</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:ruleToJson" class="event"><a href="QueryBuilder.html#.event:changer:ruleToJson"><span class="ancestors">QueryBuilder.</span><span class="name">changer:ruleToJson</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the JSON generated from a Rule object</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>json</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-277">line 277</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:setRules" class="event"><a href="QueryBuilder.html#.event:changer:setRules"><span class="ancestors">QueryBuilder.</span><span class="name">changer:setRules</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies data before the <a href="QueryBuilder.html#setRules"><code>QueryBuilder#setRules</code></a> method</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>json</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>options</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-348">line 348</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:validate" class="event"><a href="QueryBuilder.html#.event:changer:validate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:validate</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the result of the <a href="QueryBuilder.html#validate"><code>QueryBuilder#validate</code></a> method</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>valid</code></td>
+							<td><span class="param-type">boolean</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-195">line 195</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:changer:validateValue" class="event"><a href="QueryBuilder.html#.event:changer:validateValue"><span class="ancestors">QueryBuilder.</span><span class="name">changer:validateValue</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the result of the rule validation method</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>result</code></td>
+							<td><span class="param-type">array</span> | <span class="param-type">boolean</span></td>
+							<td class="last">
+									<p>true or an error array</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>value</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">array</span> | <span class="param-type">boolean</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-19">line 19</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterAddGroup" class="event"><a href="QueryBuilder.html#.event:afterAddGroup"><span class="ancestors">QueryBuilder.</span><span class="name">afterAddGroup</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after adding a group</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-385">line 385</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterAddRule" class="event"><a href="QueryBuilder.html#.event:afterAddRule"><span class="ancestors">QueryBuilder.</span><span class="name">afterAddRule</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after adding a rule</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-518">line 518</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterApplyGroupFlags" class="event"><a href="QueryBuilder.html#.event:afterApplyGroupFlags"><span class="ancestors">QueryBuilder.</span><span class="name">afterApplyGroupFlags</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After group's flags has been applied</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-844">line 844</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterApplyRuleFlags" class="event"><a href="QueryBuilder.html#.event:afterApplyRuleFlags"><span class="ancestors">QueryBuilder.</span><span class="name">afterApplyRuleFlags</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After rule's flags has been applied</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-811">line 811</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterClear" class="event"><a href="QueryBuilder.html#.event:afterClear"><span class="ancestors">QueryBuilder.</span><span class="name">afterClear</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the <a href="QueryBuilder.html#clear"><code>QueryBuilder#clear</code></a> method</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-83">line 83</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterCreateRuleFilters" class="event"><a href="QueryBuilder.html#.event:afterCreateRuleFilters"><span class="ancestors">QueryBuilder.</span><span class="name">afterCreateRuleFilters</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After creating the dropdown for filters</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-602">line 602</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterCreateRuleInput" class="event"><a href="QueryBuilder.html#.event:afterCreateRuleInput"><span class="ancestors">QueryBuilder.</span><span class="name">afterCreateRuleInput</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After creating the input for a rule and initializing optional plugin</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-682">line 682</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterCreateRuleOperators" class="event"><a href="QueryBuilder.html#.event:afterCreateRuleOperators"><span class="ancestors">QueryBuilder.</span><span class="name">afterCreateRuleOperators</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After creating the dropdown for operators</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>operators</code></td>
+							<td><span class="param-type">Array.&lt;<a href="QueryBuilder.html#.Operator">QueryBuilder.Operator</a>></span></td>
+							<td class="last">
+									<p>allowed operators for this rule</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-632">line 632</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterDeleteGroup" class="event"><a href="QueryBuilder.html#.event:afterDeleteGroup"><span class="ancestors">QueryBuilder.</span><span class="name">afterDeleteGroup</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after deleting a group</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-436">line 436</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterDeleteRule" class="event"><a href="QueryBuilder.html#.event:afterDeleteRule"><span class="ancestors">QueryBuilder.</span><span class="name">afterDeleteRule</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after deleting a rule</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-571">line 571</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterInit" class="event"><a href="QueryBuilder.html#.event:afterInit"><span class="ancestors">QueryBuilder.</span><span class="name">afterInit</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>When the initilization is done, just before creating the root group</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-145">line 145</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterReset" class="event"><a href="QueryBuilder.html#.event:afterReset"><span class="ancestors">QueryBuilder.</span><span class="name">afterReset</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the <a href="QueryBuilder.html#reset"><code>QueryBuilder#reset</code></a> method</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-51">line 51</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterSetRules" class="event"><a href="QueryBuilder.html#.event:afterSetRules"><span class="ancestors">QueryBuilder.</span><span class="name">afterSetRules</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the <a href="QueryBuilder.html#setRules"><code>QueryBuilder#setRules</code></a> method</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-456">line 456</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterUpdateGroupCondition" class="event"><a href="QueryBuilder.html#.event:afterUpdateGroupCondition"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateGroupCondition</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the group condition has been modified</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>group</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-460">line 460</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterUpdateRuleFilter" class="event"><a href="QueryBuilder.html#.event:afterUpdateRuleFilter"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateRuleFilter</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the filter has been updated and the operators and input re-created</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-718">line 718</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterUpdateRuleOperator" class="event"><a href="QueryBuilder.html#.event:afterUpdateRuleOperator"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateRuleOperator</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the operator has been updated and the input optionally re-created</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-757">line 757</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:afterUpdateRuleValue" class="event"><a href="QueryBuilder.html#.event:afterUpdateRuleValue"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateRuleValue</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the rule value has been modified</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-779">line 779</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:beforeAddGroup" class="event"><a href="QueryBuilder.html#.event:beforeAddGroup"><span class="ancestors">QueryBuilder.</span><span class="name">beforeAddGroup</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before adding a group, can be prevented.</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>parent</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>addRule</code></td>
+							<td><span class="param-type">boolean</span></td>
+							<td class="last">
+									<p>if an empty rule will be added in the group</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>level</code></td>
+							<td><span class="param-type">int</span></td>
+							<td class="last">
+									<p>nesting level of the group, 1 is the root group</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-365">line 365</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:beforeAddRule" class="event"><a href="QueryBuilder.html#.event:beforeAddRule"><span class="ancestors">QueryBuilder.</span><span class="name">beforeAddRule</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before adding a rule, can be prevented</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>parent</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-497">line 497</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:beforeClear" class="event"><a href="QueryBuilder.html#.event:beforeClear"><span class="ancestors">QueryBuilder.</span><span class="name">beforeClear</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Before the <a href="QueryBuilder.html#clear"><code>QueryBuilder#clear</code></a> method, can be prevented</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-65">line 65</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:beforeDeleteGroup" class="event"><a href="QueryBuilder.html#.event:beforeDeleteGroup"><span class="ancestors">QueryBuilder.</span><span class="name">beforeDeleteGroup</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before deleting a group, can be prevented</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>parent</code></td>
+							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-414">line 414</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:beforeDeleteRule" class="event"><a href="QueryBuilder.html#.event:beforeDeleteRule"><span class="ancestors">QueryBuilder.</span><span class="name">beforeDeleteRule</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before deleting a rule, can be prevented</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-558">line 558</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:beforeDestroy" class="event"><a href="QueryBuilder.html#.event:beforeDestroy"><span class="ancestors">QueryBuilder.</span><span class="name">beforeDestroy</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Before the <a href="QueryBuilder.html#destroy"><code>QueryBuilder#destroy</code></a> method</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-6">line 6</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:beforeReset" class="event"><a href="QueryBuilder.html#.event:beforeReset"><span class="ancestors">QueryBuilder.</span><span class="name">beforeReset</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Before the <a href="QueryBuilder.html#reset"><code>QueryBuilder#reset</code></a> method, can be prevented</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-34">line 34</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event collapsible-symbol">
+			<h4 id=".event:validationError" class="event"><a href="QueryBuilder.html#.event:validationError"><span class="ancestors">QueryBuilder.</span><span class="name">validationError</span></a></h4>
+</dt>
+<dd class="symbol-details event  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Fired when a validation error occurred, can be prevented</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>node</code></td>
+							<td><span class="param-type"><a href="Node.html">Node</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>error</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>value</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-921">line 921</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+				</dl>
+		</article>
+					</section>
+			</div>
+				<div class="col-md-3 side-content">
+					<nav class="toc hidden-print hidden-sm hidden-xs"></nav>
+				</div>
+		</div>
+	</div>
+	<footer>
+				<div class="copyright">Licensed under MIT License, documentation under CC BY 3.0.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+	</footer>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/clipboard.min.js"></script>
+	<script src="js/prism.min.js"></script>
+	<script src="js/template.min.js"></script>
+		<!-- start:lunr-search-modal.hbs -->
+		<div class="modal fade" id="lunr-search-modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Search results</h4>
+					</div>
+					<div class="modal-body" id="lunr-search-body">
+					</div>
+					<div class="modal-footer" id="lunr-search-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+		<!-- end:lunr-search-modal.hbs -->		<script src="js/lunr.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js"></script>
+		<script src="js/custom.js"></script>
+	
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-28192323-3', 'auto');
+			ga('send', 'pageview');
+		</script>
+	
+</body>
+</html>

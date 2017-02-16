@@ -6,6 +6,14 @@
   <a href="{{site.github.url}}/plugins.html">Plugins</a>
 </li>
 
+<li {% if page.title == 'Events' %}class="active"{% endif %}>
+  <a href="{{site.github.url}}/dev/events.html">Events</a>
+</li>
+
+<li>
+  <a href="{{site.github.url}}/api">API</a>
+</li>
+
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Advanced <span class="caret"></span></a>
   <ul class="dropdown-menu">
@@ -13,8 +21,8 @@
       <a href="{{site.github.url}}/dev/plugins.html">Create plugins</a>
     </li>
 
-    <li {% if page.title == 'Events' %}class="active"{% endif %}>
-      <a href="{{site.github.url}}/dev/events.html">Events</a>
+    <li {% if page.title == 'No Bootstrap' %}class="active"{% endif %}>
+      <a href="{{site.github.url}}/dev/no-bootstrap.html">No Bootstrap</a>
     </li>
   </ul>
 </li>

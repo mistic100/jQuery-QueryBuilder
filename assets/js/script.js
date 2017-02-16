@@ -45,14 +45,15 @@ $(function() {
   });
 });
 
-function trianglify(color1, color2) {
-  var header = $('#content'),
-    t = new Trianglify({
-      cellsize: 90,
-      noiseIntensity: 0,
-      x_gradient: [color1, color2]
-    }),
-    pattern = t.generate(window.screen.width | header.outerWidth(), header.outerHeight() * 1.2);
+function trianglify(color1, color2, seed) {
+  var header = $('#content');
+  var pattern = Trianglify({
+    width: window.screen.width | header.outerWidth(),
+    height: header.outerHeight(),
+    cell_size: 90,
+    seed: seed,
+    x_colors: [color1, color2]
+  });
 
-  header.css('background-image', pattern.dataUrl);
+  header.css('background-image', 'url(' + pattern.png() + ')');
 }
