@@ -1,10 +1,15 @@
 /**
- * Applies Bootstrap Select on filters and operators combo-boxes.
- * @class BtSelectpickerPlugin
+ * @module BtSelectpickerPlugin
+ * @descriptioon Applies Bootstrap Select on filters and operators combo-boxes.
+ */
+
+/**
+ * @function init
+ * @memberof module:BtSelectpickerPlugin
  * @param {object} [options]
- * @param {string} [options.container=body]
- * @param {string} [options.style=btn-inverse btn-xs]
- * @param {int|string} [options.width=auto]
+ * @param {string} [options.container='body']
+ * @param {string} [options.style='btn-inverse btn-xs']
+ * @param {int|string} [options.width='auto']
  * @param {boolean} [options.showIcon=false]
  * @throws MissingLibraryError
  */

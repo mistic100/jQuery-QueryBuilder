@@ -1,8 +1,13 @@
 /**
- * Applies Bootstrap Tooltips on validation error messages.
- * @class BtTooltipErrorsPlugin
+ * @module BtTooltipErrorsPlugin
+ * @description Applies Bootstrap Tooltips on validation error messages.
+ */
+
+/**
+ * @function init
+ * @memberof module:BtTooltipErrorsPlugin
  * @param {object} [options]
- * @param {string} [options.placement=right]
+ * @param {string} [options.placement='right']
  * @throws MissingLibraryError
  */
 QueryBuilder.define('bt-tooltip-errors', function(options) {
@@ -23,9 +28,9 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
     this.model.on('update', function(e, node, field) {
         if (field == 'error' && self.settings.display_errors) {
             node.$el.find(QueryBuilder.selectors.error_container).eq(0)
-              .tooltip(options)
-              .tooltip('hide')
-              .tooltip('fixTitle');
+                .tooltip(options)
+                .tooltip('hide')
+                .tooltip('fixTitle');
         }
     });
 }, {

@@ -1,6 +1,6 @@
 /**
- * Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.
- * @class MongoDbSupportPlugin
+ * @module MongoDbSupportPlugin
+ * @description Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.
  */
 
 QueryBuilder.defaults({
@@ -91,14 +91,15 @@ QueryBuilder.defaults({
     }
 });
 
-QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
+QueryBuilder.extend({
     /**
      * Returns rules as a MongoDB query
+     * @memberof module:MongoDbSupportPlugin
      * @param {object} [data] - current rules by default
      * @returns {object}
-     * @fires MongoDbSupportPlugin#filter:getMongoDBField
-     * @fires MongoDbSupportPlugin#filter:ruleToMongo
-     * @fires MongoDbSupportPlugin#filter:groupToMongo
+     * @fires module:MongoDbSupportPlugin.changer:getMongoDBField
+     * @fires module:MongoDbSupportPlugin.changer:ruleToMongo
+     * @fires module:MongoDbSupportPlugin.changer:groupToMongo
      * @throws UndefinedMongoConditionError, UndefinedMongoOperatorError
      */
     getMongo: function(data) {
@@ -145,7 +146,8 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
 
                     /**
                      * Modifies the MongoDB field used by a rule
-                     * @event MongoDbSupportPlugin#filter:getMongoDBField
+                     * @event changer:getMongoDBField
+                     * @memberof module:MongoDbSupportPlugin
                      * @param {string} field
                      * @param {Rule} rule
                      * @returns {string}
@@ -157,7 +159,8 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
 
                     /**
                      * Modifies the MongoDB expression generated for a rul
-                     * @event MongoDbSupportPlugin#filter:ruleToMongo
+                     * @event changer:ruleToMongo
+                     * @memberof module:MongoDbSupportPlugin
                      * @param {object} expression
                      * @param {Rule} rule
                      * @param {*} value
@@ -173,7 +176,8 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
 
             /**
              * Modifies the MongoDB expression generated for a group
-             * @event MongoDbSupportPlugin#filter:groupToMongo
+             * @event changer:groupToMongo
+             * @memberof module:MongoDbSupportPlugin
              * @param {object} expression
              * @param {Group} group
              * @returns {object}
@@ -184,12 +188,13 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
 
     /**
      * Converts a MongoDB query to rules
+     * @memberof module:MongoDbSupportPlugin
      * @param {object} query
      * @returns {object}
-     * @fires MongoDbSupportPlugin#filter:parseMongoNode
-     * @fires MongoDbSupportPlugin#filter:getMongoDBFieldID
-     * @fires MongoDbSupportPlugin#filter:mongoToRule
-     * @fires MongoDbSupportPlugin#filter:mongoToGroup
+     * @fires module:MongoDbSupportPlugin.changer:parseMongoNode
+     * @fires module:MongoDbSupportPlugin.changer:getMongoDBFieldID
+     * @fires module:MongoDbSupportPlugin.changer:mongoToRule
+     * @fires module:MongoDbSupportPlugin.changer:mongoToGroup
      * @throws MongoParseError, UndefinedMongoConditionError, UndefinedMongoOperatorError
      */
     getRulesFromMongo: function(query) {
@@ -201,7 +206,8 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
 
         /**
          * Custom parsing of a MongoDB expression, you can return a sub-part of the expression, or a well formed group or rule JSON
-         * @event MongoDbSupportPlugin#filter:parseMongoNode
+         * @event changer:parseMongoNode
+         * @memberof module:MongoDbSupportPlugin
          * @param {object} expression
          * @returns {object} expression, rule or group
          */
@@ -267,7 +273,8 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
 
                     /**
                      * Returns a filter identifier from the MongoDB field
-                     * @event MongoDbSupportPlugin#filter:getMongoDBFieldID
+                     * @event changer:getMongoDBFieldID
+                     * @memberof module:MongoDbSupportPlugin
                      * @param {string} field
                      * @param {*} value
                      * @returns {string}
@@ -276,7 +283,8 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
 
                     /**
                      * Modifies the rule generated from the MongoDB expression
-                     * @event MongoDbSupportPlugin#filter:mongoToRule
+                     * @event changer:mongoToRule
+                     * @memberof module:MongoDbSupportPlugin
                      * @param {object} rule
                      * @param {object} expression
                      * @returns {object}
@@ -294,7 +302,8 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
 
             /**
              * Modifies the group generated from the MongoDB expression
-             * @event MongoDbSupportPlugin#filter:mongoToGroup
+             * @event changer:mongoToGroup
+             * @memberof module:MongoDbSupportPlugin
              * @param {object} group
              * @param {object} expression
              * @returns {object}
@@ -308,7 +317,8 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
 
     /**
      * Sets rules a from MongoDB query
-     * @see MongoDbSupportPlugin#getRulesFromMongo
+     * @memberof module:MongoDbSupportPlugin
+     * @see module:MongoDbSupportPlugin.getRulesFromMongo
      */
     setRulesFromMongo: function(query) {
         this.setRules(this.getRulesFromMongo(query));
@@ -317,9 +327,9 @@ QueryBuilder.extend(/** @lends MongoDbSupportPlugin.prototype */ {
 
 /**
  * Finds which operator is used in a MongoDB sub-object
+ * @memberof module:MongoDbSupportPlugin
  * @param {*} value
  * @returns {string|undefined}
- * @memberof MongoDbSupportPlugin
  * @private
  */
 function determineMongoOperator(value) {
@@ -351,9 +361,9 @@ function determineMongoOperator(value) {
 
 /**
  * Returns the key corresponding to "$or" or "$and"
+ * @memberof module:MongoDbSupportPlugin
  * @param {object} data
  * @returns {string}
- * @memberof MongoDbSupportPlugin
  * @private
  */
 function andOr(data) {

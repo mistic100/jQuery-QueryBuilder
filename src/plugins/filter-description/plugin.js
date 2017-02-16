@@ -1,15 +1,18 @@
 /**
- * Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.
- * @class FilterDescriptionPlugin
+ * @module FilterDescriptionPlugin
+ * @description Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.
+ */
+
+/**
+ * @function init
+ * @memberof module:FilterDescriptionPlugin
  * @param {object} [options]
- * @param {string} [options.icon=glyphicon glyphicon-info-sign]
- * @param {string} [options.mode=popover] - inline, popover or bootbox
+ * @param {string} [options.icon='glyphicon glyphicon-info-sign']
+ * @param {string} [options.mode='popover'] - inline, popover or bootbox
  * @throws ConfigError
  */
 QueryBuilder.define('filter-description', function(options) {
-    /**
-     * INLINE
-     */
+    // INLINE
     if (options.mode === 'inline') {
         this.on('afterUpdateRuleFilter afterUpdateRuleOperator', function(e, rule) {
             var $p = rule.$el.find('p.filter-description');
@@ -31,9 +34,7 @@ QueryBuilder.define('filter-description', function(options) {
             }
         });
     }
-    /**
-     * POPOVER
-     */
+    // POPOVER
     else if (options.mode === 'popover') {
         if (!$.fn.popover || !$.fn.popover.Constructor || !$.fn.popover.Constructor.prototype.fixTitle) {
             Utils.error('MissingLibrary', 'Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
@@ -77,9 +78,7 @@ QueryBuilder.define('filter-description', function(options) {
             }
         });
     }
-    /**
-     * BOOTBOX
-     */
+    // BOOTBOX
     else if (options.mode === 'bootbox') {
         if (!('bootbox' in window)) {
             Utils.error('MissingLibrary', 'Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
@@ -111,12 +110,14 @@ QueryBuilder.define('filter-description', function(options) {
     mode: 'popover'
 });
 
-QueryBuilder.extend(/** @lends FilterDescriptionPlugin.prototype */ {
+QueryBuilder.extend({
     /**
      * Returns the description of a filter for a particular rule (if present)
+     * @memberof module:FilterDescriptionPlugin
      * @param {object} filter
      * @param {Rule} [rule]
      * @returns {string}
+     * @private
      */
     getFilterDescription: function(filter, rule) {
         if (!filter) {

@@ -5,7 +5,8 @@
 QueryBuilder.prototype.destroy = function() {
     /**
      * Before the {@link QueryBuilder#destroy} method
-     * @event QueryBuilder#beforeDestroy
+     * @event beforeDestroy
+     * @memberof QueryBuilder
      */
     this.trigger('beforeDestroy');
 
@@ -32,7 +33,8 @@ QueryBuilder.prototype.destroy = function() {
 QueryBuilder.prototype.reset = function() {
     /**
      * Before the {@link QueryBuilder#reset} method, can be prevented
-     * @event QueryBuilder#beforeReset
+     * @event beforeReset
+     * @memberof QueryBuilder
      */
     var e = this.trigger('beforeReset');
     if (e.isDefaultPrevented()) {
@@ -48,7 +50,8 @@ QueryBuilder.prototype.reset = function() {
 
     /**
      * After the {@link QueryBuilder#reset} method
-     * @event QueryBuilder#afterReset
+     * @event afterReset
+     * @memberof QueryBuilder
      */
     this.trigger('afterReset');
 };
@@ -61,7 +64,8 @@ QueryBuilder.prototype.reset = function() {
 QueryBuilder.prototype.clear = function() {
     /**
      * Before the {@link QueryBuilder#clear} method, can be prevented
-     * @event QueryBuilder#beforeClear
+     * @event beforeClear
+     * @memberof QueryBuilder
      */
     var e = this.trigger('beforeClear');
     if (e.isDefaultPrevented()) {
@@ -78,7 +82,8 @@ QueryBuilder.prototype.clear = function() {
 
     /**
      * After the {@link QueryBuilder#clear} method
-     * @event QueryBuilder#afterClear
+     * @event afterClear
+     * @memberof QueryBuilder
      */
     this.trigger('afterClear');
 };
@@ -118,7 +123,7 @@ QueryBuilder.prototype.getModel = function(target) {
  * @param {object} [options]
  * @param {boolean} [options.skip_empty=false] - skips validating rules that have no filter selected
  * @returns {boolean}
- * @fires QueryBuilder#filter:validate
+ * @fires QueryBuilder#changer:validate
  */
 QueryBuilder.prototype.validate = function(options) {
     options = $.extend({
@@ -189,7 +194,8 @@ QueryBuilder.prototype.validate = function(options) {
 
     /**
      * Modifies the result of the {@link QueryBuilder#validate} method
-     * @event QueryBuilder#filter:validate
+     * @event changer:validate
+     * @memberof QueryBuilder
      * @param {boolean} valid
      * @returns {boolean}
      */
@@ -203,9 +209,9 @@ QueryBuilder.prototype.validate = function(options) {
  * @param {boolean} [options.allow_invalid=false] - returns rules even if they are invalid
  * @param {boolean} [options.skip_empty=false] - remove rules that have no filter selected
  * @returns {object}
- * @fires QueryBuilder#filter:ruleToJson
- * @fires QueryBuilder#filter:groupToJson
- * @fires QueryBuilder#filter:getRules
+ * @fires QueryBuilder#changer:ruleToJson
+ * @fires QueryBuilder#changer:groupToJson
+ * @fires QueryBuilder#changer:getRules
  */
 QueryBuilder.prototype.getRules = function(options) {
     options = $.extend({
@@ -270,7 +276,8 @@ QueryBuilder.prototype.getRules = function(options) {
 
             /**
              * Modifies the JSON generated from a Rule object
-             * @event QueryBuilder#filter:ruleToJson
+             * @event changer:ruleToJson
+             * @memberof QueryBuilder
              * @param {object} json
              * @param {Rule} rule
              * @returns {object}
@@ -286,7 +293,8 @@ QueryBuilder.prototype.getRules = function(options) {
 
         /**
          * Modifies the JSON generated from a Group object
-         * @event QueryBuilder#filter:groupToJson
+         * @event changer:groupToJson
+         * @memberof QueryBuilder
          * @param {object} json
          * @param {Group} group
          * @returns {object}
@@ -298,7 +306,8 @@ QueryBuilder.prototype.getRules = function(options) {
     out.valid = valid;
 
     /**
-     * @avant QueryBuilder#filter:getRules
+     * Modifies the result of the {@link QueryBuilder#getRules} method
+     * @event changer:getRules
      * @param {object} json
      * @returns {object}
      */
@@ -311,9 +320,9 @@ QueryBuilder.prototype.getRules = function(options) {
  * @param {object} [options]
  * @param {boolean} [options.allow_invalid=false] - silent-fail if the data are invalid
  * @throws RulesError, UndefinedConditionError
- * @fires QueryBuilder#filter:setRules
- * @fires QueryBuilder#filter:jsonToRule
- * @fires QueryBuilder#filter:jsonToGroup
+ * @fires QueryBuilder#changer:setRules
+ * @fires QueryBuilder#changer:jsonToRule
+ * @fires QueryBuilder#changer:jsonToGroup
  * @fires QueryBuilder#afterSetRules
  */
 QueryBuilder.prototype.setRules = function(data, options) {
@@ -338,7 +347,8 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
     /**
      * Modifies data before the {@link QueryBuilder#setRules} method
-     * @event QueryBuilder#filter:setRules
+     * @event changer:setRules
+     * @memberof QueryBuilder
      * @param {object} json
      * @param {object} options
      * @returns {object}
@@ -417,7 +427,8 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
                 /**
                  * Modifies the Rule object generated from the JSON
-                 * @event QueryBuilder#filter:jsonToRule
+                 * @event changer:jsonToRule
+                 * @memberof QueryBuilder
                  * @param {Rule} rule
                  * @param {object} json
                  * @returns {Rule} the same rule
@@ -430,7 +441,8 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
         /**
          * Modifies the Group object generated from the JSON
-         * @event QueryBuilder#filter:jsonToGroup
+         * @event changer:jsonToGroup
+         * @memberof QueryBuilder
          * @param {Group} group
          * @param {object} json
          * @returns {Group} the same group
@@ -443,7 +455,8 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
     /**
      * After the {@link QueryBuilder#setRules} method
-     * @event QueryBuilder#afterSetRules
+     * @event afterSetRules
+     * @memberof QueryBuilder
      */
     this.trigger('afterSetRules');
 };

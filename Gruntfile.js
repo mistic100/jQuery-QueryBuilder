@@ -106,6 +106,10 @@ module.exports = function(grunt) {
                         dest: 'dist/scss/plugins/_' + name + '.scss'
                     };
                 })
+            },
+            doc_script: {
+                src: 'build/jsdoc.js',
+                dest: 'doc/js/custom.js'
             }
         },
 
@@ -263,7 +267,8 @@ module.exports = function(grunt) {
 
         // clean build dir
         clean: {
-            temp: ['.temp']
+            temp: ['.temp'],
+            doc: ['doc']
         },
 
         // jshint tests
@@ -301,11 +306,9 @@ module.exports = function(grunt) {
         jsdoc: {
             lib: {
                 src: ['src/**/*.js', '!src/**/.wrapper.js'],
-                dest: 'doc',
                 options: {
-                    private: false,
-                    template: 'node_modules/docdash',
-                    readme: 'README.md'
+                    destination: 'doc',
+                    config: '.jsdoc.json'
                 }
             }
         },
@@ -422,5 +425,11 @@ module.exports = function(grunt) {
         'open',
         'connect',
         'watch'
+    ]);
+
+    grunt.registerTask('doc', [
+        'clean:doc',
+        'jsdoc',
+        'copy:doc_script'
     ]);
 };

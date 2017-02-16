@@ -1,10 +1,12 @@
 /**
- * @typedef {object} QueryBuilder#Filter
+ * @typedef {object} Filter
+ * @memberof QueryBuilder
  * @description See {@link http://querybuilder.js.org/index.html#filters}
  */
 
 /**
- * @typedef {object} QueryBuilder#Operator
+ * @typedef {object} Operator
+ * @memberof QueryBuilder
  * @description See {@link http://querybuilder.js.org/index.html#operators}
  */
 
@@ -61,7 +63,7 @@ var QueryBuilder = function($el, options) {
 
     /**
      * List of filters
-     * @member {QueryBuilder#Filter[]}
+     * @member {QueryBuilder.Filter[]}
      * @readonly
      */
     this.filters = this.settings.filters;
@@ -75,7 +77,7 @@ var QueryBuilder = function($el, options) {
 
     /**
      * List of operators
-     * @member {QueryBuilder#Operator[]}
+     * @member {QueryBuilder.Operator[]}
      * @readonly
      */
     this.operators = this.settings.operators;
@@ -142,7 +144,8 @@ var QueryBuilder = function($el, options) {
 
     /**
      * When the initilization is done, just before creating the root group
-     * @event QueryBuilder#afterInit
+     * @event afterInit
+     * @memberof QueryBuilder
      */
     this.trigger('afterInit');
 
@@ -236,14 +239,8 @@ $.extend(QueryBuilder.prototype, /** @lends QueryBuilder.prototype */ {
 });
 
 /**
- * @typedef {object} QueryBuilder#Plugin
- * @property {object} def - default options
- * @property {function} fct - init function
- */
-
-/**
  * Definition of available plugins
- * @type {object.<String, QueryBuilder#Plugin>}
+ * @type {object.<String, object>}
  */
 QueryBuilder.plugins = {};
 

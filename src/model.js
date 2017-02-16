@@ -3,17 +3,26 @@
  * @constructor
  */
 function Model() {
+    /**
+     * @member {Group}
+     * @readonly
+     */
     this.root = null;
+
+    /**
+     * Base for event emitting
+     * @member {jQuery}
+     * @readonly
+     * @private
+     */
     this.$ = $(this);
 }
 
-$.extend(Model.prototype, {
+$.extend(Model.prototype, /** @lends Model.prototype */ {
     /**
      * Triggers an event on the model
      * @param {string} type
      * @returns {$.Event}
-     * @memberof Model
-     * @instance
      */
     trigger: function(type) {
         var event = new $.Event(type);
@@ -26,8 +35,6 @@ $.extend(Model.prototype, {
      * @param {string} type
      * @param {function} cb
      * @returns {Model}
-     * @memberof Model
-     * @instance
      */
     on: function() {
         this.$.on.apply(this.$, Array.prototype.slice.call(arguments));
@@ -39,8 +46,6 @@ $.extend(Model.prototype, {
      * @param {string} type
      * @param {function} [cb]
      * @returns {Model}
-     * @memberof Model
-     * @instance
      */
     off: function() {
         this.$.off.apply(this.$, Array.prototype.slice.call(arguments));
@@ -52,8 +57,6 @@ $.extend(Model.prototype, {
      * @param {string} type
      * @param {function} cb
      * @returns {Model}
-     * @memberof Model
-     * @instance
      */
     once: function() {
         this.$.one.apply(this.$, Array.prototype.slice.call(arguments));
@@ -85,7 +88,8 @@ Model.defineModelProperties = function(obj, fields) {
                 if (this.model !== null) {
                     /**
                      * After a value of the model changed
-                     * @event Model#model:update
+                     * @event model:update
+                     * @memberof Model
                      * @param {Node} node
                      * @param {string} field
                      * @param {*} value
@@ -224,7 +228,8 @@ Node.prototype.drop = function() {
     if (model !== null) {
         /**
          * After a node of the model has been removed
-         * @event Model#model:drop
+         * @event model:drop
+         * @memberof Model
          * @param {Node} node
          */
         model.trigger('drop', this);
@@ -291,7 +296,8 @@ Node.prototype.move = function(target, index) {
         if (this.model !== null) {
             /**
              * After a node of the model has been moved
-             * @event Model#model:move
+             * @event model:move
+             * @memberof Model
              * @param {Node} node
              * @param {Node} target
              * @param {int} index
@@ -382,7 +388,8 @@ Group.prototype.insertNode = function(node, index, trigger) {
     if (trigger && this.model !== null) {
         /**
          * After a node of the model has been added
-         * @event Model#model:add
+         * @event model:add
+         * @memberof Model
          * @param {Node} parent
          * @param {Node} node
          * @param {int} index
@@ -445,7 +452,7 @@ Group.prototype.getNodePos = function(node) {
 /**
  * Iterate over all Nodes
  * @param {boolean} [reverse=false] - iterate in reverse order, required if you delete nodes
- * @param {Model#GroupIteratee} cbRule - callback for Rules (can be <code>null</code> but not omitted)
+ * @param {Model#GroupIteratee} cbRule - callback for Rules (can be `null` but not omitted)
  * @param {Model#GroupIteratee} [cbGroup] - callback for Groups
  * @param {object} [context] - context for callbacks
  * @returns {boolean} if the iteration has been stopped by a callback
@@ -528,7 +535,7 @@ var Rule = function(parent, $el) {
 
     /**
      * @name filter
-     * @member {QueryBuilder#Filter}
+     * @member {QueryBuilder.Filter}
      * @memberof Rule
      * @instance
      */
@@ -536,7 +543,7 @@ var Rule = function(parent, $el) {
 
     /**
      * @name operator
-     * @member {QueryBuilder#Operator}
+     * @member {QueryBuilder.Operator}
      * @memberof Rule
      * @instance
      */

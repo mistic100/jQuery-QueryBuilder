@@ -1,13 +1,18 @@
 /**
- * Applies Awesome Bootstrap Checkbox for checkbox and radio inputs
- * @class BtCheckboxPlugin
+ * @module BtCheckboxPlugin
+ * @description Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.
+ */
+
+/**
+ * @function init
+ * @memberof module:BtCheckboxPlugin
  * @param {object} [options]
- * @param {string} [options.font=glypicons]
- * @param {string} [options.color=default]
+ * @param {string} [options.font='glyphicons']
+ * @param {string} [options.color='default']
  */
 QueryBuilder.define('bt-checkbox', function(options) {
     if (options.font == 'glyphicons') {
-        this.$el.addClass('bt-checkbox-glypicons');
+        this.$el.addClass('bt-checkbox-glyphicons');
     }
 
     this.on('getRuleInput.filter', function(h, rule, name) {

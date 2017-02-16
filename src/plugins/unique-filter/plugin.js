@@ -1,6 +1,11 @@
 /**
- * Allows to define some filters as "unique": ie which can be used for only one rule, globally or in the same group.
- * @class UniqueFilterPlugin
+ * @module UniqueFilterPlugin
+ * @description Allows to define some filters as "unique": ie which can be used for only one rule, globally or in the same group.
+ */
+
+/**
+ * @function init
+ * @memberof module:UniqueFilterPlugin
  */
 QueryBuilder.define('unique-filter', function() {
     this.status.used_filters = {};
@@ -11,10 +16,7 @@ QueryBuilder.define('unique-filter', function() {
     this.on('afterReset', this.clearDisabledFilters);
     this.on('afterClear', this.clearDisabledFilters);
 
-    /**
-     * Ensure that the default filter is not already used if unique
-     * @throws UniqueFilterError
-     */
+    // Ensure that the default filter is not already used if unique
     this.on('getDefaultFilter.filter', function(e, model) {
         var self = e.builder;
 
@@ -36,9 +38,10 @@ QueryBuilder.define('unique-filter', function() {
     });
 });
 
-QueryBuilder.extend(/** @lends UniqueFilterPlugin.prototype*/ {
+QueryBuilder.extend({
     /**
      * Updates the list of used filters
+     * @memberof module:UniqueFilterPlugin
      * @param {$.Event} [e]
      * @private
      */
@@ -72,6 +75,7 @@ QueryBuilder.extend(/** @lends UniqueFilterPlugin.prototype*/ {
 
     /**
      * Clear the list of used filters
+     * @memberof module:UniqueFilterPlugin
      * @param {$.Event} [e]
      * @private
      */
@@ -85,6 +89,7 @@ QueryBuilder.extend(/** @lends UniqueFilterPlugin.prototype*/ {
 
     /**
      * Disabled filters depending on the list of used ones
+     * @memberof module:UniqueFilterPlugin
      * @param {$.Event} [e]
      * @private
      */

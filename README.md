@@ -1,17 +1,39 @@
 # jQuery QueryBuilder
 
 [![Bower version](https://img.shields.io/bower/v/jQuery-QueryBuilder.svg?style=flat-square)](http://querybuilder.js.org)
+[![npm version](https://img.shields.io/npm/v/jQuery-QueryBuilder.svg?style=flat-square)](https://www.npmjs.com/package/jQuery-QueryBuilder)
 [![CDN](https://img.shields.io/badge/cdn-jsdelivr-%23EB4C36.svg?style=flat-square)](http://www.jsdelivr.com/projects/jquery.query-builder)
 [![Build Status](https://img.shields.io/travis/mistic100/jQuery-QueryBuilder.svg?style=flat-square)](https://travis-ci.org/mistic100/jQuery-QueryBuilder)
 [![Coverage Status](https://img.shields.io/coveralls/mistic100/jQuery-QueryBuilder/master.svg?style=flat-square)](https://coveralls.io/r/mistic100/jQuery-QueryBuilder)
-[![Say thanks](https://img.shields.io/badge/SayThanks.io-%E2%98%80-1EAEDB.svg?style=flat-square)](https://saythanks.io/to/mistic100)
 
 jQuery plugin offering an simple interface to create complex queries.
 
 [![screenshot](https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/examples/screenshot.png)](http://querybuilder.js.org)
 
+
+
 ## Documentation
-[querybuilder.js.org](http://querybuilder.js.org)
+[http://querybuilder.js.org](http://querybuilder.js.org)
+
+
+
+## Install
+
+#### Manually
+
+[Download the latest release](https://github.com/mistic100/jQuery-QueryBuilder/releases)
+
+#### With Bower
+
+```bash
+$ bower install jQuery-QueryBuilder
+```
+
+#### With npm
+
+```bash
+$ npm install jQuery-QueryBuilder
+```
 
 ### Dependencies
  * jQuery >= 1.10
@@ -27,7 +49,9 @@ jQuery plugin offering an simple interface to create complex queries.
  * Internet Explorer >= 9
  * All other recent browsers
 
-### Build
+
+
+## Build
 
 #### Prerequisites
 
@@ -63,8 +87,13 @@ grunt --languages=fr,it
 
  * `grunt test` to run jshint/jscs/scsslint and the QUnit test suite.
  * `grunt serve` to open the example page with automatic build and livereload.
- * `grunt jsdoc` to generate the documentation.
+ * `grunt doc` to generate the documentation.
 
-### Inspiration
+
+
+## License
+This library is available under the MIT license.
+
+#### Inspirations
  * [Knockout Query Builder](http://kindohm.github.io/knockout-query-builder/)
  * [jui_filter_rules](http://www.pontikis.net/labs/jui_filter_rules/)

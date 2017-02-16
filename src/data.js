@@ -3,7 +3,7 @@
  * @param {Rule} rule
  * @param {string|string[]} value
  * @returns {array|boolean} true or error array
- * @fires QueryBuilder#filter:validateValue
+ * @fires QueryBuilder#changer:validateValue
  */
 QueryBuilder.prototype.validateValue = function(rule, value) {
     var validation = rule.filter.validation || {};
@@ -18,7 +18,8 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
 
     /**
      * Modifies the result of the rule validation method
-     * @event QueryBuilder#filter:validateValue
+     * @event changer:validateValue
+     * @memberof QueryBuilder
      * @param {array|boolean} result - true or an error array
      * @param {*} value
      * @param {Rule} rule
@@ -245,7 +246,7 @@ QueryBuilder.prototype.nextRuleId = function() {
  * Returns the operators for a filter
  * @param {string|object} filter - filter id or filter object
  * @returns {object[]}
- * @fires QueryBuilder#filter:getOperators
+ * @fires QueryBuilder#changer:getOperators
  * @private
  */
 QueryBuilder.prototype.getOperators = function(filter) {
@@ -278,10 +279,12 @@ QueryBuilder.prototype.getOperators = function(filter) {
     }
 
     /**
-     * QueryBuilder#filter:getOperators
-     * @param {object[]} operators
-     * @param {QueryBuilder#Filter} filter
-     * @returns {object[]}
+     * Modifies the operators available for a filter
+     * @event changer:getOperators
+     * @memberof QueryBuilder
+     * @param {QueryBuilder.Operator[]} operators
+     * @param {QueryBuilder.Filter} filter
+     * @returns {QueryBuilder.Operator[]}
      */
     return this.change('getOperators', result, filter);
 };
@@ -338,7 +341,7 @@ QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
  * Returns rule's current input value
  * @param {Rule} rule
  * @returns {*}
- * @fires QueryBuilder#filter:getRuleValue
+ * @fires QueryBuilder#changer:getRuleValue
  * @private
  */
 QueryBuilder.prototype.getRuleInputValue = function(rule) {
@@ -409,7 +412,8 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
 
     /**
      * Modifies the rule's value grabbed from the DOM
-     * @event QueryBuilder#filter:getRuleValue
+     * @event changer:getRuleValue
+     * @memberof QueryBuilder
      * @param {*} value
      * @param {Rule} rule
      * @returns {*}
@@ -479,7 +483,7 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
  * Parses rule flags
  * @param {object} rule
  * @returns {object}
- * @fires QueryBuilder#filter:parseRuleFlags
+ * @fires QueryBuilder#changer:parseRuleFlags
  * @private
  */
 QueryBuilder.prototype.parseRuleFlags = function(rule) {
@@ -500,7 +504,8 @@ QueryBuilder.prototype.parseRuleFlags = function(rule) {
 
     /**
      * Modifies the consolidated rule's flags
-     * @event QueryBuilder#filter:parseRuleFlags
+     * @event changer:parseRuleFlags
+     * @memberof QueryBuilder
      * @param {object} flags
      * @param {object} rule - <b>not</b> a Rule object
      * @returns {object}
@@ -534,7 +539,7 @@ QueryBuilder.prototype.getRuleFlags = function(flags, all) {
  * Parses group flags
  * @param {object} group
  * @returns {object}
- * @fires QueryBuilder#filter:parseGroupFlags
+ * @fires QueryBuilder#changer:parseGroupFlags
  * @private
  */
 QueryBuilder.prototype.parseGroupFlags = function(group) {
@@ -555,7 +560,8 @@ QueryBuilder.prototype.parseGroupFlags = function(group) {
 
     /**
      * Modifies the consolidated group's flags
-     * @event QueryBuilder#filter:parseGroupFlags
+     * @event changer:parseGroupFlags
+     * @memberof QueryBuilder
      * @param {object} flags
      * @param {object} group - <b>not</b> a Group object
      * @returns {object}

@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "deepmerge": "^0.2.0",
-    "docdash": "^0.4.0",
+    "foodoc": "git://github.com/mistic100/foodoc.git#custom",
     "grunt": "^1.0.0",
     "grunt-banner": "^0.6.0",
     "grunt-contrib-clean": "^1.0.0",

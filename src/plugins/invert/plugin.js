@@ -1,12 +1,6 @@
 /**
- * Allows to invert a rule operator, a group condition or the entire builder.
- * @class InvertPlugin
- * @param {object} [options]
- * @param {string} [options.icon='glyphicon glyphicon-random]
- * @param {boolean} [options.recursive=true]
- * @param {boolean} [options.invert_rules=true]
- * @param {boolean} [options.display_rules_button=false]
- * @param {boolean} [options.silent_fail=false]
+ * @module InvertPlugin
+ * @description Allows to invert a rule operator, a group condition or the entire builder.
  */
 
 QueryBuilder.defaults({
@@ -39,13 +33,21 @@ QueryBuilder.defaults({
     }
 });
 
+/**
+ * @function init
+ * @memberof module:InvertPlugin
+ * @param {object} [options]
+ * @param {string} [options.icon='glyphicon glyphicon-random']
+ * @param {boolean} [options.recursive=true]
+ * @param {boolean} [options.invert_rules=true]
+ * @param {boolean} [options.display_rules_button=false]
+ * @param {boolean} [options.silent_fail=false]
+ */
 QueryBuilder.define('invert', function(options) {
     var self = this;
     var Selectors = QueryBuilder.selectors;
 
-    /**
-     * Bind events
-     */
+    // Bind events
     this.on('afterInit', function() {
         self.$el.on('click.queryBuilder', '[data-invert=group]', function() {
             var $group = $(this).closest(Selectors.group_container);
@@ -60,9 +62,7 @@ QueryBuilder.define('invert', function(options) {
         }
     });
 
-    /**
-     * Modify templates
-     */
+    // Modify templates
     this.on('getGroupTemplate.filter', function(h, level) {
         var $h = $(h.value);
         $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> ' + self.lang.invert + '</button>');
@@ -84,12 +84,13 @@ QueryBuilder.define('invert', function(options) {
     silent_fail: false
 });
 
-QueryBuilder.extend(/** @lends InvertPlugin.prototype */ {
+QueryBuilder.extend({
     /**
      * Invert a Group, a Rule or the whole builder
+     * @memberof module:InvertPlugin
      * @param {Node} [node]
-     * @param {object} [options] {@link InvertPlugin}
-     * @fires InvertPlugin#afterInvert
+     * @param {object} [options] {@link module:InvertPlugin.init}
+     * @fires module:InvertPlugin.afterInvert
      * @throws InvertConditionError, InvertOperatorError
      */
     invert: function(node, options) {
@@ -144,8 +145,9 @@ QueryBuilder.extend(/** @lends InvertPlugin.prototype */ {
 
         if (options.trigger) {
             /**
-             * After {@link InvertPlugin#invert} method
-             * @event InvertPlugin#afterInvert
+             * After {@link module:InvertPlugin.invert} method
+             * @event afterInvert
+             * @memberof module:InvertPlugin
              * @param {Node} node - the main group or rule that has been modified
              * @param {object} options
              */

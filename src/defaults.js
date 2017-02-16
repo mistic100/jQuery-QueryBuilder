@@ -28,7 +28,7 @@ QueryBuilder.inputs = [
 ];
 
 /**
- * Runtime modifiable options with <code>setOptions<code> method
+ * Runtime modifiable options with `setOptions` method
  * @type {string[]}
  * @readonly
  */

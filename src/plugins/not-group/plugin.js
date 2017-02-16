@@ -1,13 +1,10 @@
 /**
- * Adds a "Not" checkbox in front of group conditions.
- * @class NotGroupPlugin
- * @param {object} [options]
- * @param {string} [options.icon_checked=glyphicon glyphicon-checked]
- * @param {string} [options.icon_unchecked=glyphicon glyphicon-unchecked]
+ * @module NotGroupPlugin
+ * @description Adds a "Not" checkbox in front of group conditions.
  */
 
 /**
- * From {@link NotGroupPlugin}
+ * From {@link module:NotGroupPlugin}
  * @name not
  * @member {boolean}
  * @memberof Group
@@ -17,12 +14,17 @@ Model.defineModelProperties(Group, ['not']);
 
 QueryBuilder.selectors.group_not = QueryBuilder.selectors.group_header + ' [data-not=group]';
 
+/**
+ * @function init
+ * @memberof module:NotGroupPlugin
+ * @param {object} [options]
+ * @param {string} [options.icon_checked='glyphicon glyphicon-checked']
+ * @param {string} [options.icon_unchecked='glyphicon glyphicon-unchecked']
+ */
 QueryBuilder.define('not-group', function(options) {
     var self = this;
 
-    /**
-     * Bind events
-     */
+    // Bind events
     this.on('afterInit', function() {
         self.$el.on('click.queryBuilder', '[data-not=group]', function() {
             var $group = $(this).closest(QueryBuilder.selectors.group_container);
@@ -37,16 +39,12 @@ QueryBuilder.define('not-group', function(options) {
         });
     });
 
-    /**
-     * Init "not" property
-     */
+    // Init "not" property
     this.on('afterAddGroup', function(e, group) {
         group.__.not = false;
     });
 
-    /**
-     * Modify templates
-     */
+    // Modify templates
     this.on('getGroupTemplate.filter', function(h, level) {
         var $h = $(h.value);
         $h.find(QueryBuilder.selectors.condition_container).prepend(
@@ -57,32 +55,24 @@ QueryBuilder.define('not-group', function(options) {
         h.value = $h.prop('outerHTML');
     });
 
-    /**
-     * Export "not" to JSON
-     */
+    // Export "not" to JSON
     this.on('groupToJson.filter', function(e, group) {
         e.value.not = group.not;
     });
 
-    /**
-     * Read "not" from JSON
-     */
+    // Read "not" from JSON
     this.on('jsonToGroup.filter', function(e, json) {
         e.value.not = !!json.not;
     });
 
-    /**
-     * Export "not" to SQL
-     */
+    // Export "not" to SQL
     this.on('groupToSQL.filter', function(e, group) {
         if (group.not) {
             e.value = 'NOT ( ' + e.value + ' )';
         }
     });
 
-    /**
-     * Parse "NOT" function from sqlparser
-     */
+    // Parse "NOT" function from sqlparser
     this.on('parseSQLNode.filter', function(e) {
         if (e.value.name && e.value.name.toUpperCase() == 'NOT') {
             e.value = e.value.arguments.value[0];
@@ -90,16 +80,12 @@ QueryBuilder.define('not-group', function(options) {
         }
     });
 
-    /**
-     * Read "not" from parsed SQL
-     */
+    // Read "not" from parsed SQL
     this.on('sqlToGroup.filter', function(e, data) {
         e.value.not = !!data.not;
     });
 
-    /**
-     * Export "not" to Mongo
-     */
+    // Export "not" to Mongo
     this.on('groupToMongo.filter', function(e, group) {
         var key = '$' + group.condition.toLowerCase();
         if (group.not && e.value[key]) {
@@ -107,9 +93,7 @@ QueryBuilder.define('not-group', function(options) {
         }
     });
 
-    /**
-     * Parse "$nor" operator from Mongo
-     */
+    // Parse "$nor" operator from Mongo
     this.on('parseMongoNode.filter', function(e) {
         var keys = Object.keys(e.value);
 
@@ -119,9 +103,7 @@ QueryBuilder.define('not-group', function(options) {
         }
     });
 
-    /**
-     * Read "not" from parsed Mongo
-     */
+    // Read "not" from parsed Mongo
     this.on('mongoToGroup.filter', function(e, data) {
         e.value.not = !!data.not;
     });
@@ -130,11 +112,12 @@ QueryBuilder.define('not-group', function(options) {
     icon_checked: 'glyphicon glyphicon-check'
 });
 
-QueryBuilder.extend(/** @lends NotGroupPlugin.prototype */ {
+QueryBuilder.extend({
     /**
      * Performs actions when a group's not changes
+     * @memberof module:NotGroupPlugin
      * @param {Group} group
-     * @fires NotGroupPlugin#afterUpdateGroupNot
+     * @fires module:NotGroupPlugin.afterUpdateGroupNot
      * @private
      */
     updateGroupNot: function(group) {
@@ -145,7 +128,8 @@ QueryBuilder.extend(/** @lends NotGroupPlugin.prototype */ {
 
         /**
          * After the group's not flag has been modified
-         * @event NotGroupPlugin#afterUpdateGroupNot
+         * @event afterUpdateGroupNot
+         * @memberof module:NotGroupPlugin
          * @param {Group} group
          */
         this.trigger('afterUpdateGroupNot', group);

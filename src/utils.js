@@ -1,7 +1,14 @@
 /**
  * @namespace
  */
-var Utils = QueryBuilder.utils = {};
+var Utils = {};
+
+/**
+ * @member {object}
+ * @memberof QueryBuilder
+ * @see Utils
+ */
+QueryBuilder.utils = Utils;
 
 /**
  * @callback Utils#OptionsIteratee
@@ -163,7 +170,7 @@ Utils.escapeElementId = function(str) {
 };
 
 /**
- * Sorts objects by grouping them by <code>key</code>, preserving initial order when possible
+ * Sorts objects by grouping them by `key`, preserving initial order when possible
  * @param {object[]} items
  * @param {string} key
  * @returns {object[]}

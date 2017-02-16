@@ -1,13 +1,15 @@
 /**
- * Allows to change available filters after plugin initialization.
- * @class ChangeFiltersPlugin
+ * @module ChangeFiltersPlugin
+ * @description Allows to change available filters after plugin initialization.
  */
-QueryBuilder.extend(/** @lends ChangeFiltersPlugin.prototype */ {
+QueryBuilder.extend({
     /**
      * Change the filters of the builder
+     * @memberof module:ChangeFiltersPlugin
      * @param {boolean} [deleteOrphans=false] - delete rules using old filters
-     * @param {QueryBuilder#Filter[]} filters
-     * @fires ChangeFiltersPlugin#afterSetFilters
+     * @param {QueryBuilder[]} filters
+     * @fires module:ChangeFiltersPlugin.changer:setFilters
+     * @fires module:ChangeFiltersPlugin.afterSetFilters
      * @throws ChangeFilterError
      */
     setFilters: function(deleteOrphans, filters) {
@@ -21,10 +23,11 @@ QueryBuilder.extend(/** @lends ChangeFiltersPlugin.prototype */ {
         filters = this.checkFilters(filters);
 
         /**
-         * Modifies the filters before {@link ChangeFiltersPlugin#setFilters} method
-         * @event ChangeFiltersPlugin#filter:setFilters
-         * @param {QueryBuilder#Filter[]} filters
-         * @returns {QueryBuilder#Filter[]}
+         * Modifies the filters before {@link module:ChangeFiltersPlugin.setFilters} method
+         * @event changer:setFilters
+         * @memberof module:ChangeFiltersPlugin
+         * @param {QueryBuilder.Filter[]} filters
+         * @returns {QueryBuilder.Filter[]}
          */
         filters = this.change('setFilters', filters);
 
@@ -88,18 +91,21 @@ QueryBuilder.extend(/** @lends ChangeFiltersPlugin.prototype */ {
         }
 
         /**
-         * After {@link ChangeFiltersPlugin#setFilters} method
-         * @event ChangeFiltersPlugin#afterSetFilters
-         * @param {QueryBuilder#Filter[]} filters
+         * After {@link module:ChangeFiltersPlugin.setFilters} method
+         * @event afterSetFilters
+         * @memberof module:ChangeFiltersPlugin
+         * @param {QueryBuilder.Filter[]} filters
          */
         this.trigger('afterSetFilters', filters);
     },
 
     /**
      * Adds a new filter to the builder
-     * @param {QueryBuilder#Filter|QueryBuilder#Filter[]} newFilters
+     * @memberof module:ChangeFiltersPlugin
+     * @param {QueryBuilder.Filter|Filter[]} newFilters
      * @param {int|string} [position=#end] - index or '#start' or '#end'
-     * @fires ChangeFiltersPlugin#afterSetFilters
+     * @fires module:ChangeFiltersPlugin.changer:setFilters
+     * @fires module:ChangeFiltersPlugin.afterSetFilters
      * @throws ChangeFilterError
      */
     addFilter: function(newFilters, position) {
@@ -142,9 +148,11 @@ QueryBuilder.extend(/** @lends ChangeFiltersPlugin.prototype */ {
 
     /**
      * Removes a filter from the builder
+     * @memberof module:ChangeFiltersPlugin
      * @param {string|string[]} filterIds
      * @param {boolean} [deleteOrphans=false] delete rules using old filters
-     * @fires ChangeFiltersPlugin#afterSetFilters
+     * @fires module:ChangeFiltersPlugin.changer:setFilters
+     * @fires module:ChangeFiltersPlugin.afterSetFilters
      * @throws ChangeFilterError
      */
     removeFilter: function(filterIds, deleteOrphans) {
