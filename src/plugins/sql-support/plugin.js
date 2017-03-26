@@ -418,18 +418,18 @@ QueryBuilder.extend({
          * @param {object} AST node
          * @returns {object} tree, rule or group
          */
-        query = self.change('parseSQLNode', parsed.where.conditions);
+        var data = self.change('parseSQLNode', parsed.where.conditions);
 
         // a plugin returned a group
-        if ('rules' in query && 'condition' in query) {
-            return query;
+        if ('rules' in data && 'condition' in data) {
+            return data;
         }
 
         // a plugin returned a rule
-        if ('id' in query && 'operator' in query && 'value' in query) {
+        if ('id' in data && 'operator' in data && 'value' in data) {
             return {
                 condition: this.settings.default_condition,
-                rules: [query]
+                rules: [data]
             };
         }
 
@@ -437,7 +437,7 @@ QueryBuilder.extend({
         var out = self.change('sqlToGroup', {
             condition: this.settings.default_condition,
             rules: []
-        }, query);
+        }, data);
 
         // keep track of current group
         var curr = out;
@@ -533,7 +533,18 @@ QueryBuilder.extend({
                 }
 
                 var opVal = sqlrl.call(this, value, data.operation);
-                var field = data.left.values.join('.');
+
+                // find field name
+                var field;
+                if ('values' in data.left) {
+                    field = data.left.values.join('.');
+                }
+                else if ('value' in data.left) {
+                    field = data.left.value;
+                }
+                else {
+                    Utils.error('SQLParse', 'Cannot find field name in {0}', JSON.stringify(data.left));
+                }
 
                 /**
                  * Returns a filter identifier from the SQL field
@@ -562,7 +573,7 @@ QueryBuilder.extend({
 
                 curr.rules.push(rule);
             }
-        }(query, 0));
+        }(data, 0));
 
         return out;
     },
