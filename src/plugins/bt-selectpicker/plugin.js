@@ -37,6 +37,11 @@ QueryBuilder.define('bt-selectpicker', function(options) {
     this.on('afterUpdateRuleOperator', function(e, rule) {
         rule.$el.find(Selectors.rule_operator).selectpicker('render');
     });
+
+    this.on('beforeDeleteRule', function(e, rule) {
+        rule.$el.find(Selectors.rule_filter).selectpicker('destroy');
+        rule.$el.find(Selectors.rule_operator).selectpicker('destroy');
+    });
 }, {
     container: 'body',
     style: 'btn-inverse btn-xs',
