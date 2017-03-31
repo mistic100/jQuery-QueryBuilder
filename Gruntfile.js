@@ -11,6 +11,8 @@ module.exports = function(grunt) {
         usebanner: 'grunt-banner'
     });
 
+    require('simple-cli')('git')(grunt);
+
     grunt.util.linefeed = '\n';
 
     var config = initConfig(grunt, {
@@ -50,11 +52,17 @@ module.exports = function(grunt) {
 
         // serve folder content
         connect: {
-            dev: {
+            example: {
                 options: {
                     host: '0.0.0.0',
                     port: 9000,
                     livereload: true
+                }
+            },
+            test: {
+                options: {
+                    host: '0.0.0.0',
+                    port: 9001
                 }
             }
         },
@@ -85,7 +93,7 @@ module.exports = function(grunt) {
         // open example
         open: {
             dev: {
-                path: 'http://localhost:<%= connect.dev.options.port%>/examples/index.html'
+                path: 'http://localhost:<%= connect.example.options.port%>/examples/index.html'
             }
         },
 
@@ -346,7 +354,7 @@ module.exports = function(grunt) {
         qunit: {
             all: {
                 options: {
-                    urls: ['tests/index.html?coverage=true'],
+                    urls: ['http://localhost:<%= connect.test.options.port %>/tests/index.html?coverage=true'],
                     noGlobals: true
                 }
             }
@@ -360,6 +368,7 @@ module.exports = function(grunt) {
                     src: ['src/*.js', 'src/plugins/**/plugin.js']
                 }],
                 options: {
+                    prefix: 'http://localhost:<%= connect.test.options.port %>/',
                     dest: '.coverage-results/all.lcov'
                 }
             }
@@ -373,10 +382,46 @@ module.exports = function(grunt) {
             all: {
                 src: '.coverage-results/all.lcov'
             }
+        },
+
+        // Release tasks
+        git: {
+            checkout: {
+                args: ['master']
+            },
+
+            merge: {
+                args: ['dev'],
+                options: {
+                    'strategy-option': 'theirs',
+                    'm': 'Release <%= grunt.option("tag") %>'
+                }
+            },
+
+            commit: {
+                options: {
+                    'a': true,
+                    'amend': true,
+                    'no-edit': true
+                }
+            },
+
+            tag: {
+                args: ['<%= grunt.option("tag") %>']
+            }
         }
     });
 
+    grunt.registerTask('updatePackage', 'Update version in package.json', function() {
+        var pkg = grunt.config('pkg');
+        pkg.version = grunt.option('tag');
+        grunt.file.write('package.json', JSON.stringify(pkg, null, 2) + '\n');
+    });
 
+
+    /**
+     * Build JS
+     */
     grunt.registerTask('build_js', [
         'concat:lang_temp',
         'concat:js',
@@ -387,6 +432,9 @@ module.exports = function(grunt) {
         'clean:temp'
     ]);
 
+    /**
+     * Build CSS
+     */
     grunt.registerTask('build_css', [
         'copy:sass_core',
         'copy:sass_plugins',
@@ -396,16 +444,25 @@ module.exports = function(grunt) {
         'usebanner:css'
     ]);
 
+    /**
+     * Build language files
+     */
     grunt.registerTask('build_lang', [
         'concat:lang'
     ]);
 
-    grunt.registerTask('default', [
+    /**
+     * Build the lib
+     */
+    grunt.registerTask('build', [
         'build_lang',
         'build_js',
         'build_css'
     ]);
 
+    /**
+     * Run tests
+     */
     grunt.registerTask('test', [
         'jshint',
         'jscs',
@@ -414,22 +471,43 @@ module.exports = function(grunt) {
         'build_css',
         'injector:testSrc',
         'injector:testModules',
+        'connect:test',
         'qunit_blanket_lcov',
         'qunit'
     ]);
 
+    /**
+     * Development server
+     */
     grunt.registerTask('serve', [
         'build_lang',
         'build_css',
         'injector:example',
         'open',
-        'connect',
+        'connect:example',
         'watch'
     ]);
 
+    /**
+     * Documentation
+     */
     grunt.registerTask('doc', [
         'clean:doc',
         'jsdoc',
         'copy:doc_script'
     ]);
+
+    /**
+     * Release
+     */
+    grunt.registerTask('release', [
+        'git:checkout',
+        'git:merge',
+        'updatePackage',
+        'build',
+        'git:commit',
+        'git:tag'
+    ]);
+
+    grunt.registerTask('default', ['build']);
 };

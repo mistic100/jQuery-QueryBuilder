@@ -104,7 +104,12 @@ QUnit.assert.rulesMatch = function(actual, expected, message) {
         return ok;
     }(actual, expected));
 
-    this.push(ok, actual, expected, message);
+    this.pushResult({
+        result: ok,
+        actual: actual,
+        expected: expected,
+        message: message
+    });
 };
 
 /**
@@ -158,7 +163,12 @@ QUnit.assert.optionsMatch = function($target, expected, message) {
  * Custom assert to test a regex
  */
 QUnit.assert.match = function(actual, regex, message) {
-    this.push(regex.test(actual), actual, regex, message);
+    this.pushResult({
+        result: regex.test(actual),
+        actual: actual,
+        expected: regex,
+        message: message
+    });
 };
 
 
