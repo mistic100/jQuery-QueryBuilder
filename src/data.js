@@ -49,7 +49,7 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
 
     for (var i = 0; i < operator.nb_inputs; i++) {
         if (!operator.multiple && $.isArray(value[i]) && value[i].length > 1) {
-            result = ['operator_not_multiple', operator.type];
+            result = ['operator_not_multiple', operator.type, this.translate('operators', operator.type)];
             break;
         }
 
@@ -589,6 +589,23 @@ QueryBuilder.prototype.getGroupFlags = function(flags, all) {
         });
         return ret;
     }
+};
+
+/**
+ * Retrieve a translation in the `lang` object
+ * @param {string} [category]
+ * @param {string} key
+ * @returns {string}
+ */
+QueryBuilder.prototype.translate = function(category, key) {
+    if (!key) {
+        key = category;
+        category = undefined;
+    }
+
+    var translation = (category ? this.lang[category] : this.lang)[key] || key;
+
+    return this.change('translate', translation, category, key);
 };
 
 /**
