@@ -13,29 +13,29 @@ Model.defineModelProperties(Rule, ['category']);
 // DEFAULT CONFIG
 // ===============================
 QueryBuilder.defaults({
-  categories: [],
-  sort_categories: false,
-  display_empty_category: true,
-  default_category: null,
-  templates: {
-    categorySelect: '\
-      {{ var optgroup = null; }} \
-      <select class="form-control" name="{{= it.rule.id }}_category"> \
+    categories: [],
+    sort_categories: false,
+    display_empty_category: true,
+    default_category: null,
+    templates: {
+        categorySelect: '\
+    {{ var optgroup = null; }} \
+    <select class="form-control" name="{{= it.rule.id }}_category"> \
         {{? it.settings.display_empty_category }} \
-          <option value="-1">{{= it.settings.select_placeholder }}</option> \
+            <option value="-1">{{= it.settings.select_placeholder }}</option> \
         {{?}} \
         {{~ it.categories: category }} \
-          {{? optgroup !== category.optgroup }} \
-            {{? optgroup !== null }}</optgroup>{{?}} \
-            {{? (optgroup = category.optgroup) !== null }} \
-              <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
+            {{? optgroup !== category.optgroup }} \
+                {{? optgroup !== null }}</optgroup>{{?}} \
+                {{? (optgroup = category.optgroup) !== null }} \
+                    <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
+                {{?}} \
             {{?}} \
-          {{?}} \
-          <option value="{{= category.id }}">{{= it.translate(category.label) }}</option> \
+            <option value="{{= category.id }}">{{= it.translate(category.label) }}</option> \
         {{~}} \
         {{? optgroup !== null }}</optgroup>{{?}} \
-      </select>'
-  }
+    </select>'
+    }
 });
 
 QueryBuilder.define('category', function(options) {
@@ -56,7 +56,7 @@ QueryBuilder.define('category', function(options) {
             Model($rule).category = self.getCategoryById($(this).val());
         });
 
-        // update event binding for category field of rule model 
+        // update event binding for category field of rule model
         self.model.on('update', function(e, node, field, value, oldValue) {
             if (node instanceof Rule && field === 'category') {
                 self.updateRuleCategory(node, oldValue);
@@ -101,13 +101,6 @@ QueryBuilder.define('category', function(options) {
     this.on('ruleToJson.filter', function(e, rule) {
         e.value.category = rule.category.id;
     });
-
-    /**
-     * Read "category" from JSON
-     */
-    this.on('jsonToRule.filter', function(e, json) {
-        //e.value.category = e.builder.getCategoryById(json.category ? json.category : '-1');
-    });
 }, {
     default_no_category: false,
     container: 'body',
@@ -115,9 +108,6 @@ QueryBuilder.define('category', function(options) {
     width: 'auto',
     showIcon: false
 });
-
-// keep a pointer to the original addRule method
-var originaAddRule = QueryBuilder.prototype.addRule;
 
 QueryBuilder.extend({
     /** //OVERRIDEN to change flow of creating rule filter when new rule is added, prevented filter select creation and created category select instead.
@@ -127,8 +117,7 @@ QueryBuilder.extend({
      * @param flags {object,optional} flags to apply to the rule
      * @return rule {Rule}
      */
-     addRule: function(parent, data, flags) {
-        //originaAddRule.call(this);
+    addRule: function(parent, data, flags) {
         var e = this.trigger('beforeAddRule', parent);
         if (e.isDefaultPrevented()) {
             return null;
@@ -253,9 +242,9 @@ QueryBuilder.extend({
                     }
 
                     if (!item.empty) {
-                        if (item.category){
+                        if (item.category) {
                             model.category = self.getCategoryById(item.category ? item.category : '-1');
-                            if (self.isFilterOKForCategory(item.id, item.category)){
+                            if (self.isFilterOKForCategory(item.id, item.category)) {
 
                                 model.filter = self.getFilterById(item.id, !options.allow_invalid);
 
@@ -298,17 +287,16 @@ QueryBuilder.extend({
     isFilterOKForCategory: function(filterId, categoryId) {
         var filtersOfCategory = this.getFiltersForCategoryId(categoryId);
 
-        for (var i = 0; i < filtersOfCategory.length; i++) { 
-            if (filtersOfCategory[i].id == filterId){
+        for (var i = 0; i < filtersOfCategory.length; i++) {
+            if (filtersOfCategory[i].id == filterId) {
                 return true;
             }
         }
-        
         return false;
     },
 
     /**
-     * Filter filters array according to categories of filters 
+     * Filter filters array according to categories of filters
      * @param categoryId {string}
      * @return {array}
      */
@@ -317,7 +305,7 @@ QueryBuilder.extend({
         var category = this.getCategoryById(categoryId);
         this.filters.forEach(function(filter, i) {
             category.filters.forEach(function(filterOfCategory, i) {
-                if (filter.id == filterOfCategory){
+                if (filter.id == filterOfCategory) {
                     filtersOfCategory.push(filter);
                 }
             }, this);
@@ -355,7 +343,6 @@ QueryBuilder.extend({
         var $categorySelect = $(this.getRuleCategorySelect(rule, categories));
 
         rule.$el.find(Selectors.category_container).html($categorySelect);
-        
         this.trigger('afterCreateRuleCategories', rule);
     },
 
