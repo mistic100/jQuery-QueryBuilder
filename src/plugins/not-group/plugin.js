@@ -49,7 +49,7 @@ QueryBuilder.define('not-group', function(options) {
         var $h = $(h.value);
         $h.find(QueryBuilder.selectors.condition_container).prepend(
             '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
-            '<i class="' + options.icon_unchecked + '"></i> ' + self.lang.NOT +
+            '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
             '</button>'
         );
         h.value = $h.prop('outerHTML');

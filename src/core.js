@@ -124,7 +124,7 @@ QueryBuilder.prototype.checkFilters = function(filters) {
         else {
             var self = this;
             filters.sort(function(a, b) {
-                return self.getTranslatedLabel(a.label).localeCompare(self.getTranslatedLabel(b.label));
+                return self.translate(a.label).localeCompare(self.translate(b.label));
             });
         }
     }
@@ -884,7 +884,7 @@ QueryBuilder.prototype.updateError = function(node) {
             node.$el.removeClass('has-error');
         }
         else {
-            var errorMessage = this.lang.errors[node.error[0]] || node.error[0];
+            var errorMessage = this.translate('errors', node.error[0]);
             errorMessage = Utils.fmt(errorMessage, node.error.slice(1));
 
             /**

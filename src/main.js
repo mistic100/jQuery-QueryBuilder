@@ -101,7 +101,7 @@ var QueryBuilder = function($el, options) {
      * @member {object}
      * @readonly
      */
-    this.lang = undefined;
+    this.lang = null;
 
     // translations : english << 'lang_code' << custom
     if (QueryBuilder.regional['en'] === undefined) {

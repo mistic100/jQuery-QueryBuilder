@@ -3,23 +3,23 @@ QueryBuilder.templates.group = '\
   <dt class="rules-group-header"> \
     <div class="btn-group pull-right group-actions"> \
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
-        <i class="{{= it.icons.add_rule }}"></i> {{= it.lang.add_rule }} \
+        <i class="{{= it.icons.add_rule }}"></i> {{= it.translate("add_rule") }} \
       </button> \
       {{? it.settings.allow_groups===-1 || it.settings.allow_groups>=it.level }} \
         <button type="button" class="btn btn-xs btn-success" data-add="group"> \
-          <i class="{{= it.icons.add_group }}"></i> {{= it.lang.add_group }} \
+          <i class="{{= it.icons.add_group }}"></i> {{= it.translate("add_group") }} \
         </button> \
       {{?}} \
       {{? it.level>1 }} \
         <button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
-          <i class="{{= it.icons.remove_group }}"></i> {{= it.lang.delete_group }} \
+          <i class="{{= it.icons.remove_group }}"></i> {{= it.translate("delete_group") }} \
         </button> \
       {{?}} \
     </div> \
     <div class="btn-group group-conditions"> \
       {{~ it.conditions: condition }} \
         <label class="btn btn-xs btn-primary"> \
-          <input type="radio" name="{{= it.group_id }}_cond" value="{{= condition }}"> {{= it.lang.conditions[condition] || condition }} \
+          <input type="radio" name="{{= it.group_id }}_cond" value="{{= condition }}"> {{= it.translate("conditions", condition) }} \
         </label> \
       {{~}} \
     </div> \
@@ -37,7 +37,7 @@ QueryBuilder.templates.rule = '\
   <div class="rule-header"> \
     <div class="btn-group pull-right rule-actions"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
-        <i class="{{= it.icons.remove_rule }}"></i> {{= it.lang.delete_rule }} \
+        <i class="{{= it.icons.remove_rule }}"></i> {{= it.translate("delete_rule") }} \
       </button> \
     </div> \
   </div> \
@@ -70,7 +70,7 @@ QueryBuilder.templates.filterSelect = '\
 QueryBuilder.templates.operatorSelect = '\
 {{? it.operators.length === 1 }} \
 <span> \
-{{= it.lang.operators[it.operators[0].type] || it.operators[0].type }} \
+{{= it.translate("operators", it.operators[0].type) }} \
 </span> \
 {{?}} \
 {{ var optgroup = null; }} \
@@ -82,7 +82,7 @@ QueryBuilder.templates.operatorSelect = '\
         <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
       {{?}} \
     {{?}} \
-    <option value="{{= operator.type }}">{{= it.lang.operators[operator.type] || operator.type }}</option> \
+    <option value="{{= operator.type }}">{{= it.translate("operators", operator.type) }}</option> \
   {{~}} \
   {{? optgroup !== null }}</optgroup>{{?}} \
 </select>';
@@ -102,8 +102,8 @@ QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
         level: level,
         conditions: this.settings.conditions,
         icons: this.icons,
-        lang: this.lang,
-        settings: this.settings
+        settings: this.settings,
+        translate: this.translate.bind(this)
     });
 
     /**
@@ -129,8 +129,8 @@ QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
         builder: this,
         rule_id: rule_id,
         icons: this.icons,
-        lang: this.lang,
-        settings: this.settings
+        settings: this.settings,
+        translate: this.translate.bind(this)
     });
 
     /**
@@ -157,9 +157,8 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
         rule: rule,
         filters: filters,
         icons: this.icons,
-        lang: this.lang,
         settings: this.settings,
-        translate: this.getTranslatedLabel
+        translate: this.translate.bind(this)
     });
 
     /**
@@ -188,9 +187,8 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
         rule: rule,
         operators: operators,
         icons: this.icons,
-        lang: this.lang,
         settings: this.settings,
-        translate: this.getTranslatedLabel
+        translate: this.translate.bind(this)
     });
 
     /**

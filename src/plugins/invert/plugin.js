@@ -65,14 +65,14 @@ QueryBuilder.define('invert', function(options) {
     // Modify templates
     this.on('getGroupTemplate.filter', function(h, level) {
         var $h = $(h.value);
-        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> ' + self.lang.invert + '</button>');
+        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> ' + self.translate('invert') + '</button>');
         h.value = $h.prop('outerHTML');
     });
 
     if (options.display_rules_button && options.invert_rules) {
         this.on('getRuleTemplate.filter', function(h) {
             var $h = $(h.value);
-            $h.find(Selectors.rule_actions).prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> ' + self.lang.invert + '</button>');
+            $h.find(Selectors.rule_actions).prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> ' + self.translate('invert') + '</button>');
             h.value = $h.prop('outerHTML');
         });
     }

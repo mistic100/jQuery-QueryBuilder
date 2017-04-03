@@ -592,10 +592,11 @@ QueryBuilder.prototype.getGroupFlags = function(flags, all) {
 };
 
 /**
- * Retrieve a translation in the `lang` object
+ * Translate a label either by looking in the `lang` object or in itself if it's an object where keys are language codes
  * @param {string} [category]
- * @param {string} key
+ * @param {string|object} key
  * @returns {string}
+ * @fires QueryBuilder#changer:translate
  */
 QueryBuilder.prototype.translate = function(category, key) {
     if (!key) {
@@ -603,19 +604,24 @@ QueryBuilder.prototype.translate = function(category, key) {
         category = undefined;
     }
 
-    var translation = (category ? this.lang[category] : this.lang)[key] || key;
+    var translation;
+    if (typeof key === 'object') {
+        translation = key[this.settings.lang_code] || key['en'];
+    }
+    else {
+        translation = (category ? this.lang[category] : this.lang)[key] || key;
+    }
 
-    return this.change('translate', translation, category, key);
-};
-
-/**
- * Translates a label
- * @param {string|object} label
- * @returns {string}
- * @private
- */
-QueryBuilder.prototype.getTranslatedLabel = function(label) {
-    return typeof label == 'object' ? (label[this.settings.lang_code] || label['en']) : label;
+    /**
+     * Modifies the translated label
+     * @event changer:translate
+     * @memberof QueryBuilder
+     * @param {string} translation
+     * @param {string|object} key
+     * @param {string} [category]
+     * @returns {string}
+     */
+    return this.change('translate', translation, key, category);
 };
 
 /**
