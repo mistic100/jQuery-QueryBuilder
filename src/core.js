@@ -885,7 +885,13 @@ QueryBuilder.prototype.updateError = function(node) {
         }
         else {
             var errorMessage = this.lang.errors[node.error[0]] || node.error[0];
-            errorMessage = Utils.fmt(errorMessage, node.error.slice(1));
+            /**
+             * WHEN node.error[0] = 'operator_not_multiple' && node.error.slice(1) = 'equal' && lang_code = 'zh-CN' 
+             * THEN errorMessage = '选项 equal 无法接受多个值'
+             * CHANGE errorMessage = '选项 等于 无法接受多个值'
+             */
+            var errorParaMsg = this.lang.operators[node.error.slice(1)] || node.error.slice(1);       
+            errorMessage = Utils.fmt(errorMessage, errorParaMsg);
 
             /**
              * Modifies an error message before display
