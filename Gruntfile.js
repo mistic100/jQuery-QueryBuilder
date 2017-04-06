@@ -196,7 +196,7 @@ module.exports = function(grunt) {
                 src: ['dist/js/*.js']
             },
             css: {
-                src: ['dist/css/*.css', 'dist/css/*.scss']
+                src: ['dist/css/*.css', 'dist/scss/*.scss']
             }
         },
 
