@@ -1,9 +1,10 @@
 language: node_js
 node_js:
-  - "5"
+  - "6"
 before_install:
+  - rvm install 2.3.3
   - gem install sass
-  - gem install scss_lint -v 0.49.0
+  - gem install scss_lint
   - npm install -g grunt-cli
   - npm install -g bower
 before_script:
