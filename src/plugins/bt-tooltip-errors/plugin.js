@@ -1,11 +1,7 @@
 /**
- * @module BtTooltipErrorsPlugin
+ * @class BtTooltipErrors
+ * @memberof module:plugins
  * @description Applies Bootstrap Tooltips on validation error messages.
- */
-
-/**
- * @function init
- * @memberof module:BtTooltipErrorsPlugin
  * @param {object} [options]
  * @param {string} [options.placement='right']
  * @throws MissingLibraryError

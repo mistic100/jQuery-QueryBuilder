@@ -1,6 +1,6 @@
 /**
  * Destroys the builder
- * @fires QueryBuilder#beforeDestroy
+ * @fires QueryBuilder.beforeDestroy
  */
 QueryBuilder.prototype.destroy = function() {
     /**
@@ -27,8 +27,8 @@ QueryBuilder.prototype.destroy = function() {
 
 /**
  * Clear all rules and resets the root group
- * @fires QueryBuilder#beforeReset
- * @fires QueryBuilder#afterReset
+ * @fires QueryBuilder.beforeReset
+ * @fires QueryBuilder.afterReset
  */
 QueryBuilder.prototype.reset = function() {
     /**
@@ -58,8 +58,8 @@ QueryBuilder.prototype.reset = function() {
 
 /**
  * Clears all rules and removes the root group
- * @fires QueryBuilder#beforeClear
- * @fires QueryBuilder#afterClear
+ * @fires QueryBuilder.beforeClear
+ * @fires QueryBuilder.afterClear
  */
 QueryBuilder.prototype.clear = function() {
     /**
@@ -123,7 +123,7 @@ QueryBuilder.prototype.getModel = function(target) {
  * @param {object} [options]
  * @param {boolean} [options.skip_empty=false] - skips validating rules that have no filter selected
  * @returns {boolean}
- * @fires QueryBuilder#changer:validate
+ * @fires QueryBuilder.changer:validate
  */
 QueryBuilder.prototype.validate = function(options) {
     options = $.extend({
@@ -209,9 +209,9 @@ QueryBuilder.prototype.validate = function(options) {
  * @param {boolean} [options.allow_invalid=false] - returns rules even if they are invalid
  * @param {boolean} [options.skip_empty=false] - remove rules that have no filter selected
  * @returns {object}
- * @fires QueryBuilder#changer:ruleToJson
- * @fires QueryBuilder#changer:groupToJson
- * @fires QueryBuilder#changer:getRules
+ * @fires QueryBuilder.changer:ruleToJson
+ * @fires QueryBuilder.changer:groupToJson
+ * @fires QueryBuilder.changer:getRules
  */
 QueryBuilder.prototype.getRules = function(options) {
     options = $.extend({
@@ -308,6 +308,7 @@ QueryBuilder.prototype.getRules = function(options) {
     /**
      * Modifies the result of the {@link QueryBuilder#getRules} method
      * @event changer:getRules
+     * @memberof QueryBuilder
      * @param {object} json
      * @returns {object}
      */
@@ -320,10 +321,10 @@ QueryBuilder.prototype.getRules = function(options) {
  * @param {object} [options]
  * @param {boolean} [options.allow_invalid=false] - silent-fail if the data are invalid
  * @throws RulesError, UndefinedConditionError
- * @fires QueryBuilder#changer:setRules
- * @fires QueryBuilder#changer:jsonToRule
- * @fires QueryBuilder#changer:jsonToGroup
- * @fires QueryBuilder#afterSetRules
+ * @fires QueryBuilder.changer:setRules
+ * @fires QueryBuilder.changer:jsonToRule
+ * @fires QueryBuilder.changer:jsonToGroup
+ * @fires QueryBuilder.afterSetRules
  */
 QueryBuilder.prototype.setRules = function(data, options) {
     options = $.extend({

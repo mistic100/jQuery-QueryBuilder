@@ -2,6 +2,7 @@
  * Allowed types and their internal representation
  * @type {object.<string, string>}
  * @readonly
+ * @private
  */
 QueryBuilder.types = {
     'string':   'string',
@@ -17,6 +18,7 @@ QueryBuilder.types = {
  * Allowed inputs
  * @type {string[]}
  * @readonly
+ * @private
  */
 QueryBuilder.inputs = [
     'text',
@@ -31,6 +33,7 @@ QueryBuilder.inputs = [
  * Runtime modifiable options with `setOptions` method
  * @type {string[]}
  * @readonly
+ * @private
  */
 QueryBuilder.modifiable_options = [
     'display_errors',

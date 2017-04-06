@@ -2,10 +2,10 @@
 
 # Entry point: [$.fn.QueryBuilder](external-_jQuery.fn_.html)
 
-## [QueryBuilder](QueryBuilder.html)
+# [QueryBuilder](QueryBuilder.html)
 
-## [Rule](Rule.html) & [Group](Group.html)
+# [Rule](Rule.html) & [Group](Group.html)
 
-## [Events](list_event.html)
+# [Events](list_event.html)
 
-## [Plugins](list_module.html)
+# [Plugins](module-plugins.html)

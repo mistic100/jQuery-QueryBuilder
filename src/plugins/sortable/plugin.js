@@ -1,25 +1,7 @@
 /**
- * @module SortablePlugin
+ * @class Sortable
+ * @memberof module:plugins
  * @description Enables drag & drop sort of rules.
- */
-
-QueryBuilder.selectors.rule_and_group_containers = QueryBuilder.selectors.rule_container + ', ' + QueryBuilder.selectors.group_container;
-QueryBuilder.selectors.drag_handle = '.drag-handle';
-
-QueryBuilder.defaults({
-    default_rule_flags: {
-        no_sortable: false,
-        no_drop: false
-    },
-    default_group_flags: {
-        no_sortable: false,
-        no_drop: false
-    }
-});
-
-/**
- * @function init
- * @memberof module:SortablePlugin
  * @param {object} [options]
  * @param {boolean} [options.inherit_no_drop=true]
  * @param {boolean} [options.inherit_no_sortable=true]
@@ -104,9 +86,9 @@ QueryBuilder.define('sortable', function(options) {
                         src.$el.show();
 
                         /**
-                         * After a node has been moved with {@link module:SortablePlugin}
+                         * After a node has been moved with {@link module:plugins.Sortable}
                          * @event afterMove
-                         * @memberof module:SortablePlugin
+                         * @memberof module:plugins.Sortable
                          * @param {Node} node
                          */
                         self.trigger('afterMove', src);
@@ -181,9 +163,23 @@ QueryBuilder.define('sortable', function(options) {
     icon: 'glyphicon glyphicon-sort'
 });
 
+QueryBuilder.selectors.rule_and_group_containers = QueryBuilder.selectors.rule_container + ', ' + QueryBuilder.selectors.group_container;
+QueryBuilder.selectors.drag_handle = '.drag-handle';
+
+QueryBuilder.defaults({
+    default_rule_flags: {
+        no_sortable: false,
+        no_drop: false
+    },
+    default_group_flags: {
+        no_sortable: false,
+        no_drop: false
+    }
+});
+
 /**
  * Moves an element (placeholder or actual object) depending on active target
- * @memberof module:SortablePlugin
+ * @memberof module:plugins.Sortable
  * @param {Node} node
  * @param {jQuery} target
  * @param {QueryBuilder} [builder]

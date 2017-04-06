@@ -1,11 +1,7 @@
 /**
- * @module UniqueFilterPlugin
+ * @class UniqueFilter
+ * @memberof module:plugins
  * @description Allows to define some filters as "unique": ie which can be used for only one rule, globally or in the same group.
- */
-
-/**
- * @function init
- * @memberof module:UniqueFilterPlugin
  */
 QueryBuilder.define('unique-filter', function() {
     this.status.used_filters = {};
@@ -38,10 +34,9 @@ QueryBuilder.define('unique-filter', function() {
     });
 });
 
-QueryBuilder.extend({
+QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
     /**
      * Updates the list of used filters
-     * @memberof module:UniqueFilterPlugin
      * @param {$.Event} [e]
      * @private
      */
@@ -75,7 +70,6 @@ QueryBuilder.extend({
 
     /**
      * Clear the list of used filters
-     * @memberof module:UniqueFilterPlugin
      * @param {$.Event} [e]
      * @private
      */
@@ -89,7 +83,6 @@ QueryBuilder.extend({
 
     /**
      * Disabled filters depending on the list of used ones
-     * @memberof module:UniqueFilterPlugin
      * @param {$.Event} [e]
      * @private
      */

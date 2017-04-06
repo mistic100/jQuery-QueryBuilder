@@ -214,7 +214,7 @@ Node.prototype.getPos = function() {
 
 /**
  * Deletes self
- * @fires Model#model:drop
+ * @fires Model.model:drop
  */
 Node.prototype.drop = function() {
     var model = this.model;
@@ -239,7 +239,7 @@ Node.prototype.drop = function() {
 /**
  * Moves itself after another Node
  * @param {Node} target
- * @fires Model#model:move
+ * @fires Model.model:move
  */
 Node.prototype.moveAfter = function(target) {
     if (!this.isRoot()) {
@@ -250,7 +250,7 @@ Node.prototype.moveAfter = function(target) {
 /**
  * Moves itself at the beginning of parent or another Group
  * @param {Group} [target]
- * @fires Model#model:move
+ * @fires Model.model:move
  */
 Node.prototype.moveAtBegin = function(target) {
     if (!this.isRoot()) {
@@ -265,7 +265,7 @@ Node.prototype.moveAtBegin = function(target) {
 /**
  * Moves itself at the end of parent or another Group
  * @param {Group} [target]
- * @fires Model#model:move
+ * @fires Model.model:move
  */
 Node.prototype.moveAtEnd = function(target) {
     if (!this.isRoot()) {
@@ -281,7 +281,7 @@ Node.prototype.moveAtEnd = function(target) {
  * Moves itself at specific position of Group
  * @param {Group} target
  * @param {int} index
- * @fires Model#model:move
+ * @fires Model.model:move
  */
 Node.prototype.move = function(target, index) {
     if (!this.isRoot()) {
@@ -375,7 +375,7 @@ Group.prototype.length = function() {
  * @param {int} [index=end]
  * @param {boolean} [trigger=false] - fire 'add' event
  * @returns {Node} the inserted node
- * @fires Model#model:add
+ * @fires Model.model:add
  */
 Group.prototype.insertNode = function(node, index, trigger) {
     if (index === undefined) {
@@ -405,7 +405,7 @@ Group.prototype.insertNode = function(node, index, trigger) {
  * @param {jQuery} $el
  * @param {int} [index=end]
  * @returns {Group}
- * @fires Model#model:add
+ * @fires Model.model:add
  */
 Group.prototype.addGroup = function($el, index) {
     return this.insertNode(new Group(this, $el), index, true);
@@ -416,7 +416,7 @@ Group.prototype.addGroup = function($el, index) {
  * @param {jQuery} $el
  * @param {int} [index=end]
  * @returns {Rule}
- * @fires Model#model:add
+ * @fires Model.model:add
  */
 Group.prototype.addRule = function($el, index) {
     return this.insertNode(new Rule(this, $el), index, true);

@@ -1,11 +1,7 @@
 /**
- * @module BtSelectpickerPlugin
+ * @class BtSelectpicker
+ * @memberof module:plugins
  * @descriptioon Applies Bootstrap Select on filters and operators combo-boxes.
- */
-
-/**
- * @function init
- * @memberof module:BtSelectpickerPlugin
  * @param {object} [options]
  * @param {string} [options.container='body']
  * @param {string} [options.style='btn-inverse btn-xs']

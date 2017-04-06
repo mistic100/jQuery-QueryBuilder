@@ -321,7 +321,7 @@ QueryBuilder.prototype.bindEvents = function() {
  * @param {object} [data] - group custom data
  * @param {object} [flags] - flags to apply to the group
  * @returns {Group} root group
- * @fires QueryBuilder#afterAddGroup
+ * @fires QueryBuilder.afterAddGroup
  */
 QueryBuilder.prototype.setRoot = function(addRule, data, flags) {
     addRule = (addRule === undefined || addRule === true);
@@ -354,8 +354,8 @@ QueryBuilder.prototype.setRoot = function(addRule, data, flags) {
  * @param {object} [data] - group custom data
  * @param {object} [flags] - flags to apply to the group
  * @returns {Group}
- * @fires QueryBuilder#beforeAddGroup
- * @fires QueryBuilder#afterAddGroup
+ * @fires QueryBuilder.beforeAddGroup
+ * @fires QueryBuilder.afterAddGroup
  */
 QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     addRule = (addRule === undefined || addRule === true);
@@ -403,8 +403,8 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
  * Tries to delete a group. The group is not deleted if at least one rule is flagged `no_delete`.
  * @param {Group} group
  * @returns {boolean} if the group has been deleted
- * @fires QueryBuilder#beforeDeleteGroup
- * @fires QueryBuilder#afterDeleteGroup
+ * @fires QueryBuilder.beforeDeleteGroup
+ * @fires QueryBuilder.afterDeleteGroup
  */
 QueryBuilder.prototype.deleteGroup = function(group) {
     if (group.isRoot()) {
@@ -447,7 +447,7 @@ QueryBuilder.prototype.deleteGroup = function(group) {
 /**
  * Performs actions when a group's condition changes
  * @param {Group} group
- * @fires QueryBuilder#afterUpdateGroupCondition
+ * @fires QueryBuilder.afterUpdateGroupCondition
  * @private
  */
 QueryBuilder.prototype.updateGroupCondition = function(group) {
@@ -489,9 +489,9 @@ QueryBuilder.prototype.refreshGroupsConditions = function() {
  * @param {object} [data] - rule custom data
  * @param {object} [flags] - flags to apply to the rule
  * @returns {Rule}
- * @fires QueryBuilder#beforeAddRule
- * @fires QueryBuilder#afterAddRule
- * @fires QueryBuilder#changer:getDefaultFilter
+ * @fires QueryBuilder.beforeAddRule
+ * @fires QueryBuilder.afterAddRule
+ * @fires QueryBuilder.changer:getDefaultFilter
  */
 QueryBuilder.prototype.addRule = function(parent, data, flags) {
     /**
@@ -547,8 +547,8 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
  * Tries to delete a rule
  * @param {Rule} rule
  * @returns {boolean} if the rule has been deleted
- * @fires QueryBuilder#beforeDeleteRule
- * @fires QueryBuilder#afterDeleteRule
+ * @fires QueryBuilder.beforeDeleteRule
+ * @fires QueryBuilder.afterDeleteRule
  */
 QueryBuilder.prototype.deleteRule = function(rule) {
     if (rule.flags.no_delete) {
@@ -581,8 +581,8 @@ QueryBuilder.prototype.deleteRule = function(rule) {
 /**
  * Creates the filters for a rule
  * @param {Rule} rule
- * @fires QueryBuilder#changer:getRuleFilters
- * @fires QueryBuilder#afterCreateRuleFilters
+ * @fires QueryBuilder.changer:getRuleFilters
+ * @fires QueryBuilder.afterCreateRuleFilters
  * @private
  */
 QueryBuilder.prototype.createRuleFilters = function(rule) {
@@ -611,7 +611,7 @@ QueryBuilder.prototype.createRuleFilters = function(rule) {
 /**
  * Creates the operators for a rule and init the rule operator
  * @param {Rule} rule
- * @fires QueryBuilder#afterCreateRuleOperators
+ * @fires QueryBuilder.afterCreateRuleOperators
  * @private
  */
 QueryBuilder.prototype.createRuleOperators = function(rule) {
@@ -642,7 +642,7 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
 /**
  * Creates the main input for a rule
  * @param {Rule} rule
- * @fires QueryBuilder#afterCreateRuleInput
+ * @fires QueryBuilder.afterCreateRuleInput
  * @private
  */
 QueryBuilder.prototype.createRuleInput = function(rule) {
@@ -701,7 +701,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
  * Performs action when a rule's filter changes
  * @param {Rule} rule
  * @param {object} previousFilter
- * @fires QueryBuilder#afterUpdateRuleFilter
+ * @fires QueryBuilder.afterUpdateRuleFilter
  * @private
  */
 QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
@@ -728,7 +728,7 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
  * Performs actions when a rule's operator changes
  * @param {Rule} rule
  * @param {object} previousOperator
- * @fires QueryBuilder#afterUpdateRuleOperator
+ * @fires QueryBuilder.afterUpdateRuleOperator
  * @private
  */
 QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
@@ -768,7 +768,7 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
 /**
  * Performs actions when rule's value changes
  * @param {Rule} rule
- * @fires QueryBuilder#afterUpdateRuleValue
+ * @fires QueryBuilder.afterUpdateRuleValue
  * @private
  */
 QueryBuilder.prototype.updateRuleValue = function(rule) {
@@ -788,7 +788,7 @@ QueryBuilder.prototype.updateRuleValue = function(rule) {
 /**
  * Changes a rule's properties depending on its flags
  * @param {Rule} rule
- * @fires QueryBuilder#afterApplyRuleFlags
+ * @fires QueryBuilder.afterApplyRuleFlags
  * @private
  */
 QueryBuilder.prototype.applyRuleFlags = function(rule) {
@@ -820,7 +820,7 @@ QueryBuilder.prototype.applyRuleFlags = function(rule) {
 /**
  * Changes group's properties depending on its flags
  * @param {Group} group
- * @fires QueryBuilder#afterApplyGroupFlags
+ * @fires QueryBuilder.afterApplyGroupFlags
  * @private
  */
 QueryBuilder.prototype.applyGroupFlags = function(group) {
@@ -875,7 +875,7 @@ QueryBuilder.prototype.clearErrors = function(node) {
 /**
  * Adds/Removes error on a Rule or Group
  * @param {Node} node
- * @fires QueryBuilder#changer:displayError
+ * @fires QueryBuilder.changer:displayError
  * @private
  */
 QueryBuilder.prototype.updateError = function(node) {
@@ -910,7 +910,7 @@ QueryBuilder.prototype.updateError = function(node) {
  * @param {Node} node
  * @param {string|array} error
  * @param {*} value
- * @fires QueryBuilder#validationError
+ * @fires QueryBuilder.validationError
  * @private
  */
 QueryBuilder.prototype.triggerValidationError = function(node, error, value) {

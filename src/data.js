@@ -3,7 +3,7 @@
  * @param {Rule} rule
  * @param {string|string[]} value
  * @returns {array|boolean} true or error array
- * @fires QueryBuilder#changer:validateValue
+ * @fires QueryBuilder.changer:validateValue
  */
 QueryBuilder.prototype.validateValue = function(rule, value) {
     var validation = rule.filter.validation || {};
@@ -246,7 +246,7 @@ QueryBuilder.prototype.nextRuleId = function() {
  * Returns the operators for a filter
  * @param {string|object} filter - filter id or filter object
  * @returns {object[]}
- * @fires QueryBuilder#changer:getOperators
+ * @fires QueryBuilder.changer:getOperators
  * @private
  */
 QueryBuilder.prototype.getOperators = function(filter) {
@@ -341,7 +341,7 @@ QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
  * Returns rule's current input value
  * @param {Rule} rule
  * @returns {*}
- * @fires QueryBuilder#changer:getRuleValue
+ * @fires QueryBuilder.changer:getRuleValue
  * @private
  */
 QueryBuilder.prototype.getRuleInputValue = function(rule) {
@@ -483,7 +483,7 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
  * Parses rule flags
  * @param {object} rule
  * @returns {object}
- * @fires QueryBuilder#changer:parseRuleFlags
+ * @fires QueryBuilder.changer:parseRuleFlags
  * @private
  */
 QueryBuilder.prototype.parseRuleFlags = function(rule) {
@@ -539,7 +539,7 @@ QueryBuilder.prototype.getRuleFlags = function(flags, all) {
  * Parses group flags
  * @param {object} group
  * @returns {object}
- * @fires QueryBuilder#changer:parseGroupFlags
+ * @fires QueryBuilder.changer:parseGroupFlags
  * @private
  */
 QueryBuilder.prototype.parseGroupFlags = function(group) {
@@ -596,7 +596,7 @@ QueryBuilder.prototype.getGroupFlags = function(flags, all) {
  * @param {string} [category]
  * @param {string|object} key
  * @returns {string}
- * @fires QueryBuilder#changer:translate
+ * @fires QueryBuilder.changer:translate
  */
 QueryBuilder.prototype.translate = function(category, key) {
     if (!key) {

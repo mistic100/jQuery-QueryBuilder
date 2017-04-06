@@ -92,7 +92,7 @@ QueryBuilder.templates.operatorSelect = '\
  * @param {string} group_id
  * @param {int} level
  * @returns {string}
- * @fires QueryBuilder#changer:getGroupTemplate
+ * @fires QueryBuilder.changer:getGroupTemplate
  * @private
  */
 QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
@@ -121,7 +121,7 @@ QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
  * Returns rule's HTML
  * @param {string} rule_id
  * @returns {string}
- * @fires QueryBuilder#changer:getRuleTemplate
+ * @fires QueryBuilder.changer:getRuleTemplate
  * @private
  */
 QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
@@ -148,7 +148,7 @@ QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
  * @param {Rule} rule
  * @param {object[]} filters
  * @returns {string}
- * @fires QueryBuilder#changer:getRuleFilterTemplate
+ * @fires QueryBuilder.changer:getRuleFilterTemplate
  * @private
  */
 QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
@@ -178,7 +178,7 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
  * @param {Rule} rule
  * @param {object[]} operators
  * @returns {string}
- * @fires QueryBuilder#changer:getRuleOperatorTemplate
+ * @fires QueryBuilder.changer:getRuleOperatorTemplate
  * @private
  */
 QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
@@ -208,7 +208,7 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
  * @param {Rule} rule
  * @param {int} value_id
  * @returns {string}
- * @fires QueryBuilder#changer:getRuleInput
+ * @fires QueryBuilder.changer:getRuleInput
  * @private
  */
 QueryBuilder.prototype.getRuleInput = function(rule, value_id) {

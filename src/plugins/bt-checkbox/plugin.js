@@ -1,11 +1,7 @@
 /**
- * @module BtCheckboxPlugin
+ * @class BtCheckbox
+ * @memberof module:plugins
  * @description Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.
- */
-
-/**
- * @function init
- * @memberof module:BtCheckboxPlugin
  * @param {object} [options]
  * @param {string} [options.font='glyphicons']
  * @param {string} [options.color='default']

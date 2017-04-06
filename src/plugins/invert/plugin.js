@@ -1,41 +1,7 @@
 /**
- * @module InvertPlugin
+ * @class Invert
+ * @memberof module:plugins
  * @description Allows to invert a rule operator, a group condition or the entire builder.
- */
-
-QueryBuilder.defaults({
-    operatorOpposites: {
-        'equal':            'not_equal',
-        'not_equal':        'equal',
-        'in':               'not_in',
-        'not_in':           'in',
-        'less':             'greater_or_equal',
-        'less_or_equal':    'greater',
-        'greater':          'less_or_equal',
-        'greater_or_equal': 'less',
-        'between':          'not_between',
-        'not_between':      'between',
-        'begins_with':      'not_begins_with',
-        'not_begins_with':  'begins_with',
-        'contains':         'not_contains',
-        'not_contains':     'contains',
-        'ends_with':        'not_ends_with',
-        'not_ends_with':    'ends_with',
-        'is_empty':         'is_not_empty',
-        'is_not_empty':     'is_empty',
-        'is_null':          'is_not_null',
-        'is_not_null':      'is_null'
-    },
-
-    conditionOpposites: {
-        'AND': 'OR',
-        'OR': 'AND'
-    }
-});
-
-/**
- * @function init
- * @memberof module:InvertPlugin
  * @param {object} [options]
  * @param {string} [options.icon='glyphicon glyphicon-random']
  * @param {boolean} [options.recursive=true]
@@ -84,13 +50,42 @@ QueryBuilder.define('invert', function(options) {
     silent_fail: false
 });
 
-QueryBuilder.extend({
+QueryBuilder.defaults({
+    operatorOpposites: {
+        'equal':            'not_equal',
+        'not_equal':        'equal',
+        'in':               'not_in',
+        'not_in':           'in',
+        'less':             'greater_or_equal',
+        'less_or_equal':    'greater',
+        'greater':          'less_or_equal',
+        'greater_or_equal': 'less',
+        'between':          'not_between',
+        'not_between':      'between',
+        'begins_with':      'not_begins_with',
+        'not_begins_with':  'begins_with',
+        'contains':         'not_contains',
+        'not_contains':     'contains',
+        'ends_with':        'not_ends_with',
+        'not_ends_with':    'ends_with',
+        'is_empty':         'is_not_empty',
+        'is_not_empty':     'is_empty',
+        'is_null':          'is_not_null',
+        'is_not_null':      'is_null'
+    },
+
+    conditionOpposites: {
+        'AND': 'OR',
+        'OR': 'AND'
+    }
+});
+
+QueryBuilder.extend(/** @lends module:plugins.Invert.prototype */ {
     /**
      * Invert a Group, a Rule or the whole builder
-     * @memberof module:InvertPlugin
      * @param {Node} [node]
-     * @param {object} [options] {@link module:InvertPlugin.init}
-     * @fires module:InvertPlugin.afterInvert
+     * @param {object} [options] {@link module:plugins.Invert}
+     * @fires module:plugins.Invert.afterInvert
      * @throws InvertConditionError, InvertOperatorError
      */
     invert: function(node, options) {
@@ -145,9 +140,9 @@ QueryBuilder.extend({
 
         if (options.trigger) {
             /**
-             * After {@link module:InvertPlugin.invert} method
+             * After {@link module:plugins.Invert.invert} method
              * @event afterInvert
-             * @memberof module:InvertPlugin
+             * @memberof module:plugins.Invert
              * @param {Node} node - the main group or rule that has been modified
              * @param {object} options
              */

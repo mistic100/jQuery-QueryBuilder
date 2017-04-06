@@ -17,6 +17,7 @@ module.exports = function(grunt) {
         js_core_files: [
             'src/main.js',
             'src/defaults.js',
+            'src/plugins.js',
             'src/core.js',
             'src/public.js',
             'src/data.js',

@@ -1,22 +1,7 @@
 /**
- * @module NotGroupPlugin
+ * @class NotGroup
+ * @memberof module:plugins
  * @description Adds a "Not" checkbox in front of group conditions.
- */
-
-/**
- * From {@link module:NotGroupPlugin}
- * @name not
- * @member {boolean}
- * @memberof Group
- * @instance
- */
-Model.defineModelProperties(Group, ['not']);
-
-QueryBuilder.selectors.group_not = QueryBuilder.selectors.group_header + ' [data-not=group]';
-
-/**
- * @function init
- * @memberof module:NotGroupPlugin
  * @param {object} [options]
  * @param {string} [options.icon_checked='glyphicon glyphicon-checked']
  * @param {string} [options.icon_unchecked='glyphicon glyphicon-unchecked']
@@ -112,12 +97,22 @@ QueryBuilder.define('not-group', function(options) {
     icon_checked: 'glyphicon glyphicon-check'
 });
 
-QueryBuilder.extend({
+/**
+ * From {@link module:plugins.NotGroup}
+ * @name not
+ * @member {boolean}
+ * @memberof Group
+ * @instance
+ */
+Model.defineModelProperties(Group, ['not']);
+
+QueryBuilder.selectors.group_not = QueryBuilder.selectors.group_header + ' [data-not=group]';
+
+QueryBuilder.extend(/** @lends module:plugins.NotGroup.prototype */ {
     /**
      * Performs actions when a group's not changes
-     * @memberof module:NotGroupPlugin
      * @param {Group} group
-     * @fires module:NotGroupPlugin.afterUpdateGroupNot
+     * @fires module:plugins.NotGroup.afterUpdateGroupNot
      * @private
      */
     updateGroupNot: function(group) {
@@ -129,7 +124,7 @@ QueryBuilder.extend({
         /**
          * After the group's not flag has been modified
          * @event afterUpdateGroupNot
-         * @memberof module:NotGroupPlugin
+         * @memberof module:plugins.NotGroup
          * @param {Group} group
          */
         this.trigger('afterUpdateGroupNot', group);

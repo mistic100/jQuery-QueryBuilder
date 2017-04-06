@@ -9,6 +9,11 @@
  * @memberof external:"jQuery.fn"
  * @param {*} option - initial configuration or method name
  * @param {...*} args - method arguments
+ *
+ * @example
+ * $('#builder').queryBuilder({ /** configuration object *\/ });
+ * @example
+ * $('#builder').queryBuilder('methodName', methodParam1, methodParam2);
  */
 $.fn.queryBuilder = function(option) {
     if (this.length === 0) {
