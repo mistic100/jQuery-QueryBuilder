@@ -134,6 +134,12 @@ $(function(){
             id: 'name',
             type: 'string',
             description: '<b>Lorem Ipsum</b> sit amet.'
+        }, {
+            id: 'age',
+            type: 'integer',
+            description: function(rule) {
+                return 'Description of operator ' + rule.operator.type;
+            }
         }];
 
         var rules = {
@@ -141,6 +147,9 @@ $(function(){
             rules: [{
                 id: 'name',
                 value: 'Mistic'
+            }, {
+                id: 'age',
+                value: 25
             }]
         };
 
@@ -154,8 +163,14 @@ $(function(){
 
         assert.match(
             $('#builder_rule_0 p.filter-description').html(),
-            new RegExp(filters[0].description),
+            new RegExp('<b>Lorem Ipsum</b> sit amet.'),
             'Paragraph should contain filter description'
+        );
+
+        assert.match(
+            $('#builder_rule_1 p.filter-description').html(),
+            new RegExp('Description of operator equal'),
+            'Paragraph should contain filter description after function execution'
         );
 
         $b.queryBuilder('destroy');

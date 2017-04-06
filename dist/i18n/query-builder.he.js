@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.1
+ * jQuery QueryBuilder 2.4.2
  * Locale: Hebrew (he)
  * Author: Kfir Stri https://github.com/kfirstri
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -71,7 +71,7 @@ QueryBuilder.regional['he'] = {
     "datetime_exceed_min": "התאריך חייב להיות אחרי {0}",
     "datetime_exceed_max": "התאריך חייב להיות לפני {0}",
     "boolean_not_valid": "זהו לא בוליאני",
-    "operator_not_multiple": "האופרטור {0} לא יכול לקבל ערכים מרובים"
+    "operator_not_multiple": "האופרטור \"{1}\" לא יכול לקבל ערכים מרובים"
   },
   "invert": "הפוך שאילתא",
   "NOT": "לא"

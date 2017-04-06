@@ -1,0 +1,39 @@
+{
+  "opts": {
+    "private": false,
+    "template": "node_modules/foodoc/template",
+    "readme": "build/jsdoc.md"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "systemName": "jQuery QueryBuilder API",
+    "systemSummary": "jQuery plugin for user friendly query/filter creator",
+    "systemColor": "#004482",
+    "copyright": "Licensed under MIT License, documentation under CC BY 3.0.",
+    "includeDate": false,
+    "inverseNav": false,
+    "cleverLinks": true,
+    "sort": "longname, version, since",
+    "analytics": {
+      "ua": "UA-28192323-3",
+      "domain": "auto"
+    },
+    "navMembers": [
+      {"kind": "class", "title": "Classes", "summary": "All documented classes."},
+      {"kind": "external", "title": "Externals", "summary": "All documented external members."},
+      {"kind": "global", "title": "Globals", "summary": "All documented globals."},
+      {"kind": "mixin", "title": "Mixins", "summary": "All documented mixins."},
+      {"kind": "interface", "title": "Interfaces", "summary": "All documented interfaces."},
+      {"kind": "module", "title": "Modules", "summary": "All documented modules."},
+      {"kind": "event", "title": "Events", "summary": "All documented events."},
+      {"kind": "namespace", "title": "Namespaces", "summary": "All documented namespaces."},
+      {"kind": "tutorial", "title": "Tutorials", "summary": "All available tutorials."}
+    ],
+    "scripts": [
+      "https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js",
+      "js/custom.js"
+    ]
+  }
+}

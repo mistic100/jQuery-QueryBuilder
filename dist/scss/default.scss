@@ -1,9 +1,8 @@
 /*!
- * jQuery QueryBuilder 2.4.1
+ * jQuery QueryBuilder 2.4.2
  * Copyright 2014-2017 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
-
 $theme-name: default !default;
 
 // common
@@ -176,8 +175,10 @@ $ticks-position: 5px, 10px !default;
   }
 }
 
-
-@import 'plugins/bt-tooltip-errors';
-@import 'plugins/filter-description';
-@import 'plugins/invert';
-@import 'plugins/sortable';
+// import
+@import "plugins/_bt-checkbox";
+@import "plugins/_bt-tooltip-errors";
+@import "plugins/_filter-description";
+@import "plugins/_invert";
+@import "plugins/_sortable";
+// endimport

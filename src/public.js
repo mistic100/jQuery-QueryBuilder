@@ -1,7 +1,13 @@
 /**
- * Destroy the plugin
+ * Destroys the builder
+ * @fires QueryBuilder.beforeDestroy
  */
 QueryBuilder.prototype.destroy = function() {
+    /**
+     * Before the {@link QueryBuilder#destroy} method
+     * @event beforeDestroy
+     * @memberof QueryBuilder
+     */
     this.trigger('beforeDestroy');
 
     if (this.status.generated_id) {
@@ -20,9 +26,21 @@ QueryBuilder.prototype.destroy = function() {
 };
 
 /**
- * Reset the plugin
+ * Clear all rules and resets the root group
+ * @fires QueryBuilder.beforeReset
+ * @fires QueryBuilder.afterReset
  */
 QueryBuilder.prototype.reset = function() {
+    /**
+     * Before the {@link QueryBuilder#reset} method, can be prevented
+     * @event beforeReset
+     * @memberof QueryBuilder
+     */
+    var e = this.trigger('beforeReset');
+    if (e.isDefaultPrevented()) {
+        return;
+    }
+
     this.status.group_id = 1;
     this.status.rule_id = 0;
 
@@ -30,13 +48,30 @@ QueryBuilder.prototype.reset = function() {
 
     this.addRule(this.model.root);
 
+    /**
+     * After the {@link QueryBuilder#reset} method
+     * @event afterReset
+     * @memberof QueryBuilder
+     */
     this.trigger('afterReset');
 };
 
 /**
- * Clear the plugin
+ * Clears all rules and removes the root group
+ * @fires QueryBuilder.beforeClear
+ * @fires QueryBuilder.afterClear
  */
 QueryBuilder.prototype.clear = function() {
+    /**
+     * Before the {@link QueryBuilder#clear} method, can be prevented
+     * @event beforeClear
+     * @memberof QueryBuilder
+     */
+    var e = this.trigger('beforeClear');
+    if (e.isDefaultPrevented()) {
+        return;
+    }
+
     this.status.group_id = 0;
     this.status.rule_id = 0;
 
@@ -45,13 +80,18 @@ QueryBuilder.prototype.clear = function() {
         this.model.root = null;
     }
 
+    /**
+     * After the {@link QueryBuilder#clear} method
+     * @event afterClear
+     * @memberof QueryBuilder
+     */
     this.trigger('afterClear');
 };
 
 /**
- * Modify the builder configuration
+ * Modifies the builder configuration.<br>
  * Only options defined in QueryBuilder.modifiable_options are modifiable
- * @param {object}
+ * @param {object} options
  */
 QueryBuilder.prototype.setOptions = function(options) {
     $.each(options, function(opt, value) {
@@ -62,19 +102,34 @@ QueryBuilder.prototype.setOptions = function(options) {
 };
 
 /**
- * Return the model associated to a DOM object, or root model
- * @param {jQuery,optional}
- * @return {Node}
+ * Returns the model associated to a DOM object, or the root model
+ * @param {jQuery} [target]
+ * @returns {Node}
  */
 QueryBuilder.prototype.getModel = function(target) {
-    return !target ? this.model.root : Model(target);
+    if (!target) {
+        return this.model.root;
+    }
+    else if (target instanceof Node) {
+        return target;
+    }
+    else {
+        return $(target).data('queryBuilderModel');
+    }
 };
 
 /**
- * Validate the whole builder
- * @return {boolean}
+ * Validates the whole builder
+ * @param {object} [options]
+ * @param {boolean} [options.skip_empty=false] - skips validating rules that have no filter selected
+ * @returns {boolean}
+ * @fires QueryBuilder.changer:validate
  */
-QueryBuilder.prototype.validate = function() {
+QueryBuilder.prototype.validate = function(options) {
+    options = $.extend({
+        skip_empty: false
+    }, options);
+
     this.clearErrors();
 
     var self = this;
@@ -84,6 +139,10 @@ QueryBuilder.prototype.validate = function() {
         var errors = 0;
 
         group.each(function(rule) {
+            if (!rule.filter && options.skip_empty) {
+                return;
+            }
+
             if (!rule.filter) {
                 self.triggerValidationError(rule, 'no_filter', null);
                 errors++;
@@ -109,16 +168,20 @@ QueryBuilder.prototype.validate = function() {
             done++;
 
         }, function(group) {
-            if (parse(group)) {
+            var res = parse(group);
+            if (res === true) {
                 done++;
             }
-            else {
+            else if (res === false) {
                 errors++;
             }
         });
 
         if (errors > 0) {
             return false;
+        }
+        else if (done === 0 && !group.isRoot() && options.skip_empty) {
+            return null;
         }
         else if (done === 0 && (!self.settings.allow_empty || !group.isRoot())) {
             self.triggerValidationError(group, 'empty_group', null);
@@ -129,23 +192,35 @@ QueryBuilder.prototype.validate = function() {
 
     }(this.model.root));
 
+    /**
+     * Modifies the result of the {@link QueryBuilder#validate} method
+     * @event changer:validate
+     * @memberof QueryBuilder
+     * @param {boolean} valid
+     * @returns {boolean}
+     */
     return this.change('validate', valid);
 };
 
 /**
- * Get an object representing current rules
- * @param {object} options
- *      - get_flags: false[default] | true(only changes from default flags) | 'all'
- *      - allow_invalid: false[default] | true(returns rules even if they are invalid)
- * @return {object}
+ * Gets an object representing current rules
+ * @param {object} [options]
+ * @param {boolean|string} [options.get_flags=false] - export flags, true: only changes from default flags or 'all'
+ * @param {boolean} [options.allow_invalid=false] - returns rules even if they are invalid
+ * @param {boolean} [options.skip_empty=false] - remove rules that have no filter selected
+ * @returns {object}
+ * @fires QueryBuilder.changer:ruleToJson
+ * @fires QueryBuilder.changer:groupToJson
+ * @fires QueryBuilder.changer:getRules
  */
 QueryBuilder.prototype.getRules = function(options) {
     options = $.extend({
         get_flags: false,
-        allow_invalid: false
+        allow_invalid: false,
+        skip_empty: false
     }, options);
 
-    var valid = this.validate();
+    var valid = this.validate(options);
     if (!valid && !options.allow_invalid) {
         return null;
     }
@@ -170,6 +245,10 @@ QueryBuilder.prototype.getRules = function(options) {
         }
 
         group.each(function(rule) {
+            if (!rule.filter && options.skip_empty) {
+                return;
+            }
+
             var value = null;
             if (!rule.operator || rule.operator.nb_inputs !== 0) {
                 value = rule.value;
@@ -195,27 +274,57 @@ QueryBuilder.prototype.getRules = function(options) {
                 }
             }
 
+            /**
+             * Modifies the JSON generated from a Rule object
+             * @event changer:ruleToJson
+             * @memberof QueryBuilder
+             * @param {object} json
+             * @param {Rule} rule
+             * @returns {object}
+             */
             groupData.rules.push(self.change('ruleToJson', ruleData, rule));
 
         }, function(model) {
-            groupData.rules.push(parse(model));
+            var data = parse(model);
+            if (data.rules.length !== 0 || !options.skip_empty) {
+                groupData.rules.push(data);
+            }
         }, this);
 
+        /**
+         * Modifies the JSON generated from a Group object
+         * @event changer:groupToJson
+         * @memberof QueryBuilder
+         * @param {object} json
+         * @param {Group} group
+         * @returns {object}
+         */
         return self.change('groupToJson', groupData, group);
 
     }(this.model.root));
 
     out.valid = valid;
 
+    /**
+     * Modifies the result of the {@link QueryBuilder#getRules} method
+     * @event changer:getRules
+     * @memberof QueryBuilder
+     * @param {object} json
+     * @returns {object}
+     */
     return this.change('getRules', out);
 };
 
 /**
- * Set rules from object
+ * Sets rules from object
+ * @param {object} data
+ * @param {object} [options]
+ * @param {boolean} [options.allow_invalid=false] - silent-fail if the data are invalid
  * @throws RulesError, UndefinedConditionError
- * @param data {object}
- * @param {object} options
- *      - allow_invalid: false[default] | true(silent-fail if the data are invalid)
+ * @fires QueryBuilder.changer:setRules
+ * @fires QueryBuilder.changer:jsonToRule
+ * @fires QueryBuilder.changer:jsonToGroup
+ * @fires QueryBuilder.afterSetRules
  */
 QueryBuilder.prototype.setRules = function(data, options) {
     options = $.extend({
@@ -237,7 +346,15 @@ QueryBuilder.prototype.setRules = function(data, options) {
     this.setRoot(false, data.data, this.parseGroupFlags(data));
     this.applyGroupFlags(this.model.root);
 
-    data = this.change('setRules', data);
+    /**
+     * Modifies data before the {@link QueryBuilder#setRules} method
+     * @event changer:setRules
+     * @memberof QueryBuilder
+     * @param {object} json
+     * @param {object} options
+     * @returns {object}
+     */
+    data = this.change('setRules', data, options);
 
     var self = this;
 
@@ -309,15 +426,38 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
                 self.applyRuleFlags(model);
 
+                /**
+                 * Modifies the Rule object generated from the JSON
+                 * @event changer:jsonToRule
+                 * @memberof QueryBuilder
+                 * @param {Rule} rule
+                 * @param {object} json
+                 * @returns {Rule} the same rule
+                 */
                 if (self.change('jsonToRule', model, item) != model) {
                     Utils.error('RulesParse', 'Plugin tried to change rule reference');
                 }
             }
         });
 
+        /**
+         * Modifies the Group object generated from the JSON
+         * @event changer:jsonToGroup
+         * @memberof QueryBuilder
+         * @param {Group} group
+         * @param {object} json
+         * @returns {Group} the same group
+         */
         if (self.change('jsonToGroup', group, data) != group) {
             Utils.error('RulesParse', 'Plugin tried to change group reference');
         }
 
     }(data, this.model.root));
+
+    /**
+     * After the {@link QueryBuilder#setRules} method
+     * @event afterSetRules
+     * @memberof QueryBuilder
+     */
+    this.trigger('afterSetRules');
 };

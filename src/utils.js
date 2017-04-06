@@ -1,11 +1,36 @@
-var Utils = QueryBuilder.utils = {};
+/**
+ * @namespace
+ */
+var Utils = {};
 
 /**
- * Utility to iterate over radio/checkbox/selection options.
- * it accept three formats: array of values, map, array of 1-element maps
+ * @member {object}
+ * @memberof QueryBuilder
+ * @see Utils
+ */
+QueryBuilder.utils = Utils;
+
+/**
+ * @callback Utils#OptionsIteratee
+ * @param {string} key
+ * @param {string} value
+ */
+
+/**
+ * Iterates over radio/checkbox/selection options, it accept three formats
  *
- * @param options {object|array}
- * @param tpl {callable} (takes key and text)
+ * @example
+ * // array of values
+ * options = ['one', 'two', 'three']
+ * @example
+ * // simple key-value map
+ * options = {1: 'one', 2: 'two', 3: 'three'}
+ * @example
+ * // array of 1-element maps
+ * options = [{1: 'one'}, {2: 'two'}, {3: 'three'}]
+ *
+ * @param {object|array} options
+ * @param {Utils#OptionsIteratee} tpl
  */
 Utils.iterateOptions = function(options, tpl) {
     if (options) {
@@ -35,9 +60,9 @@ Utils.iterateOptions = function(options, tpl) {
 
 /**
  * Replaces {0}, {1}, ... in a string
- * @param str {string}
- * @param args,... {Array|*}
- * @return {string}
+ * @param {string} str
+ * @param {...*} args
+ * @returns {string}
  */
 Utils.fmt = function(str, args) {
     if (!Array.isArray(args)) {
@@ -50,11 +75,11 @@ Utils.fmt = function(str, args) {
 };
 
 /**
- * Throw an Error object with custom name or logs an error
- * @param [doThrow=true] {boolean}
- * @param type {string}
- * @param message {string}
- * @param args,... {Array|*}
+ * Throws an Error object with custom name or logs an error
+ * @param {boolean} [doThrow=true]
+ * @param {string} type
+ * @param {string} message
+ * @param {...*} args
  */
 Utils.error = function() {
     var i = 0;
@@ -75,15 +100,15 @@ Utils.error = function() {
 };
 
 /**
- * Change type of a value to int or float
- * @param value {mixed}
- * @param type {string} 'integer', 'double' or anything else
- * @param boolAsInt {boolean} return 0 or 1 for booleans
- * @return {mixed}
+ * Changes the type of a value to int, float or bool
+ * @param {*} value
+ * @param {string} type - 'integer', 'double', 'boolean' or anything else (passthrough)
+ * @param {boolean} [boolAsInt=false] - return 0 or 1 for booleans
+ * @returns {*}
  */
 Utils.changeType = function(value, type, boolAsInt) {
     switch (type) {
-    // @formatter:off
+        // @formatter:off
     case 'integer': return parseInt(value);
     case 'double': return parseFloat(value);
     case 'boolean':
@@ -95,9 +120,9 @@ Utils.changeType = function(value, type, boolAsInt) {
 };
 
 /**
- * Escape string like mysql_real_escape_string
- * @param value {string}
- * @return {string}
+ * Escapes a string like PHP's mysql_real_escape_string does
+ * @param {string} value
+ * @returns {string}
  */
 Utils.escapeString = function(value) {
     if (typeof value != 'string') {
@@ -107,7 +132,7 @@ Utils.escapeString = function(value) {
     return value
         .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
             switch (s) {
-            // @formatter:off
+                // @formatter:off
             case '\0': return '\\0';
             case '\n': return '\\n';
             case '\r': return '\\r';
@@ -122,18 +147,18 @@ Utils.escapeString = function(value) {
 };
 
 /**
- * Escape value for use in regex
- * @param value {string}
- * @return {string}
+ * Escapes a string for use in regex
+ * @param {string} str
+ * @returns {string}
  */
 Utils.escapeRegExp = function(str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 };
 
 /**
- * Escape HTML element id
- * @param value {string}
- * @return {string}
+ * Escapes a string for use in HTML element id
+ * @param {string} str
+ * @returns {string}
  */
 Utils.escapeElementId = function(str) {
     // Regex based on that suggested by:
@@ -145,7 +170,7 @@ Utils.escapeElementId = function(str) {
 };
 
 /**
- * Sort objects by grouping them by {key}, preserving initial order when possible
+ * Sorts objects by grouping them by `key`, preserving initial order when possible
  * @param {object[]} items
  * @param {string} key
  * @returns {object[]}

@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.1
+ * jQuery QueryBuilder 2.4.2
  * Locale: Albanian (sq)
  * Author: Tomor Pupovci
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -70,7 +70,7 @@ QueryBuilder.regional['sq'] = {
     "datetime_exceed_min": "Duhet të jetë pas {0}",
     "datetime_exceed_max": "Duhet të jetë para {0}",
     "boolean_not_valid": "Nuk është boolean",
-    "operator_not_multiple": "Operatori {0} nuk mund të pranojë vlera të shumëfishta"
+    "operator_not_multiple": "Operatori \"{1}\" nuk mund të pranojë vlera të shumëfishta"
   }
 };
 

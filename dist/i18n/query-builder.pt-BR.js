@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.1
+ * jQuery QueryBuilder 2.4.2
  * Locale: Brazilian Portuguese (pr-BR)
  * Author: Leandro Gehlen, leandrogehlen@gmail.com; Marcos Ferretti, marcosvferretti@gmail.com
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -71,7 +71,7 @@ QueryBuilder.regional['pt-BR'] = {
     "datetime_exceed_max": "É necessário ser inferior a {0}",
     "datetime_empty": "Nenhuma data selecionada",
     "boolean_not_valid": "Não é um valor booleano",
-    "operator_not_multiple": "O operador {0} não aceita valores múltiplos"
+    "operator_not_multiple": "O operador \"{1}\" não aceita valores múltiplos"
   },
   "invert": "Inverter"
 };

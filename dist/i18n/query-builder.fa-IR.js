@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.1
+ * jQuery QueryBuilder 2.4.2
  * Locale: Farsi (fa-ir)
  * Author: Behzad Sedighzade, behzad.sedighzade@gmail.com
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -70,7 +70,7 @@ QueryBuilder.regional['fa-IR'] = {
     "datetime_exceed_min": "باید بعد از {0} باشد",
     "datetime_exceed_max": "باید قبل  از {0} باشد",
     "boolean_not_valid": "مقدار دودویی وارد کنید",
-    "operator_not_multiple": "اپراتور {0} نمی تواند چند مقدار قبول کند"
+    "operator_not_multiple": "اپراتور \"{1}\" نمی تواند چند مقدار قبول کند"
   }
 };
 

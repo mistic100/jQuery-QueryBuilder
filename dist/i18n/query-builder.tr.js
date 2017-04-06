@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.1
+ * jQuery QueryBuilder 2.4.2
  * Locale: Turkish (tr)
  * Author: Aykut Alpgiray Ateş
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -71,7 +71,7 @@ QueryBuilder.regional['tr'] = {
     "datetime_exceed_min": "{0} Tarihinden daha sonrası olmalı.",
     "datetime_exceed_max": "{0} Tarihinden daha öncesi olmalı.",
     "boolean_not_valid": "Değer Doğru/Yanlış(bool) olmalı",
-    "operator_not_multiple": "Operatör {0} birden fazla değer kabul etmiyor"
+    "operator_not_multiple": "Operatör \"{1}\" birden fazla değer kabul etmiyor"
   },
   "invert": "Ters Çevir"
 };

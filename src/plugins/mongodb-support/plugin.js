@@ -1,10 +1,9 @@
-/*!
- * jQuery QueryBuilder MongoDB Support
- * Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.
+/**
+ * @class MongoDbSupport
+ * @memberof module:plugins
+ * @description Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.
  */
 
-// DEFAULT CONFIG
-// ===============================
 QueryBuilder.defaults({
     mongoOperators: {
         // @formatter:off
@@ -66,26 +65,42 @@ QueryBuilder.defaults({
                 return { 'val': v, 'op': 'contains' };
             }
         },
-        between:     function(v) { return { 'val': [v.$gte, v.$lte], 'op': 'between' }; },
-        not_between: function(v) { return { 'val': [v.$lt, v.$gt], 'op': 'not_between' }; },
-        $in:  function(v) { return { 'val': v.$in, 'op': 'in' }; },
-        $nin: function(v) { return { 'val': v.$nin, 'op': 'not_in' }; },
-        $lt:  function(v) { return { 'val': v.$lt, 'op': 'less' }; },
-        $lte: function(v) { return { 'val': v.$lte, 'op': 'less_or_equal' }; },
-        $gt:  function(v) { return { 'val': v.$gt, 'op': 'greater' }; },
-        $gte: function(v) { return { 'val': v.$gte, 'op': 'greater_or_equal' }; }
+        between: function(v) {
+            return { 'val': [v.$gte, v.$lte], 'op': 'between' };
+        },
+        not_between: function(v) {
+            return { 'val': [v.$lt, v.$gt], 'op': 'not_between' };
+        },
+        $in: function(v) {
+            return { 'val': v.$in, 'op': 'in' };
+        },
+        $nin: function(v) {
+            return { 'val': v.$nin, 'op': 'not_in' };
+        },
+        $lt: function(v) {
+            return { 'val': v.$lt, 'op': 'less' };
+        },
+        $lte: function(v) {
+            return { 'val': v.$lte, 'op': 'less_or_equal' };
+        },
+        $gt: function(v) {
+            return { 'val': v.$gt, 'op': 'greater' };
+        },
+        $gte: function(v) {
+            return { 'val': v.$gte, 'op': 'greater_or_equal' };
+        }
     }
 });
 
-
-// PUBLIC METHODS
-// ===============================
-QueryBuilder.extend({
+QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
     /**
-     * Get rules as MongoDB query
+     * Returns rules as a MongoDB query
+     * @param {object} [data] - current rules by default
+     * @returns {object}
+     * @fires module:plugins.MongoDbSupport.changer:getMongoDBField
+     * @fires module:plugins.MongoDbSupport.changer:ruleToMongo
+     * @fires module:plugins.MongoDbSupport.changer:groupToMongo
      * @throws UndefinedMongoConditionError, UndefinedMongoOperatorError
-     * @param data {object} (optional) rules
-     * @return {object}
      */
     getMongo: function(data) {
         data = (data === undefined) ? this.getRules() : data;
@@ -129,41 +144,88 @@ QueryBuilder.extend({
                         });
                     }
 
-                    var ruleExpression = {};
+                    /**
+                     * Modifies the MongoDB field used by a rule
+                     * @event changer:getMongoDBField
+                     * @memberof module:plugins.MongoDbSupport
+                     * @param {string} field
+                     * @param {Rule} rule
+                     * @returns {string}
+                     */
                     var field = self.change('getMongoDBField', rule.field, rule);
+
+                    var ruleExpression = {};
                     ruleExpression[field] = mdb.call(self, values);
+
+                    /**
+                     * Modifies the MongoDB expression generated for a rul
+                     * @event changer:ruleToMongo
+                     * @memberof module:plugins.MongoDbSupport
+                     * @param {object} expression
+                     * @param {Rule} rule
+                     * @param {*} value
+                     * @param {function} valueWrapper - function that takes the value and adds the operator
+                     * @returns {object}
+                     */
                     parts.push(self.change('ruleToMongo', ruleExpression, rule, values, mdb));
                 }
             });
 
             var groupExpression = {};
             groupExpression['$' + group.condition.toLowerCase()] = parts;
+
+            /**
+             * Modifies the MongoDB expression generated for a group
+             * @event changer:groupToMongo
+             * @memberof module:plugins.MongoDbSupport
+             * @param {object} expression
+             * @param {Group} group
+             * @returns {object}
+             */
             return self.change('groupToMongo', groupExpression, group);
         }(data));
     },
 
     /**
-     * Convert MongoDB object to rules
+     * Converts a MongoDB query to rules
+     * @param {object} query
+     * @returns {object}
+     * @fires module:plugins.MongoDbSupport.changer:parseMongoNode
+     * @fires module:plugins.MongoDbSupport.changer:getMongoDBFieldID
+     * @fires module:plugins.MongoDbSupport.changer:mongoToRule
+     * @fires module:plugins.MongoDbSupport.changer:mongoToGroup
      * @throws MongoParseError, UndefinedMongoConditionError, UndefinedMongoOperatorError
-     * @param data {object} query object
-     * @return {object}
      */
-    getRulesFromMongo: function(data) {
-        if (data === undefined || data === null) {
+    getRulesFromMongo: function(query) {
+        if (query === undefined || query === null) {
             return null;
         }
 
         var self = this;
 
-        // allow plugins to manually parse or handle special cases
-        data = self.change('parseMongoNode', data);
+        /**
+         * Custom parsing of a MongoDB expression, you can return a sub-part of the expression, or a well formed group or rule JSON
+         * @event changer:parseMongoNode
+         * @memberof module:plugins.MongoDbSupport
+         * @param {object} expression
+         * @returns {object} expression, rule or group
+         */
+        query = self.change('parseMongoNode', query);
 
         // a plugin returned a group
-        if ('rules' in data && 'condition' in data) {
-            return data;
+        if ('rules' in query && 'condition' in query) {
+            return query;
         }
 
-        var key = andOr(data);
+        // a plugin returned a rule
+        if ('id' in query && 'operator' in query && 'value' in query) {
+            return {
+                condition: this.settings.default_condition,
+                rules: [query]
+            };
+        }
+
+        var key = andOr(query);
         if (!key) {
             Utils.error('MongoParse', 'Invalid MongoDB query format');
         }
@@ -208,8 +270,26 @@ QueryBuilder.extend({
 
                     var opVal = mdbrl.call(self, value);
 
+                    /**
+                     * Returns a filter identifier from the MongoDB field
+                     * @event changer:getMongoDBFieldID
+                     * @memberof module:plugins.MongoDbSupport
+                     * @param {string} field
+                     * @param {*} value
+                     * @returns {string}
+                     */
+                    var id = self.change('getMongoDBFieldID', field, value);
+
+                    /**
+                     * Modifies the rule generated from the MongoDB expression
+                     * @event changer:mongoToRule
+                     * @memberof module:plugins.MongoDbSupport
+                     * @param {object} rule
+                     * @param {object} expression
+                     * @returns {object}
+                     */
                     var rule = self.change('mongoToRule', {
-                        id: self.change('getMongoDBFieldID', field, value),
+                        id: id,
                         field: field,
                         operator: opVal.op,
                         value: opVal.val
@@ -219,29 +299,38 @@ QueryBuilder.extend({
                 }
             });
 
+            /**
+             * Modifies the group generated from the MongoDB expression
+             * @event changer:mongoToGroup
+             * @memberof module:plugins.MongoDbSupport
+             * @param {object} group
+             * @param {object} expression
+             * @returns {object}
+             */
             return self.change('mongoToGroup', {
                 condition: topKey.replace('$', '').toUpperCase(),
                 rules: parts
             }, data);
-        }(data, key));
+        }(query, key));
     },
 
     /**
-     * Set rules from MongoDB object
-     * @param data {object}
+     * Sets rules a from MongoDB query
+     * @see module:plugins.MongoDbSupport.getRulesFromMongo
      */
-    setRulesFromMongo: function(data) {
-        this.setRules(this.getRulesFromMongo(data));
+    setRulesFromMongo: function(query) {
+        this.setRules(this.getRulesFromMongo(query));
     }
 });
 
 /**
- * Find which operator is used in a MongoDB sub-object
- * @param {mixed} value
- * @param {string} field
- * @return {string|undefined}
+ * Finds which operator is used in a MongoDB sub-object
+ * @memberof module:plugins.MongoDbSupport
+ * @param {*} value
+ * @returns {string|undefined}
+ * @private
  */
-function determineMongoOperator(value, field) {
+function determineMongoOperator(value) {
     if (value !== null && typeof value == 'object') {
         var subkeys = Object.keys(value);
 
@@ -270,8 +359,10 @@ function determineMongoOperator(value, field) {
 
 /**
  * Returns the key corresponding to "$or" or "$and"
+ * @memberof module:plugins.MongoDbSupport
  * @param {object} data
  * @returns {string}
+ * @private
  */
 function andOr(data) {
     var keys = Object.keys(data);

@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.1
+ * jQuery QueryBuilder 2.4.2
  * Locale: Greek (el)
  * Author: Stelios Patsatzis, https://www.linkedin.com/in/stelios-patsatzis-89841561
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -71,7 +71,7 @@ QueryBuilder.regional['el'] = {
     "datetime_exceed_min": "Νεότερο από {0}",
     "datetime_exceed_max": "Παλαιότερο από {0}",
     "boolean_not_valid": "Δεν είναι BOOLEAN",
-    "operator_not_multiple": "Η συνθήκη {0} δεν μπορεί να δεχθεί πολλαπλές τιμές"
+    "operator_not_multiple": "Η συνθήκη \"{1}\" δεν μπορεί να δεχθεί πολλαπλές τιμές"
   },
   "invert": "Εναλλαγή"
 };
