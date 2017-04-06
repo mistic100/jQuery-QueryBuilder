@@ -40,7 +40,7 @@
 				}
 			</style>
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Plugins","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"readmeTargets":[],"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
+			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
 			window.DOCLET_TOC_ENABLED = true;
 		</script>
 </head>
@@ -66,6 +66,17 @@
 								<ul class="dropdown-menu">
 										<li><a href="Group.html">Group</a></li>
 										<li><a href="Model.html">Model</a></li>
+										<li><a href="module-plugins.BtCheckbox.html">plugins.BtCheckbox</a></li>
+										<li><a href="module-plugins.BtSelectpicker.html">plugins.BtSelectpicker</a></li>
+										<li><a href="module-plugins.BtTooltipErrors.html">plugins.BtTooltipErrors</a></li>
+										<li><a href="module-plugins.ChangeFilters.html">plugins.ChangeFilters</a></li>
+										<li><a href="module-plugins.FilterDescription.html">plugins.FilterDescription</a></li>
+										<li><a href="module-plugins.Invert.html">plugins.Invert</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html">plugins.MongoDbSupport</a></li>
+										<li><a href="module-plugins.NotGroup.html">plugins.NotGroup</a></li>
+										<li><a href="module-plugins.Sortable.html">plugins.Sortable</a></li>
+										<li><a href="module-plugins.SqlSupport.html">plugins.SqlSupport</a></li>
+										<li><a href="module-plugins.UniqueFilter.html">plugins.UniqueFilter</a></li>
 										<li><a href="Node.html">Node</a></li>
 										<li><a href="QueryBuilder.html">QueryBuilder</a></li>
 										<li><a href="Rule.html">Rule</a></li>
@@ -74,30 +85,29 @@
 							<li class="dropdown">
 								<a href="list_event.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
 								<ul class="dropdown-menu">
-										<li><a href="global.html#undefinedevent:changer:getRules">changer:getRules</a></li>
 										<li><a href="Model.html#.event:model:add">Model.model:add</a></li>
 										<li><a href="Model.html#.event:model:drop">Model.model:drop</a></li>
 										<li><a href="Model.html#.event:model:move">Model.model:move</a></li>
 										<li><a href="Model.html#.event:model:update">Model.model:update</a></li>
-										<li><a href="module-ChangeFiltersPlugin.html#.event:changer:setFilters">ChangeFiltersPlugin.changer:setFilters</a></li>
-										<li><a href="module-ChangeFiltersPlugin.html#.event:afterSetFilters">ChangeFiltersPlugin.afterSetFilters</a></li>
-										<li><a href="module-InvertPlugin.html#.event:afterInvert">InvertPlugin.afterInvert</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBField">MongoDbSupportPlugin.changer:getMongoDBField</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBFieldID">MongoDbSupportPlugin.changer:getMongoDBFieldID</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:groupToMongo">MongoDbSupportPlugin.changer:groupToMongo</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToGroup">MongoDbSupportPlugin.changer:mongoToGroup</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToRule">MongoDbSupportPlugin.changer:mongoToRule</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:parseMongoNode">MongoDbSupportPlugin.changer:parseMongoNode</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:ruleToMongo">MongoDbSupportPlugin.changer:ruleToMongo</a></li>
-										<li><a href="module-NotGroupPlugin.html#.event:afterUpdateGroupNot">NotGroupPlugin.afterUpdateGroupNot</a></li>
-										<li><a href="module-SortablePlugin.html#.event:afterMove">SortablePlugin.afterMove</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:getSQLField">SqlSupportPlugin.changer:getSQLField</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:getSQLFieldID">SqlSupportPlugin.changer:getSQLFieldID</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:groupToSQL">SqlSupportPlugin.changer:groupToSQL</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:parseSQLNode">SqlSupportPlugin.changer:parseSQLNode</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:ruleToSQL">SqlSupportPlugin.changer:ruleToSQL</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:sqlToGroup">SqlSupportPlugin.changer:sqlToGroup</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:sqlToRule">SqlSupportPlugin.changer:sqlToRule</a></li>
+										<li><a href="module-plugins.ChangeFilters.html#.event:changer:setFilters">plugins.ChangeFilters.changer:setFilters</a></li>
+										<li><a href="module-plugins.ChangeFilters.html#.event:afterSetFilters">plugins.ChangeFilters.afterSetFilters</a></li>
+										<li><a href="module-plugins.Invert.html#.event:afterInvert">plugins.Invert.afterInvert</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:getMongoDBField">plugins.MongoDbSupport.changer:getMongoDBField</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:getMongoDBFieldID">plugins.MongoDbSupport.changer:getMongoDBFieldID</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:groupToMongo">plugins.MongoDbSupport.changer:groupToMongo</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:mongoToGroup">plugins.MongoDbSupport.changer:mongoToGroup</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:mongoToRule">plugins.MongoDbSupport.changer:mongoToRule</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:parseMongoNode">plugins.MongoDbSupport.changer:parseMongoNode</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:ruleToMongo">plugins.MongoDbSupport.changer:ruleToMongo</a></li>
+										<li><a href="module-plugins.NotGroup.html#.event:afterUpdateGroupNot">plugins.NotGroup.afterUpdateGroupNot</a></li>
+										<li><a href="module-plugins.Sortable.html#.event:afterMove">plugins.Sortable.afterMove</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:getSQLField">plugins.SqlSupport.changer:getSQLField</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:getSQLFieldID">plugins.SqlSupport.changer:getSQLFieldID</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:groupToSQL">plugins.SqlSupport.changer:groupToSQL</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:parseSQLNode">plugins.SqlSupport.changer:parseSQLNode</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:ruleToSQL">plugins.SqlSupport.changer:ruleToSQL</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToGroup">plugins.SqlSupport.changer:sqlToGroup</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToRule">plugins.SqlSupport.changer:sqlToRule</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:displayError">QueryBuilder.changer:displayError</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getDefaultFilter">QueryBuilder.changer:getDefaultFilter</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getGroupTemplate">QueryBuilder.changer:getGroupTemplate</a></li>
@@ -106,6 +116,7 @@
 										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate">QueryBuilder.changer:getRuleFilterTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleInput">QueryBuilder.changer:getRuleInput</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate">QueryBuilder.changer:getRuleOperatorTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></li>
@@ -115,6 +126,7 @@
 										<li><a href="QueryBuilder.html#.event:changer:parseRuleFlags">QueryBuilder.changer:parseRuleFlags</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:ruleToJson">QueryBuilder.changer:ruleToJson</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:setRules">QueryBuilder.changer:setRules</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:translate">QueryBuilder.changer:translate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:validate">QueryBuilder.changer:validate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:validateValue">QueryBuilder.changer:validateValue</a></li>
 										<li><a href="QueryBuilder.html#.event:afterAddGroup">QueryBuilder.afterAddGroup</a></li>
@@ -151,19 +163,9 @@
 								</ul>
 							</li>
 							<li class="dropdown">
-								<a href="list_module.html" class="dropdown-toggle" data-toggle="dropdown">Plugins<b class="caret"></b></a>
+								<a href="list_module.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 								<ul class="dropdown-menu">
-										<li><a href="module-BtCheckboxPlugin.html">BtCheckboxPlugin</a></li>
-										<li><a href="module-BtSelectpickerPlugin.html">BtSelectpickerPlugin</a></li>
-										<li><a href="module-BtTooltipErrorsPlugin.html">BtTooltipErrorsPlugin</a></li>
-										<li><a href="module-ChangeFiltersPlugin.html">ChangeFiltersPlugin</a></li>
-										<li><a href="module-FilterDescriptionPlugin.html">FilterDescriptionPlugin</a></li>
-										<li><a href="module-InvertPlugin.html">InvertPlugin</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html">MongoDbSupportPlugin</a></li>
-										<li><a href="module-NotGroupPlugin.html">NotGroupPlugin</a></li>
-										<li><a href="module-SortablePlugin.html">SortablePlugin</a></li>
-										<li><a href="module-SqlSupportPlugin.html">SqlSupportPlugin</a></li>
-										<li><a href="module-UniqueFilterPlugin.html">UniqueFilterPlugin</a></li>
+										<li><a href="module-plugins.html">plugins</a></li>
 								</ul>
 							</li>
 							<li class="dropdown">
@@ -237,7 +239,7 @@
 			</div>
 			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:afterInit</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:afterInit">QueryBuilder.afterInit</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -311,7 +313,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-122">line 122</a></p>
+									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-125">line 125</a></p>
 								</div>
 							</div>
 			
@@ -373,94 +375,6 @@
 </dd>
 											<hr/>
 											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".inputs" class="member"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">inputs</span><span class="signature-type"> :Array.&lt;string></span></h4>
-		</dt>
-<dd class="symbol-details member  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Allowed inputs</p></div>
-			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
-			
-							<!-- type -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Type</label>
-								<div class="col-sm-9">
-									<div class="form-control-static type-names"><span class="param-type">Array.&lt;string></span></div>
-								</div>
-							</div>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-							<!-- source -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Source</label>
-								<div class="col-sm-9">
-									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-21">line 21</a></p>
-								</div>
-							</div>
-			
-			
-			
-			
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".modifiable_options" class="member"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">modifiable_options</span><span class="signature-type"> :Array.&lt;string></span></h4>
-		</dt>
-<dd class="symbol-details member  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Runtime modifiable options with <code>setOptions</code> method</p></div>
-			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
-			
-							<!-- type -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Type</label>
-								<div class="col-sm-9">
-									<div class="form-control-static type-names"><span class="param-type">Array.&lt;string></span></div>
-								</div>
-							</div>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-							<!-- source -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Source</label>
-								<div class="col-sm-9">
-									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-35">line 35</a></p>
-								</div>
-							</div>
-			
-			
-			
-			
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
 			<h4 id=".OPERATORS" class="member"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">OPERATORS</span><span class="signature-type"> :object.&lt;string, object></span></h4>
 		</dt>
 <dd class="symbol-details member  collapsible-symbol">
@@ -493,51 +407,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-94">line 94</a></p>
-								</div>
-							</div>
-			
-			
-			
-			
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".plugins" class="member"><span class="signature-attribs">&lt;static> </span><span class="name">plugins</span><span class="signature-type"> :object.&lt;String, object></span></h4>
-		</dt>
-<dd class="symbol-details member  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Definition of available plugins</p></div>
-			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
-			
-							<!-- type -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Type</label>
-								<div class="col-sm-9">
-									<div class="form-control-static type-names"><span class="param-type">object.&lt;String, object></span></div>
-								</div>
-							</div>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-							<!-- source -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Source</label>
-								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-245">line 245</a></p>
+									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-97">line 97</a></p>
 								</div>
 							</div>
 			
@@ -581,7 +451,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-87">line 87</a></p>
+									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-90">line 90</a></p>
 								</div>
 							</div>
 			
@@ -675,7 +545,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-48">line 48</a></p>
+									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-51">line 51</a></p>
 								</div>
 							</div>
 			
@@ -719,51 +589,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-80">line 80</a></p>
-								</div>
-							</div>
-			
-			
-			
-			
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".types" class="member"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">types</span><span class="signature-type"> :object.&lt;string, string></span></h4>
-		</dt>
-<dd class="symbol-details member  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Allowed types and their internal representation</p></div>
-			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
-			
-							<!-- type -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Type</label>
-								<div class="col-sm-9">
-									<div class="form-control-static type-names"><span class="param-type">object.&lt;string, string></span></div>
-								</div>
-							</div>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-							<!-- source -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Source</label>
-								<div class="col-sm-9">
-									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-6">line 6</a></p>
+									<p class="form-control-static"><a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line-83">line 83</a></p>
 								</div>
 							</div>
 			
@@ -1224,206 +1050,6 @@
 									<dl class="symbol">
 											<hr/>
 											<dt class="symbol-title function collapsible-symbol">
-			<h4 id=".defaults" class="function"><span class="signature-attribs">&lt;static> </span><span class="name">defaults</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{undefined|object}</span></h4>
-		</dt>
-<dd class="symbol-details function  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Gets or extends the default configuration</p></div>
-			</div>			<div class="callout callout-info">
-				<h5>Parameters</h5>
-				<table class="params table table-striped">
-					<thead>
-					<tr>
-							<th>Name</th>
-						<th>Type</th>
-							<th>Attributes</th>
-						<th class="last">Description</th>
-					</tr>
-					</thead>
-					<tbody>
-						<tr>
-								<td><code>options</code></td>
-							<td><span class="param-type">object</span></td>
-								<td class="attributes">&lt;optional&gt;<br/></td>
-							<td class="last">
-									<p>new configuration</p>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
-							<div class="form-group">
-								<label class="col-sm-3 control-label returns-type"><span class="param-type">undefined</span> | <span class="param-type">object</span></label>
-								<div class="col-sm-9">
-									<div class="form-control-static returns-description"><p>nothing or configuration object (copy)</p></div>
-								</div>
-							</div>
-					</form>
-			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-							<!-- source -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Source</label>
-								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-252">line 252</a></p>
-								</div>
-							</div>
-			
-			
-			
-			
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id=".define" class="function"><span class="signature-attribs">&lt;static> </span><span class="name">define</span><span class="signature-params">( <span class="signature-param">name</span>, <span class="signature-param">fct</span> [,&nbsp;<span class="signature-param">def</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></h4>
-		</dt>
-<dd class="symbol-details function  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Registers a new plugin</p></div>
-			</div>			<div class="callout callout-info">
-				<h5>Parameters</h5>
-				<table class="params table table-striped">
-					<thead>
-					<tr>
-							<th>Name</th>
-						<th>Type</th>
-							<th>Attributes</th>
-						<th class="last">Description</th>
-					</tr>
-					</thead>
-					<tbody>
-						<tr>
-								<td><code>name</code></td>
-							<td><span class="param-type">string</span></td>
-								<td class="attributes"></td>
-							<td class="last">
-							</td>
-						</tr>
-						<tr>
-								<td><code>fct</code></td>
-							<td><span class="param-type">function</span></td>
-								<td class="attributes"></td>
-							<td class="last">
-									<p>init function</p>
-							</td>
-						</tr>
-						<tr>
-								<td><code>def</code></td>
-							<td><span class="param-type">object</span></td>
-								<td class="attributes">&lt;optional&gt;<br/></td>
-							<td class="last">
-									<p>default options</p>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-							<!-- source -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Source</label>
-								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-275">line 275</a></p>
-								</div>
-							</div>
-			
-			
-			
-			
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id=".extend" class="function"><span class="signature-attribs">&lt;static> </span><span class="name">extend</span><span class="signature-params">( <span class="signature-param">methods</span>&nbsp;)</span><span class="signature-type"></span></h4>
-		</dt>
-<dd class="symbol-details function  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Adds new methods to QueryBuilder prototype</p></div>
-			</div>			<div class="callout callout-info">
-				<h5>Parameters</h5>
-				<table class="params table table-striped">
-					<thead>
-					<tr>
-							<th>Name</th>
-						<th>Type</th>
-						<th class="last">Description</th>
-					</tr>
-					</thead>
-					<tbody>
-						<tr>
-								<td><code>methods</code></td>
-							<td><span class="param-type">object.&lt;string, function()></span></td>
-							<td class="last">
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-							<!-- source -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Source</label>
-								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-286">line 286</a></p>
-								</div>
-							</div>
-			
-			
-			
-			
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
 			<h4 id="addGroup" class="function"><span class="name">addGroup</span><span class="signature-params">( <span class="signature-param">parent</span> [,&nbsp;<span class="signature-param">addRule</span> [,&nbsp;<span class="signature-param">data</span> [,&nbsp;<span class="signature-param">flags</span>&nbsp;]&nbsp;]&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="Group.html">Group</a>}</span></h4>
 		</dt>
 <dd class="symbol-details function  collapsible-symbol">
@@ -1490,13 +1116,13 @@
 					</form>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:beforeAddGroup</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:afterAddGroup">QueryBuilder.afterAddGroup</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:afterAddGroup</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:beforeAddGroup">QueryBuilder.beforeAddGroup</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -1587,19 +1213,19 @@
 					</form>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:beforeAddRule</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:changer:getDefaultFilter">QueryBuilder.changer:getDefaultFilter</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:afterAddRule</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:afterAddRule">QueryBuilder.afterAddRule</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#changer:getDefaultFilter</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:beforeAddRule">QueryBuilder.beforeAddRule</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -1861,13 +1487,13 @@
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Clears all rules and removes the root group</p></div>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:beforeClear</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:afterClear">QueryBuilder.afterClear</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:afterClear</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:beforeClear">QueryBuilder.beforeClear</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -2000,13 +1626,13 @@
 					</form>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:beforeDeleteGroup</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:afterDeleteGroup">QueryBuilder.afterDeleteGroup</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:afterDeleteGroup</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:beforeDeleteGroup">QueryBuilder.beforeDeleteGroup</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -2079,13 +1705,13 @@
 					</form>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:beforeDeleteRule</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:afterDeleteRule">QueryBuilder.afterDeleteRule</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:afterDeleteRule</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:beforeDeleteRule">QueryBuilder.beforeDeleteRule</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -2130,7 +1756,7 @@
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Destroys the builder</p></div>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:beforeDestroy</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:beforeDestroy">QueryBuilder.beforeDestroy</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -2312,19 +1938,19 @@
 					</form>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#changer:ruleToJson</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#changer:groupToJson</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#changer:getRules</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:changer:ruleToJson">QueryBuilder.changer:ruleToJson</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -2585,13 +2211,13 @@
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Clear all rules and resets the root group</p></div>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:beforeReset</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:afterReset">QueryBuilder.afterReset</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:afterReset</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:beforeReset">QueryBuilder.beforeReset</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -2745,7 +2371,7 @@
 					</form>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:afterAddGroup</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:afterAddGroup">QueryBuilder.afterAddGroup</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -2841,25 +2467,25 @@
 			</div>
 			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#changer:setRules</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:changer:jsonToGroup">QueryBuilder.changer:jsonToGroup</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#changer:jsonToRule</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:changer:jsonToRule">QueryBuilder.changer:jsonToRule</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#changer:jsonToGroup</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:changer:setRules">QueryBuilder.changer:setRules</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#event:afterSetRules</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:afterSetRules">QueryBuilder.afterSetRules</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -2893,7 +2519,89 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-328">line 328</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-329">line 329</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function collapsible-symbol">
+			<h4 id="translate" class="function"><span class="name">translate</span><span class="signature-params">( [&nbsp;<span class="signature-param">category</span>&nbsp;], <span class="signature-param">key</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{string}</span></h4>
+		</dt>
+<dd class="symbol-details function  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Translate a label either by looking in the <code>lang</code> object or in itself if it's an object where keys are language codes</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+							<th>Attributes</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>category</code></td>
+							<td><span class="param-type">string</span></td>
+								<td class="attributes">&lt;optional&gt;<br/></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>key</code></td>
+							<td><span class="param-type">string</span> | <span class="param-type">object</span></td>
+								<td class="attributes"></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
+							<div class="form-group">
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:changer:translate">QueryBuilder.changer:translate</a></label>
+								<div class="col-sm-9">
+									<div class="form-control-static fires-summary"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-601">line 601</a></p>
 								</div>
 							</div>
 			
@@ -3029,7 +2737,7 @@
 					</form>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#changer:validate</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:changer:validate">QueryBuilder.changer:validate</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -3108,7 +2816,7 @@
 					</form>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
 							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event">QueryBuilder#changer:validateValue</label>
+								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:changer:validateValue">QueryBuilder.changer:validateValue</a></label>
 								<div class="col-sm-9">
 									<div class="form-control-static fires-summary"></div>
 								</div>
@@ -3668,7 +3376,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-165">line 165</a></p>
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-164">line 164</a></p>
 								</div>
 							</div>
 			
@@ -3746,7 +3454,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-276">line 276</a></p>
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-274">line 274</a></p>
 								</div>
 							</div>
 			
@@ -3823,7 +3531,72 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-196">line 196</a></p>
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-194">line 194</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title event">
+			<h4 id=".event:changer:getRules" class="event"><span class="name">changer:getRules</span></h4>
+		</dt>
+<dd class="symbol-details event">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the result of the <a href="QueryBuilder.html#getRules"><code>QueryBuilder#getRules</code></a> method</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>json</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">object</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-308">line 308</a></p>
 								</div>
 							</div>
 			
@@ -4101,7 +3874,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-442">line 442</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-443">line 443</a></p>
 								</div>
 							</div>
 			
@@ -4172,7 +3945,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-428">line 428</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-429">line 429</a></p>
 								</div>
 							</div>
 			
@@ -4458,7 +4231,88 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-348">line 348</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-349">line 349</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title event">
+			<h4 id=".event:changer:translate" class="event"><span class="name">changer:translate</span></h4>
+		</dt>
+<dd class="symbol-details event">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the translated label</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+							<th>Attributes</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>translation</code></td>
+							<td><span class="param-type">string</span></td>
+								<td class="attributes"></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>key</code></td>
+							<td><span class="param-type">string</span> | <span class="param-type">object</span></td>
+								<td class="attributes"></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>category</code></td>
+							<td><span class="param-type">string</span></td>
+								<td class="attributes">&lt;optional&gt;<br/></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-615">line 615</a></p>
 								</div>
 							</div>
 			
@@ -5229,7 +5083,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-456">line 456</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-457">line 457</a></p>
 								</div>
 							</div>
 			

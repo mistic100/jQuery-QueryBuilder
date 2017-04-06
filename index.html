@@ -354,9 +354,9 @@ label: {
       <tr>
         <td>input</td>
         <td>string|function</td>
-        <td>'text'</td>
-        <td>Type of input used. Available types are <code>text</code>, <code>textarea</code>, <code>radio</code>, <code>checkbox</code>
-          and <code>select</code>.<br>
+        <td>'text'|'number'</td>
+        <td>Type of input used. Available types are <code>text</code>, <code>number</code>, <code>textarea</code>,
+          <code>radio</code>, <code>checkbox</code> and <code>select</code>.<br>
           It can also be a function which returns the HTML of the said input, this function takes 2 parameters:
           <ul>
             <li><code>rule</code> a <b>Rule</b> object</li>
@@ -668,7 +668,9 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
 {% endhighlight %}
 <!-- @formatter:on -->
 
-  <p>Only main methods are described.</p>
+  <p>Only main methods are described, consult the
+    <a class="btn btn-outline" href="{{site.github.url}}/api/QueryBuilder.html#methods">API documentation</a>
+    to learn more about all available methods.</p>
 
   <div class="bs-callout bs-callout-warning">
     <h4>Plugins methods</h4>
@@ -677,11 +679,33 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
   </div>
 
   <div class="bs-callout">
-    <h4 id="method-validate"><code>.validate()</code></h4>
+    <h4 id="method-validate"><code>.validate([options])</code></h4>
 
     <p>Returns a boolean indicating whether the builder is valid or not. Use the <code>validationError</code> event to
       catch
       per-rule validation errors. If <code>display_errors</code> is enabled the invalid rules will turn red.</p>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th style="width: 130px;">Option</th>
+          <th style="width: 100px;">type</th>
+          <th style="width: 100px;">default</th>
+          <th>description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>skip_empty</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td><code>true</code> to skip the validation on rules that have no filter selected.
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div class="bs-callout">
@@ -715,6 +739,13 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
           <td>boolean</td>
           <td>false</td>
           <td><code>true</code> to return the rules evn though the validation fails. The returned object has an additional `valid` property.</td>
+        </tr>
+        <tr>
+          <td>skip_empty</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td><code>true</code> to skip rules that have no filter selected.
+          </td>
         </tr>
         </tbody>
       </table>
@@ -813,7 +844,7 @@ $('#builder').queryBuilder('setRules', { ... });
 <!-- @formatter:on -->
     </div>
 
-    <h5>User data</h5>
+    <h4>User data</h4>
 
     <p>Each rule and group can have an additional <code>data</code> parameter which will be merged with the filter data
       (for rules only) when calling <code>getRules</code>.</p>
@@ -840,7 +871,7 @@ $('#builder').queryBuilder('setRules', {
       the <code>flags</code> (see bellow) to lock the filter of a rule.
     </div>
 
-    <h5>Empty rules</h5>
+    <h4>Empty rules</h4>
 
     <p>The <code>setRules</code> method will throw an error if a rule has no filter. If for some reason you want to
       populate the builder with an empty rule, use the <code>empty</code> keyword.</p>
@@ -861,7 +892,7 @@ $('#builder').queryBuilder('setRules', {
 {% endhighlight %}
 <!-- @formatter:on -->
 
-    <h5>Flags</h5>
+    <h4>Flags</h4>
 
     <p>Each rule can have an additional <code>flags</code> parameter which will control the editability of the rule.</p>
 
@@ -1010,10 +1041,65 @@ $('#builder').queryBuilder('destroy');
 
   <h3 id="events">Events</h3>
 
-  <p>QueryBuilder uses events to notify the "outer world" about various things happening, like adding a rule or when a
-    validation error happens. The events system is also used by plugins.</p>
+  <p>QueryBuilder uses jQuery events to notify the "outer world" about various things happening, like adding a rule or
+    when a validation error happens. The events system is also used by plugins.</p>
 
-  <p><a class="btn btn-link btn-outline" href="{{site.github.url}}/dev/events.html">Read more about events</a></p>
+  <p>There are two types of events: <b>triggers</b> are used to identify a point in the code and <b>changers</b> are
+    used to modify a value before it is used (eg: template, output rules). Both types are used the same way with the jQuery
+    <code>on</code> method on the builder container.</p>
+
+  <p>The full list of events can be found in the
+    <a class="btn btn-outline" href="{{site.github.url}}/api/QueryBuilder.html#events">API documentation</a>.</p>
+
+  <div class="bs-callout">
+    <h4>Triggers</h4>
+
+    <p>Some events can be cancelled by calling <code>preventDefault()</code>. The typical example is for the errors events :</p>
+
+    <!-- @formatter:off -->
+{% highlight javascript %}
+$('#builder').on('validationError.queryBuilder', function(e, rule, error, value) {
+  // never display error for my custom filter
+  if (rule.filter.id == 'my_custom_filter') {
+    e.preventDefault();
+  }
+});
+{% endhighlight %}
+<!-- @formatter:on -->
+    </div>
+
+  <div class="bs-callout">
+    <h4>Changers</h4>
+
+    <p>All changers events have an additional <code>value</code> property which holds the value to be altered (or not).</p>
+    <!-- @formatter:off -->
+{% highlight javascript %}
+$('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
+  if (level == 1) {
+    e.value = /* ... */
+  }
+});
+{% endhighlight %}
+<!-- @formatter:on -->
+    </div>
+
+  <div class="bs-callout bs-callout-info">
+    <h4>Callbacks context</h4>
+    <p>In all events callbacks, the first parameter is an <code>Event</code> object which contains the
+      <code>builder</code> property, a reference to the QueryBuilder object currently used. Among other things it
+      contains <code>builder.settings</code> which holds the current configuration.</p>
+  </div>
+
+  <div class="bs-callout bs-callout-info">
+    <h4>Rule &amp; Group</h4>
+    <p>Read <a href="#inside_the_box">Inside the box</a> to learn more about the Rule and
+      Group objects.</p>
+  </div>
+
+  <div class="bs-callout bs-callout-warning">
+    <h4>Plugins events</h4>
+    <p>Events added by <a href="{{site.github.url}}/plugins.html">plugins</a> are detailed in their respective sections.</p>
+  </div>
 
   <h3 id="themes">Themes</h3>
 

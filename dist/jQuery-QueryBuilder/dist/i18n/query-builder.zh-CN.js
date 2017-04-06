@@ -71,7 +71,7 @@ QueryBuilder.regional['zh-CN'] = {
     "datetime_exceed_min": "必须在{0}之后",
     "datetime_exceed_max": "必须在{0}之前",
     "boolean_not_valid": "不是布尔值",
-    "operator_not_multiple": "选项{0}无法接受多个值"
+    "operator_not_multiple": "选项\"{1}\"无法接受多个值"
   },
   "invert": "倒置"
 };

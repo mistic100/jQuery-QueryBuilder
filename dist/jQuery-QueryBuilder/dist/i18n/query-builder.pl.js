@@ -71,7 +71,7 @@ QueryBuilder.regional['pl'] = {
     "datetime_exceed_min": "Musi być po {0}",
     "datetime_exceed_max": "Musi być przed {0}",
     "boolean_not_valid": "Niepoprawna wartość logiczna",
-    "operator_not_multiple": "Operator {0} nie przyjmuje wielu wartości"
+    "operator_not_multiple": "Operator \"{1}\" nie przyjmuje wielu wartości"
   },
   "invert": "Odwróć"
 };

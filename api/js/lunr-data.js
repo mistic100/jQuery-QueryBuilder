@@ -74,8 +74,7 @@ window.lunrData = {
           "document",
           "list",
           "list:modul",
-          "modul",
-          "plugin"
+          "modul"
         ],
         "list_namespace.html": [
           "document",
@@ -144,7 +143,7 @@ window.lunrData = {
           "boolean",
           "group#not",
           "member",
-          "module:notgroupplugin"
+          "module:plugins.notgroup"
         ],
         "Group.html#parent": [
           "group",
@@ -413,6 +412,269 @@ window.lunrData = {
           "node",
           "typedef"
         ],
+        "module-plugins.BtCheckbox.html": [
+          "appli",
+          "awesom",
+          "bootstrap",
+          "btcheckbox",
+          "checkbox",
+          "class",
+          "input",
+          "module:plugins.btcheckbox",
+          "plugins.btcheckbox",
+          "radio"
+        ],
+        "module-plugins.BtSelectpicker.html": [
+          "btselectpick",
+          "class",
+          "module:plugins.btselectpick",
+          "plugins.btselectpick"
+        ],
+        "module-plugins.BtTooltipErrors.html": [
+          "appli",
+          "bootstrap",
+          "bttooltiperror",
+          "class",
+          "error",
+          "messag",
+          "module:plugins.bttooltiperror",
+          "plugins.bttooltiperror",
+          "tooltip",
+          "valid"
+        ],
+        "module-plugins.ChangeFilters.html": [
+          "allow",
+          "avail",
+          "chang",
+          "changefilt",
+          "class",
+          "filter",
+          "initi",
+          "module:plugins.changefilt",
+          "plugin",
+          "plugins.changefilt"
+        ],
+        "module-plugins.ChangeFilters.html#addFilter": [
+          "add",
+          "addfilt",
+          "builder",
+          "changefilters#addfilt",
+          "filter",
+          "function",
+          "module:plugins.changefilters#addfilt",
+          "new",
+          "newfilt",
+          "posit"
+        ],
+        "module-plugins.ChangeFilters.html#removeFilter": [
+          "builder",
+          "changefilters#removefilt",
+          "deleteorphan",
+          "filter",
+          "filterid",
+          "function",
+          "module:plugins.changefilters#removefilt",
+          "remov",
+          "removefilt"
+        ],
+        "module-plugins.ChangeFilters.html#setFilters": [
+          "builder",
+          "chang",
+          "changefilters#setfilt",
+          "deleteorphan",
+          "filter",
+          "function",
+          "module:plugins.changefilters#setfilt",
+          "setfilt"
+        ],
+        "module-plugins.FilterDescription.html": [
+          "bootbox",
+          "bootsrap",
+          "class",
+          "descript",
+          "display",
+          "filter",
+          "filterdescript",
+          "inlin",
+          "module:plugins.filterdescript",
+          "plugins.filterdescript",
+          "popov",
+          "provid",
+          "three",
+          "way"
+        ],
+        "module-plugins.Invert.html": [
+          "allow",
+          "builder",
+          "class",
+          "condit",
+          "entir",
+          "group",
+          "invert",
+          "module:plugins.invert",
+          "oper",
+          "plugins.invert",
+          "rule"
+        ],
+        "module-plugins.Invert.html#invert": [
+          "builder",
+          "function",
+          "group",
+          "invert",
+          "invert#invert",
+          "module:plugins.invert#invert",
+          "node",
+          "option",
+          "rule",
+          "whole"
+        ],
+        "module-plugins.MongoDbSupport.html": [
+          "allow",
+          "builder",
+          "class",
+          "export",
+          "find",
+          "module:plugins.mongodbsupport",
+          "mongodb",
+          "mongodbsupport",
+          "object",
+          "plugins.mongodbsupport",
+          "popul",
+          "rule",
+          "well"
+        ],
+        "module-plugins.MongoDbSupport.html#getMongo": [
+          "data",
+          "function",
+          "getmongo",
+          "module:plugins.mongodbsupport#getmongo",
+          "mongodb",
+          "mongodbsupport#getmongo",
+          "object",
+          "queri",
+          "return",
+          "rule"
+        ],
+        "module-plugins.MongoDbSupport.html#getRulesFromMongo": [
+          "convert",
+          "function",
+          "getrulesfrommongo",
+          "module:plugins.mongodbsupport#getrulesfrommongo",
+          "mongodb",
+          "mongodbsupport#getrulesfrommongo",
+          "object",
+          "queri",
+          "rule"
+        ],
+        "module-plugins.MongoDbSupport.html#setRulesFromMongo": [
+          "function",
+          "module:plugins.mongodbsupport#setrulesfrommongo",
+          "mongodb",
+          "mongodbsupport#setrulesfrommongo",
+          "queri",
+          "rule",
+          "set",
+          "setrulesfrommongo"
+        ],
+        "module-plugins.NotGroup.html": [
+          "add",
+          "checkbox",
+          "class",
+          "condit",
+          "front",
+          "group",
+          "module:plugins.notgroup",
+          "notgroup",
+          "plugins.notgroup",
+          "quot;not&quot"
+        ],
+        "module-plugins.Sortable.html": [
+          "amp",
+          "class",
+          "drag",
+          "drop",
+          "enabl",
+          "module:plugins.sort",
+          "plugins.sort",
+          "rule",
+          "sort",
+          "sortabl"
+        ],
+        "module-plugins.SqlSupport.html": [
+          "allow",
+          "builder",
+          "class",
+          "export",
+          "module:plugins.sqlsupport",
+          "plugins.sqlsupport",
+          "popul",
+          "queri",
+          "rule",
+          "sql",
+          "sqlsupport",
+          "statement",
+          "well"
+        ],
+        "module-plugins.SqlSupport.html#getRulesFromSQL": [
+          "convert",
+          "function",
+          "getrulesfromsql",
+          "module:plugins.sqlsupport#getrulesfromsql",
+          "object",
+          "queri",
+          "rule",
+          "sql",
+          "sqlsupport#getrulesfromsql",
+          "stmt"
+        ],
+        "module-plugins.SqlSupport.html#getSQL": [
+          "data",
+          "function",
+          "getsql",
+          "module:plugins.sqlsupport#getsql",
+          "module:plugins.sqlsupport.sqlqueri",
+          "nl",
+          "queri",
+          "return",
+          "rule",
+          "sql",
+          "sqlsupport#getsql",
+          "stmt"
+        ],
+        "module-plugins.SqlSupport.html#setRulesFromSQL": [
+          "builder'",
+          "function",
+          "module:plugins.sqlsupport#setrulesfromsql",
+          "queri",
+          "rule",
+          "set",
+          "setrulesfromsql",
+          "sql",
+          "sqlsupport#setrulesfromsql"
+        ],
+        "module-plugins.SqlSupport.html#.SqlQuery": [
+          "module:plugins.sqlsupport.sqlqueri",
+          "sqlqueri",
+          "sqlsupport.sqlqueri",
+          "typedef"
+        ],
+        "module-plugins.UniqueFilter.html": [
+          "allow",
+          "class",
+          "defin",
+          "filter",
+          "global",
+          "group",
+          "ie",
+          "module:plugins.uniquefilt",
+          "on",
+          "plugins.uniquefilt",
+          "quot;unique&quot",
+          "rule",
+          "same",
+          "uniquefilt",
+          "us"
+        ],
         "Node.html": [
           "abstract",
           "class",
@@ -565,28 +827,6 @@ window.lunrData = {
           "member",
           "querybuilder.group"
         ],
-        "QueryBuilder.html#.inputs": [
-          "allow",
-          "array.&lt;string&gt",
-          "input",
-          "lt;static",
-          "member",
-          "querybuilder.input",
-          "readonly&gt"
-        ],
-        "QueryBuilder.html#.modifiable_options": [
-          "array.&lt;string&gt",
-          "lt;static",
-          "member",
-          "method",
-          "modifi",
-          "modifiable_opt",
-          "option",
-          "querybuilder.modifiable_opt",
-          "readonly&gt",
-          "runtim",
-          "setopt"
-        ],
         "QueryBuilder.html#.OPERATORS": [
           "default",
           "lt;static",
@@ -596,16 +836,6 @@ window.lunrData = {
           "oper",
           "querybuilder.oper",
           "readonly&gt"
-        ],
-        "QueryBuilder.html#.plugins": [
-          "avail",
-          "definit",
-          "lt;static&gt",
-          "member",
-          "object&gt",
-          "object.&lt;str",
-          "plugin",
-          "querybuilder.plugin"
         ],
         "QueryBuilder.html#.regional": [
           "i18n",
@@ -650,18 +880,6 @@ window.lunrData = {
           "string&gt",
           "templat",
           "template.j"
-        ],
-        "QueryBuilder.html#.types": [
-          "allow",
-          "intern",
-          "lt;static",
-          "member",
-          "object.&lt;str",
-          "querybuilder.typ",
-          "readonly&gt",
-          "represent",
-          "string&gt",
-          "type"
         ],
         "QueryBuilder.html#.utils": [
           "lt;static&gt",
@@ -744,40 +962,6 @@ window.lunrData = {
           "object.&lt;str",
           "querybuilder#templ",
           "templat"
-        ],
-        "QueryBuilder.html#.defaults": [
-          "configur",
-          "default",
-          "extend",
-          "function",
-          "get",
-          "lt;static&gt",
-          "option",
-          "querybuilder.default",
-          "undefined|object"
-        ],
-        "QueryBuilder.html#.define": [
-          "def",
-          "defin",
-          "fct",
-          "function",
-          "lt;static&gt",
-          "name",
-          "new",
-          "plugin",
-          "querybuilder.defin",
-          "regist"
-        ],
-        "QueryBuilder.html#.extend": [
-          "add",
-          "extend",
-          "function",
-          "lt;static&gt",
-          "method",
-          "new",
-          "prototyp",
-          "querybuild",
-          "querybuilder.extend"
         ],
         "QueryBuilder.html#addGroup": [
           "add",
@@ -984,6 +1168,22 @@ window.lunrData = {
           "set",
           "setrul"
         ],
+        "QueryBuilder.html#translate": [
+          "categori",
+          "code",
+          "function",
+          "it'",
+          "itself",
+          "key",
+          "label",
+          "lang",
+          "languag",
+          "look",
+          "object",
+          "querybuilder#transl",
+          "string",
+          "translat"
+        ],
         "QueryBuilder.html#trigger": [
           "builder",
           "contain",
@@ -1183,137 +1383,10 @@ window.lunrData = {
           "plugin",
           "quot;jquery.fn&quot"
         ],
-        "module-BtCheckboxPlugin.html": [
-          "appli",
-          "awesom",
-          "bootstrap",
-          "btcheckboxplugin",
-          "checkbox",
-          "input",
+        "module-plugins.html": [
           "modul",
-          "module:btcheckboxplugin",
-          "radio"
-        ],
-        "module-BtSelectpickerPlugin.html": [
-          "btselectpickerplugin",
-          "modul",
-          "module:btselectpickerplugin"
-        ],
-        "module-BtTooltipErrorsPlugin.html": [
-          "appli",
-          "bootstrap",
-          "bttooltiperrorsplugin",
-          "error",
-          "messag",
-          "modul",
-          "module:bttooltiperrorsplugin",
-          "tooltip",
-          "valid"
-        ],
-        "module-ChangeFiltersPlugin.html": [
-          "allow",
-          "avail",
-          "chang",
-          "changefiltersplugin",
-          "filter",
-          "initi",
-          "modul",
-          "module:changefiltersplugin",
+          "module:plugin",
           "plugin"
-        ],
-        "module-FilterDescriptionPlugin.html": [
-          "bootbox",
-          "bootsrap",
-          "descript",
-          "display",
-          "filter",
-          "filterdescriptionplugin",
-          "inlin",
-          "modul",
-          "module:filterdescriptionplugin",
-          "popov",
-          "provid",
-          "three",
-          "way"
-        ],
-        "module-InvertPlugin.html": [
-          "allow",
-          "builder",
-          "condit",
-          "entir",
-          "group",
-          "invert",
-          "invertplugin",
-          "modul",
-          "module:invertplugin",
-          "oper",
-          "rule"
-        ],
-        "module-MongoDbSupportPlugin.html": [
-          "allow",
-          "builder",
-          "export",
-          "find",
-          "modul",
-          "module:mongodbsupportplugin",
-          "mongodb",
-          "mongodbsupportplugin",
-          "object",
-          "popul",
-          "rule",
-          "well"
-        ],
-        "module-NotGroupPlugin.html": [
-          "add",
-          "checkbox",
-          "condit",
-          "front",
-          "group",
-          "modul",
-          "module:notgroupplugin",
-          "notgroupplugin",
-          "quot;not&quot"
-        ],
-        "module-SortablePlugin.html": [
-          "amp",
-          "drag",
-          "drop",
-          "enabl",
-          "modul",
-          "module:sortableplugin",
-          "rule",
-          "sort",
-          "sortableplugin"
-        ],
-        "module-SqlSupportPlugin.html": [
-          "allow",
-          "builder",
-          "export",
-          "modul",
-          "module:sqlsupportplugin",
-          "popul",
-          "queri",
-          "rule",
-          "sql",
-          "sqlsupportplugin",
-          "statement",
-          "well"
-        ],
-        "module-UniqueFilterPlugin.html": [
-          "allow",
-          "defin",
-          "filter",
-          "global",
-          "group",
-          "ie",
-          "modul",
-          "module:uniquefilterplugin",
-          "on",
-          "quot;unique&quot",
-          "rule",
-          "same",
-          "uniquefilterplugin",
-          "us"
         ],
         "Utils.html": [
           "namespac",
@@ -1432,7 +1505,7 @@ window.lunrData = {
           "valu"
         ]
       },
-      "length": 148
+      "length": 154
     },
     "tokenStore": {
       "root": {
@@ -1471,12 +1544,12 @@ window.lunrData = {
                 "docs": {},
                 "i": {
                   "docs": {
-                    "module-BtCheckboxPlugin.html": {
-                      "ref": "module-BtCheckboxPlugin.html",
+                    "module-plugins.BtCheckbox.html": {
+                      "ref": "module-plugins.BtCheckbox.html",
                       "tf": 7.142857142857142
                     },
-                    "module-BtTooltipErrorsPlugin.html": {
-                      "ref": "module-BtTooltipErrorsPlugin.html",
+                    "module-plugins.BtTooltipErrors.html": {
+                      "ref": "module-plugins.BtTooltipErrors.html",
                       "tf": 8.333333333333332
                     }
                   }
@@ -1527,42 +1600,6 @@ window.lunrData = {
                                                 "Utils.html#.groupSort": {
                                                   "ref": "Utils.html#.groupSort",
                                                   "tf": 20
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            },
-                            "s": {
-                              "docs": {},
-                              "t": {
-                                "docs": {},
-                                "r": {
-                                  "docs": {},
-                                  "i": {
-                                    "docs": {},
-                                    "n": {
-                                      "docs": {},
-                                      "g": {
-                                        "docs": {},
-                                        "&": {
-                                          "docs": {},
-                                          "g": {
-                                            "docs": {},
-                                            "t": {
-                                              "docs": {
-                                                "QueryBuilder.html#.inputs": {
-                                                  "ref": "QueryBuilder.html#.inputs",
-                                                  "tf": 25
-                                                },
-                                                "QueryBuilder.html#.modifiable_options": {
-                                                  "ref": "QueryBuilder.html#.modifiable_options",
-                                                  "tf": 25
                                                 }
                                               }
                                             }
@@ -1757,9 +1794,13 @@ window.lunrData = {
                   "ref": "Group.html#insertNode",
                   "tf": 12.5
                 },
-                "QueryBuilder.html#.extend": {
-                  "ref": "QueryBuilder.html#.extend",
-                  "tf": 10
+                "module-plugins.ChangeFilters.html#addFilter": {
+                  "ref": "module-plugins.ChangeFilters.html#addFilter",
+                  "tf": 12.5
+                },
+                "module-plugins.NotGroup.html": {
+                  "ref": "module-plugins.NotGroup.html",
+                  "tf": 8.333333333333332
                 },
                 "QueryBuilder.html#addGroup": {
                   "ref": "QueryBuilder.html#addGroup",
@@ -1768,10 +1809,6 @@ window.lunrData = {
                 "QueryBuilder.html#addRule": {
                   "ref": "QueryBuilder.html#addRule",
                   "tf": 16.666666666666664
-                },
-                "module-NotGroupPlugin.html": {
-                  "ref": "module-NotGroupPlugin.html",
-                  "tf": 8.333333333333332
                 }
               },
               "g": {
@@ -1819,6 +1856,23 @@ window.lunrData = {
                       "QueryBuilder.html#setRoot": {
                         "ref": "QueryBuilder.html#setRoot",
                         "tf": 20
+                      }
+                    }
+                  }
+                }
+              },
+              "f": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "l": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "module-plugins.ChangeFilters.html#addFilter": {
+                          "ref": "module-plugins.ChangeFilters.html#addFilter",
+                          "tf": 633.3333333333334
+                        }
                       }
                     }
                   }
@@ -1907,6 +1961,87 @@ window.lunrData = {
               }
             }
           },
+          "w": {
+            "docs": {},
+            "e": {
+              "docs": {},
+              "s": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "m": {
+                    "docs": {
+                      "module-plugins.BtCheckbox.html": {
+                        "ref": "module-plugins.BtCheckbox.html",
+                        "tf": 7.142857142857142
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "l": {
+            "docs": {},
+            "l": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "w": {
+                  "docs": {
+                    "module-plugins.ChangeFilters.html": {
+                      "ref": "module-plugins.ChangeFilters.html",
+                      "tf": 8.333333333333332
+                    },
+                    "module-plugins.Invert.html": {
+                      "ref": "module-plugins.Invert.html",
+                      "tf": 6.25
+                    },
+                    "module-plugins.MongoDbSupport.html": {
+                      "ref": "module-plugins.MongoDbSupport.html",
+                      "tf": 4.545454545454546
+                    },
+                    "module-plugins.SqlSupport.html": {
+                      "ref": "module-plugins.SqlSupport.html",
+                      "tf": 5
+                    },
+                    "module-plugins.UniqueFilter.html": {
+                      "ref": "module-plugins.UniqueFilter.html",
+                      "tf": 4.545454545454546
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "v": {
+            "docs": {},
+            "a": {
+              "docs": {},
+              "i": {
+                "docs": {},
+                "l": {
+                  "docs": {
+                    "module-plugins.ChangeFilters.html": {
+                      "ref": "module-plugins.ChangeFilters.html",
+                      "tf": 8.333333333333332
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "m": {
+            "docs": {},
+            "p": {
+              "docs": {
+                "module-plugins.Sortable.html": {
+                  "ref": "module-plugins.Sortable.html",
+                  "tf": 8.333333333333332
+                }
+              }
+            }
+          },
           "b": {
             "docs": {},
             "s": {
@@ -1933,68 +2068,6 @@ window.lunrData = {
               }
             }
           },
-          "l": {
-            "docs": {},
-            "l": {
-              "docs": {},
-              "o": {
-                "docs": {},
-                "w": {
-                  "docs": {
-                    "QueryBuilder.html#.inputs": {
-                      "ref": "QueryBuilder.html#.inputs",
-                      "tf": 25
-                    },
-                    "QueryBuilder.html#.types": {
-                      "ref": "QueryBuilder.html#.types",
-                      "tf": 12.5
-                    },
-                    "module-ChangeFiltersPlugin.html": {
-                      "ref": "module-ChangeFiltersPlugin.html",
-                      "tf": 8.333333333333332
-                    },
-                    "module-InvertPlugin.html": {
-                      "ref": "module-InvertPlugin.html",
-                      "tf": 6.25
-                    },
-                    "module-MongoDbSupportPlugin.html": {
-                      "ref": "module-MongoDbSupportPlugin.html",
-                      "tf": 4.545454545454546
-                    },
-                    "module-SqlSupportPlugin.html": {
-                      "ref": "module-SqlSupportPlugin.html",
-                      "tf": 5
-                    },
-                    "module-UniqueFilterPlugin.html": {
-                      "ref": "module-UniqueFilterPlugin.html",
-                      "tf": 4.545454545454546
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "v": {
-            "docs": {},
-            "a": {
-              "docs": {},
-              "i": {
-                "docs": {},
-                "l": {
-                  "docs": {
-                    "QueryBuilder.html#.plugins": {
-                      "ref": "QueryBuilder.html#.plugins",
-                      "tf": 16.666666666666664
-                    },
-                    "module-ChangeFiltersPlugin.html": {
-                      "ref": "module-ChangeFiltersPlugin.html",
-                      "tf": 8.333333333333332
-                    }
-                  }
-                }
-              }
-            }
-          },
           "s": {
             "docs": {},
             "s": {
@@ -2011,37 +2084,6 @@ window.lunrData = {
                       }
                     }
                   }
-                }
-              }
-            }
-          },
-          "w": {
-            "docs": {},
-            "e": {
-              "docs": {},
-              "s": {
-                "docs": {},
-                "o": {
-                  "docs": {},
-                  "m": {
-                    "docs": {
-                      "module-BtCheckboxPlugin.html": {
-                        "ref": "module-BtCheckboxPlugin.html",
-                        "tf": 7.142857142857142
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "m": {
-            "docs": {},
-            "p": {
-              "docs": {
-                "module-SortablePlugin.html": {
-                  "ref": "module-SortablePlugin.html",
-                  "tf": 8.333333333333332
                 }
               }
             }
@@ -2117,6 +2159,50 @@ window.lunrData = {
                       "ref": "Model.html",
                       "tf": 110
                     },
+                    "module-plugins.BtCheckbox.html": {
+                      "ref": "module-plugins.BtCheckbox.html",
+                      "tf": 110
+                    },
+                    "module-plugins.BtSelectpicker.html": {
+                      "ref": "module-plugins.BtSelectpicker.html",
+                      "tf": 110
+                    },
+                    "module-plugins.BtTooltipErrors.html": {
+                      "ref": "module-plugins.BtTooltipErrors.html",
+                      "tf": 110
+                    },
+                    "module-plugins.ChangeFilters.html": {
+                      "ref": "module-plugins.ChangeFilters.html",
+                      "tf": 110
+                    },
+                    "module-plugins.FilterDescription.html": {
+                      "ref": "module-plugins.FilterDescription.html",
+                      "tf": 110
+                    },
+                    "module-plugins.Invert.html": {
+                      "ref": "module-plugins.Invert.html",
+                      "tf": 110
+                    },
+                    "module-plugins.MongoDbSupport.html": {
+                      "ref": "module-plugins.MongoDbSupport.html",
+                      "tf": 110
+                    },
+                    "module-plugins.NotGroup.html": {
+                      "ref": "module-plugins.NotGroup.html",
+                      "tf": 110
+                    },
+                    "module-plugins.Sortable.html": {
+                      "ref": "module-plugins.Sortable.html",
+                      "tf": 110
+                    },
+                    "module-plugins.SqlSupport.html": {
+                      "ref": "module-plugins.SqlSupport.html",
+                      "tf": 110
+                    },
+                    "module-plugins.UniqueFilter.html": {
+                      "ref": "module-plugins.UniqueFilter.html",
+                      "tf": 110
+                    },
                     "Node.html": {
                       "ref": "Node.html",
                       "tf": 110
@@ -2190,12 +2276,12 @@ window.lunrData = {
                         "ref": "Group.html#condition",
                         "tf": 700
                       },
-                      "module-InvertPlugin.html": {
-                        "ref": "module-InvertPlugin.html",
+                      "module-plugins.Invert.html": {
+                        "ref": "module-plugins.Invert.html",
                         "tf": 6.25
                       },
-                      "module-NotGroupPlugin.html": {
-                        "ref": "module-NotGroupPlugin.html",
+                      "module-plugins.NotGroup.html": {
+                        "ref": "module-plugins.NotGroup.html",
                         "tf": 8.333333333333332
                       }
                     }
@@ -2268,6 +2354,27 @@ window.lunrData = {
                   }
                 }
               },
+              "v": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "r": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "module-plugins.MongoDbSupport.html#getRulesFromMongo": {
+                          "ref": "module-plugins.MongoDbSupport.html#getRulesFromMongo",
+                          "tf": 12.5
+                        },
+                        "module-plugins.SqlSupport.html#getRulesFromSQL": {
+                          "ref": "module-plugins.SqlSupport.html#getRulesFromSQL",
+                          "tf": 12.5
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "f": {
                 "docs": {},
                 "i": {
@@ -2289,10 +2396,6 @@ window.lunrData = {
                           "QueryBuilder.html#settings": {
                             "ref": "QueryBuilder.html#settings",
                             "tf": 25
-                          },
-                          "QueryBuilder.html#.defaults": {
-                            "ref": "QueryBuilder.html#.defaults",
-                            "tf": 12.5
                           },
                           "QueryBuilder.html#checkFilters": {
                             "ref": "QueryBuilder.html#checkFilters",
@@ -2343,6 +2446,17 @@ window.lunrData = {
                   }
                 }
               }
+            },
+            "d": {
+              "docs": {},
+              "e": {
+                "docs": {
+                  "QueryBuilder.html#translate": {
+                    "ref": "QueryBuilder.html#translate",
+                    "tf": 4.545454545454546
+                  }
+                }
+              }
             }
           },
           "h": {
@@ -2378,6 +2492,24 @@ window.lunrData = {
                       "tf": 16.666666666666664
                     }
                   },
+                  "b": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "x": {
+                        "docs": {
+                          "module-plugins.BtCheckbox.html": {
+                            "ref": "module-plugins.BtCheckbox.html",
+                            "tf": 14.285714285714285
+                          },
+                          "module-plugins.NotGroup.html": {
+                            "ref": "module-plugins.NotGroup.html",
+                            "tf": 8.333333333333332
+                          }
+                        }
+                      }
+                    }
+                  },
                   "f": {
                     "docs": {},
                     "i": {
@@ -2407,24 +2539,6 @@ window.lunrData = {
                               "ref": "QueryBuilder.html#checkOperators",
                               "tf": 683.3333333333334
                             }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "b": {
-                    "docs": {},
-                    "o": {
-                      "docs": {},
-                      "x": {
-                        "docs": {
-                          "module-BtCheckboxPlugin.html": {
-                            "ref": "module-BtCheckboxPlugin.html",
-                            "tf": 14.285714285714285
-                          },
-                          "module-NotGroupPlugin.html": {
-                            "ref": "module-NotGroupPlugin.html",
-                            "tf": 8.333333333333332
                           }
                         }
                       }
@@ -2467,13 +2581,17 @@ window.lunrData = {
                 "docs": {},
                 "g": {
                   "docs": {
+                    "module-plugins.ChangeFilters.html": {
+                      "ref": "module-plugins.ChangeFilters.html",
+                      "tf": 8.333333333333332
+                    },
+                    "module-plugins.ChangeFilters.html#setFilters": {
+                      "ref": "module-plugins.ChangeFilters.html#setFilters",
+                      "tf": 16.666666666666664
+                    },
                     "QueryBuilder.html#change": {
                       "ref": "QueryBuilder.html#change",
                       "tf": 683.3333333333334
-                    },
-                    "module-ChangeFiltersPlugin.html": {
-                      "ref": "module-ChangeFiltersPlugin.html",
-                      "tf": 8.333333333333332
                     },
                     "Utils.html#.changeType": {
                       "ref": "Utils.html#.changeType",
@@ -2489,28 +2607,100 @@ window.lunrData = {
                         "l": {
                           "docs": {},
                           "t": {
-                            "docs": {},
+                            "docs": {
+                              "module-plugins.ChangeFilters.html": {
+                                "ref": "module-plugins.ChangeFilters.html",
+                                "tf": 650
+                              }
+                            },
                             "e": {
                               "docs": {},
                               "r": {
                                 "docs": {},
                                 "s": {
                                   "docs": {},
-                                  "p": {
+                                  "#": {
                                     "docs": {},
-                                    "l": {
+                                    "a": {
                                       "docs": {},
-                                      "u": {
+                                      "d": {
                                         "docs": {},
-                                        "g": {
+                                        "d": {
                                           "docs": {},
-                                          "i": {
+                                          "f": {
                                             "docs": {},
-                                            "n": {
-                                              "docs": {
-                                                "module-ChangeFiltersPlugin.html": {
-                                                  "ref": "module-ChangeFiltersPlugin.html",
-                                                  "tf": 600
+                                            "i": {
+                                              "docs": {},
+                                              "l": {
+                                                "docs": {},
+                                                "t": {
+                                                  "docs": {
+                                                    "module-plugins.ChangeFilters.html#addFilter": {
+                                                      "ref": "module-plugins.ChangeFilters.html#addFilter",
+                                                      "tf": 100
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "r": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "m": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "v": {
+                                              "docs": {},
+                                              "e": {
+                                                "docs": {},
+                                                "f": {
+                                                  "docs": {},
+                                                  "i": {
+                                                    "docs": {},
+                                                    "l": {
+                                                      "docs": {},
+                                                      "t": {
+                                                        "docs": {
+                                                          "module-plugins.ChangeFilters.html#removeFilter": {
+                                                            "ref": "module-plugins.ChangeFilters.html#removeFilter",
+                                                            "tf": 100
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "s": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "t": {
+                                          "docs": {},
+                                          "f": {
+                                            "docs": {},
+                                            "i": {
+                                              "docs": {},
+                                              "l": {
+                                                "docs": {},
+                                                "t": {
+                                                  "docs": {
+                                                    "module-plugins.ChangeFilters.html#setFilters": {
+                                                      "ref": "module-plugins.ChangeFilters.html#setFilters",
+                                                      "tf": 100
+                                                    }
+                                                  }
                                                 }
                                               }
                                             }
@@ -2626,6 +2816,29 @@ window.lunrData = {
                   }
                 }
               }
+            },
+            "t": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "g": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "i": {
+                        "docs": {
+                          "QueryBuilder.html#translate": {
+                            "ref": "QueryBuilder.html#translate",
+                            "tf": 25
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "s": {
@@ -2713,8 +2926,8 @@ window.lunrData = {
                 "docs": {},
                 "t": {
                   "docs": {
-                    "module-NotGroupPlugin.html": {
-                      "ref": "module-NotGroupPlugin.html",
+                    "module-plugins.NotGroup.html": {
+                      "ref": "module-plugins.NotGroup.html",
                       "tf": 8.333333333333332
                     }
                   }
@@ -2872,6 +3085,46 @@ window.lunrData = {
                             "ref": "Model.html#trigger",
                             "tf": 110
                           },
+                          "module-plugins.ChangeFilters.html#addFilter": {
+                            "ref": "module-plugins.ChangeFilters.html#addFilter",
+                            "tf": 110
+                          },
+                          "module-plugins.ChangeFilters.html#removeFilter": {
+                            "ref": "module-plugins.ChangeFilters.html#removeFilter",
+                            "tf": 110
+                          },
+                          "module-plugins.ChangeFilters.html#setFilters": {
+                            "ref": "module-plugins.ChangeFilters.html#setFilters",
+                            "tf": 110
+                          },
+                          "module-plugins.Invert.html#invert": {
+                            "ref": "module-plugins.Invert.html#invert",
+                            "tf": 110
+                          },
+                          "module-plugins.MongoDbSupport.html#getMongo": {
+                            "ref": "module-plugins.MongoDbSupport.html#getMongo",
+                            "tf": 110
+                          },
+                          "module-plugins.MongoDbSupport.html#getRulesFromMongo": {
+                            "ref": "module-plugins.MongoDbSupport.html#getRulesFromMongo",
+                            "tf": 110
+                          },
+                          "module-plugins.MongoDbSupport.html#setRulesFromMongo": {
+                            "ref": "module-plugins.MongoDbSupport.html#setRulesFromMongo",
+                            "tf": 110
+                          },
+                          "module-plugins.SqlSupport.html#getRulesFromSQL": {
+                            "ref": "module-plugins.SqlSupport.html#getRulesFromSQL",
+                            "tf": 110
+                          },
+                          "module-plugins.SqlSupport.html#getSQL": {
+                            "ref": "module-plugins.SqlSupport.html#getSQL",
+                            "tf": 110
+                          },
+                          "module-plugins.SqlSupport.html#setRulesFromSQL": {
+                            "ref": "module-plugins.SqlSupport.html#setRulesFromSQL",
+                            "tf": 110
+                          },
                           "Node.html#drop": {
                             "ref": "Node.html#drop",
                             "tf": 110
@@ -2907,18 +3160,6 @@ window.lunrData = {
                           "QueryBuilder.html#.Rule": {
                             "ref": "QueryBuilder.html#.Rule",
                             "tf": 33.33333333333333
-                          },
-                          "QueryBuilder.html#.defaults": {
-                            "ref": "QueryBuilder.html#.defaults",
-                            "tf": 110
-                          },
-                          "QueryBuilder.html#.define": {
-                            "ref": "QueryBuilder.html#.define",
-                            "tf": 110
-                          },
-                          "QueryBuilder.html#.extend": {
-                            "ref": "QueryBuilder.html#.extend",
-                            "tf": 110
                           },
                           "QueryBuilder.html#addGroup": {
                             "ref": "QueryBuilder.html#addGroup",
@@ -2994,6 +3235,10 @@ window.lunrData = {
                           },
                           "QueryBuilder.html#setRules": {
                             "ref": "QueryBuilder.html#setRules",
+                            "tf": 110
+                          },
+                          "QueryBuilder.html#translate": {
+                            "ref": "QueryBuilder.html#translate",
                             "tf": 110
                           },
                           "QueryBuilder.html#trigger": {
@@ -3120,6 +3365,30 @@ window.lunrData = {
                   "docs": {},
                   "r": {
                     "docs": {
+                      "module-plugins.ChangeFilters.html": {
+                        "ref": "module-plugins.ChangeFilters.html",
+                        "tf": 8.333333333333332
+                      },
+                      "module-plugins.ChangeFilters.html#addFilter": {
+                        "ref": "module-plugins.ChangeFilters.html#addFilter",
+                        "tf": 12.5
+                      },
+                      "module-plugins.ChangeFilters.html#removeFilter": {
+                        "ref": "module-plugins.ChangeFilters.html#removeFilter",
+                        "tf": 16.666666666666664
+                      },
+                      "module-plugins.ChangeFilters.html#setFilters": {
+                        "ref": "module-plugins.ChangeFilters.html#setFilters",
+                        "tf": 49.99999999999999
+                      },
+                      "module-plugins.FilterDescription.html": {
+                        "ref": "module-plugins.FilterDescription.html",
+                        "tf": 5
+                      },
+                      "module-plugins.UniqueFilter.html": {
+                        "ref": "module-plugins.UniqueFilter.html",
+                        "tf": 4.545454545454546
+                      },
                       "QueryBuilder.html#filters": {
                         "ref": "QueryBuilder.html#filters",
                         "tf": 708.3333333333334
@@ -3135,18 +3404,17 @@ window.lunrData = {
                       "Rule.html#filter": {
                         "ref": "Rule.html#filter",
                         "tf": 700
-                      },
-                      "module-ChangeFiltersPlugin.html": {
-                        "ref": "module-ChangeFiltersPlugin.html",
-                        "tf": 8.333333333333332
-                      },
-                      "module-FilterDescriptionPlugin.html": {
-                        "ref": "module-FilterDescriptionPlugin.html",
-                        "tf": 5
-                      },
-                      "module-UniqueFilterPlugin.html": {
-                        "ref": "module-UniqueFilterPlugin.html",
-                        "tf": 4.545454545454546
+                      }
+                    },
+                    "i": {
+                      "docs": {},
+                      "d": {
+                        "docs": {
+                          "module-plugins.ChangeFilters.html#removeFilter": {
+                            "ref": "module-plugins.ChangeFilters.html#removeFilter",
+                            "tf": 33.33333333333333
+                          }
+                        }
                       }
                     },
                     "d": {
@@ -3164,37 +3432,10 @@ window.lunrData = {
                                 "p": {
                                   "docs": {},
                                   "t": {
-                                    "docs": {},
-                                    "i": {
-                                      "docs": {},
-                                      "o": {
-                                        "docs": {},
-                                        "n": {
-                                          "docs": {},
-                                          "p": {
-                                            "docs": {},
-                                            "l": {
-                                              "docs": {},
-                                              "u": {
-                                                "docs": {},
-                                                "g": {
-                                                  "docs": {},
-                                                  "i": {
-                                                    "docs": {},
-                                                    "n": {
-                                                      "docs": {
-                                                        "module-FilterDescriptionPlugin.html": {
-                                                          "ref": "module-FilterDescriptionPlugin.html",
-                                                          "tf": 600
-                                                        }
-                                                      }
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
+                                    "docs": {
+                                      "module-plugins.FilterDescription.html": {
+                                        "ref": "module-plugins.FilterDescription.html",
+                                        "tf": 650
                                       }
                                     }
                                   }
@@ -3213,21 +3454,10 @@ window.lunrData = {
               "docs": {},
               "d": {
                 "docs": {
-                  "module-MongoDbSupportPlugin.html": {
-                    "ref": "module-MongoDbSupportPlugin.html",
+                  "module-plugins.MongoDbSupport.html": {
+                    "ref": "module-plugins.MongoDbSupport.html",
                     "tf": 4.545454545454546
                   }
-                }
-              }
-            }
-          },
-          "c": {
-            "docs": {},
-            "t": {
-              "docs": {
-                "QueryBuilder.html#.define": {
-                  "ref": "QueryBuilder.html#.define",
-                  "tf": 20
                 }
               }
             }
@@ -3373,10 +3603,6 @@ window.lunrData = {
                   "docs": {},
                   "n": {
                     "docs": {
-                      "QueryBuilder.html#.types": {
-                        "ref": "QueryBuilder.html#.types",
-                        "tf": 12.5
-                      },
                       "QueryBuilder.html#model": {
                         "ref": "QueryBuilder.html#model",
                         "tf": 25
@@ -3437,12 +3663,8 @@ window.lunrData = {
                 "docs": {},
                 "t": {
                   "docs": {
-                    "QueryBuilder.html#.inputs": {
-                      "ref": "QueryBuilder.html#.inputs",
-                      "tf": 700
-                    },
-                    "module-BtCheckboxPlugin.html": {
-                      "ref": "module-BtCheckboxPlugin.html",
+                    "module-plugins.BtCheckbox.html": {
+                      "ref": "module-plugins.BtCheckbox.html",
                       "tf": 7.142857142857142
                     }
                   }
@@ -3455,8 +3677,8 @@ window.lunrData = {
                 "docs": {},
                 "i": {
                   "docs": {
-                    "module-ChangeFiltersPlugin.html": {
-                      "ref": "module-ChangeFiltersPlugin.html",
+                    "module-plugins.ChangeFilters.html": {
+                      "ref": "module-plugins.ChangeFilters.html",
                       "tf": 8.333333333333332
                     },
                     "Utils.html#.groupSort": {
@@ -3473,8 +3695,8 @@ window.lunrData = {
                 "docs": {},
                 "n": {
                   "docs": {
-                    "module-FilterDescriptionPlugin.html": {
-                      "ref": "module-FilterDescriptionPlugin.html",
+                    "module-plugins.FilterDescription.html": {
+                      "ref": "module-plugins.FilterDescription.html",
                       "tf": 5
                     }
                   }
@@ -3489,26 +3711,33 @@ window.lunrData = {
                   "docs": {},
                   "t": {
                     "docs": {
-                      "module-InvertPlugin.html": {
-                        "ref": "module-InvertPlugin.html",
-                        "tf": 6.25
+                      "module-plugins.Invert.html": {
+                        "ref": "module-plugins.Invert.html",
+                        "tf": 656.25
+                      },
+                      "module-plugins.Invert.html#invert": {
+                        "ref": "module-plugins.Invert.html#invert",
+                        "tf": 643.3333333333334
                       }
                     },
-                    "p": {
+                    "#": {
                       "docs": {},
-                      "l": {
+                      "i": {
                         "docs": {},
-                        "u": {
+                        "n": {
                           "docs": {},
-                          "g": {
+                          "v": {
                             "docs": {},
-                            "i": {
+                            "e": {
                               "docs": {},
-                              "n": {
-                                "docs": {
-                                  "module-InvertPlugin.html": {
-                                    "ref": "module-InvertPlugin.html",
-                                    "tf": 600
+                              "r": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {
+                                    "module-plugins.Invert.html#invert": {
+                                      "ref": "module-plugins.Invert.html#invert",
+                                      "tf": 100
+                                    }
                                   }
                                 }
                               }
@@ -3630,6 +3859,10 @@ window.lunrData = {
                         "ref": "Node.html#moveAtEnd",
                         "tf": 8.333333333333332
                       },
+                      "QueryBuilder.html#translate": {
+                        "ref": "QueryBuilder.html#translate",
+                        "tf": 4.545454545454546
+                      },
                       "Rule.html#move": {
                         "ref": "Rule.html#move",
                         "tf": 10
@@ -3648,6 +3881,14 @@ window.lunrData = {
                       }
                     }
                   }
+                }
+              }
+            },
+            "'": {
+              "docs": {
+                "QueryBuilder.html#translate": {
+                  "ref": "QueryBuilder.html#translate",
+                  "tf": 4.545454545454546
                 }
               }
             }
@@ -3680,6 +3921,14 @@ window.lunrData = {
               }
             }
           },
+          "e": {
+            "docs": {
+              "module-plugins.UniqueFilter.html": {
+                "ref": "module-plugins.UniqueFilter.html",
+                "tf": 4.545454545454546
+              }
+            }
+          },
           "c": {
             "docs": {},
             "o": {
@@ -3691,14 +3940,6 @@ window.lunrData = {
                     "tf": 700
                   }
                 }
-              }
-            }
-          },
-          "e": {
-            "docs": {
-              "module-UniqueFilterPlugin.html": {
-                "ref": "module-UniqueFilterPlugin.html",
-                "tf": 4.545454545454546
               }
             }
           }
@@ -3779,29 +4020,403 @@ window.lunrData = {
                         "ref": "index.html",
                         "tf": 11.666666666666666
                       },
-                      "list_module.html": {
-                        "ref": "list_module.html",
-                        "tf": 600
-                      },
-                      "QueryBuilder.html#.plugins": {
-                        "ref": "QueryBuilder.html#.plugins",
-                        "tf": 691.6666666666666
+                      "module-plugins.ChangeFilters.html": {
+                        "ref": "module-plugins.ChangeFilters.html",
+                        "tf": 8.333333333333332
                       },
                       "QueryBuilder.html#plugins": {
                         "ref": "QueryBuilder.html#plugins",
                         "tf": 700
                       },
-                      "QueryBuilder.html#.define": {
-                        "ref": "QueryBuilder.html#.define",
-                        "tf": 16.666666666666664
-                      },
                       "external-_jQuery.fn_.html": {
                         "ref": "external-_jQuery.fn_.html",
                         "tf": 16.666666666666664
                       },
-                      "module-ChangeFiltersPlugin.html": {
-                        "ref": "module-ChangeFiltersPlugin.html",
-                        "tf": 8.333333333333332
+                      "module-plugins.html": {
+                        "ref": "module-plugins.html",
+                        "tf": 600
+                      }
+                    },
+                    "s": {
+                      "docs": {},
+                      ".": {
+                        "docs": {},
+                        "b": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "h": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "c": {
+                                    "docs": {},
+                                    "k": {
+                                      "docs": {},
+                                      "b": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "x": {
+                                            "docs": {
+                                              "module-plugins.BtCheckbox.html": {
+                                                "ref": "module-plugins.BtCheckbox.html",
+                                                "tf": 100
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "s": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "l": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "c": {
+                                      "docs": {},
+                                      "t": {
+                                        "docs": {},
+                                        "p": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "c": {
+                                              "docs": {},
+                                              "k": {
+                                                "docs": {
+                                                  "module-plugins.BtSelectpicker.html": {
+                                                    "ref": "module-plugins.BtSelectpicker.html",
+                                                    "tf": 100
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "t": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "l": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {},
+                                      "i": {
+                                        "docs": {},
+                                        "p": {
+                                          "docs": {},
+                                          "e": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {},
+                                              "r": {
+                                                "docs": {},
+                                                "o": {
+                                                  "docs": {},
+                                                  "r": {
+                                                    "docs": {
+                                                      "module-plugins.BtTooltipErrors.html": {
+                                                        "ref": "module-plugins.BtTooltipErrors.html",
+                                                        "tf": 100
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "c": {
+                          "docs": {},
+                          "h": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "g": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "f": {
+                                      "docs": {},
+                                      "i": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {
+                                              "module-plugins.ChangeFilters.html": {
+                                                "ref": "module-plugins.ChangeFilters.html",
+                                                "tf": 100
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "f": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "l": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "d": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "s": {
+                                          "docs": {},
+                                          "c": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {},
+                                              "i": {
+                                                "docs": {},
+                                                "p": {
+                                                  "docs": {},
+                                                  "t": {
+                                                    "docs": {
+                                                      "module-plugins.FilterDescription.html": {
+                                                        "ref": "module-plugins.FilterDescription.html",
+                                                        "tf": 100
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "i": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "v": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {
+                                      "module-plugins.Invert.html": {
+                                        "ref": "module-plugins.Invert.html",
+                                        "tf": 100
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "m": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "n": {
+                              "docs": {},
+                              "g": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {},
+                                    "b": {
+                                      "docs": {},
+                                      "s": {
+                                        "docs": {},
+                                        "u": {
+                                          "docs": {},
+                                          "p": {
+                                            "docs": {},
+                                            "p": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "r": {
+                                                  "docs": {},
+                                                  "t": {
+                                                    "docs": {
+                                                      "module-plugins.MongoDbSupport.html": {
+                                                        "ref": "module-plugins.MongoDbSupport.html",
+                                                        "tf": 100
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "n": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "g": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "u": {
+                                      "docs": {},
+                                      "p": {
+                                        "docs": {
+                                          "module-plugins.NotGroup.html": {
+                                            "ref": "module-plugins.NotGroup.html",
+                                            "tf": 100
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "s": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "t": {
+                                "docs": {
+                                  "module-plugins.Sortable.html": {
+                                    "ref": "module-plugins.Sortable.html",
+                                    "tf": 100
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "q": {
+                            "docs": {},
+                            "l": {
+                              "docs": {},
+                              "s": {
+                                "docs": {},
+                                "u": {
+                                  "docs": {},
+                                  "p": {
+                                    "docs": {},
+                                    "p": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {
+                                              "module-plugins.SqlSupport.html": {
+                                                "ref": "module-plugins.SqlSupport.html",
+                                                "tf": 100
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "u": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "i": {
+                              "docs": {},
+                              "q": {
+                                "docs": {},
+                                "u": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "f": {
+                                      "docs": {},
+                                      "i": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {
+                                              "module-plugins.UniqueFilter.html": {
+                                                "ref": "module-plugins.UniqueFilter.html",
+                                                "tf": 100
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -3927,6 +4542,10 @@ window.lunrData = {
                       "ref": "Group.html#move",
                       "tf": 10
                     },
+                    "module-plugins.ChangeFilters.html#addFilter": {
+                      "ref": "module-plugins.ChangeFilters.html#addFilter",
+                      "tf": 33.33333333333333
+                    },
                     "Node.html#getPos": {
                       "ref": "Node.html#getPos",
                       "tf": 10
@@ -3970,8 +4589,8 @@ window.lunrData = {
                 "docs": {},
                 "v": {
                   "docs": {
-                    "module-FilterDescriptionPlugin.html": {
-                      "ref": "module-FilterDescriptionPlugin.html",
+                    "module-plugins.FilterDescription.html": {
+                      "ref": "module-plugins.FilterDescription.html",
                       "tf": 5
                     }
                   }
@@ -3981,12 +4600,12 @@ window.lunrData = {
                 "docs": {},
                 "l": {
                   "docs": {
-                    "module-MongoDbSupportPlugin.html": {
-                      "ref": "module-MongoDbSupportPlugin.html",
+                    "module-plugins.MongoDbSupport.html": {
+                      "ref": "module-plugins.MongoDbSupport.html",
                       "tf": 4.545454545454546
                     },
-                    "module-SqlSupportPlugin.html": {
-                      "ref": "module-SqlSupportPlugin.html",
+                    "module-plugins.SqlSupport.html": {
+                      "ref": "module-plugins.SqlSupport.html",
                       "tf": 5
                     }
                   }
@@ -4031,10 +4650,6 @@ window.lunrData = {
                           "Model.html#.defineModelProperties": {
                             "ref": "Model.html#.defineModelProperties",
                             "tf": 2.380952380952381
-                          },
-                          "QueryBuilder.html#.extend": {
-                            "ref": "QueryBuilder.html#.extend",
-                            "tf": 10
                           }
                         }
                       }
@@ -4048,8 +4663,8 @@ window.lunrData = {
                   "docs": {},
                   "d": {
                     "docs": {
-                      "module-FilterDescriptionPlugin.html": {
-                        "ref": "module-FilterDescriptionPlugin.html",
+                      "module-plugins.FilterDescription.html": {
+                        "ref": "module-plugins.FilterDescription.html",
                         "tf": 5
                       }
                     }
@@ -4164,10 +4779,6 @@ window.lunrData = {
                                 "ref": "QueryBuilder.html",
                                 "tf": 1900
                               },
-                              "QueryBuilder.html#.extend": {
-                                "ref": "QueryBuilder.html#.extend",
-                                "tf": 10
-                              },
                               "QueryBuilder.html#off": {
                                 "ref": "QueryBuilder.html#off",
                                 "tf": 33.33333333333333
@@ -4204,23 +4815,8 @@ window.lunrData = {
                                                   "QueryBuilder.html#.DEFAULTS": {
                                                     "ref": "QueryBuilder.html#.DEFAULTS",
                                                     "tf": 1150
-                                                  },
-                                                  "QueryBuilder.html#.defaults": {
-                                                    "ref": "QueryBuilder.html#.defaults",
-                                                    "tf": 1150
                                                   }
                                                 }
-                                              }
-                                            }
-                                          }
-                                        },
-                                        "i": {
-                                          "docs": {},
-                                          "n": {
-                                            "docs": {
-                                              "QueryBuilder.html#.define": {
-                                                "ref": "QueryBuilder.html#.define",
-                                                "tf": 1150
                                               }
                                             }
                                           }
@@ -4248,77 +4844,6 @@ window.lunrData = {
                                       }
                                     }
                                   },
-                                  "i": {
-                                    "docs": {},
-                                    "n": {
-                                      "docs": {},
-                                      "p": {
-                                        "docs": {},
-                                        "u": {
-                                          "docs": {},
-                                          "t": {
-                                            "docs": {
-                                              "QueryBuilder.html#.inputs": {
-                                                "ref": "QueryBuilder.html#.inputs",
-                                                "tf": 1150
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "m": {
-                                    "docs": {},
-                                    "o": {
-                                      "docs": {},
-                                      "d": {
-                                        "docs": {},
-                                        "i": {
-                                          "docs": {},
-                                          "f": {
-                                            "docs": {},
-                                            "i": {
-                                              "docs": {},
-                                              "a": {
-                                                "docs": {},
-                                                "b": {
-                                                  "docs": {},
-                                                  "l": {
-                                                    "docs": {},
-                                                    "e": {
-                                                      "docs": {},
-                                                      "_": {
-                                                        "docs": {},
-                                                        "o": {
-                                                          "docs": {},
-                                                          "p": {
-                                                            "docs": {},
-                                                            "t": {
-                                                              "docs": {
-                                                                "QueryBuilder.html#.modifiable_options": {
-                                                                  "ref": "QueryBuilder.html#.modifiable_options",
-                                                                  "tf": 1150
-                                                                },
-                                                                "QueryBuilder.html#setOptions": {
-                                                                  "ref": "QueryBuilder.html#setOptions",
-                                                                  "tf": 7.142857142857142
-                                                                }
-                                                              }
-                                                            }
-                                                          }
-                                                        }
-                                                      }
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  },
                                   "o": {
                                     "docs": {},
                                     "p": {
@@ -4338,29 +4863,6 @@ window.lunrData = {
                                             "Rule.html#operator": {
                                               "ref": "Rule.html#operator",
                                               "tf": 50
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "p": {
-                                    "docs": {},
-                                    "l": {
-                                      "docs": {},
-                                      "u": {
-                                        "docs": {},
-                                        "g": {
-                                          "docs": {},
-                                          "i": {
-                                            "docs": {},
-                                            "n": {
-                                              "docs": {
-                                                "QueryBuilder.html#.plugins": {
-                                                  "ref": "QueryBuilder.html#.plugins",
-                                                  "tf": 1150
-                                                }
-                                              }
                                             }
                                           }
                                         }
@@ -4448,17 +4950,6 @@ window.lunrData = {
                                           }
                                         }
                                       }
-                                    },
-                                    "y": {
-                                      "docs": {},
-                                      "p": {
-                                        "docs": {
-                                          "QueryBuilder.html#.types": {
-                                            "ref": "QueryBuilder.html#.types",
-                                            "tf": 1150
-                                          }
-                                        }
-                                      }
                                     }
                                   },
                                   "u": {
@@ -4478,21 +4969,45 @@ window.lunrData = {
                                       }
                                     }
                                   },
-                                  "e": {
+                                  "m": {
                                     "docs": {},
-                                    "x": {
+                                    "o": {
                                       "docs": {},
-                                      "t": {
+                                      "d": {
                                         "docs": {},
-                                        "e": {
+                                        "i": {
                                           "docs": {},
-                                          "n": {
+                                          "f": {
                                             "docs": {},
-                                            "d": {
-                                              "docs": {
-                                                "QueryBuilder.html#.extend": {
-                                                  "ref": "QueryBuilder.html#.extend",
-                                                  "tf": 1150
+                                            "i": {
+                                              "docs": {},
+                                              "a": {
+                                                "docs": {},
+                                                "b": {
+                                                  "docs": {},
+                                                  "l": {
+                                                    "docs": {},
+                                                    "e": {
+                                                      "docs": {},
+                                                      "_": {
+                                                        "docs": {},
+                                                        "o": {
+                                                          "docs": {},
+                                                          "p": {
+                                                            "docs": {},
+                                                            "t": {
+                                                              "docs": {
+                                                                "QueryBuilder.html#setOptions": {
+                                                                  "ref": "QueryBuilder.html#setOptions",
+                                                                  "tf": 7.142857142857142
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
                                                 }
                                               }
                                             }
@@ -4754,6 +5269,23 @@ window.lunrData = {
                                     },
                                     "r": {
                                       "docs": {},
+                                      "a": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {},
+                                          "s": {
+                                            "docs": {},
+                                            "l": {
+                                              "docs": {
+                                                "QueryBuilder.html#translate": {
+                                                  "ref": "QueryBuilder.html#translate",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
                                       "i": {
                                         "docs": {},
                                         "g": {
@@ -5105,9 +5637,33 @@ window.lunrData = {
                 },
                 "i": {
                   "docs": {
-                    "module-SqlSupportPlugin.html": {
-                      "ref": "module-SqlSupportPlugin.html",
+                    "module-plugins.MongoDbSupport.html#getMongo": {
+                      "ref": "module-plugins.MongoDbSupport.html#getMongo",
+                      "tf": 12.5
+                    },
+                    "module-plugins.MongoDbSupport.html#getRulesFromMongo": {
+                      "ref": "module-plugins.MongoDbSupport.html#getRulesFromMongo",
+                      "tf": 45.83333333333333
+                    },
+                    "module-plugins.MongoDbSupport.html#setRulesFromMongo": {
+                      "ref": "module-plugins.MongoDbSupport.html#setRulesFromMongo",
+                      "tf": 12.5
+                    },
+                    "module-plugins.SqlSupport.html": {
+                      "ref": "module-plugins.SqlSupport.html",
                       "tf": 5
+                    },
+                    "module-plugins.SqlSupport.html#getRulesFromSQL": {
+                      "ref": "module-plugins.SqlSupport.html#getRulesFromSQL",
+                      "tf": 37.5
+                    },
+                    "module-plugins.SqlSupport.html#getSQL": {
+                      "ref": "module-plugins.SqlSupport.html#getSQL",
+                      "tf": 12.5
+                    },
+                    "module-plugins.SqlSupport.html#setRulesFromSQL": {
+                      "ref": "module-plugins.SqlSupport.html#setRulesFromSQL",
+                      "tf": 10
                     }
                   }
                 }
@@ -5119,6 +5675,73 @@ window.lunrData = {
                 "docs": {},
                 ";": {
                   "docs": {},
+                  "n": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "t": {
+                        "docs": {},
+                        "&": {
+                          "docs": {},
+                          "q": {
+                            "docs": {},
+                            "u": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {
+                                    "module-plugins.NotGroup.html": {
+                                      "ref": "module-plugins.NotGroup.html",
+                                      "tf": 8.333333333333332
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "u": {
+                    "docs": {},
+                    "n": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "q": {
+                          "docs": {},
+                          "u": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "&": {
+                                "docs": {},
+                                "q": {
+                                  "docs": {},
+                                  "u": {
+                                    "docs": {},
+                                    "o": {
+                                      "docs": {},
+                                      "t": {
+                                        "docs": {
+                                          "module-plugins.UniqueFilter.html": {
+                                            "ref": "module-plugins.UniqueFilter.html",
+                                            "tf": 4.545454545454546
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
                   "j": {
                     "docs": {},
                     "q": {
@@ -5153,73 +5776,6 @@ window.lunrData = {
                                                 }
                                               }
                                             }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "n": {
-                    "docs": {},
-                    "o": {
-                      "docs": {},
-                      "t": {
-                        "docs": {},
-                        "&": {
-                          "docs": {},
-                          "q": {
-                            "docs": {},
-                            "u": {
-                              "docs": {},
-                              "o": {
-                                "docs": {},
-                                "t": {
-                                  "docs": {
-                                    "module-NotGroupPlugin.html": {
-                                      "ref": "module-NotGroupPlugin.html",
-                                      "tf": 8.333333333333332
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "u": {
-                    "docs": {},
-                    "n": {
-                      "docs": {},
-                      "i": {
-                        "docs": {},
-                        "q": {
-                          "docs": {},
-                          "u": {
-                            "docs": {},
-                            "e": {
-                              "docs": {},
-                              "&": {
-                                "docs": {},
-                                "q": {
-                                  "docs": {},
-                                  "u": {
-                                    "docs": {},
-                                    "o": {
-                                      "docs": {},
-                                      "t": {
-                                        "docs": {
-                                          "module-UniqueFilterPlugin.html": {
-                                            "ref": "module-UniqueFilterPlugin.html",
-                                            "tf": 4.545454545454546
                                           }
                                         }
                                       }
@@ -5272,14 +5828,6 @@ window.lunrData = {
                                   "ref": "QueryBuilder.html#.DEFAULTS",
                                   "tf": 25
                                 },
-                                "QueryBuilder.html#.inputs": {
-                                  "ref": "QueryBuilder.html#.inputs",
-                                  "tf": 25
-                                },
-                                "QueryBuilder.html#.modifiable_options": {
-                                  "ref": "QueryBuilder.html#.modifiable_options",
-                                  "tf": 25
-                                },
                                 "QueryBuilder.html#.OPERATORS": {
                                   "ref": "QueryBuilder.html#.OPERATORS",
                                   "tf": 20
@@ -5294,10 +5842,6 @@ window.lunrData = {
                                 },
                                 "QueryBuilder.html#.templates": {
                                   "ref": "QueryBuilder.html#.templates",
-                                  "tf": 20
-                                },
-                                "QueryBuilder.html#.types": {
-                                  "ref": "QueryBuilder.html#.types",
                                   "tf": 20
                                 }
                               }
@@ -5358,6 +5902,10 @@ window.lunrData = {
                       "ref": "Model.html#off",
                       "tf": 12.5
                     },
+                    "module-plugins.ChangeFilters.html#removeFilter": {
+                      "ref": "module-plugins.ChangeFilters.html#removeFilter",
+                      "tf": 16.666666666666664
+                    },
                     "QueryBuilder.html#clear": {
                       "ref": "QueryBuilder.html#clear",
                       "tf": 10
@@ -5378,6 +5926,23 @@ window.lunrData = {
                             "Group.html#removeNode": {
                               "ref": "Group.html#removeNode",
                               "tf": 700
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "f": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "l": {
+                          "docs": {},
+                          "t": {
+                            "docs": {
+                              "module-plugins.ChangeFilters.html#removeFilter": {
+                                "ref": "module-plugins.ChangeFilters.html#removeFilter",
+                                "tf": 633.3333333333334
+                              }
                             }
                           }
                         }
@@ -5406,6 +5971,14 @@ window.lunrData = {
                       "Group.html#length": {
                         "ref": "Group.html#length",
                         "tf": 16.666666666666664
+                      },
+                      "module-plugins.MongoDbSupport.html#getMongo": {
+                        "ref": "module-plugins.MongoDbSupport.html#getMongo",
+                        "tf": 12.5
+                      },
+                      "module-plugins.SqlSupport.html#getSQL": {
+                        "ref": "module-plugins.SqlSupport.html#getSQL",
+                        "tf": 12.5
                       },
                       "Node.html#getPos": {
                         "ref": "Node.html#getPos",
@@ -5442,17 +6015,6 @@ window.lunrData = {
                       }
                     }
                   }
-                },
-                "s": {
-                  "docs": {},
-                  "t": {
-                    "docs": {
-                      "QueryBuilder.html#.define": {
-                        "ref": "QueryBuilder.html#.define",
-                        "tf": 16.666666666666664
-                      }
-                    }
-                  }
                 }
               },
               "e": {
@@ -5478,20 +6040,6 @@ window.lunrData = {
                       "QueryBuilder.html#getRules": {
                         "ref": "QueryBuilder.html#getRules",
                         "tf": 10
-                      }
-                    },
-                    "e": {
-                      "docs": {},
-                      "n": {
-                        "docs": {},
-                        "t": {
-                          "docs": {
-                            "QueryBuilder.html#.types": {
-                              "ref": "QueryBuilder.html#.types",
-                              "tf": 12.5
-                            }
-                          }
-                        }
                       }
                     }
                   }
@@ -5541,6 +6089,54 @@ window.lunrData = {
                     "ref": "Group.html#addRule",
                     "tf": 35
                   },
+                  "module-plugins.Invert.html": {
+                    "ref": "module-plugins.Invert.html",
+                    "tf": 6.25
+                  },
+                  "module-plugins.Invert.html#invert": {
+                    "ref": "module-plugins.Invert.html#invert",
+                    "tf": 10
+                  },
+                  "module-plugins.MongoDbSupport.html": {
+                    "ref": "module-plugins.MongoDbSupport.html",
+                    "tf": 4.545454545454546
+                  },
+                  "module-plugins.MongoDbSupport.html#getMongo": {
+                    "ref": "module-plugins.MongoDbSupport.html#getMongo",
+                    "tf": 12.5
+                  },
+                  "module-plugins.MongoDbSupport.html#getRulesFromMongo": {
+                    "ref": "module-plugins.MongoDbSupport.html#getRulesFromMongo",
+                    "tf": 12.5
+                  },
+                  "module-plugins.MongoDbSupport.html#setRulesFromMongo": {
+                    "ref": "module-plugins.MongoDbSupport.html#setRulesFromMongo",
+                    "tf": 12.5
+                  },
+                  "module-plugins.Sortable.html": {
+                    "ref": "module-plugins.Sortable.html",
+                    "tf": 8.333333333333332
+                  },
+                  "module-plugins.SqlSupport.html": {
+                    "ref": "module-plugins.SqlSupport.html",
+                    "tf": 5
+                  },
+                  "module-plugins.SqlSupport.html#getRulesFromSQL": {
+                    "ref": "module-plugins.SqlSupport.html#getRulesFromSQL",
+                    "tf": 12.5
+                  },
+                  "module-plugins.SqlSupport.html#getSQL": {
+                    "ref": "module-plugins.SqlSupport.html#getSQL",
+                    "tf": 12.5
+                  },
+                  "module-plugins.SqlSupport.html#setRulesFromSQL": {
+                    "ref": "module-plugins.SqlSupport.html#setRulesFromSQL",
+                    "tf": 10
+                  },
+                  "module-plugins.UniqueFilter.html": {
+                    "ref": "module-plugins.UniqueFilter.html",
+                    "tf": 4.545454545454546
+                  },
                   "QueryBuilder.html#.Rule": {
                     "ref": "QueryBuilder.html#.Rule",
                     "tf": 683.3333333333334
@@ -5580,26 +6176,6 @@ window.lunrData = {
                   "Rule.html": {
                     "ref": "Rule.html",
                     "tf": 1925
-                  },
-                  "module-InvertPlugin.html": {
-                    "ref": "module-InvertPlugin.html",
-                    "tf": 6.25
-                  },
-                  "module-MongoDbSupportPlugin.html": {
-                    "ref": "module-MongoDbSupportPlugin.html",
-                    "tf": 4.545454545454546
-                  },
-                  "module-SortablePlugin.html": {
-                    "ref": "module-SortablePlugin.html",
-                    "tf": 8.333333333333332
-                  },
-                  "module-SqlSupportPlugin.html": {
-                    "ref": "module-SqlSupportPlugin.html",
-                    "tf": 5
-                  },
-                  "module-UniqueFilterPlugin.html": {
-                    "ref": "module-UniqueFilterPlugin.html",
-                    "tf": 4.545454545454546
                   }
                 },
                 "#": {
@@ -5903,23 +6479,6 @@ window.lunrData = {
                   }
                 }
               }
-            },
-            "n": {
-              "docs": {},
-              "t": {
-                "docs": {},
-                "i": {
-                  "docs": {},
-                  "m": {
-                    "docs": {
-                      "QueryBuilder.html#.modifiable_options": {
-                        "ref": "QueryBuilder.html#.modifiable_options",
-                        "tf": 10
-                      }
-                    }
-                  }
-                }
-              }
             }
           },
           "o": {
@@ -5980,8 +6539,8 @@ window.lunrData = {
                 "docs": {},
                 "o": {
                   "docs": {
-                    "module-BtCheckboxPlugin.html": {
-                      "ref": "module-BtCheckboxPlugin.html",
+                    "module-plugins.BtCheckbox.html": {
+                      "ref": "module-plugins.BtCheckbox.html",
                       "tf": 7.142857142857142
                     }
                   },
@@ -6047,8 +6606,8 @@ window.lunrData = {
           "docs": {},
           "s": {
             "docs": {
-              "module-UniqueFilterPlugin.html": {
-                "ref": "module-UniqueFilterPlugin.html",
+              "module-plugins.UniqueFilter.html": {
+                "ref": "module-plugins.UniqueFilter.html",
                 "tf": 4.545454545454546
               },
               "Utils.html#.escapeElementId": {
@@ -6083,6 +6642,38 @@ window.lunrData = {
                     "Model.html#.defineModelProperties": {
                       "ref": "Model.html#.defineModelProperties",
                       "tf": 2.380952380952381
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "n": {
+            "docs": {},
+            "i": {
+              "docs": {},
+              "q": {
+                "docs": {},
+                "u": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "f": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "l": {
+                          "docs": {},
+                          "t": {
+                            "docs": {
+                              "module-plugins.UniqueFilter.html": {
+                                "ref": "module-plugins.UniqueFilter.html",
+                                "tf": 650
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -6379,109 +6970,6 @@ window.lunrData = {
                 }
               }
             }
-          },
-          "n": {
-            "docs": {},
-            "d": {
-              "docs": {},
-              "e": {
-                "docs": {},
-                "f": {
-                  "docs": {},
-                  "i": {
-                    "docs": {},
-                    "n": {
-                      "docs": {},
-                      "e": {
-                        "docs": {},
-                        "d": {
-                          "docs": {},
-                          "|": {
-                            "docs": {},
-                            "o": {
-                              "docs": {},
-                              "b": {
-                                "docs": {},
-                                "j": {
-                                  "docs": {},
-                                  "e": {
-                                    "docs": {},
-                                    "c": {
-                                      "docs": {},
-                                      "t": {
-                                        "docs": {
-                                          "QueryBuilder.html#.defaults": {
-                                            "ref": "QueryBuilder.html#.defaults",
-                                            "tf": 25
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "i": {
-              "docs": {},
-              "q": {
-                "docs": {},
-                "u": {
-                  "docs": {},
-                  "e": {
-                    "docs": {},
-                    "f": {
-                      "docs": {},
-                      "i": {
-                        "docs": {},
-                        "l": {
-                          "docs": {},
-                          "t": {
-                            "docs": {},
-                            "e": {
-                              "docs": {},
-                              "r": {
-                                "docs": {},
-                                "p": {
-                                  "docs": {},
-                                  "l": {
-                                    "docs": {},
-                                    "u": {
-                                      "docs": {},
-                                      "g": {
-                                        "docs": {},
-                                        "i": {
-                                          "docs": {},
-                                          "n": {
-                                            "docs": {
-                                              "module-UniqueFilterPlugin.html": {
-                                                "ref": "module-UniqueFilterPlugin.html",
-                                                "tf": 600
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
           }
         },
         "d": {
@@ -6570,6 +7058,14 @@ window.lunrData = {
                     "ref": "Model.html",
                     "tf": 6.25
                   },
+                  "module-plugins.MongoDbSupport.html#getMongo": {
+                    "ref": "module-plugins.MongoDbSupport.html#getMongo",
+                    "tf": 33.33333333333333
+                  },
+                  "module-plugins.SqlSupport.html#getSQL": {
+                    "ref": "module-plugins.SqlSupport.html#getSQL",
+                    "tf": 20
+                  },
                   "Node.html#data": {
                     "ref": "Node.html#data",
                     "tf": 700
@@ -6633,6 +7129,33 @@ window.lunrData = {
                   },
                   "e": {
                     "docs": {},
+                    "o": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "p": {
+                          "docs": {},
+                          "h": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "n": {
+                                "docs": {
+                                  "module-plugins.ChangeFilters.html#removeFilter": {
+                                    "ref": "module-plugins.ChangeFilters.html#removeFilter",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "module-plugins.ChangeFilters.html#setFilters": {
+                                    "ref": "module-plugins.ChangeFilters.html#setFilters",
+                                    "tf": 33.33333333333333
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "g": {
                       "docs": {},
                       "r": {
@@ -6672,12 +7195,7 @@ window.lunrData = {
               }
             },
             "f": {
-              "docs": {
-                "QueryBuilder.html#.define": {
-                  "ref": "QueryBuilder.html#.define",
-                  "tf": 20
-                }
-              },
+              "docs": {},
               "i": {
                 "docs": {},
                 "n": {
@@ -6686,17 +7204,13 @@ window.lunrData = {
                       "ref": "Model.html#.defineModelProperties",
                       "tf": 2.380952380952381
                     },
-                    "QueryBuilder.html#.define": {
-                      "ref": "QueryBuilder.html#.define",
-                      "tf": 670
+                    "module-plugins.UniqueFilter.html": {
+                      "ref": "module-plugins.UniqueFilter.html",
+                      "tf": 4.545454545454546
                     },
                     "QueryBuilder.html#setOptions": {
                       "ref": "QueryBuilder.html#setOptions",
                       "tf": 7.142857142857142
-                    },
-                    "module-UniqueFilterPlugin.html": {
-                      "ref": "module-UniqueFilterPlugin.html",
-                      "tf": 4.545454545454546
                     }
                   },
                   "e": {
@@ -6745,17 +7259,6 @@ window.lunrData = {
                         }
                       }
                     }
-                  },
-                  "i": {
-                    "docs": {},
-                    "t": {
-                      "docs": {
-                        "QueryBuilder.html#.plugins": {
-                          "ref": "QueryBuilder.html#.plugins",
-                          "tf": 16.666666666666664
-                        }
-                      }
-                    }
                   }
                 }
               },
@@ -6774,10 +7277,6 @@ window.lunrData = {
                         "QueryBuilder.html#.OPERATORS": {
                           "ref": "QueryBuilder.html#.OPERATORS",
                           "tf": 25
-                        },
-                        "QueryBuilder.html#.defaults": {
-                          "ref": "QueryBuilder.html#.defaults",
-                          "tf": 687.5
                         }
                       }
                     }
@@ -6787,6 +7286,26 @@ window.lunrData = {
             },
             "s": {
               "docs": {},
+              "c": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "p": {
+                      "docs": {},
+                      "t": {
+                        "docs": {
+                          "module-plugins.FilterDescription.html": {
+                            "ref": "module-plugins.FilterDescription.html",
+                            "tf": 5
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "t": {
                 "docs": {},
                 "r": {
@@ -6798,26 +7317,6 @@ window.lunrData = {
                         "QueryBuilder.html#destroy": {
                           "ref": "QueryBuilder.html#destroy",
                           "tf": 775
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "c": {
-                "docs": {},
-                "r": {
-                  "docs": {},
-                  "i": {
-                    "docs": {},
-                    "p": {
-                      "docs": {},
-                      "t": {
-                        "docs": {
-                          "module-FilterDescriptionPlugin.html": {
-                            "ref": "module-FilterDescriptionPlugin.html",
-                            "tf": 5
-                          }
                         }
                       }
                     }
@@ -6836,6 +7335,10 @@ window.lunrData = {
                     "ref": "Group.html#drop",
                     "tf": 750
                   },
+                  "module-plugins.Sortable.html": {
+                    "ref": "module-plugins.Sortable.html",
+                    "tf": 8.333333333333332
+                  },
                   "Node.html#drop": {
                     "ref": "Node.html#drop",
                     "tf": 750
@@ -6843,10 +7346,6 @@ window.lunrData = {
                   "Rule.html#drop": {
                     "ref": "Rule.html#drop",
                     "tf": 750
-                  },
-                  "module-SortablePlugin.html": {
-                    "ref": "module-SortablePlugin.html",
-                    "tf": 8.333333333333332
                   }
                 }
               }
@@ -6855,8 +7354,8 @@ window.lunrData = {
               "docs": {},
               "g": {
                 "docs": {
-                  "module-SortablePlugin.html": {
-                    "ref": "module-SortablePlugin.html",
+                  "module-plugins.Sortable.html": {
+                    "ref": "module-plugins.Sortable.html",
                     "tf": 8.333333333333332
                   }
                 }
@@ -6875,8 +7374,8 @@ window.lunrData = {
                     "docs": {},
                     "y": {
                       "docs": {
-                        "module-FilterDescriptionPlugin.html": {
-                          "ref": "module-FilterDescriptionPlugin.html",
+                        "module-plugins.FilterDescription.html": {
+                          "ref": "module-plugins.FilterDescription.html",
                           "tf": 5
                         }
                       }
@@ -7239,14 +7738,6 @@ window.lunrData = {
                               "ref": "QueryBuilder.html#.DEFAULTS",
                               "tf": 25
                             },
-                            "QueryBuilder.html#.inputs": {
-                              "ref": "QueryBuilder.html#.inputs",
-                              "tf": 25
-                            },
-                            "QueryBuilder.html#.modifiable_options": {
-                              "ref": "QueryBuilder.html#.modifiable_options",
-                              "tf": 25
-                            },
                             "QueryBuilder.html#.OPERATORS": {
                               "ref": "QueryBuilder.html#.OPERATORS",
                               "tf": 20
@@ -7261,10 +7752,6 @@ window.lunrData = {
                             },
                             "QueryBuilder.html#.templates": {
                               "ref": "QueryBuilder.html#.templates",
-                              "tf": 20
-                            },
-                            "QueryBuilder.html#.types": {
-                              "ref": "QueryBuilder.html#.types",
                               "tf": 20
                             }
                           },
@@ -7282,28 +7769,12 @@ window.lunrData = {
                                     "ref": "QueryBuilder.html#.Group",
                                     "tf": 33.33333333333333
                                   },
-                                  "QueryBuilder.html#.plugins": {
-                                    "ref": "QueryBuilder.html#.plugins",
-                                    "tf": 25
-                                  },
                                   "QueryBuilder.html#.Rule": {
                                     "ref": "QueryBuilder.html#.Rule",
                                     "tf": 33.33333333333333
                                   },
                                   "QueryBuilder.html#.utils": {
                                     "ref": "QueryBuilder.html#.utils",
-                                    "tf": 33.33333333333333
-                                  },
-                                  "QueryBuilder.html#.defaults": {
-                                    "ref": "QueryBuilder.html#.defaults",
-                                    "tf": 25
-                                  },
-                                  "QueryBuilder.html#.define": {
-                                    "ref": "QueryBuilder.html#.define",
-                                    "tf": 20
-                                  },
-                                  "QueryBuilder.html#.extend": {
-                                    "ref": "QueryBuilder.html#.extend",
                                     "tf": 33.33333333333333
                                   },
                                   "Utils.html#.changeType": {
@@ -7408,6 +7879,17 @@ window.lunrData = {
                 }
               }
             },
+            "o": {
+              "docs": {},
+              "k": {
+                "docs": {
+                  "QueryBuilder.html#translate": {
+                    "ref": "QueryBuilder.html#translate",
+                    "tf": 4.545454545454546
+                  }
+                }
+              }
+            },
             "g": {
               "docs": {
                 "Utils.html#.error": {
@@ -7426,6 +7908,38 @@ window.lunrData = {
                   "QueryBuilder.html#lang": {
                     "ref": "QueryBuilder.html#lang",
                     "tf": 683.3333333333334
+                  },
+                  "QueryBuilder.html#translate": {
+                    "ref": "QueryBuilder.html#translate",
+                    "tf": 4.545454545454546
+                  }
+                },
+                "u": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "g": {
+                      "docs": {
+                        "QueryBuilder.html#translate": {
+                          "ref": "QueryBuilder.html#translate",
+                          "tf": 4.545454545454546
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "b": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "l": {
+                  "docs": {
+                    "QueryBuilder.html#translate": {
+                      "ref": "QueryBuilder.html#translate",
+                      "tf": 4.545454545454546
+                    }
                   }
                 }
               }
@@ -7559,21 +8073,6 @@ window.lunrData = {
                       }
                     }
                   }
-                },
-                "n": {
-                  "docs": {},
-                  "d": {
-                    "docs": {
-                      "QueryBuilder.html#.defaults": {
-                        "ref": "QueryBuilder.html#.defaults",
-                        "tf": 12.5
-                      },
-                      "QueryBuilder.html#.extend": {
-                        "ref": "QueryBuilder.html#.extend",
-                        "tf": 683.3333333333334
-                      }
-                    }
-                  }
                 }
               }
             },
@@ -7585,12 +8084,12 @@ window.lunrData = {
                   "docs": {},
                   "t": {
                     "docs": {
-                      "module-MongoDbSupportPlugin.html": {
-                        "ref": "module-MongoDbSupportPlugin.html",
+                      "module-plugins.MongoDbSupport.html": {
+                        "ref": "module-plugins.MongoDbSupport.html",
                         "tf": 4.545454545454546
                       },
-                      "module-SqlSupportPlugin.html": {
-                        "ref": "module-SqlSupportPlugin.html",
+                      "module-plugins.SqlSupport.html": {
+                        "ref": "module-plugins.SqlSupport.html",
                         "tf": 5
                       }
                     }
@@ -7663,6 +8162,10 @@ window.lunrData = {
                       "ref": "Group.html#error",
                       "tf": 700
                     },
+                    "module-plugins.BtTooltipErrors.html": {
+                      "ref": "module-plugins.BtTooltipErrors.html",
+                      "tf": 8.333333333333332
+                    },
                     "Node.html#error": {
                       "ref": "Node.html#error",
                       "tf": 700
@@ -7674,10 +8177,6 @@ window.lunrData = {
                     "Rule.html#error": {
                       "ref": "Rule.html#error",
                       "tf": 700
-                    },
-                    "module-BtTooltipErrorsPlugin.html": {
-                      "ref": "module-BtTooltipErrorsPlugin.html",
-                      "tf": 8.333333333333332
                     },
                     "Utils.html#.error": {
                       "ref": "Utils.html#.error",
@@ -7783,8 +8282,8 @@ window.lunrData = {
                 "docs": {},
                 "r": {
                   "docs": {
-                    "module-InvertPlugin.html": {
-                      "ref": "module-InvertPlugin.html",
+                    "module-plugins.Invert.html": {
+                      "ref": "module-plugins.Invert.html",
                       "tf": 6.25
                     }
                   }
@@ -7797,8 +8296,8 @@ window.lunrData = {
                 "docs": {},
                 "l": {
                   "docs": {
-                    "module-SortablePlugin.html": {
-                      "ref": "module-SortablePlugin.html",
+                    "module-plugins.Sortable.html": {
+                      "ref": "module-plugins.Sortable.html",
                       "tf": 8.333333333333332
                     }
                   }
@@ -8008,20 +8507,8 @@ window.lunrData = {
                         "ref": "QueryBuilder.html#.Group",
                         "tf": 110
                       },
-                      "QueryBuilder.html#.inputs": {
-                        "ref": "QueryBuilder.html#.inputs",
-                        "tf": 110
-                      },
-                      "QueryBuilder.html#.modifiable_options": {
-                        "ref": "QueryBuilder.html#.modifiable_options",
-                        "tf": 110
-                      },
                       "QueryBuilder.html#.OPERATORS": {
                         "ref": "QueryBuilder.html#.OPERATORS",
-                        "tf": 110
-                      },
-                      "QueryBuilder.html#.plugins": {
-                        "ref": "QueryBuilder.html#.plugins",
                         "tf": 110
                       },
                       "QueryBuilder.html#.regional": {
@@ -8038,10 +8525,6 @@ window.lunrData = {
                       },
                       "QueryBuilder.html#.templates": {
                         "ref": "QueryBuilder.html#.templates",
-                        "tf": 110
-                      },
-                      "QueryBuilder.html#.types": {
-                        "ref": "QueryBuilder.html#.types",
                         "tf": 110
                       },
                       "QueryBuilder.html#.utils": {
@@ -8133,27 +8616,6 @@ window.lunrData = {
                 }
               }
             },
-            "t": {
-              "docs": {},
-              "h": {
-                "docs": {},
-                "o": {
-                  "docs": {},
-                  "d": {
-                    "docs": {
-                      "QueryBuilder.html#.modifiable_options": {
-                        "ref": "QueryBuilder.html#.modifiable_options",
-                        "tf": 10
-                      },
-                      "QueryBuilder.html#.extend": {
-                        "ref": "QueryBuilder.html#.extend",
-                        "tf": 43.33333333333333
-                      }
-                    }
-                  }
-                }
-              }
-            },
             "s": {
               "docs": {},
               "s": {
@@ -8162,8 +8624,8 @@ window.lunrData = {
                   "docs": {},
                   "g": {
                     "docs": {
-                      "module-BtTooltipErrorsPlugin.html": {
-                        "ref": "module-BtTooltipErrorsPlugin.html",
+                      "module-plugins.BtTooltipErrors.html": {
+                        "ref": "module-plugins.BtTooltipErrors.html",
                         "tf": 8.333333333333332
                       },
                       "Utils.html#.error": {
@@ -8186,50 +8648,10 @@ window.lunrData = {
                   "docs": {
                     "list_module.html": {
                       "ref": "list_module.html",
-                      "tf": 35
+                      "tf": 635
                     },
-                    "module-BtCheckboxPlugin.html": {
-                      "ref": "module-BtCheckboxPlugin.html",
-                      "tf": 110
-                    },
-                    "module-BtSelectpickerPlugin.html": {
-                      "ref": "module-BtSelectpickerPlugin.html",
-                      "tf": 110
-                    },
-                    "module-BtTooltipErrorsPlugin.html": {
-                      "ref": "module-BtTooltipErrorsPlugin.html",
-                      "tf": 110
-                    },
-                    "module-ChangeFiltersPlugin.html": {
-                      "ref": "module-ChangeFiltersPlugin.html",
-                      "tf": 110
-                    },
-                    "module-FilterDescriptionPlugin.html": {
-                      "ref": "module-FilterDescriptionPlugin.html",
-                      "tf": 110
-                    },
-                    "module-InvertPlugin.html": {
-                      "ref": "module-InvertPlugin.html",
-                      "tf": 110
-                    },
-                    "module-MongoDbSupportPlugin.html": {
-                      "ref": "module-MongoDbSupportPlugin.html",
-                      "tf": 110
-                    },
-                    "module-NotGroupPlugin.html": {
-                      "ref": "module-NotGroupPlugin.html",
-                      "tf": 110
-                    },
-                    "module-SortablePlugin.html": {
-                      "ref": "module-SortablePlugin.html",
-                      "tf": 110
-                    },
-                    "module-SqlSupportPlugin.html": {
-                      "ref": "module-SqlSupportPlugin.html",
-                      "tf": 110
-                    },
-                    "module-UniqueFilterPlugin.html": {
-                      "ref": "module-UniqueFilterPlugin.html",
+                    "module-plugins.html": {
+                      "ref": "module-plugins.html",
                       "tf": 110
                     }
                   },
@@ -8237,92 +8659,50 @@ window.lunrData = {
                     "docs": {},
                     ":": {
                       "docs": {},
-                      "n": {
+                      "p": {
                         "docs": {},
-                        "o": {
+                        "l": {
                           "docs": {},
-                          "t": {
+                          "u": {
                             "docs": {},
                             "g": {
                               "docs": {},
-                              "r": {
+                              "i": {
                                 "docs": {},
-                                "o": {
-                                  "docs": {},
-                                  "u": {
+                                "n": {
+                                  "docs": {
+                                    "module-plugins.html": {
+                                      "ref": "module-plugins.html",
+                                      "tf": 1300
+                                    }
+                                  },
+                                  "s": {
                                     "docs": {},
-                                    "p": {
+                                    ".": {
                                       "docs": {},
-                                      "p": {
+                                      "n": {
                                         "docs": {},
-                                        "l": {
+                                        "o": {
                                           "docs": {},
-                                          "u": {
+                                          "t": {
                                             "docs": {},
                                             "g": {
                                               "docs": {},
-                                              "i": {
+                                              "r": {
                                                 "docs": {},
-                                                "n": {
-                                                  "docs": {
-                                                    "Group.html#not": {
-                                                      "ref": "Group.html#not",
-                                                      "tf": 50
-                                                    },
-                                                    "module-NotGroupPlugin.html": {
-                                                      "ref": "module-NotGroupPlugin.html",
-                                                      "tf": 1300
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "b": {
-                        "docs": {},
-                        "t": {
-                          "docs": {},
-                          "c": {
-                            "docs": {},
-                            "h": {
-                              "docs": {},
-                              "e": {
-                                "docs": {},
-                                "c": {
-                                  "docs": {},
-                                  "k": {
-                                    "docs": {},
-                                    "b": {
-                                      "docs": {},
-                                      "o": {
-                                        "docs": {},
-                                        "x": {
-                                          "docs": {},
-                                          "p": {
-                                            "docs": {},
-                                            "l": {
-                                              "docs": {},
-                                              "u": {
-                                                "docs": {},
-                                                "g": {
+                                                "o": {
                                                   "docs": {},
-                                                  "i": {
+                                                  "u": {
                                                     "docs": {},
-                                                    "n": {
+                                                    "p": {
                                                       "docs": {
-                                                        "module-BtCheckboxPlugin.html": {
-                                                          "ref": "module-BtCheckboxPlugin.html",
-                                                          "tf": 1300
+                                                        "Group.html#not": {
+                                                          "ref": "Group.html#not",
+                                                          "tf": 50
+                                                        },
+                                                        "module-plugins.NotGroup.html": {
+                                                          "ref": "module-plugins.NotGroup.html",
+                                                          "tf": 1150
                                                         }
                                                       }
                                                     }
@@ -8332,52 +8712,63 @@ window.lunrData = {
                                             }
                                           }
                                         }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "s": {
-                            "docs": {},
-                            "e": {
-                              "docs": {},
-                              "l": {
-                                "docs": {},
-                                "e": {
-                                  "docs": {},
-                                  "c": {
-                                    "docs": {},
-                                    "t": {
-                                      "docs": {},
-                                      "p": {
+                                      },
+                                      "b": {
                                         "docs": {},
-                                        "i": {
+                                        "t": {
                                           "docs": {},
                                           "c": {
                                             "docs": {},
-                                            "k": {
+                                            "h": {
                                               "docs": {},
                                               "e": {
                                                 "docs": {},
-                                                "r": {
+                                                "c": {
                                                   "docs": {},
-                                                  "p": {
+                                                  "k": {
                                                     "docs": {},
-                                                    "l": {
+                                                    "b": {
                                                       "docs": {},
-                                                      "u": {
+                                                      "o": {
                                                         "docs": {},
-                                                        "g": {
+                                                        "x": {
+                                                          "docs": {
+                                                            "module-plugins.BtCheckbox.html": {
+                                                              "ref": "module-plugins.BtCheckbox.html",
+                                                              "tf": 1150
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "s": {
+                                            "docs": {},
+                                            "e": {
+                                              "docs": {},
+                                              "l": {
+                                                "docs": {},
+                                                "e": {
+                                                  "docs": {},
+                                                  "c": {
+                                                    "docs": {},
+                                                    "t": {
+                                                      "docs": {},
+                                                      "p": {
+                                                        "docs": {},
+                                                        "i": {
                                                           "docs": {},
-                                                          "i": {
+                                                          "c": {
                                                             "docs": {},
-                                                            "n": {
+                                                            "k": {
                                                               "docs": {
-                                                                "module-BtSelectpickerPlugin.html": {
-                                                                  "ref": "module-BtSelectpickerPlugin.html",
-                                                                  "tf": 1300
+                                                                "module-plugins.BtSelectpicker.html": {
+                                                                  "ref": "module-plugins.BtSelectpicker.html",
+                                                                  "tf": 1150
                                                                 }
                                                               }
                                                             }
@@ -8389,56 +8780,35 @@ window.lunrData = {
                                                 }
                                               }
                                             }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "t": {
-                            "docs": {},
-                            "o": {
-                              "docs": {},
-                              "o": {
-                                "docs": {},
-                                "l": {
-                                  "docs": {},
-                                  "t": {
-                                    "docs": {},
-                                    "i": {
-                                      "docs": {},
-                                      "p": {
-                                        "docs": {},
-                                        "e": {
-                                          "docs": {},
-                                          "r": {
+                                          },
+                                          "t": {
                                             "docs": {},
-                                            "r": {
+                                            "o": {
                                               "docs": {},
                                               "o": {
                                                 "docs": {},
-                                                "r": {
+                                                "l": {
                                                   "docs": {},
-                                                  "s": {
+                                                  "t": {
                                                     "docs": {},
-                                                    "p": {
+                                                    "i": {
                                                       "docs": {},
-                                                      "l": {
+                                                      "p": {
                                                         "docs": {},
-                                                        "u": {
+                                                        "e": {
                                                           "docs": {},
-                                                          "g": {
+                                                          "r": {
                                                             "docs": {},
-                                                            "i": {
+                                                            "r": {
                                                               "docs": {},
-                                                              "n": {
-                                                                "docs": {
-                                                                  "module-BtTooltipErrorsPlugin.html": {
-                                                                    "ref": "module-BtTooltipErrorsPlugin.html",
-                                                                    "tf": 1300
+                                                              "o": {
+                                                                "docs": {},
+                                                                "r": {
+                                                                  "docs": {
+                                                                    "module-plugins.BtTooltipErrors.html": {
+                                                                      "ref": "module-plugins.BtTooltipErrors.html",
+                                                                      "tf": 1150
+                                                                    }
                                                                   }
                                                                 }
                                                               }
@@ -8453,126 +8823,124 @@ window.lunrData = {
                                             }
                                           }
                                         }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "c": {
-                        "docs": {},
-                        "h": {
-                          "docs": {},
-                          "a": {
-                            "docs": {},
-                            "n": {
-                              "docs": {},
-                              "g": {
-                                "docs": {},
-                                "e": {
-                                  "docs": {},
-                                  "f": {
-                                    "docs": {},
-                                    "i": {
-                                      "docs": {},
-                                      "l": {
+                                      },
+                                      "c": {
                                         "docs": {},
-                                        "t": {
+                                        "h": {
                                           "docs": {},
-                                          "e": {
+                                          "a": {
                                             "docs": {},
-                                            "r": {
+                                            "n": {
                                               "docs": {},
-                                              "s": {
+                                              "g": {
                                                 "docs": {},
-                                                "p": {
+                                                "e": {
                                                   "docs": {},
-                                                  "l": {
+                                                  "f": {
                                                     "docs": {},
-                                                    "u": {
+                                                    "i": {
                                                       "docs": {},
-                                                      "g": {
+                                                      "l": {
                                                         "docs": {},
-                                                        "i": {
-                                                          "docs": {},
-                                                          "n": {
-                                                            "docs": {
-                                                              "module-ChangeFiltersPlugin.html": {
-                                                                "ref": "module-ChangeFiltersPlugin.html",
-                                                                "tf": 1300
-                                                              }
+                                                        "t": {
+                                                          "docs": {
+                                                            "module-plugins.ChangeFilters.html": {
+                                                              "ref": "module-plugins.ChangeFilters.html",
+                                                              "tf": 1150
                                                             }
-                                                          }
-                                                        }
-                                                      }
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "f": {
-                        "docs": {},
-                        "i": {
-                          "docs": {},
-                          "l": {
-                            "docs": {},
-                            "t": {
-                              "docs": {},
-                              "e": {
-                                "docs": {},
-                                "r": {
-                                  "docs": {},
-                                  "d": {
-                                    "docs": {},
-                                    "e": {
-                                      "docs": {},
-                                      "s": {
-                                        "docs": {},
-                                        "c": {
-                                          "docs": {},
-                                          "r": {
-                                            "docs": {},
-                                            "i": {
-                                              "docs": {},
-                                              "p": {
-                                                "docs": {},
-                                                "t": {
-                                                  "docs": {},
-                                                  "i": {
-                                                    "docs": {},
-                                                    "o": {
-                                                      "docs": {},
-                                                      "n": {
-                                                        "docs": {},
-                                                        "p": {
-                                                          "docs": {},
-                                                          "l": {
+                                                          },
+                                                          "e": {
                                                             "docs": {},
-                                                            "u": {
+                                                            "r": {
                                                               "docs": {},
-                                                              "g": {
+                                                              "s": {
                                                                 "docs": {},
-                                                                "i": {
+                                                                "#": {
                                                                   "docs": {},
-                                                                  "n": {
-                                                                    "docs": {
-                                                                      "module-FilterDescriptionPlugin.html": {
-                                                                        "ref": "module-FilterDescriptionPlugin.html",
-                                                                        "tf": 1300
+                                                                  "a": {
+                                                                    "docs": {},
+                                                                    "d": {
+                                                                      "docs": {},
+                                                                      "d": {
+                                                                        "docs": {},
+                                                                        "f": {
+                                                                          "docs": {},
+                                                                          "i": {
+                                                                            "docs": {},
+                                                                            "l": {
+                                                                              "docs": {},
+                                                                              "t": {
+                                                                                "docs": {
+                                                                                  "module-plugins.ChangeFilters.html#addFilter": {
+                                                                                    "ref": "module-plugins.ChangeFilters.html#addFilter",
+                                                                                    "tf": 1100
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  "r": {
+                                                                    "docs": {},
+                                                                    "e": {
+                                                                      "docs": {},
+                                                                      "m": {
+                                                                        "docs": {},
+                                                                        "o": {
+                                                                          "docs": {},
+                                                                          "v": {
+                                                                            "docs": {},
+                                                                            "e": {
+                                                                              "docs": {},
+                                                                              "f": {
+                                                                                "docs": {},
+                                                                                "i": {
+                                                                                  "docs": {},
+                                                                                  "l": {
+                                                                                    "docs": {},
+                                                                                    "t": {
+                                                                                      "docs": {
+                                                                                        "module-plugins.ChangeFilters.html#removeFilter": {
+                                                                                          "ref": "module-plugins.ChangeFilters.html#removeFilter",
+                                                                                          "tf": 1100
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  "s": {
+                                                                    "docs": {},
+                                                                    "e": {
+                                                                      "docs": {},
+                                                                      "t": {
+                                                                        "docs": {},
+                                                                        "f": {
+                                                                          "docs": {},
+                                                                          "i": {
+                                                                            "docs": {},
+                                                                            "l": {
+                                                                              "docs": {},
+                                                                              "t": {
+                                                                                "docs": {
+                                                                                  "module-plugins.ChangeFilters.html#setFilters": {
+                                                                                    "ref": "module-plugins.ChangeFilters.html#setFilters",
+                                                                                    "tf": 1100
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
                                                                       }
                                                                     }
                                                                   }
@@ -8589,99 +8957,40 @@ window.lunrData = {
                                             }
                                           }
                                         }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "i": {
-                        "docs": {},
-                        "n": {
-                          "docs": {},
-                          "v": {
-                            "docs": {},
-                            "e": {
-                              "docs": {},
-                              "r": {
-                                "docs": {},
-                                "t": {
-                                  "docs": {},
-                                  "p": {
-                                    "docs": {},
-                                    "l": {
-                                      "docs": {},
-                                      "u": {
+                                      },
+                                      "f": {
                                         "docs": {},
-                                        "g": {
+                                        "i": {
                                           "docs": {},
-                                          "i": {
+                                          "l": {
                                             "docs": {},
-                                            "n": {
-                                              "docs": {
-                                                "module-InvertPlugin.html": {
-                                                  "ref": "module-InvertPlugin.html",
-                                                  "tf": 1300
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "m": {
-                        "docs": {},
-                        "o": {
-                          "docs": {},
-                          "n": {
-                            "docs": {},
-                            "g": {
-                              "docs": {},
-                              "o": {
-                                "docs": {},
-                                "d": {
-                                  "docs": {},
-                                  "b": {
-                                    "docs": {},
-                                    "s": {
-                                      "docs": {},
-                                      "u": {
-                                        "docs": {},
-                                        "p": {
-                                          "docs": {},
-                                          "p": {
-                                            "docs": {},
-                                            "o": {
+                                            "t": {
                                               "docs": {},
-                                              "r": {
+                                              "e": {
                                                 "docs": {},
-                                                "t": {
+                                                "r": {
                                                   "docs": {},
-                                                  "p": {
+                                                  "d": {
                                                     "docs": {},
-                                                    "l": {
+                                                    "e": {
                                                       "docs": {},
-                                                      "u": {
+                                                      "s": {
                                                         "docs": {},
-                                                        "g": {
+                                                        "c": {
                                                           "docs": {},
-                                                          "i": {
+                                                          "r": {
                                                             "docs": {},
-                                                            "n": {
-                                                              "docs": {
-                                                                "module-MongoDbSupportPlugin.html": {
-                                                                  "ref": "module-MongoDbSupportPlugin.html",
-                                                                  "tf": 1300
+                                                            "i": {
+                                                              "docs": {},
+                                                              "p": {
+                                                                "docs": {},
+                                                                "t": {
+                                                                  "docs": {
+                                                                    "module-plugins.FilterDescription.html": {
+                                                                      "ref": "module-plugins.FilterDescription.html",
+                                                                      "tf": 1150
+                                                                    }
+                                                                  }
                                                                 }
                                                               }
                                                             }
@@ -8695,94 +9004,46 @@ window.lunrData = {
                                             }
                                           }
                                         }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "s": {
-                        "docs": {},
-                        "o": {
-                          "docs": {},
-                          "r": {
-                            "docs": {},
-                            "t": {
-                              "docs": {},
-                              "a": {
-                                "docs": {},
-                                "b": {
-                                  "docs": {},
-                                  "l": {
-                                    "docs": {},
-                                    "e": {
-                                      "docs": {},
-                                      "p": {
+                                      },
+                                      "i": {
                                         "docs": {},
-                                        "l": {
+                                        "n": {
                                           "docs": {},
-                                          "u": {
+                                          "v": {
                                             "docs": {},
-                                            "g": {
+                                            "e": {
                                               "docs": {},
-                                              "i": {
+                                              "r": {
                                                 "docs": {},
-                                                "n": {
+                                                "t": {
                                                   "docs": {
-                                                    "module-SortablePlugin.html": {
-                                                      "ref": "module-SortablePlugin.html",
-                                                      "tf": 1300
+                                                    "module-plugins.Invert.html": {
+                                                      "ref": "module-plugins.Invert.html",
+                                                      "tf": 1150
                                                     }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "q": {
-                          "docs": {},
-                          "l": {
-                            "docs": {},
-                            "s": {
-                              "docs": {},
-                              "u": {
-                                "docs": {},
-                                "p": {
-                                  "docs": {},
-                                  "p": {
-                                    "docs": {},
-                                    "o": {
-                                      "docs": {},
-                                      "r": {
-                                        "docs": {},
-                                        "t": {
-                                          "docs": {},
-                                          "p": {
-                                            "docs": {},
-                                            "l": {
-                                              "docs": {},
-                                              "u": {
-                                                "docs": {},
-                                                "g": {
-                                                  "docs": {},
-                                                  "i": {
+                                                  },
+                                                  "#": {
                                                     "docs": {},
-                                                    "n": {
-                                                      "docs": {
-                                                        "module-SqlSupportPlugin.html": {
-                                                          "ref": "module-SqlSupportPlugin.html",
-                                                          "tf": 1300
+                                                    "i": {
+                                                      "docs": {},
+                                                      "n": {
+                                                        "docs": {},
+                                                        "v": {
+                                                          "docs": {},
+                                                          "e": {
+                                                            "docs": {},
+                                                            "r": {
+                                                              "docs": {},
+                                                              "t": {
+                                                                "docs": {
+                                                                  "module-plugins.Invert.html#invert": {
+                                                                    "ref": "module-plugins.Invert.html#invert",
+                                                                    "tf": 1100
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
                                                         }
                                                       }
                                                     }
@@ -8792,54 +9053,414 @@ window.lunrData = {
                                             }
                                           }
                                         }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "u": {
-                        "docs": {},
-                        "n": {
-                          "docs": {},
-                          "i": {
-                            "docs": {},
-                            "q": {
-                              "docs": {},
-                              "u": {
-                                "docs": {},
-                                "e": {
-                                  "docs": {},
-                                  "f": {
-                                    "docs": {},
-                                    "i": {
-                                      "docs": {},
-                                      "l": {
+                                      },
+                                      "m": {
                                         "docs": {},
-                                        "t": {
+                                        "o": {
                                           "docs": {},
-                                          "e": {
+                                          "n": {
                                             "docs": {},
-                                            "r": {
+                                            "g": {
                                               "docs": {},
-                                              "p": {
+                                              "o": {
                                                 "docs": {},
-                                                "l": {
+                                                "d": {
                                                   "docs": {},
-                                                  "u": {
+                                                  "b": {
                                                     "docs": {},
-                                                    "g": {
+                                                    "s": {
                                                       "docs": {},
-                                                      "i": {
+                                                      "u": {
                                                         "docs": {},
-                                                        "n": {
+                                                        "p": {
+                                                          "docs": {},
+                                                          "p": {
+                                                            "docs": {},
+                                                            "o": {
+                                                              "docs": {},
+                                                              "r": {
+                                                                "docs": {},
+                                                                "t": {
+                                                                  "docs": {
+                                                                    "module-plugins.MongoDbSupport.html": {
+                                                                      "ref": "module-plugins.MongoDbSupport.html",
+                                                                      "tf": 1150
+                                                                    }
+                                                                  },
+                                                                  "#": {
+                                                                    "docs": {},
+                                                                    "g": {
+                                                                      "docs": {},
+                                                                      "e": {
+                                                                        "docs": {},
+                                                                        "t": {
+                                                                          "docs": {},
+                                                                          "m": {
+                                                                            "docs": {},
+                                                                            "o": {
+                                                                              "docs": {},
+                                                                              "n": {
+                                                                                "docs": {},
+                                                                                "g": {
+                                                                                  "docs": {},
+                                                                                  "o": {
+                                                                                    "docs": {
+                                                                                      "module-plugins.MongoDbSupport.html#getMongo": {
+                                                                                        "ref": "module-plugins.MongoDbSupport.html#getMongo",
+                                                                                        "tf": 1100
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          },
+                                                                          "r": {
+                                                                            "docs": {},
+                                                                            "u": {
+                                                                              "docs": {},
+                                                                              "l": {
+                                                                                "docs": {},
+                                                                                "e": {
+                                                                                  "docs": {},
+                                                                                  "s": {
+                                                                                    "docs": {},
+                                                                                    "f": {
+                                                                                      "docs": {},
+                                                                                      "r": {
+                                                                                        "docs": {},
+                                                                                        "o": {
+                                                                                          "docs": {},
+                                                                                          "m": {
+                                                                                            "docs": {},
+                                                                                            "m": {
+                                                                                              "docs": {},
+                                                                                              "o": {
+                                                                                                "docs": {},
+                                                                                                "n": {
+                                                                                                  "docs": {},
+                                                                                                  "g": {
+                                                                                                    "docs": {},
+                                                                                                    "o": {
+                                                                                                      "docs": {
+                                                                                                        "module-plugins.MongoDbSupport.html#getRulesFromMongo": {
+                                                                                                          "ref": "module-plugins.MongoDbSupport.html#getRulesFromMongo",
+                                                                                                          "tf": 1100
+                                                                                                        }
+                                                                                                      }
+                                                                                                    }
+                                                                                                  }
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    "s": {
+                                                                      "docs": {},
+                                                                      "e": {
+                                                                        "docs": {},
+                                                                        "t": {
+                                                                          "docs": {},
+                                                                          "r": {
+                                                                            "docs": {},
+                                                                            "u": {
+                                                                              "docs": {},
+                                                                              "l": {
+                                                                                "docs": {},
+                                                                                "e": {
+                                                                                  "docs": {},
+                                                                                  "s": {
+                                                                                    "docs": {},
+                                                                                    "f": {
+                                                                                      "docs": {},
+                                                                                      "r": {
+                                                                                        "docs": {},
+                                                                                        "o": {
+                                                                                          "docs": {},
+                                                                                          "m": {
+                                                                                            "docs": {},
+                                                                                            "m": {
+                                                                                              "docs": {},
+                                                                                              "o": {
+                                                                                                "docs": {},
+                                                                                                "n": {
+                                                                                                  "docs": {},
+                                                                                                  "g": {
+                                                                                                    "docs": {},
+                                                                                                    "o": {
+                                                                                                      "docs": {
+                                                                                                        "module-plugins.MongoDbSupport.html#setRulesFromMongo": {
+                                                                                                          "ref": "module-plugins.MongoDbSupport.html#setRulesFromMongo",
+                                                                                                          "tf": 1100
+                                                                                                        }
+                                                                                                      }
+                                                                                                    }
+                                                                                                  }
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "s": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "r": {
+                                            "docs": {},
+                                            "t": {
+                                              "docs": {
+                                                "module-plugins.Sortable.html": {
+                                                  "ref": "module-plugins.Sortable.html",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "q": {
+                                          "docs": {},
+                                          "l": {
+                                            "docs": {},
+                                            "s": {
+                                              "docs": {},
+                                              "u": {
+                                                "docs": {},
+                                                "p": {
+                                                  "docs": {},
+                                                  "p": {
+                                                    "docs": {},
+                                                    "o": {
+                                                      "docs": {},
+                                                      "r": {
+                                                        "docs": {},
+                                                        "t": {
                                                           "docs": {
-                                                            "module-UniqueFilterPlugin.html": {
-                                                              "ref": "module-UniqueFilterPlugin.html",
-                                                              "tf": 1300
+                                                            "module-plugins.SqlSupport.html": {
+                                                              "ref": "module-plugins.SqlSupport.html",
+                                                              "tf": 1150
+                                                            }
+                                                          },
+                                                          "#": {
+                                                            "docs": {},
+                                                            "g": {
+                                                              "docs": {},
+                                                              "e": {
+                                                                "docs": {},
+                                                                "t": {
+                                                                  "docs": {},
+                                                                  "r": {
+                                                                    "docs": {},
+                                                                    "u": {
+                                                                      "docs": {},
+                                                                      "l": {
+                                                                        "docs": {},
+                                                                        "e": {
+                                                                          "docs": {},
+                                                                          "s": {
+                                                                            "docs": {},
+                                                                            "f": {
+                                                                              "docs": {},
+                                                                              "r": {
+                                                                                "docs": {},
+                                                                                "o": {
+                                                                                  "docs": {},
+                                                                                  "m": {
+                                                                                    "docs": {},
+                                                                                    "s": {
+                                                                                      "docs": {},
+                                                                                      "q": {
+                                                                                        "docs": {},
+                                                                                        "l": {
+                                                                                          "docs": {
+                                                                                            "module-plugins.SqlSupport.html#getRulesFromSQL": {
+                                                                                              "ref": "module-plugins.SqlSupport.html#getRulesFromSQL",
+                                                                                              "tf": 1100
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  "s": {
+                                                                    "docs": {},
+                                                                    "q": {
+                                                                      "docs": {},
+                                                                      "l": {
+                                                                        "docs": {
+                                                                          "module-plugins.SqlSupport.html#getSQL": {
+                                                                            "ref": "module-plugins.SqlSupport.html#getSQL",
+                                                                            "tf": 1100
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            },
+                                                            "s": {
+                                                              "docs": {},
+                                                              "e": {
+                                                                "docs": {},
+                                                                "t": {
+                                                                  "docs": {},
+                                                                  "r": {
+                                                                    "docs": {},
+                                                                    "u": {
+                                                                      "docs": {},
+                                                                      "l": {
+                                                                        "docs": {},
+                                                                        "e": {
+                                                                          "docs": {},
+                                                                          "s": {
+                                                                            "docs": {},
+                                                                            "f": {
+                                                                              "docs": {},
+                                                                              "r": {
+                                                                                "docs": {},
+                                                                                "o": {
+                                                                                  "docs": {},
+                                                                                  "m": {
+                                                                                    "docs": {},
+                                                                                    "s": {
+                                                                                      "docs": {},
+                                                                                      "q": {
+                                                                                        "docs": {},
+                                                                                        "l": {
+                                                                                          "docs": {
+                                                                                            "module-plugins.SqlSupport.html#setRulesFromSQL": {
+                                                                                              "ref": "module-plugins.SqlSupport.html#setRulesFromSQL",
+                                                                                              "tf": 1100
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          ".": {
+                                                            "docs": {},
+                                                            "s": {
+                                                              "docs": {},
+                                                              "q": {
+                                                                "docs": {},
+                                                                "l": {
+                                                                  "docs": {},
+                                                                  "q": {
+                                                                    "docs": {},
+                                                                    "u": {
+                                                                      "docs": {},
+                                                                      "e": {
+                                                                        "docs": {},
+                                                                        "r": {
+                                                                          "docs": {},
+                                                                          "i": {
+                                                                            "docs": {
+                                                                              "module-plugins.SqlSupport.html#getSQL": {
+                                                                                "ref": "module-plugins.SqlSupport.html#getSQL",
+                                                                                "tf": 20
+                                                                              },
+                                                                              "module-plugins.SqlSupport.html#.SqlQuery": {
+                                                                                "ref": "module-plugins.SqlSupport.html#.SqlQuery",
+                                                                                "tf": 1100
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "u": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "q": {
+                                              "docs": {},
+                                              "u": {
+                                                "docs": {},
+                                                "e": {
+                                                  "docs": {},
+                                                  "f": {
+                                                    "docs": {},
+                                                    "i": {
+                                                      "docs": {},
+                                                      "l": {
+                                                        "docs": {},
+                                                        "t": {
+                                                          "docs": {
+                                                            "module-plugins.UniqueFilter.html": {
+                                                              "ref": "module-plugins.UniqueFilter.html",
+                                                              "tf": 1150
                                                             }
                                                           }
                                                         }
@@ -9097,10 +9718,6 @@ window.lunrData = {
                   "docs": {},
                   "i": {
                     "docs": {
-                      "QueryBuilder.html#.modifiable_options": {
-                        "ref": "QueryBuilder.html#.modifiable_options",
-                        "tf": 10
-                      },
                       "QueryBuilder.html#change": {
                         "ref": "QueryBuilder.html#change",
                         "tf": 7.142857142857142
@@ -9108,35 +9725,6 @@ window.lunrData = {
                       "QueryBuilder.html#setOptions": {
                         "ref": "QueryBuilder.html#setOptions",
                         "tf": 14.285714285714285
-                      }
-                    },
-                    "a": {
-                      "docs": {},
-                      "b": {
-                        "docs": {},
-                        "l": {
-                          "docs": {},
-                          "e": {
-                            "docs": {},
-                            "_": {
-                              "docs": {},
-                              "o": {
-                                "docs": {},
-                                "p": {
-                                  "docs": {},
-                                  "t": {
-                                    "docs": {
-                                      "QueryBuilder.html#.modifiable_options": {
-                                        "ref": "QueryBuilder.html#.modifiable_options",
-                                        "tf": 675
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
                       }
                     }
                   }
@@ -9283,9 +9871,21 @@ window.lunrData = {
                     "docs": {},
                     "b": {
                       "docs": {
-                        "module-MongoDbSupportPlugin.html": {
-                          "ref": "module-MongoDbSupportPlugin.html",
+                        "module-plugins.MongoDbSupport.html": {
+                          "ref": "module-plugins.MongoDbSupport.html",
                           "tf": 9.090909090909092
+                        },
+                        "module-plugins.MongoDbSupport.html#getMongo": {
+                          "ref": "module-plugins.MongoDbSupport.html#getMongo",
+                          "tf": 12.5
+                        },
+                        "module-plugins.MongoDbSupport.html#getRulesFromMongo": {
+                          "ref": "module-plugins.MongoDbSupport.html#getRulesFromMongo",
+                          "tf": 12.5
+                        },
+                        "module-plugins.MongoDbSupport.html#setRulesFromMongo": {
+                          "ref": "module-plugins.MongoDbSupport.html#setRulesFromMongo",
+                          "tf": 12.5
                         }
                       },
                       "s": {
@@ -9301,22 +9901,139 @@ window.lunrData = {
                                 "r": {
                                   "docs": {},
                                   "t": {
-                                    "docs": {},
-                                    "p": {
+                                    "docs": {
+                                      "module-plugins.MongoDbSupport.html": {
+                                        "ref": "module-plugins.MongoDbSupport.html",
+                                        "tf": 650
+                                      }
+                                    },
+                                    "#": {
                                       "docs": {},
-                                      "l": {
+                                      "g": {
                                         "docs": {},
-                                        "u": {
+                                        "e": {
                                           "docs": {},
-                                          "g": {
+                                          "t": {
                                             "docs": {},
-                                            "i": {
+                                            "m": {
                                               "docs": {},
-                                              "n": {
-                                                "docs": {
-                                                  "module-MongoDbSupportPlugin.html": {
-                                                    "ref": "module-MongoDbSupportPlugin.html",
-                                                    "tf": 600
+                                              "o": {
+                                                "docs": {},
+                                                "n": {
+                                                  "docs": {},
+                                                  "g": {
+                                                    "docs": {},
+                                                    "o": {
+                                                      "docs": {
+                                                        "module-plugins.MongoDbSupport.html#getMongo": {
+                                                          "ref": "module-plugins.MongoDbSupport.html#getMongo",
+                                                          "tf": 100
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            "r": {
+                                              "docs": {},
+                                              "u": {
+                                                "docs": {},
+                                                "l": {
+                                                  "docs": {},
+                                                  "e": {
+                                                    "docs": {},
+                                                    "s": {
+                                                      "docs": {},
+                                                      "f": {
+                                                        "docs": {},
+                                                        "r": {
+                                                          "docs": {},
+                                                          "o": {
+                                                            "docs": {},
+                                                            "m": {
+                                                              "docs": {},
+                                                              "m": {
+                                                                "docs": {},
+                                                                "o": {
+                                                                  "docs": {},
+                                                                  "n": {
+                                                                    "docs": {},
+                                                                    "g": {
+                                                                      "docs": {},
+                                                                      "o": {
+                                                                        "docs": {
+                                                                          "module-plugins.MongoDbSupport.html#getRulesFromMongo": {
+                                                                            "ref": "module-plugins.MongoDbSupport.html#getRulesFromMongo",
+                                                                            "tf": 100
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "s": {
+                                        "docs": {},
+                                        "e": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {},
+                                              "u": {
+                                                "docs": {},
+                                                "l": {
+                                                  "docs": {},
+                                                  "e": {
+                                                    "docs": {},
+                                                    "s": {
+                                                      "docs": {},
+                                                      "f": {
+                                                        "docs": {},
+                                                        "r": {
+                                                          "docs": {},
+                                                          "o": {
+                                                            "docs": {},
+                                                            "m": {
+                                                              "docs": {},
+                                                              "m": {
+                                                                "docs": {},
+                                                                "o": {
+                                                                  "docs": {},
+                                                                  "n": {
+                                                                    "docs": {},
+                                                                    "g": {
+                                                                      "docs": {},
+                                                                      "o": {
+                                                                        "docs": {
+                                                                          "module-plugins.MongoDbSupport.html#setRulesFromMongo": {
+                                                                            "ref": "module-plugins.MongoDbSupport.html#setRulesFromMongo",
+                                                                            "tf": 100
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
                                                   }
                                                 }
                                               }
@@ -9443,10 +10160,6 @@ window.lunrData = {
               "docs": {},
               "e": {
                 "docs": {
-                  "QueryBuilder.html#.define": {
-                    "ref": "QueryBuilder.html#.define",
-                    "tf": 20
-                  },
                   "Utils.html#.error": {
                     "ref": "Utils.html#.error",
                     "tf": 7.142857142857142
@@ -9492,13 +10205,9 @@ window.lunrData = {
                   "ref": "Group.html#addRule",
                   "tf": 10
                 },
-                "QueryBuilder.html#.define": {
-                  "ref": "QueryBuilder.html#.define",
-                  "tf": 16.666666666666664
-                },
-                "QueryBuilder.html#.extend": {
-                  "ref": "QueryBuilder.html#.extend",
-                  "tf": 10
+                "module-plugins.ChangeFilters.html#addFilter": {
+                  "ref": "module-plugins.ChangeFilters.html#addFilter",
+                  "tf": 12.5
                 },
                 "QueryBuilder.html#addGroup": {
                   "ref": "QueryBuilder.html#addGroup",
@@ -9507,6 +10216,23 @@ window.lunrData = {
                 "QueryBuilder.html#addRule": {
                   "ref": "QueryBuilder.html#addRule",
                   "tf": 16.666666666666664
+                }
+              },
+              "f": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "l": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "module-plugins.ChangeFilters.html#addFilter": {
+                          "ref": "module-plugins.ChangeFilters.html#addFilter",
+                          "tf": 33.33333333333333
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -9555,6 +10281,10 @@ window.lunrData = {
                   },
                   "Model.html#GroupIteratee": {
                     "ref": "Model.html#GroupIteratee",
+                    "tf": 33.33333333333333
+                  },
+                  "module-plugins.Invert.html#invert": {
+                    "ref": "module-plugins.Invert.html#invert",
                     "tf": 33.33333333333333
                   },
                   "Node.html": {
@@ -9856,6 +10586,29 @@ window.lunrData = {
                 }
               }
             },
+            "t": {
+              "docs": {},
+              "g": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "u": {
+                      "docs": {},
+                      "p": {
+                        "docs": {
+                          "module-plugins.NotGroup.html": {
+                            "ref": "module-plugins.NotGroup.html",
+                            "tf": 650
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "_": {
               "docs": {},
               "d": {
@@ -9871,47 +10624,6 @@ window.lunrData = {
                           "QueryBuilder.html#deleteGroup": {
                             "ref": "QueryBuilder.html#deleteGroup",
                             "tf": 5.555555555555555
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "t": {
-              "docs": {},
-              "g": {
-                "docs": {},
-                "r": {
-                  "docs": {},
-                  "o": {
-                    "docs": {},
-                    "u": {
-                      "docs": {},
-                      "p": {
-                        "docs": {},
-                        "p": {
-                          "docs": {},
-                          "l": {
-                            "docs": {},
-                            "u": {
-                              "docs": {},
-                              "g": {
-                                "docs": {},
-                                "i": {
-                                  "docs": {},
-                                  "n": {
-                                    "docs": {
-                                      "module-NotGroupPlugin.html": {
-                                        "ref": "module-NotGroupPlugin.html",
-                                        "tf": 600
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
                           }
                         }
                       }
@@ -9938,6 +10650,14 @@ window.lunrData = {
                     }
                   }
                 }
+              }
+            }
+          },
+          "l": {
+            "docs": {
+              "module-plugins.SqlSupport.html#getSQL": {
+                "ref": "module-plugins.SqlSupport.html#getSQL",
+                "tf": 20
               }
             }
           }
@@ -9983,6 +10703,22 @@ window.lunrData = {
                     "Model.html#root": {
                       "ref": "Model.html#root",
                       "tf": 33.33333333333333
+                    },
+                    "module-plugins.Invert.html": {
+                      "ref": "module-plugins.Invert.html",
+                      "tf": 6.25
+                    },
+                    "module-plugins.Invert.html#invert": {
+                      "ref": "module-plugins.Invert.html#invert",
+                      "tf": 10
+                    },
+                    "module-plugins.NotGroup.html": {
+                      "ref": "module-plugins.NotGroup.html",
+                      "tf": 8.333333333333332
+                    },
+                    "module-plugins.UniqueFilter.html": {
+                      "ref": "module-plugins.UniqueFilter.html",
+                      "tf": 4.545454545454546
                     },
                     "Node.html#parent": {
                       "ref": "Node.html#parent",
@@ -10039,18 +10775,6 @@ window.lunrData = {
                     "Rule.html#moveAtEnd": {
                       "ref": "Rule.html#moveAtEnd",
                       "tf": 8.333333333333332
-                    },
-                    "module-InvertPlugin.html": {
-                      "ref": "module-InvertPlugin.html",
-                      "tf": 6.25
-                    },
-                    "module-NotGroupPlugin.html": {
-                      "ref": "module-NotGroupPlugin.html",
-                      "tf": 8.333333333333332
-                    },
-                    "module-UniqueFilterPlugin.html": {
-                      "ref": "module-UniqueFilterPlugin.html",
-                      "tf": 4.545454545454546
                     },
                     "Utils.html#.groupSort": {
                       "ref": "Utils.html#.groupSort",
@@ -10608,10 +11332,6 @@ window.lunrData = {
             "docs": {},
             "t": {
               "docs": {
-                "QueryBuilder.html#.defaults": {
-                  "ref": "QueryBuilder.html#.defaults",
-                  "tf": 12.5
-                },
                 "QueryBuilder.html#getRules": {
                   "ref": "QueryBuilder.html#getRules",
                   "tf": 10
@@ -10677,6 +11397,20 @@ window.lunrData = {
                 "docs": {},
                 "o": {
                   "docs": {},
+                  "n": {
+                    "docs": {},
+                    "g": {
+                      "docs": {},
+                      "o": {
+                        "docs": {
+                          "module-plugins.MongoDbSupport.html#getMongo": {
+                            "ref": "module-plugins.MongoDbSupport.html#getMongo",
+                            "tf": 633.3333333333334
+                          }
+                        }
+                      }
+                    }
+                  },
                   "d": {
                     "docs": {},
                     "e": {
@@ -10703,6 +11437,72 @@ window.lunrData = {
                         "ref": "QueryBuilder.html#getRules",
                         "tf": 683.3333333333334
                       }
+                    },
+                    "e": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "f": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "m": {
+                                "docs": {},
+                                "m": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "n": {
+                                      "docs": {},
+                                      "g": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {
+                                            "module-plugins.MongoDbSupport.html#getRulesFromMongo": {
+                                              "ref": "module-plugins.MongoDbSupport.html#getRulesFromMongo",
+                                              "tf": 633.3333333333334
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "s": {
+                                  "docs": {},
+                                  "q": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {
+                                        "module-plugins.SqlSupport.html#getRulesFromSQL": {
+                                          "ref": "module-plugins.SqlSupport.html#getRulesFromSQL",
+                                          "tf": 625
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "s": {
+                "docs": {},
+                "q": {
+                  "docs": {},
+                  "l": {
+                    "docs": {
+                      "module-plugins.SqlSupport.html#getSQL": {
+                        "ref": "module-plugins.SqlSupport.html#getSQL",
+                        "tf": 620
+                      }
                     }
                   }
                 }
@@ -10719,8 +11519,8 @@ window.lunrData = {
                   "docs": {},
                   "l": {
                     "docs": {
-                      "module-UniqueFilterPlugin.html": {
-                        "ref": "module-UniqueFilterPlugin.html",
+                      "module-plugins.UniqueFilter.html": {
+                        "ref": "module-plugins.UniqueFilter.html",
                         "tf": 4.545454545454546
                       }
                     }
@@ -10767,6 +11567,22 @@ window.lunrData = {
                         "ref": "Model.html#.defineModelProperties",
                         "tf": 4.761904761904762
                       },
+                      "module-plugins.MongoDbSupport.html": {
+                        "ref": "module-plugins.MongoDbSupport.html",
+                        "tf": 9.090909090909092
+                      },
+                      "module-plugins.MongoDbSupport.html#getMongo": {
+                        "ref": "module-plugins.MongoDbSupport.html#getMongo",
+                        "tf": 33.33333333333333
+                      },
+                      "module-plugins.MongoDbSupport.html#getRulesFromMongo": {
+                        "ref": "module-plugins.MongoDbSupport.html#getRulesFromMongo",
+                        "tf": 33.33333333333333
+                      },
+                      "module-plugins.SqlSupport.html#getRulesFromSQL": {
+                        "ref": "module-plugins.SqlSupport.html#getRulesFromSQL",
+                        "tf": 25
+                      },
                       "Node.html": {
                         "ref": "Node.html",
                         "tf": 16.666666666666664
@@ -10807,6 +11623,10 @@ window.lunrData = {
                         "ref": "QueryBuilder.html#setRules",
                         "tf": 16.666666666666664
                       },
+                      "QueryBuilder.html#translate": {
+                        "ref": "QueryBuilder.html#translate",
+                        "tf": 9.090909090909092
+                      },
                       "Rule.html": {
                         "ref": "Rule.html",
                         "tf": 25
@@ -10818,10 +11638,6 @@ window.lunrData = {
                       "Rule.html#flags": {
                         "ref": "Rule.html#flags",
                         "tf": 33.33333333333333
-                      },
-                      "module-MongoDbSupportPlugin.html": {
-                        "ref": "module-MongoDbSupportPlugin.html",
-                        "tf": 9.090909090909092
                       },
                       "Utils.html#.error": {
                         "ref": "Utils.html#.error",
@@ -10841,10 +11657,6 @@ window.lunrData = {
                             "QueryBuilder.html#.OPERATORS": {
                               "ref": "QueryBuilder.html#.OPERATORS",
                               "tf": 20
-                            },
-                            "QueryBuilder.html#.plugins": {
-                              "ref": "QueryBuilder.html#.plugins",
-                              "tf": 25
                             },
                             "QueryBuilder.html#.regional": {
                               "ref": "QueryBuilder.html#.regional",
@@ -10878,10 +11690,6 @@ window.lunrData = {
                                         "ref": "QueryBuilder.html#.OPERATORS",
                                         "tf": 20
                                       },
-                                      "QueryBuilder.html#.plugins": {
-                                        "ref": "QueryBuilder.html#.plugins",
-                                        "tf": 25
-                                      },
                                       "QueryBuilder.html#.regional": {
                                         "ref": "QueryBuilder.html#.regional",
                                         "tf": 20
@@ -10892,10 +11700,6 @@ window.lunrData = {
                                       },
                                       "QueryBuilder.html#.templates": {
                                         "ref": "QueryBuilder.html#.templates",
-                                        "tf": 20
-                                      },
-                                      "QueryBuilder.html#.types": {
-                                        "ref": "QueryBuilder.html#.types",
                                         "tf": 20
                                       },
                                       "QueryBuilder.html#icons": {
@@ -10944,13 +11748,13 @@ window.lunrData = {
           },
           "n": {
             "docs": {
+              "module-plugins.UniqueFilter.html": {
+                "ref": "module-plugins.UniqueFilter.html",
+                "tf": 4.545454545454546
+              },
               "QueryBuilder.html#deleteGroup": {
                 "ref": "QueryBuilder.html#deleteGroup",
                 "tf": 5.555555555555555
-              },
-              "module-UniqueFilterPlugin.html": {
-                "ref": "module-UniqueFilterPlugin.html",
-                "tf": 4.545454545454546
               }
             },
             "c": {
@@ -10968,6 +11772,37 @@ window.lunrData = {
           },
           "p": {
             "docs": {},
+            "e": {
+              "docs": {},
+              "r": {
+                "docs": {
+                  "module-plugins.Invert.html": {
+                    "ref": "module-plugins.Invert.html",
+                    "tf": 6.25
+                  },
+                  "QueryBuilder.html#.OPERATORS": {
+                    "ref": "QueryBuilder.html#.OPERATORS",
+                    "tf": 695
+                  },
+                  "QueryBuilder.html#operators": {
+                    "ref": "QueryBuilder.html#operators",
+                    "tf": 708.3333333333334
+                  },
+                  "QueryBuilder.html#checkOperators": {
+                    "ref": "QueryBuilder.html#checkOperators",
+                    "tf": 45.83333333333333
+                  },
+                  "QueryBuilder.html#.Operator": {
+                    "ref": "QueryBuilder.html#.Operator",
+                    "tf": 750
+                  },
+                  "Rule.html#operator": {
+                    "ref": "Rule.html#operator",
+                    "tf": 700
+                  }
+                }
+              }
+            },
             "t": {
               "docs": {},
               "i": {
@@ -10976,13 +11811,9 @@ window.lunrData = {
                   "docs": {},
                   "n": {
                     "docs": {
-                      "QueryBuilder.html#.modifiable_options": {
-                        "ref": "QueryBuilder.html#.modifiable_options",
-                        "tf": 10
-                      },
-                      "QueryBuilder.html#.defaults": {
-                        "ref": "QueryBuilder.html#.defaults",
-                        "tf": 25
+                      "module-plugins.Invert.html#invert": {
+                        "ref": "module-plugins.Invert.html#invert",
+                        "tf": 33.33333333333333
                       },
                       "QueryBuilder.html#getRules": {
                         "ref": "QueryBuilder.html#getRules",
@@ -11034,37 +11865,6 @@ window.lunrData = {
                         }
                       }
                     }
-                  }
-                }
-              }
-            },
-            "e": {
-              "docs": {},
-              "r": {
-                "docs": {
-                  "QueryBuilder.html#.OPERATORS": {
-                    "ref": "QueryBuilder.html#.OPERATORS",
-                    "tf": 695
-                  },
-                  "QueryBuilder.html#operators": {
-                    "ref": "QueryBuilder.html#operators",
-                    "tf": 708.3333333333334
-                  },
-                  "QueryBuilder.html#checkOperators": {
-                    "ref": "QueryBuilder.html#checkOperators",
-                    "tf": 45.83333333333333
-                  },
-                  "QueryBuilder.html#.Operator": {
-                    "ref": "QueryBuilder.html#.Operator",
-                    "tf": 750
-                  },
-                  "Rule.html#operator": {
-                    "ref": "Rule.html#operator",
-                    "tf": 700
-                  },
-                  "module-InvertPlugin.html": {
-                    "ref": "module-InvertPlugin.html",
-                    "tf": 6.25
                   }
                 }
               }
@@ -11141,6 +11941,10 @@ window.lunrData = {
                         "ref": "QueryBuilder.html#.templates",
                         "tf": 12.5
                       },
+                      "QueryBuilder.html#translate": {
+                        "ref": "QueryBuilder.html#translate",
+                        "tf": 25
+                      },
                       "Rule.html#error": {
                         "ref": "Rule.html#error",
                         "tf": 50
@@ -11178,10 +11982,6 @@ window.lunrData = {
                             },
                             "QueryBuilder.html#.templates": {
                               "ref": "QueryBuilder.html#.templates",
-                              "tf": 20
-                            },
-                            "QueryBuilder.html#.types": {
-                              "ref": "QueryBuilder.html#.types",
                               "tf": 20
                             },
                             "QueryBuilder.html#icons": {
@@ -11228,14 +12028,29 @@ window.lunrData = {
                         "docs": {},
                         "t": {
                           "docs": {
-                            "module-SqlSupportPlugin.html": {
-                              "ref": "module-SqlSupportPlugin.html",
+                            "module-plugins.SqlSupport.html": {
+                              "ref": "module-plugins.SqlSupport.html",
                               "tf": 5
                             }
                           }
                         }
                       }
                     }
+                  }
+                }
+              }
+            },
+            "m": {
+              "docs": {},
+              "t": {
+                "docs": {
+                  "module-plugins.SqlSupport.html#getRulesFromSQL": {
+                    "ref": "module-plugins.SqlSupport.html#getRulesFromSQL",
+                    "tf": 25
+                  },
+                  "module-plugins.SqlSupport.html#getSQL": {
+                    "ref": "module-plugins.SqlSupport.html#getSQL",
+                    "tf": 20
                   }
                 }
               }
@@ -11332,6 +12147,14 @@ window.lunrData = {
             },
             "t": {
               "docs": {
+                "module-plugins.MongoDbSupport.html#setRulesFromMongo": {
+                  "ref": "module-plugins.MongoDbSupport.html#setRulesFromMongo",
+                  "tf": 12.5
+                },
+                "module-plugins.SqlSupport.html#setRulesFromSQL": {
+                  "ref": "module-plugins.SqlSupport.html#setRulesFromSQL",
+                  "tf": 10
+                },
                 "QueryBuilder.html#settings": {
                   "ref": "QueryBuilder.html#settings",
                   "tf": 683.3333333333334
@@ -11355,19 +12178,18 @@ window.lunrData = {
                   }
                 }
               },
-              "o": {
+              "f": {
                 "docs": {},
-                "p": {
+                "i": {
                   "docs": {},
-                  "t": {
-                    "docs": {
-                      "QueryBuilder.html#.modifiable_options": {
-                        "ref": "QueryBuilder.html#.modifiable_options",
-                        "tf": 10
-                      },
-                      "QueryBuilder.html#setOptions": {
-                        "ref": "QueryBuilder.html#setOptions",
-                        "tf": 700
+                  "l": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "module-plugins.ChangeFilters.html#setFilters": {
+                          "ref": "module-plugins.ChangeFilters.html#setFilters",
+                          "tf": 633.3333333333334
+                        }
                       }
                     }
                   }
@@ -11375,6 +12197,69 @@ window.lunrData = {
               },
               "r": {
                 "docs": {},
+                "u": {
+                  "docs": {},
+                  "l": {
+                    "docs": {
+                      "QueryBuilder.html#setRules": {
+                        "ref": "QueryBuilder.html#setRules",
+                        "tf": 683.3333333333334
+                      }
+                    },
+                    "e": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "f": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "m": {
+                                "docs": {},
+                                "m": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "n": {
+                                      "docs": {},
+                                      "g": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {
+                                            "module-plugins.MongoDbSupport.html#setRulesFromMongo": {
+                                              "ref": "module-plugins.MongoDbSupport.html#setRulesFromMongo",
+                                              "tf": 700
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "s": {
+                                  "docs": {},
+                                  "q": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {
+                                        "module-plugins.SqlSupport.html#setRulesFromSQL": {
+                                          "ref": "module-plugins.SqlSupport.html#setRulesFromSQL",
+                                          "tf": 700
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
                 "o": {
                   "docs": {},
                   "o": {
@@ -11388,14 +12273,17 @@ window.lunrData = {
                       }
                     }
                   }
-                },
-                "u": {
+                }
+              },
+              "o": {
+                "docs": {},
+                "p": {
                   "docs": {},
-                  "l": {
+                  "t": {
                     "docs": {
-                      "QueryBuilder.html#setRules": {
-                        "ref": "QueryBuilder.html#setRules",
-                        "tf": 683.3333333333334
+                      "QueryBuilder.html#setOptions": {
+                        "ref": "QueryBuilder.html#setOptions",
+                        "tf": 700
                       }
                     }
                   }
@@ -11429,8 +12317,8 @@ window.lunrData = {
               "docs": {},
               "t": {
                 "docs": {
-                  "module-SortablePlugin.html": {
-                    "ref": "module-SortablePlugin.html",
+                  "module-plugins.Sortable.html": {
+                    "ref": "module-plugins.Sortable.html",
                     "tf": 8.333333333333332
                   },
                   "Utils.html#.groupSort": {
@@ -11443,31 +12331,10 @@ window.lunrData = {
                   "b": {
                     "docs": {},
                     "l": {
-                      "docs": {},
-                      "e": {
-                        "docs": {},
-                        "p": {
-                          "docs": {},
-                          "l": {
-                            "docs": {},
-                            "u": {
-                              "docs": {},
-                              "g": {
-                                "docs": {},
-                                "i": {
-                                  "docs": {},
-                                  "n": {
-                                    "docs": {
-                                      "module-SortablePlugin.html": {
-                                        "ref": "module-SortablePlugin.html",
-                                        "tf": 600
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
+                      "docs": {
+                        "module-plugins.Sortable.html": {
+                          "ref": "module-plugins.Sortable.html",
+                          "tf": 650
                         }
                       }
                     }
@@ -11480,8 +12347,20 @@ window.lunrData = {
             "docs": {},
             "l": {
               "docs": {
-                "module-SqlSupportPlugin.html": {
-                  "ref": "module-SqlSupportPlugin.html",
+                "module-plugins.SqlSupport.html": {
+                  "ref": "module-plugins.SqlSupport.html",
+                  "tf": 10
+                },
+                "module-plugins.SqlSupport.html#getRulesFromSQL": {
+                  "ref": "module-plugins.SqlSupport.html#getRulesFromSQL",
+                  "tf": 12.5
+                },
+                "module-plugins.SqlSupport.html#getSQL": {
+                  "ref": "module-plugins.SqlSupport.html#getSQL",
+                  "tf": 12.5
+                },
+                "module-plugins.SqlSupport.html#setRulesFromSQL": {
+                  "ref": "module-plugins.SqlSupport.html#setRulesFromSQL",
                   "tf": 10
                 }
               },
@@ -11498,22 +12377,153 @@ window.lunrData = {
                         "r": {
                           "docs": {},
                           "t": {
-                            "docs": {},
-                            "p": {
+                            "docs": {
+                              "module-plugins.SqlSupport.html": {
+                                "ref": "module-plugins.SqlSupport.html",
+                                "tf": 650
+                              }
+                            },
+                            "#": {
                               "docs": {},
-                              "l": {
+                              "g": {
                                 "docs": {},
-                                "u": {
+                                "e": {
                                   "docs": {},
-                                  "g": {
+                                  "t": {
                                     "docs": {},
-                                    "i": {
+                                    "r": {
                                       "docs": {},
-                                      "n": {
-                                        "docs": {
-                                          "module-SqlSupportPlugin.html": {
-                                            "ref": "module-SqlSupportPlugin.html",
-                                            "tf": 600
+                                      "u": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "e": {
+                                            "docs": {},
+                                            "s": {
+                                              "docs": {},
+                                              "f": {
+                                                "docs": {},
+                                                "r": {
+                                                  "docs": {},
+                                                  "o": {
+                                                    "docs": {},
+                                                    "m": {
+                                                      "docs": {},
+                                                      "s": {
+                                                        "docs": {},
+                                                        "q": {
+                                                          "docs": {},
+                                                          "l": {
+                                                            "docs": {
+                                                              "module-plugins.SqlSupport.html#getRulesFromSQL": {
+                                                                "ref": "module-plugins.SqlSupport.html#getRulesFromSQL",
+                                                                "tf": 100
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "s": {
+                                      "docs": {},
+                                      "q": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {
+                                            "module-plugins.SqlSupport.html#getSQL": {
+                                              "ref": "module-plugins.SqlSupport.html#getSQL",
+                                              "tf": 100
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "s": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "u": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "e": {
+                                            "docs": {},
+                                            "s": {
+                                              "docs": {},
+                                              "f": {
+                                                "docs": {},
+                                                "r": {
+                                                  "docs": {},
+                                                  "o": {
+                                                    "docs": {},
+                                                    "m": {
+                                                      "docs": {},
+                                                      "s": {
+                                                        "docs": {},
+                                                        "q": {
+                                                          "docs": {},
+                                                          "l": {
+                                                            "docs": {
+                                                              "module-plugins.SqlSupport.html#setRulesFromSQL": {
+                                                                "ref": "module-plugins.SqlSupport.html#setRulesFromSQL",
+                                                                "tf": 100
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            ".": {
+                              "docs": {},
+                              "s": {
+                                "docs": {},
+                                "q": {
+                                  "docs": {},
+                                  "l": {
+                                    "docs": {},
+                                    "q": {
+                                      "docs": {},
+                                      "u": {
+                                        "docs": {},
+                                        "e": {
+                                          "docs": {},
+                                          "r": {
+                                            "docs": {},
+                                            "i": {
+                                              "docs": {
+                                                "module-plugins.SqlSupport.html#.SqlQuery": {
+                                                  "ref": "module-plugins.SqlSupport.html#.SqlQuery",
+                                                  "tf": 100
+                                                }
+                                              }
+                                            }
                                           }
                                         }
                                       }
@@ -11522,6 +12532,26 @@ window.lunrData = {
                                 }
                               }
                             }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "q": {
+                "docs": {},
+                "u": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "i": {
+                        "docs": {
+                          "module-plugins.SqlSupport.html#.SqlQuery": {
+                            "ref": "module-plugins.SqlSupport.html#.SqlQuery",
+                            "tf": 700
                           }
                         }
                       }
@@ -11537,8 +12567,8 @@ window.lunrData = {
               "docs": {},
               "e": {
                 "docs": {
-                  "module-UniqueFilterPlugin.html": {
-                    "ref": "module-UniqueFilterPlugin.html",
+                  "module-plugins.UniqueFilter.html": {
+                    "ref": "module-plugins.UniqueFilter.html",
                     "tf": 4.545454545454546
                   }
                 }
@@ -11642,12 +12672,12 @@ window.lunrData = {
                         "docs": {},
                         "p": {
                           "docs": {
-                            "module-BtCheckboxPlugin.html": {
-                              "ref": "module-BtCheckboxPlugin.html",
+                            "module-plugins.BtCheckbox.html": {
+                              "ref": "module-plugins.BtCheckbox.html",
                               "tf": 7.142857142857142
                             },
-                            "module-BtTooltipErrorsPlugin.html": {
-                              "ref": "module-BtTooltipErrorsPlugin.html",
+                            "module-plugins.BtTooltipErrors.html": {
+                              "ref": "module-plugins.BtTooltipErrors.html",
                               "tf": 8.333333333333332
                             }
                           }
@@ -11661,8 +12691,8 @@ window.lunrData = {
                       "docs": {},
                       "p": {
                         "docs": {
-                          "module-FilterDescriptionPlugin.html": {
-                            "ref": "module-FilterDescriptionPlugin.html",
+                          "module-plugins.FilterDescription.html": {
+                            "ref": "module-plugins.FilterDescription.html",
                             "tf": 5
                           }
                         }
@@ -11676,8 +12706,8 @@ window.lunrData = {
                     "docs": {},
                     "x": {
                       "docs": {
-                        "module-FilterDescriptionPlugin.html": {
-                          "ref": "module-FilterDescriptionPlugin.html",
+                        "module-plugins.FilterDescription.html": {
+                          "ref": "module-plugins.FilterDescription.html",
                           "tf": 5
                         }
                       }
@@ -11712,69 +12742,6 @@ window.lunrData = {
               }
             }
           },
-          "u": {
-            "docs": {},
-            "i": {
-              "docs": {},
-              "l": {
-                "docs": {},
-                "d": {
-                  "docs": {},
-                  "e": {
-                    "docs": {},
-                    "r": {
-                      "docs": {
-                        "QueryBuilder.html#change": {
-                          "ref": "QueryBuilder.html#change",
-                          "tf": 7.142857142857142
-                        },
-                        "QueryBuilder.html#destroy": {
-                          "ref": "QueryBuilder.html#destroy",
-                          "tf": 25
-                        },
-                        "QueryBuilder.html#off": {
-                          "ref": "QueryBuilder.html#off",
-                          "tf": 10
-                        },
-                        "QueryBuilder.html#on": {
-                          "ref": "QueryBuilder.html#on",
-                          "tf": 10
-                        },
-                        "QueryBuilder.html#once": {
-                          "ref": "QueryBuilder.html#once",
-                          "tf": 7.142857142857142
-                        },
-                        "QueryBuilder.html#setOptions": {
-                          "ref": "QueryBuilder.html#setOptions",
-                          "tf": 7.142857142857142
-                        },
-                        "QueryBuilder.html#trigger": {
-                          "ref": "QueryBuilder.html#trigger",
-                          "tf": 12.5
-                        },
-                        "QueryBuilder.html#validate": {
-                          "ref": "QueryBuilder.html#validate",
-                          "tf": 16.666666666666664
-                        },
-                        "module-InvertPlugin.html": {
-                          "ref": "module-InvertPlugin.html",
-                          "tf": 6.25
-                        },
-                        "module-MongoDbSupportPlugin.html": {
-                          "ref": "module-MongoDbSupportPlugin.html",
-                          "tf": 4.545454545454546
-                        },
-                        "module-SqlSupportPlugin.html": {
-                          "ref": "module-SqlSupportPlugin.html",
-                          "tf": 5
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
           "t": {
             "docs": {},
             "c": {
@@ -11792,28 +12759,10 @@ window.lunrData = {
                         "o": {
                           "docs": {},
                           "x": {
-                            "docs": {},
-                            "p": {
-                              "docs": {},
-                              "l": {
-                                "docs": {},
-                                "u": {
-                                  "docs": {},
-                                  "g": {
-                                    "docs": {},
-                                    "i": {
-                                      "docs": {},
-                                      "n": {
-                                        "docs": {
-                                          "module-BtCheckboxPlugin.html": {
-                                            "ref": "module-BtCheckboxPlugin.html",
-                                            "tf": 600
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
+                            "docs": {
+                              "module-plugins.BtCheckbox.html": {
+                                "ref": "module-plugins.BtCheckbox.html",
+                                "tf": 650
                               }
                             }
                           }
@@ -11843,34 +12792,10 @@ window.lunrData = {
                             "c": {
                               "docs": {},
                               "k": {
-                                "docs": {},
-                                "e": {
-                                  "docs": {},
-                                  "r": {
-                                    "docs": {},
-                                    "p": {
-                                      "docs": {},
-                                      "l": {
-                                        "docs": {},
-                                        "u": {
-                                          "docs": {},
-                                          "g": {
-                                            "docs": {},
-                                            "i": {
-                                              "docs": {},
-                                              "n": {
-                                                "docs": {
-                                                  "module-BtSelectpickerPlugin.html": {
-                                                    "ref": "module-BtSelectpickerPlugin.html",
-                                                    "tf": 600
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
+                                "docs": {
+                                  "module-plugins.BtSelectpicker.html": {
+                                    "ref": "module-plugins.BtSelectpicker.html",
+                                    "tf": 650
                                   }
                                 }
                               }
@@ -11906,37 +12831,103 @@ window.lunrData = {
                                 "o": {
                                   "docs": {},
                                   "r": {
-                                    "docs": {},
-                                    "s": {
-                                      "docs": {},
-                                      "p": {
-                                        "docs": {},
-                                        "l": {
-                                          "docs": {},
-                                          "u": {
-                                            "docs": {},
-                                            "g": {
-                                              "docs": {},
-                                              "i": {
-                                                "docs": {},
-                                                "n": {
-                                                  "docs": {
-                                                    "module-BtTooltipErrorsPlugin.html": {
-                                                      "ref": "module-BtTooltipErrorsPlugin.html",
-                                                      "tf": 600
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
+                                    "docs": {
+                                      "module-plugins.BtTooltipErrors.html": {
+                                        "ref": "module-plugins.BtTooltipErrors.html",
+                                        "tf": 650
                                       }
                                     }
                                   }
                                 }
                               }
                             }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "u": {
+            "docs": {},
+            "i": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "d": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "r": {
+                      "docs": {
+                        "module-plugins.ChangeFilters.html#addFilter": {
+                          "ref": "module-plugins.ChangeFilters.html#addFilter",
+                          "tf": 12.5
+                        },
+                        "module-plugins.ChangeFilters.html#removeFilter": {
+                          "ref": "module-plugins.ChangeFilters.html#removeFilter",
+                          "tf": 16.666666666666664
+                        },
+                        "module-plugins.ChangeFilters.html#setFilters": {
+                          "ref": "module-plugins.ChangeFilters.html#setFilters",
+                          "tf": 16.666666666666664
+                        },
+                        "module-plugins.Invert.html": {
+                          "ref": "module-plugins.Invert.html",
+                          "tf": 6.25
+                        },
+                        "module-plugins.Invert.html#invert": {
+                          "ref": "module-plugins.Invert.html#invert",
+                          "tf": 10
+                        },
+                        "module-plugins.MongoDbSupport.html": {
+                          "ref": "module-plugins.MongoDbSupport.html",
+                          "tf": 4.545454545454546
+                        },
+                        "module-plugins.SqlSupport.html": {
+                          "ref": "module-plugins.SqlSupport.html",
+                          "tf": 5
+                        },
+                        "QueryBuilder.html#change": {
+                          "ref": "QueryBuilder.html#change",
+                          "tf": 7.142857142857142
+                        },
+                        "QueryBuilder.html#destroy": {
+                          "ref": "QueryBuilder.html#destroy",
+                          "tf": 25
+                        },
+                        "QueryBuilder.html#off": {
+                          "ref": "QueryBuilder.html#off",
+                          "tf": 10
+                        },
+                        "QueryBuilder.html#on": {
+                          "ref": "QueryBuilder.html#on",
+                          "tf": 10
+                        },
+                        "QueryBuilder.html#once": {
+                          "ref": "QueryBuilder.html#once",
+                          "tf": 7.142857142857142
+                        },
+                        "QueryBuilder.html#setOptions": {
+                          "ref": "QueryBuilder.html#setOptions",
+                          "tf": 7.142857142857142
+                        },
+                        "QueryBuilder.html#trigger": {
+                          "ref": "QueryBuilder.html#trigger",
+                          "tf": 12.5
+                        },
+                        "QueryBuilder.html#validate": {
+                          "ref": "QueryBuilder.html#validate",
+                          "tf": 16.666666666666664
+                        }
+                      },
+                      "'": {
+                        "docs": {
+                          "module-plugins.SqlSupport.html#setRulesFromSQL": {
+                            "ref": "module-plugins.SqlSupport.html#setRulesFromSQL",
+                            "tf": 10
                           }
                         }
                       }
@@ -12007,6 +12998,10 @@ window.lunrData = {
                           "QueryBuilder.html#lang": {
                             "ref": "QueryBuilder.html#lang",
                             "tf": 25
+                          },
+                          "QueryBuilder.html#translate": {
+                            "ref": "QueryBuilder.html#translate",
+                            "tf": 679.5454545454545
                           }
                         }
                       }
@@ -12117,8 +13112,8 @@ window.lunrData = {
                 "docs": {},
                 "e": {
                   "docs": {
-                    "module-FilterDescriptionPlugin.html": {
-                      "ref": "module-FilterDescriptionPlugin.html",
+                    "module-plugins.FilterDescription.html": {
+                      "ref": "module-plugins.FilterDescription.html",
                       "tf": 5
                     },
                     "Utils.html#.iterateOptions": {
@@ -12151,10 +13146,6 @@ window.lunrData = {
                   "Model.html#trigger": {
                     "ref": "Model.html#trigger",
                     "tf": 33.33333333333333
-                  },
-                  "QueryBuilder.html#.types": {
-                    "ref": "QueryBuilder.html#.types",
-                    "tf": 682.5
                   },
                   "QueryBuilder.html#change": {
                     "ref": "QueryBuilder.html#change",
@@ -12195,6 +13186,10 @@ window.lunrData = {
                           "ref": "Model.html#GroupIteratee",
                           "tf": 110
                         },
+                        "module-plugins.SqlSupport.html#.SqlQuery": {
+                          "ref": "module-plugins.SqlSupport.html#.SqlQuery",
+                          "tf": 110
+                        },
                         "QueryBuilder.html#.Filter": {
                           "ref": "QueryBuilder.html#.Filter",
                           "tf": 110
@@ -12206,6 +13201,29 @@ window.lunrData = {
                         "Utils.html#OptionsIteratee": {
                           "ref": "Utils.html#OptionsIteratee",
                           "tf": 110
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "o": {
+            "docs": {},
+            "o": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "t": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "p": {
+                      "docs": {
+                        "module-plugins.BtTooltipErrors.html": {
+                          "ref": "module-plugins.BtTooltipErrors.html",
+                          "tf": 8.333333333333332
                         }
                       }
                     }
@@ -12247,29 +13265,6 @@ window.lunrData = {
                               }
                             }
                           }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "o": {
-            "docs": {},
-            "o": {
-              "docs": {},
-              "l": {
-                "docs": {},
-                "t": {
-                  "docs": {},
-                  "i": {
-                    "docs": {},
-                    "p": {
-                      "docs": {
-                        "module-BtTooltipErrorsPlugin.html": {
-                          "ref": "module-BtTooltipErrorsPlugin.html",
-                          "tf": 8.333333333333332
                         }
                       }
                     }
@@ -12343,6 +13338,10 @@ window.lunrData = {
                 "docs": {},
                 "d": {
                   "docs": {
+                    "module-plugins.BtTooltipErrors.html": {
+                      "ref": "module-plugins.BtTooltipErrors.html",
+                      "tf": 8.333333333333332
+                    },
                     "QueryBuilder.html#validate": {
                       "ref": "QueryBuilder.html#validate",
                       "tf": 700
@@ -12350,10 +13349,6 @@ window.lunrData = {
                     "QueryBuilder.html#validateValue": {
                       "ref": "QueryBuilder.html#validateValue",
                       "tf": 16.666666666666664
-                    },
-                    "module-BtTooltipErrorsPlugin.html": {
-                      "ref": "module-BtTooltipErrorsPlugin.html",
-                      "tf": 8.333333333333332
                     }
                   },
                   "a": {
@@ -12389,6 +13384,17 @@ window.lunrData = {
         },
         "w": {
           "docs": {},
+          "a": {
+            "docs": {},
+            "y": {
+              "docs": {
+                "module-plugins.FilterDescription.html": {
+                  "ref": "module-plugins.FilterDescription.html",
+                  "tf": 5
+                }
+              }
+            }
+          },
           "h": {
             "docs": {},
             "o": {
@@ -12397,22 +13403,15 @@ window.lunrData = {
                 "docs": {},
                 "e": {
                   "docs": {
+                    "module-plugins.Invert.html#invert": {
+                      "ref": "module-plugins.Invert.html#invert",
+                      "tf": 10
+                    },
                     "QueryBuilder.html#validate": {
                       "ref": "QueryBuilder.html#validate",
                       "tf": 16.666666666666664
                     }
                   }
-                }
-              }
-            }
-          },
-          "a": {
-            "docs": {},
-            "y": {
-              "docs": {
-                "module-FilterDescriptionPlugin.html": {
-                  "ref": "module-FilterDescriptionPlugin.html",
-                  "tf": 5
                 }
               }
             }
@@ -12423,14 +13422,36 @@ window.lunrData = {
               "docs": {},
               "l": {
                 "docs": {
-                  "module-MongoDbSupportPlugin.html": {
-                    "ref": "module-MongoDbSupportPlugin.html",
+                  "module-plugins.MongoDbSupport.html": {
+                    "ref": "module-plugins.MongoDbSupport.html",
                     "tf": 4.545454545454546
                   },
-                  "module-SqlSupportPlugin.html": {
-                    "ref": "module-SqlSupportPlugin.html",
+                  "module-plugins.SqlSupport.html": {
+                    "ref": "module-plugins.SqlSupport.html",
                     "tf": 5
                   }
+                }
+              }
+            }
+          }
+        },
+        "k": {
+          "docs": {},
+          "e": {
+            "docs": {},
+            "y": {
+              "docs": {
+                "QueryBuilder.html#translate": {
+                  "ref": "QueryBuilder.html#translate",
+                  "tf": 29.545454545454547
+                },
+                "Utils.html#.groupSort": {
+                  "ref": "Utils.html#.groupSort",
+                  "tf": 26.25
+                },
+                "Utils.html#OptionsIteratee": {
+                  "ref": "Utils.html#OptionsIteratee",
+                  "tf": 33.33333333333333
                 }
               }
             }
@@ -12594,27 +13615,9 @@ window.lunrData = {
               }
             }
           }
-        },
-        "k": {
-          "docs": {},
-          "e": {
-            "docs": {},
-            "y": {
-              "docs": {
-                "Utils.html#.groupSort": {
-                  "ref": "Utils.html#.groupSort",
-                  "tf": 26.25
-                },
-                "Utils.html#OptionsIteratee": {
-                  "ref": "Utils.html#OptionsIteratee",
-                  "tf": 33.33333333333333
-                }
-              }
-            }
-          }
         }
       },
-      "length": 1096
+      "length": 1157
     },
     "corpusTokens": [
       "0",
@@ -12623,6 +13626,7 @@ window.lunrData = {
       "abstract",
       "accept",
       "add",
+      "addfilt",
       "addgroup",
       "addrul",
       "allow",
@@ -12634,7 +13638,6 @@ window.lunrData = {
       "array.&lt;object&gt",
       "array.&lt;querybuilder.filter&gt",
       "array.&lt;querybuilder.operator&gt",
-      "array.&lt;string&gt",
       "array|boolean",
       "associ",
       "attach",
@@ -12647,16 +13650,21 @@ window.lunrData = {
       "bootbox",
       "bootsrap",
       "bootstrap",
-      "btcheckboxplugin",
-      "btselectpickerplugin",
-      "bttooltiperrorsplugin",
+      "btcheckbox",
+      "btselectpick",
+      "bttooltiperror",
       "builder",
+      "builder'",
       "call",
+      "categori",
       "cb",
       "cbgroup",
       "cbrule",
       "chang",
-      "changefiltersplugin",
+      "changefilt",
+      "changefilters#addfilt",
+      "changefilters#removefilt",
+      "changefilters#setfilt",
       "changetyp",
       "check",
       "checkbox",
@@ -12667,6 +13675,7 @@ window.lunrData = {
       "class",
       "clear",
       "clearerror",
+      "code",
       "common",
       "compon",
       "condit",
@@ -12674,19 +13683,19 @@ window.lunrData = {
       "contain",
       "content",
       "context",
+      "convert",
       "creat",
       "creator",
       "css",
       "current",
       "custom",
       "data",
-      "def",
       "default",
       "defin",
       "definemodelproperti",
-      "definit",
       "delet",
       "deletegroup",
+      "deleteorphan",
       "deleterul",
       "descript",
       "destroy",
@@ -12712,13 +13721,12 @@ window.lunrData = {
       "escapestr",
       "event",
       "export",
-      "extend",
       "extern",
       "external:\"jquery.fn",
-      "fct",
       "field",
       "filter",
-      "filterdescriptionplugin",
+      "filterdescript",
+      "filterid",
       "find",
       "flag",
       "float",
@@ -12731,9 +13739,13 @@ window.lunrData = {
       "function()&gt",
       "get",
       "getmodel",
+      "getmongo",
       "getnodepo",
       "getpo",
       "getrul",
+      "getrulesfrommongo",
+      "getrulesfromsql",
+      "getsql",
       "getter",
       "global",
       "group",
@@ -12783,8 +13795,9 @@ window.lunrData = {
       "int",
       "intern",
       "invert",
-      "invertplugin",
+      "invert#invert",
       "isroot",
+      "it'",
       "item",
       "iter",
       "iterateopt",
@@ -12792,7 +13805,9 @@ window.lunrData = {
       "jqueri",
       "jquery.fn",
       "key",
+      "label",
       "lang",
+      "languag",
       "length",
       "level",
       "list",
@@ -12804,6 +13819,7 @@ window.lunrData = {
       "listen",
       "local",
       "log",
+      "look",
       "lt;readonly&gt",
       "lt;static",
       "lt;static&gt",
@@ -12811,7 +13827,6 @@ window.lunrData = {
       "marker",
       "member",
       "messag",
-      "method",
       "model",
       "model#groupiterate",
       "model#off",
@@ -12821,21 +13836,35 @@ window.lunrData = {
       "model#trigg",
       "model.definemodelproperti",
       "modifi",
-      "modifiable_opt",
       "modul",
-      "module:btcheckboxplugin",
-      "module:btselectpickerplugin",
-      "module:bttooltiperrorsplugin",
-      "module:changefiltersplugin",
-      "module:filterdescriptionplugin",
-      "module:invertplugin",
-      "module:mongodbsupportplugin",
-      "module:notgroupplugin",
-      "module:sortableplugin",
-      "module:sqlsupportplugin",
-      "module:uniquefilterplugin",
+      "module:plugin",
+      "module:plugins.btcheckbox",
+      "module:plugins.btselectpick",
+      "module:plugins.bttooltiperror",
+      "module:plugins.changefilt",
+      "module:plugins.changefilters#addfilt",
+      "module:plugins.changefilters#removefilt",
+      "module:plugins.changefilters#setfilt",
+      "module:plugins.filterdescript",
+      "module:plugins.invert",
+      "module:plugins.invert#invert",
+      "module:plugins.mongodbsupport",
+      "module:plugins.mongodbsupport#getmongo",
+      "module:plugins.mongodbsupport#getrulesfrommongo",
+      "module:plugins.mongodbsupport#setrulesfrommongo",
+      "module:plugins.notgroup",
+      "module:plugins.sort",
+      "module:plugins.sqlsupport",
+      "module:plugins.sqlsupport#getrulesfromsql",
+      "module:plugins.sqlsupport#getsql",
+      "module:plugins.sqlsupport#setrulesfromsql",
+      "module:plugins.sqlsupport.sqlqueri",
+      "module:plugins.uniquefilt",
       "mongodb",
-      "mongodbsupportplugin",
+      "mongodbsupport",
+      "mongodbsupport#getmongo",
+      "mongodbsupport#getrulesfrommongo",
+      "mongodbsupport#setrulesfrommongo",
       "move",
       "moveaft",
       "moveatbegin",
@@ -12844,6 +13873,8 @@ window.lunrData = {
       "name",
       "namespac",
       "new",
+      "newfilt",
+      "nl",
       "no_delet",
       "node",
       "node#$el",
@@ -12862,7 +13893,7 @@ window.lunrData = {
       "node#moveatend",
       "node#par",
       "non",
-      "notgroupplugin",
+      "notgroup",
       "number",
       "obj",
       "object",
@@ -12880,6 +13911,17 @@ window.lunrData = {
       "perform",
       "php'",
       "plugin",
+      "plugins.btcheckbox",
+      "plugins.btselectpick",
+      "plugins.bttooltiperror",
+      "plugins.changefilt",
+      "plugins.filterdescript",
+      "plugins.invert",
+      "plugins.mongodbsupport",
+      "plugins.notgroup",
+      "plugins.sort",
+      "plugins.sqlsupport",
+      "plugins.uniquefilt",
       "popov",
       "popul",
       "posit",
@@ -12919,23 +13961,19 @@ window.lunrData = {
       "querybuilder#setroot",
       "querybuilder#setrul",
       "querybuilder#templ",
+      "querybuilder#transl",
       "querybuilder#trigg",
       "querybuilder#valid",
       "querybuilder#validatevalu",
       "querybuilder.default",
-      "querybuilder.defin",
-      "querybuilder.extend",
       "querybuilder.filt",
       "querybuilder.group",
-      "querybuilder.input",
       "querybuilder.modifiable_opt",
       "querybuilder.oper",
-      "querybuilder.plugin",
       "querybuilder.region",
       "querybuilder.rul",
       "querybuilder.selector",
       "querybuilder.templ",
-      "querybuilder.typ",
       "querybuilder.util",
       "quot;jquery.fn&quot",
       "quot;not&quot",
@@ -12947,12 +13985,11 @@ window.lunrData = {
       "recurs",
       "regex",
       "region",
-      "regist",
       "remov",
+      "removefilt",
       "removenod",
       "replac",
       "repres",
-      "represent",
       "reset",
       "return",
       "revers",
@@ -12976,23 +14013,31 @@ window.lunrData = {
       "rule#oper",
       "rule#par",
       "rule#valu",
-      "runtim",
       "same",
       "see",
       "selector",
       "self",
       "set",
+      "setfilt",
       "setopt",
       "setroot",
       "setrul",
+      "setrulesfrommongo",
+      "setrulesfromsql",
       "setter",
       "sort",
-      "sortableplugin",
+      "sortabl",
       "specif",
       "specifi",
       "sql",
-      "sqlsupportplugin",
+      "sqlqueri",
+      "sqlsupport",
+      "sqlsupport#getrulesfromsql",
+      "sqlsupport#getsql",
+      "sqlsupport#setrulesfromsql",
+      "sqlsupport.sqlqueri",
       "statement",
+      "stmt",
       "store",
       "str",
       "string",
@@ -13010,8 +14055,7 @@ window.lunrData = {
       "trigger",
       "type",
       "typedef",
-      "undefined|object",
-      "uniquefilterplugin",
+      "uniquefilt",
       "updat",
       "us",
       "user",
@@ -13086,9 +14130,9 @@ window.lunrData = {
     "list_module.html": {
       "id": "list_module.html",
       "kind": "list",
-      "title": "Plugins",
+      "title": "Modules",
       "longname": "list:module",
-      "name": "Plugins",
+      "name": "Modules",
       "tags": "list:module",
       "summary": "All documented modules.",
       "description": "",
@@ -13204,7 +14248,7 @@ window.lunrData = {
       "name": "not",
       "tags": "Group#not not",
       "summary": "",
-      "description": "From module:NotGroupPlugin"
+      "description": "From module:plugins.NotGroup"
     },
     "Group.html#parent": {
       "id": "Group.html#parent",
@@ -13467,6 +14511,237 @@ window.lunrData = {
       "summary": "",
       "description": ""
     },
+    "module-plugins.BtCheckbox.html": {
+      "id": "module-plugins.BtCheckbox.html",
+      "kind": "class",
+      "title": "plugins.BtCheckbox",
+      "longname": "module:plugins.BtCheckbox",
+      "name": "BtCheckbox",
+      "tags": "module:plugins.BtCheckbox BtCheckbox",
+      "summary": "",
+      "description": "Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.",
+      "body": ""
+    },
+    "module-plugins.BtSelectpicker.html": {
+      "id": "module-plugins.BtSelectpicker.html",
+      "kind": "class",
+      "title": "plugins.BtSelectpicker",
+      "longname": "module:plugins.BtSelectpicker",
+      "name": "BtSelectpicker",
+      "tags": "module:plugins.BtSelectpicker BtSelectpicker",
+      "summary": "",
+      "description": "",
+      "body": ""
+    },
+    "module-plugins.BtTooltipErrors.html": {
+      "id": "module-plugins.BtTooltipErrors.html",
+      "kind": "class",
+      "title": "plugins.BtTooltipErrors",
+      "longname": "module:plugins.BtTooltipErrors",
+      "name": "BtTooltipErrors",
+      "tags": "module:plugins.BtTooltipErrors BtTooltipErrors",
+      "summary": "",
+      "description": "Applies Bootstrap Tooltips on validation error messages.",
+      "body": ""
+    },
+    "module-plugins.ChangeFilters.html": {
+      "id": "module-plugins.ChangeFilters.html",
+      "kind": "class",
+      "title": "plugins.ChangeFilters",
+      "longname": "module:plugins.ChangeFilters",
+      "name": "ChangeFilters",
+      "tags": "module:plugins.ChangeFilters ChangeFilters",
+      "summary": "",
+      "description": "Allows to change available filters after plugin initialization.",
+      "body": ""
+    },
+    "module-plugins.ChangeFilters.html#addFilter": {
+      "id": "module-plugins.ChangeFilters.html#addFilter",
+      "kind": "function",
+      "title": "addFilter( newFilters [, position ] )",
+      "longname": "module:plugins.ChangeFilters#addFilter",
+      "name": "addFilter",
+      "tags": "module:plugins.ChangeFilters#addFilter ChangeFilters#addFilter addFilter",
+      "summary": "",
+      "description": "Adds a new filter to the builder"
+    },
+    "module-plugins.ChangeFilters.html#removeFilter": {
+      "id": "module-plugins.ChangeFilters.html#removeFilter",
+      "kind": "function",
+      "title": "removeFilter( filterIds [, deleteOrphans ] )",
+      "longname": "module:plugins.ChangeFilters#removeFilter",
+      "name": "removeFilter",
+      "tags": "module:plugins.ChangeFilters#removeFilter ChangeFilters#removeFilter removeFilter",
+      "summary": "",
+      "description": "Removes a filter from the builder"
+    },
+    "module-plugins.ChangeFilters.html#setFilters": {
+      "id": "module-plugins.ChangeFilters.html#setFilters",
+      "kind": "function",
+      "title": "setFilters( [ deleteOrphans ], filters )",
+      "longname": "module:plugins.ChangeFilters#setFilters",
+      "name": "setFilters",
+      "tags": "module:plugins.ChangeFilters#setFilters ChangeFilters#setFilters setFilters",
+      "summary": "",
+      "description": "Change the filters of the builder"
+    },
+    "module-plugins.FilterDescription.html": {
+      "id": "module-plugins.FilterDescription.html",
+      "kind": "class",
+      "title": "plugins.FilterDescription",
+      "longname": "module:plugins.FilterDescription",
+      "name": "FilterDescription",
+      "tags": "module:plugins.FilterDescription FilterDescription",
+      "summary": "",
+      "description": "Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.",
+      "body": ""
+    },
+    "module-plugins.Invert.html": {
+      "id": "module-plugins.Invert.html",
+      "kind": "class",
+      "title": "plugins.Invert",
+      "longname": "module:plugins.Invert",
+      "name": "Invert",
+      "tags": "module:plugins.Invert Invert",
+      "summary": "",
+      "description": "Allows to invert a rule operator, a group condition or the entire builder.",
+      "body": ""
+    },
+    "module-plugins.Invert.html#invert": {
+      "id": "module-plugins.Invert.html#invert",
+      "kind": "function",
+      "title": "invert( [ node [, options ] ] )",
+      "longname": "module:plugins.Invert#invert",
+      "name": "invert",
+      "tags": "module:plugins.Invert#invert Invert#invert invert",
+      "summary": "",
+      "description": "Invert a Group, a Rule or the whole builder"
+    },
+    "module-plugins.MongoDbSupport.html": {
+      "id": "module-plugins.MongoDbSupport.html",
+      "kind": "class",
+      "title": "plugins.MongoDbSupport",
+      "longname": "module:plugins.MongoDbSupport",
+      "name": "MongoDbSupport",
+      "tags": "module:plugins.MongoDbSupport MongoDbSupport",
+      "summary": "",
+      "description": "Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.",
+      "body": ""
+    },
+    "module-plugins.MongoDbSupport.html#getMongo": {
+      "id": "module-plugins.MongoDbSupport.html#getMongo",
+      "kind": "function",
+      "title": "getMongo( [ data ] ) → {object}",
+      "longname": "module:plugins.MongoDbSupport#getMongo",
+      "name": "getMongo",
+      "tags": "module:plugins.MongoDbSupport#getMongo MongoDbSupport#getMongo getMongo",
+      "summary": "",
+      "description": "Returns rules as a MongoDB query"
+    },
+    "module-plugins.MongoDbSupport.html#getRulesFromMongo": {
+      "id": "module-plugins.MongoDbSupport.html#getRulesFromMongo",
+      "kind": "function",
+      "title": "getRulesFromMongo( query ) → {object}",
+      "longname": "module:plugins.MongoDbSupport#getRulesFromMongo",
+      "name": "getRulesFromMongo",
+      "tags": "module:plugins.MongoDbSupport#getRulesFromMongo MongoDbSupport#getRulesFromMongo getRulesFromMongo",
+      "summary": "",
+      "description": "Converts a MongoDB query to rules"
+    },
+    "module-plugins.MongoDbSupport.html#setRulesFromMongo": {
+      "id": "module-plugins.MongoDbSupport.html#setRulesFromMongo",
+      "kind": "function",
+      "title": "setRulesFromMongo()",
+      "longname": "module:plugins.MongoDbSupport#setRulesFromMongo",
+      "name": "setRulesFromMongo",
+      "tags": "module:plugins.MongoDbSupport#setRulesFromMongo MongoDbSupport#setRulesFromMongo setRulesFromMongo",
+      "summary": "",
+      "description": "Sets rules a from MongoDB query"
+    },
+    "module-plugins.NotGroup.html": {
+      "id": "module-plugins.NotGroup.html",
+      "kind": "class",
+      "title": "plugins.NotGroup",
+      "longname": "module:plugins.NotGroup",
+      "name": "NotGroup",
+      "tags": "module:plugins.NotGroup NotGroup",
+      "summary": "",
+      "description": "Adds a &quot;Not&quot; checkbox in front of group conditions.",
+      "body": ""
+    },
+    "module-plugins.Sortable.html": {
+      "id": "module-plugins.Sortable.html",
+      "kind": "class",
+      "title": "plugins.Sortable",
+      "longname": "module:plugins.Sortable",
+      "name": "Sortable",
+      "tags": "module:plugins.Sortable Sortable",
+      "summary": "",
+      "description": "Enables drag &amp; drop sort of rules.",
+      "body": ""
+    },
+    "module-plugins.SqlSupport.html": {
+      "id": "module-plugins.SqlSupport.html",
+      "kind": "class",
+      "title": "plugins.SqlSupport",
+      "longname": "module:plugins.SqlSupport",
+      "name": "SqlSupport",
+      "tags": "module:plugins.SqlSupport SqlSupport",
+      "summary": "",
+      "description": "Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.",
+      "body": ""
+    },
+    "module-plugins.SqlSupport.html#getRulesFromSQL": {
+      "id": "module-plugins.SqlSupport.html#getRulesFromSQL",
+      "kind": "function",
+      "title": "getRulesFromSQL( query, stmt ) → {object}",
+      "longname": "module:plugins.SqlSupport#getRulesFromSQL",
+      "name": "getRulesFromSQL",
+      "tags": "module:plugins.SqlSupport#getRulesFromSQL SqlSupport#getRulesFromSQL getRulesFromSQL",
+      "summary": "",
+      "description": "Convert a SQL query to rules"
+    },
+    "module-plugins.SqlSupport.html#getSQL": {
+      "id": "module-plugins.SqlSupport.html#getSQL",
+      "kind": "function",
+      "title": "getSQL( [ stmt [, nl [, data ] ] ] ) → {module:plugins.SqlSupport.SqlQuery}",
+      "longname": "module:plugins.SqlSupport#getSQL",
+      "name": "getSQL",
+      "tags": "module:plugins.SqlSupport#getSQL SqlSupport#getSQL getSQL",
+      "summary": "",
+      "description": "Returns rules as a SQL query"
+    },
+    "module-plugins.SqlSupport.html#setRulesFromSQL": {
+      "id": "module-plugins.SqlSupport.html#setRulesFromSQL",
+      "kind": "function",
+      "title": "setRulesFromSQL()",
+      "longname": "module:plugins.SqlSupport#setRulesFromSQL",
+      "name": "setRulesFromSQL",
+      "tags": "module:plugins.SqlSupport#setRulesFromSQL SqlSupport#setRulesFromSQL setRulesFromSQL",
+      "summary": "",
+      "description": "Sets the builder's rules from a SQL query"
+    },
+    "module-plugins.SqlSupport.html#.SqlQuery": {
+      "id": "module-plugins.SqlSupport.html#.SqlQuery",
+      "kind": "typedef",
+      "title": "SqlQuery",
+      "longname": "module:plugins.SqlSupport.SqlQuery",
+      "name": "SqlQuery",
+      "tags": "module:plugins.SqlSupport.SqlQuery SqlSupport.SqlQuery SqlQuery",
+      "summary": "",
+      "description": ""
+    },
+    "module-plugins.UniqueFilter.html": {
+      "id": "module-plugins.UniqueFilter.html",
+      "kind": "class",
+      "title": "plugins.UniqueFilter",
+      "longname": "module:plugins.UniqueFilter",
+      "name": "UniqueFilter",
+      "tags": "module:plugins.UniqueFilter UniqueFilter",
+      "summary": "",
+      "description": "Allows to define some filters as &quot;unique&quot;: ie which can be used for only one rule, globally or in the same group.",
+      "body": ""
+    },
     "Node.html": {
       "id": "Node.html",
       "kind": "class",
@@ -13659,26 +14934,6 @@ window.lunrData = {
       "summary": "",
       "description": ""
     },
-    "QueryBuilder.html#.inputs": {
-      "id": "QueryBuilder.html#.inputs",
-      "kind": "member",
-      "title": "&lt;static, readonly&gt; inputs :Array.&lt;string&gt;",
-      "longname": "QueryBuilder.inputs",
-      "name": "inputs",
-      "tags": "QueryBuilder.inputs inputs",
-      "summary": "",
-      "description": "Allowed inputs"
-    },
-    "QueryBuilder.html#.modifiable_options": {
-      "id": "QueryBuilder.html#.modifiable_options",
-      "kind": "member",
-      "title": "&lt;static, readonly&gt; modifiable_options :Array.&lt;string&gt;",
-      "longname": "QueryBuilder.modifiable_options",
-      "name": "modifiable_options",
-      "tags": "QueryBuilder.modifiable_options modifiable_options",
-      "summary": "",
-      "description": "Runtime modifiable options with setOptions method"
-    },
     "QueryBuilder.html#.OPERATORS": {
       "id": "QueryBuilder.html#.OPERATORS",
       "kind": "member",
@@ -13688,16 +14943,6 @@ window.lunrData = {
       "tags": "QueryBuilder.OPERATORS OPERATORS",
       "summary": "",
       "description": "Default operators"
-    },
-    "QueryBuilder.html#.plugins": {
-      "id": "QueryBuilder.html#.plugins",
-      "kind": "member",
-      "title": "&lt;static&gt; plugins :object.&lt;String, object&gt;",
-      "longname": "QueryBuilder.plugins",
-      "name": "plugins",
-      "tags": "QueryBuilder.plugins plugins",
-      "summary": "",
-      "description": "Definition of available plugins"
     },
     "QueryBuilder.html#.regional": {
       "id": "QueryBuilder.html#.regional",
@@ -13738,16 +14983,6 @@ window.lunrData = {
       "tags": "QueryBuilder.templates templates",
       "summary": "",
       "description": "Template strings (see template.js)"
-    },
-    "QueryBuilder.html#.types": {
-      "id": "QueryBuilder.html#.types",
-      "kind": "member",
-      "title": "&lt;static, readonly&gt; types :object.&lt;string, string&gt;",
-      "longname": "QueryBuilder.types",
-      "name": "types",
-      "tags": "QueryBuilder.types types",
-      "summary": "",
-      "description": "Allowed types and their internal representation"
     },
     "QueryBuilder.html#.utils": {
       "id": "QueryBuilder.html#.utils",
@@ -13848,36 +15083,6 @@ window.lunrData = {
       "tags": "QueryBuilder#templates templates",
       "summary": "",
       "description": "List of templates"
-    },
-    "QueryBuilder.html#.defaults": {
-      "id": "QueryBuilder.html#.defaults",
-      "kind": "function",
-      "title": "&lt;static&gt; defaults( [ options ] ) → {undefined|object}",
-      "longname": "QueryBuilder.defaults",
-      "name": "defaults",
-      "tags": "QueryBuilder.defaults defaults",
-      "summary": "",
-      "description": "Gets or extends the default configuration"
-    },
-    "QueryBuilder.html#.define": {
-      "id": "QueryBuilder.html#.define",
-      "kind": "function",
-      "title": "&lt;static&gt; define( name, fct [, def ] )",
-      "longname": "QueryBuilder.define",
-      "name": "define",
-      "tags": "QueryBuilder.define define",
-      "summary": "",
-      "description": "Registers a new plugin"
-    },
-    "QueryBuilder.html#.extend": {
-      "id": "QueryBuilder.html#.extend",
-      "kind": "function",
-      "title": "&lt;static&gt; extend( methods )",
-      "longname": "QueryBuilder.extend",
-      "name": "extend",
-      "tags": "QueryBuilder.extend extend",
-      "summary": "",
-      "description": "Adds new methods to QueryBuilder prototype"
     },
     "QueryBuilder.html#addGroup": {
       "id": "QueryBuilder.html#addGroup",
@@ -14068,6 +15273,16 @@ window.lunrData = {
       "tags": "QueryBuilder#setRules setRules",
       "summary": "",
       "description": "Sets rules from object"
+    },
+    "QueryBuilder.html#translate": {
+      "id": "QueryBuilder.html#translate",
+      "kind": "function",
+      "title": "translate( [ category ], key ) → {string}",
+      "longname": "QueryBuilder#translate",
+      "name": "translate",
+      "tags": "QueryBuilder#translate translate",
+      "summary": "",
+      "description": "Translate a label either by looking in the lang object or in itself if it's an object where keys are language codes"
     },
     "QueryBuilder.html#trigger": {
       "id": "QueryBuilder.html#trigger",
@@ -14321,125 +15536,15 @@ window.lunrData = {
       "description": "The jQuery Plugins namespace",
       "body": ""
     },
-    "module-BtCheckboxPlugin.html": {
-      "id": "module-BtCheckboxPlugin.html",
+    "module-plugins.html": {
+      "id": "module-plugins.html",
       "kind": "module",
-      "title": "BtCheckboxPlugin",
-      "longname": "module:BtCheckboxPlugin",
-      "name": "BtCheckboxPlugin",
-      "tags": "module:BtCheckboxPlugin",
-      "summary": "",
-      "description": "Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.",
-      "body": ""
-    },
-    "module-BtSelectpickerPlugin.html": {
-      "id": "module-BtSelectpickerPlugin.html",
-      "kind": "module",
-      "title": "BtSelectpickerPlugin",
-      "longname": "module:BtSelectpickerPlugin",
-      "name": "BtSelectpickerPlugin",
-      "tags": "module:BtSelectpickerPlugin",
+      "title": "plugins",
+      "longname": "module:plugins",
+      "name": "plugins",
+      "tags": "module:plugins",
       "summary": "",
       "description": "",
-      "body": ""
-    },
-    "module-BtTooltipErrorsPlugin.html": {
-      "id": "module-BtTooltipErrorsPlugin.html",
-      "kind": "module",
-      "title": "BtTooltipErrorsPlugin",
-      "longname": "module:BtTooltipErrorsPlugin",
-      "name": "BtTooltipErrorsPlugin",
-      "tags": "module:BtTooltipErrorsPlugin",
-      "summary": "",
-      "description": "Applies Bootstrap Tooltips on validation error messages.",
-      "body": ""
-    },
-    "module-ChangeFiltersPlugin.html": {
-      "id": "module-ChangeFiltersPlugin.html",
-      "kind": "module",
-      "title": "ChangeFiltersPlugin",
-      "longname": "module:ChangeFiltersPlugin",
-      "name": "ChangeFiltersPlugin",
-      "tags": "module:ChangeFiltersPlugin",
-      "summary": "",
-      "description": "Allows to change available filters after plugin initialization.",
-      "body": ""
-    },
-    "module-FilterDescriptionPlugin.html": {
-      "id": "module-FilterDescriptionPlugin.html",
-      "kind": "module",
-      "title": "FilterDescriptionPlugin",
-      "longname": "module:FilterDescriptionPlugin",
-      "name": "FilterDescriptionPlugin",
-      "tags": "module:FilterDescriptionPlugin",
-      "summary": "",
-      "description": "Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.",
-      "body": ""
-    },
-    "module-InvertPlugin.html": {
-      "id": "module-InvertPlugin.html",
-      "kind": "module",
-      "title": "InvertPlugin",
-      "longname": "module:InvertPlugin",
-      "name": "InvertPlugin",
-      "tags": "module:InvertPlugin",
-      "summary": "",
-      "description": "Allows to invert a rule operator, a group condition or the entire builder.",
-      "body": ""
-    },
-    "module-MongoDbSupportPlugin.html": {
-      "id": "module-MongoDbSupportPlugin.html",
-      "kind": "module",
-      "title": "MongoDbSupportPlugin",
-      "longname": "module:MongoDbSupportPlugin",
-      "name": "MongoDbSupportPlugin",
-      "tags": "module:MongoDbSupportPlugin",
-      "summary": "",
-      "description": "Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.",
-      "body": ""
-    },
-    "module-NotGroupPlugin.html": {
-      "id": "module-NotGroupPlugin.html",
-      "kind": "module",
-      "title": "NotGroupPlugin",
-      "longname": "module:NotGroupPlugin",
-      "name": "NotGroupPlugin",
-      "tags": "module:NotGroupPlugin",
-      "summary": "",
-      "description": "Adds a &quot;Not&quot; checkbox in front of group conditions.",
-      "body": ""
-    },
-    "module-SortablePlugin.html": {
-      "id": "module-SortablePlugin.html",
-      "kind": "module",
-      "title": "SortablePlugin",
-      "longname": "module:SortablePlugin",
-      "name": "SortablePlugin",
-      "tags": "module:SortablePlugin",
-      "summary": "",
-      "description": "Enables drag &amp; drop sort of rules.",
-      "body": ""
-    },
-    "module-SqlSupportPlugin.html": {
-      "id": "module-SqlSupportPlugin.html",
-      "kind": "module",
-      "title": "SqlSupportPlugin",
-      "longname": "module:SqlSupportPlugin",
-      "name": "SqlSupportPlugin",
-      "tags": "module:SqlSupportPlugin",
-      "summary": "",
-      "description": "Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.",
-      "body": ""
-    },
-    "module-UniqueFilterPlugin.html": {
-      "id": "module-UniqueFilterPlugin.html",
-      "kind": "module",
-      "title": "UniqueFilterPlugin",
-      "longname": "module:UniqueFilterPlugin",
-      "name": "UniqueFilterPlugin",
-      "tags": "module:UniqueFilterPlugin",
-      "summary": "",
-      "description": "Allows to define some filters as &quot;unique&quot;: ie which can be used for only one rule, globally or in the same group.",
       "body": ""
     },
     "Utils.html": {

@@ -71,7 +71,7 @@ QueryBuilder.regional['el'] = {
     "datetime_exceed_min": "Νεότερο από {0}",
     "datetime_exceed_max": "Παλαιότερο από {0}",
     "boolean_not_valid": "Δεν είναι BOOLEAN",
-    "operator_not_multiple": "Η συνθήκη {0} δεν μπορεί να δεχθεί πολλαπλές τιμές"
+    "operator_not_multiple": "Η συνθήκη \"{1}\" δεν μπορεί να δεχθεί πολλαπλές τιμές"
   },
   "invert": "Εναλλαγή"
 };

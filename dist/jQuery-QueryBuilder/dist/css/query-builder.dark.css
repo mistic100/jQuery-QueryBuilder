@@ -3,7 +3,6 @@
  * Copyright 2014-2017 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
-
 .query-builder .rules-group-container, .query-builder .rule-container, .query-builder .rule-placeholder {
   position: relative;
   margin: 4px 0;
@@ -102,6 +101,16 @@
 }
 .query-builder .rules-list > *:last-child::after {
   display: none;
+}
+
+.query-builder.bt-checkbox-glyphicons .checkbox input[type=checkbox]:checked + label::after {
+  font-family: 'Glyphicons Halflings';
+  content: '\e013';
+}
+.query-builder.bt-checkbox-glyphicons .checkbox label::after {
+  padding-left: 4px;
+  padding-top: 2px;
+  font-size: 9px;
 }
 
 .query-builder .error-container + .tooltip .tooltip-inner {

@@ -70,7 +70,7 @@ QueryBuilder.regional['cs'] = {
     "datetime_exceed_min": "Musí být po {0}",
     "datetime_exceed_max": "Musí být do {0}",
     "boolean_not_valid": "Nelogické",
-    "operator_not_multiple": "Operátor {0} nepodporuje mnoho hodnot"
+    "operator_not_multiple": "Operátor \"{1}\" nepodporuje mnoho hodnot"
   },
   "invert": "invertní"
 };

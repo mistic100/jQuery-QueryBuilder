@@ -71,7 +71,7 @@ QueryBuilder.regional['bg'] = {
     "datetime_exceed_min": "Трябва да е след {0}",
     "datetime_exceed_max": "Трябва да е преди {0}",
     "boolean_not_valid": "Не е булева",
-    "operator_not_multiple": "Оператора {0} не може да приеме множество стойности"
+    "operator_not_multiple": "Оператора \"{1}\" не може да приеме множество стойности"
   }
 };
 

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-		<title>Plugins</title>
+		<title>Modules</title>
 		<!--[if lt IE 9]>
 		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -40,7 +40,7 @@
 				}
 			</style>
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Plugins","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"readmeTargets":[],"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
+			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
 			window.DOCLET_TOC_ENABLED = true;
 		</script>
 </head>
@@ -66,6 +66,17 @@
 								<ul class="dropdown-menu">
 										<li><a href="Group.html">Group</a></li>
 										<li><a href="Model.html">Model</a></li>
+										<li><a href="module-plugins.BtCheckbox.html">plugins.BtCheckbox</a></li>
+										<li><a href="module-plugins.BtSelectpicker.html">plugins.BtSelectpicker</a></li>
+										<li><a href="module-plugins.BtTooltipErrors.html">plugins.BtTooltipErrors</a></li>
+										<li><a href="module-plugins.ChangeFilters.html">plugins.ChangeFilters</a></li>
+										<li><a href="module-plugins.FilterDescription.html">plugins.FilterDescription</a></li>
+										<li><a href="module-plugins.Invert.html">plugins.Invert</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html">plugins.MongoDbSupport</a></li>
+										<li><a href="module-plugins.NotGroup.html">plugins.NotGroup</a></li>
+										<li><a href="module-plugins.Sortable.html">plugins.Sortable</a></li>
+										<li><a href="module-plugins.SqlSupport.html">plugins.SqlSupport</a></li>
+										<li><a href="module-plugins.UniqueFilter.html">plugins.UniqueFilter</a></li>
 										<li><a href="Node.html">Node</a></li>
 										<li><a href="QueryBuilder.html">QueryBuilder</a></li>
 										<li><a href="Rule.html">Rule</a></li>
@@ -74,30 +85,29 @@
 							<li class="dropdown">
 								<a href="list_event.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
 								<ul class="dropdown-menu">
-										<li><a href="global.html#undefinedevent:changer:getRules">changer:getRules</a></li>
 										<li><a href="Model.html#.event:model:add">Model.model:add</a></li>
 										<li><a href="Model.html#.event:model:drop">Model.model:drop</a></li>
 										<li><a href="Model.html#.event:model:move">Model.model:move</a></li>
 										<li><a href="Model.html#.event:model:update">Model.model:update</a></li>
-										<li><a href="module-ChangeFiltersPlugin.html#.event:changer:setFilters">ChangeFiltersPlugin.changer:setFilters</a></li>
-										<li><a href="module-ChangeFiltersPlugin.html#.event:afterSetFilters">ChangeFiltersPlugin.afterSetFilters</a></li>
-										<li><a href="module-InvertPlugin.html#.event:afterInvert">InvertPlugin.afterInvert</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBField">MongoDbSupportPlugin.changer:getMongoDBField</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:getMongoDBFieldID">MongoDbSupportPlugin.changer:getMongoDBFieldID</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:groupToMongo">MongoDbSupportPlugin.changer:groupToMongo</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToGroup">MongoDbSupportPlugin.changer:mongoToGroup</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:mongoToRule">MongoDbSupportPlugin.changer:mongoToRule</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:parseMongoNode">MongoDbSupportPlugin.changer:parseMongoNode</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html#.event:changer:ruleToMongo">MongoDbSupportPlugin.changer:ruleToMongo</a></li>
-										<li><a href="module-NotGroupPlugin.html#.event:afterUpdateGroupNot">NotGroupPlugin.afterUpdateGroupNot</a></li>
-										<li><a href="module-SortablePlugin.html#.event:afterMove">SortablePlugin.afterMove</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:getSQLField">SqlSupportPlugin.changer:getSQLField</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:getSQLFieldID">SqlSupportPlugin.changer:getSQLFieldID</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:groupToSQL">SqlSupportPlugin.changer:groupToSQL</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:parseSQLNode">SqlSupportPlugin.changer:parseSQLNode</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:ruleToSQL">SqlSupportPlugin.changer:ruleToSQL</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:sqlToGroup">SqlSupportPlugin.changer:sqlToGroup</a></li>
-										<li><a href="module-SqlSupportPlugin.html#.event:changer:sqlToRule">SqlSupportPlugin.changer:sqlToRule</a></li>
+										<li><a href="module-plugins.ChangeFilters.html#.event:changer:setFilters">plugins.ChangeFilters.changer:setFilters</a></li>
+										<li><a href="module-plugins.ChangeFilters.html#.event:afterSetFilters">plugins.ChangeFilters.afterSetFilters</a></li>
+										<li><a href="module-plugins.Invert.html#.event:afterInvert">plugins.Invert.afterInvert</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:getMongoDBField">plugins.MongoDbSupport.changer:getMongoDBField</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:getMongoDBFieldID">plugins.MongoDbSupport.changer:getMongoDBFieldID</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:groupToMongo">plugins.MongoDbSupport.changer:groupToMongo</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:mongoToGroup">plugins.MongoDbSupport.changer:mongoToGroup</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:mongoToRule">plugins.MongoDbSupport.changer:mongoToRule</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:parseMongoNode">plugins.MongoDbSupport.changer:parseMongoNode</a></li>
+										<li><a href="module-plugins.MongoDbSupport.html#.event:changer:ruleToMongo">plugins.MongoDbSupport.changer:ruleToMongo</a></li>
+										<li><a href="module-plugins.NotGroup.html#.event:afterUpdateGroupNot">plugins.NotGroup.afterUpdateGroupNot</a></li>
+										<li><a href="module-plugins.Sortable.html#.event:afterMove">plugins.Sortable.afterMove</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:getSQLField">plugins.SqlSupport.changer:getSQLField</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:getSQLFieldID">plugins.SqlSupport.changer:getSQLFieldID</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:groupToSQL">plugins.SqlSupport.changer:groupToSQL</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:parseSQLNode">plugins.SqlSupport.changer:parseSQLNode</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:ruleToSQL">plugins.SqlSupport.changer:ruleToSQL</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToGroup">plugins.SqlSupport.changer:sqlToGroup</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToRule">plugins.SqlSupport.changer:sqlToRule</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:displayError">QueryBuilder.changer:displayError</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getDefaultFilter">QueryBuilder.changer:getDefaultFilter</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getGroupTemplate">QueryBuilder.changer:getGroupTemplate</a></li>
@@ -106,6 +116,7 @@
 										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate">QueryBuilder.changer:getRuleFilterTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleInput">QueryBuilder.changer:getRuleInput</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate">QueryBuilder.changer:getRuleOperatorTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></li>
@@ -115,6 +126,7 @@
 										<li><a href="QueryBuilder.html#.event:changer:parseRuleFlags">QueryBuilder.changer:parseRuleFlags</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:ruleToJson">QueryBuilder.changer:ruleToJson</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:setRules">QueryBuilder.changer:setRules</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:translate">QueryBuilder.changer:translate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:validate">QueryBuilder.changer:validate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:validateValue">QueryBuilder.changer:validateValue</a></li>
 										<li><a href="QueryBuilder.html#.event:afterAddGroup">QueryBuilder.afterAddGroup</a></li>
@@ -151,19 +163,9 @@
 								</ul>
 							</li>
 							<li class="dropdown">
-								<a href="list_module.html" class="dropdown-toggle" data-toggle="dropdown">Plugins<b class="caret"></b></a>
+								<a href="list_module.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 								<ul class="dropdown-menu">
-										<li><a href="module-BtCheckboxPlugin.html">BtCheckboxPlugin</a></li>
-										<li><a href="module-BtSelectpickerPlugin.html">BtSelectpickerPlugin</a></li>
-										<li><a href="module-BtTooltipErrorsPlugin.html">BtTooltipErrorsPlugin</a></li>
-										<li><a href="module-ChangeFiltersPlugin.html">ChangeFiltersPlugin</a></li>
-										<li><a href="module-FilterDescriptionPlugin.html">FilterDescriptionPlugin</a></li>
-										<li><a href="module-InvertPlugin.html">InvertPlugin</a></li>
-										<li><a href="module-MongoDbSupportPlugin.html">MongoDbSupportPlugin</a></li>
-										<li><a href="module-NotGroupPlugin.html">NotGroupPlugin</a></li>
-										<li><a href="module-SortablePlugin.html">SortablePlugin</a></li>
-										<li><a href="module-SqlSupportPlugin.html">SqlSupportPlugin</a></li>
-										<li><a href="module-UniqueFilterPlugin.html">UniqueFilterPlugin</a></li>
+										<li><a href="module-plugins.html">plugins</a></li>
 								</ul>
 							</li>
 							<li class="dropdown">
@@ -190,7 +192,7 @@
 	<!-- end:navbar.hbs -->		<div class="page-header">
 			<div class="container">
 				<span class="kind">list</span>
-				<h1><span class="name">Plugins</span></h1>
+				<h1><span class="name">Modules</span></h1>
 				<div class="summary"><p>All documented modules.</p></div>			</div>
 		</div>
 	<div class="container content">
@@ -198,95 +200,15 @@
 			<div class="col-md-9 main-content">
 						<ol class="breadcrumb">
 							<li><a href="index.html">Home</a></li>
-							<li class="active">Plugins</li>
+							<li class="active">Modules</li>
 						</ol>
 					<section>
-		<h2><span class="name">Plugins</span></h2>
+		<h2><span class="name">Modules</span></h2>
 		<article class="secondary">
 				<dl class="symbol">
 						
 						<dt class="symbol-title module">
-			<h4 id="BtCheckboxPlugin" class="module"><a href="module-BtCheckboxPlugin.html"><span class="name">BtCheckboxPlugin</span></a></h4>
-</dt>
-<dd class="symbol-details module">
-	<div class="symbol-details-inner">
-	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title module">
-			<h4 id="BtSelectpickerPlugin" class="module"><a href="module-BtSelectpickerPlugin.html"><span class="name">BtSelectpickerPlugin</span></a></h4>
-</dt>
-<dd class="symbol-details module">
-	<div class="symbol-details-inner">
-	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title module">
-			<h4 id="BtTooltipErrorsPlugin" class="module"><a href="module-BtTooltipErrorsPlugin.html"><span class="name">BtTooltipErrorsPlugin</span></a></h4>
-</dt>
-<dd class="symbol-details module">
-	<div class="symbol-details-inner">
-	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title module">
-			<h4 id="ChangeFiltersPlugin" class="module"><a href="module-ChangeFiltersPlugin.html"><span class="name">ChangeFiltersPlugin</span></a></h4>
-</dt>
-<dd class="symbol-details module">
-	<div class="symbol-details-inner">
-	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title module">
-			<h4 id="FilterDescriptionPlugin" class="module"><a href="module-FilterDescriptionPlugin.html"><span class="name">FilterDescriptionPlugin</span></a></h4>
-</dt>
-<dd class="symbol-details module">
-	<div class="symbol-details-inner">
-	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title module">
-			<h4 id="InvertPlugin" class="module"><a href="module-InvertPlugin.html"><span class="name">InvertPlugin</span></a></h4>
-</dt>
-<dd class="symbol-details module">
-	<div class="symbol-details-inner">
-	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title module">
-			<h4 id="MongoDbSupportPlugin" class="module"><a href="module-MongoDbSupportPlugin.html"><span class="name">MongoDbSupportPlugin</span></a></h4>
-</dt>
-<dd class="symbol-details module">
-	<div class="symbol-details-inner">
-	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title module">
-			<h4 id="NotGroupPlugin" class="module"><a href="module-NotGroupPlugin.html"><span class="name">NotGroupPlugin</span></a></h4>
-</dt>
-<dd class="symbol-details module">
-	<div class="symbol-details-inner">
-	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title module">
-			<h4 id="SortablePlugin" class="module"><a href="module-SortablePlugin.html"><span class="name">SortablePlugin</span></a></h4>
-</dt>
-<dd class="symbol-details module">
-	<div class="symbol-details-inner">
-	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title module">
-			<h4 id="SqlSupportPlugin" class="module"><a href="module-SqlSupportPlugin.html"><span class="name">SqlSupportPlugin</span></a></h4>
-</dt>
-<dd class="symbol-details module">
-	<div class="symbol-details-inner">
-	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title module">
-			<h4 id="UniqueFilterPlugin" class="module"><a href="module-UniqueFilterPlugin.html"><span class="name">UniqueFilterPlugin</span></a></h4>
+			<h4 id="plugins" class="module"><a href="module-plugins.html"><span class="name">plugins</span></a></h4>
 </dt>
 <dd class="symbol-details module">
 	<div class="symbol-details-inner">
