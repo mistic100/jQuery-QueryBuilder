@@ -545,15 +545,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                     Utils.error('SQLParse', 'Cannot find field name in {0}', JSON.stringify(data.left));
                 }
 
-                /**
-                 * Returns a filter identifier from the SQL field
-                 * @event changer:getSQLFieldID
-                 * @memberof module:plugins.SqlSupport
-                 * @param {string} field
-                 * @param {*} value
-                 * @returns {string}
-                 */
-                var id = self.change('getSQLFieldID', field, value);
+                var id = self.getSQLFieldID(field, value);
 
                 /**
                  * Modifies the rule generated from the SQL expression
@@ -583,6 +575,39 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
      */
     setRulesFromSQL: function(query, stmt) {
         this.setRules(this.getRulesFromSQL(query, stmt));
+    },
+
+    /**
+     * Returns a filter identifier from the SQL field.
+     * Automatically use the only one filter with a matching field, fires a changer otherwise.
+     * @param {string} field
+     * @param {*} value
+     * @fires module:plugins.SqlSupport:changer:getSQLFieldID
+     * @returns {string}
+     * @private
+     */
+    getSQLFieldID: function(field, value) {
+        var matchingFilters = this.filters.filter(function(filter) {
+            return filter.field === field;
+        });
+
+        var id;
+        if (matchingFilters.length === 1) {
+            id = matchingFilters[0].id;
+        }
+        else {
+            /**
+             * Returns a filter identifier from the SQL field
+             * @event changer:getSQLFieldID
+             * @memberof module:plugins.SqlSupport
+             * @param {string} field
+             * @param {*} value
+             * @returns {string}
+             */
+            id = this.change('getSQLFieldID', field, value);
+        }
+
+        return id;
     }
 });
 

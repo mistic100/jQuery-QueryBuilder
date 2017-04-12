@@ -1,13 +1,13 @@
-$(function () {
+$(function() {
     var $b = $('#builder');
 
     QUnit.module('plugins.sql-support', {
-        afterEach: function () {
+        afterEach: function() {
             $b.queryBuilder('destroy');
         }
     });
 
-    QUnit.test('Raw SQL', function (assert) {
+    QUnit.test('Raw SQL', function(assert) {
         $b.queryBuilder({
             filters: basic_filters,
             rules: basic_rules
@@ -30,7 +30,7 @@ $(function () {
         );
     });
 
-    QUnit.test('Placeholder SQL', function (assert) {
+    QUnit.test('Placeholder SQL', function(assert) {
         $b.queryBuilder({
             filters: basic_filters,
             rules: basic_rules
@@ -53,7 +53,7 @@ $(function () {
         );
     });
 
-    QUnit.test('Numbered SQL', function (assert) {
+    QUnit.test('Numbered SQL', function(assert) {
         $b.queryBuilder({
             filters: basic_filters,
             rules: basic_rules
@@ -92,7 +92,7 @@ $(function () {
         );
     });
 
-    QUnit.test('Named SQL', function (assert) {
+    QUnit.test('Named SQL', function(assert) {
         $b.queryBuilder({
             filters: basic_filters,
             rules: basic_rules
@@ -131,7 +131,7 @@ $(function () {
         );
     });
 
-    QUnit.test('All operators', function (assert) {
+    QUnit.test('All operators', function(assert) {
         $b.queryBuilder({
             filters: basic_filters,
             rules: all_operators_rules
@@ -154,14 +154,14 @@ $(function () {
         );
     });
 
-    QUnit.test('Nested rules', function (assert) {
+    QUnit.test('Nested rules', function(assert) {
 
         $b.queryBuilder({
             filters: [
-                {id: 'a', type: 'integer'},
-                {id: 'b', type: 'integer'},
-                {id: 'c', type: 'integer'},
-                {id: 'd', type: 'integer'}
+                { id: 'a', type: 'integer' },
+                { id: 'b', type: 'integer' },
+                { id: 'c', type: 'integer' },
+                { id: 'd', type: 'integer' }
             ]
         });
 
@@ -191,7 +191,7 @@ $(function () {
         );
     });
 
-    QUnit.test('Custom export/parsing', function (assert) {
+    QUnit.test('Custom export/parsing', function(assert) {
         var rules = {
             condition: 'AND',
             rules: [
@@ -225,13 +225,13 @@ $(function () {
             ]
         });
 
-        $b.on('ruleToSQL.queryBuilder.filter', function (e, rule, sqlValue, sqlOperator) {
+        $b.on('ruleToSQL.queryBuilder.filter', function(e, rule, sqlValue, sqlOperator) {
             if (rule.id === 'last_days') {
                 e.value = rule.field + ' ' + sqlOperator('DATE_SUB(NOW(), INTERVAL ' + sqlValue + ' DAY)');
             }
         });
 
-        $b.on('parseSQLNode.queryBuilder.filter', function (e) {
+        $b.on('parseSQLNode.queryBuilder.filter', function(e) {
             var data = e.value;
             // left must be the field name and right must be the date_sub function
             if (data.left && data.left.value == 'display_date' && data.operation == '>' && data.right && data.right.name == 'DATE_SUB') {
@@ -266,6 +266,44 @@ $(function () {
             $b.queryBuilder('getRules'),
             rules,
             'Should parse date_sub function'
+        );
+    });
+
+    QUnit.test('Automatically use filter from field', function(assert) {
+        var rules = {
+            condition: 'AND',
+            rules: [
+                {
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }
+            ]
+        };
+
+        var sql = 'username = \'Mistic\'';
+
+        $b.queryBuilder({
+            filters: [
+                {
+                    id: 'name',
+                    field: 'username',
+                    type: 'string'
+                },
+                {
+                    id: 'last_days',
+                    field: 'display_date',
+                    type: 'integer'
+                }
+            ]
+        });
+
+        $b.queryBuilder('setRulesFromSQL', sql);
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            rules,
+            'Should use "name" filter from "username" field'
         );
     });
 
