@@ -273,7 +273,7 @@
 
 
 /*!
- * jQuery QueryBuilder 2.4.1
+ * jQuery QueryBuilder 2.4.3
  * Copyright 2014-2017 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -4834,15 +4834,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
 
                     var opVal = mdbrl.call(self, value);
 
-                    /**
-                     * Returns a filter identifier from the MongoDB field
-                     * @event changer:getMongoDBFieldID
-                     * @memberof module:plugins.MongoDbSupport
-                     * @param {string} field
-                     * @param {*} value
-                     * @returns {string}
-                     */
-                    var id = self.change('getMongoDBFieldID', field, value);
+                    var id = self.getMongoDBFieldID(field, value);
 
                     /**
                      * Modifies the rule generated from the MongoDB expression
@@ -4884,6 +4876,39 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
      */
     setRulesFromMongo: function(query) {
         this.setRules(this.getRulesFromMongo(query));
+    },
+
+    /**
+     * Returns a filter identifier from the MongoDB field.
+     * Automatically use the only one filter with a matching field, fires a changer otherwise.
+     * @param {string} field
+     * @param {*} value
+     * @fires module:plugins.MongoDbSupport:changer:getMongoDBFieldID
+     * @returns {string}
+     * @private
+     */
+    getMongoDBFieldID: function(field, value) {
+        var matchingFilters = this.filters.filter(function(filter) {
+            return filter.field === field;
+        });
+
+        var id;
+        if (matchingFilters.length === 1) {
+            id = matchingFilters[0].id;
+        }
+        else {
+            /**
+             * Returns a filter identifier from the MongoDB field
+             * @event changer:getMongoDBFieldID
+             * @memberof module:plugins.MongoDbSupport
+             * @param {string} field
+             * @param {*} value
+             * @returns {string}
+             */
+            id = this.change('getMongoDBFieldID', field, value);
+        }
+
+        return id;
     }
 });
 
@@ -5179,7 +5204,7 @@ QueryBuilder.define('sortable', function(options) {
                 .dropzone({
                     accept: QueryBuilder.selectors.rule_and_group_containers,
                     ondragenter: function(event) {
-                        moveSortableToTarget(placeholder, $(event.target));
+                        moveSortableToTarget(placeholder, $(event.target), self);
                     },
                     ondrop: function(event) {
                         moveSortableToTarget(src, $(event.target), self);
@@ -5192,7 +5217,7 @@ QueryBuilder.define('sortable', function(options) {
                     .dropzone({
                         accept: QueryBuilder.selectors.rule_and_group_containers,
                         ondragenter: function(event) {
-                            moveSortableToTarget(placeholder, $(event.target));
+                            moveSortableToTarget(placeholder, $(event.target), self);
                         },
                         ondrop: function(event) {
                             moveSortableToTarget(src, $(event.target), self);
@@ -5847,15 +5872,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                     Utils.error('SQLParse', 'Cannot find field name in {0}', JSON.stringify(data.left));
                 }
 
-                /**
-                 * Returns a filter identifier from the SQL field
-                 * @event changer:getSQLFieldID
-                 * @memberof module:plugins.SqlSupport
-                 * @param {string} field
-                 * @param {*} value
-                 * @returns {string}
-                 */
-                var id = self.change('getSQLFieldID', field, value);
+                var id = self.getSQLFieldID(field, value);
 
                 /**
                  * Modifies the rule generated from the SQL expression
@@ -5885,6 +5902,39 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
      */
     setRulesFromSQL: function(query, stmt) {
         this.setRules(this.getRulesFromSQL(query, stmt));
+    },
+
+    /**
+     * Returns a filter identifier from the SQL field.
+     * Automatically use the only one filter with a matching field, fires a changer otherwise.
+     * @param {string} field
+     * @param {*} value
+     * @fires module:plugins.SqlSupport:changer:getSQLFieldID
+     * @returns {string}
+     * @private
+     */
+    getSQLFieldID: function(field, value) {
+        var matchingFilters = this.filters.filter(function(filter) {
+            return filter.field === field;
+        });
+
+        var id;
+        if (matchingFilters.length === 1) {
+            id = matchingFilters[0].id;
+        }
+        else {
+            /**
+             * Returns a filter identifier from the SQL field
+             * @event changer:getSQLFieldID
+             * @memberof module:plugins.SqlSupport
+             * @param {string} field
+             * @param {*} value
+             * @returns {string}
+             */
+            id = this.change('getSQLFieldID', field, value);
+        }
+
+        return id;
     }
 });
 
@@ -6019,7 +6069,7 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.4.1
+ * jQuery QueryBuilder 2.4.3
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
