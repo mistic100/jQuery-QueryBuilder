@@ -128,6 +128,7 @@
 <!-- injector:js -->
 <script src="../src/main.js"></script>
 <script src="../src/defaults.js"></script>
+<script src="../src/plugins.js"></script>
 <script src="../src/core.js"></script>
 <script src="../src/public.js"></script>
 <script src="../src/data.js"></script>
@@ -208,6 +209,7 @@
        */
       {
         id: 'name',
+        field: 'username',
         label: {
           en: 'Name',
           fr: 'Nom'
@@ -563,7 +565,7 @@
   $('.set-mongo').on('click', function() {
     $('#builder').queryBuilder('setRulesFromMongo', {
       "$or": [{
-        "name": {
+        "username": {
           "$regex": "^(?!Mistic)"
         }
       }, {
@@ -582,7 +584,7 @@
 
   // set rules from SQL
   $('.set-sql').on('click', function() {
-    $('#builder').queryBuilder('setRulesFromSQL', 'name NOT LIKE "Mistic%" OR price BETWEEN 100 OR 200 OR NOT (category IN(1, 2) AND rate <= 2)');
+    $('#builder').queryBuilder('setRulesFromSQL', 'username NOT LIKE "Mistic%" OR price BETWEEN 100 OR 200 OR NOT (category IN(1, 2) AND rate <= 2)');
   });
 
   // reset builder

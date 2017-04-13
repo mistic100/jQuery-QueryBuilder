@@ -270,15 +270,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
 
                     var opVal = mdbrl.call(self, value);
 
-                    /**
-                     * Returns a filter identifier from the MongoDB field
-                     * @event changer:getMongoDBFieldID
-                     * @memberof module:plugins.MongoDbSupport
-                     * @param {string} field
-                     * @param {*} value
-                     * @returns {string}
-                     */
-                    var id = self.change('getMongoDBFieldID', field, value);
+                    var id = self.getMongoDBFieldID(field, value);
 
                     /**
                      * Modifies the rule generated from the MongoDB expression
@@ -320,6 +312,39 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
      */
     setRulesFromMongo: function(query) {
         this.setRules(this.getRulesFromMongo(query));
+    },
+
+    /**
+     * Returns a filter identifier from the MongoDB field.
+     * Automatically use the only one filter with a matching field, fires a changer otherwise.
+     * @param {string} field
+     * @param {*} value
+     * @fires module:plugins.MongoDbSupport:changer:getMongoDBFieldID
+     * @returns {string}
+     * @private
+     */
+    getMongoDBFieldID: function(field, value) {
+        var matchingFilters = this.filters.filter(function(filter) {
+            return filter.field === field;
+        });
+
+        var id;
+        if (matchingFilters.length === 1) {
+            id = matchingFilters[0].id;
+        }
+        else {
+            /**
+             * Returns a filter identifier from the MongoDB field
+             * @event changer:getMongoDBFieldID
+             * @memberof module:plugins.MongoDbSupport
+             * @param {string} field
+             * @param {*} value
+             * @returns {string}
+             */
+            id = this.change('getMongoDBFieldID', field, value);
+        }
+
+        return id;
     }
 });
 

@@ -102,7 +102,7 @@ QueryBuilder.define('sortable', function(options) {
                 .dropzone({
                     accept: QueryBuilder.selectors.rule_and_group_containers,
                     ondragenter: function(event) {
-                        moveSortableToTarget(placeholder, $(event.target));
+                        moveSortableToTarget(placeholder, $(event.target), self);
                     },
                     ondrop: function(event) {
                         moveSortableToTarget(src, $(event.target), self);
@@ -115,7 +115,7 @@ QueryBuilder.define('sortable', function(options) {
                     .dropzone({
                         accept: QueryBuilder.selectors.rule_and_group_containers,
                         ondragenter: function(event) {
-                            moveSortableToTarget(placeholder, $(event.target));
+                            moveSortableToTarget(placeholder, $(event.target), self);
                         },
                         ondrop: function(event) {
                             moveSortableToTarget(src, $(event.target), self);
