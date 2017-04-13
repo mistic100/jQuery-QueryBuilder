@@ -62,6 +62,48 @@ $(function(){
         );
     });
 
+    QUnit.test('Automatically use filter from field', function(assert) {
+        var rules = {
+            condition: 'AND',
+            rules: [
+                {
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }
+            ]
+        };
+
+        var mongo = {
+            $and: [{
+                username: 'Mistic'
+            }]
+        };
+
+        $b.queryBuilder({
+            filters: [
+                {
+                    id: 'name',
+                    field: 'username',
+                    type: 'string'
+                },
+                {
+                    id: 'last_days',
+                    field: 'display_date',
+                    type: 'integer'
+                }
+            ]
+        });
+
+        $b.queryBuilder('setRulesFromMongo', mongo);
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            rules,
+            'Should use "name" filter from "username" field'
+        );
+    });
+
 
     var all_operators_rules = {
         condition: 'AND',

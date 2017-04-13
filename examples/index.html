@@ -565,7 +565,7 @@
   $('.set-mongo').on('click', function() {
     $('#builder').queryBuilder('setRulesFromMongo', {
       "$or": [{
-        "name": {
+        "username": {
           "$regex": "^(?!Mistic)"
         }
       }, {
