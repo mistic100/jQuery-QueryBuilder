@@ -57,3 +57,16 @@ h4:hover .anchor-link,
 h5:hover .anchor-link {
   opacity: 1;
 }
+
+#releases h1 {
+  font-size: 28px;
+}
+
+#releases h1 small {
+  padding-left: 1em;
+}
+
+#releases h1 a.release-date {
+  float: right;
+  font-size: 18px;
+}
