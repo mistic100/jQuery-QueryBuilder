@@ -50,3 +50,65 @@ QueryBuilder.define = function(name, fct, def) {
 QueryBuilder.extend = function(methods) {
     $.extend(QueryBuilder.prototype, methods);
 };
+
+/**
+ * Initializes plugins for an instance
+ * @throws ConfigError
+ * @private
+ */
+QueryBuilder.prototype.initPlugins = function() {
+    if (!this.plugins) {
+        return;
+    }
+
+    if ($.isArray(this.plugins)) {
+        var tmp = {};
+        this.plugins.forEach(function(plugin) {
+            tmp[plugin] = null;
+        });
+        this.plugins = tmp;
+    }
+
+    Object.keys(this.plugins).forEach(function(plugin) {
+        if (plugin in QueryBuilder.plugins) {
+            this.plugins[plugin] = $.extend(true, {},
+                QueryBuilder.plugins[plugin].def,
+                this.plugins[plugin] || {}
+            );
+
+            QueryBuilder.plugins[plugin].fct.call(this, this.plugins[plugin]);
+        }
+        else {
+            Utils.error('Config', 'Unable to find plugin "{0}"', plugin);
+        }
+    }, this);
+};
+
+/**
+ * Returns the config of a plugin, if the plugin is not loaded, returns the default config.
+ * @param {string} name
+ * @param {string} [property]
+ * @throws ConfigError
+ * @returns {*}
+ */
+QueryBuilder.prototype.getPluginOptions = function(name, property) {
+    var plugin;
+    if (this.plugins && this.plugins[name]) {
+        plugin = this.plugins[name];
+    }
+    else if (QueryBuilder.plugins[name]) {
+        plugin = QueryBuilder.plugins[name].def;
+    }
+
+    if (plugin) {
+        if (property) {
+            return plugin[property];
+        }
+        else {
+            return plugin;
+        }
+    }
+    else {
+        Utils.error('Config', 'Unable to find plugin "{0}"', name);
+    }
+};

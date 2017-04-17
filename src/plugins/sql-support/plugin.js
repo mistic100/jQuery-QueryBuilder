@@ -2,7 +2,14 @@
  * @class SqlSupport
  * @memberof module:plugins
  * @description Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.
+ * @param {object} [options]
+ * @param {boolean} [options.boolean_as_integer=true] - `true` to convert boolean values to integer in the SQL output
  */
+QueryBuilder.define('sql-support', function(options) {
+
+}, {
+    boolean_as_integer: true
+});
 
 QueryBuilder.defaults({
     // operators for internal -> SQL conversion
@@ -242,6 +249,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
     getSQL: function(stmt, nl, data) {
         data = (data === undefined) ? this.getRules() : data;
         nl = !!nl ? '\n' : ' ';
+        var boolean_as_integer = this.getPluginOptions('sql-support', 'boolean_as_integer');
 
         if (stmt === true) stmt = 'question_mark';
         if (typeof stmt == 'string') {
@@ -289,7 +297,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                             }
 
                             if (rule.type == 'integer' || rule.type == 'double' || rule.type == 'boolean') {
-                                v = Utils.changeType(v, rule.type, true);
+                                v = Utils.changeType(v, rule.type, boolean_as_integer);
                             }
                             else if (!stmt) {
                                 v = Utils.escapeString(v);
