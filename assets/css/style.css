@@ -1,3 +1,6 @@
+/**
+ * Overwrites
+ */
 .bs-docs-masthead {
   padding-top: 50px;
   padding-bottom: 40px;
@@ -5,7 +8,7 @@
 }
 
 .bs-docs-header h1, .bs-docs-header p {
-  margin-right: 0px;
+  margin-right: 0;
 }
 
 .bs-docs-sidebar .nav > li > a {
@@ -27,14 +30,17 @@
 #content:after {
   content: "";
   position: absolute;
-  bottom: 0px;
-  right: 0px;
+  bottom: 0;
+  right: 0;
   height: 50px;
   width: 30%;
   min-width: 300px;
   background: linear-gradient(135deg, transparent 50px, white 50px);
 }
 
+/**
+ * Title anchors
+ */
 .anchor-link {
   opacity: 0;
   position: absolute;
@@ -58,6 +64,9 @@ h5:hover .anchor-link {
   opacity: 1;
 }
 
+/**
+ * Releases titles
+ */
 #releases h1 {
   font-size: 28px;
 }
@@ -69,4 +78,89 @@ h5:hover .anchor-link {
 #releases h1 a.release-date {
   float: right;
   font-size: 18px;
+}
+
+/**
+ * Loader
+ * http://codepen.io/fox_hover/pen/YZxGed
+ */
+.spinner {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}
+
+.spinner::before, .spinner::after {
+  content: "";
+  display: block;
+  position: absolute;
+  border: 0.05em solid currentcolor;
+  border-radius: 50%;
+}
+
+.spinner::before {
+  width: 0.936em;
+  height: 0.936em;
+  border-top-color: rgba(33, 33, 33, 0);
+  border-left-color: rgba(33, 33, 33, 0);
+  top: 0;
+  left: 0;
+  -webkit-animation: rotate-animation 1s linear 0s infinite;
+  animation: rotate-animation 1s linear 0s infinite;
+}
+
+.spinner::after {
+  width: 0.6552em;
+  height: 0.6552em;
+  border-top-color: rgba(33, 33, 33, 0);
+  border-left-color: rgba(33, 33, 33, 0);
+  top: 0.1404em;
+  left: 0.1404em;
+  -webkit-animation: anti-rotate-animation 0.85s linear 0s infinite;
+  animation: anti-rotate-animation 0.85s linear 0s infinite;
+}
+
+@-webkit-keyframes rotate-animation {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+    transform: rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateZ(360deg);
+    transform: rotateZ(360deg);
+  }
+}
+
+@keyframes rotate-animation {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+    transform: rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateZ(360deg);
+    transform: rotateZ(360deg);
+  }
+}
+
+@-webkit-keyframes anti-rotate-animation {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+    transform: rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateZ(-360deg);
+    transform: rotateZ(-360deg);
+  }
+}
+
+@keyframes anti-rotate-animation {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+    transform: rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateZ(-360deg);
+    transform: rotateZ(-360deg);
+  }
 }

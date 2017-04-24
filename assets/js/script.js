@@ -63,7 +63,7 @@ var jekyllBootstrapDoc = {
 
     header.css('background-image', 'url(' + pattern.png() + ')');
   }
-}
+};
 
 $(function() {
   jekyllBootstrapDoc.buildSideMenu();

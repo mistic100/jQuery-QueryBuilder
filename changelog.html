@@ -3,7 +3,11 @@ layout: default
 title: Changelog
 ---
 
-<div id="releases"></div>
+<div id="releases">
+  <div id="spinner" style="text-align:center; color: #888; font-size:100px;">
+    <span class="spinner"></span>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/marked/0.3.5/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
@@ -11,75 +15,6 @@ title: Changelog
 <script>
   var releasesAPI = 'https://api.github.com/repos/{{site.id}}/releases';
   var issuesBase = 'https://github.com/{{site.id}}/issues/';
-
-  (function() {
-    function fetchReleases() {
-      var cacheDate = localStorage.releasesCacheDate;
-
-      if (cacheDate && (new Date() - new Date(cacheDate)) < 1000 * 3600) {
-        return $.when(JSON.parse(localStorage.releasesCache));
-      }
-      else {
-        return $.getJSON(releasesAPI)
-          .then(function(data) {
-            localStorage.releasesCacheDate = new Date().toString();
-            localStorage.releasesCache = JSON.stringify(data);
-            return data;
-          });
-      }
-    }
-
-    function unescape(html) {
-      return html
-        .replace(/&quot;/g, '"')
-        .replace(/&#39;/g, "'");
-    }
-
-    function replaceIssueLinks(html) {
-      return html.replace(/(#([0-9]+))/g, '<a href="' + issuesBase + '$2">$1</a>');
-    }
-
-    function sanitizeHeaders(html) {
-      return html.replace(/(<h[2-5])/g, '$1 data-no-menu');
-    }
-
-    function appendRelease(release, container) {
-      var date = moment(release.published_at);
-      var desc = sanitizeHeaders(replaceIssueLinks(unescape(marked(release.body, { breaks: true }))));
-
-      container.append(
-        $('<section>')
-          .addClass('bs-docs-section')
-          .append(
-            $('<h1>')
-              .addClass('page-header')
-              .attr('id', release.id)
-              .text(release.name)
-              .append(
-                $('<small>')
-                  .text(date.format('LL')),
-                $('<a>')
-                  .addClass('release-date')
-                  .attr('href', release.html_url)
-                  .html('<i class="glyphicon glyphicon-tag"></i>')
-              ),
-            $('<article>').html(desc)
-          )
-      );
-    }
-
-    fetchReleases()
-      .then(function(releases) {
-        var container = $('#releases');
-
-        releases.forEach(function(release) {
-          appendRelease(release, container);
-        });
-
-        if (jekyllBootstrapDoc) {
-          jekyllBootstrapDoc.buildSideMenu();
-          jekyllBootstrapDoc.addHeadingAnchors();
-        }
-      });
-  }());
 </script>
+
+<script src="{{site.github.url}}/assets/js/changelog.js"></script>
