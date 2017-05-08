@@ -64,44 +64,6 @@ $.extend(Model.prototype, /** @lends Model.prototype */ {
     }
 });
 
-/**
- * Defines properties on an Node prototype with getter and setter.<br>
- *     Update events are emitted in the setter through root Model (if any).<br>
- *     The object must have a `__` object, non enumerable property to store values.
- * @param {function} obj
- * @param {string[]} fields
- */
-Model.defineModelProperties = function(obj, fields) {
-    fields.forEach(function(field) {
-        Object.defineProperty(obj.prototype, field, {
-            enumerable: true,
-            get: function() {
-                return this.__[field];
-            },
-            set: function(value) {
-                var previousValue = (this.__[field] !== null && typeof this.__[field] == 'object') ?
-                    $.extend({}, this.__[field]) :
-                    this.__[field];
-
-                this.__[field] = value;
-
-                if (this.model !== null) {
-                    /**
-                     * After a value of the model changed
-                     * @event model:update
-                     * @memberof Model
-                     * @param {Node} node
-                     * @param {string} field
-                     * @param {*} value
-                     * @param {*} previousValue
-                     */
-                    this.model.trigger('update', this, field, value, previousValue);
-                }
-            }
-        });
-    });
-};
-
 
 /**
  * Root abstract object
@@ -177,7 +139,7 @@ var Node = function(parent, $el) {
     this.parent = parent;
 };
 
-Model.defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
+Utils.defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
 
 Object.defineProperty(Node.prototype, 'parent', {
     enumerable: true,
@@ -340,7 +302,7 @@ var Group = function(parent, $el) {
 Group.prototype = Object.create(Node.prototype);
 Group.prototype.constructor = Group;
 
-Model.defineModelProperties(Group, ['condition']);
+Utils.defineModelProperties(Group, ['condition']);
 
 /**
  * Removes group's content
@@ -561,7 +523,7 @@ var Rule = function(parent, $el) {
 Rule.prototype = Object.create(Node.prototype);
 Rule.prototype.constructor = Rule;
 
-Model.defineModelProperties(Rule, ['filter', 'operator', 'value']);
+Utils.defineModelProperties(Rule, ['filter', 'operator', 'value']);
 
 /**
  * Checks if this Node is the root

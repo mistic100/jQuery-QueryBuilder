@@ -104,7 +104,7 @@ QueryBuilder.define('not-group', function(options) {
  * @memberof Group
  * @instance
  */
-Model.defineModelProperties(Group, ['not']);
+Utils.defineModelProperties(Group, ['not']);
 
 QueryBuilder.selectors.group_not = QueryBuilder.selectors.group_header + ' [data-not=group]';
 
