@@ -307,6 +307,44 @@ $(function() {
         );
     });
 
+    QUnit.test('Cast booleans', function(assert) {
+        $b.queryBuilder({
+            plugins: {
+              'sql-support': {
+                  boolean_as_integer: true
+              }
+            },
+            filters: [
+                {
+                    id: 'done',
+                    type: 'boolean'
+                }
+            ],
+            rules: [
+                {
+                    id: 'done',
+                    operator: 'equal',
+                    value: true
+                }
+            ]
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getSQL'),
+            'done = 1',
+            'Should convert boolean value to integer'
+        );
+
+        // don't do that in real life !
+        $b[0].queryBuilder.plugins['sql-support'].boolean_as_integer = false;
+
+        assert.rulesMatch(
+            $b.queryBuilder('getSQL'),
+            'done = true',
+            'Should not convert boolean value to integer'
+        );
+    });
+
 
     var basic_rules_sql_raw = {
         sql: 'price < 10.25 AND name IS NULL AND ( category IN(\'mo\', \'mu\') OR id != \'1234-azer-5678\' ) '

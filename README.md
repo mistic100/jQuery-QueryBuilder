@@ -35,6 +35,10 @@ $ bower install jQuery-QueryBuilder
 $ npm install jQuery-QueryBuilder
 ```
 
+#### Via CDN
+
+jQuery-QueryBuilder is available on [jsDelivr](https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/) and [unpkg](https://unpkg.com/jQuery-QueryBuilder/dist/))
+
 ### Dependencies
  * jQuery >= 1.10
  * Bootstrap >= 3.1 (CSS only)

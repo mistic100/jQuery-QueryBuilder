@@ -1,37 +1,4 @@
 /**
- * Initializes plugins for an instance
- * @throws ConfigError
- * @private
- */
-QueryBuilder.prototype.initPlugins = function() {
-    if (!this.plugins) {
-        return;
-    }
-
-    if ($.isArray(this.plugins)) {
-        var tmp = {};
-        this.plugins.forEach(function(plugin) {
-            tmp[plugin] = null;
-        });
-        this.plugins = tmp;
-    }
-
-    Object.keys(this.plugins).forEach(function(plugin) {
-        if (plugin in QueryBuilder.plugins) {
-            this.plugins[plugin] = $.extend(true, {},
-                QueryBuilder.plugins[plugin].def,
-                this.plugins[plugin] || {}
-            );
-
-            QueryBuilder.plugins[plugin].fct.call(this, this.plugins[plugin]);
-        }
-        else {
-            Utils.error('Config', 'Unable to find plugin "{0}"', plugin);
-        }
-    }, this);
-};
-
-/**
  * Checks the configuration of each filter
  * @param {QueryBuilder.Filter[]} filters
  * @returns {QueryBuilder.Filter[]}

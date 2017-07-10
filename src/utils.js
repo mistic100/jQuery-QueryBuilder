@@ -202,3 +202,41 @@ Utils.groupSort = function(items, key) {
 
     return newItems;
 };
+
+/**
+ * Defines properties on an Node prototype with getter and setter.<br>
+ *     Update events are emitted in the setter through root Model (if any).<br>
+ *     The object must have a `__` object, non enumerable property to store values.
+ * @param {function} obj
+ * @param {string[]} fields
+ */
+Utils.defineModelProperties = function(obj, fields) {
+    fields.forEach(function(field) {
+        Object.defineProperty(obj.prototype, field, {
+            enumerable: true,
+            get: function() {
+                return this.__[field];
+            },
+            set: function(value) {
+                var previousValue = (this.__[field] !== null && typeof this.__[field] == 'object') ?
+                    $.extend({}, this.__[field]) :
+                    this.__[field];
+
+                this.__[field] = value;
+
+                if (this.model !== null) {
+                    /**
+                     * After a value of the model changed
+                     * @event model:update
+                     * @memberof Model
+                     * @param {Node} node
+                     * @param {string} field
+                     * @param {*} value
+                     * @param {*} previousValue
+                     */
+                    this.model.trigger('update', this, field, value, previousValue);
+                }
+            }
+        });
+    });
+};

@@ -273,13 +273,16 @@
 
 
 /*!
- * jQuery QueryBuilder 2.4.3
+ * jQuery QueryBuilder 2.4.4
  * Copyright 2014-2017 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 (function(root, factory) {
     if (typeof define == 'function' && define.amd) {
-        define('query-builder', ['jquery', 'doT', 'jQuery.extendext'], factory);
+        define('query-builder', ['jquery', 'dot/doT', 'jquery-extendext'], factory);
+    }
+    else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(require('jquery'), require('dot/doT'), require('jquery-extendext'));
     }
     else {
         factory(root.jQuery, root.doT);
@@ -778,7 +781,6 @@ QueryBuilder.extend = function(methods) {
     $.extend(QueryBuilder.prototype, methods);
 };
 
-
 /**
  * Initializes plugins for an instance
  * @throws ConfigError
@@ -811,6 +813,36 @@ QueryBuilder.prototype.initPlugins = function() {
         }
     }, this);
 };
+
+/**
+ * Returns the config of a plugin, if the plugin is not loaded, returns the default config.
+ * @param {string} name
+ * @param {string} [property]
+ * @throws ConfigError
+ * @returns {*}
+ */
+QueryBuilder.prototype.getPluginOptions = function(name, property) {
+    var plugin;
+    if (this.plugins && this.plugins[name]) {
+        plugin = this.plugins[name];
+    }
+    else if (QueryBuilder.plugins[name]) {
+        plugin = QueryBuilder.plugins[name].def;
+    }
+
+    if (plugin) {
+        if (property) {
+            return plugin[property];
+        }
+        else {
+            return plugin;
+        }
+    }
+    else {
+        Utils.error('Config', 'Unable to find plugin "{0}"', name);
+    }
+};
+
 
 /**
  * Checks the configuration of each filter
@@ -3105,6 +3137,250 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
 
 
 /**
+ * @namespace
+ */
+var Utils = {};
+
+/**
+ * @member {object}
+ * @memberof QueryBuilder
+ * @see Utils
+ */
+QueryBuilder.utils = Utils;
+
+/**
+ * @callback Utils#OptionsIteratee
+ * @param {string} key
+ * @param {string} value
+ */
+
+/**
+ * Iterates over radio/checkbox/selection options, it accept three formats
+ *
+ * @example
+ * // array of values
+ * options = ['one', 'two', 'three']
+ * @example
+ * // simple key-value map
+ * options = {1: 'one', 2: 'two', 3: 'three'}
+ * @example
+ * // array of 1-element maps
+ * options = [{1: 'one'}, {2: 'two'}, {3: 'three'}]
+ *
+ * @param {object|array} options
+ * @param {Utils#OptionsIteratee} tpl
+ */
+Utils.iterateOptions = function(options, tpl) {
+    if (options) {
+        if ($.isArray(options)) {
+            options.forEach(function(entry) {
+                // array of one-element maps
+                if ($.isPlainObject(entry)) {
+                    $.each(entry, function(key, val) {
+                        tpl(key, val);
+                        return false; // break after first entry
+                    });
+                }
+                // array of values
+                else {
+                    tpl(entry, entry);
+                }
+            });
+        }
+        // unordered map
+        else {
+            $.each(options, function(key, val) {
+                tpl(key, val);
+            });
+        }
+    }
+};
+
+/**
+ * Replaces {0}, {1}, ... in a string
+ * @param {string} str
+ * @param {...*} args
+ * @returns {string}
+ */
+Utils.fmt = function(str, args) {
+    if (!Array.isArray(args)) {
+        args = Array.prototype.slice.call(arguments, 1);
+    }
+
+    return str.replace(/{([0-9]+)}/g, function(m, i) {
+        return args[parseInt(i)];
+    });
+};
+
+/**
+ * Throws an Error object with custom name or logs an error
+ * @param {boolean} [doThrow=true]
+ * @param {string} type
+ * @param {string} message
+ * @param {...*} args
+ */
+Utils.error = function() {
+    var i = 0;
+    var doThrow = typeof arguments[i] === 'boolean' ? arguments[i++] : true;
+    var type = arguments[i++];
+    var message = arguments[i++];
+    var args = Array.isArray(arguments[i]) ? arguments[i] : Array.prototype.slice.call(arguments, i);
+
+    if (doThrow) {
+        var err = new Error(Utils.fmt(message, args));
+        err.name = type + 'Error';
+        err.args = args;
+        throw err;
+    }
+    else {
+        console.error(type + 'Error: ' + Utils.fmt(message, args));
+    }
+};
+
+/**
+ * Changes the type of a value to int, float or bool
+ * @param {*} value
+ * @param {string} type - 'integer', 'double', 'boolean' or anything else (passthrough)
+ * @param {boolean} [boolAsInt=false] - return 0 or 1 for booleans
+ * @returns {*}
+ */
+Utils.changeType = function(value, type, boolAsInt) {
+    switch (type) {
+        // @formatter:off
+    case 'integer': return parseInt(value);
+    case 'double': return parseFloat(value);
+    case 'boolean':
+        var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
+        return boolAsInt ? (bool ? 1 : 0) : bool;
+    default: return value;
+    // @formatter:on
+    }
+};
+
+/**
+ * Escapes a string like PHP's mysql_real_escape_string does
+ * @param {string} value
+ * @returns {string}
+ */
+Utils.escapeString = function(value) {
+    if (typeof value != 'string') {
+        return value;
+    }
+
+    return value
+        .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
+            switch (s) {
+                // @formatter:off
+            case '\0': return '\\0';
+            case '\n': return '\\n';
+            case '\r': return '\\r';
+            case '\b': return '\\b';
+            default:   return '\\' + s;
+            // @formatter:off
+            }
+        })
+        // uglify compliant
+        .replace(/\t/g, '\\t')
+        .replace(/\x1a/g, '\\Z');
+};
+
+/**
+ * Escapes a string for use in regex
+ * @param {string} str
+ * @returns {string}
+ */
+Utils.escapeRegExp = function(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+};
+
+/**
+ * Escapes a string for use in HTML element id
+ * @param {string} str
+ * @returns {string}
+ */
+Utils.escapeElementId = function(str) {
+    // Regex based on that suggested by:
+    // https://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
+    // - escapes : . [ ] ,
+    // - avoids escaping already escaped values
+    return (str) ? str.replace(/(\\)?([:.\[\],])/g,
+            function( $0, $1, $2 ) { return $1 ? $0 : '\\' + $2; }) : str;
+};
+
+/**
+ * Sorts objects by grouping them by `key`, preserving initial order when possible
+ * @param {object[]} items
+ * @param {string} key
+ * @returns {object[]}
+ */
+Utils.groupSort = function(items, key) {
+    var optgroups = [];
+    var newItems = [];
+
+    items.forEach(function(item) {
+        var idx;
+
+        if (item[key]) {
+            idx = optgroups.lastIndexOf(item[key]);
+
+            if (idx == -1) {
+                idx = optgroups.length;
+            }
+            else {
+                idx++;
+            }
+        }
+        else {
+            idx = optgroups.length;
+        }
+
+        optgroups.splice(idx, 0, item[key]);
+        newItems.splice(idx, 0, item);
+    });
+
+    return newItems;
+};
+
+/**
+ * Defines properties on an Node prototype with getter and setter.<br>
+ *     Update events are emitted in the setter through root Model (if any).<br>
+ *     The object must have a `__` object, non enumerable property to store values.
+ * @param {function} obj
+ * @param {string[]} fields
+ */
+Utils.defineModelProperties = function(obj, fields) {
+    fields.forEach(function(field) {
+        Object.defineProperty(obj.prototype, field, {
+            enumerable: true,
+            get: function() {
+                return this.__[field];
+            },
+            set: function(value) {
+                var previousValue = (this.__[field] !== null && typeof this.__[field] == 'object') ?
+                    $.extend({}, this.__[field]) :
+                    this.__[field];
+
+                this.__[field] = value;
+
+                if (this.model !== null) {
+                    /**
+                     * After a value of the model changed
+                     * @event model:update
+                     * @memberof Model
+                     * @param {Node} node
+                     * @param {string} field
+                     * @param {*} value
+                     * @param {*} previousValue
+                     */
+                    this.model.trigger('update', this, field, value, previousValue);
+                }
+            }
+        });
+    });
+};
+
+
+/**
  * Main object storing data model and emitting model events
  * @constructor
  */
@@ -3169,44 +3445,6 @@ $.extend(Model.prototype, /** @lends Model.prototype */ {
         return this;
     }
 });
-
-/**
- * Defines properties on an Node prototype with getter and setter.<br>
- *     Update events are emitted in the setter through root Model (if any).<br>
- *     The object must have a `__` object, non enumerable property to store values.
- * @param {function} obj
- * @param {string[]} fields
- */
-Model.defineModelProperties = function(obj, fields) {
-    fields.forEach(function(field) {
-        Object.defineProperty(obj.prototype, field, {
-            enumerable: true,
-            get: function() {
-                return this.__[field];
-            },
-            set: function(value) {
-                var previousValue = (this.__[field] !== null && typeof this.__[field] == 'object') ?
-                    $.extend({}, this.__[field]) :
-                    this.__[field];
-
-                this.__[field] = value;
-
-                if (this.model !== null) {
-                    /**
-                     * After a value of the model changed
-                     * @event model:update
-                     * @memberof Model
-                     * @param {Node} node
-                     * @param {string} field
-                     * @param {*} value
-                     * @param {*} previousValue
-                     */
-                    this.model.trigger('update', this, field, value, previousValue);
-                }
-            }
-        });
-    });
-};
 
 
 /**
@@ -3283,7 +3521,7 @@ var Node = function(parent, $el) {
     this.parent = parent;
 };
 
-Model.defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
+Utils.defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
 
 Object.defineProperty(Node.prototype, 'parent', {
     enumerable: true,
@@ -3446,7 +3684,7 @@ var Group = function(parent, $el) {
 Group.prototype = Object.create(Node.prototype);
 Group.prototype.constructor = Group;
 
-Model.defineModelProperties(Group, ['condition']);
+Utils.defineModelProperties(Group, ['condition']);
 
 /**
  * Removes group's content
@@ -3667,7 +3905,7 @@ var Rule = function(parent, $el) {
 Rule.prototype = Object.create(Node.prototype);
 Rule.prototype.constructor = Rule;
 
-Model.defineModelProperties(Rule, ['filter', 'operator', 'value']);
+Utils.defineModelProperties(Rule, ['filter', 'operator', 'value']);
 
 /**
  * Checks if this Node is the root
@@ -3691,212 +3929,6 @@ QueryBuilder.Group = Group;
  * @see Rule
  */
 QueryBuilder.Rule = Rule;
-
-
-/**
- * @namespace
- */
-var Utils = {};
-
-/**
- * @member {object}
- * @memberof QueryBuilder
- * @see Utils
- */
-QueryBuilder.utils = Utils;
-
-/**
- * @callback Utils#OptionsIteratee
- * @param {string} key
- * @param {string} value
- */
-
-/**
- * Iterates over radio/checkbox/selection options, it accept three formats
- *
- * @example
- * // array of values
- * options = ['one', 'two', 'three']
- * @example
- * // simple key-value map
- * options = {1: 'one', 2: 'two', 3: 'three'}
- * @example
- * // array of 1-element maps
- * options = [{1: 'one'}, {2: 'two'}, {3: 'three'}]
- *
- * @param {object|array} options
- * @param {Utils#OptionsIteratee} tpl
- */
-Utils.iterateOptions = function(options, tpl) {
-    if (options) {
-        if ($.isArray(options)) {
-            options.forEach(function(entry) {
-                // array of one-element maps
-                if ($.isPlainObject(entry)) {
-                    $.each(entry, function(key, val) {
-                        tpl(key, val);
-                        return false; // break after first entry
-                    });
-                }
-                // array of values
-                else {
-                    tpl(entry, entry);
-                }
-            });
-        }
-        // unordered map
-        else {
-            $.each(options, function(key, val) {
-                tpl(key, val);
-            });
-        }
-    }
-};
-
-/**
- * Replaces {0}, {1}, ... in a string
- * @param {string} str
- * @param {...*} args
- * @returns {string}
- */
-Utils.fmt = function(str, args) {
-    if (!Array.isArray(args)) {
-        args = Array.prototype.slice.call(arguments, 1);
-    }
-
-    return str.replace(/{([0-9]+)}/g, function(m, i) {
-        return args[parseInt(i)];
-    });
-};
-
-/**
- * Throws an Error object with custom name or logs an error
- * @param {boolean} [doThrow=true]
- * @param {string} type
- * @param {string} message
- * @param {...*} args
- */
-Utils.error = function() {
-    var i = 0;
-    var doThrow = typeof arguments[i] === 'boolean' ? arguments[i++] : true;
-    var type = arguments[i++];
-    var message = arguments[i++];
-    var args = Array.isArray(arguments[i]) ? arguments[i] : Array.prototype.slice.call(arguments, i);
-
-    if (doThrow) {
-        var err = new Error(Utils.fmt(message, args));
-        err.name = type + 'Error';
-        err.args = args;
-        throw err;
-    }
-    else {
-        console.error(type + 'Error: ' + Utils.fmt(message, args));
-    }
-};
-
-/**
- * Changes the type of a value to int, float or bool
- * @param {*} value
- * @param {string} type - 'integer', 'double', 'boolean' or anything else (passthrough)
- * @param {boolean} [boolAsInt=false] - return 0 or 1 for booleans
- * @returns {*}
- */
-Utils.changeType = function(value, type, boolAsInt) {
-    switch (type) {
-        // @formatter:off
-    case 'integer': return parseInt(value);
-    case 'double': return parseFloat(value);
-    case 'boolean':
-        var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
-        return boolAsInt ? (bool ? 1 : 0) : bool;
-    default: return value;
-    // @formatter:on
-    }
-};
-
-/**
- * Escapes a string like PHP's mysql_real_escape_string does
- * @param {string} value
- * @returns {string}
- */
-Utils.escapeString = function(value) {
-    if (typeof value != 'string') {
-        return value;
-    }
-
-    return value
-        .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
-            switch (s) {
-                // @formatter:off
-            case '\0': return '\\0';
-            case '\n': return '\\n';
-            case '\r': return '\\r';
-            case '\b': return '\\b';
-            default:   return '\\' + s;
-            // @formatter:off
-            }
-        })
-        // uglify compliant
-        .replace(/\t/g, '\\t')
-        .replace(/\x1a/g, '\\Z');
-};
-
-/**
- * Escapes a string for use in regex
- * @param {string} str
- * @returns {string}
- */
-Utils.escapeRegExp = function(str) {
-    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
-};
-
-/**
- * Escapes a string for use in HTML element id
- * @param {string} str
- * @returns {string}
- */
-Utils.escapeElementId = function(str) {
-    // Regex based on that suggested by:
-    // https://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
-    // - escapes : . [ ] ,
-    // - avoids escaping already escaped values
-    return (str) ? str.replace(/(\\)?([:.\[\],])/g,
-            function( $0, $1, $2 ) { return $1 ? $0 : '\\' + $2; }) : str;
-};
-
-/**
- * Sorts objects by grouping them by `key`, preserving initial order when possible
- * @param {object[]} items
- * @param {string} key
- * @returns {object[]}
- */
-Utils.groupSort = function(items, key) {
-    var optgroups = [];
-    var newItems = [];
-
-    items.forEach(function(item) {
-        var idx;
-
-        if (item[key]) {
-            idx = optgroups.lastIndexOf(item[key]);
-
-            if (idx == -1) {
-                idx = optgroups.length;
-            }
-            else {
-                idx++;
-            }
-        }
-        else {
-            idx = optgroups.length;
-        }
-
-        optgroups.splice(idx, 0, item[key]);
-        newItems.splice(idx, 0, item);
-    });
-
-    return newItems;
-};
 
 
 /**
@@ -5072,7 +5104,7 @@ QueryBuilder.define('not-group', function(options) {
  * @memberof Group
  * @instance
  */
-Model.defineModelProperties(Group, ['not']);
+Utils.defineModelProperties(Group, ['not']);
 
 QueryBuilder.selectors.group_not = QueryBuilder.selectors.group_header + ' [data-not=group]';
 
@@ -5329,7 +5361,14 @@ function moveSortableToTarget(node, target, builder) {
  * @class SqlSupport
  * @memberof module:plugins
  * @description Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.
+ * @param {object} [options]
+ * @param {boolean} [options.boolean_as_integer=true] - `true` to convert boolean values to integer in the SQL output
  */
+QueryBuilder.define('sql-support', function(options) {
+
+}, {
+    boolean_as_integer: true
+});
 
 QueryBuilder.defaults({
     // operators for internal -> SQL conversion
@@ -5569,6 +5608,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
     getSQL: function(stmt, nl, data) {
         data = (data === undefined) ? this.getRules() : data;
         nl = !!nl ? '\n' : ' ';
+        var boolean_as_integer = this.getPluginOptions('sql-support', 'boolean_as_integer');
 
         if (stmt === true) stmt = 'question_mark';
         if (typeof stmt == 'string') {
@@ -5616,7 +5656,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                             }
 
                             if (rule.type == 'integer' || rule.type == 'double' || rule.type == 'boolean') {
-                                v = Utils.changeType(v, rule.type, true);
+                                v = Utils.changeType(v, rule.type, boolean_as_integer);
                             }
                             else if (!stmt) {
                                 v = Utils.escapeString(v);
@@ -6069,7 +6109,7 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.4.3
+ * jQuery QueryBuilder 2.4.4
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -6136,4 +6176,6 @@ QueryBuilder.regional['en'] = {
 };
 
 QueryBuilder.defaults({ lang_code: 'en' });
+return QueryBuilder;
+
 }));

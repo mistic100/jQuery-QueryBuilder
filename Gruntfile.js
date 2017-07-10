@@ -22,8 +22,8 @@ module.exports = function(grunt) {
             'src/public.js',
             'src/data.js',
             'src/template.js',
-            'src/model.js',
             'src/utils.js',
+            'src/model.js',
             'src/jquery.js'
         ],
         js_files_for_standalone: [

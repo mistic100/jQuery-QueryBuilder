@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.3
+ * jQuery QueryBuilder 2.4.4
  * Locale: Italian (it)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
