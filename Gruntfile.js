@@ -177,7 +177,7 @@ module.exports = function(grunt) {
         wrap: {
             js: {
                 src: ['dist/js/query-builder.js'],
-                dest: '',
+                dest: './',
                 options: {
                     separator: '',
                     wrapper: function() {

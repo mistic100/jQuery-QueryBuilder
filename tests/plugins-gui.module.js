@@ -127,6 +127,41 @@ $(function(){
     });
 
     /**
+     * Test Collapse Groups
+     */
+    QUnit.test('collapse-groups', function(assert) {
+        $b.queryBuilder({
+            plugins: ['collapse-groups'],
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        var $collapseButton = $('#builder_group_0 .rules-group-header .btn[data-collapse="group"]');
+
+        assert.ok(
+            $collapseButton.length > 0,
+            'Should have added button with data-collapse=group in the rules header with '
+        );
+
+        assert.ok(
+            $collapseButton.find('i').hasClass('glyphicon-chevron-up'),
+            'Should have chevron up icon inside the collapse button'
+        );
+
+        $collapseButton.trigger('click', [$collapseButton, $b.queryBuilder.options]);
+
+        assert.ok(
+            $collapseButton.find('i').hasClass('glyphicon-chevron-down'),
+            'Should have chevron down icon inside the collapse button after collapsing'
+        );
+
+        assert.ok(
+            $collapseButton.closest('#builder_group_0 .rules_list').not(':visible'),
+            'Should hide the rules list'
+        );
+    });
+
+    /**
      * Test filter-description
      */
     QUnit.test('filter-description', function(assert) {
