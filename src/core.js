@@ -1,4 +1,27 @@
 /**
+ * Final initialisation of the builder
+ * @param {object} [rules]
+ * @fires QueryBuilder.afterInit
+ * @private
+ */
+QueryBuilder.prototype.init = function(rules) {
+    /**
+     * When the initilization is done, just before creating the root group
+     * @event afterInit
+     * @memberof QueryBuilder
+     */
+    this.trigger('afterInit');
+
+    if (rules) {
+        this.setRules(rules);
+        delete this.settings.rules;
+    }
+    else {
+        this.setRoot(true);
+    }
+};
+
+/**
  * Checks the configuration of each filter
  * @param {QueryBuilder.Filter[]} filters
  * @returns {QueryBuilder.Filter[]}
