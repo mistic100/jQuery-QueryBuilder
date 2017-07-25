@@ -62,7 +62,7 @@ $ticks-position: 5px, 10px !default;
 
     .group-conditions {
       .btn.readonly:not(.active),
-      input[name$=_cond] {
+      input[name$='_cond'] {
         border: 0;
         clip: rect(0 0 0 0);
         height: 1px;
@@ -110,7 +110,9 @@ $ticks-position: 5px, 10px !default;
       }
     }
 
-    select, input[type=text], input[type=number] {
+    select,
+    input[type='text'],
+    input[type='number'] {
       padding: 1px;
     }
   }

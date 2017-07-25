@@ -1,0 +1,9 @@
+rules:
+    property-sort-order: [0]
+    force-pseudo-nesting: [0]
+    force-element-nesting: [0]
+    force-attribute-nesting: [0]
+    no-important: [0]
+    no-qualifying-elements: [0]
+    shorthand-values: [1, {allowed-shorthands: [1, 2, 4]}]
+    hex-notation: [1, {style: uppercase}]
