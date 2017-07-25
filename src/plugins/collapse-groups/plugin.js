@@ -32,7 +32,7 @@ QueryBuilder.define('collapse-groups', function(options) {
 
 QueryBuilder.extend({
     /**
-     * Collapse a group
+     * Collapse a group into it's header
      * @param {jQuery Element} [$el]
      * @param {object} [options] {@link module:plugins.Collapse}
      */
