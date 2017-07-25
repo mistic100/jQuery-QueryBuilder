@@ -16,18 +16,43 @@ QueryBuilder.define('collapse-groups', function(options) {
             var $group = $(this).closest(Selectors.group_container);
             self.collapse($(this), options);
         });
+
+        self.$el.on('change.queryBuilder', '.group-name', function() {
+            self.setGroupName($(this));
+        });
+    });
+
+    // Collapse any groups that were saved as collapsed
+    this.on('afterSetRules', function() {
+        $.each($(Selectors.group_container), function(i, el) {
+            var group = self.getModel($(el));
+            if (group.collapsed) {
+                self.collapse($(el).find('[data-collapse="group"]'), options);
+            }
+            if (group.name) {
+                $(el).find('.group-name').val(group.name);
+            }
+        });
     });
 
     // Modify templates
     this.on('getGroupTemplate.filter', function(h, level) {
         var $h = $(h.value);
-        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-collapse="group"><i class="' + options.iconUp + '"></i> ' + self.translate('collapse') + '</button>');
+        $h.find(Selectors.group_header).append('<button type="button" class="btn btn-xs btn-default" data-collapse="group"><i class="' + options.iconUp + '"></i> ' + self.translate('collapse') + '</button>');
         h.value = $h.prop('outerHTML');
     });
+    if (options.namedGroups) {
+        this.on('getGroupTemplate.filter', function(h, level) {
+            var $h = $(h.value);
+            $h.find(Selectors.group_header).append('<input type="text" maxlength="32" class="group-name">');
+            h.value = $h.prop('outerHTML');
+        });
+    }
 
 }, {
     iconUp: 'glyphicon glyphicon-chevron-up',
-    iconDown: 'glyphicon glyphicon-chevron-down'
+    iconDown: 'glyphicon glyphicon-chevron-down',
+    namedGroups: true
 });
 
 QueryBuilder.extend({
@@ -40,8 +65,17 @@ QueryBuilder.extend({
         var self = this;
         var selectors = QueryBuilder.selectors;
         var $iconEl = $el.find('i');
+        var group = self.getModel($el.closest(selectors.group_container));
+        group.collapsed = !(!!group.collapsed);
 
         $el.closest(selectors.group_container).find(selectors.rules_list).slideToggle('fast');
         $iconEl.toggleClass(options.iconUp).toggleClass(options.iconDown);
+    },
+
+    setGroupName: function($el) {
+        var name = $el.val();
+        var selectors = QueryBuilder.selectors;
+        var group = this.getModel($el.closest(selectors.group_container));
+        group.name = name;
     }
 });

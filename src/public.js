@@ -237,6 +237,14 @@ QueryBuilder.prototype.getRules = function(options) {
             groupData.data = $.extendext(true, 'replace', {}, group.data);
         }
 
+        if (typeof group.collapsed !== 'undefined') {
+            groupData.collapsed = group.collapsed;
+        }
+
+        if (typeof group.name !== 'undefined') {
+            groupData.name = group.name;
+        }
+
         if (options.get_flags) {
             var flags = self.getGroupFlags(group.flags, options.get_flags === 'all');
             if (!$.isEmptyObject(flags)) {
@@ -371,6 +379,8 @@ QueryBuilder.prototype.setRules = function(data, options) {
             data.condition = self.settings.default_condition;
         }
 
+        group.name = data.name;
+        group.collapsed = data.collapsed;
         group.condition = data.condition;
 
         data.rules.forEach(function(item) {

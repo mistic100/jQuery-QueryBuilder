@@ -137,6 +137,7 @@ $(function(){
         });
 
         var $collapseButton = $('#builder_group_0 .rules-group-header .btn[data-collapse="group"]');
+        var $groupNameInput = $('#builder_group_0 .rules-group-header .group-name');
 
         assert.ok(
             $collapseButton.length > 0,
@@ -146,6 +147,11 @@ $(function(){
         assert.ok(
             $collapseButton.find('i').hasClass('glyphicon-chevron-up'),
             'Should have chevron up icon inside the collapse button'
+        );
+
+        assert.ok(
+            $('#builder_group_0 .rules-group-header .group-name').length > 0,
+            'Should have a group name field'
         );
 
         $collapseButton.trigger('click', [$collapseButton, $b.queryBuilder.options]);
@@ -158,6 +164,60 @@ $(function(){
         assert.ok(
             $collapseButton.closest('#builder_group_0 .rules_list').not(':visible'),
             'Should hide the rules list'
+        );
+
+        $b.queryBuilder('destroy');
+        $b.queryBuilder({
+            plugins: {
+                'collapse-groups': {
+                    namedGroups: false
+                }
+            },
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        assert.ok(
+            $('#builder_group_0 .rules-group-header .group-name').length === 0,
+            'Should not have a group name field when named groups option is false'
+        );
+
+        $b.queryBuilder('destroy');
+        $b.queryBuilder({
+            plugins: ['collapse-groups'],
+            filters: basic_filters,
+            rules: {
+              condition: 'AND',
+              rules: [
+                {
+                  id: 'age',
+                  field: 'age',
+                  type: 'integer',
+                  input: 'text',
+                  operator: 'equal',
+                  value: '24'
+                }
+              ],
+              collapsed: true,
+              name: 'foo',
+              not: false,
+              valid: true
+            }
+        });
+
+        assert.ok(
+            $collapseButton.closest('#builder_group_0 .rules_list').not(':visible'),
+            'Should hide rules list when loading a group with collapse === true'
+        );
+
+        assert.ok(
+            $collapseButton.find('i').hasClass('glyphicon-chevron-down'),
+            'Should have chevron down icon inside the collapse button after collapsing'
+        );
+
+        assert.ok(
+            $groupNameInput.length > 0,
+            'Should have a group name field'
         );
     });
 

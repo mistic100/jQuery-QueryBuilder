@@ -210,4 +210,37 @@ $(function(){
             'Should have added filter "a" after "c"'
         );
     });
+
+
+    /**
+     * Test collapse groups & group names
+     */
+    QUnit.test('collapse-groups', function(assert) {
+        $b.queryBuilder({
+            plugins: ['collapse-groups'],
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        var $collapseButton = $('#builder_group_0 .rules-group-header .btn[data-collapse="group"]');
+        var $groupNameInput = $('#builder_group_0 .rules-group-header .group-name');
+
+        $groupNameInput.val('foo').trigger('change', [$groupNameInput]);
+        $collapseButton.trigger('click', [$collapseButton, $b.queryBuilder.options]);
+
+        var rules = $b.queryBuilder('getRules');
+
+        assert.equal(
+            rules.name,
+            'foo',
+            'Should have set the group name field to foo'
+        );
+
+        assert.equal(
+            rules.collapsed,
+            true,
+            'Should have set the group name field to foo'
+        );
+
+    });
 });
