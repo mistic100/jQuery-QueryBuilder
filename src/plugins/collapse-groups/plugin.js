@@ -49,11 +49,25 @@ QueryBuilder.define('collapse-groups', function(options) {
         });
     }
 
+    // Export "collapse" and "name" to JSON
+    this.on('groupToJson.filter', function(e, group) {
+        e.value.collapsed = group.collapsed;
+        e.value.name = group.name;
+    });
+
+    // Import "collapse" and "name" from JSON
+    this.on('jsonToGroup.filter', function(e, json) {
+        e.value.collapsed = json.collapsed;
+        e.value.name = json.name;
+    });
+
 }, {
     iconUp: 'glyphicon glyphicon-chevron-up',
     iconDown: 'glyphicon glyphicon-chevron-down',
     namedGroups: true
 });
+
+Utils.defineModelProperties(Group, ['name', 'collapsed']);
 
 QueryBuilder.extend({
     /**
