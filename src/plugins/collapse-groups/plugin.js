@@ -72,6 +72,10 @@ QueryBuilder.extend({
         $iconEl.toggleClass(options.iconUp).toggleClass(options.iconDown);
     },
 
+    /**
+     * Save the entered group name on the group object
+     * @param {jQuery Element} [$el]
+     */
     setGroupName: function($el) {
         var name = $el.val();
         var selectors = QueryBuilder.selectors;
