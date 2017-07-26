@@ -67,6 +67,13 @@ QueryBuilder.define('collapse-groups', function(options) {
     namedGroups: true
 });
 
+/**
+ * From {@link module:plugins.Collapse}
+ * @name name, collapsed
+ * @member {string}, {boolean}
+ * @memberof Group
+ * @instance
+ */
 Utils.defineModelProperties(Group, ['name', 'collapsed']);
 
 QueryBuilder.extend({
