@@ -38,7 +38,9 @@ QueryBuilder.define('collapse-groups', function(options) {
     // Modify templates
     this.on('getGroupTemplate.filter', function(h, level) {
         var $h = $(h.value);
-        $h.find(Selectors.group_header).append('<button type="button" class="btn btn-xs btn-default" data-collapse="group"><i class="' + options.iconUp + '"></i> ' + self.translate('collapse') + '</button>');
+        $h.find(Selectors.group_header)
+          .append('<button type="button" class="btn btn-xs btn-default" data-collapse="group"><i class="' +
+                   options.iconUp + '"></i> ' + self.translate('collapse') + '</button>');
         h.value = $h.prop('outerHTML');
     });
     if (options.namedGroups) {
