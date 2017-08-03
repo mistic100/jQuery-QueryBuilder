@@ -15,6 +15,7 @@ QueryBuilder.define('collapse-groups', function(options) {
         self.$el.on('click.queryBuilder', '[data-collapse=group]', function() {
             var $group = $(this).closest(Selectors.group_container);
             self.collapse($(this), options);
+            self.toggleCollapseValue($(this));
         });
 
         self.$el.on('change.queryBuilder', '.group-name', function() {
@@ -88,11 +89,14 @@ QueryBuilder.extend({
         var self = this;
         var selectors = QueryBuilder.selectors;
         var $iconEl = $el.find('i');
-        var group = self.getModel($el.closest(selectors.group_container));
-        group.collapsed = !(!!group.collapsed);
 
         $el.closest(selectors.group_container).find(selectors.rules_list).slideToggle('fast');
         $iconEl.toggleClass(options.iconUp).toggleClass(options.iconDown);
+    },
+
+    toggleCollapseValue: function($el) {
+        var group = this.getModel($el.closest(QueryBuilder.selectors.group_container));
+        group.collapsed = !(!!group.collapsed);
     },
 
     /**
