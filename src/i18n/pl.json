@@ -8,8 +8,8 @@
   "delete_group": "Usuń",
 
   "conditions": {
-    "AND": "AND",
-    "OR": "OR"
+    "AND": "ORAZ",
+    "OR": "LUB"
   },
 
   "operators": {

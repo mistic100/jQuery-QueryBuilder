@@ -282,7 +282,7 @@ QueryBuilder.prototype.bindEvents = function() {
                         break;
 
                     case 'value':
-                        self.updateRuleValue(node);
+                        self.updateRuleValue(node, oldValue);
                         break;
                 }
             }
@@ -297,7 +297,7 @@ QueryBuilder.prototype.bindEvents = function() {
                         break;
 
                     case 'condition':
-                        self.updateGroupCondition(node);
+                        self.updateGroupCondition(node, oldValue);
                         break;
                 }
             }
@@ -446,10 +446,11 @@ QueryBuilder.prototype.deleteGroup = function(group) {
 /**
  * Performs actions when a group's condition changes
  * @param {Group} group
+ * @param {object} previousCondition
  * @fires QueryBuilder.afterUpdateGroupCondition
  * @private
  */
-QueryBuilder.prototype.updateGroupCondition = function(group) {
+QueryBuilder.prototype.updateGroupCondition = function(group, previousCondition) {
     group.$el.find('>' + QueryBuilder.selectors.group_condition).each(function() {
         var $this = $(this);
         $this.prop('checked', $this.val() === group.condition);
@@ -461,8 +462,9 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
      * @event afterUpdateGroupCondition
      * @memberof QueryBuilder
      * @param {Group} group
+     * @param {object} previousCondition
      */
-    this.trigger('afterUpdateGroupCondition', group);
+    this.trigger('afterUpdateGroupCondition', group, previousCondition);
 
     this.trigger('rulesChanged');
 };
@@ -732,8 +734,9 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
      * @event afterUpdateRuleFilter
      * @memberof QueryBuilder
      * @param {Rule} rule
+     * @param {object} previousFilter
      */
-    this.trigger('afterUpdateRuleFilter', rule);
+    this.trigger('afterUpdateRuleFilter', rule, previousFilter);
 
     this.trigger('rulesChanged');
 };
@@ -747,6 +750,7 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
  */
 QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     var $valueContainer = rule.$el.find(QueryBuilder.selectors.value_container);
+    var ruleValue = rule.value;
 
     if (!rule.operator || rule.operator.nb_inputs === 0) {
         $valueContainer.hide();
@@ -773,22 +777,24 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
      * @event afterUpdateRuleOperator
      * @memberof QueryBuilder
      * @param {Rule} rule
+     * @param {object} previousOperator
      */
-    this.trigger('afterUpdateRuleOperator', rule);
+    this.trigger('afterUpdateRuleOperator', rule, previousOperator);
 
     this.trigger('rulesChanged');
 
     // FIXME is it necessary ?
-    this.updateRuleValue(rule);
+    this.updateRuleValue(rule, ruleValue);
 };
 
 /**
  * Performs actions when rule's value changes
  * @param {Rule} rule
+ * @param {object} previousValue
  * @fires QueryBuilder.afterUpdateRuleValue
  * @private
  */
-QueryBuilder.prototype.updateRuleValue = function(rule) {
+QueryBuilder.prototype.updateRuleValue = function(rule, previousValue) {
     if (!rule._updating_value) {
         this.setRuleInputValue(rule, rule.value);
     }
@@ -798,8 +804,9 @@ QueryBuilder.prototype.updateRuleValue = function(rule) {
      * @event afterUpdateRuleValue
      * @memberof QueryBuilder
      * @param {Rule} rule
+     * @param {*} previousValue
      */
-    this.trigger('afterUpdateRuleValue', rule);
+    this.trigger('afterUpdateRuleValue', rule, previousValue);
 
     this.trigger('rulesChanged');
 };
