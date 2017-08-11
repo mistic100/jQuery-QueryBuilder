@@ -682,7 +682,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     $valueContainer.show();
 
     $inputs.on('change ' + (filter.input_event || ''), function() {
-        if (!this._updating_input) {
+        if (!rule._updating_input) {
             rule._updating_value = true;
             rule.value = self.getRuleInputValue(rule);
             rule._updating_value = false;
@@ -770,6 +770,9 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
 
     if (rule.operator) {
         rule.$el.find(QueryBuilder.selectors.rule_operator).val(rule.operator.type);
+
+        // refresh value if the format changed for this operator
+        rule.__.value = this.getRuleInputValue(rule);
     }
 
     /**
@@ -782,9 +785,6 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     this.trigger('afterUpdateRuleOperator', rule, previousOperator);
 
     this.trigger('rulesChanged');
-
-    // FIXME is it necessary ?
-    this.updateRuleValue(rule, ruleValue);
 };
 
 /**

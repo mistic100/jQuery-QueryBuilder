@@ -132,7 +132,6 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                 else {
                     var mdb = self.settings.mongoOperators[rule.operator];
                     var ope = self.getOperatorByType(rule.operator);
-                    var values = [];
 
                     if (mdb === undefined) {
                         Utils.error('UndefinedMongoOperator', 'Unknown MongoDB operation for operator "{0}"', rule.operator);
@@ -142,10 +141,6 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                         if (!(rule.value instanceof Array)) {
                             rule.value = [rule.value];
                         }
-
-                        rule.value.forEach(function(v) {
-                            values.push(Utils.changeType(v, rule.type, false));
-                        });
                     }
 
                     /**
@@ -159,7 +154,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                     var field = self.change('getMongoDBField', rule.field, rule);
 
                     var ruleExpression = {};
-                    ruleExpression[field] = mdb.call(self, values);
+                    ruleExpression[field] = mdb.call(self, rule.value);
 
                     /**
                      * Modifies the MongoDB expression generated for a rul
@@ -171,7 +166,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                      * @param {function} valueWrapper - function that takes the value and adds the operator
                      * @returns {object}
                      */
-                    parts.push(self.change('ruleToMongo', ruleExpression, rule, values, mdb));
+                    parts.push(self.change('ruleToMongo', ruleExpression, rule, rule.value, mdb));
                 }
             });
 

@@ -96,11 +96,6 @@ $(function () {
         );
 
         assert.ok(
-            Utils.changeType('10.5', 'integer') === 10,
-            '"10.5" should be parsed as integer'
-        );
-
-        assert.ok(
             Utils.changeType('10.5', 'double') === 10.5,
             '"10.5" should be parsed as double'
         );
@@ -108,11 +103,6 @@ $(function () {
         assert.ok(
             Utils.changeType('true', 'boolean') === true,
             '"true" should be parsed as boolean'
-        );
-
-        assert.ok(
-            Utils.changeType('false', 'boolean', true) === 0,
-            '"false" should be parsed as integer'
         );
     });
 
