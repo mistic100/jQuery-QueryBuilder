@@ -596,7 +596,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
      */
     getSQLFieldID: function(field, value) {
         var matchingFilters = this.filters.filter(function(filter) {
-            return filter.field === field;
+            return filter.field.toLowerCase() === field.toLowerCase();
         });
 
         var id;
