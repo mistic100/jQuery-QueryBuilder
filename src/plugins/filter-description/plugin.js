@@ -96,6 +96,9 @@ QueryBuilder.define('filter-description', function(options) {
                         bootbox.alert($b.data('description'));
                     });
                 }
+                else {
+                    $b.show();
+                }
 
                 $b.data('description', description);
             }
