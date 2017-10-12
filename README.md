@@ -2,7 +2,7 @@
 
 [![Bower version](https://img.shields.io/bower/v/jQuery-QueryBuilder.svg?style=flat-square)](http://querybuilder.js.org)
 [![npm version](https://img.shields.io/npm/v/jQuery-QueryBuilder.svg?style=flat-square)](https://www.npmjs.com/package/jQuery-QueryBuilder)
-[![CDN](https://img.shields.io/badge/cdn-jsdelivr-%23EB4C36.svg?style=flat-square)](https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/)
+[![jsDelivr CDN](https://data.jsdelivr.com/v1/package/npm/jQuery-QueryBuilder/badge)](https://www.jsdelivr.com/package/npm/jQuery-QueryBuilder)
 [![Build Status](https://img.shields.io/travis/mistic100/jQuery-QueryBuilder.svg?style=flat-square)](https://travis-ci.org/mistic100/jQuery-QueryBuilder)
 [![Coverage Status](https://img.shields.io/coveralls/mistic100/jQuery-QueryBuilder/master.svg?style=flat-square)](https://coveralls.io/r/mistic100/jQuery-QueryBuilder)
 
@@ -37,8 +37,7 @@ $ npm install jQuery-QueryBuilder
 
 #### Via CDN
 
-jQuery-QueryBuilder is available on [jsDelivr](https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/) and [unpkg](https://unpkg.com/jQuery-QueryBuilder/dist/))
-
+jQuery-QueryBuilder is available on [jsDelivr](https://www.jsdelivr.com/package/npm/jQuery-QueryBuilder).
 ### Dependencies
  * jQuery >= 1.10
  * Bootstrap >= 3.1 (CSS only)
