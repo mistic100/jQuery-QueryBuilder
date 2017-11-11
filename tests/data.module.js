@@ -171,6 +171,11 @@ $(function() {
         );
 
         assert.validationError($b,
+            { id: 'integer', operator: 'between', value: [5, 1] },
+            /number_between_invalid/
+        );
+
+        assert.validationError($b,
             { id: 'date' },
             /datetime_empty/
         );
@@ -188,6 +193,11 @@ $(function() {
         assert.validationError($b,
             { id: 'time', value: '18:00' },
             /datetime_exceed_max/
+        );
+
+        assert.validationError($b,
+            { id: 'date', operator: 'between', value: ['2015/01/01', '2014/01/01'] },
+            /datetime_between_invalid/
         );
 
         assert.validationError($b,
