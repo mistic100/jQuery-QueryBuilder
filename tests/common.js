@@ -301,7 +301,8 @@ var basic_filters = [{
     label: 'Age',
     type: 'integer',
     input: 'text',
-    value_separator: '|'
+    value_separator: '|',
+    default_operator: 'in'
 }];
 
 var basic_rules = {

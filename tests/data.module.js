@@ -412,6 +412,23 @@ $(function() {
     });
 
     /**
+     * Test default operator
+     */
+    QUnit.test('default operator', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters
+        });
+
+        $('[name=builder_rule_0_filter]').val('age').trigger('change');
+
+        assert.equal(
+            $('[name=builder_rule_0_operator]').val(),
+            'in',
+            'Should set "age" operator to "in" by default'
+        );
+    });
+
+    /**
      * Test allow_invalid option
      */
     QUnit.test('allow invalid', function(assert) {

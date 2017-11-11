@@ -617,7 +617,20 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
     $operatorContainer.html($operatorSelect);
 
     // set the operator without triggering update event
-    rule.__.operator = operators[0];
+    if (rule.filter.default_operator) {
+        rule.__.operator = operators.filter(function(operator) {
+            return operator.type === rule.filter.default_operator;
+        })[0];
+
+        if (!rule.__.operator) {
+            Utils.error('Config', 'Invalid operator {0}', rule.filter.default_operator);
+        }
+    }
+    else {
+        rule.__.operator = operators[0];
+    }
+
+    rule.$el.find(QueryBuilder.selectors.rule_operator).val(rule.operator.type);
 
     /**
      * After creating the dropdown for operators
@@ -752,6 +765,7 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
      */
     this.trigger('afterUpdateRuleOperator', rule);
 
+    // FIXME is it necessary ?
     this.updateRuleValue(rule);
 };
 
