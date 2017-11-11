@@ -59,6 +59,8 @@ QueryBuilder.extend(/** @lends module:plugins.ChangeFilters.prototype */ {
                 function(rule) {
                     if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
                         rule.drop();
+
+                        self.trigger('rulesChanged');
                     }
                     else {
                         self.createRuleFilters(rule);

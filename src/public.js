@@ -54,6 +54,8 @@ QueryBuilder.prototype.reset = function() {
      * @memberof QueryBuilder
      */
     this.trigger('afterReset');
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -86,6 +88,8 @@ QueryBuilder.prototype.clear = function() {
      * @memberof QueryBuilder
      */
     this.trigger('afterClear');
+
+    this.trigger('rulesChanged');
 };
 
 /**

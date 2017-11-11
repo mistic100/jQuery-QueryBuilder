@@ -147,6 +147,8 @@ QueryBuilder.extend(/** @lends module:plugins.Invert.prototype */ {
              * @param {object} options
              */
             this.trigger('afterInvert', node, options);
+
+            this.trigger('rulesChanged');
         }
     }
 });

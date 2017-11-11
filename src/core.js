@@ -380,6 +380,13 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
      */
     this.trigger('afterAddGroup', model);
 
+    /**
+     * After any change in the rules
+     * @event rulesChanged
+     * @memberof QueryBuilder
+     */
+    this.trigger('rulesChanged');
+
     model.condition = this.settings.default_condition;
 
     if (addRule) {
@@ -429,6 +436,8 @@ QueryBuilder.prototype.deleteGroup = function(group) {
          * @memberof QueryBuilder
          */
         this.trigger('afterDeleteGroup');
+
+        this.trigger('rulesChanged');
     }
 
     return del;
@@ -454,6 +463,8 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
      * @param {Group} group
      */
     this.trigger('afterUpdateGroupCondition', group);
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -513,6 +524,8 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
      */
     this.trigger('afterAddRule', model);
 
+    this.trigger('rulesChanged');
+
     this.createRuleFilters(model);
 
     if (this.settings.default_filter || !this.settings.display_empty_filter) {
@@ -564,6 +577,8 @@ QueryBuilder.prototype.deleteRule = function(rule) {
      * @memberof QueryBuilder
      */
     this.trigger('afterDeleteRule');
+
+    this.trigger('rulesChanged');
 
     return true;
 };
@@ -719,6 +734,8 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
      * @param {Rule} rule
      */
     this.trigger('afterUpdateRuleFilter', rule);
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -759,6 +776,8 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
      */
     this.trigger('afterUpdateRuleOperator', rule);
 
+    this.trigger('rulesChanged');
+
     // FIXME is it necessary ?
     this.updateRuleValue(rule);
 };
@@ -781,6 +800,8 @@ QueryBuilder.prototype.updateRuleValue = function(rule) {
      * @param {Rule} rule
      */
     this.trigger('afterUpdateRuleValue', rule);
+
+    this.trigger('rulesChanged');
 };
 
 /**
