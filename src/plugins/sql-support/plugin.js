@@ -248,6 +248,11 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
      */
     getSQL: function(stmt, nl, data) {
         data = (data === undefined) ? this.getRules() : data;
+
+        if (!data) {
+            return null;
+        }
+
         nl = !!nl ? '\n' : ' ';
         var boolean_as_integer = this.getPluginOptions('sql-support', 'boolean_as_integer');
 
