@@ -517,6 +517,35 @@ $(function() {
         );
     });
 
+    QUnit.test('apply default value', function(assert) {
+        $b.queryBuilder({
+            filters: [
+                {
+                    id: 'name',
+                    default_value: 'Mistic'
+                }
+            ],
+            rules: [
+                {
+                    id: 'name'
+                }
+            ]
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            {
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }]
+            },
+            'Should have used the filter default value'
+        );
+    });
+
     /**
      * Test allow_empty_value option
      */

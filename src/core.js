@@ -618,13 +618,7 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
 
     // set the operator without triggering update event
     if (rule.filter.default_operator) {
-        rule.__.operator = operators.filter(function(operator) {
-            return operator.type === rule.filter.default_operator;
-        })[0];
-
-        if (!rule.__.operator) {
-            Utils.error('Config', 'Invalid operator {0}', rule.filter.default_operator);
-        }
+        rule.__.operator = this.getOperatorByType(rule.filter.default_operator);
     }
     else {
         rule.__.operator = operators[0];
