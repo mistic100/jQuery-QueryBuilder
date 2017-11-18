@@ -41,8 +41,9 @@
 				}
 			</style>
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
+			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
 			window.DOCLET_TOC_ENABLED = false;
+			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
 </head>
 <body>
@@ -114,9 +115,9 @@
 										<li><a href="QueryBuilder.html#.event:changer:getGroupTemplate">QueryBuilder.changer:getGroupTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getOperators">QueryBuilder.changer:getOperators</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleFilters">QueryBuilder.changer:getRuleFilters</a></li>
-										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate">QueryBuilder.changer:getRuleFilterTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterSelect">QueryBuilder.changer:getRuleFilterSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleInput">QueryBuilder.changer:getRuleInput</a></li>
-										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate">QueryBuilder.changer:getRuleOperatorTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorSelect">QueryBuilder.changer:getRuleOperatorSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
@@ -154,6 +155,7 @@
 										<li><a href="QueryBuilder.html#.event:beforeDeleteRule">QueryBuilder.beforeDeleteRule</a></li>
 										<li><a href="QueryBuilder.html#.event:beforeDestroy">QueryBuilder.beforeDestroy</a></li>
 										<li><a href="QueryBuilder.html#.event:beforeReset">QueryBuilder.beforeReset</a></li>
+										<li><a href="QueryBuilder.html#.event:rulesChanged">QueryBuilder.rulesChanged</a></li>
 										<li><a href="QueryBuilder.html#.event:validationError">QueryBuilder.validationError</a></li>
 								</ul>
 							</li>
@@ -205,7 +207,14 @@
  * @class SqlSupport
  * @memberof module:plugins
  * @description Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.
+ * @param {object} [options]
+ * @param {boolean} [options.boolean_as_integer=true] - `true` to convert boolean values to integer in the SQL output
  */
+QueryBuilder.define('sql-support', function(options) {
+
+}, {
+    boolean_as_integer: true
+});
 
 QueryBuilder.defaults({
     // operators for internal -> SQL conversion
@@ -444,7 +453,13 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
      */
     getSQL: function(stmt, nl, data) {
         data = (data === undefined) ? this.getRules() : data;
+
+        if (!data) {
+            return null;
+        }
+
         nl = !!nl ? '\n' : ' ';
+        var boolean_as_integer = this.getPluginOptions('sql-support', 'boolean_as_integer');
 
         if (stmt === true) stmt = 'question_mark';
         if (typeof stmt == 'string') {
@@ -492,7 +507,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                             }
 
                             if (rule.type == 'integer' || rule.type == 'double' || rule.type == 'boolean') {
-                                v = Utils.changeType(v, rule.type, true);
+                                v = Utils.changeType(v, rule.type, boolean_as_integer);
                             }
                             else if (!stmt) {
                                 v = Utils.escapeString(v);
@@ -791,7 +806,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
      */
     getSQLFieldID: function(field, value) {
         var matchingFilters = this.filters.filter(function(filter) {
-            return filter.field === field;
+            return filter.field.toLowerCase() === field.toLowerCase();
         });
 
         var id;
@@ -833,7 +848,7 @@ function getStmtConfig(stmt) {
 	</div>
 	<footer>
 				<div class="copyright">Licensed under MIT License, documentation under CC BY 3.0.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

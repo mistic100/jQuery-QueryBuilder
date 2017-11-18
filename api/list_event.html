@@ -40,8 +40,9 @@
 				}
 			</style>
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
+			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
 			window.DOCLET_TOC_ENABLED = true;
+			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
 </head>
 <body>
@@ -113,9 +114,9 @@
 										<li><a href="QueryBuilder.html#.event:changer:getGroupTemplate">QueryBuilder.changer:getGroupTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getOperators">QueryBuilder.changer:getOperators</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleFilters">QueryBuilder.changer:getRuleFilters</a></li>
-										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate">QueryBuilder.changer:getRuleFilterTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterSelect">QueryBuilder.changer:getRuleFilterSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleInput">QueryBuilder.changer:getRuleInput</a></li>
-										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate">QueryBuilder.changer:getRuleOperatorTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorSelect">QueryBuilder.changer:getRuleOperatorSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
@@ -153,6 +154,7 @@
 										<li><a href="QueryBuilder.html#.event:beforeDeleteRule">QueryBuilder.beforeDeleteRule</a></li>
 										<li><a href="QueryBuilder.html#.event:beforeDestroy">QueryBuilder.beforeDestroy</a></li>
 										<li><a href="QueryBuilder.html#.event:beforeReset">QueryBuilder.beforeReset</a></li>
+										<li><a href="QueryBuilder.html#.event:rulesChanged">QueryBuilder.rulesChanged</a></li>
 										<li><a href="QueryBuilder.html#.event:validationError">QueryBuilder.validationError</a></li>
 								</ul>
 							</li>
@@ -207,10 +209,10 @@
 		<article class="secondary">
 				<dl class="symbol">
 						
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:model:add" class="event"><a href="Model.html#.event:model:add"><span class="ancestors">Model.</span><span class="name">model:add</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:model:add" class="event public"><a href="Model.html#.event:model:add"><span class="ancestors">Model.</span><span class="name">model:add</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After a node of the model has been added</p></div>
 			</div>			<div class="callout callout-info">
@@ -265,7 +267,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-389">line 389</a></p>
+									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-351">line 351</a></p>
 								</div>
 							</div>
 			
@@ -276,10 +278,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:model:drop" class="event"><a href="Model.html#.event:model:drop"><span class="ancestors">Model.</span><span class="name">model:drop</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:model:drop" class="event public"><a href="Model.html#.event:model:drop"><span class="ancestors">Model.</span><span class="name">model:drop</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After a node of the model has been removed</p></div>
 			</div>			<div class="callout callout-info">
@@ -322,7 +324,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-229">line 229</a></p>
+									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-191">line 191</a></p>
 								</div>
 							</div>
 			
@@ -333,10 +335,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:model:move" class="event"><a href="Model.html#.event:model:move"><span class="ancestors">Model.</span><span class="name">model:move</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:model:move" class="event public"><a href="Model.html#.event:model:move"><span class="ancestors">Model.</span><span class="name">model:move</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After a node of the model has been moved</p></div>
 			</div>			<div class="callout callout-info">
@@ -391,7 +393,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-297">line 297</a></p>
+									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-259">line 259</a></p>
 								</div>
 							</div>
 			
@@ -402,10 +404,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:model:update" class="event"><a href="Model.html#.event:model:update"><span class="ancestors">Model.</span><span class="name">model:update</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:model:update" class="event public"><a href="Model.html#.event:model:update"><span class="ancestors">Model.</span><span class="name">model:update</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After a value of the model changed</p></div>
 			</div>			<div class="callout callout-info">
@@ -466,7 +468,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-89">line 89</a></p>
+									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-228">line 228</a></p>
 								</div>
 							</div>
 			
@@ -477,10 +479,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:setFilters" class="event"><a href="module-plugins.ChangeFilters.html#.event:changer:setFilters"><span class="ancestors">plugins.ChangeFilters.</span><span class="name">changer:setFilters</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:setFilters" class="event public"><a href="module-plugins.ChangeFilters.html#.event:changer:setFilters"><span class="ancestors">plugins.ChangeFilters.</span><span class="name">changer:setFilters</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the filters before <code>module:plugins.ChangeFilters.setFilters</code> method</p></div>
 			</div>			<div class="callout callout-info">
@@ -542,10 +544,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterSetFilters" class="event"><a href="module-plugins.ChangeFilters.html#.event:afterSetFilters"><span class="ancestors">plugins.ChangeFilters.</span><span class="name">afterSetFilters</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterSetFilters" class="event public"><a href="module-plugins.ChangeFilters.html#.event:afterSetFilters"><span class="ancestors">plugins.ChangeFilters.</span><span class="name">afterSetFilters</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After <code>module:plugins.ChangeFilters.setFilters</code> method</p></div>
 			</div>			<div class="callout callout-info">
@@ -588,7 +590,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_change-filters_plugin.js.html">plugins/change-filters/plugin.js</a>, <a href="plugins_change-filters_plugin.js.html#line-94">line 94</a></p>
+									<p class="form-control-static"><a href="plugins_change-filters_plugin.js.html">plugins/change-filters/plugin.js</a>, <a href="plugins_change-filters_plugin.js.html#line-96">line 96</a></p>
 								</div>
 							</div>
 			
@@ -599,10 +601,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterInvert" class="event"><a href="module-plugins.Invert.html#.event:afterInvert"><span class="ancestors">plugins.Invert.</span><span class="name">afterInvert</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterInvert" class="event public"><a href="module-plugins.Invert.html#.event:afterInvert"><span class="ancestors">plugins.Invert.</span><span class="name">afterInvert</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After <code>module:plugins.Invert.invert</code> method</p></div>
 			</div>			<div class="callout callout-info">
@@ -663,10 +665,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getMongoDBField" class="event"><a href="module-plugins.MongoDbSupport.html#.event:changer:getMongoDBField"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:getMongoDBField</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getMongoDBField" class="event public"><a href="module-plugins.MongoDbSupport.html#.event:changer:getMongoDBField"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:getMongoDBField</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the MongoDB field used by a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -723,7 +725,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-147">line 147</a></p>
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-151">line 151</a></p>
 								</div>
 							</div>
 			
@@ -734,10 +736,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getMongoDBFieldID" class="event"><a href="module-plugins.MongoDbSupport.html#.event:changer:getMongoDBFieldID"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:getMongoDBFieldID</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getMongoDBFieldID" class="event public"><a href="module-plugins.MongoDbSupport.html#.event:changer:getMongoDBFieldID"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:getMongoDBFieldID</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Returns a filter identifier from the MongoDB field</p></div>
 			</div>			<div class="callout callout-info">
@@ -794,7 +796,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-336">line 336</a></p>
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-340">line 340</a></p>
 								</div>
 							</div>
 			
@@ -805,10 +807,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:groupToMongo" class="event"><a href="module-plugins.MongoDbSupport.html#.event:changer:groupToMongo"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:groupToMongo</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:groupToMongo" class="event public"><a href="module-plugins.MongoDbSupport.html#.event:changer:groupToMongo"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:groupToMongo</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the MongoDB expression generated for a group</p></div>
 			</div>			<div class="callout callout-info">
@@ -865,7 +867,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-177">line 177</a></p>
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-181">line 181</a></p>
 								</div>
 							</div>
 			
@@ -876,10 +878,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:mongoToGroup" class="event"><a href="module-plugins.MongoDbSupport.html#.event:changer:mongoToGroup"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:mongoToGroup</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:mongoToGroup" class="event public"><a href="module-plugins.MongoDbSupport.html#.event:changer:mongoToGroup"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:mongoToGroup</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the group generated from the MongoDB expression</p></div>
 			</div>			<div class="callout callout-info">
@@ -936,7 +938,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-294">line 294</a></p>
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-298">line 298</a></p>
 								</div>
 							</div>
 			
@@ -947,10 +949,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:mongoToRule" class="event"><a href="module-plugins.MongoDbSupport.html#.event:changer:mongoToRule"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:mongoToRule</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:mongoToRule" class="event public"><a href="module-plugins.MongoDbSupport.html#.event:changer:mongoToRule"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:mongoToRule</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the rule generated from the MongoDB expression</p></div>
 			</div>			<div class="callout callout-info">
@@ -1007,7 +1009,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-275">line 275</a></p>
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-279">line 279</a></p>
 								</div>
 							</div>
 			
@@ -1018,10 +1020,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:parseMongoNode" class="event"><a href="module-plugins.MongoDbSupport.html#.event:changer:parseMongoNode"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:parseMongoNode</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:parseMongoNode" class="event public"><a href="module-plugins.MongoDbSupport.html#.event:changer:parseMongoNode"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:parseMongoNode</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Custom parsing of a MongoDB expression, you can return a sub-part of the expression, or a well formed group or rule JSON</p></div>
 			</div>			<div class="callout callout-info">
@@ -1072,7 +1074,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-206">line 206</a></p>
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-210">line 210</a></p>
 								</div>
 							</div>
 			
@@ -1083,10 +1085,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:ruleToMongo" class="event"><a href="module-plugins.MongoDbSupport.html#.event:changer:ruleToMongo"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:ruleToMongo</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:ruleToMongo" class="event public"><a href="module-plugins.MongoDbSupport.html#.event:changer:ruleToMongo"><span class="ancestors">plugins.MongoDbSupport.</span><span class="name">changer:ruleToMongo</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the MongoDB expression generated for a rul</p></div>
 			</div>			<div class="callout callout-info">
@@ -1156,7 +1158,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-160">line 160</a></p>
+									<p class="form-control-static"><a href="plugins_mongodb-support_plugin.js.html">plugins/mongodb-support/plugin.js</a>, <a href="plugins_mongodb-support_plugin.js.html#line-164">line 164</a></p>
 								</div>
 							</div>
 			
@@ -1167,10 +1169,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterUpdateGroupNot" class="event"><a href="module-plugins.NotGroup.html#.event:afterUpdateGroupNot"><span class="ancestors">plugins.NotGroup.</span><span class="name">afterUpdateGroupNot</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterUpdateGroupNot" class="event public"><a href="module-plugins.NotGroup.html#.event:afterUpdateGroupNot"><span class="ancestors">plugins.NotGroup.</span><span class="name">afterUpdateGroupNot</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the group's not flag has been modified</p></div>
 			</div>			<div class="callout callout-info">
@@ -1224,10 +1226,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterMove" class="event"><a href="module-plugins.Sortable.html#.event:afterMove"><span class="ancestors">plugins.Sortable.</span><span class="name">afterMove</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterMove" class="event public"><a href="module-plugins.Sortable.html#.event:afterMove"><span class="ancestors">plugins.Sortable.</span><span class="name">afterMove</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After a node has been moved with <a href="module-plugins.Sortable.html"><code>module:plugins.Sortable</code></a></p></div>
 			</div>			<div class="callout callout-info">
@@ -1281,10 +1283,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getSQLField" class="event"><a href="module-plugins.SqlSupport.html#.event:changer:getSQLField"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:getSQLField</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getSQLField" class="event public"><a href="module-plugins.SqlSupport.html#.event:changer:getSQLField"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:getSQLField</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the SQL field used by a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -1341,7 +1343,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-319">line 319</a></p>
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-332">line 332</a></p>
 								</div>
 							</div>
 			
@@ -1352,10 +1354,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getSQLFieldID" class="event"><a href="module-plugins.SqlSupport.html#.event:changer:getSQLFieldID"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:getSQLFieldID</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getSQLFieldID" class="event public"><a href="module-plugins.SqlSupport.html#.event:changer:getSQLFieldID"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:getSQLFieldID</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Returns a filter identifier from the SQL field</p></div>
 			</div>			<div class="callout callout-info">
@@ -1412,7 +1414,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-599">line 599</a></p>
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-612">line 612</a></p>
 								</div>
 							</div>
 			
@@ -1423,10 +1425,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:groupToSQL" class="event"><a href="module-plugins.SqlSupport.html#.event:changer:groupToSQL"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:groupToSQL</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:groupToSQL" class="event public"><a href="module-plugins.SqlSupport.html#.event:changer:groupToSQL"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:groupToSQL</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the SQL generated for a group</p></div>
 			</div>			<div class="callout callout-info">
@@ -1483,7 +1485,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-347">line 347</a></p>
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-360">line 360</a></p>
 								</div>
 							</div>
 			
@@ -1494,10 +1496,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:parseSQLNode" class="event"><a href="module-plugins.SqlSupport.html#.event:changer:parseSQLNode"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:parseSQLNode</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:parseSQLNode" class="event public"><a href="module-plugins.SqlSupport.html#.event:changer:parseSQLNode"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:parseSQLNode</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Custom parsing of an AST node generated by SQLParser, you can return a sub-part of the tree, or a well formed group or rule JSON</p></div>
 			</div>			<div class="callout callout-info">
@@ -1549,7 +1551,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-413">line 413</a></p>
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-426">line 426</a></p>
 								</div>
 							</div>
 			
@@ -1560,10 +1562,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:ruleToSQL" class="event"><a href="module-plugins.SqlSupport.html#.event:changer:ruleToSQL"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:ruleToSQL</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:ruleToSQL" class="event public"><a href="module-plugins.SqlSupport.html#.event:changer:ruleToSQL"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:ruleToSQL</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the SQL generated for a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -1633,7 +1635,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-331">line 331</a></p>
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-344">line 344</a></p>
 								</div>
 							</div>
 			
@@ -1644,10 +1646,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:sqlToGroup" class="event"><a href="module-plugins.SqlSupport.html#.event:changer:sqlToGroup"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:sqlToGroup</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:sqlToGroup" class="event public"><a href="module-plugins.SqlSupport.html#.event:changer:sqlToGroup"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:sqlToGroup</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the group generated from the SQL expression (this is called before the group is filled with rules)</p></div>
 			</div>			<div class="callout callout-info">
@@ -1704,7 +1706,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-469">line 469</a></p>
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-482">line 482</a></p>
 								</div>
 							</div>
 			
@@ -1715,10 +1717,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:sqlToRule" class="event"><a href="module-plugins.SqlSupport.html#.event:changer:sqlToRule"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:sqlToRule</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:sqlToRule" class="event public"><a href="module-plugins.SqlSupport.html#.event:changer:sqlToRule"><span class="ancestors">plugins.SqlSupport.</span><span class="name">changer:sqlToRule</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the rule generated from the SQL expression</p></div>
 			</div>			<div class="callout callout-info">
@@ -1775,7 +1777,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-550">line 550</a></p>
+									<p class="form-control-static"><a href="plugins_sql-support_plugin.js.html">plugins/sql-support/plugin.js</a>, <a href="plugins_sql-support_plugin.js.html#line-563">line 563</a></p>
 								</div>
 							</div>
 			
@@ -1786,10 +1788,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:displayError" class="event"><a href="QueryBuilder.html#.event:changer:displayError"><span class="ancestors">QueryBuilder.</span><span class="name">changer:displayError</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:displayError" class="event public"><a href="QueryBuilder.html#.event:changer:displayError"><span class="ancestors">QueryBuilder.</span><span class="name">changer:displayError</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies an error message before display</p></div>
 			</div>			<div class="callout callout-info">
@@ -1854,7 +1856,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-890">line 890</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-916">line 916</a></p>
 								</div>
 							</div>
 			
@@ -1865,10 +1867,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getDefaultFilter" class="event"><a href="QueryBuilder.html#.event:changer:getDefaultFilter"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getDefaultFilter</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getDefaultFilter" class="event public"><a href="QueryBuilder.html#.event:changer:getDefaultFilter"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getDefaultFilter</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the default filter for a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -1925,7 +1927,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-529">line 529</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-534">line 534</a></p>
 								</div>
 							</div>
 			
@@ -1936,10 +1938,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getGroupTemplate" class="event"><a href="QueryBuilder.html#.event:changer:getGroupTemplate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getGroupTemplate</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getGroupTemplate" class="event public"><a href="QueryBuilder.html#.event:changer:getGroupTemplate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getGroupTemplate</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of a group</p></div>
 			</div>			<div class="callout callout-info">
@@ -2007,10 +2009,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getOperators" class="event"><a href="QueryBuilder.html#.event:changer:getOperators"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getOperators</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getOperators" class="event public"><a href="QueryBuilder.html#.event:changer:getOperators"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getOperators</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the operators available for a filter</p></div>
 			</div>			<div class="callout callout-info">
@@ -2067,7 +2069,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-281">line 281</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-304">line 304</a></p>
 								</div>
 							</div>
 			
@@ -2078,10 +2080,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getRuleFilters" class="event"><a href="QueryBuilder.html#.event:changer:getRuleFilters"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleFilters</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getRuleFilters" class="event public"><a href="QueryBuilder.html#.event:changer:getRuleFilters"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleFilters</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the list a filters available for a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -2138,7 +2140,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-589">line 589</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-596">line 596</a></p>
 								</div>
 							</div>
 			
@@ -2149,10 +2151,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getRuleFilterTemplate" class="event"><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleFilterTemplate</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getRuleFilterSelect" class="event public"><a href="QueryBuilder.html#.event:changer:getRuleFilterSelect"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleFilterSelect</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of the rule's filter dropdown</p></div>
 			</div>			<div class="callout callout-info">
@@ -2226,10 +2228,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getRuleInput" class="event"><a href="QueryBuilder.html#.event:changer:getRuleInput"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleInput</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getRuleInput" class="event public"><a href="QueryBuilder.html#.event:changer:getRuleInput"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleInput</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of the rule's input</p></div>
 			</div>			<div class="callout callout-info">
@@ -2304,10 +2306,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getRuleOperatorTemplate" class="event"><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleOperatorTemplate</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getRuleOperatorSelect" class="event public"><a href="QueryBuilder.html#.event:changer:getRuleOperatorSelect"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleOperatorSelect</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of the rule's operator dropdown</p></div>
 			</div>			<div class="callout callout-info">
@@ -2381,10 +2383,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getRules" class="event"><a href="QueryBuilder.html#.event:changer:getRules"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRules</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getRules" class="event public"><a href="QueryBuilder.html#.event:changer:getRules"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRules</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the result of the <a href="QueryBuilder.html#getRules"><code>QueryBuilder#getRules</code></a> method</p></div>
 			</div>			<div class="callout callout-info">
@@ -2435,7 +2437,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-308">line 308</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-312">line 312</a></p>
 								</div>
 							</div>
 			
@@ -2446,10 +2448,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getRuleTemplate" class="event"><a href="QueryBuilder.html#.event:changer:getRuleTemplate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleTemplate</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getRuleTemplate" class="event public"><a href="QueryBuilder.html#.event:changer:getRuleTemplate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleTemplate</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -2511,10 +2513,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:getRuleValue" class="event"><a href="QueryBuilder.html#.event:changer:getRuleValue"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleValue</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:getRuleValue" class="event public"><a href="QueryBuilder.html#.event:changer:getRuleValue"><span class="ancestors">QueryBuilder.</span><span class="name">changer:getRuleValue</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the rule's value grabbed from the DOM</p></div>
 			</div>			<div class="callout callout-info">
@@ -2571,7 +2573,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-413">line 413</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-436">line 436</a></p>
 								</div>
 							</div>
 			
@@ -2582,10 +2584,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:groupToJson" class="event"><a href="QueryBuilder.html#.event:changer:groupToJson"><span class="ancestors">QueryBuilder.</span><span class="name">changer:groupToJson</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:groupToJson" class="event public"><a href="QueryBuilder.html#.event:changer:groupToJson"><span class="ancestors">QueryBuilder.</span><span class="name">changer:groupToJson</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the JSON generated from a Group object</p></div>
 			</div>			<div class="callout callout-info">
@@ -2642,7 +2644,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-294">line 294</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-298">line 298</a></p>
 								</div>
 							</div>
 			
@@ -2653,10 +2655,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:jsonToGroup" class="event"><a href="QueryBuilder.html#.event:changer:jsonToGroup"><span class="ancestors">QueryBuilder.</span><span class="name">changer:jsonToGroup</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:jsonToGroup" class="event public"><a href="QueryBuilder.html#.event:changer:jsonToGroup"><span class="ancestors">QueryBuilder.</span><span class="name">changer:jsonToGroup</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the Group object generated from the JSON</p></div>
 			</div>			<div class="callout callout-info">
@@ -2713,7 +2715,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-443">line 443</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-452">line 452</a></p>
 								</div>
 							</div>
 			
@@ -2724,10 +2726,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:jsonToRule" class="event"><a href="QueryBuilder.html#.event:changer:jsonToRule"><span class="ancestors">QueryBuilder.</span><span class="name">changer:jsonToRule</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:jsonToRule" class="event public"><a href="QueryBuilder.html#.event:changer:jsonToRule"><span class="ancestors">QueryBuilder.</span><span class="name">changer:jsonToRule</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the Rule object generated from the JSON</p></div>
 			</div>			<div class="callout callout-info">
@@ -2784,7 +2786,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-429">line 429</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-438">line 438</a></p>
 								</div>
 							</div>
 			
@@ -2795,10 +2797,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:parseGroupFlags" class="event"><a href="QueryBuilder.html#.event:changer:parseGroupFlags"><span class="ancestors">QueryBuilder.</span><span class="name">changer:parseGroupFlags</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:parseGroupFlags" class="event public"><a href="QueryBuilder.html#.event:changer:parseGroupFlags"><span class="ancestors">QueryBuilder.</span><span class="name">changer:parseGroupFlags</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the consolidated group's flags</p></div>
 			</div>			<div class="callout callout-info">
@@ -2856,7 +2858,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-561">line 561</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-584">line 584</a></p>
 								</div>
 							</div>
 			
@@ -2867,10 +2869,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:parseRuleFlags" class="event"><a href="QueryBuilder.html#.event:changer:parseRuleFlags"><span class="ancestors">QueryBuilder.</span><span class="name">changer:parseRuleFlags</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:parseRuleFlags" class="event public"><a href="QueryBuilder.html#.event:changer:parseRuleFlags"><span class="ancestors">QueryBuilder.</span><span class="name">changer:parseRuleFlags</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the consolidated rule's flags</p></div>
 			</div>			<div class="callout callout-info">
@@ -2928,7 +2930,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-505">line 505</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-528">line 528</a></p>
 								</div>
 							</div>
 			
@@ -2939,10 +2941,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:ruleToJson" class="event"><a href="QueryBuilder.html#.event:changer:ruleToJson"><span class="ancestors">QueryBuilder.</span><span class="name">changer:ruleToJson</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:ruleToJson" class="event public"><a href="QueryBuilder.html#.event:changer:ruleToJson"><span class="ancestors">QueryBuilder.</span><span class="name">changer:ruleToJson</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the JSON generated from a Rule object</p></div>
 			</div>			<div class="callout callout-info">
@@ -2999,7 +3001,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-277">line 277</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-281">line 281</a></p>
 								</div>
 							</div>
 			
@@ -3010,10 +3012,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:setRules" class="event"><a href="QueryBuilder.html#.event:changer:setRules"><span class="ancestors">QueryBuilder.</span><span class="name">changer:setRules</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:setRules" class="event public"><a href="QueryBuilder.html#.event:changer:setRules"><span class="ancestors">QueryBuilder.</span><span class="name">changer:setRules</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies data before the <a href="QueryBuilder.html#setRules"><code>QueryBuilder#setRules</code></a> method</p></div>
 			</div>			<div class="callout callout-info">
@@ -3070,7 +3072,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-349">line 349</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-353">line 353</a></p>
 								</div>
 							</div>
 			
@@ -3081,10 +3083,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:translate" class="event"><a href="QueryBuilder.html#.event:changer:translate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:translate</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:translate" class="event public"><a href="QueryBuilder.html#.event:changer:translate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:translate</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the translated label</p></div>
 			</div>			<div class="callout callout-info">
@@ -3151,7 +3153,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-615">line 615</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-638">line 638</a></p>
 								</div>
 							</div>
 			
@@ -3162,10 +3164,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:validate" class="event"><a href="QueryBuilder.html#.event:changer:validate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:validate</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:validate" class="event public"><a href="QueryBuilder.html#.event:changer:validate"><span class="ancestors">QueryBuilder.</span><span class="name">changer:validate</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the result of the <a href="QueryBuilder.html#validate"><code>QueryBuilder#validate</code></a> method</p></div>
 			</div>			<div class="callout callout-info">
@@ -3216,7 +3218,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-195">line 195</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-199">line 199</a></p>
 								</div>
 							</div>
 			
@@ -3227,10 +3229,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:changer:validateValue" class="event"><a href="QueryBuilder.html#.event:changer:validateValue"><span class="ancestors">QueryBuilder.</span><span class="name">changer:validateValue</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:changer:validateValue" class="event public"><a href="QueryBuilder.html#.event:changer:validateValue"><span class="ancestors">QueryBuilder.</span><span class="name">changer:validateValue</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the result of the rule validation method</p></div>
 			</div>			<div class="callout callout-info">
@@ -3305,10 +3307,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterAddGroup" class="event"><a href="QueryBuilder.html#.event:afterAddGroup"><span class="ancestors">QueryBuilder.</span><span class="name">afterAddGroup</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterAddGroup" class="event public"><a href="QueryBuilder.html#.event:afterAddGroup"><span class="ancestors">QueryBuilder.</span><span class="name">afterAddGroup</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after adding a group</p></div>
 			</div>			<div class="callout callout-info">
@@ -3351,7 +3353,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-385">line 385</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-375">line 375</a></p>
 								</div>
 							</div>
 			
@@ -3362,10 +3364,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterAddRule" class="event"><a href="QueryBuilder.html#.event:afterAddRule"><span class="ancestors">QueryBuilder.</span><span class="name">afterAddRule</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterAddRule" class="event public"><a href="QueryBuilder.html#.event:afterAddRule"><span class="ancestors">QueryBuilder.</span><span class="name">afterAddRule</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after adding a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -3408,7 +3410,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-518">line 518</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-521">line 521</a></p>
 								</div>
 							</div>
 			
@@ -3419,10 +3421,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterApplyGroupFlags" class="event"><a href="QueryBuilder.html#.event:afterApplyGroupFlags"><span class="ancestors">QueryBuilder.</span><span class="name">afterApplyGroupFlags</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterApplyGroupFlags" class="event public"><a href="QueryBuilder.html#.event:afterApplyGroupFlags"><span class="ancestors">QueryBuilder.</span><span class="name">afterApplyGroupFlags</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After group's flags has been applied</p></div>
 			</div>			<div class="callout callout-info">
@@ -3465,7 +3467,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-844">line 844</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-870">line 870</a></p>
 								</div>
 							</div>
 			
@@ -3476,10 +3478,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterApplyRuleFlags" class="event"><a href="QueryBuilder.html#.event:afterApplyRuleFlags"><span class="ancestors">QueryBuilder.</span><span class="name">afterApplyRuleFlags</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterApplyRuleFlags" class="event public"><a href="QueryBuilder.html#.event:afterApplyRuleFlags"><span class="ancestors">QueryBuilder.</span><span class="name">afterApplyRuleFlags</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After rule's flags has been applied</p></div>
 			</div>			<div class="callout callout-info">
@@ -3522,7 +3524,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-811">line 811</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-837">line 837</a></p>
 								</div>
 							</div>
 			
@@ -3533,10 +3535,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterClear" class="event"><a href="QueryBuilder.html#.event:afterClear"><span class="ancestors">QueryBuilder.</span><span class="name">afterClear</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterClear" class="event public"><a href="QueryBuilder.html#.event:afterClear"><span class="ancestors">QueryBuilder.</span><span class="name">afterClear</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the <a href="QueryBuilder.html#clear"><code>QueryBuilder#clear</code></a> method</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -3559,7 +3561,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-83">line 83</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-85">line 85</a></p>
 								</div>
 							</div>
 			
@@ -3570,10 +3572,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterCreateRuleFilters" class="event"><a href="QueryBuilder.html#.event:afterCreateRuleFilters"><span class="ancestors">QueryBuilder.</span><span class="name">afterCreateRuleFilters</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterCreateRuleFilters" class="event public"><a href="QueryBuilder.html#.event:afterCreateRuleFilters"><span class="ancestors">QueryBuilder.</span><span class="name">afterCreateRuleFilters</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After creating the dropdown for filters</p></div>
 			</div>			<div class="callout callout-info">
@@ -3616,7 +3618,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-602">line 602</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-609">line 609</a></p>
 								</div>
 							</div>
 			
@@ -3627,10 +3629,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterCreateRuleInput" class="event"><a href="QueryBuilder.html#.event:afterCreateRuleInput"><span class="ancestors">QueryBuilder.</span><span class="name">afterCreateRuleInput</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterCreateRuleInput" class="event public"><a href="QueryBuilder.html#.event:afterCreateRuleInput"><span class="ancestors">QueryBuilder.</span><span class="name">afterCreateRuleInput</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After creating the input for a rule and initializing optional plugin</p></div>
 			</div>			<div class="callout callout-info">
@@ -3673,7 +3675,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-682">line 682</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-696">line 696</a></p>
 								</div>
 							</div>
 			
@@ -3684,10 +3686,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterCreateRuleOperators" class="event"><a href="QueryBuilder.html#.event:afterCreateRuleOperators"><span class="ancestors">QueryBuilder.</span><span class="name">afterCreateRuleOperators</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterCreateRuleOperators" class="event public"><a href="QueryBuilder.html#.event:afterCreateRuleOperators"><span class="ancestors">QueryBuilder.</span><span class="name">afterCreateRuleOperators</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After creating the dropdown for operators</p></div>
 			</div>			<div class="callout callout-info">
@@ -3737,7 +3739,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-632">line 632</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-646">line 646</a></p>
 								</div>
 							</div>
 			
@@ -3748,10 +3750,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterDeleteGroup" class="event"><a href="QueryBuilder.html#.event:afterDeleteGroup"><span class="ancestors">QueryBuilder.</span><span class="name">afterDeleteGroup</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterDeleteGroup" class="event public"><a href="QueryBuilder.html#.event:afterDeleteGroup"><span class="ancestors">QueryBuilder.</span><span class="name">afterDeleteGroup</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after deleting a group</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -3774,7 +3776,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-436">line 436</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-433">line 433</a></p>
 								</div>
 							</div>
 			
@@ -3785,10 +3787,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterDeleteRule" class="event"><a href="QueryBuilder.html#.event:afterDeleteRule"><span class="ancestors">QueryBuilder.</span><span class="name">afterDeleteRule</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterDeleteRule" class="event public"><a href="QueryBuilder.html#.event:afterDeleteRule"><span class="ancestors">QueryBuilder.</span><span class="name">afterDeleteRule</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after deleting a rule</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -3811,7 +3813,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-571">line 571</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-576">line 576</a></p>
 								</div>
 							</div>
 			
@@ -3822,10 +3824,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterInit" class="event"><a href="QueryBuilder.html#.event:afterInit"><span class="ancestors">QueryBuilder.</span><span class="name">afterInit</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterInit" class="event public"><a href="QueryBuilder.html#.event:afterInit"><span class="ancestors">QueryBuilder.</span><span class="name">afterInit</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>When the initilization is done, just before creating the root group</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -3848,7 +3850,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-145">line 145</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-8">line 8</a></p>
 								</div>
 							</div>
 			
@@ -3859,10 +3861,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterReset" class="event"><a href="QueryBuilder.html#.event:afterReset"><span class="ancestors">QueryBuilder.</span><span class="name">afterReset</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterReset" class="event public"><a href="QueryBuilder.html#.event:afterReset"><span class="ancestors">QueryBuilder.</span><span class="name">afterReset</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the <a href="QueryBuilder.html#reset"><code>QueryBuilder#reset</code></a> method</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -3896,10 +3898,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterSetRules" class="event"><a href="QueryBuilder.html#.event:afterSetRules"><span class="ancestors">QueryBuilder.</span><span class="name">afterSetRules</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterSetRules" class="event public"><a href="QueryBuilder.html#.event:afterSetRules"><span class="ancestors">QueryBuilder.</span><span class="name">afterSetRules</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the <a href="QueryBuilder.html#setRules"><code>QueryBuilder#setRules</code></a> method</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -3922,7 +3924,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-457">line 457</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-466">line 466</a></p>
 								</div>
 							</div>
 			
@@ -3933,10 +3935,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterUpdateGroupCondition" class="event"><a href="QueryBuilder.html#.event:afterUpdateGroupCondition"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateGroupCondition</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterUpdateGroupCondition" class="event public"><a href="QueryBuilder.html#.event:afterUpdateGroupCondition"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateGroupCondition</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the group condition has been modified</p></div>
 			</div>			<div class="callout callout-info">
@@ -3953,6 +3955,12 @@
 						<tr>
 								<td><code>group</code></td>
 							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>previousCondition</code></td>
+							<td><span class="param-type">object</span></td>
 							<td class="last">
 							</td>
 						</tr>
@@ -3990,10 +3998,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterUpdateRuleFilter" class="event"><a href="QueryBuilder.html#.event:afterUpdateRuleFilter"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateRuleFilter</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterUpdateRuleFilter" class="event public"><a href="QueryBuilder.html#.event:afterUpdateRuleFilter"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateRuleFilter</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the filter has been updated and the operators and input re-created</p></div>
 			</div>			<div class="callout callout-info">
@@ -4013,6 +4021,12 @@
 							<td class="last">
 							</td>
 						</tr>
+						<tr>
+								<td><code>previousFilter</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -4036,7 +4050,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-718">line 718</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-732">line 732</a></p>
 								</div>
 							</div>
 			
@@ -4047,10 +4061,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterUpdateRuleOperator" class="event"><a href="QueryBuilder.html#.event:afterUpdateRuleOperator"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateRuleOperator</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterUpdateRuleOperator" class="event public"><a href="QueryBuilder.html#.event:afterUpdateRuleOperator"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateRuleOperator</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the operator has been updated and the input optionally re-created</p></div>
 			</div>			<div class="callout callout-info">
@@ -4070,60 +4084,9 @@
 							<td class="last">
 							</td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-							<!-- source -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Source</label>
-								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-757">line 757</a></p>
-								</div>
-							</div>
-			
-			
-			
-			
-					</form>
-			</div>	</div>
-</dd>
-						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:afterUpdateRuleValue" class="event"><a href="QueryBuilder.html#.event:afterUpdateRuleValue"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateRuleValue</span></a></h4>
-</dt>
-<dd class="symbol-details event  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the rule value has been modified</p></div>
-			</div>			<div class="callout callout-info">
-				<h5>Parameters</h5>
-				<table class="params table table-striped">
-					<thead>
-					<tr>
-							<th>Name</th>
-						<th>Type</th>
-						<th class="last">Description</th>
-					</tr>
-					</thead>
-					<tbody>
 						<tr>
-								<td><code>rule</code></td>
-							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+								<td><code>previousOperator</code></td>
+							<td><span class="param-type">object</span></td>
 							<td class="last">
 							</td>
 						</tr>
@@ -4150,7 +4113,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-779">line 779</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-775">line 775</a></p>
 								</div>
 							</div>
 			
@@ -4161,10 +4124,73 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:beforeAddGroup" class="event"><a href="QueryBuilder.html#.event:beforeAddGroup"><span class="ancestors">QueryBuilder.</span><span class="name">beforeAddGroup</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:afterUpdateRuleValue" class="event public"><a href="QueryBuilder.html#.event:afterUpdateRuleValue"><span class="ancestors">QueryBuilder.</span><span class="name">afterUpdateRuleValue</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the rule value has been modified</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>previousValue</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-802">line 802</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:beforeAddGroup" class="event public"><a href="QueryBuilder.html#.event:beforeAddGroup"><span class="ancestors">QueryBuilder.</span><span class="name">beforeAddGroup</span></a></h4>
+</dt>
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before adding a group, can be prevented.</p></div>
 			</div>			<div class="callout callout-info">
@@ -4221,7 +4247,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-365">line 365</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-355">line 355</a></p>
 								</div>
 							</div>
 			
@@ -4232,10 +4258,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:beforeAddRule" class="event"><a href="QueryBuilder.html#.event:beforeAddRule"><span class="ancestors">QueryBuilder.</span><span class="name">beforeAddRule</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:beforeAddRule" class="event public"><a href="QueryBuilder.html#.event:beforeAddRule"><span class="ancestors">QueryBuilder.</span><span class="name">beforeAddRule</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before adding a rule, can be prevented</p></div>
 			</div>			<div class="callout callout-info">
@@ -4278,7 +4304,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-497">line 497</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-500">line 500</a></p>
 								</div>
 							</div>
 			
@@ -4289,10 +4315,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:beforeClear" class="event"><a href="QueryBuilder.html#.event:beforeClear"><span class="ancestors">QueryBuilder.</span><span class="name">beforeClear</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:beforeClear" class="event public"><a href="QueryBuilder.html#.event:beforeClear"><span class="ancestors">QueryBuilder.</span><span class="name">beforeClear</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Before the <a href="QueryBuilder.html#clear"><code>QueryBuilder#clear</code></a> method, can be prevented</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -4315,7 +4341,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-65">line 65</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-67">line 67</a></p>
 								</div>
 							</div>
 			
@@ -4326,10 +4352,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:beforeDeleteGroup" class="event"><a href="QueryBuilder.html#.event:beforeDeleteGroup"><span class="ancestors">QueryBuilder.</span><span class="name">beforeDeleteGroup</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:beforeDeleteGroup" class="event public"><a href="QueryBuilder.html#.event:beforeDeleteGroup"><span class="ancestors">QueryBuilder.</span><span class="name">beforeDeleteGroup</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before deleting a group, can be prevented</p></div>
 			</div>			<div class="callout callout-info">
@@ -4372,7 +4398,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-414">line 414</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-411">line 411</a></p>
 								</div>
 							</div>
 			
@@ -4383,10 +4409,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:beforeDeleteRule" class="event"><a href="QueryBuilder.html#.event:beforeDeleteRule"><span class="ancestors">QueryBuilder.</span><span class="name">beforeDeleteRule</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:beforeDeleteRule" class="event public"><a href="QueryBuilder.html#.event:beforeDeleteRule"><span class="ancestors">QueryBuilder.</span><span class="name">beforeDeleteRule</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before deleting a rule, can be prevented</p></div>
 			</div>			<div class="callout callout-info">
@@ -4429,7 +4455,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-558">line 558</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-563">line 563</a></p>
 								</div>
 							</div>
 			
@@ -4440,10 +4466,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:beforeDestroy" class="event"><a href="QueryBuilder.html#.event:beforeDestroy"><span class="ancestors">QueryBuilder.</span><span class="name">beforeDestroy</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:beforeDestroy" class="event public"><a href="QueryBuilder.html#.event:beforeDestroy"><span class="ancestors">QueryBuilder.</span><span class="name">beforeDestroy</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Before the <a href="QueryBuilder.html#destroy"><code>QueryBuilder#destroy</code></a> method</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -4477,10 +4503,10 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:beforeReset" class="event"><a href="QueryBuilder.html#.event:beforeReset"><span class="ancestors">QueryBuilder.</span><span class="name">beforeReset</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:beforeReset" class="event public"><a href="QueryBuilder.html#.event:beforeReset"><span class="ancestors">QueryBuilder.</span><span class="name">beforeReset</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Before the <a href="QueryBuilder.html#reset"><code>QueryBuilder#reset</code></a> method, can be prevented</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -4514,10 +4540,47 @@
 			</div>	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title event collapsible-symbol">
-			<h4 id=".event:validationError" class="event"><a href="QueryBuilder.html#.event:validationError"><span class="ancestors">QueryBuilder.</span><span class="name">validationError</span></a></h4>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:rulesChanged" class="event public"><a href="QueryBuilder.html#.event:rulesChanged"><span class="ancestors">QueryBuilder.</span><span class="name">rulesChanged</span></a></h4>
 </dt>
-<dd class="symbol-details event  collapsible-symbol">
+<dd class="symbol-details event public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After any change in the rules</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-383">line 383</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+						<hr/>
+						<dt class="symbol-title event public collapsible-symbol">
+			<h4 id=".event:validationError" class="event public"><a href="QueryBuilder.html#.event:validationError"><span class="ancestors">QueryBuilder.</span><span class="name">validationError</span></a></h4>
+</dt>
+<dd class="symbol-details event public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Fired when a validation error occurred, can be prevented</p></div>
 			</div>			<div class="callout callout-info">
@@ -4572,7 +4635,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-921">line 921</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-947">line 947</a></p>
 								</div>
 							</div>
 			
@@ -4593,7 +4656,7 @@
 	</div>
 	<footer>
 				<div class="copyright">Licensed under MIT License, documentation under CC BY 3.0.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

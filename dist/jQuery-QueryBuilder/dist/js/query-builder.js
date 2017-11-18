@@ -1,11 +1,14 @@
 /*!
- * jQuery QueryBuilder 2.4.3
+ * jQuery QueryBuilder 2.4.5
  * Copyright 2014-2017 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 (function(root, factory) {
     if (typeof define == 'function' && define.amd) {
-        define(['jquery', 'doT', 'jQuery.extendext'], factory);
+        define(['jquery', 'dot/doT', 'jquery-extendext'], factory);
+    }
+    else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(require('jquery'), require('dot/doT'), require('jquery-extendext'));
     }
     else {
         factory(root.jQuery, root.doT);
@@ -29,7 +32,6 @@
  * @param {jQuery} $el
  * @param {object} options - see {@link http://querybuilder.js.org/#options}
  * @constructor
- * @fires QueryBuilder.afterInit
  */
 var QueryBuilder = function($el, options) {
     $el[0].queryBuilder = this;
@@ -156,21 +158,6 @@ var QueryBuilder = function($el, options) {
     this.operators = this.checkOperators(this.operators);
     this.bindEvents();
     this.initPlugins();
-
-    /**
-     * When the initilization is done, just before creating the root group
-     * @event afterInit
-     * @memberof QueryBuilder
-     */
-    this.trigger('afterInit');
-
-    if (options.rules) {
-        this.setRules(options.rules);
-        delete this.settings.rules;
-    }
-    else {
-        this.setRoot(true);
-    }
 };
 
 $.extend(QueryBuilder.prototype, /** @lends QueryBuilder.prototype */ {
@@ -504,7 +491,6 @@ QueryBuilder.extend = function(methods) {
     $.extend(QueryBuilder.prototype, methods);
 };
 
-
 /**
  * Initializes plugins for an instance
  * @throws ConfigError
@@ -536,6 +522,59 @@ QueryBuilder.prototype.initPlugins = function() {
             Utils.error('Config', 'Unable to find plugin "{0}"', plugin);
         }
     }, this);
+};
+
+/**
+ * Returns the config of a plugin, if the plugin is not loaded, returns the default config.
+ * @param {string} name
+ * @param {string} [property]
+ * @throws ConfigError
+ * @returns {*}
+ */
+QueryBuilder.prototype.getPluginOptions = function(name, property) {
+    var plugin;
+    if (this.plugins && this.plugins[name]) {
+        plugin = this.plugins[name];
+    }
+    else if (QueryBuilder.plugins[name]) {
+        plugin = QueryBuilder.plugins[name].def;
+    }
+
+    if (plugin) {
+        if (property) {
+            return plugin[property];
+        }
+        else {
+            return plugin;
+        }
+    }
+    else {
+        Utils.error('Config', 'Unable to find plugin "{0}"', name);
+    }
+};
+
+
+/**
+ * Final initialisation of the builder
+ * @param {object} [rules]
+ * @fires QueryBuilder.afterInit
+ * @private
+ */
+QueryBuilder.prototype.init = function(rules) {
+    /**
+     * When the initilization is done, just before creating the root group
+     * @event afterInit
+     * @memberof QueryBuilder
+     */
+    this.trigger('afterInit');
+
+    if (rules) {
+        this.setRules(rules);
+        delete this.settings.rules;
+    }
+    else {
+        this.setRoot(true);
+    }
 };
 
 /**
@@ -799,7 +838,7 @@ QueryBuilder.prototype.bindEvents = function() {
                         break;
 
                     case 'value':
-                        self.updateRuleValue(node);
+                        self.updateRuleValue(node, oldValue);
                         break;
                 }
             }
@@ -814,7 +853,7 @@ QueryBuilder.prototype.bindEvents = function() {
                         break;
 
                     case 'condition':
-                        self.updateGroupCondition(node);
+                        self.updateGroupCondition(node, oldValue);
                         break;
                 }
             }
@@ -897,6 +936,13 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
      */
     this.trigger('afterAddGroup', model);
 
+    /**
+     * After any change in the rules
+     * @event rulesChanged
+     * @memberof QueryBuilder
+     */
+    this.trigger('rulesChanged');
+
     model.condition = this.settings.default_condition;
 
     if (addRule) {
@@ -946,6 +992,8 @@ QueryBuilder.prototype.deleteGroup = function(group) {
          * @memberof QueryBuilder
          */
         this.trigger('afterDeleteGroup');
+
+        this.trigger('rulesChanged');
     }
 
     return del;
@@ -954,10 +1002,11 @@ QueryBuilder.prototype.deleteGroup = function(group) {
 /**
  * Performs actions when a group's condition changes
  * @param {Group} group
+ * @param {object} previousCondition
  * @fires QueryBuilder.afterUpdateGroupCondition
  * @private
  */
-QueryBuilder.prototype.updateGroupCondition = function(group) {
+QueryBuilder.prototype.updateGroupCondition = function(group, previousCondition) {
     group.$el.find('>' + QueryBuilder.selectors.group_condition).each(function() {
         var $this = $(this);
         $this.prop('checked', $this.val() === group.condition);
@@ -969,8 +1018,11 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
      * @event afterUpdateGroupCondition
      * @memberof QueryBuilder
      * @param {Group} group
+     * @param {object} previousCondition
      */
-    this.trigger('afterUpdateGroupCondition', group);
+    this.trigger('afterUpdateGroupCondition', group, previousCondition);
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -1030,6 +1082,8 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
      */
     this.trigger('afterAddRule', model);
 
+    this.trigger('rulesChanged');
+
     this.createRuleFilters(model);
 
     if (this.settings.default_filter || !this.settings.display_empty_filter) {
@@ -1081,6 +1135,8 @@ QueryBuilder.prototype.deleteRule = function(rule) {
      * @memberof QueryBuilder
      */
     this.trigger('afterDeleteRule');
+
+    this.trigger('rulesChanged');
 
     return true;
 };
@@ -1134,7 +1190,14 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
     $operatorContainer.html($operatorSelect);
 
     // set the operator without triggering update event
-    rule.__.operator = operators[0];
+    if (rule.filter.default_operator) {
+        rule.__.operator = this.getOperatorByType(rule.filter.default_operator);
+    }
+    else {
+        rule.__.operator = operators[0];
+    }
+
+    rule.$el.find(QueryBuilder.selectors.rule_operator).val(rule.operator.type);
 
     /**
      * After creating the dropdown for operators
@@ -1227,8 +1290,11 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
      * @event afterUpdateRuleFilter
      * @memberof QueryBuilder
      * @param {Rule} rule
+     * @param {object} previousFilter
      */
-    this.trigger('afterUpdateRuleFilter', rule);
+    this.trigger('afterUpdateRuleFilter', rule, previousFilter);
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -1240,6 +1306,7 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
  */
 QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     var $valueContainer = rule.$el.find(QueryBuilder.selectors.value_container);
+    var ruleValue = rule.value;
 
     if (!rule.operator || rule.operator.nb_inputs === 0) {
         $valueContainer.hide();
@@ -1266,19 +1333,24 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
      * @event afterUpdateRuleOperator
      * @memberof QueryBuilder
      * @param {Rule} rule
+     * @param {object} previousOperator
      */
-    this.trigger('afterUpdateRuleOperator', rule);
+    this.trigger('afterUpdateRuleOperator', rule, previousOperator);
 
-    this.updateRuleValue(rule);
+    this.trigger('rulesChanged');
+
+    // FIXME is it necessary ?
+    this.updateRuleValue(rule, ruleValue);
 };
 
 /**
  * Performs actions when rule's value changes
  * @param {Rule} rule
+ * @param {object} previousValue
  * @fires QueryBuilder.afterUpdateRuleValue
  * @private
  */
-QueryBuilder.prototype.updateRuleValue = function(rule) {
+QueryBuilder.prototype.updateRuleValue = function(rule, previousValue) {
     if (!rule._updating_value) {
         this.setRuleInputValue(rule, rule.value);
     }
@@ -1288,8 +1360,11 @@ QueryBuilder.prototype.updateRuleValue = function(rule) {
      * @event afterUpdateRuleValue
      * @memberof QueryBuilder
      * @param {Rule} rule
+     * @param {*} previousValue
      */
-    this.trigger('afterUpdateRuleValue', rule);
+    this.trigger('afterUpdateRuleValue', rule, previousValue);
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -1496,6 +1571,8 @@ QueryBuilder.prototype.reset = function() {
      * @memberof QueryBuilder
      */
     this.trigger('afterReset');
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -1528,6 +1605,8 @@ QueryBuilder.prototype.clear = function() {
      * @memberof QueryBuilder
      */
     this.trigger('afterClear');
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -1852,17 +1931,22 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
                 if (!item.empty) {
                     model.filter = self.getFilterById(item.id, !options.allow_invalid);
+                }
 
-                    if (model.filter) {
-                        model.operator = self.getOperatorByType(item.operator, !options.allow_invalid);
+                if (model.filter) {
+                    model.operator = self.getOperatorByType(item.operator, !options.allow_invalid);
 
-                        if (!model.operator) {
-                            model.operator = self.getOperators(model.filter)[0];
-                        }
+                    if (!model.operator) {
+                        model.operator = self.getOperators(model.filter)[0];
+                    }
+                }
 
-                        if (model.operator && model.operator.nb_inputs !== 0 && item.value !== undefined) {
-                            model.value = item.value;
-                        }
+                if (model.operator && model.operator.nb_inputs !== 0) {
+                    if (item.value !== undefined) {
+                        model.value = item.value;
+                    }
+                    else if (model.filter.default_value !== undefined) {
+                        model.value = model.filter.default_value;
                     }
                 }
 
@@ -2125,6 +2209,29 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
 
         if (result !== true) {
             break;
+        }
+    }
+
+    if ((rule.operator.type === 'between' || rule.operator.type === 'not_between') && value.length === 2) {
+        switch (QueryBuilder.types[filter.type]) {
+            case 'number':
+                if (value[0] > value[1]) {
+                    result = ['number_between_invalid', value[0], value[1]];
+                }
+                break;
+
+            case 'datetime':
+                // we need MomentJS
+                if (validation.format) {
+                    if (!('moment' in window)) {
+                        Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
+                    }
+
+                    if (moment(value[0], validation.format).isAfter(moment(value[1], validation.format))) {
+                        result = ['datetime_between_invalid', value[0], value[1]];
+                    }
+                }
+                break;
         }
     }
 
@@ -2709,7 +2816,7 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
 
     /**
      * Modifies the raw HTML of the rule's filter dropdown
-     * @event changer:getRuleFilterTemplate
+     * @event changer:getRuleFilterSelect
      * @memberof QueryBuilder
      * @param {string} html
      * @param {Rule} rule
@@ -2739,7 +2846,7 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
 
     /**
      * Modifies the raw HTML of the rule's operator dropdown
-     * @event changer:getRuleOperatorTemplate
+     * @event changer:getRuleOperatorSelect
      * @memberof QueryBuilder
      * @param {string} html
      * @param {Rule} rule
@@ -2831,6 +2938,250 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
 
 
 /**
+ * @namespace
+ */
+var Utils = {};
+
+/**
+ * @member {object}
+ * @memberof QueryBuilder
+ * @see Utils
+ */
+QueryBuilder.utils = Utils;
+
+/**
+ * @callback Utils#OptionsIteratee
+ * @param {string} key
+ * @param {string} value
+ */
+
+/**
+ * Iterates over radio/checkbox/selection options, it accept three formats
+ *
+ * @example
+ * // array of values
+ * options = ['one', 'two', 'three']
+ * @example
+ * // simple key-value map
+ * options = {1: 'one', 2: 'two', 3: 'three'}
+ * @example
+ * // array of 1-element maps
+ * options = [{1: 'one'}, {2: 'two'}, {3: 'three'}]
+ *
+ * @param {object|array} options
+ * @param {Utils#OptionsIteratee} tpl
+ */
+Utils.iterateOptions = function(options, tpl) {
+    if (options) {
+        if ($.isArray(options)) {
+            options.forEach(function(entry) {
+                // array of one-element maps
+                if ($.isPlainObject(entry)) {
+                    $.each(entry, function(key, val) {
+                        tpl(key, val);
+                        return false; // break after first entry
+                    });
+                }
+                // array of values
+                else {
+                    tpl(entry, entry);
+                }
+            });
+        }
+        // unordered map
+        else {
+            $.each(options, function(key, val) {
+                tpl(key, val);
+            });
+        }
+    }
+};
+
+/**
+ * Replaces {0}, {1}, ... in a string
+ * @param {string} str
+ * @param {...*} args
+ * @returns {string}
+ */
+Utils.fmt = function(str, args) {
+    if (!Array.isArray(args)) {
+        args = Array.prototype.slice.call(arguments, 1);
+    }
+
+    return str.replace(/{([0-9]+)}/g, function(m, i) {
+        return args[parseInt(i)];
+    });
+};
+
+/**
+ * Throws an Error object with custom name or logs an error
+ * @param {boolean} [doThrow=true]
+ * @param {string} type
+ * @param {string} message
+ * @param {...*} args
+ */
+Utils.error = function() {
+    var i = 0;
+    var doThrow = typeof arguments[i] === 'boolean' ? arguments[i++] : true;
+    var type = arguments[i++];
+    var message = arguments[i++];
+    var args = Array.isArray(arguments[i]) ? arguments[i] : Array.prototype.slice.call(arguments, i);
+
+    if (doThrow) {
+        var err = new Error(Utils.fmt(message, args));
+        err.name = type + 'Error';
+        err.args = args;
+        throw err;
+    }
+    else {
+        console.error(type + 'Error: ' + Utils.fmt(message, args));
+    }
+};
+
+/**
+ * Changes the type of a value to int, float or bool
+ * @param {*} value
+ * @param {string} type - 'integer', 'double', 'boolean' or anything else (passthrough)
+ * @param {boolean} [boolAsInt=false] - return 0 or 1 for booleans
+ * @returns {*}
+ */
+Utils.changeType = function(value, type, boolAsInt) {
+    switch (type) {
+        // @formatter:off
+    case 'integer': return parseInt(value);
+    case 'double': return parseFloat(value);
+    case 'boolean':
+        var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
+        return boolAsInt ? (bool ? 1 : 0) : bool;
+    default: return value;
+    // @formatter:on
+    }
+};
+
+/**
+ * Escapes a string like PHP's mysql_real_escape_string does
+ * @param {string} value
+ * @returns {string}
+ */
+Utils.escapeString = function(value) {
+    if (typeof value != 'string') {
+        return value;
+    }
+
+    return value
+        .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
+            switch (s) {
+                // @formatter:off
+            case '\0': return '\\0';
+            case '\n': return '\\n';
+            case '\r': return '\\r';
+            case '\b': return '\\b';
+            default:   return '\\' + s;
+            // @formatter:off
+            }
+        })
+        // uglify compliant
+        .replace(/\t/g, '\\t')
+        .replace(/\x1a/g, '\\Z');
+};
+
+/**
+ * Escapes a string for use in regex
+ * @param {string} str
+ * @returns {string}
+ */
+Utils.escapeRegExp = function(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+};
+
+/**
+ * Escapes a string for use in HTML element id
+ * @param {string} str
+ * @returns {string}
+ */
+Utils.escapeElementId = function(str) {
+    // Regex based on that suggested by:
+    // https://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
+    // - escapes : . [ ] ,
+    // - avoids escaping already escaped values
+    return (str) ? str.replace(/(\\)?([:.\[\],])/g,
+            function( $0, $1, $2 ) { return $1 ? $0 : '\\' + $2; }) : str;
+};
+
+/**
+ * Sorts objects by grouping them by `key`, preserving initial order when possible
+ * @param {object[]} items
+ * @param {string} key
+ * @returns {object[]}
+ */
+Utils.groupSort = function(items, key) {
+    var optgroups = [];
+    var newItems = [];
+
+    items.forEach(function(item) {
+        var idx;
+
+        if (item[key]) {
+            idx = optgroups.lastIndexOf(item[key]);
+
+            if (idx == -1) {
+                idx = optgroups.length;
+            }
+            else {
+                idx++;
+            }
+        }
+        else {
+            idx = optgroups.length;
+        }
+
+        optgroups.splice(idx, 0, item[key]);
+        newItems.splice(idx, 0, item);
+    });
+
+    return newItems;
+};
+
+/**
+ * Defines properties on an Node prototype with getter and setter.<br>
+ *     Update events are emitted in the setter through root Model (if any).<br>
+ *     The object must have a `__` object, non enumerable property to store values.
+ * @param {function} obj
+ * @param {string[]} fields
+ */
+Utils.defineModelProperties = function(obj, fields) {
+    fields.forEach(function(field) {
+        Object.defineProperty(obj.prototype, field, {
+            enumerable: true,
+            get: function() {
+                return this.__[field];
+            },
+            set: function(value) {
+                var previousValue = (this.__[field] !== null && typeof this.__[field] == 'object') ?
+                    $.extend({}, this.__[field]) :
+                    this.__[field];
+
+                this.__[field] = value;
+
+                if (this.model !== null) {
+                    /**
+                     * After a value of the model changed
+                     * @event model:update
+                     * @memberof Model
+                     * @param {Node} node
+                     * @param {string} field
+                     * @param {*} value
+                     * @param {*} previousValue
+                     */
+                    this.model.trigger('update', this, field, value, previousValue);
+                }
+            }
+        });
+    });
+};
+
+
+/**
  * Main object storing data model and emitting model events
  * @constructor
  */
@@ -2895,44 +3246,6 @@ $.extend(Model.prototype, /** @lends Model.prototype */ {
         return this;
     }
 });
-
-/**
- * Defines properties on an Node prototype with getter and setter.<br>
- *     Update events are emitted in the setter through root Model (if any).<br>
- *     The object must have a `__` object, non enumerable property to store values.
- * @param {function} obj
- * @param {string[]} fields
- */
-Model.defineModelProperties = function(obj, fields) {
-    fields.forEach(function(field) {
-        Object.defineProperty(obj.prototype, field, {
-            enumerable: true,
-            get: function() {
-                return this.__[field];
-            },
-            set: function(value) {
-                var previousValue = (this.__[field] !== null && typeof this.__[field] == 'object') ?
-                    $.extend({}, this.__[field]) :
-                    this.__[field];
-
-                this.__[field] = value;
-
-                if (this.model !== null) {
-                    /**
-                     * After a value of the model changed
-                     * @event model:update
-                     * @memberof Model
-                     * @param {Node} node
-                     * @param {string} field
-                     * @param {*} value
-                     * @param {*} previousValue
-                     */
-                    this.model.trigger('update', this, field, value, previousValue);
-                }
-            }
-        });
-    });
-};
 
 
 /**
@@ -3009,7 +3322,7 @@ var Node = function(parent, $el) {
     this.parent = parent;
 };
 
-Model.defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
+Utils.defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
 
 Object.defineProperty(Node.prototype, 'parent', {
     enumerable: true,
@@ -3172,7 +3485,7 @@ var Group = function(parent, $el) {
 Group.prototype = Object.create(Node.prototype);
 Group.prototype.constructor = Group;
 
-Model.defineModelProperties(Group, ['condition']);
+Utils.defineModelProperties(Group, ['condition']);
 
 /**
  * Removes group's content
@@ -3393,7 +3706,7 @@ var Rule = function(parent, $el) {
 Rule.prototype = Object.create(Node.prototype);
 Rule.prototype.constructor = Rule;
 
-Model.defineModelProperties(Rule, ['filter', 'operator', 'value']);
+Utils.defineModelProperties(Rule, ['filter', 'operator', 'value']);
 
 /**
  * Checks if this Node is the root
@@ -3417,212 +3730,6 @@ QueryBuilder.Group = Group;
  * @see Rule
  */
 QueryBuilder.Rule = Rule;
-
-
-/**
- * @namespace
- */
-var Utils = {};
-
-/**
- * @member {object}
- * @memberof QueryBuilder
- * @see Utils
- */
-QueryBuilder.utils = Utils;
-
-/**
- * @callback Utils#OptionsIteratee
- * @param {string} key
- * @param {string} value
- */
-
-/**
- * Iterates over radio/checkbox/selection options, it accept three formats
- *
- * @example
- * // array of values
- * options = ['one', 'two', 'three']
- * @example
- * // simple key-value map
- * options = {1: 'one', 2: 'two', 3: 'three'}
- * @example
- * // array of 1-element maps
- * options = [{1: 'one'}, {2: 'two'}, {3: 'three'}]
- *
- * @param {object|array} options
- * @param {Utils#OptionsIteratee} tpl
- */
-Utils.iterateOptions = function(options, tpl) {
-    if (options) {
-        if ($.isArray(options)) {
-            options.forEach(function(entry) {
-                // array of one-element maps
-                if ($.isPlainObject(entry)) {
-                    $.each(entry, function(key, val) {
-                        tpl(key, val);
-                        return false; // break after first entry
-                    });
-                }
-                // array of values
-                else {
-                    tpl(entry, entry);
-                }
-            });
-        }
-        // unordered map
-        else {
-            $.each(options, function(key, val) {
-                tpl(key, val);
-            });
-        }
-    }
-};
-
-/**
- * Replaces {0}, {1}, ... in a string
- * @param {string} str
- * @param {...*} args
- * @returns {string}
- */
-Utils.fmt = function(str, args) {
-    if (!Array.isArray(args)) {
-        args = Array.prototype.slice.call(arguments, 1);
-    }
-
-    return str.replace(/{([0-9]+)}/g, function(m, i) {
-        return args[parseInt(i)];
-    });
-};
-
-/**
- * Throws an Error object with custom name or logs an error
- * @param {boolean} [doThrow=true]
- * @param {string} type
- * @param {string} message
- * @param {...*} args
- */
-Utils.error = function() {
-    var i = 0;
-    var doThrow = typeof arguments[i] === 'boolean' ? arguments[i++] : true;
-    var type = arguments[i++];
-    var message = arguments[i++];
-    var args = Array.isArray(arguments[i]) ? arguments[i] : Array.prototype.slice.call(arguments, i);
-
-    if (doThrow) {
-        var err = new Error(Utils.fmt(message, args));
-        err.name = type + 'Error';
-        err.args = args;
-        throw err;
-    }
-    else {
-        console.error(type + 'Error: ' + Utils.fmt(message, args));
-    }
-};
-
-/**
- * Changes the type of a value to int, float or bool
- * @param {*} value
- * @param {string} type - 'integer', 'double', 'boolean' or anything else (passthrough)
- * @param {boolean} [boolAsInt=false] - return 0 or 1 for booleans
- * @returns {*}
- */
-Utils.changeType = function(value, type, boolAsInt) {
-    switch (type) {
-        // @formatter:off
-    case 'integer': return parseInt(value);
-    case 'double': return parseFloat(value);
-    case 'boolean':
-        var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
-        return boolAsInt ? (bool ? 1 : 0) : bool;
-    default: return value;
-    // @formatter:on
-    }
-};
-
-/**
- * Escapes a string like PHP's mysql_real_escape_string does
- * @param {string} value
- * @returns {string}
- */
-Utils.escapeString = function(value) {
-    if (typeof value != 'string') {
-        return value;
-    }
-
-    return value
-        .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
-            switch (s) {
-                // @formatter:off
-            case '\0': return '\\0';
-            case '\n': return '\\n';
-            case '\r': return '\\r';
-            case '\b': return '\\b';
-            default:   return '\\' + s;
-            // @formatter:off
-            }
-        })
-        // uglify compliant
-        .replace(/\t/g, '\\t')
-        .replace(/\x1a/g, '\\Z');
-};
-
-/**
- * Escapes a string for use in regex
- * @param {string} str
- * @returns {string}
- */
-Utils.escapeRegExp = function(str) {
-    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
-};
-
-/**
- * Escapes a string for use in HTML element id
- * @param {string} str
- * @returns {string}
- */
-Utils.escapeElementId = function(str) {
-    // Regex based on that suggested by:
-    // https://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
-    // - escapes : . [ ] ,
-    // - avoids escaping already escaped values
-    return (str) ? str.replace(/(\\)?([:.\[\],])/g,
-            function( $0, $1, $2 ) { return $1 ? $0 : '\\' + $2; }) : str;
-};
-
-/**
- * Sorts objects by grouping them by `key`, preserving initial order when possible
- * @param {object[]} items
- * @param {string} key
- * @returns {object[]}
- */
-Utils.groupSort = function(items, key) {
-    var optgroups = [];
-    var newItems = [];
-
-    items.forEach(function(item) {
-        var idx;
-
-        if (item[key]) {
-            idx = optgroups.lastIndexOf(item[key]);
-
-            if (idx == -1) {
-                idx = optgroups.length;
-            }
-            else {
-                idx++;
-            }
-        }
-        else {
-            idx = optgroups.length;
-        }
-
-        optgroups.splice(idx, 0, item[key]);
-        newItems.splice(idx, 0, item);
-    });
-
-    return newItems;
-};
 
 
 /**
@@ -3657,7 +3764,9 @@ $.fn.queryBuilder = function(option) {
         return this;
     }
     if (!data) {
-        this.data('queryBuilder', new QueryBuilder(this, options));
+        var builder = new QueryBuilder(this, options);
+        this.data('queryBuilder', builder);
+        builder.init(options.rules);
     }
     if (typeof option == 'string') {
         return data[option].apply(data, Array.prototype.slice.call(arguments, 1));
@@ -3894,6 +4003,8 @@ QueryBuilder.extend(/** @lends module:plugins.ChangeFilters.prototype */ {
                 function(rule) {
                     if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
                         rule.drop();
+
+                        self.trigger('rulesChanged');
                     }
                     else {
                         self.createRuleFilters(rule);
@@ -4102,6 +4213,9 @@ QueryBuilder.define('filter-description', function(options) {
                         bootbox.alert($b.data('description'));
                     });
                 }
+                else {
+                    $b.show();
+                }
 
                 $b.data('description', description);
             }
@@ -4283,6 +4397,8 @@ QueryBuilder.extend(/** @lends module:plugins.Invert.prototype */ {
              * @param {object} options
              */
             this.trigger('afterInvert', node, options);
+
+            this.trigger('rulesChanged');
         }
     }
 });
@@ -4394,6 +4510,10 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
      */
     getMongo: function(data) {
         data = (data === undefined) ? this.getRules() : data;
+
+        if (!data) {
+            return null;
+        }
 
         var self = this;
 
@@ -4798,7 +4918,7 @@ QueryBuilder.define('not-group', function(options) {
  * @memberof Group
  * @instance
  */
-Model.defineModelProperties(Group, ['not']);
+Utils.defineModelProperties(Group, ['not']);
 
 QueryBuilder.selectors.group_not = QueryBuilder.selectors.group_header + ' [data-not=group]';
 
@@ -4822,6 +4942,8 @@ QueryBuilder.extend(/** @lends module:plugins.NotGroup.prototype */ {
          * @param {Group} group
          */
         this.trigger('afterUpdateGroupNot', group);
+
+        this.trigger('rulesChanged');
     }
 });
 
@@ -4920,6 +5042,8 @@ QueryBuilder.define('sortable', function(options) {
                          * @param {Node} node
                          */
                         self.trigger('afterMove', src);
+
+                        self.trigger('rulesChanged');
                     }
                 });
         }
@@ -5055,7 +5179,14 @@ function moveSortableToTarget(node, target, builder) {
  * @class SqlSupport
  * @memberof module:plugins
  * @description Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.
+ * @param {object} [options]
+ * @param {boolean} [options.boolean_as_integer=true] - `true` to convert boolean values to integer in the SQL output
  */
+QueryBuilder.define('sql-support', function(options) {
+
+}, {
+    boolean_as_integer: true
+});
 
 QueryBuilder.defaults({
     // operators for internal -> SQL conversion
@@ -5294,7 +5425,13 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
      */
     getSQL: function(stmt, nl, data) {
         data = (data === undefined) ? this.getRules() : data;
+
+        if (!data) {
+            return null;
+        }
+
         nl = !!nl ? '\n' : ' ';
+        var boolean_as_integer = this.getPluginOptions('sql-support', 'boolean_as_integer');
 
         if (stmt === true) stmt = 'question_mark';
         if (typeof stmt == 'string') {
@@ -5342,7 +5479,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                             }
 
                             if (rule.type == 'integer' || rule.type == 'double' || rule.type == 'boolean') {
-                                v = Utils.changeType(v, rule.type, true);
+                                v = Utils.changeType(v, rule.type, boolean_as_integer);
                             }
                             else if (!stmt) {
                                 v = Utils.escapeString(v);
@@ -5641,7 +5778,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
      */
     getSQLFieldID: function(field, value) {
         var matchingFilters = this.filters.filter(function(filter) {
-            return filter.field === field;
+            return filter.field.toLowerCase() === field.toLowerCase();
         });
 
         var id;
@@ -5795,7 +5932,7 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.4.3
+ * jQuery QueryBuilder 2.4.5
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -5850,10 +5987,12 @@ QueryBuilder.regional['en'] = {
     "number_exceed_min": "Must be greater than {0}",
     "number_exceed_max": "Must be lower than {0}",
     "number_wrong_step": "Must be a multiple of {0}",
+    "number_between_invalid": "Invalid values, {0} is greater than {1}",
     "datetime_empty": "Empty value",
     "datetime_invalid": "Invalid date format ({0})",
     "datetime_exceed_min": "Must be after {0}",
     "datetime_exceed_max": "Must be before {0}",
+    "datetime_between_invalid": "Invalid values, {0} isgreater than {1}",
     "boolean_not_valid": "Not a boolean",
     "operator_not_multiple": "Operator \"{1}\" cannot accept multiple values"
   },
@@ -5862,4 +6001,6 @@ QueryBuilder.regional['en'] = {
 };
 
 QueryBuilder.defaults({ lang_code: 'en' });
+return QueryBuilder;
+
 }));

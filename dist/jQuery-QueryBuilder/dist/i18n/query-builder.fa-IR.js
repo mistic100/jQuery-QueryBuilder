@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.3
+ * jQuery QueryBuilder 2.4.5
  * Locale: Farsi (fa-ir)
  * Author: Behzad Sedighzade, behzad.sedighzade@gmail.com
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -38,6 +38,7 @@ QueryBuilder.regional['fa-IR'] = {
     "greater": "بزرگتر از",
     "greater_or_equal": "بزرگتر یا مساوی با",
     "between": "مابین",
+    "not_between": "مابین نباشد",
     "begins_with": "شروع شود با",
     "not_begins_with": "شروع نشود با",
     "contains": "شامل شود",

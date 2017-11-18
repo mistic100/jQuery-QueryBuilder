@@ -339,32 +339,6 @@
           "model#root",
           "root"
         ],
-        "Model.html#.defineModelProperties": [
-          "__",
-          "defin",
-          "definemodelproperti",
-          "emit",
-          "enumer",
-          "event",
-          "field",
-          "function",
-          "getter",
-          "lt;static&gt",
-          "model",
-          "model.definemodelproperti",
-          "node",
-          "non",
-          "obj",
-          "object",
-          "properti",
-          "prototyp",
-          "root",
-          "setter",
-          "store",
-          "through",
-          "updat",
-          "valu"
-        ],
         "Model.html#off": [
           "cb",
           "event",
@@ -1403,6 +1377,32 @@
           "lt;static&gt",
           "type",
           "utils.changetyp",
+          "valu"
+        ],
+        "Utils.html#.defineModelProperties": [
+          "__",
+          "defin",
+          "definemodelproperti",
+          "emit",
+          "enumer",
+          "event",
+          "field",
+          "function",
+          "getter",
+          "lt;static&gt",
+          "model",
+          "node",
+          "non",
+          "obj",
+          "object",
+          "properti",
+          "prototyp",
+          "root",
+          "setter",
+          "store",
+          "through",
+          "updat",
+          "utils.definemodelproperti",
           "valu"
         ],
         "Utils.html#.error": [
@@ -3065,10 +3065,6 @@
                             "ref": "Group.html#removeNode",
                             "tf": 110
                           },
-                          "Model.html#.defineModelProperties": {
-                            "ref": "Model.html#.defineModelProperties",
-                            "tf": 110
-                          },
                           "Model.html#off": {
                             "ref": "Model.html#off",
                             "tf": 110
@@ -3285,6 +3281,10 @@
                             "ref": "Utils.html#.changeType",
                             "tf": 110
                           },
+                          "Utils.html#.defineModelProperties": {
+                            "ref": "Utils.html#.defineModelProperties",
+                            "tf": 110
+                          },
                           "Utils.html#.error": {
                             "ref": "Utils.html#.error",
                             "tf": 110
@@ -3343,20 +3343,6 @@
           },
           "i": {
             "docs": {},
-            "e": {
-              "docs": {},
-              "l": {
-                "docs": {},
-                "d": {
-                  "docs": {
-                    "Model.html#.defineModelProperties": {
-                      "ref": "Model.html#.defineModelProperties",
-                      "tf": 25
-                    }
-                  }
-                }
-              }
-            },
             "l": {
               "docs": {},
               "t": {
@@ -3457,6 +3443,20 @@
                   "module-plugins.MongoDbSupport.html": {
                     "ref": "module-plugins.MongoDbSupport.html",
                     "tf": 4.545454545454546
+                  }
+                }
+              }
+            },
+            "e": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "d": {
+                  "docs": {
+                    "Utils.html#.defineModelProperties": {
+                      "ref": "Utils.html#.defineModelProperties",
+                      "tf": 25
+                    }
                   }
                 }
               }
@@ -4617,6 +4617,20 @@
             "docs": {},
             "o": {
               "docs": {},
+              "v": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "d": {
+                    "docs": {
+                      "module-plugins.FilterDescription.html": {
+                        "ref": "module-plugins.FilterDescription.html",
+                        "tf": 5
+                      }
+                    }
+                  }
+                }
+              },
               "p": {
                 "docs": {},
                 "e": {
@@ -4627,8 +4641,8 @@
                       "docs": {},
                       "i": {
                         "docs": {
-                          "Model.html#.defineModelProperties": {
-                            "ref": "Model.html#.defineModelProperties",
+                          "Utils.html#.defineModelProperties": {
+                            "ref": "Utils.html#.defineModelProperties",
                             "tf": 4.761904761904762
                           }
                         }
@@ -4647,25 +4661,11 @@
                       "docs": {},
                       "p": {
                         "docs": {
-                          "Model.html#.defineModelProperties": {
-                            "ref": "Model.html#.defineModelProperties",
+                          "Utils.html#.defineModelProperties": {
+                            "ref": "Utils.html#.defineModelProperties",
                             "tf": 2.380952380952381
                           }
                         }
-                      }
-                    }
-                  }
-                }
-              },
-              "v": {
-                "docs": {},
-                "i": {
-                  "docs": {},
-                  "d": {
-                    "docs": {
-                      "module-plugins.FilterDescription.html": {
-                        "ref": "module-plugins.FilterDescription.html",
-                        "tf": 5
                       }
                     }
                   }
@@ -6495,10 +6495,6 @@
                     "ref": "Model.html#root",
                     "tf": 683.3333333333334
                   },
-                  "Model.html#.defineModelProperties": {
-                    "ref": "Model.html#.defineModelProperties",
-                    "tf": 2.380952380952381
-                  },
                   "Node.html": {
                     "ref": "Node.html",
                     "tf": 16.666666666666664
@@ -6526,6 +6522,10 @@
                   "Rule.html#isRoot": {
                     "ref": "Rule.html#isRoot",
                     "tf": 16.666666666666664
+                  },
+                  "Utils.html#.defineModelProperties": {
+                    "ref": "Utils.html#.defineModelProperties",
+                    "tf": 2.380952380952381
                   }
                 }
               }
@@ -6631,23 +6631,6 @@
               }
             }
           },
-          "p": {
-            "docs": {},
-            "d": {
-              "docs": {},
-              "a": {
-                "docs": {},
-                "t": {
-                  "docs": {
-                    "Model.html#.defineModelProperties": {
-                      "ref": "Model.html#.defineModelProperties",
-                      "tf": 2.380952380952381
-                    }
-                  }
-                }
-              }
-            }
-          },
           "n": {
             "docs": {},
             "i": {
@@ -6720,6 +6703,68 @@
                                         "Utils.html#.changeType": {
                                           "ref": "Utils.html#.changeType",
                                           "tf": 1150
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "d": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "f": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "n": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "m": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "d": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "p": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "p": {
+                                                  "docs": {},
+                                                  "e": {
+                                                    "docs": {},
+                                                    "r": {
+                                                      "docs": {},
+                                                      "t": {
+                                                        "docs": {},
+                                                        "i": {
+                                                          "docs": {
+                                                            "Utils.html#.defineModelProperties": {
+                                                              "ref": "Utils.html#.defineModelProperties",
+                                                              "tf": 1150
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
                                         }
                                       }
                                     }
@@ -6970,6 +7015,23 @@
                 }
               }
             }
+          },
+          "p": {
+            "docs": {},
+            "d": {
+              "docs": {},
+              "a": {
+                "docs": {},
+                "t": {
+                  "docs": {
+                    "Utils.html#.defineModelProperties": {
+                      "ref": "Utils.html#.defineModelProperties",
+                      "tf": 2.380952380952381
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "d": {
@@ -7194,16 +7256,52 @@
                 }
               }
             },
+            "s": {
+              "docs": {},
+              "c": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "p": {
+                      "docs": {},
+                      "t": {
+                        "docs": {
+                          "module-plugins.FilterDescription.html": {
+                            "ref": "module-plugins.FilterDescription.html",
+                            "tf": 5
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "t": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "y": {
+                      "docs": {
+                        "QueryBuilder.html#destroy": {
+                          "ref": "QueryBuilder.html#destroy",
+                          "tf": 775
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "f": {
               "docs": {},
               "i": {
                 "docs": {},
                 "n": {
                   "docs": {
-                    "Model.html#.defineModelProperties": {
-                      "ref": "Model.html#.defineModelProperties",
-                      "tf": 2.380952380952381
-                    },
                     "module-plugins.UniqueFilter.html": {
                       "ref": "module-plugins.UniqueFilter.html",
                       "tf": 4.545454545454546
@@ -7211,6 +7309,10 @@
                     "QueryBuilder.html#setOptions": {
                       "ref": "QueryBuilder.html#setOptions",
                       "tf": 7.142857142857142
+                    },
+                    "Utils.html#.defineModelProperties": {
+                      "ref": "Utils.html#.defineModelProperties",
+                      "tf": 2.380952380952381
                     }
                   },
                   "e": {
@@ -7241,8 +7343,8 @@
                                             "docs": {},
                                             "i": {
                                               "docs": {
-                                                "Model.html#.defineModelProperties": {
-                                                  "ref": "Model.html#.defineModelProperties",
+                                                "Utils.html#.defineModelProperties": {
+                                                  "ref": "Utils.html#.defineModelProperties",
                                                   "tf": 675
                                                 }
                                               }
@@ -7277,46 +7379,6 @@
                         "QueryBuilder.html#.OPERATORS": {
                           "ref": "QueryBuilder.html#.OPERATORS",
                           "tf": 25
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "s": {
-              "docs": {},
-              "c": {
-                "docs": {},
-                "r": {
-                  "docs": {},
-                  "i": {
-                    "docs": {},
-                    "p": {
-                      "docs": {},
-                      "t": {
-                        "docs": {
-                          "module-plugins.FilterDescription.html": {
-                            "ref": "module-plugins.FilterDescription.html",
-                            "tf": 5
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "t": {
-                "docs": {},
-                "r": {
-                  "docs": {},
-                  "o": {
-                    "docs": {},
-                    "y": {
-                      "docs": {
-                        "QueryBuilder.html#destroy": {
-                          "ref": "QueryBuilder.html#destroy",
-                          "tf": 775
                         }
                       }
                     }
@@ -7761,10 +7823,6 @@
                               "docs": {},
                               "t": {
                                 "docs": {
-                                  "Model.html#.defineModelProperties": {
-                                    "ref": "Model.html#.defineModelProperties",
-                                    "tf": 25
-                                  },
                                   "QueryBuilder.html#.Group": {
                                     "ref": "QueryBuilder.html#.Group",
                                     "tf": 33.33333333333333
@@ -7780,6 +7838,10 @@
                                   "Utils.html#.changeType": {
                                     "ref": "Utils.html#.changeType",
                                     "tf": 20
+                                  },
+                                  "Utils.html#.defineModelProperties": {
+                                    "ref": "Utils.html#.defineModelProperties",
+                                    "tf": 25
                                   },
                                   "Utils.html#.error": {
                                     "ref": "Utils.html#.error",
@@ -7964,10 +8026,6 @@
                       "ref": "Model.html",
                       "tf": 6.25
                     },
-                    "Model.html#.defineModelProperties": {
-                      "ref": "Model.html#.defineModelProperties",
-                      "tf": 2.380952380952381
-                    },
                     "Model.html#off": {
                       "ref": "Model.html#off",
                       "tf": 12.5
@@ -8003,6 +8061,10 @@
                     "QueryBuilder.html#trigger": {
                       "ref": "QueryBuilder.html#trigger",
                       "tf": 45.83333333333333
+                    },
+                    "Utils.html#.defineModelProperties": {
+                      "ref": "Utils.html#.defineModelProperties",
+                      "tf": 2.380952380952381
                     }
                   }
                 }
@@ -8233,8 +8295,8 @@
                     "ref": "Model.html",
                     "tf": 6.25
                   },
-                  "Model.html#.defineModelProperties": {
-                    "ref": "Model.html#.defineModelProperties",
+                  "Utils.html#.defineModelProperties": {
+                    "ref": "Utils.html#.defineModelProperties",
                     "tf": 2.380952380952381
                   }
                 }
@@ -8256,23 +8318,6 @@
                 "Rule.html#moveAtEnd": {
                   "ref": "Rule.html#moveAtEnd",
                   "tf": 8.333333333333332
-                }
-              }
-            },
-            "u": {
-              "docs": {},
-              "m": {
-                "docs": {},
-                "e": {
-                  "docs": {},
-                  "r": {
-                    "docs": {
-                      "Model.html#.defineModelProperties": {
-                        "ref": "Model.html#.defineModelProperties",
-                        "tf": 2.380952380952381
-                      }
-                    }
-                  }
                 }
               }
             },
@@ -8299,6 +8344,23 @@
                     "module-plugins.Sortable.html": {
                       "ref": "module-plugins.Sortable.html",
                       "tf": 8.333333333333332
+                    }
+                  }
+                }
+              }
+            },
+            "u": {
+              "docs": {},
+              "m": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "r": {
+                    "docs": {
+                      "Utils.html#.defineModelProperties": {
+                        "ref": "Utils.html#.defineModelProperties",
+                        "tf": 2.380952380952381
+                      }
                     }
                   }
                 }
@@ -9497,10 +9559,6 @@
                       "ref": "Model.html",
                       "tf": 1912.5
                     },
-                    "Model.html#.defineModelProperties": {
-                      "ref": "Model.html#.defineModelProperties",
-                      "tf": 2.380952380952381
-                    },
                     "Model.html#off": {
                       "ref": "Model.html#off",
                       "tf": 45.83333333333333
@@ -9532,6 +9590,10 @@
                     "Rule.html#model": {
                       "ref": "Rule.html#model",
                       "tf": 716.6666666666666
+                    },
+                    "Utils.html#.defineModelProperties": {
+                      "ref": "Utils.html#.defineModelProperties",
+                      "tf": 2.380952380952381
                     }
                   },
                   "#": {
@@ -9630,71 +9692,6 @@
                                               "Model.html#GroupIteratee": {
                                                 "ref": "Model.html#GroupIteratee",
                                                 "tf": 1150
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  ".": {
-                    "docs": {},
-                    "d": {
-                      "docs": {},
-                      "e": {
-                        "docs": {},
-                        "f": {
-                          "docs": {},
-                          "i": {
-                            "docs": {},
-                            "n": {
-                              "docs": {},
-                              "e": {
-                                "docs": {},
-                                "m": {
-                                  "docs": {},
-                                  "o": {
-                                    "docs": {},
-                                    "d": {
-                                      "docs": {},
-                                      "e": {
-                                        "docs": {},
-                                        "l": {
-                                          "docs": {},
-                                          "p": {
-                                            "docs": {},
-                                            "r": {
-                                              "docs": {},
-                                              "o": {
-                                                "docs": {},
-                                                "p": {
-                                                  "docs": {},
-                                                  "e": {
-                                                    "docs": {},
-                                                    "r": {
-                                                      "docs": {},
-                                                      "t": {
-                                                        "docs": {},
-                                                        "i": {
-                                                          "docs": {
-                                                            "Model.html#.defineModelProperties": {
-                                                              "ref": "Model.html#.defineModelProperties",
-                                                              "tf": 1150
-                                                            }
-                                                          }
-                                                        }
-                                                      }
-                                                    }
-                                                  }
-                                                }
                                               }
                                             }
                                           }
@@ -10275,10 +10272,6 @@
                     "ref": "Group.html#removeNode",
                     "tf": 66.66666666666666
                   },
-                  "Model.html#.defineModelProperties": {
-                    "ref": "Model.html#.defineModelProperties",
-                    "tf": 2.380952380952381
-                  },
                   "Model.html#GroupIteratee": {
                     "ref": "Model.html#GroupIteratee",
                     "tf": 33.33333333333333
@@ -10322,6 +10315,10 @@
                   "Rule.html#moveAfter": {
                     "ref": "Rule.html#moveAfter",
                     "tf": 12.5
+                  },
+                  "Utils.html#.defineModelProperties": {
+                    "ref": "Utils.html#.defineModelProperties",
+                    "tf": 2.380952380952381
                   }
                 },
                 "#": {
@@ -10578,14 +10575,6 @@
                 }
               }
             },
-            "n": {
-              "docs": {
-                "Model.html#.defineModelProperties": {
-                  "ref": "Model.html#.defineModelProperties",
-                  "tf": 2.380952380952381
-                }
-              }
-            },
             "t": {
               "docs": {},
               "g": {
@@ -10629,6 +10618,14 @@
                       }
                     }
                   }
+                }
+              }
+            },
+            "n": {
+              "docs": {
+                "Utils.html#.defineModelProperties": {
+                  "ref": "Utils.html#.defineModelProperties",
+                  "tf": 2.380952380952381
                 }
               }
             }
@@ -11379,20 +11376,6 @@
                   }
                 }
               },
-              "t": {
-                "docs": {},
-                "e": {
-                  "docs": {},
-                  "r": {
-                    "docs": {
-                      "Model.html#.defineModelProperties": {
-                        "ref": "Model.html#.defineModelProperties",
-                        "tf": 2.380952380952381
-                      }
-                    }
-                  }
-                }
-              },
               "m": {
                 "docs": {},
                 "o": {
@@ -11506,6 +11489,20 @@
                     }
                   }
                 }
+              },
+              "t": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "r": {
+                    "docs": {
+                      "Utils.html#.defineModelProperties": {
+                        "ref": "Utils.html#.defineModelProperties",
+                        "tf": 2.380952380952381
+                      }
+                    }
+                  }
+                }
               }
             }
           },
@@ -11536,8 +11533,8 @@
             "docs": {},
             "j": {
               "docs": {
-                "Model.html#.defineModelProperties": {
-                  "ref": "Model.html#.defineModelProperties",
+                "Utils.html#.defineModelProperties": {
+                  "ref": "Utils.html#.defineModelProperties",
                   "tf": 25
                 }
               },
@@ -11562,10 +11559,6 @@
                       "Model.html": {
                         "ref": "Model.html",
                         "tf": 6.25
-                      },
-                      "Model.html#.defineModelProperties": {
-                        "ref": "Model.html#.defineModelProperties",
-                        "tf": 4.761904761904762
                       },
                       "module-plugins.MongoDbSupport.html": {
                         "ref": "module-plugins.MongoDbSupport.html",
@@ -11638,6 +11631,10 @@
                       "Rule.html#flags": {
                         "ref": "Rule.html#flags",
                         "tf": 33.33333333333333
+                      },
+                      "Utils.html#.defineModelProperties": {
+                        "ref": "Utils.html#.defineModelProperties",
+                        "tf": 4.761904761904762
                       },
                       "Utils.html#.error": {
                         "ref": "Utils.html#.error",
@@ -12006,8 +12003,8 @@
                       "ref": "Model.html",
                       "tf": 6.25
                     },
-                    "Model.html#.defineModelProperties": {
-                      "ref": "Model.html#.defineModelProperties",
+                    "Utils.html#.defineModelProperties": {
+                      "ref": "Utils.html#.defineModelProperties",
                       "tf": 2.380952380952381
                     }
                   }
@@ -12164,20 +12161,6 @@
                   "tf": 16.666666666666664
                 }
               },
-              "t": {
-                "docs": {},
-                "e": {
-                  "docs": {},
-                  "r": {
-                    "docs": {
-                      "Model.html#.defineModelProperties": {
-                        "ref": "Model.html#.defineModelProperties",
-                        "tf": 4.761904761904762
-                      }
-                    }
-                  }
-                }
-              },
               "f": {
                 "docs": {},
                 "i": {
@@ -12284,6 +12267,20 @@
                       "QueryBuilder.html#setOptions": {
                         "ref": "QueryBuilder.html#setOptions",
                         "tf": 700
+                      }
+                    }
+                  }
+                }
+              },
+              "t": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "r": {
+                    "docs": {
+                      "Utils.html#.defineModelProperties": {
+                        "ref": "Utils.html#.defineModelProperties",
+                        "tf": 4.761904761904762
                       }
                     }
                   }
@@ -13079,52 +13076,6 @@
               }
             }
           },
-          "h": {
-            "docs": {},
-            "r": {
-              "docs": {},
-              "o": {
-                "docs": {},
-                "u": {
-                  "docs": {},
-                  "g": {
-                    "docs": {},
-                    "h": {
-                      "docs": {
-                        "Model.html#.defineModelProperties": {
-                          "ref": "Model.html#.defineModelProperties",
-                          "tf": 2.380952380952381
-                        }
-                      }
-                    }
-                  }
-                },
-                "w": {
-                  "docs": {
-                    "Utils.html#.error": {
-                      "ref": "Utils.html#.error",
-                      "tf": 7.142857142857142
-                    }
-                  }
-                }
-              },
-              "e": {
-                "docs": {},
-                "e": {
-                  "docs": {
-                    "module-plugins.FilterDescription.html": {
-                      "ref": "module-plugins.FilterDescription.html",
-                      "tf": 5
-                    },
-                    "Utils.html#.iterateOptions": {
-                      "ref": "Utils.html#.iterateOptions",
-                      "tf": 7.142857142857142
-                    }
-                  }
-                }
-              }
-            }
-          },
           "y": {
             "docs": {},
             "p": {
@@ -13232,6 +13183,52 @@
               }
             }
           },
+          "h": {
+            "docs": {},
+            "r": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "e": {
+                  "docs": {
+                    "module-plugins.FilterDescription.html": {
+                      "ref": "module-plugins.FilterDescription.html",
+                      "tf": 5
+                    },
+                    "Utils.html#.iterateOptions": {
+                      "ref": "Utils.html#.iterateOptions",
+                      "tf": 7.142857142857142
+                    }
+                  }
+                }
+              },
+              "o": {
+                "docs": {},
+                "u": {
+                  "docs": {},
+                  "g": {
+                    "docs": {},
+                    "h": {
+                      "docs": {
+                        "Utils.html#.defineModelProperties": {
+                          "ref": "Utils.html#.defineModelProperties",
+                          "tf": 2.380952380952381
+                        }
+                      }
+                    }
+                  }
+                },
+                "w": {
+                  "docs": {
+                    "Utils.html#.error": {
+                      "ref": "Utils.html#.error",
+                      "tf": 7.142857142857142
+                    }
+                  }
+                }
+              }
+            }
+          },
           "e": {
             "docs": {},
             "m": {
@@ -13285,55 +13282,12 @@
             }
           }
         },
-        "_": {
-          "docs": {},
-          "_": {
-            "docs": {
-              "Model.html#.defineModelProperties": {
-                "ref": "Model.html#.defineModelProperties",
-                "tf": 2.380952380952381
-              }
-            }
-          }
-        },
         "v": {
           "docs": {},
           "a": {
             "docs": {},
             "l": {
               "docs": {},
-              "u": {
-                "docs": {
-                  "Model.html#.defineModelProperties": {
-                    "ref": "Model.html#.defineModelProperties",
-                    "tf": 2.380952380952381
-                  },
-                  "QueryBuilder.html#change": {
-                    "ref": "QueryBuilder.html#change",
-                    "tf": 40.47619047619047
-                  },
-                  "QueryBuilder.html#validateValue": {
-                    "ref": "QueryBuilder.html#validateValue",
-                    "tf": 41.666666666666664
-                  },
-                  "Rule.html#value": {
-                    "ref": "Rule.html#value",
-                    "tf": 750
-                  },
-                  "Utils.html#.changeType": {
-                    "ref": "Utils.html#.changeType",
-                    "tf": 28.333333333333332
-                  },
-                  "Utils.html#.escapeString": {
-                    "ref": "Utils.html#.escapeString",
-                    "tf": 25
-                  },
-                  "Utils.html#OptionsIteratee": {
-                    "ref": "Utils.html#OptionsIteratee",
-                    "tf": 33.33333333333333
-                  }
-                }
-              },
               "i": {
                 "docs": {},
                 "d": {
@@ -13376,6 +13330,38 @@
                         }
                       }
                     }
+                  }
+                }
+              },
+              "u": {
+                "docs": {
+                  "QueryBuilder.html#change": {
+                    "ref": "QueryBuilder.html#change",
+                    "tf": 40.47619047619047
+                  },
+                  "QueryBuilder.html#validateValue": {
+                    "ref": "QueryBuilder.html#validateValue",
+                    "tf": 41.666666666666664
+                  },
+                  "Rule.html#value": {
+                    "ref": "Rule.html#value",
+                    "tf": 750
+                  },
+                  "Utils.html#.changeType": {
+                    "ref": "Utils.html#.changeType",
+                    "tf": 28.333333333333332
+                  },
+                  "Utils.html#.defineModelProperties": {
+                    "ref": "Utils.html#.defineModelProperties",
+                    "tf": 2.380952380952381
+                  },
+                  "Utils.html#.escapeString": {
+                    "ref": "Utils.html#.escapeString",
+                    "tf": 25
+                  },
+                  "Utils.html#OptionsIteratee": {
+                    "ref": "Utils.html#OptionsIteratee",
+                    "tf": 33.33333333333333
                   }
                 }
               }
@@ -13615,6 +13601,17 @@
               }
             }
           }
+        },
+        "_": {
+          "docs": {},
+          "_": {
+            "docs": {
+              "Utils.html#.defineModelProperties": {
+                "ref": "Utils.html#.defineModelProperties",
+                "tf": 2.380952380952381
+              }
+            }
+          }
         }
       },
       "length": 1157
@@ -13834,7 +13831,6 @@
       "model#onc",
       "model#root",
       "model#trigg",
-      "model.definemodelproperti",
       "modifi",
       "modul",
       "module:plugin",
@@ -14062,6 +14058,7 @@
       "util",
       "utils#optionsiterate",
       "utils.changetyp",
+      "utils.definemodelproperti",
       "utils.error",
       "utils.escapeelementid",
       "utils.escaperegexp",
@@ -14450,16 +14447,6 @@
       "tags": "Model#root root",
       "summary": "",
       "description": ""
-    },
-    "Model.html#.defineModelProperties": {
-      "id": "Model.html#.defineModelProperties",
-      "kind": "function",
-      "title": "&lt;static&gt; defineModelProperties( obj, fields )",
-      "longname": "Model.defineModelProperties",
-      "name": "defineModelProperties",
-      "tags": "Model.defineModelProperties defineModelProperties",
-      "summary": "",
-      "description": "Defines properties on an Node prototype with getter and setter. Update events are emitted in the setter through root Model (if any). The object must have a __ object, non enumerable property to store values."
     },
     "Model.html#off": {
       "id": "Model.html#off",
@@ -15567,6 +15554,16 @@
       "tags": "Utils.changeType changeType",
       "summary": "",
       "description": "Changes the type of a value to int, float or bool"
+    },
+    "Utils.html#.defineModelProperties": {
+      "id": "Utils.html#.defineModelProperties",
+      "kind": "function",
+      "title": "&lt;static&gt; defineModelProperties( obj, fields )",
+      "longname": "Utils.defineModelProperties",
+      "name": "defineModelProperties",
+      "tags": "Utils.defineModelProperties defineModelProperties",
+      "summary": "",
+      "description": "Defines properties on an Node prototype with getter and setter. Update events are emitted in the setter through root Model (if any). The object must have a __ object, non enumerable property to store values."
     },
     "Utils.html#.error": {
       "id": "Utils.html#.error",

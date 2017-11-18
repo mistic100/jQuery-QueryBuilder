@@ -3,11 +3,11 @@ id: mistic100/jQuery-QueryBuilder
 # name of the software
 name: jQuery QueryBuilder
 # current version of the software
-version: 2.4.3
+version: 2.4.5
 # links to file/dir viewers
 treeUrl: https://github.com/mistic100/jQuery-QueryBuilder/tree/master
 blobUrl: https://github.com/mistic100/jQuery-QueryBuilder/blob/master
-cdnUrl: https://unpkg.com/jQuery-QueryBuilder@2.4.3/dist
+cdnUrl: https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist
 # licence of the software
 license: MIT License
 licenseUrl: http://opensource.org/licenses/MIT
@@ -21,13 +21,13 @@ favicon:
 # download.cdn.img is optional
 download:
   popup: true
-  url: https://github.com/mistic100/jQuery-QueryBuilder/archive/2.4.3.zip
+  url: https://github.com/mistic100/jQuery-QueryBuilder/archive/master.zip
   bower: jQuery-QueryBuilder
   npm: jQuery-QueryBuilder
   cdn:
-    url: https://unpkg.com/jQuery-QueryBuilder/dist/
-    img: http://querybuilder.js.org/assets/images/unpkg-logo.png
-    name: unpkg
+    url: https://www.jsdelivr.com/package/npm/jQuery-QueryBuilder
+    img: http://querybuilder.js.org/assets/images/jsdelivr-logo.png
+    name: jsDelivr
 
 # set this to true to replace the generated header navbar by _includes/navbar.html
 customNavBar: true

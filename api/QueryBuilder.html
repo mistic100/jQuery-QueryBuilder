@@ -40,8 +40,9 @@
 				}
 			</style>
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
+			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
 			window.DOCLET_TOC_ENABLED = true;
+			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
 </head>
 <body>
@@ -113,9 +114,9 @@
 										<li><a href="QueryBuilder.html#.event:changer:getGroupTemplate">QueryBuilder.changer:getGroupTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getOperators">QueryBuilder.changer:getOperators</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleFilters">QueryBuilder.changer:getRuleFilters</a></li>
-										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate">QueryBuilder.changer:getRuleFilterTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterSelect">QueryBuilder.changer:getRuleFilterSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleInput">QueryBuilder.changer:getRuleInput</a></li>
-										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate">QueryBuilder.changer:getRuleOperatorTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorSelect">QueryBuilder.changer:getRuleOperatorSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
@@ -153,6 +154,7 @@
 										<li><a href="QueryBuilder.html#.event:beforeDeleteRule">QueryBuilder.beforeDeleteRule</a></li>
 										<li><a href="QueryBuilder.html#.event:beforeDestroy">QueryBuilder.beforeDestroy</a></li>
 										<li><a href="QueryBuilder.html#.event:beforeReset">QueryBuilder.beforeReset</a></li>
+										<li><a href="QueryBuilder.html#.event:rulesChanged">QueryBuilder.rulesChanged</a></li>
 										<li><a href="QueryBuilder.html#.event:validationError">QueryBuilder.validationError</a></li>
 								</ul>
 							</li>
@@ -237,15 +239,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
-							<div class="form-group">
-								<label class="col-sm-3 control-label fires-event"><a href="QueryBuilder.html#.event:afterInit">QueryBuilder.afterInit</a></label>
-								<div class="col-sm-9">
-									<div class="form-control-static fires-summary"></div>
-								</div>
-							</div>
-					</form>
-			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
 			
 			
 			
@@ -265,7 +259,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-19">line 19</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-18">line 18</a></p>
 								</div>
 							</div>
 			
@@ -280,10 +274,10 @@
 									<h3>Members</h3>
 									<dl class="symbol">
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".DEFAULTS" class="member"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">DEFAULTS</span><span class="signature-type"> :object</span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id=".DEFAULTS" class="member public"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">DEFAULTS</span><span class="signature-type"> :object</span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Default configuration</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -324,10 +318,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".Group" class="member"><span class="signature-attribs">&lt;static> </span><span class="name">Group</span><span class="signature-type"> :function</span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id=".Group" class="member public"><span class="signature-attribs">&lt;static> </span><span class="name">Group</span><span class="signature-type"> :function</span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
 			
@@ -356,7 +350,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-580">line 580</a></p>
+									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-542">line 542</a></p>
 								</div>
 							</div>
 			
@@ -374,10 +368,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".OPERATORS" class="member"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">OPERATORS</span><span class="signature-type"> :object.&lt;string, object></span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id=".OPERATORS" class="member public"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">OPERATORS</span><span class="signature-type"> :object.&lt;string, object></span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Default operators</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -418,10 +412,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".regional" class="member"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">regional</span><span class="signature-type"> :object.&lt;string, object></span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id=".regional" class="member public"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">regional</span><span class="signature-type"> :object.&lt;string, object></span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Localized strings (see i18n/)</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -462,10 +456,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".Rule" class="member"><span class="signature-attribs">&lt;static> </span><span class="name">Rule</span><span class="signature-type"> :function</span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id=".Rule" class="member public"><span class="signature-attribs">&lt;static> </span><span class="name">Rule</span><span class="signature-type"> :function</span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
 			
@@ -494,7 +488,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-587">line 587</a></p>
+									<p class="form-control-static"><a href="model.js.html">model.js</a>, <a href="model.js.html#line-549">line 549</a></p>
 								</div>
 							</div>
 			
@@ -512,10 +506,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".selectors" class="member"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">selectors</span><span class="signature-type"> :object.&lt;string, string></span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id=".selectors" class="member public"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">selectors</span><span class="signature-type"> :object.&lt;string, string></span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>CSS selectors for common components</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -556,10 +550,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".templates" class="member"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">templates</span><span class="signature-type"> :object.&lt;string, string></span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id=".templates" class="member public"><span class="signature-attribs">&lt;static, readonly> </span><span class="name">templates</span><span class="signature-type"> :object.&lt;string, string></span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Template strings (see template.js)</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -600,10 +594,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id=".utils" class="member"><span class="signature-attribs">&lt;static> </span><span class="name">utils</span><span class="signature-type"> :object</span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id=".utils" class="member public"><span class="signature-attribs">&lt;static> </span><span class="name">utils</span><span class="signature-type"> :object</span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
 			
@@ -650,10 +644,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id="$el" class="member"><span class="signature-attribs">&lt;readonly> </span><span class="name">$el</span><span class="signature-type"> :jQuery</span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id="$el" class="member public"><span class="signature-attribs">&lt;readonly> </span><span class="name">$el</span><span class="signature-type"> :jQuery</span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Element container</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -683,7 +677,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-27">line 27</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-26">line 26</a></p>
 								</div>
 							</div>
 			
@@ -694,10 +688,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id="filters" class="member"><span class="signature-attribs">&lt;readonly> </span><span class="name">filters</span><span class="signature-type"> :Array.&lt;<a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a>></span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id="filters" class="member public"><span class="signature-attribs">&lt;readonly> </span><span class="name">filters</span><span class="signature-type"> :Array.&lt;<a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a>></span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>List of filters</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -727,7 +721,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-69">line 69</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-68">line 68</a></p>
 								</div>
 							</div>
 			
@@ -738,10 +732,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id="icons" class="member"><span class="signature-attribs">&lt;readonly> </span><span class="name">icons</span><span class="signature-type"> :object.&lt;string, string></span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id="icons" class="member public"><span class="signature-attribs">&lt;readonly> </span><span class="name">icons</span><span class="signature-type"> :object.&lt;string, string></span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>List of icons</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -771,7 +765,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-76">line 76</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-75">line 75</a></p>
 								</div>
 							</div>
 			
@@ -782,10 +776,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id="lang" class="member"><span class="signature-attribs">&lt;readonly> </span><span class="name">lang</span><span class="signature-type"> :object</span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id="lang" class="member public"><span class="signature-attribs">&lt;readonly> </span><span class="name">lang</span><span class="signature-type"> :object</span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Translations object</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -815,7 +809,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-104">line 104</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-103">line 103</a></p>
 								</div>
 							</div>
 			
@@ -826,10 +820,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id="model" class="member"><span class="signature-attribs">&lt;readonly> </span><span class="name">model</span><span class="signature-type"> :<a href="Model.html">Model</a></span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id="model" class="member public"><span class="signature-attribs">&lt;readonly> </span><span class="name">model</span><span class="signature-type"> :<a href="Model.html">Model</a></span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Internal model</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -859,7 +853,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-41">line 41</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-40">line 40</a></p>
 								</div>
 							</div>
 			
@@ -870,10 +864,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id="operators" class="member"><span class="signature-attribs">&lt;readonly> </span><span class="name">operators</span><span class="signature-type"> :Array.&lt;<a href="QueryBuilder.html#.Operator">QueryBuilder.Operator</a>></span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id="operators" class="member public"><span class="signature-attribs">&lt;readonly> </span><span class="name">operators</span><span class="signature-type"> :Array.&lt;<a href="QueryBuilder.html#.Operator">QueryBuilder.Operator</a>></span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>List of operators</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -903,7 +897,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-83">line 83</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-82">line 82</a></p>
 								</div>
 							</div>
 			
@@ -914,10 +908,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id="plugins" class="member"><span class="signature-attribs">&lt;readonly> </span><span class="name">plugins</span><span class="signature-type"> :object.&lt;string, object></span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id="plugins" class="member public"><span class="signature-attribs">&lt;readonly> </span><span class="name">plugins</span><span class="signature-type"> :object.&lt;string, object></span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Plugins configuration</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -947,7 +941,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-97">line 97</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-96">line 96</a></p>
 								</div>
 							</div>
 			
@@ -958,10 +952,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id="settings" class="member"><span class="signature-attribs">&lt;readonly> </span><span class="name">settings</span><span class="signature-type"> :object</span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id="settings" class="member public"><span class="signature-attribs">&lt;readonly> </span><span class="name">settings</span><span class="signature-type"> :object</span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Configuration object</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -991,7 +985,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-34">line 34</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-33">line 33</a></p>
 								</div>
 							</div>
 			
@@ -1002,10 +996,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title member collapsible-symbol">
-			<h4 id="templates" class="member"><span class="signature-attribs">&lt;readonly> </span><span class="name">templates</span><span class="signature-type"> :object.&lt;string, function()></span></h4>
+											<dt class="symbol-title member public collapsible-symbol">
+			<h4 id="templates" class="member public"><span class="signature-attribs">&lt;readonly> </span><span class="name">templates</span><span class="signature-type"> :object.&lt;string, function()></span></h4>
 		</dt>
-<dd class="symbol-details member  collapsible-symbol">
+<dd class="symbol-details member public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>List of templates</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -1035,7 +1029,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-90">line 90</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-89">line 89</a></p>
 								</div>
 							</div>
 			
@@ -1049,10 +1043,10 @@
 									<h3>Methods</h3>
 									<dl class="symbol">
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="addGroup" class="function"><span class="name">addGroup</span><span class="signature-params">( <span class="signature-param">parent</span> [,&nbsp;<span class="signature-param">addRule</span> [,&nbsp;<span class="signature-param">data</span> [,&nbsp;<span class="signature-param">flags</span>&nbsp;]&nbsp;]&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="Group.html">Group</a>}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="addGroup" class="function public"><span class="name">addGroup</span><span class="signature-params">( <span class="signature-param">parent</span> [,&nbsp;<span class="signature-param">addRule</span> [,&nbsp;<span class="signature-param">data</span> [,&nbsp;<span class="signature-param">flags</span>&nbsp;]&nbsp;]&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="Group.html">Group</a>}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Adds a new group</p></div>
 			</div>			<div class="callout callout-info">
@@ -1148,7 +1142,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-360">line 360</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-350">line 350</a></p>
 								</div>
 							</div>
 			
@@ -1159,10 +1153,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="addRule" class="function"><span class="name">addRule</span><span class="signature-params">( <span class="signature-param">parent</span> [,&nbsp;<span class="signature-param">data</span> [,&nbsp;<span class="signature-param">flags</span>&nbsp;]&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="Rule.html">Rule</a>}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="addRule" class="function public"><span class="name">addRule</span><span class="signature-params">( <span class="signature-param">parent</span> [,&nbsp;<span class="signature-param">data</span> [,&nbsp;<span class="signature-param">flags</span>&nbsp;]&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="Rule.html">Rule</a>}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Adds a new rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -1251,7 +1245,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-496">line 496</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-499">line 499</a></p>
 								</div>
 							</div>
 			
@@ -1262,10 +1256,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="change" class="function"><span class="name">change</span><span class="signature-params">( <span class="signature-param">type</span>, <span class="signature-param">value</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{*}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="change" class="function public"><span class="name">change</span><span class="signature-params">( <span class="signature-param">type</span>, <span class="signature-param">value</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{*}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Triggers an event on the builder container and returns the modified value</p></div>
 			</div>			<div class="callout callout-info">
@@ -1322,7 +1316,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-183">line 183</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-167">line 167</a></p>
 								</div>
 							</div>
 			
@@ -1333,10 +1327,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="checkFilters" class="function"><span class="name">checkFilters</span><span class="signature-params">( <span class="signature-param">filters</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{Array.&lt;<a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a>>}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="checkFilters" class="function public"><span class="name">checkFilters</span><span class="signature-params">( <span class="signature-param">filters</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{Array.&lt;<a href="QueryBuilder.html#.Filter">QueryBuilder.Filter</a>>}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Checks the configuration of each filter</p></div>
 			</div>			<div class="callout callout-info">
@@ -1395,7 +1389,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-40">line 40</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-30">line 30</a></p>
 								</div>
 							</div>
 			
@@ -1406,10 +1400,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="checkOperators" class="function"><span class="name">checkOperators</span><span class="signature-params">( <span class="signature-param">operators</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{Array.&lt;<a href="QueryBuilder.html#.Operator">QueryBuilder.Operator</a>>}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="checkOperators" class="function public"><span class="name">checkOperators</span><span class="signature-params">( <span class="signature-param">operators</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{Array.&lt;<a href="QueryBuilder.html#.Operator">QueryBuilder.Operator</a>>}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Checks the configuration of each operator</p></div>
 			</div>			<div class="callout callout-info">
@@ -1468,7 +1462,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-145">line 145</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-135">line 135</a></p>
 								</div>
 							</div>
 			
@@ -1479,10 +1473,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="clear" class="function"><span class="name">clear</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="clear" class="function public"><span class="name">clear</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Clears all rules and removes the root group</p></div>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
@@ -1519,7 +1513,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-64">line 64</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-66">line 66</a></p>
 								</div>
 							</div>
 			
@@ -1530,10 +1524,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="clearErrors" class="function"><span class="name">clearErrors</span><span class="signature-params">( [&nbsp;<span class="signature-param">node</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="clearErrors" class="function public"><span class="name">clearErrors</span><span class="signature-params">( [&nbsp;<span class="signature-param">node</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Clears all errors markers</p></div>
 			</div>			<div class="callout callout-info">
@@ -1579,7 +1573,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-857">line 857</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-883">line 883</a></p>
 								</div>
 							</div>
 			
@@ -1590,10 +1584,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="deleteGroup" class="function"><span class="name">deleteGroup</span><span class="signature-params">( <span class="signature-param">group</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="deleteGroup" class="function public"><span class="name">deleteGroup</span><span class="signature-params">( <span class="signature-param">group</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Tries to delete a group. The group is not deleted if at least one rule is flagged <code>no_delete</code>.</p></div>
 			</div>			<div class="callout callout-info">
@@ -1658,7 +1652,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-409">line 409</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-406">line 406</a></p>
 								</div>
 							</div>
 			
@@ -1669,10 +1663,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="deleteRule" class="function"><span class="name">deleteRule</span><span class="signature-params">( <span class="signature-param">rule</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="deleteRule" class="function public"><span class="name">deleteRule</span><span class="signature-params">( <span class="signature-param">rule</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Tries to delete a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -1737,7 +1731,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-553">line 553</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-558">line 558</a></p>
 								</div>
 							</div>
 			
@@ -1748,10 +1742,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="destroy" class="function"><span class="name">destroy</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="destroy" class="function public"><span class="name">destroy</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Destroys the builder</p></div>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
@@ -1793,10 +1787,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="getModel" class="function"><span class="name">getModel</span><span class="signature-params">( [&nbsp;<span class="signature-param">target</span>&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="Node.html">Node</a>}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="getModel" class="function public"><span class="name">getModel</span><span class="signature-params">( [&nbsp;<span class="signature-param">target</span>&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="Node.html">Node</a>}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Returns the model associated to a DOM object, or the root model</p></div>
 			</div>			<div class="callout callout-info">
@@ -1849,7 +1843,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-109">line 109</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-113">line 113</a></p>
 								</div>
 							</div>
 			
@@ -1860,10 +1854,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="getRules" class="function"><span class="name">getRules</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{object}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="getRules" class="function public"><span class="name">getRules</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{object}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Gets an object representing current rules</p></div>
 			</div>			<div class="callout callout-info">
@@ -1976,7 +1970,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-216">line 216</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-220">line 220</a></p>
 								</div>
 							</div>
 			
@@ -1987,10 +1981,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="off" class="function"><span class="name">off</span><span class="signature-params">( <span class="signature-param">type</span> [,&nbsp;<span class="signature-param">cb</span>&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="QueryBuilder.html">QueryBuilder</a>}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="off" class="function public"><span class="name">off</span><span class="signature-params">( <span class="signature-param">type</span> [,&nbsp;<span class="signature-param">cb</span>&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="QueryBuilder.html">QueryBuilder</a>}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Removes an event listener from the builder container</p></div>
 			</div>			<div class="callout callout-info">
@@ -2050,7 +2044,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-211">line 211</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-195">line 195</a></p>
 								</div>
 							</div>
 			
@@ -2061,10 +2055,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="on" class="function"><span class="name">on</span><span class="signature-params">( <span class="signature-param">type</span>, <span class="signature-param">cb</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="QueryBuilder.html">QueryBuilder</a>}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="on" class="function public"><span class="name">on</span><span class="signature-params">( <span class="signature-param">type</span>, <span class="signature-param">cb</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="QueryBuilder.html">QueryBuilder</a>}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Attaches an event listener on the builder container</p></div>
 			</div>			<div class="callout callout-info">
@@ -2121,7 +2115,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-200">line 200</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-184">line 184</a></p>
 								</div>
 							</div>
 			
@@ -2132,10 +2126,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="once" class="function"><span class="name">once</span><span class="signature-params">( <span class="signature-param">type</span>, <span class="signature-param">cb</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="QueryBuilder.html">QueryBuilder</a>}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="once" class="function public"><span class="name">once</span><span class="signature-params">( <span class="signature-param">type</span>, <span class="signature-param">cb</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="QueryBuilder.html">QueryBuilder</a>}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Attaches an event listener called once on the builder container</p></div>
 			</div>			<div class="callout callout-info">
@@ -2192,7 +2186,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-222">line 222</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-206">line 206</a></p>
 								</div>
 							</div>
 			
@@ -2203,10 +2197,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="reset" class="function"><span class="name">reset</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="reset" class="function public"><span class="name">reset</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Clear all rules and resets the root group</p></div>
 			</div>			<div class="callout callout-warning"><h5>Fires</h5>		<form class="form-horizontal fires">
@@ -2254,10 +2248,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="setOptions" class="function"><span class="name">setOptions</span><span class="signature-params">( <span class="signature-param">options</span>&nbsp;)</span><span class="signature-type"></span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="setOptions" class="function public"><span class="name">setOptions</span><span class="signature-params">( <span class="signature-param">options</span>&nbsp;)</span><span class="signature-type"></span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the builder configuration.<br>
 			Only options defined in QueryBuilder.modifiable_options are modifiable</p></div>
@@ -2301,7 +2295,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-96">line 96</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-100">line 100</a></p>
 								</div>
 							</div>
 			
@@ -2312,10 +2306,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="setRoot" class="function"><span class="name">setRoot</span><span class="signature-params">( [&nbsp;<span class="signature-param">addRule</span> [,&nbsp;<span class="signature-param">data</span> [,&nbsp;<span class="signature-param">flags</span>&nbsp;]&nbsp;]&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="Group.html">Group</a>}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="setRoot" class="function public"><span class="name">setRoot</span><span class="signature-params">( [&nbsp;<span class="signature-param">addRule</span> [,&nbsp;<span class="signature-param">data</span> [,&nbsp;<span class="signature-param">flags</span>&nbsp;]&nbsp;]&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="Group.html">Group</a>}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Creates the root group</p></div>
 			</div>			<div class="callout callout-info">
@@ -2397,7 +2391,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-326">line 326</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-316">line 316</a></p>
 								</div>
 							</div>
 			
@@ -2408,10 +2402,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="setRules" class="function"><span class="name">setRules</span><span class="signature-params">( <span class="signature-param">data</span> [,&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="setRules" class="function public"><span class="name">setRules</span><span class="signature-params">( <span class="signature-param">data</span> [,&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Sets rules from object</p></div>
 			</div>			<div class="callout callout-info">
@@ -2519,7 +2513,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-329">line 329</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-333">line 333</a></p>
 								</div>
 							</div>
 			
@@ -2530,10 +2524,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="translate" class="function"><span class="name">translate</span><span class="signature-params">( [&nbsp;<span class="signature-param">category</span>&nbsp;], <span class="signature-param">key</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{string}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="translate" class="function public"><span class="name">translate</span><span class="signature-params">( [&nbsp;<span class="signature-param">category</span>&nbsp;], <span class="signature-param">key</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{string}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Translate a label either by looking in the <code>lang</code> object or in itself if it's an object where keys are language codes</p></div>
 			</div>			<div class="callout callout-info">
@@ -2601,7 +2595,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-601">line 601</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-624">line 624</a></p>
 								</div>
 							</div>
 			
@@ -2612,10 +2606,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="trigger" class="function"><span class="name">trigger</span><span class="signature-params">( <span class="signature-param">type</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{$.Event}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="trigger" class="function public"><span class="name">trigger</span><span class="signature-params">( <span class="signature-param">type</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{$.Event}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Triggers an event on the builder container</p></div>
 			</div>			<div class="callout callout-info">
@@ -2666,7 +2660,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-167">line 167</a></p>
+									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-151">line 151</a></p>
 								</div>
 							</div>
 			
@@ -2677,10 +2671,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="validate" class="function"><span class="name">validate</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="validate" class="function public"><span class="name">validate</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Validates the whole builder</p></div>
 			</div>			<div class="callout callout-info">
@@ -2763,7 +2757,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-128">line 128</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-132">line 132</a></p>
 								</div>
 							</div>
 			
@@ -2774,10 +2768,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title function collapsible-symbol">
-			<h4 id="validateValue" class="function"><span class="name">validateValue</span><span class="signature-params">( <span class="signature-param">rule</span>, <span class="signature-param">value</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{array|boolean}</span></h4>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="validateValue" class="function public"><span class="name">validateValue</span><span class="signature-params">( <span class="signature-param">rule</span>, <span class="signature-param">value</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{array|boolean}</span></h4>
 		</dt>
-<dd class="symbol-details function  collapsible-symbol">
+<dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Performs value validation</p></div>
 			</div>			<div class="callout callout-info">
@@ -2856,10 +2850,10 @@
 									<h3>Type Definitions</h3>
 									<dl class="symbol">
 											<hr/>
-											<dt class="symbol-title typedef collapsible-symbol">
-			<h4 id=".Filter" class="typedef"><span class="name">Filter</span></h4>
+											<dt class="symbol-title typedef public collapsible-symbol">
+			<h4 id=".Filter" class="typedef public"><span class="name">Filter</span></h4>
 		</dt>
-<dd class="symbol-details typedef  collapsible-symbol">
+<dd class="symbol-details typedef public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>See <a href="http://querybuilder.js.org/index.html#filters">http://querybuilder.js.org/index.html#filters</a></p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -2900,10 +2894,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title typedef collapsible-symbol">
-			<h4 id=".Operator" class="typedef"><span class="name">Operator</span></h4>
+											<dt class="symbol-title typedef public collapsible-symbol">
+			<h4 id=".Operator" class="typedef public"><span class="name">Operator</span></h4>
 		</dt>
-<dd class="symbol-details typedef  collapsible-symbol">
+<dd class="symbol-details typedef public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>See <a href="http://querybuilder.js.org/index.html#operators">http://querybuilder.js.org/index.html#operators</a></p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -2947,10 +2941,10 @@
 									<h3>Events</h3>
 									<dl class="symbol">
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:displayError" class="event"><span class="name">changer:displayError</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:displayError" class="event public"><span class="name">changer:displayError</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies an error message before display</p></div>
 			</div>			<div class="callout callout-info">
@@ -3015,7 +3009,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-890">line 890</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-916">line 916</a></p>
 								</div>
 							</div>
 			
@@ -3026,10 +3020,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:getDefaultFilter" class="event"><span class="name">changer:getDefaultFilter</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getDefaultFilter" class="event public"><span class="name">changer:getDefaultFilter</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the default filter for a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -3086,7 +3080,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-529">line 529</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-534">line 534</a></p>
 								</div>
 							</div>
 			
@@ -3097,10 +3091,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:getGroupTemplate" class="event"><span class="name">changer:getGroupTemplate</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getGroupTemplate" class="event public"><span class="name">changer:getGroupTemplate</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of a group</p></div>
 			</div>			<div class="callout callout-info">
@@ -3168,10 +3162,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:getOperators" class="event"><span class="name">changer:getOperators</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getOperators" class="event public"><span class="name">changer:getOperators</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the operators available for a filter</p></div>
 			</div>			<div class="callout callout-info">
@@ -3228,7 +3222,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-281">line 281</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-304">line 304</a></p>
 								</div>
 							</div>
 			
@@ -3239,10 +3233,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:getRuleFilters" class="event"><span class="name">changer:getRuleFilters</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getRuleFilters" class="event public"><span class="name">changer:getRuleFilters</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the list a filters available for a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -3299,7 +3293,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-589">line 589</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-596">line 596</a></p>
 								</div>
 							</div>
 			
@@ -3310,10 +3304,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:getRuleFilterTemplate" class="event"><span class="name">changer:getRuleFilterTemplate</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getRuleFilterSelect" class="event public"><span class="name">changer:getRuleFilterSelect</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of the rule's filter dropdown</p></div>
 			</div>			<div class="callout callout-info">
@@ -3387,10 +3381,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:getRuleInput" class="event"><span class="name">changer:getRuleInput</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getRuleInput" class="event public"><span class="name">changer:getRuleInput</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of the rule's input</p></div>
 			</div>			<div class="callout callout-info">
@@ -3465,10 +3459,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:getRuleOperatorTemplate" class="event"><span class="name">changer:getRuleOperatorTemplate</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getRuleOperatorSelect" class="event public"><span class="name">changer:getRuleOperatorSelect</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of the rule's operator dropdown</p></div>
 			</div>			<div class="callout callout-info">
@@ -3542,10 +3536,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:getRules" class="event"><span class="name">changer:getRules</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getRules" class="event public"><span class="name">changer:getRules</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the result of the <a href="QueryBuilder.html#getRules"><code>QueryBuilder#getRules</code></a> method</p></div>
 			</div>			<div class="callout callout-info">
@@ -3596,7 +3590,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-308">line 308</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-312">line 312</a></p>
 								</div>
 							</div>
 			
@@ -3607,10 +3601,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:getRuleTemplate" class="event"><span class="name">changer:getRuleTemplate</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getRuleTemplate" class="event public"><span class="name">changer:getRuleTemplate</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -3672,10 +3666,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:getRuleValue" class="event"><span class="name">changer:getRuleValue</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getRuleValue" class="event public"><span class="name">changer:getRuleValue</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the rule's value grabbed from the DOM</p></div>
 			</div>			<div class="callout callout-info">
@@ -3732,7 +3726,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-413">line 413</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-436">line 436</a></p>
 								</div>
 							</div>
 			
@@ -3743,10 +3737,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:groupToJson" class="event"><span class="name">changer:groupToJson</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:groupToJson" class="event public"><span class="name">changer:groupToJson</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the JSON generated from a Group object</p></div>
 			</div>			<div class="callout callout-info">
@@ -3803,7 +3797,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-294">line 294</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-298">line 298</a></p>
 								</div>
 							</div>
 			
@@ -3814,10 +3808,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:jsonToGroup" class="event"><span class="name">changer:jsonToGroup</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:jsonToGroup" class="event public"><span class="name">changer:jsonToGroup</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the Group object generated from the JSON</p></div>
 			</div>			<div class="callout callout-info">
@@ -3874,7 +3868,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-443">line 443</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-452">line 452</a></p>
 								</div>
 							</div>
 			
@@ -3885,10 +3879,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:jsonToRule" class="event"><span class="name">changer:jsonToRule</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:jsonToRule" class="event public"><span class="name">changer:jsonToRule</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the Rule object generated from the JSON</p></div>
 			</div>			<div class="callout callout-info">
@@ -3945,7 +3939,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-429">line 429</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-438">line 438</a></p>
 								</div>
 							</div>
 			
@@ -3956,10 +3950,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:parseGroupFlags" class="event"><span class="name">changer:parseGroupFlags</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:parseGroupFlags" class="event public"><span class="name">changer:parseGroupFlags</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the consolidated group's flags</p></div>
 			</div>			<div class="callout callout-info">
@@ -4017,7 +4011,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-561">line 561</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-584">line 584</a></p>
 								</div>
 							</div>
 			
@@ -4028,10 +4022,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:parseRuleFlags" class="event"><span class="name">changer:parseRuleFlags</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:parseRuleFlags" class="event public"><span class="name">changer:parseRuleFlags</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the consolidated rule's flags</p></div>
 			</div>			<div class="callout callout-info">
@@ -4089,7 +4083,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-505">line 505</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-528">line 528</a></p>
 								</div>
 							</div>
 			
@@ -4100,10 +4094,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:ruleToJson" class="event"><span class="name">changer:ruleToJson</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:ruleToJson" class="event public"><span class="name">changer:ruleToJson</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the JSON generated from a Rule object</p></div>
 			</div>			<div class="callout callout-info">
@@ -4160,7 +4154,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-277">line 277</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-281">line 281</a></p>
 								</div>
 							</div>
 			
@@ -4171,10 +4165,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:setRules" class="event"><span class="name">changer:setRules</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:setRules" class="event public"><span class="name">changer:setRules</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies data before the <a href="QueryBuilder.html#setRules"><code>QueryBuilder#setRules</code></a> method</p></div>
 			</div>			<div class="callout callout-info">
@@ -4231,7 +4225,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-349">line 349</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-353">line 353</a></p>
 								</div>
 							</div>
 			
@@ -4242,10 +4236,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:translate" class="event"><span class="name">changer:translate</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:translate" class="event public"><span class="name">changer:translate</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the translated label</p></div>
 			</div>			<div class="callout callout-info">
@@ -4312,7 +4306,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-615">line 615</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-638">line 638</a></p>
 								</div>
 							</div>
 			
@@ -4323,10 +4317,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:validate" class="event"><span class="name">changer:validate</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:validate" class="event public"><span class="name">changer:validate</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the result of the <a href="QueryBuilder.html#validate"><code>QueryBuilder#validate</code></a> method</p></div>
 			</div>			<div class="callout callout-info">
@@ -4377,7 +4371,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-195">line 195</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-199">line 199</a></p>
 								</div>
 							</div>
 			
@@ -4388,10 +4382,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:changer:validateValue" class="event"><span class="name">changer:validateValue</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:validateValue" class="event public"><span class="name">changer:validateValue</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the result of the rule validation method</p></div>
 			</div>			<div class="callout callout-info">
@@ -4466,10 +4460,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterAddGroup" class="event"><span class="name">afterAddGroup</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterAddGroup" class="event public"><span class="name">afterAddGroup</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after adding a group</p></div>
 			</div>			<div class="callout callout-info">
@@ -4512,7 +4506,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-385">line 385</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-375">line 375</a></p>
 								</div>
 							</div>
 			
@@ -4523,10 +4517,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterAddRule" class="event"><span class="name">afterAddRule</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterAddRule" class="event public"><span class="name">afterAddRule</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after adding a rule</p></div>
 			</div>			<div class="callout callout-info">
@@ -4569,7 +4563,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-518">line 518</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-521">line 521</a></p>
 								</div>
 							</div>
 			
@@ -4580,10 +4574,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterApplyGroupFlags" class="event"><span class="name">afterApplyGroupFlags</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterApplyGroupFlags" class="event public"><span class="name">afterApplyGroupFlags</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After group's flags has been applied</p></div>
 			</div>			<div class="callout callout-info">
@@ -4626,7 +4620,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-844">line 844</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-870">line 870</a></p>
 								</div>
 							</div>
 			
@@ -4637,10 +4631,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterApplyRuleFlags" class="event"><span class="name">afterApplyRuleFlags</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterApplyRuleFlags" class="event public"><span class="name">afterApplyRuleFlags</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After rule's flags has been applied</p></div>
 			</div>			<div class="callout callout-info">
@@ -4683,7 +4677,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-811">line 811</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-837">line 837</a></p>
 								</div>
 							</div>
 			
@@ -4694,10 +4688,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterClear" class="event"><span class="name">afterClear</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterClear" class="event public"><span class="name">afterClear</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the <a href="QueryBuilder.html#clear"><code>QueryBuilder#clear</code></a> method</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -4720,7 +4714,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-83">line 83</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-85">line 85</a></p>
 								</div>
 							</div>
 			
@@ -4731,10 +4725,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterCreateRuleFilters" class="event"><span class="name">afterCreateRuleFilters</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterCreateRuleFilters" class="event public"><span class="name">afterCreateRuleFilters</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After creating the dropdown for filters</p></div>
 			</div>			<div class="callout callout-info">
@@ -4777,7 +4771,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-602">line 602</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-609">line 609</a></p>
 								</div>
 							</div>
 			
@@ -4788,10 +4782,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterCreateRuleInput" class="event"><span class="name">afterCreateRuleInput</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterCreateRuleInput" class="event public"><span class="name">afterCreateRuleInput</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After creating the input for a rule and initializing optional plugin</p></div>
 			</div>			<div class="callout callout-info">
@@ -4834,7 +4828,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-682">line 682</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-696">line 696</a></p>
 								</div>
 							</div>
 			
@@ -4845,10 +4839,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterCreateRuleOperators" class="event"><span class="name">afterCreateRuleOperators</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterCreateRuleOperators" class="event public"><span class="name">afterCreateRuleOperators</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After creating the dropdown for operators</p></div>
 			</div>			<div class="callout callout-info">
@@ -4898,7 +4892,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-632">line 632</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-646">line 646</a></p>
 								</div>
 							</div>
 			
@@ -4909,10 +4903,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterDeleteGroup" class="event"><span class="name">afterDeleteGroup</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterDeleteGroup" class="event public"><span class="name">afterDeleteGroup</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after deleting a group</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -4935,7 +4929,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-436">line 436</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-433">line 433</a></p>
 								</div>
 							</div>
 			
@@ -4946,10 +4940,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterDeleteRule" class="event"><span class="name">afterDeleteRule</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterDeleteRule" class="event public"><span class="name">afterDeleteRule</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just after deleting a rule</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -4972,7 +4966,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-571">line 571</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-576">line 576</a></p>
 								</div>
 							</div>
 			
@@ -4983,10 +4977,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterInit" class="event"><span class="name">afterInit</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterInit" class="event public"><span class="name">afterInit</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>When the initilization is done, just before creating the root group</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -5009,7 +5003,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="main.js.html">main.js</a>, <a href="main.js.html#line-145">line 145</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-8">line 8</a></p>
 								</div>
 							</div>
 			
@@ -5020,10 +5014,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterReset" class="event"><span class="name">afterReset</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterReset" class="event public"><span class="name">afterReset</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the <a href="QueryBuilder.html#reset"><code>QueryBuilder#reset</code></a> method</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -5057,10 +5051,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterSetRules" class="event"><span class="name">afterSetRules</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterSetRules" class="event public"><span class="name">afterSetRules</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the <a href="QueryBuilder.html#setRules"><code>QueryBuilder#setRules</code></a> method</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -5083,7 +5077,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-457">line 457</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-466">line 466</a></p>
 								</div>
 							</div>
 			
@@ -5094,10 +5088,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterUpdateGroupCondition" class="event"><span class="name">afterUpdateGroupCondition</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterUpdateGroupCondition" class="event public"><span class="name">afterUpdateGroupCondition</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the group condition has been modified</p></div>
 			</div>			<div class="callout callout-info">
@@ -5114,6 +5108,12 @@
 						<tr>
 								<td><code>group</code></td>
 							<td><span class="param-type"><a href="Group.html">Group</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>previousCondition</code></td>
+							<td><span class="param-type">object</span></td>
 							<td class="last">
 							</td>
 						</tr>
@@ -5151,10 +5151,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterUpdateRuleFilter" class="event"><span class="name">afterUpdateRuleFilter</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterUpdateRuleFilter" class="event public"><span class="name">afterUpdateRuleFilter</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the filter has been updated and the operators and input re-created</p></div>
 			</div>			<div class="callout callout-info">
@@ -5174,6 +5174,12 @@
 							<td class="last">
 							</td>
 						</tr>
+						<tr>
+								<td><code>previousFilter</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -5197,7 +5203,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-718">line 718</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-732">line 732</a></p>
 								</div>
 							</div>
 			
@@ -5208,10 +5214,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterUpdateRuleOperator" class="event"><span class="name">afterUpdateRuleOperator</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterUpdateRuleOperator" class="event public"><span class="name">afterUpdateRuleOperator</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the operator has been updated and the input optionally re-created</p></div>
 			</div>			<div class="callout callout-info">
@@ -5231,60 +5237,9 @@
 							<td class="last">
 							</td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-							<!-- source -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Source</label>
-								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-757">line 757</a></p>
-								</div>
-							</div>
-			
-			
-			
-			
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:afterUpdateRuleValue" class="event"><span class="name">afterUpdateRuleValue</span></h4>
-		</dt>
-<dd class="symbol-details event">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the rule value has been modified</p></div>
-			</div>			<div class="callout callout-info">
-				<h5>Parameters</h5>
-				<table class="params table table-striped">
-					<thead>
-					<tr>
-							<th>Name</th>
-						<th>Type</th>
-						<th class="last">Description</th>
-					</tr>
-					</thead>
-					<tbody>
 						<tr>
-								<td><code>rule</code></td>
-							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+								<td><code>previousOperator</code></td>
+							<td><span class="param-type">object</span></td>
 							<td class="last">
 							</td>
 						</tr>
@@ -5311,7 +5266,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-779">line 779</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-775">line 775</a></p>
 								</div>
 							</div>
 			
@@ -5322,10 +5277,73 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:beforeAddGroup" class="event"><span class="name">beforeAddGroup</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:afterUpdateRuleValue" class="event public"><span class="name">afterUpdateRuleValue</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After the rule value has been modified</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>previousValue</code></td>
+							<td><span class="param-type">*</span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-802">line 802</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title event public">
+			<h4 id=".event:beforeAddGroup" class="event public"><span class="name">beforeAddGroup</span></h4>
+		</dt>
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before adding a group, can be prevented.</p></div>
 			</div>			<div class="callout callout-info">
@@ -5382,7 +5400,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-365">line 365</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-355">line 355</a></p>
 								</div>
 							</div>
 			
@@ -5393,10 +5411,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:beforeAddRule" class="event"><span class="name">beforeAddRule</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:beforeAddRule" class="event public"><span class="name">beforeAddRule</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before adding a rule, can be prevented</p></div>
 			</div>			<div class="callout callout-info">
@@ -5439,7 +5457,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-497">line 497</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-500">line 500</a></p>
 								</div>
 							</div>
 			
@@ -5450,10 +5468,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:beforeClear" class="event"><span class="name">beforeClear</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:beforeClear" class="event public"><span class="name">beforeClear</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Before the <a href="QueryBuilder.html#clear"><code>QueryBuilder#clear</code></a> method, can be prevented</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -5476,7 +5494,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-65">line 65</a></p>
+									<p class="form-control-static"><a href="public.js.html">public.js</a>, <a href="public.js.html#line-67">line 67</a></p>
 								</div>
 							</div>
 			
@@ -5487,10 +5505,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:beforeDeleteGroup" class="event"><span class="name">beforeDeleteGroup</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:beforeDeleteGroup" class="event public"><span class="name">beforeDeleteGroup</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before deleting a group, can be prevented</p></div>
 			</div>			<div class="callout callout-info">
@@ -5533,7 +5551,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-414">line 414</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-411">line 411</a></p>
 								</div>
 							</div>
 			
@@ -5544,10 +5562,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:beforeDeleteRule" class="event"><span class="name">beforeDeleteRule</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:beforeDeleteRule" class="event public"><span class="name">beforeDeleteRule</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Just before deleting a rule, can be prevented</p></div>
 			</div>			<div class="callout callout-info">
@@ -5590,7 +5608,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-558">line 558</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-563">line 563</a></p>
 								</div>
 							</div>
 			
@@ -5601,10 +5619,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:beforeDestroy" class="event"><span class="name">beforeDestroy</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:beforeDestroy" class="event public"><span class="name">beforeDestroy</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Before the <a href="QueryBuilder.html#destroy"><code>QueryBuilder#destroy</code></a> method</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -5638,10 +5656,10 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:beforeReset" class="event"><span class="name">beforeReset</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:beforeReset" class="event public"><span class="name">beforeReset</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Before the <a href="QueryBuilder.html#reset"><code>QueryBuilder#reset</code></a> method, can be prevented</p></div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
@@ -5675,10 +5693,47 @@
 			</div>	</div>
 </dd>
 											<hr/>
-											<dt class="symbol-title event">
-			<h4 id=".event:validationError" class="event"><span class="name">validationError</span></h4>
+											<dt class="symbol-title event public">
+			<h4 id=".event:rulesChanged" class="event public"><span class="name">rulesChanged</span></h4>
 		</dt>
-<dd class="symbol-details event">
+<dd class="symbol-details event public">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>After any change in the rules</p></div>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-383">line 383</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title event public">
+			<h4 id=".event:validationError" class="event public"><span class="name">validationError</span></h4>
+		</dt>
+<dd class="symbol-details event public">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Fired when a validation error occurred, can be prevented</p></div>
 			</div>			<div class="callout callout-info">
@@ -5733,7 +5788,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-921">line 921</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-947">line 947</a></p>
 								</div>
 							</div>
 			
@@ -5754,7 +5809,7 @@
 	</div>
 	<footer>
 				<div class="copyright">Licensed under MIT License, documentation under CC BY 3.0.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

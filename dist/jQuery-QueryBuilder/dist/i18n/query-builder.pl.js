@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.3
+ * jQuery QueryBuilder 2.4.5
  * Locale: Polish (pl)
  * Author: Artur Smolarek
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -25,8 +25,8 @@ QueryBuilder.regional['pl'] = {
   "delete_rule": "Usuń",
   "delete_group": "Usuń",
   "conditions": {
-    "AND": "AND",
-    "OR": "OR"
+    "AND": "ORAZ",
+    "OR": "LUB"
   },
   "operators": {
     "equal": "równa się",

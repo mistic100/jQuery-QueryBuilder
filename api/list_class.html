@@ -40,8 +40,9 @@
 				}
 			</style>
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
+			window.TEMPLATE_OPTIONS = {"includeDate":false,"dateFormat":"Do MMM YYYY","systemName":"jQuery QueryBuilder API","systemSummary":"jQuery plugin for user friendly query/filter creator","systemLogo":"","systemColor":"#004482","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"event","title":"Events","summary":"All documented events."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"Licensed under MIT License, documentation under CC BY 3.0.","linenums":true,"collapseSymbols":true,"inverseNav":false,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":{"ua":"UA-28192323-3","domain":"auto"},"methodHeadingReturns":true,"sort":"longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":["https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.0.1/trianglify.min.js","js/custom.js"],"monospaceLinks":false,"cleverLinks":true};
 			window.DOCLET_TOC_ENABLED = true;
+			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
 </head>
 <body>
@@ -113,9 +114,9 @@
 										<li><a href="QueryBuilder.html#.event:changer:getGroupTemplate">QueryBuilder.changer:getGroupTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getOperators">QueryBuilder.changer:getOperators</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleFilters">QueryBuilder.changer:getRuleFilters</a></li>
-										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterTemplate">QueryBuilder.changer:getRuleFilterTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleFilterSelect">QueryBuilder.changer:getRuleFilterSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleInput">QueryBuilder.changer:getRuleInput</a></li>
-										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorTemplate">QueryBuilder.changer:getRuleOperatorTemplate</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleOperatorSelect">QueryBuilder.changer:getRuleOperatorSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
@@ -153,6 +154,7 @@
 										<li><a href="QueryBuilder.html#.event:beforeDeleteRule">QueryBuilder.beforeDeleteRule</a></li>
 										<li><a href="QueryBuilder.html#.event:beforeDestroy">QueryBuilder.beforeDestroy</a></li>
 										<li><a href="QueryBuilder.html#.event:beforeReset">QueryBuilder.beforeReset</a></li>
+										<li><a href="QueryBuilder.html#.event:rulesChanged">QueryBuilder.rulesChanged</a></li>
 										<li><a href="QueryBuilder.html#.event:validationError">QueryBuilder.validationError</a></li>
 								</ul>
 							</li>
@@ -207,130 +209,130 @@
 		<article class="secondary">
 				<dl class="symbol">
 						
-						<dt class="symbol-title class">
-			<h4 id="Group" class="class"><a href="Group.html"><span class="signature-new">new&nbsp;</span><span class="name">Group</span><span class="signature-params">( [&nbsp;<span class="signature-param">parent</span>&nbsp;], <span class="signature-param">$el</span>&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="Group" class="class public"><a href="Group.html"><span class="signature-new">new&nbsp;</span><span class="name">Group</span><span class="signature-params">( [&nbsp;<span class="signature-param">parent</span>&nbsp;], <span class="signature-param">$el</span>&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="Model" class="class"><a href="Model.html"><span class="signature-new">new&nbsp;</span><span class="name">Model</span><span class="signature-params">()</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="Model" class="class public"><a href="Model.html"><span class="signature-new">new&nbsp;</span><span class="name">Model</span><span class="signature-params">()</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="BtCheckbox" class="class"><a href="module-plugins.BtCheckbox.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">BtCheckbox</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="BtCheckbox" class="class public"><a href="module-plugins.BtCheckbox.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">BtCheckbox</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="BtSelectpicker" class="class"><a href="module-plugins.BtSelectpicker.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">BtSelectpicker</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="BtSelectpicker" class="class public"><a href="module-plugins.BtSelectpicker.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">BtSelectpicker</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="BtTooltipErrors" class="class"><a href="module-plugins.BtTooltipErrors.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">BtTooltipErrors</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="BtTooltipErrors" class="class public"><a href="module-plugins.BtTooltipErrors.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">BtTooltipErrors</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="ChangeFilters" class="class"><a href="module-plugins.ChangeFilters.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">ChangeFilters</span><span class="signature-params">()</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="ChangeFilters" class="class public"><a href="module-plugins.ChangeFilters.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">ChangeFilters</span><span class="signature-params">()</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="FilterDescription" class="class"><a href="module-plugins.FilterDescription.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">FilterDescription</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="FilterDescription" class="class public"><a href="module-plugins.FilterDescription.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">FilterDescription</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="Invert" class="class"><a href="module-plugins.Invert.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">Invert</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="Invert" class="class public"><a href="module-plugins.Invert.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">Invert</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="MongoDbSupport" class="class"><a href="module-plugins.MongoDbSupport.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">MongoDbSupport</span><span class="signature-params">()</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="MongoDbSupport" class="class public"><a href="module-plugins.MongoDbSupport.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">MongoDbSupport</span><span class="signature-params">()</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="NotGroup" class="class"><a href="module-plugins.NotGroup.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">NotGroup</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="NotGroup" class="class public"><a href="module-plugins.NotGroup.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">NotGroup</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="Sortable" class="class"><a href="module-plugins.Sortable.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">Sortable</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="Sortable" class="class public"><a href="module-plugins.Sortable.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">Sortable</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="SqlSupport" class="class"><a href="module-plugins.SqlSupport.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">SqlSupport</span><span class="signature-params">()</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="SqlSupport" class="class public"><a href="module-plugins.SqlSupport.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">SqlSupport</span><span class="signature-params">( [&nbsp;<span class="signature-param">options</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="UniqueFilter" class="class"><a href="module-plugins.UniqueFilter.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">UniqueFilter</span><span class="signature-params">()</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="UniqueFilter" class="class public"><a href="module-plugins.UniqueFilter.html"><span class="signature-new">new&nbsp;</span><span class="ancestors">plugins.</span><span class="name">UniqueFilter</span><span class="signature-params">()</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="Node" class="class"><a href="Node.html"><span class="signature-new">new&nbsp;</span><span class="name">Node</span><span class="signature-params">( [&nbsp;<span class="signature-param">parent</span>&nbsp;], <span class="signature-param">$el</span>&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="Node" class="class public"><a href="Node.html"><span class="signature-new">new&nbsp;</span><span class="name">Node</span><span class="signature-params">( [&nbsp;<span class="signature-param">parent</span>&nbsp;], <span class="signature-param">$el</span>&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="QueryBuilder" class="class"><a href="QueryBuilder.html"><span class="signature-new">new&nbsp;</span><span class="name">QueryBuilder</span><span class="signature-params">( <span class="signature-param">$el</span>, <span class="signature-param">options</span>&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="QueryBuilder" class="class public"><a href="QueryBuilder.html"><span class="signature-new">new&nbsp;</span><span class="name">QueryBuilder</span><span class="signature-params">( <span class="signature-param">$el</span>, <span class="signature-param">options</span>&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
 						<hr/>
-						<dt class="symbol-title class">
-			<h4 id="Rule" class="class"><a href="Rule.html"><span class="signature-new">new&nbsp;</span><span class="name">Rule</span><span class="signature-params">( <span class="signature-param">parent</span>, <span class="signature-param">$el</span>&nbsp;)</span><span class="signature-type"></span></a></h4>
+						<dt class="symbol-title class public">
+			<h4 id="Rule" class="class public"><a href="Rule.html"><span class="signature-new">new&nbsp;</span><span class="name">Rule</span><span class="signature-params">( <span class="signature-param">parent</span>, <span class="signature-param">$el</span>&nbsp;)</span><span class="signature-type"></span></a></h4>
 </dt>
-<dd class="symbol-details class">
+<dd class="symbol-details class public">
 	<div class="symbol-details-inner">
 	</div>
 </dd>
@@ -345,7 +347,7 @@
 	</div>
 	<footer>
 				<div class="copyright">Licensed under MIT License, documentation under CC BY 3.0.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
