@@ -128,5 +128,7 @@ QueryBuilder.extend(/** @lends module:plugins.NotGroup.prototype */ {
          * @param {Group} group
          */
         this.trigger('afterUpdateGroupNot', group);
+
+        this.trigger('rulesChanged');
     }
 });

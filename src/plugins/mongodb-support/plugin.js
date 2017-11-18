@@ -105,6 +105,10 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
     getMongo: function(data) {
         data = (data === undefined) ? this.getRules() : data;
 
+        if (!data) {
+            return null;
+        }
+
         var self = this;
 
         return (function parse(group) {

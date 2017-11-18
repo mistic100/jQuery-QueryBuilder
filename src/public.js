@@ -54,6 +54,8 @@ QueryBuilder.prototype.reset = function() {
      * @memberof QueryBuilder
      */
     this.trigger('afterReset');
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -86,6 +88,8 @@ QueryBuilder.prototype.clear = function() {
      * @memberof QueryBuilder
      */
     this.trigger('afterClear');
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -410,17 +414,22 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
                 if (!item.empty) {
                     model.filter = self.getFilterById(item.id, !options.allow_invalid);
+                }
 
-                    if (model.filter) {
-                        model.operator = self.getOperatorByType(item.operator, !options.allow_invalid);
+                if (model.filter) {
+                    model.operator = self.getOperatorByType(item.operator, !options.allow_invalid);
 
-                        if (!model.operator) {
-                            model.operator = self.getOperators(model.filter)[0];
-                        }
+                    if (!model.operator) {
+                        model.operator = self.getOperators(model.filter)[0];
+                    }
+                }
 
-                        if (model.operator && model.operator.nb_inputs !== 0 && item.value !== undefined) {
-                            model.value = item.value;
-                        }
+                if (model.operator && model.operator.nb_inputs !== 0) {
+                    if (item.value !== undefined) {
+                        model.value = item.value;
+                    }
+                    else if (model.filter.default_value !== undefined) {
+                        model.value = model.filter.default_value;
                     }
                 }
 

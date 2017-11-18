@@ -14,7 +14,6 @@
  * @param {jQuery} $el
  * @param {object} options - see {@link http://querybuilder.js.org/#options}
  * @constructor
- * @fires QueryBuilder.afterInit
  */
 var QueryBuilder = function($el, options) {
     $el[0].queryBuilder = this;
@@ -141,21 +140,6 @@ var QueryBuilder = function($el, options) {
     this.operators = this.checkOperators(this.operators);
     this.bindEvents();
     this.initPlugins();
-
-    /**
-     * When the initilization is done, just before creating the root group
-     * @event afterInit
-     * @memberof QueryBuilder
-     */
-    this.trigger('afterInit');
-
-    if (options.rules) {
-        this.setRules(options.rules);
-        delete this.settings.rules;
-    }
-    else {
-        this.setRoot(true);
-    }
 };
 
 $.extend(QueryBuilder.prototype, /** @lends QueryBuilder.prototype */ {

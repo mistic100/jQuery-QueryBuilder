@@ -6,7 +6,7 @@ var cleanLn = require('./build/cleanLn');
 module.exports = function(grunt) {
     require('time-grunt')(grunt);
     require('jit-grunt')(grunt, {
-        scsslint: 'grunt-scss-lint',
+        sasslint: 'grunt-sass-lint',
         sass_injection: 'grunt-sass-injection',
         usebanner: 'grunt-banner'
     });
@@ -177,7 +177,7 @@ module.exports = function(grunt) {
         wrap: {
             js: {
                 src: ['dist/js/query-builder.js'],
-                dest: '',
+                dest: 'dist/js/query-builder.js',
                 options: {
                     separator: '',
                     wrapper: function() {
@@ -217,8 +217,8 @@ module.exports = function(grunt) {
         // parse scss
         sass: {
             options: {
-                sourcemap: 'none',
-                style: 'expanded'
+                sourceMap: false,
+                outputStyle: 'expanded'
             },
             dist: {
                 files: [{
@@ -293,11 +293,10 @@ module.exports = function(grunt) {
         },
 
         // scss tests
-        scsslint: {
+        sasslint: {
             lib: {
                 options: {
-                    colorizeOutput: true,
-                    config: '.scss-lint.yml'
+                    configFile: '.sass-lint.yml'
                 },
                 src: ['src/**/*.scss']
             }
@@ -410,7 +409,7 @@ module.exports = function(grunt) {
     grunt.registerTask('test', [
         'jshint',
         'jscs',
-        'scsslint',
+        'sasslint',
         'build_lang',
         'build_css',
         'injector:testSrc',

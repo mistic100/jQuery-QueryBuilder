@@ -171,6 +171,11 @@ $(function() {
         );
 
         assert.validationError($b,
+            { id: 'integer', operator: 'between', value: [5, 1] },
+            /number_between_invalid/
+        );
+
+        assert.validationError($b,
             { id: 'date' },
             /datetime_empty/
         );
@@ -188,6 +193,11 @@ $(function() {
         assert.validationError($b,
             { id: 'time', value: '18:00' },
             /datetime_exceed_max/
+        );
+
+        assert.validationError($b,
+            { id: 'date', operator: 'between', value: ['2015/01/01', '2014/01/01'] },
+            /datetime_between_invalid/
         );
 
         assert.validationError($b,
@@ -412,6 +422,23 @@ $(function() {
     });
 
     /**
+     * Test default operator
+     */
+    QUnit.test('default operator', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters
+        });
+
+        $('[name=builder_rule_0_filter]').val('age').trigger('change');
+
+        assert.equal(
+            $('[name=builder_rule_0_operator]').val(),
+            'in',
+            'Should set "age" operator to "in" by default'
+        );
+    });
+
+    /**
      * Test allow_invalid option
      */
     QUnit.test('allow invalid', function(assert) {
@@ -487,6 +514,35 @@ $(function() {
                 }]
             },
             'Should skip empty rules for getRules'
+        );
+    });
+
+    QUnit.test('apply default value', function(assert) {
+        $b.queryBuilder({
+            filters: [
+                {
+                    id: 'name',
+                    default_value: 'Mistic'
+                }
+            ],
+            rules: [
+                {
+                    id: 'name'
+                }
+            ]
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            {
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }]
+            },
+            'Should have used the filter default value'
         );
     });
 

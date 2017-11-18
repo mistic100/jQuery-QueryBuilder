@@ -92,6 +92,8 @@ QueryBuilder.define('sortable', function(options) {
                          * @param {Node} node
                          */
                         self.trigger('afterMove', src);
+
+                        self.trigger('rulesChanged');
                     }
                 });
         }

@@ -30,7 +30,9 @@ $.fn.queryBuilder = function(option) {
         return this;
     }
     if (!data) {
-        this.data('queryBuilder', new QueryBuilder(this, options));
+        var builder = new QueryBuilder(this, options);
+        this.data('queryBuilder', builder);
+        builder.init(options.rules);
     }
     if (typeof option == 'string') {
         return data[option].apply(data, Array.prototype.slice.call(arguments, 1));

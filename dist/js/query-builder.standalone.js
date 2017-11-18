@@ -273,7 +273,7 @@
 
 
 /*!
- * jQuery QueryBuilder 2.4.4
+ * jQuery QueryBuilder 2.4.5
  * Copyright 2014-2017 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -306,7 +306,6 @@
  * @param {jQuery} $el
  * @param {object} options - see {@link http://querybuilder.js.org/#options}
  * @constructor
- * @fires QueryBuilder.afterInit
  */
 var QueryBuilder = function($el, options) {
     $el[0].queryBuilder = this;
@@ -433,21 +432,6 @@ var QueryBuilder = function($el, options) {
     this.operators = this.checkOperators(this.operators);
     this.bindEvents();
     this.initPlugins();
-
-    /**
-     * When the initilization is done, just before creating the root group
-     * @event afterInit
-     * @memberof QueryBuilder
-     */
-    this.trigger('afterInit');
-
-    if (options.rules) {
-        this.setRules(options.rules);
-        delete this.settings.rules;
-    }
-    else {
-        this.setRoot(true);
-    }
 };
 
 $.extend(QueryBuilder.prototype, /** @lends QueryBuilder.prototype */ {
@@ -845,6 +829,29 @@ QueryBuilder.prototype.getPluginOptions = function(name, property) {
 
 
 /**
+ * Final initialisation of the builder
+ * @param {object} [rules]
+ * @fires QueryBuilder.afterInit
+ * @private
+ */
+QueryBuilder.prototype.init = function(rules) {
+    /**
+     * When the initilization is done, just before creating the root group
+     * @event afterInit
+     * @memberof QueryBuilder
+     */
+    this.trigger('afterInit');
+
+    if (rules) {
+        this.setRules(rules);
+        delete this.settings.rules;
+    }
+    else {
+        this.setRoot(true);
+    }
+};
+
+/**
  * Checks the configuration of each filter
  * @param {QueryBuilder.Filter[]} filters
  * @returns {QueryBuilder.Filter[]}
@@ -1105,7 +1112,7 @@ QueryBuilder.prototype.bindEvents = function() {
                         break;
 
                     case 'value':
-                        self.updateRuleValue(node);
+                        self.updateRuleValue(node, oldValue);
                         break;
                 }
             }
@@ -1120,7 +1127,7 @@ QueryBuilder.prototype.bindEvents = function() {
                         break;
 
                     case 'condition':
-                        self.updateGroupCondition(node);
+                        self.updateGroupCondition(node, oldValue);
                         break;
                 }
             }
@@ -1203,6 +1210,13 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
      */
     this.trigger('afterAddGroup', model);
 
+    /**
+     * After any change in the rules
+     * @event rulesChanged
+     * @memberof QueryBuilder
+     */
+    this.trigger('rulesChanged');
+
     model.condition = this.settings.default_condition;
 
     if (addRule) {
@@ -1252,6 +1266,8 @@ QueryBuilder.prototype.deleteGroup = function(group) {
          * @memberof QueryBuilder
          */
         this.trigger('afterDeleteGroup');
+
+        this.trigger('rulesChanged');
     }
 
     return del;
@@ -1260,10 +1276,11 @@ QueryBuilder.prototype.deleteGroup = function(group) {
 /**
  * Performs actions when a group's condition changes
  * @param {Group} group
+ * @param {object} previousCondition
  * @fires QueryBuilder.afterUpdateGroupCondition
  * @private
  */
-QueryBuilder.prototype.updateGroupCondition = function(group) {
+QueryBuilder.prototype.updateGroupCondition = function(group, previousCondition) {
     group.$el.find('>' + QueryBuilder.selectors.group_condition).each(function() {
         var $this = $(this);
         $this.prop('checked', $this.val() === group.condition);
@@ -1275,8 +1292,11 @@ QueryBuilder.prototype.updateGroupCondition = function(group) {
      * @event afterUpdateGroupCondition
      * @memberof QueryBuilder
      * @param {Group} group
+     * @param {object} previousCondition
      */
-    this.trigger('afterUpdateGroupCondition', group);
+    this.trigger('afterUpdateGroupCondition', group, previousCondition);
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -1336,6 +1356,8 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
      */
     this.trigger('afterAddRule', model);
 
+    this.trigger('rulesChanged');
+
     this.createRuleFilters(model);
 
     if (this.settings.default_filter || !this.settings.display_empty_filter) {
@@ -1387,6 +1409,8 @@ QueryBuilder.prototype.deleteRule = function(rule) {
      * @memberof QueryBuilder
      */
     this.trigger('afterDeleteRule');
+
+    this.trigger('rulesChanged');
 
     return true;
 };
@@ -1440,7 +1464,14 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
     $operatorContainer.html($operatorSelect);
 
     // set the operator without triggering update event
-    rule.__.operator = operators[0];
+    if (rule.filter.default_operator) {
+        rule.__.operator = this.getOperatorByType(rule.filter.default_operator);
+    }
+    else {
+        rule.__.operator = operators[0];
+    }
+
+    rule.$el.find(QueryBuilder.selectors.rule_operator).val(rule.operator.type);
 
     /**
      * After creating the dropdown for operators
@@ -1533,8 +1564,11 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
      * @event afterUpdateRuleFilter
      * @memberof QueryBuilder
      * @param {Rule} rule
+     * @param {object} previousFilter
      */
-    this.trigger('afterUpdateRuleFilter', rule);
+    this.trigger('afterUpdateRuleFilter', rule, previousFilter);
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -1546,6 +1580,7 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
  */
 QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     var $valueContainer = rule.$el.find(QueryBuilder.selectors.value_container);
+    var ruleValue = rule.value;
 
     if (!rule.operator || rule.operator.nb_inputs === 0) {
         $valueContainer.hide();
@@ -1572,19 +1607,24 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
      * @event afterUpdateRuleOperator
      * @memberof QueryBuilder
      * @param {Rule} rule
+     * @param {object} previousOperator
      */
-    this.trigger('afterUpdateRuleOperator', rule);
+    this.trigger('afterUpdateRuleOperator', rule, previousOperator);
 
-    this.updateRuleValue(rule);
+    this.trigger('rulesChanged');
+
+    // FIXME is it necessary ?
+    this.updateRuleValue(rule, ruleValue);
 };
 
 /**
  * Performs actions when rule's value changes
  * @param {Rule} rule
+ * @param {object} previousValue
  * @fires QueryBuilder.afterUpdateRuleValue
  * @private
  */
-QueryBuilder.prototype.updateRuleValue = function(rule) {
+QueryBuilder.prototype.updateRuleValue = function(rule, previousValue) {
     if (!rule._updating_value) {
         this.setRuleInputValue(rule, rule.value);
     }
@@ -1594,8 +1634,11 @@ QueryBuilder.prototype.updateRuleValue = function(rule) {
      * @event afterUpdateRuleValue
      * @memberof QueryBuilder
      * @param {Rule} rule
+     * @param {*} previousValue
      */
-    this.trigger('afterUpdateRuleValue', rule);
+    this.trigger('afterUpdateRuleValue', rule, previousValue);
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -1802,6 +1845,8 @@ QueryBuilder.prototype.reset = function() {
      * @memberof QueryBuilder
      */
     this.trigger('afterReset');
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -1834,6 +1879,8 @@ QueryBuilder.prototype.clear = function() {
      * @memberof QueryBuilder
      */
     this.trigger('afterClear');
+
+    this.trigger('rulesChanged');
 };
 
 /**
@@ -2158,17 +2205,22 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
                 if (!item.empty) {
                     model.filter = self.getFilterById(item.id, !options.allow_invalid);
+                }
 
-                    if (model.filter) {
-                        model.operator = self.getOperatorByType(item.operator, !options.allow_invalid);
+                if (model.filter) {
+                    model.operator = self.getOperatorByType(item.operator, !options.allow_invalid);
 
-                        if (!model.operator) {
-                            model.operator = self.getOperators(model.filter)[0];
-                        }
+                    if (!model.operator) {
+                        model.operator = self.getOperators(model.filter)[0];
+                    }
+                }
 
-                        if (model.operator && model.operator.nb_inputs !== 0 && item.value !== undefined) {
-                            model.value = item.value;
-                        }
+                if (model.operator && model.operator.nb_inputs !== 0) {
+                    if (item.value !== undefined) {
+                        model.value = item.value;
+                    }
+                    else if (model.filter.default_value !== undefined) {
+                        model.value = model.filter.default_value;
                     }
                 }
 
@@ -2431,6 +2483,29 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
 
         if (result !== true) {
             break;
+        }
+    }
+
+    if ((rule.operator.type === 'between' || rule.operator.type === 'not_between') && value.length === 2) {
+        switch (QueryBuilder.types[filter.type]) {
+            case 'number':
+                if (value[0] > value[1]) {
+                    result = ['number_between_invalid', value[0], value[1]];
+                }
+                break;
+
+            case 'datetime':
+                // we need MomentJS
+                if (validation.format) {
+                    if (!('moment' in window)) {
+                        Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
+                    }
+
+                    if (moment(value[0], validation.format).isAfter(moment(value[1], validation.format))) {
+                        result = ['datetime_between_invalid', value[0], value[1]];
+                    }
+                }
+                break;
         }
     }
 
@@ -3015,7 +3090,7 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
 
     /**
      * Modifies the raw HTML of the rule's filter dropdown
-     * @event changer:getRuleFilterTemplate
+     * @event changer:getRuleFilterSelect
      * @memberof QueryBuilder
      * @param {string} html
      * @param {Rule} rule
@@ -3045,7 +3120,7 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
 
     /**
      * Modifies the raw HTML of the rule's operator dropdown
-     * @event changer:getRuleOperatorTemplate
+     * @event changer:getRuleOperatorSelect
      * @memberof QueryBuilder
      * @param {string} html
      * @param {Rule} rule
@@ -3963,7 +4038,9 @@ $.fn.queryBuilder = function(option) {
         return this;
     }
     if (!data) {
-        this.data('queryBuilder', new QueryBuilder(this, options));
+        var builder = new QueryBuilder(this, options);
+        this.data('queryBuilder', builder);
+        builder.init(options.rules);
     }
     if (typeof option == 'string') {
         return data[option].apply(data, Array.prototype.slice.call(arguments, 1));
@@ -4200,6 +4277,8 @@ QueryBuilder.extend(/** @lends module:plugins.ChangeFilters.prototype */ {
                 function(rule) {
                     if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
                         rule.drop();
+
+                        self.trigger('rulesChanged');
                     }
                     else {
                         self.createRuleFilters(rule);
@@ -4408,6 +4487,9 @@ QueryBuilder.define('filter-description', function(options) {
                         bootbox.alert($b.data('description'));
                     });
                 }
+                else {
+                    $b.show();
+                }
 
                 $b.data('description', description);
             }
@@ -4589,6 +4671,8 @@ QueryBuilder.extend(/** @lends module:plugins.Invert.prototype */ {
              * @param {object} options
              */
             this.trigger('afterInvert', node, options);
+
+            this.trigger('rulesChanged');
         }
     }
 });
@@ -4700,6 +4784,10 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
      */
     getMongo: function(data) {
         data = (data === undefined) ? this.getRules() : data;
+
+        if (!data) {
+            return null;
+        }
 
         var self = this;
 
@@ -5128,6 +5216,8 @@ QueryBuilder.extend(/** @lends module:plugins.NotGroup.prototype */ {
          * @param {Group} group
          */
         this.trigger('afterUpdateGroupNot', group);
+
+        this.trigger('rulesChanged');
     }
 });
 
@@ -5226,6 +5316,8 @@ QueryBuilder.define('sortable', function(options) {
                          * @param {Node} node
                          */
                         self.trigger('afterMove', src);
+
+                        self.trigger('rulesChanged');
                     }
                 });
         }
@@ -5607,6 +5699,11 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
      */
     getSQL: function(stmt, nl, data) {
         data = (data === undefined) ? this.getRules() : data;
+
+        if (!data) {
+            return null;
+        }
+
         nl = !!nl ? '\n' : ' ';
         var boolean_as_integer = this.getPluginOptions('sql-support', 'boolean_as_integer');
 
@@ -5955,7 +6052,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
      */
     getSQLFieldID: function(field, value) {
         var matchingFilters = this.filters.filter(function(filter) {
-            return filter.field === field;
+            return filter.field.toLowerCase() === field.toLowerCase();
         });
 
         var id;
@@ -6109,7 +6206,7 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.4.4
+ * jQuery QueryBuilder 2.4.5
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -6164,10 +6261,12 @@ QueryBuilder.regional['en'] = {
     "number_exceed_min": "Must be greater than {0}",
     "number_exceed_max": "Must be lower than {0}",
     "number_wrong_step": "Must be a multiple of {0}",
+    "number_between_invalid": "Invalid values, {0} is greater than {1}",
     "datetime_empty": "Empty value",
     "datetime_invalid": "Invalid date format ({0})",
     "datetime_exceed_min": "Must be after {0}",
     "datetime_exceed_max": "Must be before {0}",
+    "datetime_between_invalid": "Invalid values, {0} isgreater than {1}",
     "boolean_not_valid": "Not a boolean",
     "operator_not_multiple": "Operator \"{1}\" cannot accept multiple values"
   },

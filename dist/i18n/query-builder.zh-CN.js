@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.4
+ * jQuery QueryBuilder 2.4.5
  * Locale: Simplified Chinese (zh_CN)
  * Author: shadowwind, shatteredwindgo@gmail.com
  * Licensed under MIT (http://opensource.org/licenses/MIT)

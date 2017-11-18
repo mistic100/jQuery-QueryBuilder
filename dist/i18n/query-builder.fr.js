@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.4
+ * jQuery QueryBuilder 2.4.5
  * Locale: French (fr)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -66,10 +66,12 @@ QueryBuilder.regional['fr'] = {
     "number_exceed_min": "Doit être plus grand que {0}",
     "number_exceed_max": "Doit être plus petit que {0}",
     "number_wrong_step": "Doit être un multiple de {0}",
+    "number_between_invalid": "Valeurs invalides, {0} est plus grand que {1}",
     "datetime_empty": "Valeur vide",
     "datetime_invalid": "Fomat de date invalide ({0})",
     "datetime_exceed_min": "Doit être après {0}",
     "datetime_exceed_max": "Doit être avant {0}",
+    "datetime_between_invalid": "Valeurs invalides, {0} est plus grand que {1}",
     "boolean_not_valid": "N'est pas un booléen",
     "operator_not_multiple": "L'opérateur \"{1}\" ne peut utiliser plusieurs valeurs"
   },

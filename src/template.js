@@ -163,7 +163,7 @@ QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
 
     /**
      * Modifies the raw HTML of the rule's filter dropdown
-     * @event changer:getRuleFilterTemplate
+     * @event changer:getRuleFilterSelect
      * @memberof QueryBuilder
      * @param {string} html
      * @param {Rule} rule
@@ -193,7 +193,7 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
 
     /**
      * Modifies the raw HTML of the rule's operator dropdown
-     * @event changer:getRuleOperatorTemplate
+     * @event changer:getRuleOperatorSelect
      * @memberof QueryBuilder
      * @param {string} html
      * @param {Rule} rule
