@@ -22,6 +22,7 @@
     "greater": "mayor",
     "greater_or_equal": "mayor o igual",
     "between": "entre",
+    "not_between": "no está entre",
     "begins_with": "empieza por",
     "not_begins_with": "no empieza por",
     "contains": "contiene",
