@@ -51,10 +51,12 @@
     "number_exceed_min": "Sayı {0}'den/dan daha büyük olmalı",
     "number_exceed_max": "Sayı {0}'den/dan daha küçük olmalı",
     "number_wrong_step": "{0} veya katı olmalı",
+    "number_between_invalid": "Geçersiz değerler, {0} değeri {1} değerinden büyük",
     "datetime_empty": "Tarih Seçilmemiş",
     "datetime_invalid": "Uygun olmayan tarih formatı ({0})",
     "datetime_exceed_min": "{0} Tarihinden daha sonrası olmalı.",
     "datetime_exceed_max": "{0} Tarihinden daha öncesi olmalı.",
+    "datetime_between_invalid": "Geçersiz değerler, {0} değeri {1} değerinden büyük",
     "boolean_not_valid": "Değer Doğru/Yanlış(bool) olmalı",
     "operator_not_multiple": "Operatör \"{1}\" birden fazla değer kabul etmiyor"
   }
