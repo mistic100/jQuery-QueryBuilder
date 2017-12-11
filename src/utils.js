@@ -240,3 +240,20 @@ Utils.defineModelProperties = function(obj, fields) {
         });
     });
 };
+
+/**
+ * Defines properties on an Node prototype with getter and setter.<br>
+ *     Update events are emitted in the setter through root Model (if any).<br>
+ *     The object must have a `__` object, non enumerable property to store values.
+ * @param {string} modelName
+ *   one of Model, Node, Group, Rule
+ * @param {string[]} fields
+ */
+Utils.defineModelPropertiesByString = function(modelName, fields) {
+    // Allowing eval here only because the allowed values are very strict
+    if (['Model', 'Node', 'Group', 'Rule'].indexOf(modelName) !== -1) {
+        /*jshint evil:true */
+        var obj = eval(modelName);
+        return Utils.defineModelProperties(obj, fields);
+    }
+};

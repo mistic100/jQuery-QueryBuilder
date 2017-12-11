@@ -72,6 +72,13 @@ $.fn.queryBuilder.define = QueryBuilder.define;
 /**
  * @function
  * @memberof external:"jQuery.fn"
+ * @see Utils.defineModelPropertiesByString
+ */
+$.fn.queryBuilder.defineModelPropertiesByString = Utils.defineModelPropertiesByString;
+
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
  * @see QueryBuilder.regional
  */
 $.fn.queryBuilder.regional = QueryBuilder.regional;
