@@ -90,7 +90,14 @@ grunt --languages=fr,it
  * `grunt serve` to open the example page with automatic build and livereload.
  * `grunt doc` to generate the documentation.
 
+#### Build using Docker
 
+In case docker is available following commands can be used to build.
+
+* `docker build . -t querybuilder` to create the base image (needs to be called only once or on package/bower.json changes)
+* `docker run --rm -iv$PWD/dist:/opt/querybuilder/dist -v$PWD/src:/opt/querybuilder/src querybuilder` to build the 
+
+Its possible to just add explained options to the end of the docker run command.
 
 ## License
 This library is available under the MIT license.
