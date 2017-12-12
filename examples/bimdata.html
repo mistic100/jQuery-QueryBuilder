@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>BIMData.io Rule Builder</title>
+
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css" id="bt-theme">
+  <link rel="stylesheet" href="../bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="../bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
+  <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
+  <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.bootstrap3.css">
+
+  <link rel="stylesheet" href="../dist/css/query-builder.default.css" id="qb-theme">
+
+  <link rel="stylesheet" href="http://mistic100.github.io/jQuery-QueryBuilder/assets/flags/flags.css">
+  <style>
+    .flag {
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="col-md-12 col-lg-10 col-lg-offset-1">
+    <div class="page-header">
+      <h1>Nouvelle règle</h1>
+    </div>
+
+    <h4>Filtrer les éléments à valider</h4>
+    <div id="builder"></div>
+
+    <h4>Créer les règles de validation</h4>
+    <div id="checker"></div>
+
+    <!-- <div class="btn-group">
+      <button class="btn btn-danger reset">Réinitialiser</button>
+      <button class="btn btn-warning set-filters" data-toggle="tooltip" data-container="body" data-placement="bottom"
+              title="Adds a filter 'New filter' and removes 'Coordinates', 'State', 'BSON'">Set filters
+      </button>
+    </div> -->
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js"></script>
+<!-- <script src="https://sandbox-libs.bimdata.io/bimviewer/js/bimviewer.js"></script> -->
+<script src="http://xeogl.dev/dist/js/BIMViewer.js"></script>
+
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="../bower_components/bootbox/bootbox.js"></script>
+<script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+<script src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
+<script src="../bower_components/jquery-extendext/jQuery.extendext.min.js"></script>
+<script src="../bower_components/sql-parser/browser/sql-parser.js"></script>
+<script src="../bower_components/doT/doT.js"></script>
+<script src="../bower_components/interact/interact.js"></script>
+
+<!-- <script src="../dist/js/query-builder.js"></script> -->
+<!-- injector:js -->
+<script src="../src/main.js"></script>
+<script src="../src/defaults.js"></script>
+<script src="../src/plugins.js"></script>
+<script src="../src/core.js"></script>
+<script src="../src/public.js"></script>
+<script src="../src/data.js"></script>
+<script src="../src/template.js"></script>
+<script src="../src/utils.js"></script>
+<script src="../src/model.js"></script>
+<script src="../src/jquery.js"></script>
+<script src="../src/plugins/bt-checkbox/plugin.js"></script>
+<script src="../src/plugins/bt-selectpicker/plugin.js"></script>
+<script src="../src/plugins/bt-tooltip-errors/plugin.js"></script>
+<script src="../src/plugins/change-filters/plugin.js"></script>
+<script src="../src/plugins/filter-description/plugin.js"></script>
+<script src="../src/plugins/invert/plugin.js"></script>
+<script src="../src/plugins/mongodb-support/plugin.js"></script>
+<script src="../src/plugins/not-group/plugin.js"></script>
+<script src="../src/plugins/sortable/plugin.js"></script>
+<script src="../src/plugins/sql-support/plugin.js"></script>
+<script src="../src/plugins/unique-filter/plugin.js"></script>
+<script src="../dist/i18n/query-builder.en.js"></script>
+<script src="../dist/i18n/query-builder.fr.js"></script>
+<!-- endinjector -->
+
+
+<script>
+  $('[data-toggle="tooltip"]').tooltip();
+  // var ifc = new IFC();
+  var $b = $('#builder');
+  var ifc = IFC;
+  var entity = ifc.getEntity('IfcBuildingElement');
+  var tree = _.flatten(ifc.getTree(entity));
+  console.log(tree)
+
+  var semanticFilters = [
+    {
+      id: 'element',
+      field: 'element',
+      label: {
+        en: 'Element',
+        fr: 'Élément'
+      },
+      value_separator: ',',
+      values: _.map(tree, 'name'),
+      type: 'string',
+      input: 'select',
+      optgroup: 'semantic',
+      size: 30,
+      validation: {
+        allow_empty_value: false
+      },
+      unique: true,
+      operators: ['equal', 'in', 'not_in']
+    },
+    {
+      id: 'attribut',
+      field: 'attribute',
+      label: {
+        en: 'Attribute',
+        fr: 'Attribut'
+      },
+      value_separator: ',',
+      type: 'string',
+      optgroup: 'semantic',
+      size: 30,
+      validation: {
+        allow_empty_value: false
+      },
+      unique: false
+    },
+    /*
+     * Properties
+     */
+    {
+      id: 'property',
+      field: 'property',
+      label: {
+        en: 'Property',
+        fr: 'Propriété'
+      },
+      value_separator: ',',
+      type: 'string',
+      optgroup: 'semantic',
+      size: 30,
+      validation: {
+        allow_empty_value: false
+      },
+      unique: false
+    },
+    {
+      id: 'type',
+      label: 'Type',
+      type: 'string',
+      input: 'select',
+      optgroup: 'semantic',
+      values: [ 'CHAIR', 'TABLE', 'DESK', 'BED', 'FILECABINET', 'SHELF', 'SOFA', 'USERDEFINED', 'NOTDEFINED'],
+      operators: ['in', 'not_in', 'is_null', 'is_not_null']
+    },
+    {
+      id: 'classification',
+      label: 'Classification',
+      type: 'string',
+      input: 'text',
+      optgroup: 'semantic'
+    }
+  ]
+
+  var checkerFilters = semanticFilters.concat([
+    /*
+     * Geometry
+     */
+    {
+      id: 'minimal_distance',
+      label: 'Distance minimale',
+      type: 'double',
+      input: 'text',
+      optgroup: 'geometry'
+    },
+    {
+      id: 'horizontal_distance',
+      label: 'Distance horizontale',
+      type: 'double',
+      input: 'text',
+      optgroup: 'geometry'
+    },
+    {
+      id: 'placement',
+      label: 'Placement',
+      type: 'string',
+      input: 'text',
+      optgroup: 'geometry',
+      operators: ['above', 'below', 'inside']
+    },
+    {
+      id: 'clash',
+      label: 'Collisions',
+      type: 'string',
+      input: 'text',
+      optgroup: 'geometry'
+    }
+  ]);
+
+
+  var commonOptions = {
+    allow_empty: true,
+
+    //default_filter: 'name',
+    sort_filters: false,
+
+    optgroups: {
+      semantic: {
+        en: 'Properties',
+        fr: 'Propriétés'
+      },
+      topologic: {
+        en: 'Topology',
+        fr: 'Topologie'
+      },
+      geometric: {
+        en: 'Geometry',
+        fr: 'Géométrie'
+      }
+    },
+
+    plugins: {
+      'bt-tooltip-errors': { delay: 100 },
+      'sortable': null,
+      'filter-description': { mode: 'bootbox' },
+      'bt-selectpicker': null,
+      'unique-filter': null,
+      'bt-checkbox': { color: 'primary' },
+      'invert': null,
+      'not-group': null
+    },
+
+    // standard operators in custom optgroups
+    operators: [
+      { type: 'equal', optgroup: 'basic' },
+      { type: 'not_equal', optgroup: 'basic' },
+      { type: 'in', optgroup: 'basic' },
+      { type: 'not_in', optgroup: 'basic' },
+      { type: 'less', optgroup: 'numbers' },
+      { type: 'less_or_equal', optgroup: 'numbers' },
+      { type: 'greater', optgroup: 'numbers' },
+      { type: 'greater_or_equal', optgroup: 'numbers' },
+      { type: 'between', optgroup: 'numbers' },
+      { type: 'not_between', optgroup: 'numbers' },
+      { type: 'begins_with', optgroup: 'strings' },
+      { type: 'not_begins_with', optgroup: 'strings' },
+      { type: 'contains', optgroup: 'strings' },
+      { type: 'not_contains', optgroup: 'strings' },
+      { type: 'ends_with', optgroup: 'strings' },
+      { type: 'not_ends_with', optgroup: 'strings' },
+      { type: 'above', nb_inputs: 1, apply_to: ['string'], optgroup: 'geometry'},
+      { type: 'below', nb_inputs: 1, apply_to: ['string'], optgroup: 'geometry'},
+      { type: 'inside', nb_inputs: 1, apply_to: ['string'], optgroup: 'geometry'},
+      { type: 'is_empty' },
+      { type: 'is_not_empty' },
+      { type: 'is_null' },
+      { type: 'is_not_null' }
+    ]
+  };
+
+  var filterOptions = _.clone(commonOptions);
+  console.log(filterOptions);
+  filterOptions['filters'] = semanticFilters;
+  // init
+  $('#builder').queryBuilder(filterOptions);
+
+  $('#builder').on('afterCreateRuleInput.queryBuilder', function(e, rule) {
+    if (rule.filter.plugin == 'selectize') {
+      rule.$el.find('.rule-value-container').css('min-width', '200px')
+        .find('.selectize-control').removeClass('form-control');
+    }
+  });
+
+  var checkerOptions = _.clone(commonOptions);
+  console.log(checkerOptions);
+  checkerOptions['filters'] = checkerFilters;
+  $('#checker').queryBuilder(checkerOptions);
+
+  $('#checker').on('afterCreateRuleInput.queryBuilder', function(e, rule) {
+    if (rule.filter.plugin == 'selectize') {
+      rule.$el.find('.rule-value-container').css('min-width', '200px')
+        .find('.selectize-control').removeClass('form-control');
+    }
+  });
+
+  // change language
+  $('[name=language]').selectpicker().on('change', function() {
+    var lang = $(this).val();
+
+    var done = function() {
+      var rules = $b.queryBuilder('getRules');
+      if (!$.isEmptyObject(rules)) {
+        options.rules = rules;
+      }
+      else {
+        delete options.rules;
+      }
+      options.lang_code = lang;
+      $b.queryBuilder('destroy');
+      $('#builder').queryBuilder(options);
+    };
+
+    if ($.fn.queryBuilder.regional[lang] === undefined) {
+      $.getScript('../dist/i18n/query-builder.' + lang + '.js', done);
+    }
+    else {
+      done();
+    }
+  });
+
+  // change theme
+  $('.change-theme').on('click', function() {
+    $('#qb-theme').replaceWith('<link rel="stylesheet" href="' + $(this).data('qb') + '" id="qb-theme">');
+    $('#bt-theme').replaceWith('<link rel="stylesheet" href="' + $(this).data('bt') + '" id="bt-theme">');
+  });
+
+  // set rules
+  $('.set').on('click', function() {
+    $('#builder').queryBuilder('setRules', {
+      condition: 'AND',
+      flags: {
+        condition_readonly: true
+      },
+      rules: [{
+        id: 'price',
+        operator: 'between',
+        value: [10.25, 15.52],
+        flags: {
+          no_delete: true,
+          filter_readonly: true
+        },
+        data: {
+          unit: '€'
+        }
+      }, {
+        id: 'state',
+        operator: 'equal',
+        value: 'AK'
+      }, {
+        condition: 'OR',
+        not: true,
+        flags: {
+          no_delete: true,
+          no_drop: true,
+          no_sortable: true
+        },
+        rules: [{
+          id: 'category',
+          operator: 'equal',
+          value: 2
+        }, {
+          id: 'coord',
+          operator: 'equal',
+          value: 'B.3'
+        }]
+      }, {
+        id: 'name',
+        operator: 'in',
+        value: ['Mistic', 'Damien']
+      }, {
+        id: 'age',
+        operator: 'in',
+        value: [20,21,22]
+      }, {
+        empty: true
+      }]
+    });
+  });
+
+  // set rules from MongoDB
+  $('.set-mongo').on('click', function() {
+    $('#builder').queryBuilder('setRulesFromMongo', {
+      "$or": [{
+        "username": {
+          "$regex": "^(?!Mistic)"
+        }
+      }, {
+        "price": { "$gte": 0, "$lte": 100 }
+      }, {
+        "$nor": [{
+          "$and": [{
+            "category": 2
+          }, {
+            "category": { "$in": [4, 5] }
+          }]
+        }]
+      }]
+    });
+  });
+
+  // set rules from SQL
+  $('.set-sql').on('click', function() {
+    $('#builder').queryBuilder('setRulesFromSQL', 'username NOT LIKE "Mistic%" OR price BETWEEN 100 OR 200 OR NOT (category IN(1, 2) AND rate <= 2)');
+  });
+
+  // reset builder
+  $('.reset').on('click', function() {
+    $('#builder').queryBuilder('reset');
+    $('#result').addClass('hide').find('pre').empty();
+  });
+
+  // get rules
+  $('.parse-json').on('click', function() {
+    $('#result').removeClass('hide')
+      .find('pre').html(JSON.stringify(
+      $('#builder').queryBuilder('getRules', {
+        get_flags: true,
+        skip_empty: true
+      }),
+      undefined, 2
+    ));
+  });
+
+  $('.parse-sql').on('click', function() {
+    var res = $('#builder').queryBuilder('getSQL', $(this).data('stmt'), false);
+    $('#result').removeClass('hide')
+      .find('pre').html(
+      res.sql + (res.params ? '\n\n' + JSON.stringify(res.params, undefined, 2) : '')
+    );
+  });
+
+  $('.parse-mongo').on('click', function() {
+    $('#result').removeClass('hide')
+      .find('pre').html(JSON.stringify(
+      $('#builder').queryBuilder('getMongo'),
+      undefined, 2
+    ));
+  });
+
+  // set filters
+  $('.set-filters').on('click', function() {
+    $(this).prop('disabled', true);
+    $(this).tooltip('hide');
+
+    // add a new filter after 'state'
+    $('#builder').queryBuilder('addFilter',
+      {
+        id: 'new_one',
+        label: 'New filter',
+        type: 'string'
+      },
+      'state'
+    );
+
+    // remove filter 'coord'
+    $('#builder').queryBuilder('removeFilter',
+      ['coord', 'state', 'bson'],
+      true
+    );
+
+    // also available : 'setFilters'
+  });
+</script>
+
+<script>
+  document.write('<script src="//' + location.host.split(':')[0] + ':35729/livereload.js" async defer><' + '/script>');
+</script>
+</body>
+</html>
