@@ -1,6 +1,6 @@
 QueryBuilder.templates.group = '\
-<dl id="{{= it.group_id }}" class="rules-group-container"> \
-  <dt class="rules-group-header"> \
+<div id="{{= it.group_id }}" class="rules-group-container"> \
+  <div class="rules-group-header"> \
     <div class="btn-group pull-right group-actions"> \
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
         <i class="{{= it.icons.add_rule }}"></i> {{= it.translate("add_rule") }} \
@@ -26,14 +26,14 @@ QueryBuilder.templates.group = '\
     {{? it.settings.display_errors }} \
       <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
     {{?}} \
-  </dt> \
-  <dd class=rules-group-body> \
-    <ul class=rules-list></ul> \
-  </dd> \
-</dl>';
+  </div> \
+  <div class=rules-group-body> \
+    <div class=rules-list></div> \
+  </div> \
+</div>';
 
 QueryBuilder.templates.rule = '\
-<li id="{{= it.rule_id }}" class="rule-container"> \
+<div id="{{= it.rule_id }}" class="rule-container"> \
   <div class="rule-header"> \
     <div class="btn-group pull-right rule-actions"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
@@ -47,7 +47,7 @@ QueryBuilder.templates.rule = '\
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
-</li>';
+</div>';
 
 QueryBuilder.templates.filterSelect = '\
 {{ var optgroup = null; }} \
