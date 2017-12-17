@@ -83,7 +83,7 @@ QueryBuilder.define('sortable', function(options) {
                         placeholder = undefined;
 
                         // show element
-                        src.$el.show();
+                        src.$el.css('display', '');
 
                         /**
                          * After a node has been moved with {@link module:plugins.Sortable}

@@ -679,7 +679,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         $inputs = $inputs.add($ruleInput);
     }
 
-    $valueContainer.show();
+    $valueContainer.css('display', '');
 
     $inputs.on('change ' + (filter.input_event || ''), function() {
         if (!rule._updating_input) {
@@ -750,7 +750,6 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
  */
 QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     var $valueContainer = rule.$el.find(QueryBuilder.selectors.value_container);
-    var ruleValue = rule.value;
 
     if (!rule.operator || rule.operator.nb_inputs === 0) {
         $valueContainer.hide();
@@ -758,7 +757,7 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
         rule.__.value = undefined;
     }
     else {
-        $valueContainer.show();
+        $valueContainer.css('display', '');
 
         if ($valueContainer.is(':empty') || !previousOperator ||
             rule.operator.nb_inputs !== previousOperator.nb_inputs ||
