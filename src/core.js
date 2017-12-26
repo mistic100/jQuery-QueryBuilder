@@ -753,9 +753,9 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
 
     if (!rule.operator || rule.operator.nb_inputs === 0) {
 
-        if(rule.__.error){
+        if (rule.__.error) {
             rule.__.error = null;
-            rule.$el.removeClass("has-error");
+            rule.$el.removeClass('has-error');
         }
 
         $valueContainer.hide();
