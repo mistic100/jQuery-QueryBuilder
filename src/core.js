@@ -752,6 +752,12 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     var $valueContainer = rule.$el.find(QueryBuilder.selectors.value_container);
 
     if (!rule.operator || rule.operator.nb_inputs === 0) {
+
+        if (rule.__.error) {
+            rule.__.error = null;
+            rule.$el.removeClass('has-error');
+        }
+
         $valueContainer.hide();
 
         rule.__.value = undefined;
