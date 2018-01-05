@@ -619,7 +619,7 @@ $('#builder').queryBuilder('addFilter', { /* ... */ }, 4);
 $('#builder').queryBuilder('removeFilter', 'name');
 
 // remove filters "name" and "age" and delete orphan rules
-$('#builder').queryBuilder('setFilters', ['name', 'age'], true);
+$('#builder').queryBuilder('removeFilter', ['name', 'age'], true);
 {% endhighlight %}
 <!-- @formatter:on -->
 
