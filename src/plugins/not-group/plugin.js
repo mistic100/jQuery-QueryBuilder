@@ -30,15 +30,17 @@ QueryBuilder.define('not-group', function(options) {
     });
 
     // Modify templates
-    this.on('getGroupTemplate.filter', function(h, level) {
-        var $h = $(h.value);
-        $h.find(QueryBuilder.selectors.condition_container).prepend(
-            '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
-            '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
-            '</button>'
-        );
-        h.value = $h.prop('outerHTML');
-    });
+    if (!options.disable_template) {
+        this.on('getGroupTemplate.filter', function(h) {
+            var $h = $(h.value);
+            $h.find(QueryBuilder.selectors.condition_container).prepend(
+                '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
+                '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
+                '</button>'
+            );
+            h.value = $h.prop('outerHTML');
+        });
+    }
 
     // Export "not" to JSON
     this.on('groupToJson.filter', function(e, group) {
@@ -94,7 +96,8 @@ QueryBuilder.define('not-group', function(options) {
     });
 }, {
     icon_unchecked: 'glyphicon glyphicon-unchecked',
-    icon_checked: 'glyphicon glyphicon-check'
+    icon_checked: 'glyphicon glyphicon-check',
+    disable_template: false
 });
 
 /**

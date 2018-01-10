@@ -30,6 +30,21 @@ $(function () {
             $b.queryBuilder('getRules').not,
             'The root json should have "not" flag set to true'
         );
+
+        $b.queryBuilder('destroy');
+
+        $b.queryBuilder({
+            plugins: {
+                'not-group': {disable_template: true}
+            },
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        assert.ok(
+            $b.find('[data-not="group"]').length === 0,
+            'Should not have added the button with disable_template=true'
+        );
     });
 
     QUnit.test('SQL export', function (assert) {

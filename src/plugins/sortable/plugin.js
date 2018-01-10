@@ -146,23 +146,26 @@ QueryBuilder.define('sortable', function(options) {
     });
 
     // Modify templates
-    this.on('getGroupTemplate.filter', function(h, level) {
-        if (level > 1) {
-            var $h = $(h.value);
-            $h.find(QueryBuilder.selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
-            h.value = $h.prop('outerHTML');
-        }
-    });
+    if (!options.disable_template) {
+        this.on('getGroupTemplate.filter', function(h, level) {
+            if (level > 1) {
+                var $h = $(h.value);
+                $h.find(QueryBuilder.selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+                h.value = $h.prop('outerHTML');
+            }
+        });
 
-    this.on('getRuleTemplate.filter', function(h) {
-        var $h = $(h.value);
-        $h.find(QueryBuilder.selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
-        h.value = $h.prop('outerHTML');
-    });
+        this.on('getRuleTemplate.filter', function(h) {
+            var $h = $(h.value);
+            $h.find(QueryBuilder.selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+            h.value = $h.prop('outerHTML');
+        });
+    }
 }, {
     inherit_no_sortable: true,
     inherit_no_drop: true,
-    icon: 'glyphicon glyphicon-sort'
+    icon: 'glyphicon glyphicon-sort',
+    disable_template: false
 });
 
 QueryBuilder.selectors.rule_and_group_containers = QueryBuilder.selectors.rule_container + ', ' + QueryBuilder.selectors.group_container;

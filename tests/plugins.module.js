@@ -138,6 +138,21 @@ $(function(){
             },
             'Should have inverted all conditions and operators'
         );
+
+        $b.queryBuilder('destroy');
+
+        $b.queryBuilder({
+            plugins: {
+                invert: {disable_template: true}
+            },
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        assert.ok(
+            $b.find('[data-invert="group"]').length === 0,
+            'Should not have added the button with disable_template=true'
+        );
     });
 
     /**
