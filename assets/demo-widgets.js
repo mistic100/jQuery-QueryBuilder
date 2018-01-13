@@ -30,6 +30,13 @@ $('#builder-widgets').on('afterCreateRuleInput.queryBuilder', function(e, rule) 
   }
 });
 
+// Fix for Bootstrap Datepicker
+$('#builder-widgets').on('afterUpdateRuleValue.queryBuilder', function(e, rule) {
+  if (rule.filter.plugin === 'datepicker') {
+    rule.$el.find('.rule-value-container input').datepicker('update');
+  }
+});
+
 $('#builder-widgets').queryBuilder({
   plugins: ['bt-tooltip-errors'],
 
