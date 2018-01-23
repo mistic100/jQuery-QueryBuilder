@@ -15,7 +15,7 @@ QueryBuilder.defaults({
     // operators for internal -> SQL conversion
     sqlOperators: {
         equal: { op: '= ?' },
-        not_equal: { op: '!= ?' },
+        not_equal: { op: '<> ?' },
         in: { op: 'IN(?)', sep: ', ' },
         not_in: { op: 'NOT IN(?)', sep: ', ' },
         less: { op: '< ?' },
