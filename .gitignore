@@ -6,3 +6,5 @@ doc
 .coverage-results
 .idea
 *.iml
+*.config
+/.vs/jQuery-QueryBuilder/v15
