@@ -3,6 +3,8 @@
 ## Work on `dev`
 Any merge request should be created from and issued to the `dev` branch.
 
+Do not add the `dist` files to your pull request. The directory is ignored for a reason: it is generated and pushed only when doing a release on `master`.
+
 ## Core vs Plugins
 I want to keep the core clean of extra (and certainly awesome) functionalities. That includes, but is not limited to, export/import plugins, visual aids, etc.
 
