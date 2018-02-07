@@ -9,9 +9,9 @@
  * @param {boolean} [options.showIcon=false]
  * @throws MissingLibraryError
  */
-QueryBuilder.define('bt-selectpicker', function(options) {
-    if (!$.fn.selectpicker || !$.fn.selectpicker.Constructor) {
-        Utils.error('MissingLibrary', 'Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');
+QueryBuilder.define('chosen-selectpicker', function(options) {
+    if (!$.fn.chosen) {
+        Utils.error('MissingLibrary', ' chosen is required to use "chosen-selectpicker" plugin. Get it here: https://github.com/harvesthq/chosen');
     }
 
     var Selectors = QueryBuilder.selectors;
@@ -20,25 +20,26 @@ QueryBuilder.define('bt-selectpicker', function(options) {
     // init selectpicker
     this.on('afterCreateRuleFilters', function(e, rule) {
         options.liveSearch = true;    
-        rule.$el.find(Selectors.rule_filter).removeClass('form-control').selectpicker(options);
+        rule.$el.find(Selectors.rule_filter).removeClass('form-control').chosen();
     });
 
     this.on('afterCreateRuleOperators', function(e, rule) {
-        rule.$el.find(Selectors.rule_operator).removeClass('form-control').selectpicker(options);
+        rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen();
     });
 
     // update selectpicker on change
     this.on('afterUpdateRuleFilter', function(e, rule) {
-        rule.$el.find(Selectors.rule_filter).selectpicker('render');
+        rule.$el.find(Selectors.rule_filter).trigger("chosen:updated");
     });
 
     this.on('afterUpdateRuleOperator', function(e, rule) {
-        rule.$el.find(Selectors.rule_operator).selectpicker('render');
+        rule.$el.find(Selectors.rule_operator).trigger("chosen:updated");
+
     });
 
     this.on('beforeDeleteRule', function(e, rule) {
-        rule.$el.find(Selectors.rule_filter).selectpicker('destroy');
-        rule.$el.find(Selectors.rule_operator).selectpicker('destroy');
+        rule.$el.find(Selectors.rule_filter).chosen('destroy');
+        rule.$el.find(Selectors.rule_operator).chosen('destroy');
     });
 }, {
     container: 'body',
