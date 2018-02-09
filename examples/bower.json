@@ -1,8 +1,9 @@
 {
   "name": "jQuery-QueryBuilder-example",
-  "dependencies" : {
+  "dependencies": {
     "seiyria-bootstrap-slider": "latest",
     "bootswatch-dist": "#slate",
-    "selectize": "latest"
+    "selectize": "latest",
+    "chosen": "^1.8.3"
   }
 }

@@ -15,11 +15,9 @@ QueryBuilder.define('bt-selectpicker', function(options) {
     }
 
     var Selectors = QueryBuilder.selectors;
-    
-        console.log(options)
+
     // init selectpicker
     this.on('afterCreateRuleFilters', function(e, rule) {
-        options.liveSearch = true;    
         rule.$el.find(Selectors.rule_filter).removeClass('form-control').selectpicker(options);
     });
 
