@@ -1,12 +1,8 @@
 /**
- * @class BtSelectpicker
+ * @class ChosenSelectpicker
  * @memberof module:plugins
- * @descriptioon Applies Bootstrap Select on filters and operators combo-boxes.
- * @param {object} [options]
- * @param {string} [options.container='body']
- * @param {string} [options.style='btn-inverse btn-xs']
- * @param {int|string} [options.width='auto']
- * @param {boolean} [options.showIcon=false]
+ * @descriptioon Applies chosen-js Select on filters and operators combo-boxes.
+ * @param {object} [options] Supports all the options for chosen
  * @throws MissingLibraryError
  */
 QueryBuilder.define('chosen-selectpicker', function(options) {
@@ -16,10 +12,8 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
 
     var Selectors = QueryBuilder.selectors;
     
-        console.log(options)
     // init selectpicker
     this.on('afterCreateRuleFilters', function(e, rule) {
-        options.liveSearch = true;    
         rule.$el.find(Selectors.rule_filter).removeClass('form-control').chosen();
     });
 
@@ -41,9 +35,4 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
         rule.$el.find(Selectors.rule_filter).chosen('destroy');
         rule.$el.find(Selectors.rule_operator).chosen('destroy');
     });
-}, {
-    container: 'body',
-    style: 'btn-inverse btn-xs',
-    width: 'auto',
-    showIcon: false
 });
