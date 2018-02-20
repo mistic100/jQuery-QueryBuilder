@@ -10,36 +10,32 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     if (!$.fn.chosen) {
         Utils.error('MissingLibrary', ' chosen is required to use "chosen-selectpicker" plugin. Get it here: https://github.com/harvesthq/chosen');
     }
+    
+    if (this.settings.plugins['bt-selectpicker']) {
+        Utils.error('Conflict', 'chosen-selectpicker have a conflict with bt-selectpicker. Please chose only one of the plugins');
+    }
+
+    var Selectors = QueryBuilder.selectors;
 
     // init selectpicker
     this.on('afterCreateRuleFilters', function(e, rule) {
-        if($(".form-control").length === 0 || $(".form-control").prop('nodeName') !== 'SELECT')     
-            Utils.error('MissingLibrary', ' chosen is required to use "chosen-selectpicker" plugin. Get it here: https://github.com/harvesthq/chosen');
         rule.$el.find(Selectors.rule_filter).removeClass('form-control').chosen();
     });
 
     this.on('afterCreateRuleOperators', function(e, rule) {
-        console.log("Length Insidec", $(".form-control").length);
-        if($(".form-control").length !== 0 && $(".form-control").prop('nodeName') === 'SELECT')    
         rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen();
     });
 
     // update selectpicker on change
     this.on('afterUpdateRuleFilter', function(e, rule) {
-        console.log("Length Insideuf", $(".form-control").length);
-        if($(".form-control").length !== 0 && $(".form-control").prop('nodeName') === 'SELECT')    
         rule.$el.find(Selectors.rule_filter).trigger("chosen:updated");
     });
 
     this.on('afterUpdateRuleOperator', function(e, rule) {
-        console.log("Length Insideu",$(".form-control").length);
-        if($(".form-control").length !== 0 && $(".form-control").prop('nodeName') === 'SELECT')    
         rule.$el.find(Selectors.rule_operator).trigger("chosen:updated");
-
     });
 
     this.on('beforeDeleteRule', function(e, rule) {
-        console.log("Length Insidea", $(".form-control").length);
         if($(".form-control").length !== 0 && $(".form-control").prop('nodeName') === 'SELECT') {    
             rule.$el.find(Selectors.rule_filter).chosen('destroy');
             rule.$el.find(Selectors.rule_operator).chosen('destroy');
