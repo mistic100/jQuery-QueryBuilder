@@ -8,11 +8,11 @@
 QueryBuilder.define('chosen-selectpicker', function(options) {
 
     if (!$.fn.chosen) {
-        Utils.error('MissingLibrary', ' chosen is required to use "chosen-selectpicker" plugin. Get it here: https://github.com/harvesthq/chosen');
+        Utils.error('MissingLibrary', 'chosen is required to use "chosen-selectpicker" plugin. Get it here: https://github.com/harvesthq/chosen');
     }
     
     if (this.settings.plugins['bt-selectpicker']) {
-        Utils.error('Conflict', 'chosen-selectpicker have a conflict with bt-selectpicker. Please chose only one of the plugins');
+        Utils.error('Conflict', 'bt-selectpicker is already selected as the dropdown plugin. Please remove chosen-selectpicker from the plugin list');
     }
 
     var Selectors = QueryBuilder.selectors;
