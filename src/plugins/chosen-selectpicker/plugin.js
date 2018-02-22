@@ -10,7 +10,7 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     if (!$.fn.chosen) {
         Utils.error('MissingLibrary', 'chosen is required to use "chosen-selectpicker" plugin. Get it here: https://github.com/harvesthq/chosen');
     }
-    
+
     if (this.settings.plugins['bt-selectpicker']) {
         Utils.error('Conflict', 'bt-selectpicker is already selected as the dropdown plugin. Please remove chosen-selectpicker from the plugin list');
     }
@@ -28,15 +28,15 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
 
     // update selectpicker on change
     this.on('afterUpdateRuleFilter', function(e, rule) {
-        rule.$el.find(Selectors.rule_filter).trigger("chosen:updated");
+        rule.$el.find(Selectors.rule_filter).trigger('chosen:updated');
     });
 
     this.on('afterUpdateRuleOperator', function(e, rule) {
-        rule.$el.find(Selectors.rule_operator).trigger("chosen:updated");
+        rule.$el.find(Selectors.rule_operator).trigger('chosen:updated');
     });
 
     this.on('beforeDeleteRule', function(e, rule) {
-        if($(".form-control").length !== 0 && $(".form-control").prop('nodeName') === 'SELECT') {    
+        if ($('.form-control').length !== 0 && $('.form-control').prop('nodeName') === 'SELECT') {
             rule.$el.find(Selectors.rule_filter).chosen('destroy');
             rule.$el.find(Selectors.rule_operator).chosen('destroy');
         }
