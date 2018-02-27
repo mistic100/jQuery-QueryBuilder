@@ -36,9 +36,7 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     });
 
     this.on('beforeDeleteRule', function(e, rule) {
-        if ($('.form-control').length !== 0 && $('.form-control').prop('nodeName') === 'SELECT') {
-            rule.$el.find(Selectors.rule_filter).chosen('destroy');
-            rule.$el.find(Selectors.rule_operator).chosen('destroy');
-        }
+        rule.$el.find(Selectors.rule_filter).chosen('destroy');
+        rule.$el.find(Selectors.rule_operator).chosen('destroy');
     });
 });
