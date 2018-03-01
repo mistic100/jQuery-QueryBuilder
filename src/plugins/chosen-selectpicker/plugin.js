@@ -19,11 +19,11 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
 
     // init selectpicker
     this.on('afterCreateRuleFilters', function(e, rule) {
-        rule.$el.find(Selectors.rule_filter).removeClass('form-control').chosen();
+        rule.$el.find(Selectors.rule_filter).removeClass('form-control').chosen(options);
     });
 
     this.on('afterCreateRuleOperators', function(e, rule) {
-        rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen();
+        rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
     });
 
     // update selectpicker on change
