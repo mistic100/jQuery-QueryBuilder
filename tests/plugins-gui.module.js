@@ -95,6 +95,23 @@ $(function(){
     });
 
     /**
+     * Test chosen-selectpicker
+     */
+    QUnit.test('chosen-selectpicker', function(assert) {
+        $b.queryBuilder({
+            plugins: ['chosen-selectpicker'],
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        assert.ok(
+            $b.find('.chosen-single').length == 8,
+            'Should have initialized chosen on all filters and operators selectors'
+        );
+    });
+
+
+    /**
      * Test bt-tooltip-errors
      */
     QUnit.test('bt-tooltip-errors', function(assert) {
