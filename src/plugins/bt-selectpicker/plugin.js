@@ -14,6 +14,10 @@ QueryBuilder.define('bt-selectpicker', function(options) {
         Utils.error('MissingLibrary', 'Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');
     }
 
+    if (this.settings.plugins['chosen-selectpicker']) {
+        Utils.error('Conflict', 'chosen-selectpicker is already selected as the dropdown plugin. Please remove bt-selectpicker from the plugin list');
+    }
+
     var Selectors = QueryBuilder.selectors;
 
     // init selectpicker
