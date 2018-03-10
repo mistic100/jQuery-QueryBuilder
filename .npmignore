@@ -2,4 +2,4 @@
 build
 composer.json
 Gruntfile.js
-bower_components
+tests/

@@ -42,8 +42,9 @@ jQuery-QueryBuilder is available on [jsDelivr](https://www.jsdelivr.com/package/
  * jQuery >= 1.10
  * Bootstrap >= 3.1 (CSS only)
  * [jQuery.extendext](https://github.com/mistic100/jQuery.extendext)
- * [doT.js >= 1.0.3](http://olado.github.io/doT)
+ * [doT.js](http://olado.github.io/doT)
  * [MomentJS](http://momentjs.com) (optional, for Date/Time validation)
+ * [SQL Parser](https://github.com/mistic100/sql-parser) (option, for SQL methods)
  * Other Bootstrap/jQuery plugins used by plugins
 
 ($.extendext and doT.js are directly included in the [standalone](https://github.com/mistic100/jQuery-QueryBuilder/blob/master/dist/js/query-builder.standalone.js) file)
@@ -60,11 +61,10 @@ jQuery-QueryBuilder is available on [jsDelivr](https://www.jsdelivr.com/package/
 
  * NodeJS + NPM: `apt-get install nodejs-legacy npm`
  * Grunt CLI: `npm install -g grunt-cli`
- * Bower: `npm install -g bower`
 
 #### Run
 
-Install Node and Bower dependencies `npm install & bower install` then run `grunt` in the root directory to generate production files inside `dist`.
+Install Node and Bower dependencies `npm install` then run `grunt` in the root directory to generate production files inside `dist`.
 
 #### Options
 
