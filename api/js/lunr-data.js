@@ -461,6 +461,12 @@ window.lunrData = {
           "module:plugins.changefilters#setfilt",
           "setfilt"
         ],
+        "module-plugins.ChosenSelectpicker.html": [
+          "chosenselectpick",
+          "class",
+          "module:plugins.chosenselectpick",
+          "plugins.chosenselectpick"
+        ],
         "module-plugins.FilterDescription.html": [
           "bootbox",
           "bootsrap",
@@ -1368,7 +1374,6 @@ window.lunrData = {
         ],
         "Utils.html#.changeType": [
           "bool",
-          "boolasint",
           "chang",
           "changetyp",
           "float",
@@ -1486,6 +1491,7 @@ window.lunrData = {
         "Utils.html#.iterateOptions": [
           "accept",
           "format",
+          "four",
           "function",
           "iter",
           "iterateopt",
@@ -1493,19 +1499,19 @@ window.lunrData = {
           "option",
           "over",
           "radio/checkbox/select",
-          "three",
           "tpl",
           "utils.iterateopt"
         ],
         "Utils.html#OptionsIteratee": [
           "key",
+          "optgroup",
           "optionsiterate",
           "typedef",
           "utils#optionsiterate",
           "valu"
         ]
       },
-      "length": 154
+      "length": 155
     },
     "tokenStore": {
       "root": {
@@ -2175,6 +2181,10 @@ window.lunrData = {
                       "ref": "module-plugins.ChangeFilters.html",
                       "tf": 110
                     },
+                    "module-plugins.ChosenSelectpicker.html": {
+                      "ref": "module-plugins.ChosenSelectpicker.html",
+                      "tf": 110
+                    },
                     "module-plugins.FilterDescription.html": {
                       "ref": "module-plugins.FilterDescription.html",
                       "tf": 110
@@ -2724,7 +2734,54 @@ window.lunrData = {
                           "docs": {
                             "Utils.html#.changeType": {
                               "ref": "Utils.html#.changeType",
-                              "tf": 670
+                              "tf": 675
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "o": {
+              "docs": {},
+              "s": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "l": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "p": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "c": {
+                                      "docs": {},
+                                      "k": {
+                                        "docs": {
+                                          "module-plugins.ChosenSelectpicker.html": {
+                                            "ref": "module-plugins.ChosenSelectpicker.html",
+                                            "tf": 650
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
                             }
                           }
                         }
@@ -3499,6 +3556,17 @@ window.lunrData = {
                   }
                 }
               }
+            },
+            "u": {
+              "docs": {},
+              "r": {
+                "docs": {
+                  "Utils.html#.iterateOptions": {
+                    "ref": "Utils.html#.iterateOptions",
+                    "tf": 7.142857142857142
+                  }
+                }
+              }
             }
           }
         },
@@ -4175,6 +4243,53 @@ window.lunrData = {
                                               "module-plugins.ChangeFilters.html": {
                                                 "ref": "module-plugins.ChangeFilters.html",
                                                 "tf": 100
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "o": {
+                              "docs": {},
+                              "s": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "s": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "e": {
+                                            "docs": {},
+                                            "c": {
+                                              "docs": {},
+                                              "t": {
+                                                "docs": {},
+                                                "p": {
+                                                  "docs": {},
+                                                  "i": {
+                                                    "docs": {},
+                                                    "c": {
+                                                      "docs": {},
+                                                      "k": {
+                                                        "docs": {
+                                                          "module-plugins.ChosenSelectpicker.html": {
+                                                            "ref": "module-plugins.ChosenSelectpicker.html",
+                                                            "tf": 100
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
                                               }
                                             }
                                           }
@@ -7837,7 +7952,7 @@ window.lunrData = {
                                   },
                                   "Utils.html#.changeType": {
                                     "ref": "Utils.html#.changeType",
-                                    "tf": 20
+                                    "tf": 25
                                   },
                                   "Utils.html#.defineModelProperties": {
                                     "ref": "Utils.html#.defineModelProperties",
@@ -9002,6 +9117,53 @@ window.lunrData = {
                                                                               }
                                                                             }
                                                                           }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "o": {
+                                            "docs": {},
+                                            "s": {
+                                              "docs": {},
+                                              "e": {
+                                                "docs": {},
+                                                "n": {
+                                                  "docs": {},
+                                                  "s": {
+                                                    "docs": {},
+                                                    "e": {
+                                                      "docs": {},
+                                                      "l": {
+                                                        "docs": {},
+                                                        "e": {
+                                                          "docs": {},
+                                                          "c": {
+                                                            "docs": {},
+                                                            "t": {
+                                                              "docs": {},
+                                                              "p": {
+                                                                "docs": {},
+                                                                "i": {
+                                                                  "docs": {},
+                                                                  "c": {
+                                                                    "docs": {},
+                                                                    "k": {
+                                                                      "docs": {
+                                                                        "module-plugins.ChosenSelectpicker.html": {
+                                                                          "ref": "module-plugins.ChosenSelectpicker.html",
+                                                                          "tf": 1150
                                                                         }
                                                                       }
                                                                     }
@@ -11851,13 +12013,33 @@ window.lunrData = {
                                     "docs": {
                                       "Utils.html#OptionsIteratee": {
                                         "ref": "Utils.html#OptionsIteratee",
-                                        "tf": 683.3333333333334
+                                        "tf": 675
                                       }
                                     }
                                   }
                                 }
                               }
                             }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "g": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "u": {
+                      "docs": {},
+                      "p": {
+                        "docs": {
+                          "Utils.html#OptionsIteratee": {
+                            "ref": "Utils.html#OptionsIteratee",
+                            "tf": 25
                           }
                         }
                       }
@@ -12635,26 +12817,6 @@ window.lunrData = {
                       }
                     }
                   }
-                },
-                "a": {
-                  "docs": {},
-                  "s": {
-                    "docs": {},
-                    "i": {
-                      "docs": {},
-                      "n": {
-                        "docs": {},
-                        "t": {
-                          "docs": {
-                            "Utils.html#.changeType": {
-                              "ref": "Utils.html#.changeType",
-                              "tf": 20
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
                 }
               },
               "t": {
@@ -13120,7 +13282,7 @@ window.lunrData = {
                   },
                   "Utils.html#.changeType": {
                     "ref": "Utils.html#.changeType",
-                    "tf": 28.333333333333332
+                    "tf": 33.33333333333333
                   },
                   "Utils.html#.error": {
                     "ref": "Utils.html#.error",
@@ -13194,10 +13356,6 @@ window.lunrData = {
                     "module-plugins.FilterDescription.html": {
                       "ref": "module-plugins.FilterDescription.html",
                       "tf": 5
-                    },
-                    "Utils.html#.iterateOptions": {
-                      "ref": "Utils.html#.iterateOptions",
-                      "tf": 7.142857142857142
                     }
                   }
                 }
@@ -13349,7 +13507,7 @@ window.lunrData = {
                   },
                   "Utils.html#.changeType": {
                     "ref": "Utils.html#.changeType",
-                    "tf": 28.333333333333332
+                    "tf": 33.33333333333333
                   },
                   "Utils.html#.defineModelProperties": {
                     "ref": "Utils.html#.defineModelProperties",
@@ -13361,7 +13519,7 @@ window.lunrData = {
                   },
                   "Utils.html#OptionsIteratee": {
                     "ref": "Utils.html#OptionsIteratee",
-                    "tf": 33.33333333333333
+                    "tf": 25
                   }
                 }
               }
@@ -13437,7 +13595,7 @@ window.lunrData = {
                 },
                 "Utils.html#OptionsIteratee": {
                   "ref": "Utils.html#OptionsIteratee",
-                  "tf": 33.33333333333333
+                  "tf": 25
                 }
               }
             }
@@ -13614,7 +13772,7 @@ window.lunrData = {
           }
         }
       },
-      "length": 1157
+      "length": 1161
     },
     "corpusTokens": [
       "0",
@@ -13642,7 +13800,6 @@ window.lunrData = {
       "awesom",
       "begin",
       "bool",
-      "boolasint",
       "boolean",
       "bootbox",
       "bootsrap",
@@ -13669,6 +13826,7 @@ window.lunrData = {
       "checkoper",
       "child",
       "children",
+      "chosenselectpick",
       "class",
       "clear",
       "clearerror",
@@ -13730,6 +13888,7 @@ window.lunrData = {
       "fmt",
       "fn",
       "format",
+      "four",
       "friendli",
       "front",
       "function",
@@ -13841,6 +14000,7 @@ window.lunrData = {
       "module:plugins.changefilters#addfilt",
       "module:plugins.changefilters#removefilt",
       "module:plugins.changefilters#setfilt",
+      "module:plugins.chosenselectpick",
       "module:plugins.filterdescript",
       "module:plugins.invert",
       "module:plugins.invert#invert",
@@ -13898,6 +14058,7 @@ window.lunrData = {
       "on",
       "onc",
       "oper",
+      "optgroup",
       "option",
       "optionsiterate",
       "order",
@@ -13911,6 +14072,7 @@ window.lunrData = {
       "plugins.btselectpick",
       "plugins.bttooltiperror",
       "plugins.changefilt",
+      "plugins.chosenselectpick",
       "plugins.filterdescript",
       "plugins.invert",
       "plugins.mongodbsupport",
@@ -14571,6 +14733,17 @@ window.lunrData = {
       "tags": "module:plugins.ChangeFilters#setFilters ChangeFilters#setFilters setFilters",
       "summary": "",
       "description": "Change the filters of the builder"
+    },
+    "module-plugins.ChosenSelectpicker.html": {
+      "id": "module-plugins.ChosenSelectpicker.html",
+      "kind": "class",
+      "title": "plugins.ChosenSelectpicker",
+      "longname": "module:plugins.ChosenSelectpicker",
+      "name": "ChosenSelectpicker",
+      "tags": "module:plugins.ChosenSelectpicker ChosenSelectpicker",
+      "summary": "",
+      "description": "",
+      "body": ""
     },
     "module-plugins.FilterDescription.html": {
       "id": "module-plugins.FilterDescription.html",
@@ -15548,7 +15721,7 @@ window.lunrData = {
     "Utils.html#.changeType": {
       "id": "Utils.html#.changeType",
       "kind": "function",
-      "title": "&lt;static&gt; changeType( value, type [, boolAsInt ] ) → {*}",
+      "title": "&lt;static&gt; changeType( value, type ) → {*}",
       "longname": "Utils.changeType",
       "name": "changeType",
       "tags": "Utils.changeType changeType",
@@ -15633,12 +15806,12 @@ window.lunrData = {
       "name": "iterateOptions",
       "tags": "Utils.iterateOptions iterateOptions",
       "summary": "",
-      "description": "Iterates over radio/checkbox/selection options, it accept three formats"
+      "description": "Iterates over radio/checkbox/selection options, it accept four formats"
     },
     "Utils.html#OptionsIteratee": {
       "id": "Utils.html#OptionsIteratee",
       "kind": "typedef",
-      "title": "OptionsIteratee( key, value )",
+      "title": "OptionsIteratee( key, value [, optgroup ] )",
       "longname": "Utils#OptionsIteratee",
       "name": "OptionsIteratee",
       "tags": "Utils#OptionsIteratee OptionsIteratee",

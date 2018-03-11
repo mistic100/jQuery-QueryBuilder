@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.5
+ * jQuery QueryBuilder 2.5.0
  * Locale: French (fr)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -29,14 +29,14 @@ QueryBuilder.regional['fr'] = {
     "OR": "OU"
   },
   "operators": {
-    "equal": "égal",
-    "not_equal": "non égal",
-    "in": "dans",
-    "not_in": "pas dans",
-    "less": "inférieur",
-    "less_or_equal": "inférieur ou égal",
-    "greater": "supérieur",
-    "greater_or_equal": "supérieur ou égal",
+    "equal": "est égal à",
+    "not_equal": "n'est pas égal à",
+    "in": "est compris dans",
+    "not_in": "n'est pas compris dans",
+    "less": "est inférieur à",
+    "less_or_equal": "est inférieur ou égal à",
+    "greater": "est supérieur à",
+    "greater_or_equal": "est supérieur ou égal à",
     "between": "est entre",
     "not_between": "n'est pas entre",
     "begins_with": "commence par",

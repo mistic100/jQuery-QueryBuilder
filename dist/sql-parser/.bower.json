@@ -1,10 +1,14 @@
 {
   "name": "sql-parser",
-  "version": "1.0.0",
   "authors": [
     {
       "name": "Andy Kent",
       "email": "andy@forward.co.uk"
+    },
+    {
+      "name": "Damien \"Mistic\" Sorel",
+      "email": "contact@git.strangeplanet.fr",
+      "homepage": "https://www.strangeplanet.fr"
     }
   ],
   "description": "Lexer and Parser for SQL Syntax",
@@ -30,13 +34,15 @@
     "package.json",
     "Cakefile"
   ],
-  "_release": "1.0.0",
+  "version": "1.2.0",
+  "_release": "1.2.0",
   "_resolution": {
     "type": "version",
-    "tag": "1.0.0",
-    "commit": "e1796a8b711351583211c4c7e570c90bc938a9cf"
+    "tag": "1.2.0",
+    "commit": "8524ffd9f1bc3658518daf69eda4274a3dcccc56"
   },
-  "_source": "git://github.com/mistic100/sql-parser.git",
-  "_target": "*",
-  "_originalSource": "sql-parser"
+  "_source": "https://github.com/mistic100/sql-parser.git",
+  "_target": "^1.2.0",
+  "_originalSource": "sql-parser",
+  "_direct": true
 }

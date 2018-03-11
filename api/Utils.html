@@ -71,6 +71,7 @@
 										<li><a href="module-plugins.BtSelectpicker.html">plugins.BtSelectpicker</a></li>
 										<li><a href="module-plugins.BtTooltipErrors.html">plugins.BtTooltipErrors</a></li>
 										<li><a href="module-plugins.ChangeFilters.html">plugins.ChangeFilters</a></li>
+										<li><a href="module-plugins.ChosenSelectpicker.html">plugins.ChosenSelectpicker</a></li>
 										<li><a href="module-plugins.FilterDescription.html">plugins.FilterDescription</a></li>
 										<li><a href="module-plugins.Invert.html">plugins.Invert</a></li>
 										<li><a href="module-plugins.MongoDbSupport.html">plugins.MongoDbSupport</a></li>
@@ -107,6 +108,7 @@
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:groupToSQL">plugins.SqlSupport.changer:groupToSQL</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:parseSQLNode">plugins.SqlSupport.changer:parseSQLNode</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:ruleToSQL">plugins.SqlSupport.changer:ruleToSQL</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlGroupsDistinct">plugins.SqlSupport.changer:sqlGroupsDistinct</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToGroup">plugins.SqlSupport.changer:sqlToGroup</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToRule">plugins.SqlSupport.changer:sqlToRule</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:displayError">QueryBuilder.changer:displayError</a></li>
@@ -120,6 +122,7 @@
 										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleValueSelect">QueryBuilder.changer:getRuleValueSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:jsonToGroup">QueryBuilder.changer:jsonToGroup</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:jsonToRule">QueryBuilder.changer:jsonToRule</a></li>
@@ -248,7 +251,7 @@
 									<dl class="symbol">
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".changeType" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">changeType</span><span class="signature-params">( <span class="signature-param">value</span>, <span class="signature-param">type</span> [,&nbsp;<span class="signature-param">boolAsInt</span>&nbsp;]&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{*}</span></h4>
+			<h4 id=".changeType" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">changeType</span><span class="signature-params">( <span class="signature-param">value</span>, <span class="signature-param">type</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{*}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
@@ -260,8 +263,6 @@
 					<tr>
 							<th>Name</th>
 						<th>Type</th>
-							<th>Attributes</th>
-							<th>Default</th>
 						<th class="last">Description</th>
 					</tr>
 					</thead>
@@ -269,27 +270,14 @@
 						<tr>
 								<td><code>value</code></td>
 							<td><span class="param-type">*</span></td>
-								<td class="attributes"></td>
-								<td></td>
 							<td class="last">
 							</td>
 						</tr>
 						<tr>
 								<td><code>type</code></td>
 							<td><span class="param-type">string</span></td>
-								<td class="attributes"></td>
-								<td></td>
 							<td class="last">
 									<p>'integer', 'double', 'boolean' or anything else (passthrough)</p>
-							</td>
-						</tr>
-						<tr>
-								<td><code>boolAsInt</code></td>
-							<td><span class="param-type">boolean</span></td>
-								<td class="attributes">&lt;optional&gt;<br/></td>
-								<td>false</td>
-							<td class="last">
-									<p>return 0 or 1 for booleans</p>
 							</td>
 						</tr>
 					</tbody>
@@ -323,7 +311,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-109">line 109</a></p>
+									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-118">line 118</a></p>
 								</div>
 							</div>
 			
@@ -388,7 +376,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-213">line 213</a></p>
+									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-236">line 236</a></p>
 								</div>
 							</div>
 			
@@ -473,7 +461,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-84">line 84</a></p>
+									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-94">line 94</a></p>
 								</div>
 							</div>
 			
@@ -538,7 +526,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-163">line 163</a></p>
+									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-186">line 186</a></p>
 								</div>
 							</div>
 			
@@ -603,7 +591,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-154">line 154</a></p>
+									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-177">line 177</a></p>
 								</div>
 							</div>
 			
@@ -668,7 +656,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-127">line 127</a></p>
+									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-150">line 150</a></p>
 								</div>
 							</div>
 			
@@ -742,7 +730,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-67">line 67</a></p>
+									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-77">line 77</a></p>
 								</div>
 							</div>
 			
@@ -813,7 +801,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-178">line 178</a></p>
+									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-201">line 201</a></p>
 								</div>
 							</div>
 			
@@ -829,7 +817,7 @@
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Iterates over radio/checkbox/selection options, it accept three formats</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Iterates over radio/checkbox/selection options, it accept four formats</p></div>
 			</div>			<div class="callout callout-info">
 				<h5>Parameters</h5>
 				<table class="params table table-striped">
@@ -868,6 +856,10 @@
 						<pre class="prettyprint source language-javascript"><code class="language-javascript">// array of 1-element maps
 			options &#x3D; [{1: &#x27;one&#x27;}, {2: &#x27;two&#x27;}, {3: &#x27;three&#x27;}]</code></pre>
 					</div>
+					<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">// array of elements
+			options &#x3D; [{value: 1, label: &#x27;one&#x27;, optgroup: &#x27;group&#x27;}, {value: 2, label: &#x27;two&#x27;}]</code></pre>
+					</div>
 			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
 			
 			
@@ -888,7 +880,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-35">line 35</a></p>
+									<p class="form-control-static"><a href="utils.js.html">utils.js</a>, <a href="utils.js.html#line-39">line 39</a></p>
 								</div>
 							</div>
 			
@@ -903,7 +895,7 @@
 									<dl class="symbol">
 											<hr/>
 											<dt class="symbol-title typedef public collapsible-symbol">
-			<h4 id="OptionsIteratee" class="typedef public"><span class="name">OptionsIteratee</span><span class="signature-params">( <span class="signature-param">key</span>, <span class="signature-param">value</span>&nbsp;)</span><span class="signature-type"></span></h4>
+			<h4 id="OptionsIteratee" class="typedef public"><span class="name">OptionsIteratee</span><span class="signature-params">( <span class="signature-param">key</span>, <span class="signature-param">value</span> [,&nbsp;<span class="signature-param">optgroup</span>&nbsp;]&nbsp;)</span><span class="signature-type"></span></h4>
 		</dt>
 <dd class="symbol-details typedef public  collapsible-symbol">
 	<div class="symbol-details-inner">
@@ -914,6 +906,7 @@
 					<tr>
 							<th>Name</th>
 						<th>Type</th>
+							<th>Attributes</th>
 						<th class="last">Description</th>
 					</tr>
 					</thead>
@@ -921,12 +914,21 @@
 						<tr>
 								<td><code>key</code></td>
 							<td><span class="param-type">string</span></td>
+								<td class="attributes"></td>
 							<td class="last">
 							</td>
 						</tr>
 						<tr>
 								<td><code>value</code></td>
 							<td><span class="param-type">string</span></td>
+								<td class="attributes"></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>optgroup</code></td>
+							<td><span class="param-type">string</span></td>
+								<td class="attributes">&lt;optional&gt;<br/></td>
 							<td class="last">
 							</td>
 						</tr>

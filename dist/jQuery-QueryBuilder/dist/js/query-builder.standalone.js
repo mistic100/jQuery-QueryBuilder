@@ -133,11 +133,12 @@
 // 2011-2014, Laura Doktorova, https://github.com/olado/doT
 // Licensed under the MIT license.
 
-(function() {
+(function () {
 	"use strict";
 
 	var doT = {
-		version: "1.0.3",
+		name: "doT",
+		version: "1.1.1",
 		templateSettings: {
 			evaluate:    /\{\{([\s\S]+?(\}?)+)\}\}/g,
 			interpolate: /\{\{=([\s\S]+?)\}\}/g,
@@ -169,6 +170,7 @@
 
 	_globals = (function(){ return this || (0,eval)("this"); }());
 
+	/* istanbul ignore else */
 	if (typeof module !== "undefined" && module.exports) {
 		module.exports = doT;
 	} else if (typeof define === "function" && define.amd) {
@@ -261,6 +263,7 @@
 		try {
 			return new Function(c.varname, str);
 		} catch (e) {
+			/* istanbul ignore else */
 			if (typeof console !== "undefined") console.log("Could not create a template function: " + str);
 			throw e;
 		}
@@ -273,8 +276,8 @@
 
 
 /*!
- * jQuery QueryBuilder 2.4.5
- * Copyright 2014-2017 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * jQuery QueryBuilder 2.5.0
+ * Copyright 2014-2018 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 (function(root, factory) {
@@ -673,7 +676,8 @@ QueryBuilder.DEFAULTS = {
         group: null,
         rule: null,
         filterSelect: null,
-        operatorSelect: null
+        operatorSelect: null,
+        ruleValueSelect: null
     },
 
     lang_code: 'en',
@@ -923,12 +927,40 @@ QueryBuilder.prototype.checkFilters = function(filters) {
                 break;
 
             case 'select':
+                var cleanValues = [];
+                filter.has_optgroup = false;
+
+                Utils.iterateOptions(filter.values, function(value, label, optgroup) {
+                    cleanValues.push({
+                        value: value,
+                        label: label,
+                        optgroup: optgroup || null
+                    });
+
+                    if (optgroup) {
+                        filter.has_optgroup = true;
+
+                        // register optgroup if needed
+                        if (!this.settings.optgroups[optgroup]) {
+                            this.settings.optgroups[optgroup] = optgroup;
+                        }
+                    }
+                }.bind(this));
+
+                if (filter.has_optgroup) {
+                    filter.values = Utils.groupSort(cleanValues, 'optgroup');
+                }
+                else {
+                    filter.values = cleanValues;
+                }
+
                 if (filter.placeholder) {
                     if (filter.placeholder_value === undefined) {
                         filter.placeholder_value = -1;
                     }
-                    Utils.iterateOptions(filter.values, function(key) {
-                        if (key == filter.placeholder_value) {
+
+                    filter.values.forEach(function(entry) {
+                        if (entry.value == filter.placeholder_value) {
                             Utils.error('Config', 'Placeholder of filter "{0}" overlaps with one of its values', filter.id);
                         }
                     });
@@ -1509,10 +1541,10 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         $inputs = $inputs.add($ruleInput);
     }
 
-    $valueContainer.show();
+    $valueContainer.css('display', '');
 
     $inputs.on('change ' + (filter.input_event || ''), function() {
-        if (!this._updating_input) {
+        if (!rule._updating_input) {
             rule._updating_value = true;
             rule.value = self.getRuleInputValue(rule);
             rule._updating_value = false;
@@ -1580,7 +1612,6 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
  */
 QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     var $valueContainer = rule.$el.find(QueryBuilder.selectors.value_container);
-    var ruleValue = rule.value;
 
     if (!rule.operator || rule.operator.nb_inputs === 0) {
         $valueContainer.hide();
@@ -1588,7 +1619,7 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
         rule.__.value = undefined;
     }
     else {
-        $valueContainer.show();
+        $valueContainer.css('display', '');
 
         if ($valueContainer.is(':empty') || !previousOperator ||
             rule.operator.nb_inputs !== previousOperator.nb_inputs ||
@@ -1600,6 +1631,9 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
 
     if (rule.operator) {
         rule.$el.find(QueryBuilder.selectors.rule_operator).val(rule.operator.type);
+
+        // refresh value if the format changed for this operator
+        rule.__.value = this.getRuleInputValue(rule);
     }
 
     /**
@@ -1612,9 +1646,6 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     this.trigger('afterUpdateRuleOperator', rule, previousOperator);
 
     this.trigger('rulesChanged');
-
-    // FIXME is it necessary ?
-    this.updateRuleValue(rule, ruleValue);
 };
 
 /**
@@ -2682,11 +2713,20 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
             }
         }
 
-        if (operator.multiple && filter.value_separator) {
-            value = value.map(function(val) {
-                return val.split(filter.value_separator);
-            });
-        }
+        value = value.map(function(val) {
+            if (operator.multiple && filter.value_separator && typeof val == 'string') {
+                val = val.split(filter.value_separator);
+            }
+
+            if ($.isArray(val)) {
+                return val.map(function(subval) {
+                    return Utils.changeType(subval, filter.type);
+                });
+            }
+            else {
+                return Utils.changeType(val, filter.type);
+            }
+        });
 
         if (operator.nb_inputs === 1) {
             value = value[0];
@@ -2723,7 +2763,7 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
         return;
     }
 
-    this._updating_input = true;
+    rule._updating_input = true;
 
     if (filter.valueSetter) {
         filter.valueSetter.call(this, rule, value);
@@ -2764,7 +2804,7 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
         }
     }
 
-    this._updating_input = false;
+    rule._updating_input = false;
 };
 
 /**
@@ -2926,8 +2966,8 @@ QueryBuilder.prototype.getValidationMessage = function(validation, type, def) {
 
 
 QueryBuilder.templates.group = '\
-<dl id="{{= it.group_id }}" class="rules-group-container"> \
-  <dt class="rules-group-header"> \
+<div id="{{= it.group_id }}" class="rules-group-container"> \
+  <div class="rules-group-header"> \
     <div class="btn-group pull-right group-actions"> \
       <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
         <i class="{{= it.icons.add_rule }}"></i> {{= it.translate("add_rule") }} \
@@ -2953,14 +2993,14 @@ QueryBuilder.templates.group = '\
     {{? it.settings.display_errors }} \
       <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
     {{?}} \
-  </dt> \
-  <dd class=rules-group-body> \
-    <ul class=rules-list></ul> \
-  </dd> \
-</dl>';
+  </div> \
+  <div class=rules-group-body> \
+    <div class=rules-list></div> \
+  </div> \
+</div>';
 
 QueryBuilder.templates.rule = '\
-<li id="{{= it.rule_id }}" class="rule-container"> \
+<div id="{{= it.rule_id }}" class="rule-container"> \
   <div class="rule-header"> \
     <div class="btn-group pull-right rule-actions"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
@@ -2974,7 +3014,7 @@ QueryBuilder.templates.rule = '\
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
-</li>';
+</div>';
 
 QueryBuilder.templates.filterSelect = '\
 {{ var optgroup = null; }} \
@@ -2989,7 +3029,7 @@ QueryBuilder.templates.filterSelect = '\
         <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
       {{?}} \
     {{?}} \
-    <option value="{{= filter.id }}">{{= it.translate(filter.label) }}</option> \
+    <option value="{{= filter.id }}" {{? filter.icon}}data-icon="{{= filter.icon}}"{{?}}>{{= it.translate(filter.label) }}</option> \
   {{~}} \
   {{? optgroup !== null }}</optgroup>{{?}} \
 </select>';
@@ -3009,7 +3049,25 @@ QueryBuilder.templates.operatorSelect = '\
         <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
       {{?}} \
     {{?}} \
-    <option value="{{= operator.type }}">{{= it.translate("operators", operator.type) }}</option> \
+    <option value="{{= operator.type }}" {{? operator.icon}}data-icon="{{= operator.icon}}"{{?}}>{{= it.translate("operators", operator.type) }}</option> \
+  {{~}} \
+  {{? optgroup !== null }}</optgroup>{{?}} \
+</select>';
+
+QueryBuilder.templates.ruleValueSelect = '\
+{{ var optgroup = null; }} \
+<select class="form-control" name="{{= it.name }}" {{? it.rule.filter.multiple }}multiple{{?}}> \
+  {{? it.rule.filter.placeholder }} \
+    <option value="{{= it.rule.filter.placeholder_value }}" disabled selected>{{= it.rule.filter.placeholder }}</option> \
+  {{?}} \
+  {{~ it.rule.filter.values: entry }} \
+    {{? optgroup !== entry.optgroup }} \
+      {{? optgroup !== null }}</optgroup>{{?}} \
+      {{? (optgroup = entry.optgroup) !== null }} \
+        <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
+      {{?}} \
+    {{?}} \
+    <option value="{{= entry.value }}">{{= entry.label }}</option> \
   {{~}} \
   {{? optgroup !== null }}</optgroup>{{?}} \
 </select>';
@@ -3131,6 +3189,36 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
 };
 
 /**
+ * Returns the rule's value select HTML
+ * @param {string} name
+ * @param {Rule} rule
+ * @returns {string}
+ * @fires QueryBuilder.changer:getRuleValueSelect
+ * @private
+ */
+QueryBuilder.prototype.getRuleValueSelect = function(name, rule) {
+    var h = this.templates.ruleValueSelect({
+        builder: this,
+        name: name,
+        rule: rule,
+        icons: this.icons,
+        settings: this.settings,
+        translate: this.translate.bind(this)
+    });
+
+    /**
+     * Modifies the raw HTML of the rule's value dropdown (in case of a "select filter)
+     * @event changer:getRuleValueSelect
+     * @memberof QueryBuilder
+     * @param {string} html
+     * @param [string} name
+     * @param {Rule} rule
+     * @returns {string}
+     */
+    return this.change('getRuleValueSelect', h, name, rule);
+};
+
+/**
  * Returns the rule's value HTML
  * @param {Rule} rule
  * @param {int} value_id
@@ -3158,14 +3246,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 break;
 
             case 'select':
-                h += '<select class="form-control" name="' + name + '"' + (filter.multiple ? ' multiple' : '') + '>';
-                if (filter.placeholder) {
-                    h += '<option value="' + filter.placeholder_value + '" disabled selected>' + filter.placeholder + '</option>';
-                }
-                Utils.iterateOptions(filter.values, function(key, val) {
-                    h += '<option value="' + key + '">' + val + '</option> ';
-                });
-                h += '</select>';
+                h = this.getRuleValueSelect(name, rule);
                 break;
 
             case 'textarea':
@@ -3227,10 +3308,11 @@ QueryBuilder.utils = Utils;
  * @callback Utils#OptionsIteratee
  * @param {string} key
  * @param {string} value
+ * @param {string} [optgroup]
  */
 
 /**
- * Iterates over radio/checkbox/selection options, it accept three formats
+ * Iterates over radio/checkbox/selection options, it accept four formats
  *
  * @example
  * // array of values
@@ -3241,6 +3323,9 @@ QueryBuilder.utils = Utils;
  * @example
  * // array of 1-element maps
  * options = [{1: 'one'}, {2: 'two'}, {3: 'three'}]
+ * @example
+ * // array of elements
+ * options = [{value: 1, label: 'one', optgroup: 'group'}, {value: 2, label: 'two'}]
  *
  * @param {object|array} options
  * @param {Utils#OptionsIteratee} tpl
@@ -3249,12 +3334,18 @@ Utils.iterateOptions = function(options, tpl) {
     if (options) {
         if ($.isArray(options)) {
             options.forEach(function(entry) {
-                // array of one-element maps
                 if ($.isPlainObject(entry)) {
-                    $.each(entry, function(key, val) {
-                        tpl(key, val);
-                        return false; // break after first entry
-                    });
+                    // array of elements
+                    if ('value' in entry) {
+                        tpl(entry.value, entry.label || entry.value, entry.optgroup);
+                    }
+                    // array of one-element maps
+                    else {
+                        $.each(entry, function(key, val) {
+                            tpl(key, val);
+                            return false; // break after first entry
+                        });
+                    }
                 }
                 // array of values
                 else {
@@ -3316,19 +3407,32 @@ Utils.error = function() {
  * Changes the type of a value to int, float or bool
  * @param {*} value
  * @param {string} type - 'integer', 'double', 'boolean' or anything else (passthrough)
- * @param {boolean} [boolAsInt=false] - return 0 or 1 for booleans
  * @returns {*}
  */
-Utils.changeType = function(value, type, boolAsInt) {
+Utils.changeType = function(value, type) {
+    if (value === '' || value === undefined) {
+        return undefined;
+    }
+
     switch (type) {
         // @formatter:off
-    case 'integer': return parseInt(value);
-    case 'double': return parseFloat(value);
-    case 'boolean':
-        var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
-        return boolAsInt ? (bool ? 1 : 0) : bool;
-    default: return value;
-    // @formatter:on
+        case 'integer':
+            if (typeof value === 'string' && !/^-?\d+$/.test(value)) {
+                return value;
+            }
+            return parseInt(value);
+        case 'double':
+            if (typeof value === 'string' && !/^-?\d+\.?\d*$/.test(value)) {
+                return value;
+            }
+            return parseFloat(value);
+        case 'boolean':
+            if (typeof value === 'string' && !/^(0|1|true|false){1}$/i.test(value)) {
+                return value;
+            }
+            return value === true || value === 1 || value.toLowerCase() === 'true' || value === '1';
+        default: return value;
+        // @formatter:on
     }
 };
 
@@ -3346,12 +3450,12 @@ Utils.escapeString = function(value) {
         .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
             switch (s) {
                 // @formatter:off
-            case '\0': return '\\0';
-            case '\n': return '\\n';
-            case '\r': return '\\r';
-            case '\b': return '\\b';
-            default:   return '\\' + s;
-            // @formatter:off
+                case '\0': return '\\0';
+                case '\n': return '\\n';
+                case '\r': return '\\r';
+                case '\b': return '\\b';
+                default:   return '\\' + s;
+                // @formatter:off
             }
         })
         // uglify compliant
@@ -4390,6 +4494,50 @@ QueryBuilder.extend(/** @lends module:plugins.ChangeFilters.prototype */ {
 
 
 /**
+ * @class ChosenSelectpicker
+ * @memberof module:plugins
+ * @descriptioon Applies chosen-js Select on filters and operators combo-boxes.
+ * @param {object} [options] Supports all the options for chosen
+ * @throws MissingLibraryError
+ */
+QueryBuilder.define('chosen-selectpicker', function(options) {
+
+    if (!$.fn.chosen) {
+        Utils.error('MissingLibrary', 'chosen is required to use "chosen-selectpicker" plugin. Get it here: https://github.com/harvesthq/chosen');
+    }
+
+    if (this.settings.plugins['bt-selectpicker']) {
+        Utils.error('Conflict', 'bt-selectpicker is already selected as the dropdown plugin. Please remove chosen-selectpicker from the plugin list');
+    }
+
+    var Selectors = QueryBuilder.selectors;
+
+    // init selectpicker
+    this.on('afterCreateRuleFilters', function(e, rule) {
+        rule.$el.find(Selectors.rule_filter).removeClass('form-control').chosen(options);
+    });
+
+    this.on('afterCreateRuleOperators', function(e, rule) {
+        rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
+    });
+
+    // update selectpicker on change
+    this.on('afterUpdateRuleFilter', function(e, rule) {
+        rule.$el.find(Selectors.rule_filter).trigger('chosen:updated');
+    });
+
+    this.on('afterUpdateRuleOperator', function(e, rule) {
+        rule.$el.find(Selectors.rule_operator).trigger('chosen:updated');
+    });
+
+    this.on('beforeDeleteRule', function(e, rule) {
+        rule.$el.find(Selectors.rule_filter).chosen('destroy');
+        rule.$el.find(Selectors.rule_operator).chosen('destroy');
+    });
+});
+
+
+/**
  * @class FilterDescription
  * @memberof module:plugins
  * @description Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.
@@ -4414,7 +4562,7 @@ QueryBuilder.define('filter-description', function(options) {
                     $p.appendTo(rule.$el);
                 }
                 else {
-                    $p.show();
+                    $p.css('display', '');
                 }
 
                 $p.html('<i class="' + options.icon + '"></i> ' + description);
@@ -4454,7 +4602,7 @@ QueryBuilder.define('filter-description', function(options) {
                     });
                 }
                 else {
-                    $b.show();
+                    $b.css('display', '');
                 }
 
                 $b.data('bs.popover').options.content = description;
@@ -4488,7 +4636,7 @@ QueryBuilder.define('filter-description', function(options) {
                     });
                 }
                 else {
-                    $b.show();
+                    $b.css('display', '');
                 }
 
                 $b.data('description', description);
@@ -4553,25 +4701,36 @@ QueryBuilder.define('invert', function(options) {
     });
 
     // Modify templates
-    this.on('getGroupTemplate.filter', function(h, level) {
-        var $h = $(h.value);
-        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> ' + self.translate('invert') + '</button>');
-        h.value = $h.prop('outerHTML');
-    });
-
-    if (options.display_rules_button && options.invert_rules) {
-        this.on('getRuleTemplate.filter', function(h) {
+    if (!options.disable_template) {
+        this.on('getGroupTemplate.filter', function(h) {
             var $h = $(h.value);
-            $h.find(Selectors.rule_actions).prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> ' + self.translate('invert') + '</button>');
+            $h.find(Selectors.condition_container).after(
+                '<button type="button" class="btn btn-xs btn-default" data-invert="group">' +
+                '<i class="' + options.icon + '"></i> ' + self.translate('invert') +
+                '</button>'
+            );
             h.value = $h.prop('outerHTML');
         });
+
+        if (options.display_rules_button && options.invert_rules) {
+            this.on('getRuleTemplate.filter', function(h) {
+                var $h = $(h.value);
+                $h.find(Selectors.rule_actions).prepend(
+                    '<button type="button" class="btn btn-xs btn-default" data-invert="rule">' +
+                    '<i class="' + options.icon + '"></i> ' + self.translate('invert') +
+                    '</button>'
+                );
+                h.value = $h.prop('outerHTML');
+            });
+        }
     }
 }, {
     icon: 'glyphicon glyphicon-random',
     recursive: true,
     invert_rules: true,
     display_rules_button: false,
-    silent_fail: false
+    silent_fail: false,
+    disable_template: false
 });
 
 QueryBuilder.defaults({
@@ -4812,7 +4971,6 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                 else {
                     var mdb = self.settings.mongoOperators[rule.operator];
                     var ope = self.getOperatorByType(rule.operator);
-                    var values = [];
 
                     if (mdb === undefined) {
                         Utils.error('UndefinedMongoOperator', 'Unknown MongoDB operation for operator "{0}"', rule.operator);
@@ -4822,10 +4980,6 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                         if (!(rule.value instanceof Array)) {
                             rule.value = [rule.value];
                         }
-
-                        rule.value.forEach(function(v) {
-                            values.push(Utils.changeType(v, rule.type, false));
-                        });
                     }
 
                     /**
@@ -4839,7 +4993,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                     var field = self.change('getMongoDBField', rule.field, rule);
 
                     var ruleExpression = {};
-                    ruleExpression[field] = mdb.call(self, values);
+                    ruleExpression[field] = mdb.call(self, rule.value);
 
                     /**
                      * Modifies the MongoDB expression generated for a rul
@@ -4851,7 +5005,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                      * @param {function} valueWrapper - function that takes the value and adds the operator
                      * @returns {object}
                      */
-                    parts.push(self.change('ruleToMongo', ruleExpression, rule, values, mdb));
+                    parts.push(self.change('ruleToMongo', ruleExpression, rule, rule.value, mdb));
                 }
             });
 
@@ -5118,15 +5272,17 @@ QueryBuilder.define('not-group', function(options) {
     });
 
     // Modify templates
-    this.on('getGroupTemplate.filter', function(h, level) {
-        var $h = $(h.value);
-        $h.find(QueryBuilder.selectors.condition_container).prepend(
-            '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
-            '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
-            '</button>'
-        );
-        h.value = $h.prop('outerHTML');
-    });
+    if (!options.disable_template) {
+        this.on('getGroupTemplate.filter', function(h) {
+            var $h = $(h.value);
+            $h.find(QueryBuilder.selectors.condition_container).prepend(
+                '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
+                '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
+                '</button>'
+            );
+            h.value = $h.prop('outerHTML');
+        });
+    }
 
     // Export "not" to JSON
     this.on('groupToJson.filter', function(e, group) {
@@ -5149,7 +5305,24 @@ QueryBuilder.define('not-group', function(options) {
     this.on('parseSQLNode.filter', function(e) {
         if (e.value.name && e.value.name.toUpperCase() == 'NOT') {
             e.value = e.value.arguments.value[0];
+
+            // if the there is no sub-group, create one
+            if (['AND', 'OR'].indexOf(e.value.operation.toUpperCase()) === -1) {
+                e.value = {
+                    left: e.value,
+                    operation: self.settings.default_condition,
+                    right: null
+                };
+            }
+
             e.value.not = true;
+        }
+    });
+
+    // Request to create sub-group if the "not" flag is set
+    this.on('sqlGroupsDistinct.filter', function(e, group, data) {
+        if (data.not) {
+            e.value = true;
         }
     });
 
@@ -5182,7 +5355,8 @@ QueryBuilder.define('not-group', function(options) {
     });
 }, {
     icon_unchecked: 'glyphicon glyphicon-unchecked',
-    icon_checked: 'glyphicon glyphicon-check'
+    icon_checked: 'glyphicon glyphicon-check',
+    disable_template: false
 });
 
 /**
@@ -5251,6 +5425,7 @@ QueryBuilder.define('sortable', function(options) {
     var placeholder;
     var ghost;
     var src;
+    var moved;
 
     // Init drag and drop
     this.on('afterAddRule afterAddGroup', function(e, node) {
@@ -5271,9 +5446,11 @@ QueryBuilder.define('sortable', function(options) {
         // Configure drag
         if (!node.flags.no_sortable) {
             interact(node.$el[0])
-                .allowFrom(QueryBuilder.selectors.drag_handle)
                 .draggable({
+                    allowForm: QueryBuilder.selectors.drag_handle,
                     onstart: function(event) {
+                        moved = false;
+
                         // get model of dragged element
                         src = self.getModel(event.target);
 
@@ -5297,7 +5474,13 @@ QueryBuilder.define('sortable', function(options) {
                         ghost[0].style.top = event.clientY - 15 + 'px';
                         ghost[0].style.left = event.clientX - 15 + 'px';
                     },
-                    onend: function() {
+                    onend: function(event) {
+                        // starting from Interact 1.3.3, onend is called before ondrop
+                        if (event.dropzone) {
+                            moveSortableToTarget(src, $(event.relatedTarget), self);
+                            moved = true;
+                        }
+
                         // remove ghost
                         ghost.remove();
                         ghost = undefined;
@@ -5307,7 +5490,7 @@ QueryBuilder.define('sortable', function(options) {
                         placeholder = undefined;
 
                         // show element
-                        src.$el.show();
+                        src.$el.css('display', '');
 
                         /**
                          * After a node has been moved with {@link module:plugins.Sortable}
@@ -5331,7 +5514,9 @@ QueryBuilder.define('sortable', function(options) {
                         moveSortableToTarget(placeholder, $(event.target), self);
                     },
                     ondrop: function(event) {
-                        moveSortableToTarget(src, $(event.target), self);
+                        if (!moved) {
+                            moveSortableToTarget(src, $(event.target), self);
+                        }
                     }
                 });
 
@@ -5344,7 +5529,9 @@ QueryBuilder.define('sortable', function(options) {
                             moveSortableToTarget(placeholder, $(event.target), self);
                         },
                         ondrop: function(event) {
-                            moveSortableToTarget(src, $(event.target), self);
+                            if (!moved) {
+                                moveSortableToTarget(src, $(event.target), self);
+                            }
                         }
                     });
             }
@@ -5370,23 +5557,26 @@ QueryBuilder.define('sortable', function(options) {
     });
 
     // Modify templates
-    this.on('getGroupTemplate.filter', function(h, level) {
-        if (level > 1) {
-            var $h = $(h.value);
-            $h.find(QueryBuilder.selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
-            h.value = $h.prop('outerHTML');
-        }
-    });
+    if (!options.disable_template) {
+        this.on('getGroupTemplate.filter', function(h, level) {
+            if (level > 1) {
+                var $h = $(h.value);
+                $h.find(QueryBuilder.selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+                h.value = $h.prop('outerHTML');
+            }
+        });
 
-    this.on('getRuleTemplate.filter', function(h) {
-        var $h = $(h.value);
-        $h.find(QueryBuilder.selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
-        h.value = $h.prop('outerHTML');
-    });
+        this.on('getRuleTemplate.filter', function(h) {
+            var $h = $(h.value);
+            $h.find(QueryBuilder.selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+            h.value = $h.prop('outerHTML');
+        });
+    }
 }, {
     inherit_no_sortable: true,
     inherit_no_drop: true,
-    icon: 'glyphicon glyphicon-sort'
+    icon: 'glyphicon glyphicon-sort',
+    disable_template: false
 });
 
 QueryBuilder.selectors.rule_and_group_containers = QueryBuilder.selectors.rule_container + ', ' + QueryBuilder.selectors.group_container;
@@ -5707,7 +5897,9 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
         nl = !!nl ? '\n' : ' ';
         var boolean_as_integer = this.getPluginOptions('sql-support', 'boolean_as_integer');
 
-        if (stmt === true) stmt = 'question_mark';
+        if (stmt === true) {
+            stmt = 'question_mark';
+        }
         if (typeof stmt == 'string') {
             var config = getStmtConfig(stmt);
             stmt = this.settings.sqlStatements[config[1]](config[2]);
@@ -5752,10 +5944,10 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                                 value += sql.sep;
                             }
 
-                            if (rule.type == 'integer' || rule.type == 'double' || rule.type == 'boolean') {
-                                v = Utils.changeType(v, rule.type, boolean_as_integer);
+                            if (rule.type == 'boolean' && boolean_as_integer) {
+                                v = v ? 1 : 0;
                             }
-                            else if (!stmt) {
+                            else if (!stmt && rule.type !== 'integer' && rule.type !== 'double' && rule.type !== 'boolean') {
                                 v = Utils.escapeString(v);
                             }
 
@@ -5906,6 +6098,10 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
         var curr = out;
 
         (function flatten(data, i) {
+            if (data === null) {
+                return;
+            }
+
             // allow plugins to manually parse or handle special cases
             data = self.change('parseSQLNode', data);
 
@@ -5929,7 +6125,19 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
             // it's a node
             if (['AND', 'OR'].indexOf(data.operation.toUpperCase()) !== -1) {
                 // create a sub-group if the condition is not the same and it's not the first level
-                if (i > 0 && curr.condition != data.operation.toUpperCase()) {
+
+                /**
+                 * Given an existing group and an AST node, determines if a sub-group must be created
+                 * @event changer:sqlGroupsDistinct
+                 * @memberof module:plugins.SqlSupport
+                 * @param {boolean} create - try by default if the group condition is different
+                 * @param {object} group
+                 * @param {object} AST
+                 * @returns {boolean}
+                 */
+                var createGroup = self.change('sqlGroupsDistinct', i > 0 && curr.condition != data.operation.toUpperCase(), curr, data);
+
+                if (createGroup) {
                     /**
                      * Modifies the group generated from the SQL expression (this is called before the group is filled with rules)
                      * @event changer:sqlToGroup
@@ -6206,7 +6414,7 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.4.5
+ * jQuery QueryBuilder 2.5.0
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -6266,7 +6474,7 @@ QueryBuilder.regional['en'] = {
     "datetime_invalid": "Invalid date format ({0})",
     "datetime_exceed_min": "Must be after {0}",
     "datetime_exceed_max": "Must be before {0}",
-    "datetime_between_invalid": "Invalid values, {0} isgreater than {1}",
+    "datetime_between_invalid": "Invalid values, {0} is greater than {1}",
     "boolean_not_valid": "Not a boolean",
     "operator_not_multiple": "Operator \"{1}\" cannot accept multiple values"
   },

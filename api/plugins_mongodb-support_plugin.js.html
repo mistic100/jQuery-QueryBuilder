@@ -72,6 +72,7 @@
 										<li><a href="module-plugins.BtSelectpicker.html">plugins.BtSelectpicker</a></li>
 										<li><a href="module-plugins.BtTooltipErrors.html">plugins.BtTooltipErrors</a></li>
 										<li><a href="module-plugins.ChangeFilters.html">plugins.ChangeFilters</a></li>
+										<li><a href="module-plugins.ChosenSelectpicker.html">plugins.ChosenSelectpicker</a></li>
 										<li><a href="module-plugins.FilterDescription.html">plugins.FilterDescription</a></li>
 										<li><a href="module-plugins.Invert.html">plugins.Invert</a></li>
 										<li><a href="module-plugins.MongoDbSupport.html">plugins.MongoDbSupport</a></li>
@@ -108,6 +109,7 @@
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:groupToSQL">plugins.SqlSupport.changer:groupToSQL</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:parseSQLNode">plugins.SqlSupport.changer:parseSQLNode</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:ruleToSQL">plugins.SqlSupport.changer:ruleToSQL</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlGroupsDistinct">plugins.SqlSupport.changer:sqlGroupsDistinct</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToGroup">plugins.SqlSupport.changer:sqlToGroup</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToRule">plugins.SqlSupport.changer:sqlToRule</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:displayError">QueryBuilder.changer:displayError</a></li>
@@ -121,6 +123,7 @@
 										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleValueSelect">QueryBuilder.changer:getRuleValueSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:jsonToGroup">QueryBuilder.changer:jsonToGroup</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:jsonToRule">QueryBuilder.changer:jsonToRule</a></li>
@@ -337,7 +340,6 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                 else {
                     var mdb = self.settings.mongoOperators[rule.operator];
                     var ope = self.getOperatorByType(rule.operator);
-                    var values = [];
 
                     if (mdb === undefined) {
                         Utils.error('UndefinedMongoOperator', 'Unknown MongoDB operation for operator "{0}"', rule.operator);
@@ -347,10 +349,6 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                         if (!(rule.value instanceof Array)) {
                             rule.value = [rule.value];
                         }
-
-                        rule.value.forEach(function(v) {
-                            values.push(Utils.changeType(v, rule.type, false));
-                        });
                     }
 
                     /**
@@ -364,7 +362,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                     var field = self.change('getMongoDBField', rule.field, rule);
 
                     var ruleExpression = {};
-                    ruleExpression[field] = mdb.call(self, values);
+                    ruleExpression[field] = mdb.call(self, rule.value);
 
                     /**
                      * Modifies the MongoDB expression generated for a rul
@@ -376,7 +374,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                      * @param {function} valueWrapper - function that takes the value and adds the operator
                      * @returns {object}
                      */
-                    parts.push(self.change('ruleToMongo', ruleExpression, rule, values, mdb));
+                    parts.push(self.change('ruleToMongo', ruleExpression, rule, rule.value, mdb));
                 }
             });
 

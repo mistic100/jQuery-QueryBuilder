@@ -142,8 +142,8 @@ $('#builder').queryBuilder('setRulesFromSQL', {
     <h3>Requirements</h3>
     <!-- @formatter:off -->
 {% highlight html %}
-<!-- SQLParser -->
-<script src="sql-parser/browser/sql-parser.js"></script>
+<!-- SQLParser from https://www.npmjs.com/package/sql-parser-mistic -->
+<script src="sql-parser-mistic/browser/sql-parser.js"></script>
 {% endhighlight %}
 <!-- @formatter:on -->
 
@@ -284,6 +284,13 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
           <td>boolean</td>
           <td>true</td>
           <td>When a group is <code>no_drop</code>, should its rules and sub-groups be no_drop too.</td>
+        </tr>
+        <tr>
+          <td>disable_template</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Do not alter the generated HTML, you must add a button with the
+            <code>class="drag-handle"</code> attribute yourself.</td>
         </tr>
         </tbody>
       </table>
@@ -481,6 +488,13 @@ $('#builder').queryBuilder('invert', group, {/* ... */});
           <td>false</td>
           <td>Do not throw an error when a condition or an operator has no invert defined</td>
         </tr>
+        <tr>
+          <td>disable_template</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Do not alter the generated HTML, you must add a button with the
+            <code>data-invert="rule"</code> or <code>data-invert="group"</code> attribute yourself.</td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -552,6 +566,13 @@ $('#builder').queryBuilder('invert', group, {/* ... */});
           <td>string</td>
           <td>'glyphicon glyphicon-check'</td>
           <td>The font-icon used for the button when checked</td>
+        </tr>
+        <tr>
+          <td>disable_template</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Do not alter the generated HTML, you must add a button with the
+            <code>data-not="group"</code> attribute yourself.</td>
         </tr>
         </tbody>
       </table>
@@ -670,6 +691,24 @@ $('#builder').queryBuilder('removeFilter', ['name', 'age'], true);
     <p>Applies <a href="http://silviomoreto.github.io/bootstrap-select">Bootstrap Select</a> on filters and operators
       combo-boxes.</p>
 
+    <p>Also supports the usage of font-icons for filters and operators with the <code>icon</code> property.</p>
+    <!-- @formatter:off -->
+{% highlight javascript %}
+filters: [
+  {
+    id: 'filter-1',
+    icon: 'glyphicon glypicon-heart'
+  }
+],
+operators: [
+  {
+    type: 'equal',
+    icon: 'glyphicon glypicon-heart'
+  }
+]
+{% endhighlight %}
+<!-- @formatter:on -->
+
     <h3>Requirements</h3>
     <!-- @formatter:off -->
 {% highlight html %}
@@ -682,6 +721,30 @@ $('#builder').queryBuilder('removeFilter', ['name', 'age'], true);
     <h3>Options</h3>
 
     <p><i>All options supported by the selectpicker plugin.</i></p>
+  </div>
+
+  <div class="bs-callout">
+    <h2 id="chosen-selectpicker">
+      Chosen for filters/operators
+      <small>chosen-selectpicker</small>
+    </h2>
+
+    <p>Applies <a href="https://harvesthq.github.io/chosen">Chosen</a> on filters and operators combo-boxes.</p>
+
+    <p class="alert alert-warning">This plugin cannot be enabled at the same as <code>bt-selectpicker</code>.</p>
+
+    <h3>Requirements</h3>
+    <!-- @formatter:off -->
+{% highlight html %}
+<!-- Chosen CSS & JS -->
+<link rel="stylesheet" href="chosenjs/chosen.min.css">
+<script src="chosenjs/chosen.jquery.min.js"></script>
+{% endhighlight %}
+<!-- @formatter:on -->
+
+    <h3>Options</h3>
+
+    <p><i>All options supported by Chosen.</i></p>
   </div>
 
   <div class="bs-callout">

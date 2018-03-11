@@ -1,9 +1,12 @@
 {
   "name": "sql-parser",
-  "version": "1.0.0",
   "authors": [{
     "name": "Andy Kent",
     "email": "andy@forward.co.uk"
+  }, {
+    "name": "Damien \"Mistic\" Sorel",
+    "email": "contact@git.strangeplanet.fr",
+    "homepage": "https://www.strangeplanet.fr"
   }],
   "description": "Lexer and Parser for SQL Syntax",
   "main": "browser/sql-parser.js",

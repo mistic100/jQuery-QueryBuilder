@@ -72,6 +72,7 @@
 										<li><a href="module-plugins.BtSelectpicker.html">plugins.BtSelectpicker</a></li>
 										<li><a href="module-plugins.BtTooltipErrors.html">plugins.BtTooltipErrors</a></li>
 										<li><a href="module-plugins.ChangeFilters.html">plugins.ChangeFilters</a></li>
+										<li><a href="module-plugins.ChosenSelectpicker.html">plugins.ChosenSelectpicker</a></li>
 										<li><a href="module-plugins.FilterDescription.html">plugins.FilterDescription</a></li>
 										<li><a href="module-plugins.Invert.html">plugins.Invert</a></li>
 										<li><a href="module-plugins.MongoDbSupport.html">plugins.MongoDbSupport</a></li>
@@ -108,6 +109,7 @@
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:groupToSQL">plugins.SqlSupport.changer:groupToSQL</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:parseSQLNode">plugins.SqlSupport.changer:parseSQLNode</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:ruleToSQL">plugins.SqlSupport.changer:ruleToSQL</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlGroupsDistinct">plugins.SqlSupport.changer:sqlGroupsDistinct</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToGroup">plugins.SqlSupport.changer:sqlToGroup</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToRule">plugins.SqlSupport.changer:sqlToRule</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:displayError">QueryBuilder.changer:displayError</a></li>
@@ -121,6 +123,7 @@
 										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleValueSelect">QueryBuilder.changer:getRuleValueSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:jsonToGroup">QueryBuilder.changer:jsonToGroup</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:jsonToRule">QueryBuilder.changer:jsonToRule</a></li>
@@ -204,8 +207,8 @@
 		<section class="source-section">
 			<article></article>
 			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">QueryBuilder.templates.group = '\
-&lt;dl id="{{= it.group_id }}" class="rules-group-container"> \
-  &lt;dt class="rules-group-header"> \
+&lt;div id="{{= it.group_id }}" class="rules-group-container"> \
+  &lt;div class="rules-group-header"> \
     &lt;div class="btn-group pull-right group-actions"> \
       &lt;button type="button" class="btn btn-xs btn-success" data-add="rule"> \
         &lt;i class="{{= it.icons.add_rule }}">&lt;/i> {{= it.translate("add_rule") }} \
@@ -231,14 +234,14 @@
     {{? it.settings.display_errors }} \
       &lt;div class="error-container">&lt;i class="{{= it.icons.error }}">&lt;/i>&lt;/div> \
     {{?}} \
-  &lt;/dt> \
-  &lt;dd class=rules-group-body> \
-    &lt;ul class=rules-list>&lt;/ul> \
-  &lt;/dd> \
-&lt;/dl>';
+  &lt;/div> \
+  &lt;div class=rules-group-body> \
+    &lt;div class=rules-list>&lt;/div> \
+  &lt;/div> \
+&lt;/div>';
 
 QueryBuilder.templates.rule = '\
-&lt;li id="{{= it.rule_id }}" class="rule-container"> \
+&lt;div id="{{= it.rule_id }}" class="rule-container"> \
   &lt;div class="rule-header"> \
     &lt;div class="btn-group pull-right rule-actions"> \
       &lt;button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
@@ -252,7 +255,7 @@ QueryBuilder.templates.rule = '\
   &lt;div class="rule-filter-container">&lt;/div> \
   &lt;div class="rule-operator-container">&lt;/div> \
   &lt;div class="rule-value-container">&lt;/div> \
-&lt;/li>';
+&lt;/div>';
 
 QueryBuilder.templates.filterSelect = '\
 {{ var optgroup = null; }} \
@@ -267,7 +270,7 @@ QueryBuilder.templates.filterSelect = '\
         &lt;optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
       {{?}} \
     {{?}} \
-    &lt;option value="{{= filter.id }}">{{= it.translate(filter.label) }}&lt;/option> \
+    &lt;option value="{{= filter.id }}" {{? filter.icon}}data-icon="{{= filter.icon}}"{{?}}>{{= it.translate(filter.label) }}&lt;/option> \
   {{~}} \
   {{? optgroup !== null }}&lt;/optgroup>{{?}} \
 &lt;/select>';
@@ -287,7 +290,25 @@ QueryBuilder.templates.operatorSelect = '\
         &lt;optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
       {{?}} \
     {{?}} \
-    &lt;option value="{{= operator.type }}">{{= it.translate("operators", operator.type) }}&lt;/option> \
+    &lt;option value="{{= operator.type }}" {{? operator.icon}}data-icon="{{= operator.icon}}"{{?}}>{{= it.translate("operators", operator.type) }}&lt;/option> \
+  {{~}} \
+  {{? optgroup !== null }}&lt;/optgroup>{{?}} \
+&lt;/select>';
+
+QueryBuilder.templates.ruleValueSelect = '\
+{{ var optgroup = null; }} \
+&lt;select class="form-control" name="{{= it.name }}" {{? it.rule.filter.multiple }}multiple{{?}}> \
+  {{? it.rule.filter.placeholder }} \
+    &lt;option value="{{= it.rule.filter.placeholder_value }}" disabled selected>{{= it.rule.filter.placeholder }}&lt;/option> \
+  {{?}} \
+  {{~ it.rule.filter.values: entry }} \
+    {{? optgroup !== entry.optgroup }} \
+      {{? optgroup !== null }}&lt;/optgroup>{{?}} \
+      {{? (optgroup = entry.optgroup) !== null }} \
+        &lt;optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
+      {{?}} \
+    {{?}} \
+    &lt;option value="{{= entry.value }}">{{= entry.label }}&lt;/option> \
   {{~}} \
   {{? optgroup !== null }}&lt;/optgroup>{{?}} \
 &lt;/select>';
@@ -409,6 +430,36 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
 };
 
 /**
+ * Returns the rule's value select HTML
+ * @param {string} name
+ * @param {Rule} rule
+ * @returns {string}
+ * @fires QueryBuilder.changer:getRuleValueSelect
+ * @private
+ */
+QueryBuilder.prototype.getRuleValueSelect = function(name, rule) {
+    var h = this.templates.ruleValueSelect({
+        builder: this,
+        name: name,
+        rule: rule,
+        icons: this.icons,
+        settings: this.settings,
+        translate: this.translate.bind(this)
+    });
+
+    /**
+     * Modifies the raw HTML of the rule's value dropdown (in case of a "select filter)
+     * @event changer:getRuleValueSelect
+     * @memberof QueryBuilder
+     * @param {string} html
+     * @param [string} name
+     * @param {Rule} rule
+     * @returns {string}
+     */
+    return this.change('getRuleValueSelect', h, name, rule);
+};
+
+/**
  * Returns the rule's value HTML
  * @param {Rule} rule
  * @param {int} value_id
@@ -436,14 +487,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 break;
 
             case 'select':
-                h += '&lt;select class="form-control" name="' + name + '"' + (filter.multiple ? ' multiple' : '') + '>';
-                if (filter.placeholder) {
-                    h += '&lt;option value="' + filter.placeholder_value + '" disabled selected>' + filter.placeholder + '&lt;/option>';
-                }
-                Utils.iterateOptions(filter.values, function(key, val) {
-                    h += '&lt;option value="' + key + '">' + val + '&lt;/option> ';
-                });
-                h += '&lt;/select>';
+                h = this.getRuleValueSelect(name, rule);
                 break;
 
             case 'textarea':

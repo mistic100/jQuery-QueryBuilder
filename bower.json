@@ -9,6 +9,6 @@
     "awesome-bootstrap-checkbox": "latest",
     "bootstrap-select": "latest",
     "sql-parser": "latest",
-    "interact": "^1.2.6"
+    "interactjs": "^1.3.3"
   }
 }

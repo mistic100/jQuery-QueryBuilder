@@ -72,6 +72,7 @@
 										<li><a href="module-plugins.BtSelectpicker.html">plugins.BtSelectpicker</a></li>
 										<li><a href="module-plugins.BtTooltipErrors.html">plugins.BtTooltipErrors</a></li>
 										<li><a href="module-plugins.ChangeFilters.html">plugins.ChangeFilters</a></li>
+										<li><a href="module-plugins.ChosenSelectpicker.html">plugins.ChosenSelectpicker</a></li>
 										<li><a href="module-plugins.FilterDescription.html">plugins.FilterDescription</a></li>
 										<li><a href="module-plugins.Invert.html">plugins.Invert</a></li>
 										<li><a href="module-plugins.MongoDbSupport.html">plugins.MongoDbSupport</a></li>
@@ -108,6 +109,7 @@
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:groupToSQL">plugins.SqlSupport.changer:groupToSQL</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:parseSQLNode">plugins.SqlSupport.changer:parseSQLNode</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:ruleToSQL">plugins.SqlSupport.changer:ruleToSQL</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlGroupsDistinct">plugins.SqlSupport.changer:sqlGroupsDistinct</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToGroup">plugins.SqlSupport.changer:sqlToGroup</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToRule">plugins.SqlSupport.changer:sqlToRule</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:displayError">QueryBuilder.changer:displayError</a></li>
@@ -121,6 +123,7 @@
 										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleValueSelect">QueryBuilder.changer:getRuleValueSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:jsonToGroup">QueryBuilder.changer:jsonToGroup</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:jsonToRule">QueryBuilder.changer:jsonToRule</a></li>
@@ -622,11 +625,20 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
             }
         }
 
-        if (operator.multiple &amp;&amp; filter.value_separator) {
-            value = value.map(function(val) {
-                return val.split(filter.value_separator);
-            });
-        }
+        value = value.map(function(val) {
+            if (operator.multiple &amp;&amp; filter.value_separator &amp;&amp; typeof val == 'string') {
+                val = val.split(filter.value_separator);
+            }
+
+            if ($.isArray(val)) {
+                return val.map(function(subval) {
+                    return Utils.changeType(subval, filter.type);
+                });
+            }
+            else {
+                return Utils.changeType(val, filter.type);
+            }
+        });
 
         if (operator.nb_inputs === 1) {
             value = value[0];
@@ -663,7 +675,7 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
         return;
     }
 
-    this._updating_input = true;
+    rule._updating_input = true;
 
     if (filter.valueSetter) {
         filter.valueSetter.call(this, rule, value);
@@ -704,7 +716,7 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
         }
     }
 
-    this._updating_input = false;
+    rule._updating_input = false;
 };
 
 /**

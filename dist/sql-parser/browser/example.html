@@ -1,8 +1,37 @@
 <html>
-  <script src="./sql-parser.js" type="text/javascript" charset="utf-8"></script>
-  <script type="text/javascript" charset="utf-8">
-    console.log(
-      SQLParser.parse('select * from test where a = 1 and foo = "bar"').toString()
-    )
-  </script>
+<body>
+
+<h1>SQLParser</h1>
+
+<h2>Input</h2>
+<textarea id="input" cols="100" rows="10">select * from test where a = 1 and foo = "bar"</textarea>
+<button onclick="parse()">Parse</button>
+
+<h2>Tokens</h2>
+<pre id="tokens"></pre>
+
+<h2>Parsed</h2>
+<pre id="parsed"></pre>
+
+<h2>Output</h2>
+<pre id="output"></pre>
+
+<script src="./sql-parser.js" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript" charset="utf-8">
+    function parse() {
+        var input = document.getElementById('input').value;
+        var tokens = SQLParser.lexer.tokenize(input);
+        var parsed = SQLParser.parser.parse(tokens);
+        var output = parsed.toString();
+
+        document.getElementById('tokens').innerText = tokens;
+        document.getElementById('parsed').innerText = JSON.stringify(parsed, null, 2);
+        document.getElementById('output').innerText = output;
+    }
+
+    parse();
+</script>
+
+</body>
 </html>

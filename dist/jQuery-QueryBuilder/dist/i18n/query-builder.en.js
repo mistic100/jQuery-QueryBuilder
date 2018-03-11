@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.4.5
+ * jQuery QueryBuilder 2.5.0
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -71,7 +71,7 @@ QueryBuilder.regional['en'] = {
     "datetime_invalid": "Invalid date format ({0})",
     "datetime_exceed_min": "Must be after {0}",
     "datetime_exceed_max": "Must be before {0}",
-    "datetime_between_invalid": "Invalid values, {0} isgreater than {1}",
+    "datetime_between_invalid": "Invalid values, {0} is greater than {1}",
     "boolean_not_valid": "Not a boolean",
     "operator_not_multiple": "Operator \"{1}\" cannot accept multiple values"
   },

@@ -35,6 +35,7 @@ Gemfile.lock
 /dist/bootstrap-select/dist/js/i18n
 /dist/sql-parser/lib
 /dist/doT
-/dist/interact/*
-!/dist/interact/dist
+/dist/interactjs/*
+!/dist/interactjs/dist
+/dist/interactjs/dist/docs
 /dist/**/*.map

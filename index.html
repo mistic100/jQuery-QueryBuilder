@@ -96,7 +96,7 @@ require(['jquery', 'query-builder'], function($) {
   <h3 id="backends">Backends</h3>
 
   <p>Awesome people implemented parsers in various language, check them out :</p>
-  
+
   <ul>
     <li><b>JAVA (JDBC)</b> <i class="glyphicon glyphicon-chevron-right"></i>
       itfsw / <a href="https://github.com/itfsw/QueryBuilder">QueryBuilder</a></li>
@@ -113,14 +113,14 @@ require(['jquery', 'query-builder'], function($) {
       leandrogehlen / <a href="https://github.com/leandrogehlen/yii2-querybuilder">yii2-querybuilder</a></li>
     <li><b>PHP (Doctrine)</b> <i class="glyphicon glyphicon-chevron-right"></i>
       josedacosta / <a href="https://github.com/josedacosta/jQueryQueryBuilderBundle">jQueryQueryBuilderBundle</a></li>
-    <li><b>Python</b> <i class="glyphicon glyphicon-chevron-right"></i> 
+    <li><b>Python</b> <i class="glyphicon glyphicon-chevron-right"></i>
       NorthIsUp / <a href="https://github.com/northisup/querybuilder">querybuilder</a></li>
     <li><b>Rails</b> <i class="glyphicon glyphicon-chevron-right"></i>
       SixiS / <a href="https://github.com/SixiS/jquery_query_builder-rails">jquery_query_builder-rails</a></li>
   </ul>
-  
+
   <p>
-    Want your project listed here ? Open an <a href="https://github.com/mistic100/jQuery-QueryBuilder/issues">issue</a> 
+    Want your project listed here ? Open an <a href="https://github.com/mistic100/jQuery-QueryBuilder/issues">issue</a>
     or create a <a href="https://github.com/mistic100/jQuery-QueryBuilder/pulls">pull request</a> on the <code>gh-pages</code> branch.
   </p>
 </section>
@@ -389,7 +389,7 @@ label: {
           <a data-bootbox="filter_values_details"><i class="glyphicon glyphicon-info-sign"></i> More details</a>
 
           <div id="filter_values_details" class="hidden" title="Filter values">
-            <p>Three forms are allowed for the <code>values</code> object.</p>
+            <p>Four formats are allowed for the <code>values</code> object.</p>
             <ol>
               <li>Simple array of values, labels will be the values.
                 <!-- @formatter:off -->
@@ -416,6 +416,17 @@ values: [
   {'one': 'Un'},
   {'two': 'Deux'},
   {'three': 'Trois'}
+]
+{% endhighlight %}
+<!-- @formatter:on -->
+              </li>
+              <li>The expanded format allows to define optgroups.
+                <!-- @formatter:off -->
+{% highlight js %}
+values: [
+  { value: 'one', label: 'Un', optgroup: 'Group 1' },
+  { value: 'two', label: 'Deux', optgroup: 'Group 2' },
+  { value: 'three', label: 'Trois' } // no group
 ]
 {% endhighlight %}
 <!-- @formatter:on -->

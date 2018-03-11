@@ -71,6 +71,7 @@
 										<li><a href="module-plugins.BtSelectpicker.html">plugins.BtSelectpicker</a></li>
 										<li><a href="module-plugins.BtTooltipErrors.html">plugins.BtTooltipErrors</a></li>
 										<li><a href="module-plugins.ChangeFilters.html">plugins.ChangeFilters</a></li>
+										<li><a href="module-plugins.ChosenSelectpicker.html">plugins.ChosenSelectpicker</a></li>
 										<li><a href="module-plugins.FilterDescription.html">plugins.FilterDescription</a></li>
 										<li><a href="module-plugins.Invert.html">plugins.Invert</a></li>
 										<li><a href="module-plugins.MongoDbSupport.html">plugins.MongoDbSupport</a></li>
@@ -107,6 +108,7 @@
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:groupToSQL">plugins.SqlSupport.changer:groupToSQL</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:parseSQLNode">plugins.SqlSupport.changer:parseSQLNode</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:ruleToSQL">plugins.SqlSupport.changer:ruleToSQL</a></li>
+										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlGroupsDistinct">plugins.SqlSupport.changer:sqlGroupsDistinct</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToGroup">plugins.SqlSupport.changer:sqlToGroup</a></li>
 										<li><a href="module-plugins.SqlSupport.html#.event:changer:sqlToRule">plugins.SqlSupport.changer:sqlToRule</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:displayError">QueryBuilder.changer:displayError</a></li>
@@ -120,6 +122,7 @@
 										<li><a href="QueryBuilder.html#.event:changer:getRules">QueryBuilder.changer:getRules</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleTemplate">QueryBuilder.changer:getRuleTemplate</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:getRuleValue">QueryBuilder.changer:getRuleValue</a></li>
+										<li><a href="QueryBuilder.html#.event:changer:getRuleValueSelect">QueryBuilder.changer:getRuleValueSelect</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:groupToJson">QueryBuilder.changer:groupToJson</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:jsonToGroup">QueryBuilder.changer:jsonToGroup</a></li>
 										<li><a href="QueryBuilder.html#.event:changer:jsonToRule">QueryBuilder.changer:jsonToRule</a></li>
@@ -1142,7 +1145,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-350">line 350</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-378">line 378</a></p>
 								</div>
 							</div>
 			
@@ -1245,7 +1248,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-499">line 499</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-527">line 527</a></p>
 								</div>
 							</div>
 			
@@ -1462,7 +1465,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-135">line 135</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-163">line 163</a></p>
 								</div>
 							</div>
 			
@@ -1573,7 +1576,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-883">line 883</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-910">line 910</a></p>
 								</div>
 							</div>
 			
@@ -1652,7 +1655,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-406">line 406</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-434">line 434</a></p>
 								</div>
 							</div>
 			
@@ -1731,7 +1734,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-558">line 558</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-586">line 586</a></p>
 								</div>
 							</div>
 			
@@ -2391,7 +2394,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-316">line 316</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-344">line 344</a></p>
 								</div>
 							</div>
 			
@@ -2595,7 +2598,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-624">line 624</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-633">line 633</a></p>
 								</div>
 							</div>
 			
@@ -3009,7 +3012,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-916">line 916</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-943">line 943</a></p>
 								</div>
 							</div>
 			
@@ -3080,7 +3083,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-534">line 534</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-562">line 562</a></p>
 								</div>
 							</div>
 			
@@ -3151,7 +3154,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-109">line 109</a></p>
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-127">line 127</a></p>
 								</div>
 							</div>
 			
@@ -3293,7 +3296,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-596">line 596</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-624">line 624</a></p>
 								</div>
 							</div>
 			
@@ -3370,7 +3373,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-164">line 164</a></p>
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-182">line 182</a></p>
 								</div>
 							</div>
 			
@@ -3448,7 +3451,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-274">line 274</a></p>
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-315">line 315</a></p>
 								</div>
 							</div>
 			
@@ -3525,7 +3528,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-194">line 194</a></p>
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-212">line 212</a></p>
 								</div>
 							</div>
 			
@@ -3655,7 +3658,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-136">line 136</a></p>
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-154">line 154</a></p>
 								</div>
 							</div>
 			
@@ -3726,7 +3729,85 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-436">line 436</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-445">line 445</a></p>
+								</div>
+							</div>
+			
+			
+			
+			
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title event public">
+			<h4 id=".event:changer:getRuleValueSelect" class="event public"><span class="name">changer:getRuleValueSelect</span></h4>
+		</dt>
+<dd class="symbol-details event public">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Modifies the raw HTML of the rule's value dropdown (in case of a &quot;select filter)</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>html</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+							</td>
+						</tr>
+						<tr>
+								<td><code>string}</code></td>
+							<td></td>
+							<td class="last">
+									<p>name</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>rule</code></td>
+							<td><span class="param-type"><a href="Rule.html">Rule</a></span></td>
+							<td class="last">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-default"><h5>Details</h5>		<form class="form-horizontal details">
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+							<!-- source -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Source</label>
+								<div class="col-sm-9">
+									<p class="form-control-static"><a href="template.js.html">template.js</a>, <a href="template.js.html#line-242">line 242</a></p>
 								</div>
 							</div>
 			
@@ -4011,7 +4092,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-584">line 584</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-593">line 593</a></p>
 								</div>
 							</div>
 			
@@ -4083,7 +4164,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-528">line 528</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-537">line 537</a></p>
 								</div>
 							</div>
 			
@@ -4306,7 +4387,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-638">line 638</a></p>
+									<p class="form-control-static"><a href="data.js.html">data.js</a>, <a href="data.js.html#line-647">line 647</a></p>
 								</div>
 							</div>
 			
@@ -4506,7 +4587,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-375">line 375</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-403">line 403</a></p>
 								</div>
 							</div>
 			
@@ -4563,7 +4644,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-521">line 521</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-549">line 549</a></p>
 								</div>
 							</div>
 			
@@ -4620,7 +4701,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-870">line 870</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-897">line 897</a></p>
 								</div>
 							</div>
 			
@@ -4677,7 +4758,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-837">line 837</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-864">line 864</a></p>
 								</div>
 							</div>
 			
@@ -4771,7 +4852,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-609">line 609</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-637">line 637</a></p>
 								</div>
 							</div>
 			
@@ -4828,7 +4909,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-696">line 696</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-724">line 724</a></p>
 								</div>
 							</div>
 			
@@ -4892,7 +4973,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-646">line 646</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-674">line 674</a></p>
 								</div>
 							</div>
 			
@@ -4929,7 +5010,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-433">line 433</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-461">line 461</a></p>
 								</div>
 							</div>
 			
@@ -4966,7 +5047,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-576">line 576</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-604">line 604</a></p>
 								</div>
 							</div>
 			
@@ -5140,7 +5221,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-460">line 460</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-488">line 488</a></p>
 								</div>
 							</div>
 			
@@ -5203,7 +5284,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-732">line 732</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-760">line 760</a></p>
 								</div>
 							</div>
 			
@@ -5266,7 +5347,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-775">line 775</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-805">line 805</a></p>
 								</div>
 							</div>
 			
@@ -5329,7 +5410,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-802">line 802</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-829">line 829</a></p>
 								</div>
 							</div>
 			
@@ -5400,7 +5481,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-355">line 355</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-383">line 383</a></p>
 								</div>
 							</div>
 			
@@ -5457,7 +5538,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-500">line 500</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-528">line 528</a></p>
 								</div>
 							</div>
 			
@@ -5551,7 +5632,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-411">line 411</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-439">line 439</a></p>
 								</div>
 							</div>
 			
@@ -5608,7 +5689,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-563">line 563</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-591">line 591</a></p>
 								</div>
 							</div>
 			
@@ -5719,7 +5800,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-383">line 383</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-411">line 411</a></p>
 								</div>
 							</div>
 			
@@ -5788,7 +5869,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Source</label>
 								<div class="col-sm-9">
-									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-947">line 947</a></p>
+									<p class="form-control-static"><a href="core.js.html">core.js</a>, <a href="core.js.html#line-974">line 974</a></p>
 								</div>
 							</div>
 			
