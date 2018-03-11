@@ -40,12 +40,12 @@ $ npm install jQuery-QueryBuilder
 
 jQuery-QueryBuilder is available on [jsDelivr](https://www.jsdelivr.com/package/npm/jQuery-QueryBuilder).
 ### Dependencies
- * jQuery >= 1.10
- * Bootstrap >= 3.1 (CSS only)
+ * [jQuery 3](https://jquery.com)
+ * [Bootstrap 3](https://getbootstrap.com/docs/3.3) (CSS only)
  * [jQuery.extendext](https://github.com/mistic100/jQuery.extendext)
  * [doT.js](http://olado.github.io/doT)
  * [MomentJS](http://momentjs.com) (optional, for Date/Time validation)
- * [SQL Parser](https://github.com/mistic100/sql-parser) (option, for SQL methods)
+ * [SQL Parser](https://github.com/mistic100/sql-parser) (optional, for SQL methods)
  * Other Bootstrap/jQuery plugins used by plugins
 
 ($.extendext and doT.js are directly included in the [standalone](https://github.com/mistic100/jQuery-QueryBuilder/blob/master/dist/js/query-builder.standalone.js) file)
