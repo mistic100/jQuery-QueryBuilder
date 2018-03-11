@@ -27,6 +27,7 @@ QueryBuilder.define('sortable', function(options) {
     var placeholder;
     var ghost;
     var src;
+    var moved;
 
     // Init drag and drop
     this.on('afterAddRule afterAddGroup', function(e, node) {
@@ -50,6 +51,8 @@ QueryBuilder.define('sortable', function(options) {
                 .draggable({
                     allowForm: QueryBuilder.selectors.drag_handle,
                     onstart: function(event) {
+                        moved = false;
+
                         // get model of dragged element
                         src = self.getModel(event.target);
 
@@ -73,7 +76,13 @@ QueryBuilder.define('sortable', function(options) {
                         ghost[0].style.top = event.clientY - 15 + 'px';
                         ghost[0].style.left = event.clientX - 15 + 'px';
                     },
-                    onend: function() {
+                    onend: function(event) {
+                        // starting from Interact 1.3.3, onend is called before ondrop
+                        if (event.dropzone) {
+                            moveSortableToTarget(src, $(event.relatedTarget), self);
+                            moved = true;
+                        }
+
                         // remove ghost
                         ghost.remove();
                         ghost = undefined;
@@ -107,7 +116,9 @@ QueryBuilder.define('sortable', function(options) {
                         moveSortableToTarget(placeholder, $(event.target), self);
                     },
                     ondrop: function(event) {
-                        moveSortableToTarget(src, $(event.target), self);
+                        if (!moved) {
+                            moveSortableToTarget(src, $(event.target), self);
+                        }
                     }
                 });
 
@@ -120,7 +131,9 @@ QueryBuilder.define('sortable', function(options) {
                             moveSortableToTarget(placeholder, $(event.target), self);
                         },
                         ondrop: function(event) {
-                            moveSortableToTarget(src, $(event.target), self);
+                            if (!moved) {
+                                moveSortableToTarget(src, $(event.target), self);
+                            }
                         }
                     });
             }
