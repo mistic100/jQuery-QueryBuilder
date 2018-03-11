@@ -69,6 +69,22 @@ $(function () {
             rules,
             'Should parse NOT SQL function'
         );
+
+        $b.queryBuilder('setRulesFromSQL', sql2);
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            rules2,
+            'Should parse NOT SQL function with only one rule'
+        );
+
+        $b.queryBuilder('setRulesFromSQL', sql3);
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            rules3,
+            'Should parse NOT SQL function with same operation'
+        );
     });
 
     QUnit.test('Mongo export', function (assert) {
@@ -118,6 +134,49 @@ $(function () {
     };
 
     var sql = 'name = \'Mistic\' OR ( NOT ( price < 10.25 AND category IN(\'mo\', \'mu\') ) ) ';
+
+    var rules2 = {
+        condition: 'OR',
+        rules: [{
+            id: 'name',
+            operator: 'equal',
+            value: 'Mistic'
+        }, {
+            condition: 'AND',
+            not: true,
+            rules: [{
+                id: 'price',
+                operator: 'less',
+                value: 10.25
+            }]
+        }]
+    };
+
+    var sql2 = 'name = \'Mistic\' OR ( NOT ( price < 10.25 ) ) ';
+
+    var rules3 = {
+        condition: 'OR',
+        rules: [{
+            id: 'name',
+            operator: 'equal',
+            value: 'Mistic'
+        }, {
+            condition: 'OR',
+            not: true,
+            rules: [{
+                id: 'price',
+                operator: 'less',
+                value: 10.25
+            }, {
+                id: 'category',
+                field: 'category',
+                operator: 'in',
+                value: ['mo', 'mu']
+            }]
+        }]
+    };
+
+    var sql3 = 'name = \'Mistic\' OR ( NOT ( price < 10.25 OR category IN(\'mo\', \'mu\') ) ) ';
 
     var mongo = {
         "$or": [{
