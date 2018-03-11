@@ -9,14 +9,14 @@
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": "dist/js/query-builder.js",
   "dependencies": {
-    "bootstrap": ">=4.0.0",
+    "bootstrap": ">=3.1.0 <4",
     "dot": ">=1.0.3",
     "jquery": "^3.3.1",
     "jquery-extendext": ">=0.1.2",
     "moment": "^2.21.0"
   },
   "devDependencies": {
-    "awesome-bootstrap-checkbox": "^1.0.1",
+    "awesome-bootstrap-checkbox": "^0.3.7",
     "blanket": "^1.2.3",
     "bootbox": "^4.4.0",
     "bootstrap-select": "^1.12.4",

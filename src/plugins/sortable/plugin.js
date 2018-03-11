@@ -47,8 +47,8 @@ QueryBuilder.define('sortable', function(options) {
         // Configure drag
         if (!node.flags.no_sortable) {
             interact(node.$el[0])
-                .allowFrom(QueryBuilder.selectors.drag_handle)
                 .draggable({
+                    allowForm: QueryBuilder.selectors.drag_handle,
                     onstart: function(event) {
                         // get model of dragged element
                         src = self.getModel(event.target);
