@@ -14,10 +14,11 @@ QueryBuilder.utils = Utils;
  * @callback Utils#OptionsIteratee
  * @param {string} key
  * @param {string} value
+ * @param {string} [optgroup]
  */
 
 /**
- * Iterates over radio/checkbox/selection options, it accept three formats
+ * Iterates over radio/checkbox/selection options, it accept four formats
  *
  * @example
  * // array of values
@@ -28,6 +29,9 @@ QueryBuilder.utils = Utils;
  * @example
  * // array of 1-element maps
  * options = [{1: 'one'}, {2: 'two'}, {3: 'three'}]
+ * @example
+ * // array of elements
+ * options = [{value: 1, label: 'one', optgroup: 'group'}, {value: 2, label: 'two'}]
  *
  * @param {object|array} options
  * @param {Utils#OptionsIteratee} tpl
@@ -36,12 +40,18 @@ Utils.iterateOptions = function(options, tpl) {
     if (options) {
         if ($.isArray(options)) {
             options.forEach(function(entry) {
-                // array of one-element maps
                 if ($.isPlainObject(entry)) {
-                    $.each(entry, function(key, val) {
-                        tpl(key, val);
-                        return false; // break after first entry
-                    });
+                    // array of elements
+                    if ('value' in entry) {
+                        tpl(entry.value, entry.label || entry.value, entry.optgroup);
+                    }
+                    // array of one-element maps
+                    else {
+                        $.each(entry, function(key, val) {
+                            tpl(key, val);
+                            return false; // break after first entry
+                        });
+                    }
                 }
                 // array of values
                 else {
@@ -103,19 +113,32 @@ Utils.error = function() {
  * Changes the type of a value to int, float or bool
  * @param {*} value
  * @param {string} type - 'integer', 'double', 'boolean' or anything else (passthrough)
- * @param {boolean} [boolAsInt=false] - return 0 or 1 for booleans
  * @returns {*}
  */
-Utils.changeType = function(value, type, boolAsInt) {
+Utils.changeType = function(value, type) {
+    if (value === '' || value === undefined) {
+        return undefined;
+    }
+
     switch (type) {
         // @formatter:off
-    case 'integer': return parseInt(value);
-    case 'double': return parseFloat(value);
-    case 'boolean':
-        var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
-        return boolAsInt ? (bool ? 1 : 0) : bool;
-    default: return value;
-    // @formatter:on
+        case 'integer':
+            if (typeof value === 'string' && !/^-?\d+$/.test(value)) {
+                return value;
+            }
+            return parseInt(value);
+        case 'double':
+            if (typeof value === 'string' && !/^-?\d+\.?\d*$/.test(value)) {
+                return value;
+            }
+            return parseFloat(value);
+        case 'boolean':
+            if (typeof value === 'string' && !/^(0|1|true|false){1}$/i.test(value)) {
+                return value;
+            }
+            return value === true || value === 1 || value.toLowerCase() === 'true' || value === '1';
+        default: return value;
+        // @formatter:on
     }
 };
 
@@ -133,12 +156,12 @@ Utils.escapeString = function(value) {
         .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
             switch (s) {
                 // @formatter:off
-            case '\0': return '\\0';
-            case '\n': return '\\n';
-            case '\r': return '\\r';
-            case '\b': return '\\b';
-            default:   return '\\' + s;
-            // @formatter:off
+                case '\0': return '\\0';
+                case '\n': return '\\n';
+                case '\r': return '\\r';
+                case '\b': return '\\b';
+                default:   return '\\' + s;
+                // @formatter:off
             }
         })
         // uglify compliant

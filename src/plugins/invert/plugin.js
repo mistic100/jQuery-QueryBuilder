@@ -29,25 +29,36 @@ QueryBuilder.define('invert', function(options) {
     });
 
     // Modify templates
-    this.on('getGroupTemplate.filter', function(h, level) {
-        var $h = $(h.value);
-        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> ' + self.translate('invert') + '</button>');
-        h.value = $h.prop('outerHTML');
-    });
-
-    if (options.display_rules_button && options.invert_rules) {
-        this.on('getRuleTemplate.filter', function(h) {
+    if (!options.disable_template) {
+        this.on('getGroupTemplate.filter', function(h) {
             var $h = $(h.value);
-            $h.find(Selectors.rule_actions).prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> ' + self.translate('invert') + '</button>');
+            $h.find(Selectors.condition_container).after(
+                '<button type="button" class="btn btn-xs btn-default" data-invert="group">' +
+                '<i class="' + options.icon + '"></i> ' + self.translate('invert') +
+                '</button>'
+            );
             h.value = $h.prop('outerHTML');
         });
+
+        if (options.display_rules_button && options.invert_rules) {
+            this.on('getRuleTemplate.filter', function(h) {
+                var $h = $(h.value);
+                $h.find(Selectors.rule_actions).prepend(
+                    '<button type="button" class="btn btn-xs btn-default" data-invert="rule">' +
+                    '<i class="' + options.icon + '"></i> ' + self.translate('invert') +
+                    '</button>'
+                );
+                h.value = $h.prop('outerHTML');
+            });
+        }
     }
 }, {
     icon: 'glyphicon glyphicon-random',
     recursive: true,
     invert_rules: true,
     display_rules_button: false,
-    silent_fail: false
+    silent_fail: false,
+    disable_template: false
 });
 
 QueryBuilder.defaults({

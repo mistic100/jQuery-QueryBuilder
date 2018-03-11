@@ -93,12 +93,40 @@ QueryBuilder.prototype.checkFilters = function(filters) {
                 break;
 
             case 'select':
+                var cleanValues = [];
+                filter.has_optgroup = false;
+
+                Utils.iterateOptions(filter.values, function(value, label, optgroup) {
+                    cleanValues.push({
+                        value: value,
+                        label: label,
+                        optgroup: optgroup || null
+                    });
+
+                    if (optgroup) {
+                        filter.has_optgroup = true;
+
+                        // register optgroup if needed
+                        if (!this.settings.optgroups[optgroup]) {
+                            this.settings.optgroups[optgroup] = optgroup;
+                        }
+                    }
+                }.bind(this));
+
+                if (filter.has_optgroup) {
+                    filter.values = Utils.groupSort(cleanValues, 'optgroup');
+                }
+                else {
+                    filter.values = cleanValues;
+                }
+
                 if (filter.placeholder) {
                     if (filter.placeholder_value === undefined) {
                         filter.placeholder_value = -1;
                     }
-                    Utils.iterateOptions(filter.values, function(key) {
-                        if (key == filter.placeholder_value) {
+
+                    filter.values.forEach(function(entry) {
+                        if (entry.value == filter.placeholder_value) {
                             Utils.error('Config', 'Placeholder of filter "{0}" overlaps with one of its values', filter.id);
                         }
                     });
@@ -679,10 +707,10 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         $inputs = $inputs.add($ruleInput);
     }
 
-    $valueContainer.show();
+    $valueContainer.css('display', '');
 
     $inputs.on('change ' + (filter.input_event || ''), function() {
-        if (!this._updating_input) {
+        if (!rule._updating_input) {
             rule._updating_value = true;
             rule.value = self.getRuleInputValue(rule);
             rule._updating_value = false;
@@ -750,7 +778,6 @@ QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
  */
 QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     var $valueContainer = rule.$el.find(QueryBuilder.selectors.value_container);
-    var ruleValue = rule.value;
 
     if (!rule.operator || rule.operator.nb_inputs === 0) {
         $valueContainer.hide();
@@ -758,7 +785,7 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
         rule.__.value = undefined;
     }
     else {
-        $valueContainer.show();
+        $valueContainer.css('display', '');
 
         if ($valueContainer.is(':empty') || !previousOperator ||
             rule.operator.nb_inputs !== previousOperator.nb_inputs ||
@@ -770,6 +797,9 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
 
     if (rule.operator) {
         rule.$el.find(QueryBuilder.selectors.rule_operator).val(rule.operator.type);
+
+        // refresh value if the format changed for this operator
+        rule.__.value = this.getRuleInputValue(rule);
     }
 
     /**
@@ -782,9 +812,6 @@ QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
     this.trigger('afterUpdateRuleOperator', rule, previousOperator);
 
     this.trigger('rulesChanged');
-
-    // FIXME is it necessary ?
-    this.updateRuleValue(rule, ruleValue);
 };
 
 /**

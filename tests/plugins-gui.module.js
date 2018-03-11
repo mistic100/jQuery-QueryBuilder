@@ -95,6 +95,23 @@ $(function(){
     });
 
     /**
+     * Test chosen-selectpicker
+     */
+    QUnit.test('chosen-selectpicker', function(assert) {
+        $b.queryBuilder({
+            plugins: ['chosen-selectpicker'],
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        assert.ok(
+            $b.find('.chosen-single').length == 8,
+            'Should have initialized chosen on all filters and operators selectors'
+        );
+    });
+
+
+    /**
      * Test bt-tooltip-errors
      */
     QUnit.test('bt-tooltip-errors', function(assert) {
@@ -201,6 +218,37 @@ $(function(){
         assert.ok(
             $('#builder_rule_0 button.filter-description').data('toggle') == 'bootbox',
             'Rule should contain a new button enabled with Bootbox'
+        );
+    });
+
+    /**
+     * Test sortable
+     */
+    QUnit.test('sortable', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: basic_rules,
+            plugins: ['sortable']
+        });
+
+        assert.ok(
+            $b.find('.drag-handle').length > 0,
+            'Should add the drag handles'
+        );
+
+        $b.queryBuilder('destroy');
+
+        $b.queryBuilder({
+            plugins: {
+                'sortable': {disable_template: true}
+            },
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        assert.ok(
+            $b.find('.drag-handle').length === 0,
+            'Should not have added the handles with disable_template=true'
         );
     });
 });

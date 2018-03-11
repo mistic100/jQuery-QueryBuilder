@@ -9,7 +9,7 @@
   "description": "jQuery plugin for user friendly query/filter creator",
   "require": {
     "robloach/component-installer": "*",
-    "components/jquery": ">=1.9.0",
+    "components/jquery": ">=1.10.0",
     "moment/moment": ">=2.6.0",
     "components/bootstrap": ">=3.1.0 <4"
   },

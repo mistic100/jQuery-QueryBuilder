@@ -6,15 +6,16 @@
 
   <title>jQuery QueryBuilder Example</title>
 
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css" id="bt-theme">
-  <link rel="stylesheet" href="../bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
-  <link rel="stylesheet" href="../bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
-  <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
-  <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.bootstrap3.css">
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css" id="bt-theme">
+  <link rel="stylesheet" href="../node_modules/bootstrap-select/dist/css/bootstrap-select.css">
+  <link rel="stylesheet" href="../node_modules/chosenjs/chosen.css">
+  <link rel="stylesheet" href="../node_modules/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
+  <link rel="stylesheet" href="../node_modules/bootstrap-slider/dist/css/bootstrap-slider.css">
+  <link rel="stylesheet" href="../node_modules/selectize/dist/css/selectize.bootstrap3.css">
 
   <link rel="stylesheet" href="../dist/css/query-builder.default.css" id="qb-theme">
-
   <link rel="stylesheet" href="http://mistic100.github.io/jQuery-QueryBuilder/assets/flags/flags.css">
+
   <style>
     .flag {
       display: inline-block;
@@ -35,21 +36,14 @@
       </h1>
     </div>
 
-    <div class="alert alert-info alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      You must execute <code>bower install</code> in the example directory to run this demo.
-    </div>
-
     <div class="well well-sm">
       <label>Theme:</label>
       <div class="btn-group">
-        <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.default.min.css"
-                data-bt="../bower_components/bootstrap/dist/css/bootstrap.min.css">Default
+        <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.default.css"
+                data-bt="../node_modules/bootstrap/dist/css/bootstrap.css">Default
         </button>
-        <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.dark.min.css"
-                data-bt="bower_components/bootswatch-dist/css/bootstrap.min.css">Dark
+        <button class="btn btn-primary btn-sm change-theme" data-qb="../dist/css/query-builder.dark.css"
+                data-bt="../node_modules/bootswatch-dist/css/bootstrap.css">Dark
         </button>
       </div>
 
@@ -113,16 +107,17 @@
   </div>
 </div>
 
-<script src="../bower_components/jquery/dist/jquery.js"></script>
-<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-<script src="../bower_components/bootbox/bootbox.js"></script>
-<script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
-<script src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
-<script src="../bower_components/jquery-extendext/jQuery.extendext.min.js"></script>
-<script src="../bower_components/sql-parser/browser/sql-parser.js"></script>
-<script src="../bower_components/doT/doT.js"></script>
-<script src="../bower_components/interact/interact.js"></script>
+<script src="../node_modules/jquery/dist/jquery.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../node_modules/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script src="../node_modules/chosenjs/chosen.jquery.js"></script>
+<script src="../node_modules/bootbox/bootbox.js"></script>
+<script src="../node_modules/bootstrap-slider/dist/bootstrap-slider.js"></script>
+<script src="../node_modules/selectize/dist/js/standalone/selectize.js"></script>
+<script src="../node_modules/jquery-extendext/jQuery.extendext.js"></script>
+<script src="../node_modules/sql-parser-mistic/browser/sql-parser.js"></script>
+<script src="../node_modules/dot/doT.js"></script>
+<script src="../node_modules/interactjs/dist/interact.js"></script>
 
 <!-- <script src="../dist/js/query-builder.js"></script> -->
 <!-- injector:js -->
@@ -140,6 +135,7 @@
 <script src="../src/plugins/bt-selectpicker/plugin.js"></script>
 <script src="../src/plugins/bt-tooltip-errors/plugin.js"></script>
 <script src="../src/plugins/change-filters/plugin.js"></script>
+<script src="../src/plugins/chosen-selectpicker/plugin.js"></script>
 <script src="../src/plugins/filter-description/plugin.js"></script>
 <script src="../src/plugins/invert/plugin.js"></script>
 <script src="../src/plugins/mongodb-support/plugin.js"></script>
@@ -173,6 +169,7 @@
       'sortable': null,
       'filter-description': { mode: 'bootbox' },
       'bt-selectpicker': null,
+//      'chosen-selectpicker': null,
       'unique-filter': null,
       'bt-checkbox': { color: 'primary' },
       'invert': null,
@@ -214,6 +211,7 @@
           en: 'Name',
           fr: 'Nom'
         },
+        icon: 'glyphicon glyphicon-user',
         value_separator: ',',
         type: 'string',
         optgroup: 'core',
@@ -230,6 +228,7 @@
       {
         id: 'age',
         label: 'Age',
+        icon: 'glyphicon glyphicon-calendar',
         type: 'integer',
         input: 'text',
         value_separator: '|',
@@ -246,6 +245,7 @@
       {
         id: 'bson',
         label: 'BSON',
+        icon: 'glyphicon glyphicon-qrcode',
         type: 'string',
         input: 'textarea',
         operators: ['equal'],
@@ -258,6 +258,7 @@
       {
         id: 'category',
         label: 'Category',
+        icon: 'glyphicon glyphicon-th-list',
         type: 'integer',
         input: 'checkbox',
         optgroup: 'core',
@@ -283,18 +284,47 @@
       {
         id: 'continent',
         label: 'Continent',
+        icon: 'glyphicon glyphicon-globe',
         type: 'string',
         input: 'select',
         optgroup: 'core',
         placeholder: 'Select something',
-        values: {
-          'eur': 'Europe',
-          'asia': 'Asia',
-          'oce': 'Oceania',
-          'afr': 'Africa',
-          'na': 'North America',
-          'sa': 'South America'
-        },
+        values: [
+          {
+            label: 'Europe',
+            value: 'eur',
+            optgroup: 'North'
+          },
+          {
+            label: 'Asia',
+            value: 'asia',
+            optgroup: 'North'
+          },
+          {
+            label: 'Oceania',
+            value: 'oce',
+            optgroup: 'South'
+          },
+          {
+            label: 'Africa',
+            value: 'afr',
+            optgroup: 'South'
+          },
+          {
+            label: 'North America',
+            value: 'na',
+            optgroup: 'North'
+          },
+          {
+            label: 'South America',
+            value: 'sa',
+            optgroup: 'South'
+          },
+          {
+            label: 'Mordor',
+            value: 'mrd'
+          }
+        ],
         operators: ['equal', 'not_equal', 'is_null', 'is_not_null']
       },
       /*
@@ -303,6 +333,7 @@
       {
         id: 'state',
         label: 'State',
+        icon: 'glyphicon glyphicon-globe',
         type: 'string',
         input: 'select',
         multiple: true,
@@ -338,6 +369,7 @@
       {
         id: 'in_stock',
         label: 'In stock',
+        icon: 'glyphicon glyphicon-log-in',
         type: 'integer',
         input: 'radio',
         optgroup: 'plugin',
@@ -353,6 +385,7 @@
       {
         id: 'price',
         label: 'Price',
+        icon: 'glyphicon glyphicon-usd',
         type: 'double',
         size: 5,
         validation: {
@@ -369,6 +402,7 @@
       {
         id: 'rate',
         label: 'Rate',
+        icon: 'glyphicon glyphicon-flash',
         type: 'integer',
         validation: {
           min: 0,
@@ -392,6 +426,7 @@
       {
         id: 'id',
         label: 'Identifier',
+        icon: 'glyphicon glyphicon-sunglasses',
         type: 'string',
         optgroup: 'plugin',
         placeholder: '____-____-____',
@@ -410,6 +445,7 @@
       {
         id: 'coord',
         label: 'Coordinates',
+        icon: 'glyphicon glyphicon-star-empty',
         type: 'string',
         default_value: 'C.5',
         description: 'The letter is the cadran identifier:\

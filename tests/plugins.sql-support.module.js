@@ -406,27 +406,27 @@ $(function() {
         }, {
             id: 'price',
             operator: 'less',
-            value: '5'
+            value: 5
         }, {
             id: 'price',
             operator: 'less_or_equal',
-            value: '5'
+            value: 5
         }, {
             id: 'price',
             operator: 'greater',
-            value: '4'
+            value: 4
         }, {
             id: 'price',
             operator: 'greater_or_equal',
-            value: '4'
+            value: 4
         }, {
             id: 'price',
             operator: 'between',
-            value: ['4', '5']
+            value: [4,5]
         }, {
             id: 'price',
             operator: 'not_between',
-            value: ['4', '5']
+            value: [4,5]
         }, {
             id: 'name',
             operator: 'begins_with',

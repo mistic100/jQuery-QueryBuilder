@@ -414,7 +414,7 @@ $(function() {
                 }, {
                     id: 'age',
                     operator: 'not_in',
-                    value: ['16', '17', '18']
+                    value: [16, 17, 18]
                 }]
             },
             'Should split values on comma and pipe'

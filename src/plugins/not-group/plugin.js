@@ -30,15 +30,17 @@ QueryBuilder.define('not-group', function(options) {
     });
 
     // Modify templates
-    this.on('getGroupTemplate.filter', function(h, level) {
-        var $h = $(h.value);
-        $h.find(QueryBuilder.selectors.condition_container).prepend(
-            '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
-            '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
-            '</button>'
-        );
-        h.value = $h.prop('outerHTML');
-    });
+    if (!options.disable_template) {
+        this.on('getGroupTemplate.filter', function(h) {
+            var $h = $(h.value);
+            $h.find(QueryBuilder.selectors.condition_container).prepend(
+                '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
+                '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
+                '</button>'
+            );
+            h.value = $h.prop('outerHTML');
+        });
+    }
 
     // Export "not" to JSON
     this.on('groupToJson.filter', function(e, group) {
@@ -61,7 +63,24 @@ QueryBuilder.define('not-group', function(options) {
     this.on('parseSQLNode.filter', function(e) {
         if (e.value.name && e.value.name.toUpperCase() == 'NOT') {
             e.value = e.value.arguments.value[0];
+
+            // if the there is no sub-group, create one
+            if (['AND', 'OR'].indexOf(e.value.operation.toUpperCase()) === -1) {
+                e.value = {
+                    left: e.value,
+                    operation: self.settings.default_condition,
+                    right: null
+                };
+            }
+
             e.value.not = true;
+        }
+    });
+
+    // Request to create sub-group if the "not" flag is set
+    this.on('sqlGroupsDistinct.filter', function(e, group, data) {
+        if (data.not) {
+            e.value = true;
         }
     });
 
@@ -94,7 +113,8 @@ QueryBuilder.define('not-group', function(options) {
     });
 }, {
     icon_unchecked: 'glyphicon glyphicon-unchecked',
-    icon_checked: 'glyphicon glyphicon-check'
+    icon_checked: 'glyphicon glyphicon-check',
+    disable_template: false
 });
 
 /**
