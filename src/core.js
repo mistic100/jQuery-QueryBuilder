@@ -93,12 +93,40 @@ QueryBuilder.prototype.checkFilters = function(filters) {
                 break;
 
             case 'select':
+                var cleanValues = [];
+                filter.has_optgroup = false;
+
+                Utils.iterateOptions(filter.values, function(value, label, optgroup) {
+                    cleanValues.push({
+                        value: value,
+                        label: label,
+                        optgroup: optgroup || null
+                    });
+
+                    if (optgroup) {
+                        filter.has_optgroup = true;
+
+                        // register optgroup if needed
+                        if (!this.settings.optgroups[optgroup]) {
+                            this.settings.optgroups[optgroup] = optgroup;
+                        }
+                    }
+                }.bind(this));
+
+                if (filter.has_optgroup) {
+                    filter.values = Utils.groupSort(cleanValues, 'optgroup');
+                }
+                else {
+                    filter.values = cleanValues;
+                }
+
                 if (filter.placeholder) {
                     if (filter.placeholder_value === undefined) {
                         filter.placeholder_value = -1;
                     }
-                    Utils.iterateOptions(filter.values, function(key) {
-                        if (key == filter.placeholder_value) {
+
+                    filter.values.forEach(function(entry) {
+                        if (entry.value == filter.placeholder_value) {
                             Utils.error('Config', 'Placeholder of filter "{0}" overlaps with one of its values', filter.id);
                         }
                     });

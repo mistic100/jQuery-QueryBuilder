@@ -87,6 +87,24 @@ QueryBuilder.templates.operatorSelect = '\
   {{? optgroup !== null }}</optgroup>{{?}} \
 </select>';
 
+QueryBuilder.templates.ruleValueSelect = '\
+{{ var optgroup = null; }} \
+<select class="form-control" name="{{= it.name }}" {{? it.rule.filter.multiple }}multiple{{?}}> \
+  {{? it.rule.filter.placeholder }} \
+    <option value="{{= it.rule.filter.placeholder_value }}" disabled selected>{{= it.rule.filter.placeholder }}</option> \
+  {{?}} \
+  {{~ it.rule.filter.values: entry }} \
+    {{? optgroup !== entry.optgroup }} \
+      {{? optgroup !== null }}</optgroup>{{?}} \
+      {{? (optgroup = entry.optgroup) !== null }} \
+        <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
+      {{?}} \
+    {{?}} \
+    <option value="{{= entry.value }}">{{= entry.label }}</option> \
+  {{~}} \
+  {{? optgroup !== null }}</optgroup>{{?}} \
+</select>';
+
 /**
  * Returns group's HTML
  * @param {string} group_id
@@ -204,6 +222,36 @@ QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
 };
 
 /**
+ * Returns the rule's value select HTML
+ * @param {string} name
+ * @param {Rule} rule
+ * @returns {string}
+ * @fires QueryBuilder.changer:getRuleValueSelect
+ * @private
+ */
+QueryBuilder.prototype.getRuleValueSelect = function(name, rule) {
+    var h = this.templates.ruleValueSelect({
+        builder: this,
+        name: name,
+        rule: rule,
+        icons: this.icons,
+        settings: this.settings,
+        translate: this.translate.bind(this)
+    });
+
+    /**
+     * Modifies the raw HTML of the rule's value dropdown (in case of a "select filter)
+     * @event changer:getRuleValueSelect
+     * @memberof QueryBuilder
+     * @param {string} html
+     * @param [string} name
+     * @param {Rule} rule
+     * @returns {string}
+     */
+    return this.change('getRuleValueSelect', h, name, rule);
+};
+
+/**
  * Returns the rule's value HTML
  * @param {Rule} rule
  * @param {int} value_id
@@ -231,14 +279,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 break;
 
             case 'select':
-                h += '<select class="form-control" name="' + name + '"' + (filter.multiple ? ' multiple' : '') + '>';
-                if (filter.placeholder) {
-                    h += '<option value="' + filter.placeholder_value + '" disabled selected>' + filter.placeholder + '</option>';
-                }
-                Utils.iterateOptions(filter.values, function(key, val) {
-                    h += '<option value="' + key + '">' + val + '</option> ';
-                });
-                h += '</select>';
+                h = this.getRuleValueSelect(name, rule);
                 break;
 
             case 'textarea':

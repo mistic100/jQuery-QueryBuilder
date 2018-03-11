@@ -284,14 +284,42 @@
         input: 'select',
         optgroup: 'core',
         placeholder: 'Select something',
-        values: {
-          'eur': 'Europe',
-          'asia': 'Asia',
-          'oce': 'Oceania',
-          'afr': 'Africa',
-          'na': 'North America',
-          'sa': 'South America'
-        },
+        values: [
+          {
+            label: 'Europe',
+            value: 'eur',
+            optgroup: 'North'
+          },
+          {
+            label: 'Asia',
+            value: 'asia',
+            optgroup: 'North'
+          },
+          {
+            label: 'Oceania',
+            value: 'oce',
+            optgroup: 'South'
+          },
+          {
+            label: 'Africa',
+            value: 'afr',
+            optgroup: 'South'
+          },
+          {
+            label: 'North America',
+            value: 'na',
+            optgroup: 'North'
+          },
+          {
+            label: 'South America',
+            value: 'sa',
+            optgroup: 'South'
+          },
+          {
+            label: 'Mordor',
+            value: 'mrd'
+          }
+        ],
         operators: ['equal', 'not_equal', 'is_null', 'is_not_null']
       },
       /*
