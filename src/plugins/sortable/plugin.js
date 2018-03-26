@@ -49,7 +49,7 @@ QueryBuilder.define('sortable', function(options) {
         if (!node.flags.no_sortable) {
             interact(node.$el[0])
                 .draggable({
-                    allowForm: QueryBuilder.selectors.drag_handle,
+                    allowFrom: QueryBuilder.selectors.drag_handle,
                     onstart: function(event) {
                         moved = false;
 
