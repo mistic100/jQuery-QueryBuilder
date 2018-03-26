@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.5.0
+ * jQuery QueryBuilder 2.5.1
  * Copyright 2014-2018 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
@@ -5170,7 +5170,7 @@ QueryBuilder.define('sortable', function(options) {
         if (!node.flags.no_sortable) {
             interact(node.$el[0])
                 .draggable({
-                    allowForm: QueryBuilder.selectors.drag_handle,
+                    allowFrom: QueryBuilder.selectors.drag_handle,
                     onstart: function(event) {
                         moved = false;
 
@@ -6137,7 +6137,7 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.5.0
+ * jQuery QueryBuilder 2.5.1
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)
