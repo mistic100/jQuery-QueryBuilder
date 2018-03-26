@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.5.0
+ * jQuery QueryBuilder 2.5.1
  * Locale: German (de)
  * Author: "raimu"
  * Licensed under MIT (http://opensource.org/licenses/MIT)
