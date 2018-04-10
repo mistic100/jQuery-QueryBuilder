@@ -9,7 +9,7 @@
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": "dist/js/query-builder.js",
   "dependencies": {
-    "bootstrap": ">=3.1.0 <4",
+    "bootstrap": ">=4.1.0",
     "dot": ">=1.0.3",
     "jquery": "^3.3.1",
     "jquery-extendext": ">=0.1.2",
