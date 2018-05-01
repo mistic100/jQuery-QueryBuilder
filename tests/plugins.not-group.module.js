@@ -59,8 +59,13 @@ $(function () {
             sql,
             'Should export SQL with NOT function'
         );
+    });
 
-        $b.queryBuilder('reset');
+    QUnit.test('SQL import', function (assert) {
+        $b.queryBuilder({
+            filters: basic_filters,
+            plugins: ['not-group']
+        });
 
         $b.queryBuilder('setRulesFromSQL', sql);
 
@@ -84,6 +89,22 @@ $(function () {
             $b.queryBuilder('getRules'),
             rules3,
             'Should parse NOT SQL function with same operation'
+        );
+
+        $b.queryBuilder('setRulesFromSQL', sql4);
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            rules4,
+            'Should parse NOT SQL function with negated root group'
+        );
+
+        $b.queryBuilder('setRulesFromSQL', sql5);
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            rules5,
+            'Should parse NOT SQL function with double negated root group'
         );
     });
 
@@ -113,6 +134,7 @@ $(function () {
 
     var rules = {
         condition: 'OR',
+        not: false,
         rules: [{
             id: 'name',
             operator: 'equal',
@@ -137,6 +159,7 @@ $(function () {
 
     var rules2 = {
         condition: 'OR',
+        not: false,
         rules: [{
             id: 'name',
             operator: 'equal',
@@ -156,6 +179,7 @@ $(function () {
 
     var rules3 = {
         condition: 'OR',
+        not: false,
         rules: [{
             id: 'name',
             operator: 'equal',
@@ -177,6 +201,42 @@ $(function () {
     };
 
     var sql3 = 'name = \'Mistic\' OR ( NOT ( price < 10.25 OR category IN(\'mo\', \'mu\') ) ) ';
+
+    var rules4 = {
+        condition: 'AND',
+        not: true,
+        rules: [{
+            id: 'price',
+            operator: 'less',
+            value: 10.25
+        }]
+    };
+
+    var sql4 = 'NOT ( price < 10.25 )';
+
+    var rules5 = {
+        condition: 'AND',
+        not: false,
+        rules: [{
+            condition: 'AND',
+            not: true,
+            rules: [{
+                id: 'price',
+                operator: 'less',
+                value: 10.25
+            }]
+        }, {
+            condition: 'AND',
+            not: true,
+            rules: [{
+                id: 'price',
+                operator: 'greater',
+                value: 20.5
+            }]
+        }]
+    };
+
+    var sql5 = 'NOT ( price < 10.25 ) AND NOT ( price > 20.5 )';
 
     var mongo = {
         "$or": [{

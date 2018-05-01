@@ -491,12 +491,13 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                  * Given an existing group and an AST node, determines if a sub-group must be created
                  * @event changer:sqlGroupsDistinct
                  * @memberof module:plugins.SqlSupport
-                 * @param {boolean} create - try by default if the group condition is different
+                 * @param {boolean} create - true by default if the group condition is different
                  * @param {object} group
                  * @param {object} AST
+                 * @param {int} current group level
                  * @returns {boolean}
                  */
-                var createGroup = self.change('sqlGroupsDistinct', i > 0 && curr.condition != data.operation.toUpperCase(), curr, data);
+                var createGroup = self.change('sqlGroupsDistinct', i > 0 && curr.condition != data.operation.toUpperCase(), curr, data, i);
 
                 if (createGroup) {
                     /**
