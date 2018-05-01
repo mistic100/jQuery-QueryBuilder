@@ -328,7 +328,9 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                     }
 
                     var sqlFn = function(v) {
-                        return sql.op.replace('?', v);
+                        return sql.op.replace('?', function() {
+                            return v;
+                        });
                     };
 
                     /**

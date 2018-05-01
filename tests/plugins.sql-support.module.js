@@ -131,6 +131,35 @@ $(function() {
         );
     });
 
+    QUnit.test('Special chars', function(assert) {
+        // PhantomJS is broken https://github.com/ariya/phantomjs/issues/14921
+        if (!!window._phantom) {
+            assert.ok(true, 'Test ignore in PhantomJS');
+            return;
+        }
+
+        var chars = ['\'', '"', '$1', '$$', '$&', '$`', '$\''];
+
+        var sql = "name = '\\'' AND name = '\\\"' AND name = '$1' AND " +
+            "name = '$$' AND name = '$&' AND name = '$`' AND name = '$\\''";
+
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: chars.map(function(char) {
+                return {
+                    id: 'name',
+                    value: char
+                };
+            })
+        });
+
+        assert.equal(
+            $b.queryBuilder('getSQL').sql,
+            sql,
+            'Should output SQL with escaped special chars'
+        );
+    });
+
     QUnit.test('All operators', function(assert) {
         $b.queryBuilder({
             filters: basic_filters,
