@@ -18,8 +18,8 @@ isHome: true
       datepickers.
     </li>
     <li>It outputs a structured JSON of rules which can be easily parsed to create SQL/NoSQL/whatever queries.</li>
-    <li>And it also comes with a set of <i>great</i> <a href="{{site.github.url}}/plugins.html">plugins</a> and has a
-      full <a href="{{site.github.url}}/dev/events.html">events system</a> for even more features.
+    <li>And it also comes with a set of <i>great</i> <a href="{{ site.github.url | replace: 'http://', '//' }}/plugins.html">plugins</a> and has a
+      full <a href="{{ site.github.url | replace: 'http://', '//' }}/dev/events.html">events system</a> for even more features.
     </li>
   </ul>
 </section>
@@ -29,7 +29,7 @@ isHome: true
 
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
     <div id="builder-basic"></div>
-    <p class="text-center">The full code of this example can be found <a href="{{site.github.url}}/demo.html">here</a>.
+    <p class="text-center">The full code of this example can be found <a href="{{ site.github.url | replace: 'http://', '//' }}/demo.html">here</a>.
     </p>
   </div>
 </section>
@@ -55,7 +55,7 @@ isHome: true
   <div class="bs-callout">
     <h4>Don't want to use Bootstrap ?</h4>
 
-    <p>Let's see <a href="{{site.github.url}}/dev/no-bootstrap.html">what we can do for you</a>.</p>
+    <p>Let's see <a href="{{ site.github.url | replace: 'http://', '//' }}/dev/no-bootstrap.html">what we can do for you</a>.</p>
   </div>
 
   <h3 id="letsgo">Let's go!</h3>
@@ -155,7 +155,7 @@ require(['jquery', 'query-builder'], function($) {
         <td>plugins</td>
         <td>object</td>
         <td></td>
-        <td>Configuration of plugins. <a href="{{site.github.url}}/plugins.html"><i
+        <td>Configuration of plugins. <a href="{{ site.github.url | replace: 'http://', '//' }}/plugins.html"><i
           class="glyphicon glyphicon-info-sign"></i> See plugins page</a></td>
       </tr>
       <tr>
@@ -607,7 +607,7 @@ values: [
         <td>
           <ul>
             <li>For <code>date</code>, <code>time</code>, <code>datetime</code>: a valid <a
-              href="http://momentjs.com/docs/#/parsing/string-format/">MomentJS string format</a></li>
+              href="https://momentjs.com/docs/#/parsing/string-format/">MomentJS string format</a></li>
             <li>For <code>string</code>: a regular expression (plain or RegExp object)</li>
           </ul>
         </td>
@@ -702,12 +702,12 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
 <!-- @formatter:on -->
 
   <p>Only main methods are described, consult the
-    <a class="btn btn-outline" href="{{site.github.url}}/api/QueryBuilder.html#methods">API documentation</a>
+    <a class="btn btn-outline" href="{{ site.github.url | replace: 'http://', '//' }}/api/QueryBuilder.html#methods">API documentation</a>
     to learn more about all available methods.</p>
 
   <div class="bs-callout bs-callout-warning">
     <h4>Plugins methods</h4>
-    <p>Methods added by <a href="{{site.github.url}}/plugins.html">plugins</a> are detailed in their respective
+    <p>Methods added by <a href="{{ site.github.url | replace: 'http://', '//' }}/plugins.html">plugins</a> are detailed in their respective
       sections.</p>
   </div>
 
@@ -745,7 +745,7 @@ $('#builder')[0].queryBuilder.methodName(param_1, param_2);
     <h4 id="method-getRules"><code>.getRules([options])</code></h4>
 
     <p>Performs validation and returns the rules as a plain JSON object. See the <a
-      href="{{site.github.url}}/demo.html">demo</a> for output example. The method takes an optional object of options.
+      href="{{ site.github.url | replace: 'http://', '//' }}/demo.html">demo</a> for output example. The method takes an optional object of options.
     </p>
 
     <div class="table-responsive">
@@ -798,7 +798,7 @@ $('#builder').queryBuilder('getRules', { get_flags: true });
       <h4>Other formats</h4>
 
       <p>For other output formats like <b>SQL</b> and <b>MongoDB</b>, please refer to the <a
-        href="{{site.github.url}}/plugins.html#import-export">plugins</a> page.</p>
+        href="{{ site.github.url | replace: 'http://', '//' }}/plugins.html#import-export">plugins</a> page.</p>
     </div>
   </div>
 
@@ -1082,7 +1082,7 @@ $('#builder').queryBuilder('destroy');
     <code>on</code> method on the builder container.</p>
 
   <p>The full list of events can be found in the
-    <a class="btn btn-outline" href="{{site.github.url}}/api/QueryBuilder.html#events">API documentation</a>.</p>
+    <a class="btn btn-outline" href="{{ site.github.url | replace: 'http://', '//' }}/api/QueryBuilder.html#events">API documentation</a>.</p>
 
   <div class="bs-callout">
     <h4>Triggers</h4>
@@ -1131,7 +1131,7 @@ $('#builder').on('getGroupTemplate.queryBuilder.filter', function(e, level) {
 
   <div class="bs-callout bs-callout-warning">
     <h4>Plugins events</h4>
-    <p>Events added by <a href="{{site.github.url}}/plugins.html">plugins</a> are detailed in their respective sections.</p>
+    <p>Events added by <a href="{{ site.github.url | replace: 'http://', '//' }}/plugins.html">plugins</a> are detailed in their respective sections.</p>
   </div>
 
   <h3 id="themes">Themes</h3>
@@ -1320,7 +1320,7 @@ operators: [
   <h3 id="templates">Templates</h3>
 
   <p>For very specific customizations, QueryBuilder provides a way to completely overwrite the HTML templates used to
-    display rules and groups. It uses the <a href="http://olado.github.io/doT">doT.js</a> template engine by default,
+    display rules and groups. It uses the <a href="https://olado.github.io/doT">doT.js</a> template engine by default,
     but
     can be used with most JS template engines, like <i>underscore.js</i> one.</p>
 
@@ -1331,7 +1331,7 @@ operators: [
       non-Bootstrap CSS classes should not be removed.</p>
   </div>
 
-  <p>Templates can be provided as a <a href="http://olado.github.io/doT/#samples">doT.js template string</a> or as a
+  <p>Templates can be provided as a <a href="https://olado.github.io/doT/#samples">doT.js template string</a> or as a
     function taking an object of variables and returning an HTML string (<code>_.template</code> for instance). Check
     the default templates <a href="{{site.blobUrl}}/src/template.js"><i class="glyphicon glyphicon-file"></i> in the
       source code</a>.</p>
@@ -1405,9 +1405,9 @@ operators: [
 </section>
 
 
-<link href="{{site.github.url}}/dist/bootstrap-treeview/dist/bootstrap-treeview.min.css" rel="stylesheet">
-<link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/css/query-builder.default.min.css" rel="stylesheet">
-<link href="{{site.github.url}}/assets/flags/flags.css" rel="stylesheet">
+<link href="{{ site.github.url | replace: 'http://', '//' }}/dist/bootstrap-treeview/dist/bootstrap-treeview.min.css" rel="stylesheet">
+<link href="{{ site.github.url | replace: 'http://', '//' }}/dist/jQuery-QueryBuilder/dist/css/query-builder.default.min.css" rel="stylesheet">
+<link href="{{ site.github.url | replace: 'http://', '//' }}/assets/flags/flags.css" rel="stylesheet">
 
 <style>
   .languages-list {
@@ -1425,7 +1425,7 @@ operators: [
   }
 </style>
 
-<script src="{{site.github.url}}/dist/bootstrap-treeview/dist/bootstrap-treeview.min.js"></script>
-<script src="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/js/query-builder.standalone.min.js"></script>
-<script src="{{site.github.url}}/assets/demo-basic.js"></script>
-<script src="{{site.github.url}}/assets/index.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/dist/bootstrap-treeview/dist/bootstrap-treeview.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/dist/jQuery-QueryBuilder/dist/js/query-builder.standalone.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/assets/demo-basic.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/assets/index.js"></script>

@@ -7,7 +7,7 @@
   <title>{{site.name}}</title>
 
   {% if site.favicon %}
-  <link rel="icon" type="{% if site.favicon == 'png' %}image/png{% else %}image/x-icon{% endif %}" href="{{site.github.url}}/favicon.{{site.favicon}}"/>
+  <link rel="icon" type="{% if site.favicon == 'png' %}image/png{% else %}image/x-icon{% endif %}" href="{{ site.github.url | replace: 'http://', '//' }}/favicon.{{site.favicon}}"/>
   {% endif %}
 
   <!--[if lt IE 9]>
@@ -16,8 +16,8 @@
   <![endif]-->
 
   <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-  <link href="{{site.github.url}}/assets/css/docs.min.css" rel="stylesheet">
-  <link href="{{site.github.url}}/assets/css/style.css" rel="stylesheet">
+  <link href="{{ site.github.url | replace: 'http://', '//' }}/assets/css/docs.min.css" rel="stylesheet">
+  <link href="{{ site.github.url | replace: 'http://', '//' }}/assets/css/style.css" rel="stylesheet">
 
   <style>
     #content {
@@ -29,8 +29,8 @@
   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
   <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js"></script>
-  <script src="{{site.github.url}}/assets/js/docs.min.js"></script>
-  <script src="{{site.github.url}}/assets/js/script.js"></script>
+  <script src="{{ site.github.url | replace: 'http://', '//' }}/assets/js/docs.min.js"></script>
+  <script src="{{ site.github.url | replace: 'http://', '//' }}/assets/js/script.js"></script>
 </head>
 
 <body>
@@ -45,7 +45,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{site.github.url}}/index.html">{{site.name}}</a>
+        <a class="navbar-brand" href="{{ site.github.url | replace: 'http://', '//' }}/index.html">{{site.name}}</a>
       </div>
       <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
         <ul class="nav navbar-nav">
@@ -56,7 +56,7 @@
           {% for p in sorted_pages %}
             {% if p.isHome != true and p.hide != true and p.title != ''  %}
             <li {% if page.title == p.title %}class="active"{% endif %}>
-              <a href="{{site.github.url}}{{p.url}}">{{p.title}}</a>
+              <a href="{{ site.github.url | replace: 'http://', '//' }}{{p.url}}">{{p.title}}</a>
             </li>
             {% endif %}
           {% endfor %}
@@ -146,7 +146,7 @@
         {% endif %}
         {% if site.twitter.enabled %}
           <li>
-            <a href="https://twitter.com/share" class="twitter-share-button" data-url="{{site.github.url}}" data-count="horizontal" data-via="{{site.twitter.via}}" data-text="{{site.name}}" data-hashtags="{{site.twitter.hash}}">Tweet</a>
+            <a href="https://twitter.com/share" class="twitter-share-button" data-url="{{ site.github.url | replace: 'http://', '//' }}" data-count="horizontal" data-via="{{site.twitter.via}}" data-text="{{site.name}}" data-hashtags="{{site.twitter.hash}}">Tweet</a>
           </li>
         {% endif %}
         {% if site.twitter.account %}
@@ -156,7 +156,7 @@
         {% endif %}
         {% if site.facebook.enabled %}
           <li>
-            <div class="fb-like" data-href="{{site.github.url}}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+            <div class="fb-like" data-href="{{ site.github.url | replace: 'http://', '//' }}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
           </li>
         {% endif %}
         {% if site.facebook.profileUrl %}

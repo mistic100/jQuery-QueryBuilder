@@ -1,28 +1,28 @@
 <li {% if page.title == 'Demos' %}class="active"{% endif %}>
-  <a href="{{site.github.url}}/demo.html">Demos</a>
+  <a href="{{ site.github.url | replace: 'http://', '//' }}/demo.html">Demos</a>
 </li>
 
 <li {% if page.title == 'Plugins' %}class="active"{% endif %}>
-  <a href="{{site.github.url}}/plugins.html">Plugins</a>
+  <a href="{{ site.github.url | replace: 'http://', '//' }}/plugins.html">Plugins</a>
 </li>
 
 <li>
-  <a href="{{site.github.url}}/api">API</a>
+  <a href="{{ site.github.url | replace: 'http://', '//' }}/api">API</a>
 </li>
 
 <li>
-  <a href="{{site.github.url}}/changelog.html">Changelog</a>
+  <a href="{{ site.github.url | replace: 'http://', '//' }}/changelog.html">Changelog</a>
 </li>
 
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Advanced <span class="caret"></span></a>
   <ul class="dropdown-menu">
     <li {% if page.title == 'Create plugins' %}class="active"{% endif %}>
-      <a href="{{site.github.url}}/dev/plugins.html">Create plugins</a>
+      <a href="{{ site.github.url | replace: 'http://', '//' }}/dev/plugins.html">Create plugins</a>
     </li>
 
     <li {% if page.title == 'No Bootstrap' %}class="active"{% endif %}>
-      <a href="{{site.github.url}}/dev/no-bootstrap.html">No Bootstrap</a>
+      <a href="{{ site.github.url | replace: 'http://', '//' }}/dev/no-bootstrap.html">No Bootstrap</a>
     </li>
   </ul>
 </li>

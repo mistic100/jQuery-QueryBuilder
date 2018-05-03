@@ -28,7 +28,7 @@ $('#builder').queryBuilder({
 
   <p>Below you can find the plugins shipped by default with QueryBuilder, with their identifiers.</p>
 
-  <p><b>Want to create a new plugin ?</b> Check our <a href="{{site.github.url}}/dev/plugins.html">developer doc</a>.
+  <p><b>Want to create a new plugin ?</b> Check our <a href="{{ site.github.url | replace: 'http://', '//' }}/dev/plugins.html">developer doc</a>.
   </p>
 </section>
 
@@ -55,7 +55,7 @@ $('#builder').queryBuilder({
     <h4><code>.getSQL([mode [, linebreaks]])</code></h4>
 
     <p>Performs validation and returns the rules as a valid SQL WHERE statement. See the <a
-      href="{{site.github.url}}/demo.html">demo</a> for output example. The first parameter can be:</p>
+      href="{{ site.github.url | replace: 'http://', '//' }}/demo.html">demo</a> for output example. The first parameter can be:</p>
 
     <div class="table-responsive">
       <table class="table table-bordered table-striped">
@@ -136,7 +136,7 @@ $('#builder').queryBuilder('setRulesFromSQL', {
 
     <h3>New events</h3>
 
-    <p>Check the <a class="btn btn-outline" href="{{site.github.url}}/api/module-plugins.SqlSupport.html#events">API documentation</a>
+    <p>Check the <a class="btn btn-outline" href="{{ site.github.url | replace: 'http://', '//' }}/api/module-plugins.SqlSupport.html#events">API documentation</a>
       for the list of events added by this plugin.</p>
 
     <h3>Requirements</h3>
@@ -175,7 +175,7 @@ $('#builder').queryBuilder('setRulesFromSQL', {
     <h4><code>.getMongo()</code></h4>
 
     <p>Performs validation and returns the rules as a valid MongoDB find object. See the <a
-      href="{{site.github.url}}/demo.html">demo</a> for output example.</p>
+      href="{{ site.github.url | replace: 'http://', '//' }}/demo.html">demo</a> for output example.</p>
     <!-- @formatter:off -->
 {% highlight javascript %}
 var mongo = $('#builder').queryBuilder('getMongo');
@@ -194,7 +194,7 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
 
     <h3>New events</h3>
 
-    <p>Check the <a class="btn btn-outline" href="{{site.github.url}}/api/module-plugins.MongoDbSupport.html#events">API documentation</a>
+    <p>Check the <a class="btn btn-outline" href="{{ site.github.url | replace: 'http://', '//' }}/api/module-plugins.MongoDbSupport.html#events">API documentation</a>
       for the list of events added by this plugin.</p>
 
     <h3>Operators</h3>
@@ -243,7 +243,7 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
     <p>Enables drag &amp; drop sort of rules and groups. It is based on <a href="http://interactjs.io">interact.js</a> to offer
       touch screen support.</p>
 
-    <p>The plugin also adds two new rule/group flags useable with <a href="{{site.github.url}}/index.html#methods">setRules</a>
+    <p>The plugin also adds two new rule/group flags useable with <a href="{{ site.github.url | replace: 'http://', '//' }}/index.html#methods">setRules</a>
       method: <code>no_sortable</code> and <code>no_drop</code>.</p>
 
     <h3>Requirements</h3>
@@ -298,7 +298,7 @@ $('#builder').queryBuilder('setRulesFromMongo', { /* ... */ });
 
     <h3>New events</h3>
 
-    <p>Check the <a class="btn btn-outline" href="{{site.github.url}}/api/module-plugins.Sortable.html#events">API documentation</a>
+    <p>Check the <a class="btn btn-outline" href="{{ site.github.url | replace: 'http://', '//' }}/api/module-plugins.Sortable.html#events">API documentation</a>
       for the list of events added by this plugin.</p>
   </div>
 
@@ -501,7 +501,7 @@ $('#builder').queryBuilder('invert', group, {/* ... */});
 
     <h3>New events</h3>
 
-    <p>Check the <a class="btn btn-outline" href="{{site.github.url}}/api/module-plugins.Invert.html#events">API documentation</a>
+    <p>Check the <a class="btn btn-outline" href="{{ site.github.url | replace: 'http://', '//' }}/api/module-plugins.Invert.html#events">API documentation</a>
       for the list of events added by this plugin.</p>
   </div>
 
@@ -580,7 +580,7 @@ $('#builder').queryBuilder('invert', group, {/* ... */});
 
     <h3>New events</h3>
 
-    <p>Check the <a class="btn btn-outline" href="{{site.github.url}}/api/module-plugins.NotGroup.html#events">API documentation</a>
+    <p>Check the <a class="btn btn-outline" href="{{ site.github.url | replace: 'http://', '//' }}/api/module-plugins.NotGroup.html#events">API documentation</a>
       for the list of events added by this plugin.</p>
   </div>
 
@@ -648,7 +648,7 @@ $('#builder').queryBuilder('removeFilter', ['name', 'age'], true);
 
     <h3>New events</h3>
 
-    <p>Check the <a class="btn btn-outline" href="{{site.github.url}}/api/module-plugins.ChangeFilters.html#events">API documentation</a>
+    <p>Check the <a class="btn btn-outline" href="{{ site.github.url | replace: 'http://', '//' }}/api/module-plugins.ChangeFilters.html#events">API documentation</a>
       for the list of events added by this plugin.</p>
   </div>
 </section>

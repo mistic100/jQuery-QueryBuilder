@@ -14,7 +14,7 @@ redirect_from:
   <p>This demo shows the basic features of the QueryBuilder. Click one of the blue buttons to trigger the validation and
     display the output.</p>
 
-  <a href="{{site.github.url}}/assets/demo-basic.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
+  <a href="{{ site.github.url | replace: 'http://', '//' }}/assets/demo-basic.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
 
   <div class="col-md-12">
     <div id="builder-basic"></div>
@@ -40,7 +40,7 @@ redirect_from:
     The filter <b>Coordinates</b> shows how to define a custom input (here two linked &lt;select&gt;) without using a
     plugin.</p>
 
-  <a href="{{site.github.url}}/assets/demo-widgets.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
+  <a href="{{ site.github.url | replace: 'http://', '//' }}/assets/demo-widgets.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
 
   <div class="col-md-12">
     <div id="builder-widgets"></div>
@@ -59,9 +59,9 @@ redirect_from:
     Plugins
   </h1>
 
-  <p>This demo uses all <a href="{{site.github.url}}/plugins.html">plugins</a> with their default configuration.</p>
+  <p>This demo uses all <a href="{{ site.github.url | replace: 'http://', '//' }}/plugins.html">plugins</a> with their default configuration.</p>
 
-  <a href="{{site.github.url}}/assets/demo-plugins.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
+  <a href="{{ site.github.url | replace: 'http://', '//' }}/assets/demo-plugins.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
 
   <div class="col-md-12">
     <div id="builder-plugins"></div>
@@ -82,7 +82,7 @@ redirect_from:
 
   <p>This demo shows how SQL and MongoDB import/export features are working.</p>
 
-  <a href="{{site.github.url}}/assets/demo-import-export.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
+  <a href="{{ site.github.url | replace: 'http://', '//' }}/assets/demo-import-export.js" class="btn btn-default"><b>&lt;/&gt;</b> See source</a>
 
   <div class="col-md-12">
     <div id="builder-import_export"></div>
@@ -109,28 +109,28 @@ redirect_from:
 </section>
 
 
-<link href="{{site.github.url}}/dist/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
-<link href="{{site.github.url}}/dist/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
-<link href="{{site.github.url}}/dist/selectize/dist/css/selectize.bootstrap3.css" rel="stylesheet">
-<link href="{{site.github.url}}/dist/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
-<link href="{{site.github.url}}/dist/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
-<link href="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/css/query-builder.default.min.css" rel="stylesheet">
+<link href="{{ site.github.url | replace: 'http://', '//' }}/dist/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+<link href="{{ site.github.url | replace: 'http://', '//' }}/dist/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
+<link href="{{ site.github.url | replace: 'http://', '//' }}/dist/selectize/dist/css/selectize.bootstrap3.css" rel="stylesheet">
+<link href="{{ site.github.url | replace: 'http://', '//' }}/dist/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+<link href="{{ site.github.url | replace: 'http://', '//' }}/dist/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="{{ site.github.url | replace: 'http://', '//' }}/dist/jQuery-QueryBuilder/dist/css/query-builder.default.min.css" rel="stylesheet">
 
-<script src="{{site.github.url}}/dist/moment/min/moment.min.js"></script>
-<script src="{{site.github.url}}/dist/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-<script src="{{site.github.url}}/dist/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
-<script src="{{site.github.url}}/dist/selectize/dist/js/standalone/selectize.min.js"></script>
-<script src="{{site.github.url}}/dist/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-<script src="{{site.github.url}}/dist/jQuery-QueryBuilder/dist/js/query-builder.standalone.min.js"></script>
-<script src="{{site.github.url}}/dist/sql-parser/browser/sql-parser.min.js"></script>
-<script src="{{site.github.url}}/dist/interactjs/dist/interact.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/dist/moment/min/moment.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/dist/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/dist/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/dist/selectize/dist/js/standalone/selectize.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/dist/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/dist/jQuery-QueryBuilder/dist/js/query-builder.standalone.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/dist/sql-parser/browser/sql-parser.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/dist/interactjs/dist/interact.min.js"></script>
 
-<script>var baseurl = '{{site.github.url}}';</script>
-<script src="{{site.github.url}}/assets/demo-basic.js"></script>
-<script src="{{site.github.url}}/assets/demo-widgets.js"></script>
-<script src="{{site.github.url}}/assets/demo-plugins.js"></script>
-<script src="{{site.github.url}}/assets/demo-import-export.js"></script>
-<script src="{{site.github.url}}/assets/demo.js"></script>
+<script>var baseurl = '{{ site.github.url | replace: 'http://', '//' }}';</script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/assets/demo-basic.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/assets/demo-widgets.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/assets/demo-plugins.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/assets/demo-import-export.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/assets/demo.js"></script>
 
 <style>
   .code-popup {
