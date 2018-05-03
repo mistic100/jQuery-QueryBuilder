@@ -4,7 +4,7 @@
   "author": {
     "name": "Damien \"Mistic\" Sorel",
     "email": "contact@git.strangeplanet.fr",
-    "url": "http://www.strangeplanet.fr"
+    "url": "https://www.strangeplanet.fr"
   },
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": "dist/js/query-builder.js",
@@ -60,7 +60,7 @@
     "filter"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/mistic100/jQuery-QueryBuilder",
+  "homepage": "https://querybuilder.js.org",
   "repository": {
     "type": "git",
     "url": "git://github.com/mistic100/jQuery-QueryBuilder.git"
