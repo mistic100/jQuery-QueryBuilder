@@ -39,14 +39,14 @@ module.exports = function(grunt) {
         banner: '/*!\n' +
         ' * jQuery QueryBuilder <%= pkg.version %>\n' +
         ' * Copyright 2014-<%= grunt.template.today("yyyy") %> Damien "Mistic" Sorel (http://www.strangeplanet.fr)\n' +
-        ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n' +
+        ' * Licensed under MIT (https://opensource.org/licenses/MIT)\n' +
         ' */',
 
         langBanner: '/*!\n' +
         ' * jQuery QueryBuilder <%= pkg.version %>\n' +
         ' * Locale: <%= lang_locale %>\n' +
         '<% if (lang_author) { %> * Author: <%= lang_author %>\n<% } %>' +
-        ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n' +
+        ' * Licensed under MIT (https://opensource.org/licenses/MIT)\n' +
         ' */',
 
         // serve folder content

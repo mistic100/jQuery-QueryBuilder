@@ -66,11 +66,11 @@ QueryBuilder.define('not-group', function(options) {
 
             // if the there is no sub-group, create one
             if (['AND', 'OR'].indexOf(e.value.operation.toUpperCase()) === -1) {
-                e.value = {
-                    left: e.value,
-                    operation: self.settings.default_condition,
-                    right: null
-                };
+                e.value = new SQLParser.nodes.Op(
+                    self.settings.default_condition,
+                    e.value,
+                    null
+                );
             }
 
             e.value.not = true;
@@ -78,8 +78,8 @@ QueryBuilder.define('not-group', function(options) {
     });
 
     // Request to create sub-group if the "not" flag is set
-    this.on('sqlGroupsDistinct.filter', function(e, group, data) {
-        if (data.not) {
+    this.on('sqlGroupsDistinct.filter', function(e, group, data, i) {
+        if (data.not && i > 0) {
             e.value = true;
         }
     });

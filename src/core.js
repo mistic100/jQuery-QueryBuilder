@@ -352,11 +352,10 @@ QueryBuilder.prototype.setRoot = function(addRule, data, flags) {
     this.model.root.model = this.model;
 
     this.model.root.data = data;
-    this.model.root.__.flags = $.extend({}, this.settings.default_group_flags, flags);
+    this.model.root.flags = $.extend({}, this.settings.default_group_flags, flags);
+    this.model.root.condition = this.settings.default_condition;
 
     this.trigger('afterAddGroup', this.model.root);
-
-    this.model.root.condition = this.settings.default_condition;
 
     if (addRule) {
         this.addRule(this.model.root);
@@ -398,7 +397,8 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     var model = parent.addGroup($group);
 
     model.data = data;
-    model.__.flags = $.extend({}, this.settings.default_group_flags, flags);
+    model.flags = $.extend({}, this.settings.default_group_flags, flags);
+    model.condition = this.settings.default_condition;
 
     /**
      * Just after adding a group
@@ -414,8 +414,6 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
      * @memberof QueryBuilder
      */
     this.trigger('rulesChanged');
-
-    model.condition = this.settings.default_condition;
 
     if (addRule) {
         this.addRule(model);
@@ -540,11 +538,8 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
     var $rule = $(this.getRuleTemplate(rule_id));
     var model = parent.addRule($rule);
 
-    if (data !== undefined) {
-        model.data = data;
-    }
-
-    model.__.flags = $.extend({}, this.settings.default_rule_flags, flags);
+    model.data = data;
+    model.flags = $.extend({}, this.settings.default_rule_flags, flags);
 
     /**
      * Just after adding a rule
@@ -641,6 +636,8 @@ QueryBuilder.prototype.createRuleFilters = function(rule) {
      * @param {Rule} rule
      */
     this.trigger('afterCreateRuleFilters', rule);
+
+    this.applyRuleFlags(rule);
 };
 
 /**
@@ -679,6 +676,8 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
      * @param {QueryBuilder.Operator[]} operators - allowed operators for this rule
      */
     this.trigger('afterCreateRuleOperators', rule, operators);
+
+    this.applyRuleFlags(rule);
 };
 
 /**
@@ -737,6 +736,8 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         rule.value = self.getRuleInputValue(rule);
         rule._updating_value = false;
     }
+
+    this.applyRuleFlags(rule);
 };
 
 /**
@@ -848,15 +849,10 @@ QueryBuilder.prototype.applyRuleFlags = function(rule) {
     var flags = rule.flags;
     var Selectors = QueryBuilder.selectors;
 
-    if (flags.filter_readonly) {
-        rule.$el.find(Selectors.rule_filter).prop('disabled', true);
-    }
-    if (flags.operator_readonly) {
-        rule.$el.find(Selectors.rule_operator).prop('disabled', true);
-    }
-    if (flags.value_readonly) {
-        rule.$el.find(Selectors.rule_value).prop('disabled', true);
-    }
+    rule.$el.find(Selectors.rule_filter).prop('disabled', flags.filter_readonly);
+    rule.$el.find(Selectors.rule_operator).prop('disabled', flags.operator_readonly);
+    rule.$el.find(Selectors.rule_value).prop('disabled', flags.value_readonly);
+
     if (flags.no_delete) {
         rule.$el.find(Selectors.delete_rule).remove();
     }
@@ -880,10 +876,9 @@ QueryBuilder.prototype.applyGroupFlags = function(group) {
     var flags = group.flags;
     var Selectors = QueryBuilder.selectors;
 
-    if (flags.condition_readonly) {
-        group.$el.find('>' + Selectors.group_condition).prop('disabled', true)
-            .parent().addClass('readonly');
-    }
+    group.$el.find('>' + Selectors.group_condition).prop('disabled', flags.condition_readonly)
+        .parent().toggleClass('readonly', flags.condition_readonly);
+
     if (flags.no_add_rule) {
         group.$el.find(Selectors.add_rule).remove();
     }

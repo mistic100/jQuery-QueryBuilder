@@ -1,8 +1,8 @@
 /*!
- * jQuery QueryBuilder 2.5.1
+ * jQuery QueryBuilder 2.5.2
  * Locale: Greek (el)
  * Author: Stelios Patsatzis, https://www.linkedin.com/in/stelios-patsatzis-89841561
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {

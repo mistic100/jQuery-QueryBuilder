@@ -276,9 +276,9 @@
 
 
 /*!
- * jQuery QueryBuilder 2.5.1
+ * jQuery QueryBuilder 2.5.2
  * Copyright 2014-2018 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 (function(root, factory) {
     if (typeof define == 'function' && define.amd) {
@@ -1186,11 +1186,10 @@ QueryBuilder.prototype.setRoot = function(addRule, data, flags) {
     this.model.root.model = this.model;
 
     this.model.root.data = data;
-    this.model.root.__.flags = $.extend({}, this.settings.default_group_flags, flags);
+    this.model.root.flags = $.extend({}, this.settings.default_group_flags, flags);
+    this.model.root.condition = this.settings.default_condition;
 
     this.trigger('afterAddGroup', this.model.root);
-
-    this.model.root.condition = this.settings.default_condition;
 
     if (addRule) {
         this.addRule(this.model.root);
@@ -1232,7 +1231,8 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
     var model = parent.addGroup($group);
 
     model.data = data;
-    model.__.flags = $.extend({}, this.settings.default_group_flags, flags);
+    model.flags = $.extend({}, this.settings.default_group_flags, flags);
+    model.condition = this.settings.default_condition;
 
     /**
      * Just after adding a group
@@ -1248,8 +1248,6 @@ QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
      * @memberof QueryBuilder
      */
     this.trigger('rulesChanged');
-
-    model.condition = this.settings.default_condition;
 
     if (addRule) {
         this.addRule(model);
@@ -1374,11 +1372,8 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
     var $rule = $(this.getRuleTemplate(rule_id));
     var model = parent.addRule($rule);
 
-    if (data !== undefined) {
-        model.data = data;
-    }
-
-    model.__.flags = $.extend({}, this.settings.default_rule_flags, flags);
+    model.data = data;
+    model.flags = $.extend({}, this.settings.default_rule_flags, flags);
 
     /**
      * Just after adding a rule
@@ -1475,6 +1470,8 @@ QueryBuilder.prototype.createRuleFilters = function(rule) {
      * @param {Rule} rule
      */
     this.trigger('afterCreateRuleFilters', rule);
+
+    this.applyRuleFlags(rule);
 };
 
 /**
@@ -1513,6 +1510,8 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
      * @param {QueryBuilder.Operator[]} operators - allowed operators for this rule
      */
     this.trigger('afterCreateRuleOperators', rule, operators);
+
+    this.applyRuleFlags(rule);
 };
 
 /**
@@ -1571,6 +1570,8 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
         rule.value = self.getRuleInputValue(rule);
         rule._updating_value = false;
     }
+
+    this.applyRuleFlags(rule);
 };
 
 /**
@@ -1682,15 +1683,10 @@ QueryBuilder.prototype.applyRuleFlags = function(rule) {
     var flags = rule.flags;
     var Selectors = QueryBuilder.selectors;
 
-    if (flags.filter_readonly) {
-        rule.$el.find(Selectors.rule_filter).prop('disabled', true);
-    }
-    if (flags.operator_readonly) {
-        rule.$el.find(Selectors.rule_operator).prop('disabled', true);
-    }
-    if (flags.value_readonly) {
-        rule.$el.find(Selectors.rule_value).prop('disabled', true);
-    }
+    rule.$el.find(Selectors.rule_filter).prop('disabled', flags.filter_readonly);
+    rule.$el.find(Selectors.rule_operator).prop('disabled', flags.operator_readonly);
+    rule.$el.find(Selectors.rule_value).prop('disabled', flags.value_readonly);
+
     if (flags.no_delete) {
         rule.$el.find(Selectors.delete_rule).remove();
     }
@@ -1714,10 +1710,9 @@ QueryBuilder.prototype.applyGroupFlags = function(group) {
     var flags = group.flags;
     var Selectors = QueryBuilder.selectors;
 
-    if (flags.condition_readonly) {
-        group.$el.find('>' + Selectors.group_condition).prop('disabled', true)
-            .parent().addClass('readonly');
-    }
+    group.$el.find('>' + Selectors.group_condition).prop('disabled', flags.condition_readonly)
+        .parent().toggleClass('readonly', flags.condition_readonly);
+
     if (flags.no_add_rule) {
         group.$el.find(Selectors.add_rule).remove();
     }
@@ -1867,6 +1862,10 @@ QueryBuilder.prototype.reset = function() {
     this.status.rule_id = 0;
 
     this.model.root.empty();
+
+    this.model.root.data = undefined;
+    this.model.root.flags = $.extend({}, this.settings.default_group_flags);
+    this.model.root.condition = this.settings.default_condition;
 
     this.addRule(this.model.root);
 
@@ -2170,7 +2169,6 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
     this.clear();
     this.setRoot(false, data.data, this.parseGroupFlags(data));
-    this.applyGroupFlags(this.model.root);
 
     /**
      * Modifies data before the {@link QueryBuilder#setRules} method
@@ -2213,8 +2211,6 @@ QueryBuilder.prototype.setRules = function(data, options) {
                         return;
                     }
 
-                    self.applyGroupFlags(model);
-
                     add(item, model);
                 }
             }
@@ -2254,8 +2250,6 @@ QueryBuilder.prototype.setRules = function(data, options) {
                         model.value = model.filter.default_value;
                     }
                 }
-
-                self.applyRuleFlags(model);
 
                 /**
                  * Modifies the Rule object generated from the JSON
@@ -4870,17 +4864,17 @@ QueryBuilder.defaults({
     },
 
     mongoRuleOperators: {
+        $eq: function(v) {
+            return {
+                'val': v,
+                'op': v === null ? 'is_null' : (v === '' ? 'is_empty' : 'equal')
+            };
+        },
         $ne: function(v) {
             v = v.$ne;
             return {
                 'val': v,
                 'op': v === null ? 'is_not_null' : (v === '' ? 'is_not_empty' : 'not_equal')
-            };
-        },
-        eq: function(v) {
-            return {
-                'val': v,
-                'op': v === null ? 'is_null' : (v === '' ? 'is_empty' : 'equal')
             };
         },
         $regex: function(v) {
@@ -5063,7 +5057,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
             };
         }
 
-        var key = andOr(query);
+        var key = self.getMongoCondition(query);
         if (!key) {
             Utils.error('MongoParse', 'Invalid MongoDB query format');
         }
@@ -5088,7 +5082,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                     return;
                 }
 
-                var key = andOr(data);
+                var key = self.getMongoCondition(data);
                 if (key) {
                     parts.push(parse(data, key));
                 }
@@ -5096,7 +5090,7 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
                     var field = Object.keys(data)[0];
                     var value = data[field];
 
-                    var operator = determineMongoOperator(value, field);
+                    var operator = self.getMongoOperator(value);
                     if (operator === undefined) {
                         Utils.error('MongoParse', 'Invalid MongoDB query format');
                     }
@@ -5183,61 +5177,53 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
         }
 
         return id;
-    }
-});
+    },
 
-/**
- * Finds which operator is used in a MongoDB sub-object
- * @memberof module:plugins.MongoDbSupport
- * @param {*} value
- * @returns {string|undefined}
- * @private
- */
-function determineMongoOperator(value) {
-    if (value !== null && typeof value == 'object') {
-        var subkeys = Object.keys(value);
-
-        if (subkeys.length === 1) {
-            return subkeys[0];
-        }
-        else {
-            if (value.$gte !== undefined && value.$lte !== undefined) {
+    /**
+     * Finds which operator is used in a MongoDB sub-object
+     * @param {*} data
+     * @returns {string|undefined}
+     * @private
+     */
+    getMongoOperator: function(data) {
+        if (data !== null && typeof data === 'object') {
+            if (data.$gte !== undefined && data.$lte !== undefined) {
                 return 'between';
             }
-            if (value.$lt !== undefined && value.$gt !== undefined) {
+            if (data.$lt !== undefined && data.$gt !== undefined) {
                 return 'not_between';
             }
-            else if (value.$regex !== undefined) { // optional $options
-                return '$regex';
+
+            var knownKeys = Object.keys(data).filter(function(key) {
+                return !!this.settings.mongoRuleOperators[key];
+            }.bind(this));
+
+            if (knownKeys.length === 1) {
+                return knownKeys[0];
             }
-            else {
-                return;
+        }
+        else {
+            return '$eq';
+        }
+    },
+
+
+    /**
+     * Returns the key corresponding to "$or" or "$and"
+     * @param {object} data
+     * @returns {string|undefined}
+     * @private
+     */
+    getMongoCondition: function(data) {
+        var keys = Object.keys(data);
+
+        for (var i = 0, l = keys.length; i < l; i++) {
+            if (keys[i].toLowerCase() === '$or' || keys[i].toLowerCase() === '$and') {
+                return keys[i];
             }
         }
     }
-    else {
-        return 'eq';
-    }
-}
-
-/**
- * Returns the key corresponding to "$or" or "$and"
- * @memberof module:plugins.MongoDbSupport
- * @param {object} data
- * @returns {string}
- * @private
- */
-function andOr(data) {
-    var keys = Object.keys(data);
-
-    for (var i = 0, l = keys.length; i < l; i++) {
-        if (keys[i].toLowerCase() == '$or' || keys[i].toLowerCase() == '$and') {
-            return keys[i];
-        }
-    }
-
-    return undefined;
-}
+});
 
 
 /**
@@ -5308,11 +5294,11 @@ QueryBuilder.define('not-group', function(options) {
 
             // if the there is no sub-group, create one
             if (['AND', 'OR'].indexOf(e.value.operation.toUpperCase()) === -1) {
-                e.value = {
-                    left: e.value,
-                    operation: self.settings.default_condition,
-                    right: null
-                };
+                e.value = new SQLParser.nodes.Op(
+                    self.settings.default_condition,
+                    e.value,
+                    null
+                );
             }
 
             e.value.not = true;
@@ -5320,8 +5306,8 @@ QueryBuilder.define('not-group', function(options) {
     });
 
     // Request to create sub-group if the "not" flag is set
-    this.on('sqlGroupsDistinct.filter', function(e, group, data) {
-        if (data.not) {
+    this.on('sqlGroupsDistinct.filter', function(e, group, data, i) {
+        if (data.not && i > 0) {
             e.value = true;
         }
     });
@@ -5969,7 +5955,9 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                     }
 
                     var sqlFn = function(v) {
-                        return sql.op.replace(/\?/, v);
+                        return sql.op.replace('?', function() {
+                            return v;
+                        });
                     };
 
                     /**
@@ -6130,12 +6118,13 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                  * Given an existing group and an AST node, determines if a sub-group must be created
                  * @event changer:sqlGroupsDistinct
                  * @memberof module:plugins.SqlSupport
-                 * @param {boolean} create - try by default if the group condition is different
+                 * @param {boolean} create - true by default if the group condition is different
                  * @param {object} group
                  * @param {object} AST
+                 * @param {int} current group level
                  * @returns {boolean}
                  */
-                var createGroup = self.change('sqlGroupsDistinct', i > 0 && curr.condition != data.operation.toUpperCase(), curr, data);
+                var createGroup = self.change('sqlGroupsDistinct', i > 0 && curr.condition != data.operation.toUpperCase(), curr, data, i);
 
                 if (createGroup) {
                     /**
@@ -6414,10 +6403,10 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.5.1
+ * jQuery QueryBuilder 2.5.2
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 QueryBuilder.regional['en'] = {

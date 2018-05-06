@@ -46,6 +46,10 @@ QueryBuilder.prototype.reset = function() {
 
     this.model.root.empty();
 
+    this.model.root.data = undefined;
+    this.model.root.flags = $.extend({}, this.settings.default_group_flags);
+    this.model.root.condition = this.settings.default_condition;
+
     this.addRule(this.model.root);
 
     /**
@@ -348,7 +352,6 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
     this.clear();
     this.setRoot(false, data.data, this.parseGroupFlags(data));
-    this.applyGroupFlags(this.model.root);
 
     /**
      * Modifies data before the {@link QueryBuilder#setRules} method
@@ -391,8 +394,6 @@ QueryBuilder.prototype.setRules = function(data, options) {
                         return;
                     }
 
-                    self.applyGroupFlags(model);
-
                     add(item, model);
                 }
             }
@@ -432,8 +433,6 @@ QueryBuilder.prototype.setRules = function(data, options) {
                         model.value = model.filter.default_value;
                     }
                 }
-
-                self.applyRuleFlags(model);
 
                 /**
                  * Modifies the Rule object generated from the JSON
