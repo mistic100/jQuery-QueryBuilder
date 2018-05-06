@@ -46,6 +46,10 @@ QueryBuilder.prototype.reset = function() {
 
     this.model.root.empty();
 
+    this.model.root.data = undefined;
+    this.model.root.flags = $.extend({}, this.settings.default_group_flags);
+    this.model.root.condition = this.settings.default_condition;
+
     this.addRule(this.model.root);
 
     /**
