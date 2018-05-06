@@ -348,7 +348,6 @@ QueryBuilder.prototype.setRules = function(data, options) {
 
     this.clear();
     this.setRoot(false, data.data, this.parseGroupFlags(data));
-    this.applyGroupFlags(this.model.root);
 
     /**
      * Modifies data before the {@link QueryBuilder#setRules} method
@@ -391,8 +390,6 @@ QueryBuilder.prototype.setRules = function(data, options) {
                         return;
                     }
 
-                    self.applyGroupFlags(model);
-
                     add(item, model);
                 }
             }
@@ -432,8 +429,6 @@ QueryBuilder.prototype.setRules = function(data, options) {
                         model.value = model.filter.default_value;
                     }
                 }
-
-                self.applyRuleFlags(model);
 
                 /**
                  * Modifies the Rule object generated from the JSON
