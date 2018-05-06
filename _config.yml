@@ -3,7 +3,7 @@ id: mistic100/jQuery-QueryBuilder
 # name of the software
 name: jQuery QueryBuilder
 # current version of the software
-version: 2.5.1
+version: 2.5.2
 # links to file/dir viewers
 treeUrl: https://github.com/mistic100/jQuery-QueryBuilder/tree/master
 blobUrl: https://github.com/mistic100/jQuery-QueryBuilder/blob/master
@@ -75,7 +75,7 @@ facebook:
   profileUrl:
 
 
-exclude: ['README.md', 'LICENSE', 'bower.json', 'Gemfile.lock', 'Gemfile']
+exclude: ['README.md', 'LICENSE', 'CNAME', 'Gemfile.lock', 'Gemfile', 'package.json']
 
 gems:
   - jekyll-redirect-from

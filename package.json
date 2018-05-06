@@ -1,0 +1,27 @@
+{
+  "name": "jquery-querybuilder-doc",
+  "version": "1.0.0",
+  "description": "jQuery QueryBuilder documentation",
+  "author": {
+    "name": "Damien \"Mistic\" Sorel",
+    "email": "contact@git.strangeplanet.fr",
+    "homepage": "https://www.strangeplanet.fr"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "awesome-bootstrap-checkbox": "^0.3.7",
+    "bootstrap-datepicker": "^1.8.0",
+    "bootstrap-select": "^1.13.1",
+    "bootstrap-slider": "^10.0.2",
+    "bootstrap-treeview": "^1.2.0",
+    "interactjs": "^1.3.3",
+    "jQuery-QueryBuilder": "^2.5.1",
+    "moment": "^2.22.1",
+    "selectize": "^0.12.4",
+    "sql-parser-mistic": "^1.2.2"
+  },
+  "scripts": {
+    "postinstall": "rm -rf node_modules/bootstrap-treeview/public"
+  }
+}
