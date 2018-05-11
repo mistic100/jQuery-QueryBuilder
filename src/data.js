@@ -270,7 +270,6 @@ QueryBuilder.prototype.nextRuleId = function() {
  * @param {string|object} filter - filter id or filter object
  * @returns {object[]}
  * @fires QueryBuilder.changer:getOperators
- * @private
  */
 QueryBuilder.prototype.getOperators = function(filter) {
     if (typeof filter == 'string') {
@@ -318,7 +317,6 @@ QueryBuilder.prototype.getOperators = function(filter) {
  * @param {boolean} [doThrow=true]
  * @returns {object|null}
  * @throws UndefinedFilterError
- * @private
  */
 QueryBuilder.prototype.getFilterById = function(id, doThrow) {
     if (id == '-1') {
@@ -342,7 +340,6 @@ QueryBuilder.prototype.getFilterById = function(id, doThrow) {
  * @param {boolean} [doThrow=true]
  * @returns {object|null}
  * @throws UndefinedOperatorError
- * @private
  */
 QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
     if (type == '-1') {

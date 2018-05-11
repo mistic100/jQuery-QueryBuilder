@@ -24,7 +24,7 @@
     "bootswatch-dist": "git+https://github.com/dbtek/bootswatch-dist.git#slate",
     "chosenjs": "^1.4.3",
     "deepmerge": "^2.1.0",
-    "foodoc": "^0.0.8",
+    "foodoc": "^0.0.9",
     "grunt": "^1.0.2",
     "grunt-banner": "^0.6.0",
     "grunt-contrib-clean": "^1.0.0",
