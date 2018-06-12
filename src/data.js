@@ -224,7 +224,7 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
     if ((rule.operator.type === 'between' || rule.operator.type === 'not_between') && value.length === 2) {
         switch (QueryBuilder.types[filter.type]) {
             case 'number':
-                if (value[0] > value[1]) {
+                if (parseFloat(value[0]) > parseFloat(value[1])) {
                     result = ['number_between_invalid', value[0], value[1]];
                 }
                 break;
