@@ -34,6 +34,10 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     this.on('afterUpdateRuleOperator', function(e, rule) {
         rule.$el.find(Selectors.rule_operator).trigger('chosen:updated');
     });
+    
+    this.on('afterUpdateRuleValue', function (e, rule) {
+        rule.$el.find(Selectors.rule_value).trigger('chosen:updated');
+    });
 
     this.on('beforeDeleteRule', function(e, rule) {
         rule.$el.find(Selectors.rule_filter).chosen('destroy');
