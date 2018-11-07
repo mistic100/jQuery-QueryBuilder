@@ -26,6 +26,11 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
         rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
     });
 
+    this.on('afterCreateRuleInput', function(e, rule) {
+        let select_selector = Selectors.value_container + ' select[name*=_value_]';
+        rule.$el.find(select_selector).removeClass('form-control').chosen(options);
+    });
+
     // update selectpicker on change
     this.on('afterUpdateRuleFilter', function(e, rule) {
         rule.$el.find(Selectors.rule_filter).trigger('chosen:updated');
