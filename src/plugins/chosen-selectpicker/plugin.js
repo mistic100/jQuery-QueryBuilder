@@ -23,7 +23,10 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     });
 
     this.on('afterCreateRuleOperators', function(e, rule) {
-        rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
+        let node = rule.$el.find(Selectors.rule_operator);
+        if (node.css('display') !== 'none') { // avoid creating useless chosen widget
+            rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
+        }
     });
 
     this.on('afterCreateRuleInput', function(e, rule) {
