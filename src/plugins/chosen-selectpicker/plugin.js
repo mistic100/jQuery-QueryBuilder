@@ -23,14 +23,14 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     });
 
     this.on('afterCreateRuleOperators', function(e, rule) {
-        let node = rule.$el.find(Selectors.rule_operator);
+        var node = rule.$el.find(Selectors.rule_operator);
         if (node.css('display') !== 'none') { // avoid creating useless chosen widget
             rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
         }
     });
 
     this.on('afterCreateRuleInput', function(e, rule) {
-        let select_selector = Selectors.value_container + ' select[name*=_value_]';
+        var select_selector = Selectors.value_container + ' select[name*=_value_]';
         rule.$el.find(select_selector).removeClass('form-control').chosen(options);
     });
 
