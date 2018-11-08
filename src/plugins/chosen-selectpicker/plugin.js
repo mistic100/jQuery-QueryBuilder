@@ -23,15 +23,9 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     });
 
     this.on('afterCreateRuleOperators', function(e, rule) {
-        var node = rule.$el.find(Selectors.rule_operator);
-        if (node.css('display') !== 'none') { // avoid creating useless chosen widget
+        if (e.builder.getOperators(rule.filter).length > 1) {
             rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
         }
-    });
-
-    this.on('afterCreateRuleInput', function(e, rule) {
-        var select_selector = Selectors.value_container + ' select[name*=_value_]';
-        rule.$el.find(select_selector).removeClass('form-control').chosen(options);
     });
 
     // update selectpicker on change
