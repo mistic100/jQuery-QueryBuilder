@@ -23,6 +23,16 @@ QueryBuilder.prototype.destroy = function() {
         .removeData('queryBuilder');
 
     delete this.$el[0].queryBuilder;
+
+    // clear properties to reduce memory footprint
+    this.filters = null;
+    this.settings = null;
+    this.plugins = null;
+    this.templates = null;
+    this.operators = null;
+    this.lang = null;
+    this.icons = null;
+    this.status = null;
 };
 
 /**
