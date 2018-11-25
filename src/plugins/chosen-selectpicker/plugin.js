@@ -23,7 +23,9 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     });
 
     this.on('afterCreateRuleOperators', function(e, rule) {
-        rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
+        if (e.builder.getOperators(rule.filter).length > 1) {
+            rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
+        }
     });
 
     // update selectpicker on change
