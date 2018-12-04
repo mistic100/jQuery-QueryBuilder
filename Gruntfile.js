@@ -243,7 +243,8 @@ module.exports = function(grunt) {
         uglify: {
             options: {
                 banner: '<%= banner %>\n',
-                mangle: { reserved: ['$'] }
+                mangle: { reserved: ['$'] },
+                sourceMap: true,
             },
             dist: {
                 files: [{
