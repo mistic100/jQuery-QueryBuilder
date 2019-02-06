@@ -265,6 +265,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
     var name = rule.id + '_value_' + value_id;
     var c = filter.vertical ? ' class=block' : '';
     var h = '';
+    var placeholder = Array.isArray(filter.placeholder) ? filter.placeholder[value_id] : filter.placeholder;
 
     if (typeof filter.input == 'function') {
         h = filter.input.call(this, rule, name);
@@ -288,7 +289,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 if (filter.rows) h += ' rows="' + filter.rows + '"';
                 if (validation.min !== undefined) h += ' minlength="' + validation.min + '"';
                 if (validation.max !== undefined) h += ' maxlength="' + validation.max + '"';
-                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                if (placeholder) h += ' placeholder="' + placeholder + '"';
                 h += '></textarea>';
                 break;
 
@@ -297,14 +298,14 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 if (validation.step !== undefined) h += ' step="' + validation.step + '"';
                 if (validation.min !== undefined) h += ' min="' + validation.min + '"';
                 if (validation.max !== undefined) h += ' max="' + validation.max + '"';
-                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                if (placeholder) h += ' placeholder="' + placeholder + '"';
                 if (filter.size) h += ' size="' + filter.size + '"';
                 h += '>';
                 break;
 
             default:
                 h += '<input class="form-control" type="text" name="' + name + '"';
-                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                if (placeholder) h += ' placeholder="' + placeholder + '"';
                 if (filter.type === 'string' && validation.min !== undefined) h += ' minlength="' + validation.min + '"';
                 if (filter.type === 'string' && validation.max !== undefined) h += ' maxlength="' + validation.max + '"';
                 if (filter.size) h += ' size="' + filter.size + '"';
