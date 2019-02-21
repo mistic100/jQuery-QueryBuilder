@@ -1,0 +1,63 @@
+{
+  "__locale": "Lithuanian (lt)",
+  "__author": "Dalius Guzauskas (aka Tichij), https://lt.linkedin.com/in/daliusg",
+  
+  "add_rule": "Prideti taisykle",
+  "add_group": "Prideti grupe",
+  "delete_rule": "Ištrinti",
+  "delete_group": "Ištrinti",
+  
+  "conditions": {
+    "AND": "IR",
+    "OR": "ARBA"
+  },
+  
+  "operators": {
+    "equal": "lygu",
+    "not_equal": "nera lygu",
+    "in": "iš nurodytu",
+    "not_in": "ne iš nurodytu",
+    "less": "mažiau",
+    "less_or_equal": "mažiau arba lygu",
+    "greater": "daugiau",
+    "greater_or_equal": "daugiau arba lygu",
+    "between": "tarp",
+    "not_between": "nera tarp",
+    "begins_with": "prasideda",
+    "not_begins_with": "neprasideda",
+    "contains": "turi",
+    "not_contains": "neturi",
+    "ends_with": "baigiasi",
+    "not_ends_with": "nesibaigia",
+    "is_empty": "tušcia",
+    "is_not_empty": "ne tušcia",
+    "is_null": "neapibrežta",
+    "is_not_null": "nera neapibrežta"
+  },
+  
+  "errors": {
+    "no_filter": "Nepasirinktas filtras",
+    "empty_group": "Grupe tušcia",
+    "radio_empty": "Nepasirinkta reikšme",
+    "checkbox_empty": "Nepasirinkta reikšme",
+    "select_empty": "Nepasirinkta reikšme",
+    "string_empty": "Tušcia reikšme",
+    "string_exceed_min_length": "Turi buti bent {0} simboliu",
+    "string_exceed_max_length": "Turi buti ne daugiau kaip {0} simboliu",
+    "string_invalid_format": "Klaidingas formatas ({0})",
+    "number_nan": "Nera skaicius",
+    "number_not_integer": "Ne sveikasis skaicius",
+    "number_not_double": "Ne realusis skaicius",
+    "number_exceed_min": "Turi buti daugiau už {0}",
+    "number_exceed_max": "Turi buti mažiau už {0}",
+    "number_wrong_step": "Turi buti {0} kartotinis",
+    "number_between_invalid": "Klaidingos reikšmes, {0} yra daugiau už {1}",
+    "datetime_empty": "Tušcia reikšme",
+    "datetime_invalid": "Klaidingas datos formatas ({0})",
+    "datetime_exceed_min": "Turi buti po {0}",
+    "datetime_exceed_max": "Turi buti prieš {0}",
+    "datetime_between_invalid": "Klaidingos reikšmes, {0} yra daugiau už {1}",
+    "boolean_not_valid": "Nera loginis tipas",
+    "operator_not_multiple": "Operatorius \"{1}\" negali priimti keliu reikšmiu"
+  }
+}
