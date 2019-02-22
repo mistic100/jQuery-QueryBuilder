@@ -2,6 +2,10 @@ bower_components
 node_modules
 dist
 doc
+tests
+examples
+build
+.github
 .sass-cache
 .coverage-results
 .idea
