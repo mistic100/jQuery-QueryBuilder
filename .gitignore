@@ -47,9 +47,9 @@ package-lock.json
 !/node_modules/selectize
 /node_modules/selectize/*
 !/node_modules/selectize/dist
-/node_modules/selectize/dist/js
-!/node_modules/selectize/dist/js/standalone
-/node_modules/selectize/dist/less
+/node_modules/selectize/dist/*
+!/node_modules/selectize/dist/css
+!/node_modules/selectize/dist/js
 
 !/node_modules/sql-parser-mistic
 /node_modules/sql-parser-mistic/*
