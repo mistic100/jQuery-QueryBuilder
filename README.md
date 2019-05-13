@@ -5,6 +5,7 @@
 [![Build Status](https://img.shields.io/travis/mistic100/jQuery-QueryBuilder.svg?style=flat-square)](https://travis-ci.org/mistic100/jQuery-QueryBuilder)
 [![Coverage Status](https://img.shields.io/coveralls/mistic100/jQuery-QueryBuilder/master.svg?style=flat-square)](https://coveralls.io/r/mistic100/jQuery-QueryBuilder)
 [![Dependencies Status](https://david-dm.org/mistic100/jQuery-QueryBuilder/status.svg?style=flat-square)](https://david-dm.org/mistic100/jQuery-QueryBuilder)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmistic100%2FjQuery-QueryBuilder.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmistic100%2FjQuery-QueryBuilder?ref=badge_shield)
 
 jQuery plugin offering an simple interface to create complex queries.
 
@@ -93,3 +94,6 @@ grunt --languages=fr,it
 
 ## License
 This library is available under the MIT license.
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmistic100%2FjQuery-QueryBuilder.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmistic100%2FjQuery-QueryBuilder?ref=badge_large)
