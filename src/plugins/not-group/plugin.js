@@ -49,7 +49,7 @@ QueryBuilder.define('not-group', function(options) {
 
     // Read "not" from JSON
     this.on('jsonToGroup.filter', function(e, json) {
-        e.value.not = !!json.not;
+        e.value.not = json.not == 'true';
     });
 
     // Export "not" to SQL
