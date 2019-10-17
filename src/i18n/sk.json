@@ -58,6 +58,6 @@
     "datetime_exceed_max": "Musí byť skôr ako {0}",
     "datetime_between_invalid": "Chybné hodnoty, {0} je neskôr ako {1}",
     "boolean_not_valid": "Neplatné áno/nie",
-    "operator_not_multiple": "Operátor "{1}" nepodporuje viacero hodnôt"
+    "operator_not_multiple": "Operátor '{1}' nepodporuje viacero hodnôt"
   }
 }
