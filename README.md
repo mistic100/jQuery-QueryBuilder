@@ -8,8 +8,6 @@
 
 jQuery plugin offering an simple interface to create complex queries.
 
-[![screenshot](https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/examples/screenshot.png)](https://querybuilder.js.org)
-
 
 
 ## Documentation
