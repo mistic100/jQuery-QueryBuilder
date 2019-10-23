@@ -152,8 +152,8 @@
   var $b = $('#builder');
 
   var options = {
+    design_mode: false,
     allow_empty: true,
-    design_mode: true,
 
     //default_filter: 'name',
     sort_filters: true,
@@ -561,92 +561,41 @@
       },
       'not': false,
       'valid': true,
-      'rules': [
-    {
-      'id': 'price',
-      'field': 'price',
-      'type': 'double',
-      'input': 'number',
-      'operator': 'between',
-      'value': [
-        10.25,
-        15.52
-      ],
-      'data': {
-        'show': false
-      },
-      'flags': {
-        'filter_readonly': true,
-        'no_delete': true
-      }
-    },
-    {
-      'id': 'state',
-      'field': 'state',
-      'type': 'string',
-      'input': 'select',
-      'operator': 'equal',
-      'value': 'AK'
-    },
-    {
-      'condition': 'OR',
-      'rules': [
-        {
-          'id': 'category',
-          'field': 'category',
-          'type': 'integer',
-          'input': 'checkbox',
-          'operator': 'equal',
-          'value': 2,
-          'flags': {
-            'no_sortable': true,
-            'no_drop': true
-          }
-        },
-        {
-          'id': 'coord',
-          'field': 'coord',
-          'type': 'string',
-          'operator': 'equal',
-          'value': 'C.5',
-          'flags': {
-            'no_sortable': true,
-            'no_drop': true
-          }
+      "rules": [
+      {
+        "id": "name",
+        "field": "username",
+        "type": "string",
+        "input": "text",
+        "operator": "equal",
+        "value": "Quan",
+        "data": {
+          "show": true
         }
-      ],
-      'flags': {
-        'no_delete': true,
-        'no_sortable': true,
-        'no_drop': true
       },
-      'not': true
-    },
-    {
-      'id': 'name',
-      'field': 'username',
-      'type': 'string',
-      'input': 'text',
-      'operator': 'in',
-      'value': [
-        'Mistic',
-        'Damien'
-      ]
-    },
-    {
-      'id': 'age',
-      'field': 'age',
-      'type': 'integer',
-      'input': 'text',
-      'operator': 'in',
-      'value': [
-        20,
-        21,
-        22
-      ]
-    }
-  ]
-
+      {
+        "id": "age",
+        "field": "age",
+        "type": "integer",
+        "input": "text",
+        "operator": "equal",
+        "value": 27,
+        "data": {
+          "show": true
+        }
+      },
+      {
+        "id": "continent",
+        "field": "continent",
+        "type": "string",
+        "input": "select",
+        "operator": "equal",
+        "value": "asia",
+        "data": {
+          "show": false
+        }
+      }
+    ]
     });
   });
 
