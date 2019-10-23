@@ -33,13 +33,18 @@ QueryBuilder.templates.group = '\
 </div>';
 
 QueryBuilder.templates.rule = '\
-<div id="{{= it.rule_id }}" class="rule-container"> \
+<div id="{{= it.rule_id }}" class="rule-container" style="{{? !it.is_show && !it.builder.status.design_mode}} display: none; {{?}}"> \
   <div class="rule-header"> \
     <div class="btn-group pull-right rule-actions"> \
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
         <i class="{{= it.icons.remove_rule }}"></i> {{= it.translate("delete_rule") }} \
       </button> \
     </div> \
+    {{? it.builder.status.design_mode}} \
+    <div class="checkbox checkbox-primary pull-right" style="padding: 0 1% ;"  data-toggle="tooltip" title="Check to hide">\
+      <input type="checkbox" id="show_hide_{{= it.rule_id}}" data-show="rule" {{? !it.is_show}} checked {{?}}><label for="show_hide_{{= it.rule_id}}"></label>\
+    </div>\
+    {{?}}\
   </div> \
   {{? it.settings.display_errors }} \
     <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
@@ -47,7 +52,8 @@ QueryBuilder.templates.rule = '\
   <div class="rule-filter-container"></div> \
   <div class="rule-operator-container"></div> \
   <div class="rule-value-container"></div> \
-</div>';
+</div>\
+';
 
 QueryBuilder.templates.filterSelect = '\
 {{ var optgroup = null; }} \
@@ -142,15 +148,15 @@ QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
  * @fires QueryBuilder.changer:getRuleTemplate
  * @private
  */
-QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
+QueryBuilder.prototype.getRuleTemplate = function(rule_id, is_show) {
     var h = this.templates.rule({
         builder: this,
         rule_id: rule_id,
         icons: this.icons,
         settings: this.settings,
-        translate: this.translate.bind(this)
+        translate: this.translate.bind(this),
+        is_show: is_show
     });
-
     /**
      * Modifies the raw HTML of a rule
      * @event changer:getRuleTemplate

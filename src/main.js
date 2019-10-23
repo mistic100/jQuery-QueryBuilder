@@ -48,6 +48,8 @@ var QueryBuilder = function($el, options) {
      * @property {int} rule_id - current rule id
      * @property {boolean} has_optgroup - if filters have optgroups
      * @property {boolean} has_operator_optgroup - if operators have optgroups
+     * @property {boolean} design_mode - true for design screen, checkbox for each rule is visible - false for excute screen, checkbox for each rule is disable
+     * @property {boolean} is_show - true for show rule - false for hide off current rule
      * @readonly
      * @private
      */
@@ -57,8 +59,15 @@ var QueryBuilder = function($el, options) {
         group_id: 0,
         rule_id: 0,
         has_optgroup: false,
-        has_operator_optgroup: false
+        has_operator_optgroup: false,
+        design_mode: false,
+        is_show: true
     };
+
+    if(options.design_mode !== undefined)
+    {
+        this.status.design_mode = options.design_mode;
+    }
 
     /**
      * List of filters

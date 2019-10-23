@@ -517,7 +517,6 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
  */
 QueryBuilder.prototype.parseRuleFlags = function(rule) {
     var flags = $.extend({}, this.settings.default_rule_flags);
-
     if (rule.readonly) {
         $.extend(flags, {
             filter_readonly: true,
