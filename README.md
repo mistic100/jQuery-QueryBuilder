@@ -33,7 +33,7 @@ Install Node dependencies `npm install` then run `grunt` in the root directory t
 You can add feature show hide rule without missing rule in sql generate :
 ```bash
 # set "design_mode": true to declare design mode for QueryBuilder (we use it in design condition page)
-# set "design_mode": false to declare design mode for QueryBuilder (we use it in run report page)
+# set "design_mode": false to declare design mode for QueryBuilder (we use it in non design page)
 	var options = {
     design_mode: true,
 	... }
@@ -42,9 +42,10 @@ You can add feature show hide rule without missing rule in sql generate :
 ```
 
 ![](images/designmode.png)
+#Design page
 
 ![](images/nondesignmode.png)
-
+#Non-Design page
 #### Other commands
 
  * `grunt build` to build a standalone builder.
