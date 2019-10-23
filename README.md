@@ -26,7 +26,9 @@ jQuery plugin offering an simple interface to create complex queries.
 
 ### Run
 
-Install Node dependencies `npm install` then run `grunt` in the root directory to generate production files inside `dist`.
+ * `npm install` to install Node dependencies .
+ * `npm build` to build a standalone builder.
+ * `npm serve` to open the example page with automatic build and livereload.
 
 #### Options for show/hide feature
 
@@ -46,12 +48,6 @@ You can add feature show hide rule without missing rule in sql generate :
 
 ![](images/nondesignmode.png)
 #Non-Design page
-#### Other commands
-
- * `grunt build` to build a standalone builder.
- * `grunt serve` to open the example page with automatic build and livereload.
- * `grunt doc` to generate the documentation.
-
 
 ## License
 This library is available under the MIT license.
