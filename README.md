@@ -27,8 +27,8 @@ jQuery plugin offering an simple interface to create complex queries.
 ### Run
 
  * `npm install` to install Node dependencies .
- * `npm build` to build a standalone builder.
- * `npm serve` to open the example page with automatic build and livereload.
+ * `npm run build` to build a standalone builder.
+ * `npm run serve` to open the example page with automatic build and livereload.
 
 #### Options for show/hide feature
 
