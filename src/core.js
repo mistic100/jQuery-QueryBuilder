@@ -270,8 +270,7 @@ QueryBuilder.prototype.bindEvents = function() {
             var $querybuilder = $(this).closest(Selectors.query_builder);
             $querybuilder.queryBuilder('destroy');
         });
-    }
-        
+    }        
     // model events
     this.model.on({
         'drop': function(e, node) {
