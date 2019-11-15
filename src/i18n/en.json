@@ -6,6 +6,7 @@
   "add_group": "Add group",
   "delete_rule": "Delete",
   "delete_group": "Delete",
+  "close_builder": "Close",
 
   "conditions": {
     "AND": "AND",

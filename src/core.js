@@ -264,6 +264,14 @@ QueryBuilder.prototype.bindEvents = function() {
         });
     }
 
+    if (this.settings.allow_close == 1) {
+        // delete builder button
+        this.$el.on('click.queryBuilder', Selectors.close_builder, function() {
+            var $querybuilder = $(this).closest(Selectors.query_builder);
+            $querybuilder.queryBuilder('destroy');
+        });
+    }
+
     // model events
     this.model.on({
         'drop': function(e, node) {

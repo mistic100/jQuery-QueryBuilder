@@ -33,5 +33,6 @@
     "catch"
   ],
   "requireEarlyReturn": false,
-  "validateCommentPosition": false
+  "validateCommentPosition": false,
+  "validateLineBreaks": null
 }

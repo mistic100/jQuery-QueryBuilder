@@ -40,7 +40,8 @@ QueryBuilder.modifiable_options = [
     'allow_groups',
     'allow_empty',
     'default_condition',
-    'default_filter'
+    'default_filter',
+    'allow_close'
 ];
 
 /**
@@ -49,6 +50,7 @@ QueryBuilder.modifiable_options = [
  * @readonly
  */
 QueryBuilder.selectors = {
+    query_builder:        '.query-builder',
     group_container:      '.rules-group-container',
     rule_container:       '.rule-container',
     filter_container:     '.rule-filter-container',
@@ -72,7 +74,8 @@ QueryBuilder.selectors = {
     add_rule:             '[data-add=rule]',
     delete_rule:          '[data-delete=rule]',
     add_group:            '[data-add=group]',
-    delete_group:         '[data-delete=group]'
+    delete_group:         '[data-delete=group]',
+    close_builder:        '[data-delete=builder]'
 };
 
 /**
@@ -130,6 +133,7 @@ QueryBuilder.DEFAULTS = {
     display_errors: true,
     allow_groups: -1,
     allow_empty: false,
+    allow_close: false,
     conditions: ['AND', 'OR'],
     default_condition: 'AND',
     inputs_separator: ' , ',

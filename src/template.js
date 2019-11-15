@@ -15,6 +15,11 @@ QueryBuilder.templates.group = '\
           <i class="{{= it.icons.remove_group }}"></i> {{= it.translate("delete_group") }} \
         </button> \
       {{?}} \
+      {{? it.settings.allow_close && it.level==1 }} \
+      <button type="button" class="btn btn-xs btn-danger" data-delete="builder"> \
+        <i class="{{= it.icons.close_builder}}"></i> {{= it.translate("close_builder") }} \
+      </button> \
+      {{?}} \
     </div> \
     <div class="btn-group group-conditions"> \
       {{~ it.conditions: condition }} \
