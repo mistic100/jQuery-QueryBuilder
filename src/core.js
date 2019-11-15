@@ -271,7 +271,6 @@ QueryBuilder.prototype.bindEvents = function() {
             $querybuilder.queryBuilder('destroy');
         });
     }
-	
     // model events
     this.model.on({
         'drop': function(e, node) {
