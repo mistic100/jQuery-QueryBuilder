@@ -51,6 +51,11 @@ QueryBuilder.define('sortable', function(options) {
                 .draggable({
                     allowFrom: QueryBuilder.selectors.drag_handle,
                     onstart: function(event) {
+                        // ignore when readonly
+                        if (e.builder.settings.read_only) {
+                            return;
+                        }
+
                         moved = false;
 
                         // get model of dragged element
@@ -72,11 +77,21 @@ QueryBuilder.define('sortable', function(options) {
                         src.$el.hide();
                     },
                     onmove: function(event) {
+                        // ignore when readonly
+                        if (e.builder.settings.read_only) {
+                            return;
+                        }
+
                         // make the ghost follow the cursor
                         ghost[0].style.top = event.clientY - 15 + 'px';
                         ghost[0].style.left = event.clientX - 15 + 'px';
                     },
                     onend: function(event) {
+                        // ignore when readonly
+                        if (e.builder.settings.read_only) {
+                            return;
+                        }
+
                         // starting from Interact 1.3.3, onend is called before ondrop
                         if (event.dropzone) {
                             moveSortableToTarget(src, $(event.relatedTarget), self);
@@ -204,6 +219,11 @@ QueryBuilder.defaults({
  * @private
  */
 function moveSortableToTarget(node, target, builder) {
+    // ignore when readonly
+    if (builder.settings.read_only) {
+        return;
+    }
+
     var parent, method;
     var Selectors = QueryBuilder.selectors;
 

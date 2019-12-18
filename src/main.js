@@ -136,16 +136,15 @@ var QueryBuilder = function($el, options) {
     // INIT
     this.$el.addClass('query-builder form-inline');
 
-    // if read only, add readonly class
-    if (this.settings.read_only)
-    {
-        this.$el.addClass('query-builder-readonly');
-    }
-
     this.filters = this.checkFilters(this.filters);
     this.operators = this.checkOperators(this.operators);
     this.bindEvents();
     this.initPlugins();
+
+    // if read only, disable interative elements
+    if (this.settings.read_only) {
+        this.$el.find(':input').prop('disabled', true);
+    }
 };
 
 $.extend(QueryBuilder.prototype, /** @lends QueryBuilder.prototype */ {
