@@ -172,5 +172,11 @@ $ticks-position: 5px, 10px !default;
   }
 }
 
+// READ ONLY
+.query-builder-readonly > div {
+  opacity: .5;
+  pointer-events: none;
+}
+
 // import
 // endimport
