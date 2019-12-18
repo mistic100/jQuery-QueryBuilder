@@ -19,7 +19,7 @@ QueryBuilder.prototype.destroy = function() {
 
     this.$el
         .off('.queryBuilder')
-        .removeClass('query-builder')
+        .removeClass('query-builder query-builder-readonly')
         .removeData('queryBuilder');
 
     delete this.$el[0].queryBuilder;
@@ -105,6 +105,14 @@ QueryBuilder.prototype.setOptions = function(options) {
     $.each(options, function(opt, value) {
         if (QueryBuilder.modifiable_options.indexOf(opt) !== -1) {
             this.settings[opt] = value;
+            if (opt === 'read_only')
+            {
+                this.$el.removeClass('query-builder-readonly');
+                if (value)
+                {
+                    this.$el.addClass('query-builder-readonly');
+                }
+            }
         }
     }.bind(this));
 };

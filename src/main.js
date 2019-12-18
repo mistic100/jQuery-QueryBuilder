@@ -136,6 +136,12 @@ var QueryBuilder = function($el, options) {
     // INIT
     this.$el.addClass('query-builder form-inline');
 
+    // if read only, add readonly class
+    if (this.settings.read_only)
+    {
+        this.$el.addClass('query-builder-readonly');
+    }
+
     this.filters = this.checkFilters(this.filters);
     this.operators = this.checkOperators(this.operators);
     this.bindEvents();

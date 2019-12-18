@@ -37,6 +37,7 @@ QueryBuilder.inputs = [
  */
 QueryBuilder.modifiable_options = [
     'display_errors',
+    'read_only',
     'allow_groups',
     'allow_empty',
     'default_condition',
@@ -128,6 +129,7 @@ QueryBuilder.DEFAULTS = {
 
     sort_filters: false,
     display_errors: true,
+    read_only: false,
     allow_groups: -1,
     allow_empty: false,
     conditions: ['AND', 'OR'],
