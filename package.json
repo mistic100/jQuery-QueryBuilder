@@ -48,5 +48,8 @@
   },
   "scripts": {
     "test": "grunt test"
+  },
+  "dependencies": {
+    "dot": "^1.1.3"
   }
 }
