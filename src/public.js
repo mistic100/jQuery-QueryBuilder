@@ -52,6 +52,12 @@ QueryBuilder.prototype.reset = function() {
 
     this.addRule(this.model.root);
 
+    // if read only, disable interative elements
+    var $el = this.$el;
+    if (this.settings.read_only) {
+        setTimeout(function () { $el.find(':input').prop('disabled', true)});
+    }
+
     /**
      * After the {@link QueryBuilder#reset} method
      * @event afterReset

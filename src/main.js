@@ -143,7 +143,7 @@ var QueryBuilder = function($el, options) {
 
     // if read only, disable interative elements
     if (this.settings.read_only) {
-        this.$el.find(':input').prop('disabled', true);
+        setTimeout(function () { $el.find(':input').prop('disabled', true)});
     }
 };
 

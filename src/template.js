@@ -2,16 +2,16 @@ QueryBuilder.templates.group = '\
 <div id="{{= it.group_id }}" class="rules-group-container"> \
   <div class="rules-group-header"> \
     <div class="btn-group pull-right group-actions"> \
-      <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
+      <button type="button" class="btn btn-xs btn-success" data-add="rule"{{? it.settings.read_only!=false}} disabled="disabled"{{?}}> \
         <i class="{{= it.icons.add_rule }}"></i> {{= it.translate("add_rule") }} \
       </button> \
       {{? it.settings.allow_groups===-1 || it.settings.allow_groups>=it.level }} \
-        <button type="button" class="btn btn-xs btn-success" data-add="group"> \
+        <button type="button" class="btn btn-xs btn-success" data-add="group"{{? it.settings.read_only!=false}} disabled="disabled"{{?}}> \
           <i class="{{= it.icons.add_group }}"></i> {{= it.translate("add_group") }} \
         </button> \
       {{?}} \
       {{? it.level>1 }} \
-        <button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
+        <button type="button" class="btn btn-xs btn-danger" data-delete="group"{{? it.settings.read_only!=false}} disabled="disabled"{{?}}> \
           <i class="{{= it.icons.remove_group }}"></i> {{= it.translate("delete_group") }} \
         </button> \
       {{?}} \
@@ -19,7 +19,7 @@ QueryBuilder.templates.group = '\
     <div class="btn-group group-conditions"> \
       {{~ it.conditions: condition }} \
         <label class="btn btn-xs btn-primary"> \
-          <input type="radio" name="{{= it.group_id }}_cond" value="{{= condition }}"> {{= it.translate("conditions", condition) }} \
+          <input type="radio" name="{{= it.group_id }}_cond" value="{{= condition }}"{{? it.settings.read_only!=false}} disabled="disabled"{{?}}> {{= it.translate("conditions", condition) }} \
         </label> \
       {{~}} \
     </div> \
@@ -36,7 +36,7 @@ QueryBuilder.templates.rule = '\
 <div id="{{= it.rule_id }}" class="rule-container"> \
   <div class="rule-header"> \
     <div class="btn-group pull-right rule-actions"> \
-      <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
+      <button type="button" class="btn btn-xs btn-danger" data-delete="rule"{{? it.settings.read_only!=false}} disabled="disabled"{{?}}> \
         <i class="{{= it.icons.remove_rule }}"></i> {{= it.translate("delete_rule") }} \
       </button> \
     </div> \
@@ -51,7 +51,7 @@ QueryBuilder.templates.rule = '\
 
 QueryBuilder.templates.filterSelect = '\
 {{ var optgroup = null; }} \
-<select class="form-control" name="{{= it.rule.id }}_filter"> \
+<select class="form-control" name="{{= it.rule.id }}_filter"{{? it.settings.read_only!=false}} disabled="disabled"{{?}}> \
   {{? it.settings.display_empty_filter }} \
     <option value="-1">{{= it.settings.select_placeholder }}</option> \
   {{?}} \
@@ -74,7 +74,7 @@ QueryBuilder.templates.operatorSelect = '\
 </span> \
 {{?}} \
 {{ var optgroup = null; }} \
-<select class="form-control {{? it.operators.length === 1 }}hide{{?}}" name="{{= it.rule.id }}_operator"> \
+<select class="form-control {{? it.operators.length === 1 }}hide{{?}}" name="{{= it.rule.id }}_operator"{{? it.settings.read_only!=false}} disabled="disabled"{{?}}> \
   {{~ it.operators: operator }} \
     {{? optgroup !== operator.optgroup }} \
       {{? optgroup !== null }}</optgroup>{{?}} \
@@ -89,7 +89,7 @@ QueryBuilder.templates.operatorSelect = '\
 
 QueryBuilder.templates.ruleValueSelect = '\
 {{ var optgroup = null; }} \
-<select class="form-control" name="{{= it.name }}" {{? it.rule.filter.multiple }}multiple{{?}}> \
+<select class="form-control" name="{{= it.name }}"{{? it.rule.filter.multiple }} multiple{{?}}{{? it.settings.read_only!=false}} disabled="disabled"{{?}}> \
   {{? it.rule.filter.placeholder }} \
     <option value="{{= it.rule.filter.placeholder_value }}" disabled selected>{{= it.rule.filter.placeholder }}</option> \
   {{?}} \
