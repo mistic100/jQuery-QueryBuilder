@@ -72,7 +72,9 @@ QueryBuilder.selectors = {
     add_rule:             '[data-add=rule]',
     delete_rule:          '[data-delete=rule]',
     add_group:            '[data-add=group]',
-    delete_group:         '[data-delete=group]'
+    delete_group:         '[data-delete=group]',
+
+    show_rule:            '[data-show=rule]'
 };
 
 /**

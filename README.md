@@ -11,34 +11,9 @@ jQuery plugin offering an simple interface to create complex queries.
 
 [![screenshot](https://raw.githubusercontent.com/mistic100/jQuery-QueryBuilder/master/examples/screenshot.png)](https://querybuilder.js.org)
 
-
-
 ## Documentation
 [querybuilder.js.org](https://querybuilder.js.org)
 
-
-
-## Install
-
-#### Manually
-
-[Download the latest release](https://github.com/mistic100/jQuery-QueryBuilder/releases)
-
-#### With Bower
-
-```bash
-$ bower install jQuery-QueryBuilder
-```
-
-#### With npm
-
-```bash
-$ npm install jQuery-QueryBuilder
-```
-
-#### Via CDN
-
-jQuery-QueryBuilder is available on [jsDelivr](https://www.jsdelivr.com/package/npm/jQuery-QueryBuilder).
 ### Dependencies
  * [jQuery 3](https://jquery.com)
  * [Bootstrap 3](https://getbootstrap.com/docs/3.3) (CSS only)
@@ -50,47 +25,30 @@ jQuery-QueryBuilder is available on [jsDelivr](https://www.jsdelivr.com/package/
 
 ($.extendext and doT.js are directly included in the [standalone](https://github.com/mistic100/jQuery-QueryBuilder/blob/master/dist/js/query-builder.standalone.js) file)
 
-### Browser support
- * Internet Explorer >= 9
- * All other recent browsers
+### Run
 
+ * `npm install` to install Node dependencies .
+ * `npm run build` to build a standalone builder.
+ * `npm run serve` to open the example page with automatic build and livereload.
 
+#### Options for show/hide feature
 
-## Build
-
-#### Prerequisites
-
- * NodeJS + NPM: `apt-get install nodejs-legacy npm`
- * Grunt CLI: `npm install -g grunt-cli`
-
-#### Run
-
-Install Node dependencies `npm install` then run `grunt` in the root directory to generate production files inside `dist`.
-
-#### Options
-
-You can choose which plugins to include with `--plugins` :
+You can add feature show hide rule without missing rule in sql generate :
 ```bash
-# include "sql-support" and "mongodb-support" plugins
-grunt --plugins=sql-support,mongodb-support
-
-# disable all plugins
-grunt --plugins=false
-```
-All plugins are included by default.
-
-You can also include language files with `--languages` :
-```bash
-# include French & Italian translation
-grunt --languages=fr,it
+# set "design_mode": true to declare design mode for QueryBuilder (we use it in design condition page)
+# set "design_mode": false to declare design mode for QueryBuilder (we use it in non design page)
+	var options = {
+    design_mode: true,
+	... }
+	
+	$('#builder').queryBuilder(options);
 ```
 
-#### Other commands
+![](images/designmode.png)
+#Design page
 
- * `grunt test` to run jshint/jscs/scsslint and the QUnit test suite.
- * `grunt serve` to open the example page with automatic build and livereload.
- * `grunt doc` to generate the documentation.
-
+![](images/nondesignmode.png)
+#Non-Design page
 
 ## License
 This library is available under the MIT license.

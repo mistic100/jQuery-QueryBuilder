@@ -518,6 +518,7 @@ var Rule = function(parent, $el) {
      * @instance
      */
     this.__.value = undefined;
+    this.show = true;
 };
 
 Rule.prototype = Object.create(Node.prototype);

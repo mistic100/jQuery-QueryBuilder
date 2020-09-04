@@ -10,6 +10,7 @@
   "main": "dist/js/query-builder.js",
   "dependencies": {
     "bootstrap": ">=3.1.0 <4",
+    "bootswatch": "^4.3.1",
     "dot": ">=1.0.3",
     "jquery": "^3.3.1",
     "jquery-extendext": ">=0.1.2",
@@ -21,7 +22,6 @@
     "bootbox": "^4.4.0",
     "bootstrap-select": "^1.12.4",
     "bootstrap-slider": "^10.0.0",
-    "bootswatch-dist": "git+https://github.com/dbtek/bootswatch-dist.git#slate",
     "chosenjs": "^1.4.3",
     "deepmerge": "^2.1.0",
     "foodoc": "^0.0.9",

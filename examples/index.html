@@ -152,6 +152,7 @@
   var $b = $('#builder');
 
   var options = {
+    design_mode: false,
     allow_empty: true,
 
     //default_filter: 'name',
@@ -393,7 +394,7 @@
           step: 0.01
         },
         data: {
-          class: 'com.example.PriceTag'
+          show: true
         }
       },
       /*
@@ -548,56 +549,53 @@
   // set rules
   $('.set').on('click', function() {
     $('#builder').queryBuilder('setRules', {
-      condition: 'AND',
-      flags: {
-        condition_readonly: true
+      'condition': 'AND',
+      'flags': {
+        'condition_readonly': true
       },
-      data: {
-        root: true
+      'data': {
+        'root': true
       },
-      rules: [{
-        id: 'price',
-        operator: 'between',
-        value: [10.25, 15.52],
-        flags: {
-          no_delete: true,
-          filter_readonly: true
-        },
-        data: {
-          unit: '€'
+      'flags': {
+        'condition_readonly': true
+      },
+      'not': false,
+      'valid': true,
+      "rules": [
+      {
+        "id": "name",
+        "field": "username",
+        "type": "string",
+        "input": "text",
+        "operator": "equal",
+        "value": "Quan",
+        "data": {
+          "show": true
         }
-      }, {
-        id: 'state',
-        operator: 'equal',
-        value: 'AK'
-      }, {
-        condition: 'OR',
-        not: true,
-        flags: {
-          no_delete: true,
-          no_drop: true,
-          no_sortable: true
-        },
-        rules: [{
-          id: 'category',
-          operator: 'equal',
-          value: 2
-        }, {
-          id: 'coord',
-          operator: 'equal',
-          value: undefined // will use filter's default value
-        }]
-      }, {
-        id: 'name',
-        operator: 'in',
-        value: ['Mistic', 'Damien']
-      }, {
-        id: 'age',
-        operator: 'in',
-        value: [20,21,22]
-      }, {
-        empty: true
-      }]
+      },
+      {
+        "id": "age",
+        "field": "age",
+        "type": "integer",
+        "input": "text",
+        "operator": "equal",
+        "value": 27,
+        "data": {
+          "show": true
+        }
+      },
+      {
+        "id": "continent",
+        "field": "continent",
+        "type": "string",
+        "input": "select",
+        "operator": "equal",
+        "value": "asia",
+        "data": {
+          "show": false
+        }
+      }
+    ]
     });
   });
 
