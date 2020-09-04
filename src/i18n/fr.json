@@ -1,17 +1,14 @@
 {
   "__locale": "French (fr)",
-  "__author": "Damien \"Mistic\" Sorel, http://www.strangeplanet.fr",
-
+  "__author": "Damien \"Mistic\" Sorel, https://www.strangeplanet.fr",
   "add_rule": "Ajouter une règle",
   "add_group": "Ajouter un groupe",
   "delete_rule": "Supprimer",
   "delete_group": "Supprimer",
-
   "conditions": {
     "AND": "ET",
     "OR": "OU"
   },
-
   "operators": {
     "equal": "est égal à",
     "not_equal": "n'est pas égal à",
@@ -34,7 +31,6 @@
     "is_null": "est nul",
     "is_not_null": "n'est pas nul"
   },
-
   "errors": {
     "no_filter": "Aucun filtre sélectionné",
     "empty_group": "Le groupe est vide",
