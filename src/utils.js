@@ -1,22 +1,57 @@
-var Utils = QueryBuilder.utils = {};
+/**
+ * @namespace
+ */
+var Utils = {};
 
 /**
- * Utility to iterate over radio/checkbox/selection options.
- * it accept three formats: array of values, map, array of 1-element maps
+ * @member {object}
+ * @memberof QueryBuilder
+ * @see Utils
+ */
+QueryBuilder.utils = Utils;
+
+/**
+ * @callback Utils#OptionsIteratee
+ * @param {string} key
+ * @param {string} value
+ * @param {string} [optgroup]
+ */
+
+/**
+ * Iterates over radio/checkbox/selection options, it accept four formats
  *
- * @param options {object|array}
- * @param tpl {callable} (takes key and text)
+ * @example
+ * // array of values
+ * options = ['one', 'two', 'three']
+ * @example
+ * // simple key-value map
+ * options = {1: 'one', 2: 'two', 3: 'three'}
+ * @example
+ * // array of 1-element maps
+ * options = [{1: 'one'}, {2: 'two'}, {3: 'three'}]
+ * @example
+ * // array of elements
+ * options = [{value: 1, label: 'one', optgroup: 'group'}, {value: 2, label: 'two'}]
+ *
+ * @param {object|array} options
+ * @param {Utils#OptionsIteratee} tpl
  */
 Utils.iterateOptions = function(options, tpl) {
     if (options) {
         if ($.isArray(options)) {
             options.forEach(function(entry) {
-                // array of one-element maps
                 if ($.isPlainObject(entry)) {
-                    $.each(entry, function(key, val) {
-                        tpl(key, val);
-                        return false; // break after first entry
-                    });
+                    // array of elements
+                    if ('value' in entry) {
+                        tpl(entry.value, entry.label || entry.value, entry.optgroup);
+                    }
+                    // array of one-element maps
+                    else {
+                        $.each(entry, function(key, val) {
+                            tpl(key, val);
+                            return false; // break after first entry
+                        });
+                    }
                 }
                 // array of values
                 else {
@@ -35,12 +70,14 @@ Utils.iterateOptions = function(options, tpl) {
 
 /**
  * Replaces {0}, {1}, ... in a string
- * @param str {string}
- * @param args,... {mixed}
- * @return {string}
+ * @param {string} str
+ * @param {...*} args
+ * @returns {string}
  */
-Utils.fmt = function(str/*, args*/) {
-    var args = Array.prototype.slice.call(arguments, 1);
+Utils.fmt = function(str, args) {
+    if (!Array.isArray(args)) {
+        args = Array.prototype.slice.call(arguments, 1);
+    }
 
     return str.replace(/{([0-9]+)}/g, function(m, i) {
         return args[parseInt(i)];
@@ -48,40 +85,67 @@ Utils.fmt = function(str/*, args*/) {
 };
 
 /**
- * Throw an Error object with custom name
- * @param type {string}
- * @param message {string}
- * @param args,... {mixed}
+ * Throws an Error object with custom name or logs an error
+ * @param {boolean} [doThrow=true]
+ * @param {string} type
+ * @param {string} message
+ * @param {...*} args
  */
-Utils.error = function(type, message/*, args*/) {
-    var err = new Error(Utils.fmt.apply(null, Array.prototype.slice.call(arguments, 1)));
-    err.name = type + 'Error';
-    err.args = Array.prototype.slice.call(arguments, 2);
-    throw err;
-};
+Utils.error = function() {
+    var i = 0;
+    var doThrow = typeof arguments[i] === 'boolean' ? arguments[i++] : true;
+    var type = arguments[i++];
+    var message = arguments[i++];
+    var args = Array.isArray(arguments[i]) ? arguments[i] : Array.prototype.slice.call(arguments, i);
 
-/**
- * Change type of a value to int or float
- * @param value {mixed}
- * @param type {string} 'integer', 'double' or anything else
- * @param boolAsInt {boolean} return 0 or 1 for booleans
- * @return {mixed}
- */
-Utils.changeType = function(value, type, boolAsInt) {
-    switch (type) {
-        case 'integer': return parseInt(value);
-        case 'double': return parseFloat(value);
-        case 'boolean':
-            var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
-            return boolAsInt ? (bool ? 1 : 0) : bool;
-        default: return value;
+    if (doThrow) {
+        var err = new Error(Utils.fmt(message, args));
+        err.name = type + 'Error';
+        err.args = args;
+        throw err;
+    }
+    else {
+        console.error(type + 'Error: ' + Utils.fmt(message, args));
     }
 };
 
 /**
- * Escape string like mysql_real_escape_string
- * @param value {string}
- * @return {string}
+ * Changes the type of a value to int, float or bool
+ * @param {*} value
+ * @param {string} type - 'integer', 'double', 'boolean' or anything else (passthrough)
+ * @returns {*}
+ */
+Utils.changeType = function(value, type) {
+    if (value === '' || value === undefined) {
+        return undefined;
+    }
+
+    switch (type) {
+        // @formatter:off
+        case 'integer':
+            if (typeof value === 'string' && !/^-?\d+$/.test(value)) {
+                return value;
+            }
+            return parseInt(value);
+        case 'double':
+            if (typeof value === 'string' && !/^-?\d+\.?\d*$/.test(value)) {
+                return value;
+            }
+            return parseFloat(value);
+        case 'boolean':
+            if (typeof value === 'string' && !/^(0|1|true|false){1}$/i.test(value)) {
+                return value;
+            }
+            return value === true || value === 1 || value.toLowerCase() === 'true' || value === '1';
+        default: return value;
+        // @formatter:on
+    }
+};
+
+/**
+ * Escapes a string like PHP's mysql_real_escape_string does
+ * @param {string} value
+ * @returns {string}
  */
 Utils.escapeString = function(value) {
     if (typeof value != 'string') {
@@ -89,33 +153,35 @@ Utils.escapeString = function(value) {
     }
 
     return value
-      .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
-          switch (s) {
-              case '\0': return '\\0';
-              case '\n': return '\\n';
-              case '\r': return '\\r';
-              case '\b': return '\\b';
-              default:   return '\\' + s;
-          }
-      })
-      // uglify compliant
-      .replace(/\t/g, '\\t')
-      .replace(/\x1a/g, '\\Z');
+        .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
+            switch (s) {
+                // @formatter:off
+                case '\0': return '\\0';
+                case '\n': return '\\n';
+                case '\r': return '\\r';
+                case '\b': return '\\b';
+                default:   return '\\' + s;
+                // @formatter:off
+            }
+        })
+        // uglify compliant
+        .replace(/\t/g, '\\t')
+        .replace(/\x1a/g, '\\Z');
 };
 
 /**
- * Escape value for use in regex
- * @param value {string}
- * @return {string}
+ * Escapes a string for use in regex
+ * @param {string} str
+ * @returns {string}
  */
 Utils.escapeRegExp = function(str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 };
 
 /**
- * Escape HTML element id
- * @param value {string}
- * @return {string}
+ * Escapes a string for use in HTML element id
+ * @param {string} str
+ * @returns {string}
  */
 Utils.escapeElementId = function(str) {
     // Regex based on that suggested by:
@@ -127,7 +193,7 @@ Utils.escapeElementId = function(str) {
 };
 
 /**
- * Sort objects by grouping them by {key}, preserving initial order when possible
+ * Sorts objects by grouping them by `key`, preserving initial order when possible
  * @param {object[]} items
  * @param {string} key
  * @returns {object[]}
@@ -158,4 +224,42 @@ Utils.groupSort = function(items, key) {
     });
 
     return newItems;
+};
+
+/**
+ * Defines properties on an Node prototype with getter and setter.<br>
+ *     Update events are emitted in the setter through root Model (if any).<br>
+ *     The object must have a `__` object, non enumerable property to store values.
+ * @param {function} obj
+ * @param {string[]} fields
+ */
+Utils.defineModelProperties = function(obj, fields) {
+    fields.forEach(function(field) {
+        Object.defineProperty(obj.prototype, field, {
+            enumerable: true,
+            get: function() {
+                return this.__[field];
+            },
+            set: function(value) {
+                var previousValue = (this.__[field] !== null && typeof this.__[field] == 'object') ?
+                    $.extend({}, this.__[field]) :
+                    this.__[field];
+
+                this.__[field] = value;
+
+                if (this.model !== null) {
+                    /**
+                     * After a value of the model changed
+                     * @event model:update
+                     * @memberof Model
+                     * @param {Node} node
+                     * @param {string} field
+                     * @param {*} value
+                     * @param {*} previousValue
+                     */
+                    this.model.trigger('update', this, field, value, previousValue);
+                }
+            }
+        });
+    });
 };

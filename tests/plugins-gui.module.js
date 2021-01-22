@@ -95,6 +95,23 @@ $(function(){
     });
 
     /**
+     * Test chosen-selectpicker
+     */
+    QUnit.test('chosen-selectpicker', function(assert) {
+        $b.queryBuilder({
+            plugins: ['chosen-selectpicker'],
+            filters: basic_filters,
+            rules: basic_rules
+        });
+
+        assert.ok(
+            $b.find('.chosen-single').length == 8,
+            'Should have initialized chosen on all filters and operators selectors'
+        );
+    });
+
+
+    /**
      * Test bt-tooltip-errors
      */
     QUnit.test('bt-tooltip-errors', function(assert) {
@@ -134,6 +151,12 @@ $(function(){
             id: 'name',
             type: 'string',
             description: '<b>Lorem Ipsum</b> sit amet.'
+        }, {
+            id: 'age',
+            type: 'integer',
+            description: function(rule) {
+                return 'Description of operator ' + rule.operator.type;
+            }
         }];
 
         var rules = {
@@ -141,6 +164,9 @@ $(function(){
             rules: [{
                 id: 'name',
                 value: 'Mistic'
+            }, {
+                id: 'age',
+                value: 25
             }]
         };
 
@@ -154,8 +180,14 @@ $(function(){
 
         assert.match(
             $('#builder_rule_0 p.filter-description').html(),
-            new RegExp(filters[0].description),
+            new RegExp('<b>Lorem Ipsum</b> sit amet.'),
             'Paragraph should contain filter description'
+        );
+
+        assert.match(
+            $('#builder_rule_1 p.filter-description').html(),
+            new RegExp('Description of operator equal'),
+            'Paragraph should contain filter description after function execution'
         );
 
         $b.queryBuilder('destroy');
@@ -193,31 +225,30 @@ $(function(){
      * Test sortable
      */
     QUnit.test('sortable', function(assert) {
-        var sorted_rules = $.extend(true, {}, basic_rules);
-        sorted_rules.rules.splice(2, 0, sorted_rules.rules[2].rules.pop());
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: basic_rules,
+            plugins: ['sortable']
+        });
 
-        assert.expect(1);
-        var done = assert.async();
+        assert.ok(
+            $b.find('.drag-handle').length > 0,
+            'Should add the drag handles'
+        );
+
+        $b.queryBuilder('destroy');
 
         $b.queryBuilder({
-            plugins: ['sortable'],
+            plugins: {
+                'sortable': {disable_template: true}
+            },
             filters: basic_filters,
             rules: basic_rules
         });
 
-        $('#builder_rule_3').simulateDragDrop({
-            dropTarget: $('#builder_rule_1'),
-            start: function() {
-                $(this).find('.drag-handle').trigger('mouseover');
-            },
-            done: function() {
-                assert.rulesMatch(
-                    $b.queryBuilder('getRules'),
-                    sorted_rules,
-                    'Should have moved "Identifier" rule'
-                );
-                done();
-            }
-        });
+        assert.ok(
+            $b.find('.drag-handle').length === 0,
+            'Should not have added the handles with disable_template=true'
+        );
     });
 });

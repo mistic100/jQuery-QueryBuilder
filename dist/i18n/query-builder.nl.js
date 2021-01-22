@@ -1,8 +1,8 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2
  * Locale: Dutch (nl)
  * Author: "Roywcm"
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
@@ -38,6 +38,7 @@ QueryBuilder.regional['nl'] = {
     "greater": "groter",
     "greater_or_equal": "groter of gelijk",
     "between": "tussen",
+    "not_between": "niet tussen",
     "begins_with": "begint met",
     "not_begins_with": "begint niet met",
     "contains": "bevat",

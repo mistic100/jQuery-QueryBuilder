@@ -1,9 +1,8 @@
 /*!
- * jQuery QueryBuilder 2.3.3
- * Copyright 2014-2016 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * jQuery QueryBuilder 2.5.2
+ * Copyright 2014-2018 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
-
 $theme-name: default !default;
 
 // common
@@ -68,8 +67,16 @@ $ticks-position: 5px, 10px !default;
 
     .group-conditions {
       .btn.readonly:not(.active),
-      input[name$=_cond] {
-        display: none;
+      input[name$='_cond'] {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+        white-space: nowrap;
       }
 
       .btn.readonly {
@@ -108,7 +115,9 @@ $ticks-position: 5px, 10px !default;
       }
     }
 
-    select, input[type=text], input[type=number] {
+    select,
+    input[type='text'],
+    input[type='number'] {
       padding: 1px;
     }
   }
@@ -168,8 +177,10 @@ $ticks-position: 5px, 10px !default;
   }
 }
 
-
-@import 'plugins/bt-tooltip-errors';
-@import 'plugins/filter-description';
-@import 'plugins/invert';
-@import 'plugins/sortable';
+// import
+@import "plugins/_bt-checkbox";
+@import "plugins/_bt-tooltip-errors";
+@import "plugins/_filter-description";
+@import "plugins/_invert";
+@import "plugins/_sortable";
+// endimport

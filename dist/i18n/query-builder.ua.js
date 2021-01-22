@@ -1,8 +1,8 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2
  * Locale: Ukrainian (ua)
  * Author: Megaplan, mborisv <bm@megaplan.ru>
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
@@ -70,7 +70,7 @@ QueryBuilder.regional['ua'] = {
     "datetime_exceed_min": "Повинне бути, після {0}",
     "datetime_exceed_max": "Повинне бути, до {0}",
     "boolean_not_valid": "Не логічне",
-    "operator_not_multiple": "Оператор {0} не підтримує багато значень"
+    "operator_not_multiple": "Оператор \"{1}\" не підтримує багато значень"
   },
   "invert": "інвертувати"
 };

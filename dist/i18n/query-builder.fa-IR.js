@@ -1,8 +1,8 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2
  * Locale: Farsi (fa-ir)
  * Author: Behzad Sedighzade, behzad.sedighzade@gmail.com
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
@@ -38,6 +38,7 @@ QueryBuilder.regional['fa-IR'] = {
     "greater": "بزرگتر از",
     "greater_or_equal": "بزرگتر یا مساوی با",
     "between": "مابین",
+    "not_between": "مابین نباشد",
     "begins_with": "شروع شود با",
     "not_begins_with": "شروع نشود با",
     "contains": "شامل شود",
@@ -70,7 +71,7 @@ QueryBuilder.regional['fa-IR'] = {
     "datetime_exceed_min": "باید بعد از {0} باشد",
     "datetime_exceed_max": "باید قبل  از {0} باشد",
     "boolean_not_valid": "مقدار دودویی وارد کنید",
-    "operator_not_multiple": "اپراتور {0} نمی تواند چند مقدار قبول کند"
+    "operator_not_multiple": "اپراتور \"{1}\" نمی تواند چند مقدار قبول کند"
   }
 };
 

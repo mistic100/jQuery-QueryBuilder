@@ -1,7 +1,7 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2
  * Locale: Russian (ru)
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
@@ -68,7 +68,7 @@ QueryBuilder.regional['ru'] = {
     "datetime_exceed_min": "Должно быть, после {0}",
     "datetime_exceed_max": "Должно быть, до {0}",
     "boolean_not_valid": "Не логическое",
-    "operator_not_multiple": "Оператор {0} не поддерживает много значений"
+    "operator_not_multiple": "Оператор \"{1}\" не поддерживает много значений"
   },
   "invert": "Инвертировать"
 };

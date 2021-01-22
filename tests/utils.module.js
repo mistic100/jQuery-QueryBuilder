@@ -7,15 +7,15 @@ $(function () {
      */
     QUnit.test('iterateOptions', function (assert) {
         var output;
-        function callback(a, b) {
-            output.push(a, b);
+        function callback(a, b, c) {
+            output.push(a, b, c);
         }
 
         output = [];
         Utils.iterateOptions(['one', 'foo', 'bar'], callback);
         assert.deepEqual(
             output,
-            ['one', 'one', 'foo', 'foo', 'bar', 'bar'],
+            ['one', 'one', undefined, 'foo', 'foo', undefined, 'bar', 'bar', undefined],
             'Should iterate simple array'
         );
 
@@ -23,7 +23,7 @@ $(function () {
         Utils.iterateOptions({1: 'one', 2: 'foo', 3: 'bar'}, callback);
         assert.deepEqual(
             output,
-            ['1', 'one', '2', 'foo', '3', 'bar'],
+            ['1', 'one', undefined, '2', 'foo', undefined, '3', 'bar', undefined],
             'Should iterate simple hash-map'
         );
 
@@ -31,7 +31,15 @@ $(function () {
         Utils.iterateOptions([{1: 'one'}, {2: 'foo'}, {3: 'bar'}], callback);
         assert.deepEqual(
             output,
-            ['1', 'one', '2', 'foo', '3', 'bar'],
+            ['1', 'one', undefined, '2', 'foo', undefined, '3', 'bar', undefined],
+            'Should iterate array of one element hash-maps'
+        );
+
+        output = [];
+        Utils.iterateOptions([{value: 1, label: 'one', optgroup: 'group'}, {value: 2, label: 'foo'}, {value: 3, label: 'bar', optgroup: 'group'}], callback);
+        assert.deepEqual(
+            output,
+            [1, 'one', 'group', 2, 'foo', undefined, 3, 'bar', 'group'],
             'Should iterate array of hash-maps'
         );
     });
@@ -96,11 +104,6 @@ $(function () {
         );
 
         assert.ok(
-            Utils.changeType('10.5', 'integer') === 10,
-            '"10.5" should be parsed as integer'
-        );
-
-        assert.ok(
             Utils.changeType('10.5', 'double') === 10.5,
             '"10.5" should be parsed as double'
         );
@@ -108,11 +111,6 @@ $(function () {
         assert.ok(
             Utils.changeType('true', 'boolean') === true,
             '"true" should be parsed as boolean'
-        );
-
-        assert.ok(
-            Utils.changeType('false', 'boolean', true) === 0,
-            '"false" should be parsed as integer'
         );
     });
 

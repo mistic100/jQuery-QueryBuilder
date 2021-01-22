@@ -1,13 +1,13 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2
  * Locale: German (de)
  * Author: "raimu"
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
     if (typeof define == 'function' && define.amd) {
-        define(['jquery'], factory);
+        define(['jquery', 'query-builder'], factory);
     }
     else {
         factory(root.jQuery);

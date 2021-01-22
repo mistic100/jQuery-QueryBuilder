@@ -9,8 +9,14 @@ $placeholder-border: 1px dashed $placeholder-border-color;
     margin-left: 5px;
   }
 
-  .dragged {
+  .dragging {
+    position: fixed;
     opacity: .5;
+    z-index: 100;
+
+    &::before, &::after {
+      display: none;
+    }
   }
 
   .rule-placeholder {

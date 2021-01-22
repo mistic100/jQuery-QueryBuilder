@@ -1,8 +1,8 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2
  * Locale: Spanish (es)
  * Author: "pyarza", "kddlb"
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
@@ -38,6 +38,7 @@ QueryBuilder.regional['es'] = {
     "greater": "mayor",
     "greater_or_equal": "mayor o igual",
     "between": "entre",
+    "not_between": "no está entre",
     "begins_with": "empieza por",
     "not_begins_with": "no empieza por",
     "contains": "contiene",
@@ -67,7 +68,12 @@ QueryBuilder.regional['es'] = {
     "number_wrong_step": "Debe ser múltiplo de {0}",
     "datetime_invalid": "Formato de fecha inválido ({0})",
     "datetime_exceed_min": "Debe ser posterior a {0}",
-    "datetime_exceed_max": "Debe ser anterior a {0}"
+    "datetime_exceed_max": "Debe ser anterior a {0}",
+    "number_between_invalid": "Valores Inválidos, {0} es mayor que {1}",
+    "datetime_empty": "Campo vacio",
+    "datetime_between_invalid": "Valores Inválidos, {0} es mayor que {1}",
+    "boolean_not_valid": "No es booleano",
+    "operator_not_multiple": "El operador \"{1}\" no puede aceptar valores multiples"
   }
 };
 
