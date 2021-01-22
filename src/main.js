@@ -134,7 +134,7 @@ var QueryBuilder = function($el, options) {
     this.status.id = this.$el.attr('id');
 
     // INIT
-    this.$el.addClass('query-builder form-inline');
+    this.$el.addClass('query-builder');
 
     this.filters = this.checkFilters(this.filters);
     this.operators = this.checkOperators(this.operators);
