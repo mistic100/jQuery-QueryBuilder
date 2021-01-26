@@ -13,7 +13,8 @@
     "dot": ">=1.0.3",
     "jquery": "^3.3.1",
     "jquery-extendext": ">=0.1.2",
-    "moment": "^2.21.0"
+    "moment": "^2.21.0",
+    "@spryker/sql-parser-mistic": "~1.2.3"
   },
   "devDependencies": {
     "awesome-bootstrap-checkbox": "^0.3.7",
@@ -50,7 +51,6 @@
     "jit-grunt": "^0.10.0",
     "qunit": "^2.5.1",
     "selectize": "^0.12.4",
-    "sql-parser-mistic": "https://github.com/spryker/spryker-sql-parser.git#feature/te-8445-update-dependency",
     "time-grunt": "^1.3.0"
   },
   "keywords": [
