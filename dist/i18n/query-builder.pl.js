@@ -1,13 +1,13 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2
  * Locale: Polish (pl)
  * Author: Artur Smolarek
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
     if (typeof define == 'function' && define.amd) {
-        define(['jquery', 'query-builder'], factory);
+        define(['jquery'], factory);
     }
     else {
         factory(root.jQuery);
@@ -25,8 +25,8 @@ QueryBuilder.regional['pl'] = {
   "delete_rule": "Usuń",
   "delete_group": "Usuń",
   "conditions": {
-    "AND": "AND",
-    "OR": "OR"
+    "AND": "ORAZ",
+    "OR": "LUB"
   },
   "operators": {
     "equal": "równa się",
@@ -71,7 +71,7 @@ QueryBuilder.regional['pl'] = {
     "datetime_exceed_min": "Musi być po {0}",
     "datetime_exceed_max": "Musi być przed {0}",
     "boolean_not_valid": "Niepoprawna wartość logiczna",
-    "operator_not_multiple": "Operator {0} nie przyjmuje wielu wartości"
+    "operator_not_multiple": "Operator \"{1}\" nie przyjmuje wielu wartości"
   },
   "invert": "Odwróć"
 };

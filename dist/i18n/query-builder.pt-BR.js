@@ -1,13 +1,13 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2
  * Locale: Brazilian Portuguese (pr-BR)
- * Author: Leandro Gehlen, leandrogehlen@gmail.com
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Author: Leandro Gehlen, leandrogehlen@gmail.com; Marcos Ferretti, marcosvferretti@gmail.com
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
     if (typeof define == 'function' && define.amd) {
-        define(['jquery', 'query-builder'], factory);
+        define(['jquery'], factory);
     }
     else {
         factory(root.jQuery);
@@ -19,9 +19,9 @@ var QueryBuilder = $.fn.queryBuilder;
 
 QueryBuilder.regional['pt-BR'] = {
   "__locale": "Brazilian Portuguese (pr-BR)",
-  "__author": "Leandro Gehlen, leandrogehlen@gmail.com",
+  "__author": "Leandro Gehlen, leandrogehlen@gmail.com; Marcos Ferretti, marcosvferretti@gmail.com",
   "add_rule": "Nova Regra",
-  "add_group": "Novo Gruop",
+  "add_group": "Novo Grupo",
   "delete_rule": "Excluir",
   "delete_group": "Excluir",
   "conditions": {
@@ -37,7 +37,8 @@ QueryBuilder.regional['pt-BR'] = {
     "less_or_equal": "Menor ou igual",
     "greater": "Maior",
     "greater_or_equal": "Maior ou igual",
-    "between": "entre",
+    "between": "Entre",
+    "not_between": "Não entre",
     "begins_with": "Iniciando com",
     "not_begins_with": "Não iniciando com",
     "contains": "Contém",
@@ -57,7 +58,7 @@ QueryBuilder.regional['pt-BR'] = {
     "select_empty": "Nenhum valor selecionado",
     "string_empty": "Valor vazio",
     "string_exceed_min_length": "É necessário conter pelo menos {0} caracteres",
-    "string_exceed_max_length": "É necessário conterm mais de {0} caracteres",
+    "string_exceed_max_length": "É necessário conter mais de {0} caracteres",
     "string_invalid_format": "Formato inválido ({0})",
     "number_nan": "Não é um número",
     "number_not_integer": "Não é um número inteiro",
@@ -67,8 +68,12 @@ QueryBuilder.regional['pt-BR'] = {
     "number_wrong_step": "É necessário ser múltiplo de {0}",
     "datetime_invalid": "Formato de data inválido ({0})",
     "datetime_exceed_min": "É necessário ser superior a {0}",
-    "datetime_exceed_max": "É necessário ser inferior a {0}"
-  }
+    "datetime_exceed_max": "É necessário ser inferior a {0}",
+    "datetime_empty": "Nenhuma data selecionada",
+    "boolean_not_valid": "Não é um valor booleano",
+    "operator_not_multiple": "O operador \"{1}\" não aceita valores múltiplos"
+  },
+  "invert": "Inverter"
 };
 
 QueryBuilder.defaults({ lang_code: 'pt-BR' });

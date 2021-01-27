@@ -1,4 +1,4 @@
-$(function(){
+$(function() {
     var $b = $('#builder');
 
     QUnit.module('data', {
@@ -31,9 +31,9 @@ $(function(){
                 type: 'string',
                 input: 'select',
                 values: [
-                    {one: 'One'},
-                    {two: 'Two'},
-                    {three: 'Three'}
+                    { one: 'One' },
+                    { two: 'Two' },
+                    { three: 'Three' }
                 ]
             }],
             rules: {
@@ -156,11 +156,6 @@ $(function(){
         );
 
         assert.validationError($b,
-            { id: 'double', value: 'abc' },
-            /number_not_double/
-        );
-
-        assert.validationError($b,
             { id: 'integer', value: -15 },
             /number_exceed_min/
         );
@@ -173,6 +168,11 @@ $(function(){
         assert.validationError($b,
             { id: 'double', value: 0.05 },
             /number_wrong_step/
+        );
+
+        assert.validationError($b,
+            { id: 'integer', operator: 'between', value: [5, 1] },
+            /number_between_invalid/
         );
 
         assert.validationError($b,
@@ -196,6 +196,11 @@ $(function(){
         );
 
         assert.validationError($b,
+            { id: 'date', operator: 'between', value: ['2015/01/01', '2014/01/01'] },
+            /datetime_between_invalid/
+        );
+
+        assert.validationError($b,
             { id: 'boolean', value: 'oui' },
             /boolean_not_valid/
         );
@@ -212,7 +217,7 @@ $(function(){
     QUnit.test('custom data', function(assert) {
         var rules = {
             condition: 'AND',
-            data: [1,2,3],
+            data: [1, 2, 3],
             rules: [{
                 id: 'name',
                 value: 'Mistic',
@@ -245,6 +250,46 @@ $(function(){
     });
 
     /**
+     * Set an empty rule
+     */
+    QUnit.test('set empty rule', function(assert) {
+        var rules = [{
+            id: 'name',
+            value: 'Mistic'
+        }, {
+            empty: true
+        }, {
+            condition: 'OR',
+            rules: []
+        }];
+
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: rules
+        });
+
+        assert.validationError($b,
+            null,
+            /no_filter/
+        );
+
+        assert.equal(
+            $b[0].queryBuilder.model.root.rules.length, 3,
+            'Should have two rules and one group'
+        );
+
+        assert.equal(
+            $b[0].queryBuilder.model.root.rules[2].rules.length, 0,
+            'Group should be empty'
+        );
+
+        assert.equal(
+            $('[name=builder_rule_1_filter]').val(), '-1',
+            'Second rule should be empty'
+        );
+    });
+
+    /**
      * Test get flags with getRules
      */
     QUnit.test('get flags', function(assert) {
@@ -262,6 +307,7 @@ $(function(){
                 }
             }, {
                 condition: 'OR',
+                readonly: true,
                 rules: [{
                     id: 'id',
                     operator: 'not_equal',
@@ -271,43 +317,253 @@ $(function(){
             }]
         };
 
-        var rules_all_flags = $.extend(true, {}, rules_readonly);
-        rules_all_flags.flags = {
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: rules_readonly
+        });
+
+        var rules_changed_flags = $.extend(true, {}, rules_readonly);
+        rules_changed_flags.rules[1].flags = {
             condition_readonly: true,
-            no_delete: false
-        };
-        rules_all_flags.rules[0].flags = {
-            filter_readonly: false,
-            operator_readonly: false,
-            value_readonly: false,
+            no_add_rule: true,
+            no_add_group: true,
             no_delete: true
         };
-        rules_all_flags.rules[1].flags = {
-            condition_readonly: false,
-            no_delete: false
-        };
-        rules_all_flags.rules[1].rules[0].flags = {
+        rules_changed_flags.rules[1].rules[0].flags = {
             filter_readonly: true,
             operator_readonly: true,
             value_readonly: true,
             no_delete: true
         };
 
-        $b.queryBuilder({
-            filters: basic_filters,
-            rules: rules_readonly
-        });
+        var rules_all_flags = $.extend(true, {}, rules_changed_flags);
+        rules_all_flags.flags = {
+            condition_readonly: true,
+            no_add_rule: false,
+            no_add_group: false,
+            no_delete: false,
+            no_sortable: false,
+            no_drop: false
+        };
+        rules_all_flags.rules[0].flags = {
+            filter_readonly: false,
+            operator_readonly: false,
+            value_readonly: false,
+            no_delete: true,
+            no_sortable: false,
+            no_drop: false
+        };
+        rules_all_flags.rules[1].flags = {
+            condition_readonly: true,
+            no_add_rule: true,
+            no_add_group: true,
+            no_delete: true,
+            no_sortable: false,
+            no_drop: false
+        };
+        rules_all_flags.rules[1].rules[0].flags = {
+            filter_readonly: true,
+            operator_readonly: true,
+            value_readonly: true,
+            no_delete: true,
+            no_sortable: false,
+            no_drop: false
+        };
 
         assert.rulesMatch(
-            $b.queryBuilder('getRules', {get_flags: true}),
-            rules_readonly,
+            $b.queryBuilder('getRules', { get_flags: true }),
+            rules_changed_flags,
             'Should export rules with changed flags'
         );
 
         assert.rulesMatch(
-            $b.queryBuilder('getRules', {get_flags: 'all'}),
+            $b.queryBuilder('getRules', { get_flags: 'all' }),
             rules_all_flags,
             'Should export rules with all flags'
+        );
+    });
+
+    /**
+     * Test value separator
+     */
+    QUnit.test('value separator', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: [{
+                id: 'name',
+                operator: 'equal',
+                value: 'Mistic,Damien'
+            }, {
+                id: 'age',
+                operator: 'not_equal',
+                value: '16|17|18'
+            }]
+        });
+
+        $('[name=builder_rule_0_operator]').val('in').trigger('change');
+        $('[name=builder_rule_1_operator]').val('not_in').trigger('change');
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            {
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'in',
+                    value: ['Mistic', 'Damien']
+                }, {
+                    id: 'age',
+                    operator: 'not_in',
+                    value: [16, 17, 18]
+                }]
+            },
+            'Should split values on comma and pipe'
+        );
+    });
+
+    /**
+     * Test default operator
+     */
+    QUnit.test('default operator', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters
+        });
+
+        $('[name=builder_rule_0_filter]').val('age').trigger('change');
+
+        assert.equal(
+            $('[name=builder_rule_0_operator]').val(),
+            'in',
+            'Should set "age" operator to "in" by default'
+        );
+    });
+
+    /**
+     * Test allow_invalid option
+     */
+    QUnit.test('allow invalid', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters
+        });
+
+        $b.queryBuilder('setRules', {
+            condition: 'XOR',
+            rules: [{
+                id: 'name',
+                operator: 'unkown_ope',
+                value: 'Mistic'
+            }, {
+                id: 'unknown_id',
+                operator: 'equal',
+                value: 123
+            }]
+        }, {
+            allow_invalid: true
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules', {
+                allow_invalid: true
+            }),
+            {
+                valid: false,
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }, {
+                    id: null,
+                    operator: null,
+                    value: null
+                }]
+            },
+            'Should allow invalid rules for setRules and getRules'
+        );
+    });
+
+    /**
+     * Test skip_empty option
+     */
+    QUnit.test('skip empty', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters
+        });
+
+        $b.queryBuilder('setRules', {
+            condition: 'AND',
+            rules: [{
+                id: 'name',
+                operator: 'equal',
+                value: 'Mistic'
+            }, {
+                empty: true
+            }]
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules', {
+                skip_empty: true
+            }),
+            {
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }]
+            },
+            'Should skip empty rules for getRules'
+        );
+    });
+
+    QUnit.test('apply default value', function(assert) {
+        $b.queryBuilder({
+            filters: [
+                {
+                    id: 'name',
+                    default_value: 'Mistic'
+                }
+            ],
+            rules: [
+                {
+                    id: 'name'
+                }
+            ]
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            {
+                condition: 'AND',
+                rules: [{
+                    id: 'name',
+                    operator: 'equal',
+                    value: 'Mistic'
+                }]
+            },
+            'Should have used the filter default value'
+        );
+    });
+
+    /**
+     * Test allow_empty_value option
+     */
+    QUnit.test('allow empty value', function(assert) {
+        var filters = $.extend(true, [], basic_filters);
+        filters.forEach(function(filter) {
+            filter.validation = $.extend({ allow_empty_value: true }, filter.validation);
+        });
+
+        $b.queryBuilder({
+            filters: filters,
+            rules: empty_rules
+        });
+
+        assert.rulesMatch(
+            $b.queryBuilder('getRules'),
+            empty_rules,
+            'Should allow empty value for all filters'
         );
     });
 
@@ -382,4 +638,25 @@ $(function(){
             }
         }
     }];
+
+    var empty_rules = {
+        condition: 'AND',
+        rules: [{
+            id: 'name',
+            operator: 'equal',
+            value: ''
+        }, {
+            id: 'category',
+            operator: 'equal',
+            value: []
+        }, {
+            id: 'in_stock',
+            operator: 'equal',
+            value: undefined
+        }, {
+            id: 'price',
+            operator: 'equal',
+            value: ''
+        }]
+    };
 });

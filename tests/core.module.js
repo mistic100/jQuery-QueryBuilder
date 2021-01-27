@@ -86,9 +86,9 @@ $(function(){
             );
         });
 
-        assert.deepEqual(
+        assert.equal(
             $b.queryBuilder('getRules'),
-            {},
+            null,
             'Should return empty object'
         );
 
@@ -98,7 +98,7 @@ $(function(){
 
         assert.deepEqual(
             $b.queryBuilder('getRules'),
-            { condition: 'AND', rules: [] },
+            { condition: 'AND', rules: [], valid: true},
             'Should return object with no rules'
         );
     });
@@ -400,33 +400,46 @@ $(function(){
                         value: '1234-azer-5678',
                         readonly: true
                     }]
+                }, {
+                    condition: 'AND',
+                    readonly: true,
+                    rules: [{
+                        id: 'name',
+                        operator: 'equal',
+                        value: 'foo'
+                    }]
                 }]
             }
         });
 
-        assert.ok(
-            $('#builder_group_0>.rules-group-header input:not(:disabled)').length == 0,
+        assert.equal(
+            $('#builder_group_0>.rules-group-header input:not(:disabled)').length, 0,
             'Should disable group condition radio buttons'
         );
 
-        assert.ok(
-            $('#builder_rule_0 [data-delete=rule]').length == 0,
+        assert.equal(
+            $('#builder_rule_0 [data-delete=rule]').length, 0,
             'Should hide delete button of "no_delete" rule'
         );
 
-        assert.ok(
-            $('#builder_rule_0').find('input:disabled, select:disabled').length == 0,
+        assert.equal(
+            $('#builder_rule_0').find('input:disabled, select:disabled').length, 0,
             'Should not disable inputs of "no_delete" rule'
         );
 
-        assert.ok(
-            $('#builder_rule_1 [data-delete=rule]').length == 0,
+        assert.equal(
+            $('#builder_rule_1 [data-delete=rule]').length, 0,
             'Should hide delete button of "readonly" rule'
         );
 
-        assert.ok(
-            $('#builder_rule_1').find('input:disabled, select:disabled').length == 3,
+        assert.equal(
+            $('#builder_rule_1').find('input:disabled, select:disabled').length, 3,
             'Should disable inputs of "readonly" rule'
+        );
+
+        assert.equal(
+            $('#builder_group_2').find('[data-delete=group], [data-add=rule], [data-add=group]').length, 0,
+            'Should hide all buttons of "readonly" group'
         );
 
         $('#builder_group_1 [data-delete=group]').click();
@@ -445,6 +458,13 @@ $(function(){
                         id: 'id',
                         operator: 'not_equal',
                         value: '1234-azer-5678'
+                    }]
+                }, {
+                    condition: 'AND',
+                    rules: [{
+                        id: 'name',
+                        operator: 'equal',
+                        value: 'foo'
                     }]
                 }]
             },
@@ -670,6 +690,47 @@ $(function(){
     });
 
     /**
+     * Test custom error messages
+     */
+    QUnit.test('Custom error messages', function(assert) {
+        $b.queryBuilder({
+            filters: basic_filters,
+            rules: [
+                {
+                    id: 'id',
+                    operator: 'equal',
+                    value: 'azerty'
+                },
+                {
+                    id: 'price',
+                    operator: 'equal',
+                    value: -10
+                }
+            ]
+        });
+
+        $b.on('displayError.queryBuilder.filter', function(e, error, node) {
+            if (node.filter.id == 'price' && error[0] == 'number_exceed_min') {
+                e.value = 'Custom min error message';
+            }
+        });
+
+        $b.queryBuilder('validate');
+
+        assert.equal(
+            $b.find('.error-container').eq(1).attr('title'),
+            'Custom format error message',
+            'Should apply custom message from config'
+        );
+
+        assert.equal(
+            $b.find('.error-container').eq(2).attr('title'),
+            'Custom min error message',
+            'Should apply custom message from event'
+        );
+    });
+
+    /**
      * Test access to defaults
      */
     QUnit.test('Access to defaults', function(assert) {
@@ -701,7 +762,9 @@ $(function(){
             filter_readonly: true,
             operator_readonly: false,
             value_readonly: true,
-            no_delete: false
+            no_delete: false,
+            no_sortable: true,
+            no_drop: false
         };
 
         QueryBuilder.defaults({ default_rule_flags: flags });

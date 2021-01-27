@@ -1,13 +1,13 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2
  * Locale: Simplified Chinese (zh_CN)
  * Author: shadowwind, shatteredwindgo@gmail.com
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
     if (typeof define == 'function' && define.amd) {
-        define(['jquery', 'query-builder'], factory);
+        define(['jquery'], factory);
     }
     else {
         factory(root.jQuery);
@@ -71,7 +71,7 @@ QueryBuilder.regional['zh-CN'] = {
     "datetime_exceed_min": "必须在{0}之后",
     "datetime_exceed_max": "必须在{0}之前",
     "boolean_not_valid": "不是布尔值",
-    "operator_not_multiple": "选项{0}无法接受多个值"
+    "operator_not_multiple": "选项\"{1}\"无法接受多个值"
   },
   "invert": "倒置"
 };

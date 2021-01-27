@@ -1,24 +1,35 @@
-/*!
- * jQuery QueryBuilder Change Filters
- * Allows to change available filters after plugin initialization.
+/**
+ * @class ChangeFilters
+ * @memberof module:plugins
+ * @description Allows to change available filters after plugin initialization.
  */
 
-QueryBuilder.extend({
+QueryBuilder.extend(/** @lends module:plugins.ChangeFilters.prototype */ {
     /**
      * Change the filters of the builder
+     * @param {boolean} [deleteOrphans=false] - delete rules using old filters
+     * @param {QueryBuilder[]} filters
+     * @fires module:plugins.ChangeFilters.changer:setFilters
+     * @fires module:plugins.ChangeFilters.afterSetFilters
      * @throws ChangeFilterError
-     * @param {boolean,optional} delete rules using old filters
-     * @param {object[]} new filters
      */
-    setFilters: function(delete_orphans, filters) {
+    setFilters: function(deleteOrphans, filters) {
         var self = this;
 
         if (filters === undefined) {
-            filters = delete_orphans;
-            delete_orphans = false;
+            filters = deleteOrphans;
+            deleteOrphans = false;
         }
 
         filters = this.checkFilters(filters);
+
+        /**
+         * Modifies the filters before {@link module:plugins.ChangeFilters.setFilters} method
+         * @event changer:setFilters
+         * @memberof module:plugins.ChangeFilters
+         * @param {QueryBuilder.Filter[]} filters
+         * @returns {QueryBuilder.Filter[]}
+         */
         filters = this.change('setFilters', filters);
 
         var filtersIds = filters.map(function(filter) {
@@ -26,7 +37,7 @@ QueryBuilder.extend({
         });
 
         // check for orphans
-        if (!delete_orphans) {
+        if (!deleteOrphans) {
             (function checkOrphans(node) {
                 node.each(
                     function(rule) {
@@ -45,17 +56,20 @@ QueryBuilder.extend({
         // apply on existing DOM
         (function updateBuilder(node) {
             node.each(true,
-              function(rule) {
-                  if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
-                      rule.drop();
-                  }
-                  else {
-                      self.createRuleFilters(rule);
+                function(rule) {
+                    if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
+                        rule.drop();
 
-                      rule.$el.find(Selectors.rule_filter).val(rule.filter ? rule.filter.id : '-1');
-                  }
-              },
-              updateBuilder
+                        self.trigger('rulesChanged');
+                    }
+                    else {
+                        self.createRuleFilters(rule);
+
+                        rule.$el.find(QueryBuilder.selectors.rule_filter).val(rule.filter ? rule.filter.id : '-1');
+                        self.trigger('afterUpdateRuleFilter', rule);
+                    }
+                },
+                updateBuilder
             );
         }(this.model.root));
 
@@ -65,7 +79,7 @@ QueryBuilder.extend({
                 this.updateDisabledFilters();
             }
             if (this.settings.plugins['bt-selectpicker']) {
-                this.$el.find(Selectors.rule_filter).selectpicker('render');
+                this.$el.find(QueryBuilder.selectors.rule_filter).selectpicker('render');
             }
         }
 
@@ -79,15 +93,24 @@ QueryBuilder.extend({
             }
         }
 
+        /**
+         * After {@link module:plugins.ChangeFilters.setFilters} method
+         * @event afterSetFilters
+         * @memberof module:plugins.ChangeFilters
+         * @param {QueryBuilder.Filter[]} filters
+         */
         this.trigger('afterSetFilters', filters);
     },
 
     /**
      * Adds a new filter to the builder
-     * @param {object|object[]} the new filter
-     * @param {mixed,optional} numeric index or '#start' or '#end'
+     * @param {QueryBuilder.Filter|Filter[]} newFilters
+     * @param {int|string} [position=#end] - index or '#start' or '#end'
+     * @fires module:plugins.ChangeFilters.changer:setFilters
+     * @fires module:plugins.ChangeFilters.afterSetFilters
+     * @throws ChangeFilterError
      */
-    addFilter: function(new_filters, position) {
+    addFilter: function(newFilters, position) {
         if (position === undefined || position == '#end') {
             position = this.filters.length;
         }
@@ -95,29 +118,30 @@ QueryBuilder.extend({
             position = 0;
         }
 
-        if (!$.isArray(new_filters)) {
-            new_filters = [new_filters];
+        if (!$.isArray(newFilters)) {
+            newFilters = [newFilters];
         }
 
         var filters = $.extend(true, [], this.filters);
 
         // numeric position
         if (parseInt(position) == position) {
-            Array.prototype.splice.apply(filters, [position, 0].concat(new_filters));
+            Array.prototype.splice.apply(filters, [position, 0].concat(newFilters));
         }
         else {
             // after filter by its id
             if (this.filters.some(function(filter, index) {
-                if (filter.id == position) {
-                    position = index + 1;
-                    return true;
-                }
-            })) {
-                Array.prototype.splice.apply(filters, [position, 0].concat(new_filters));
+                    if (filter.id == position) {
+                        position = index + 1;
+                        return true;
+                    }
+                })
+            ) {
+                Array.prototype.splice.apply(filters, [position, 0].concat(newFilters));
             }
             // defaults to end of list
             else {
-                Array.prototype.push.apply(filters, new_filters);
+                Array.prototype.push.apply(filters, newFilters);
             }
         }
 
@@ -126,19 +150,22 @@ QueryBuilder.extend({
 
     /**
      * Removes a filter from the builder
-     * @param {string|string[]} the filter id
-     * @param {boolean,optional} delete rules using old filters
+     * @param {string|string[]} filterIds
+     * @param {boolean} [deleteOrphans=false] delete rules using old filters
+     * @fires module:plugins.ChangeFilters.changer:setFilters
+     * @fires module:plugins.ChangeFilters.afterSetFilters
+     * @throws ChangeFilterError
      */
-    removeFilter: function(filter_ids, delete_orphans) {
+    removeFilter: function(filterIds, deleteOrphans) {
         var filters = $.extend(true, [], this.filters);
-        if (typeof filter_ids === 'string') {
-            filter_ids = [filter_ids];
+        if (typeof filterIds === 'string') {
+            filterIds = [filterIds];
         }
 
         filters = filters.filter(function(filter) {
-            return filter_ids.indexOf(filter.id) === -1;
+            return filterIds.indexOf(filter.id) === -1;
         });
 
-        this.setFilters(delete_orphans, filters);
+        this.setFilters(deleteOrphans, filters);
     }
 });

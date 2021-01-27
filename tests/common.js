@@ -43,6 +43,10 @@ QUnit.assert.rulesMatch = function(actual, expected, message) {
     var ok = (function match(a, b){
         var ok = true;
 
+        if (a.hasOwnProperty('valid') && b.hasOwnProperty('valid')) {
+            ok = QUnit.equiv(a.valid, b.valid);
+        }
+
         if (b.hasOwnProperty('data')) {
             if (!a.hasOwnProperty('data')) {
                 ok = false;
@@ -100,7 +104,12 @@ QUnit.assert.rulesMatch = function(actual, expected, message) {
         return ok;
     }(actual, expected));
 
-    this.push(ok, actual, expected, message);
+    this.pushResult({
+        result: ok,
+        actual: actual,
+        expected: expected,
+        message: message
+    });
 };
 
 /**
@@ -154,7 +163,12 @@ QUnit.assert.optionsMatch = function($target, expected, message) {
  * Custom assert to test a regex
  */
 QUnit.assert.match = function(actual, regex, message) {
-    this.push(regex.test(actual), actual, regex, message);
+    this.pushResult({
+        result: regex.test(actual),
+        actual: actual,
+        expected: regex,
+        message: message
+    });
 };
 
 
@@ -244,7 +258,8 @@ QUnit.assert.match = function(actual, regex, message) {
 var basic_filters = [{
     id: 'name',
     label: 'Name',
-    type: 'string'
+    type: 'string',
+    value_separator: ','
 }, {
     id: 'category',
     label: 'Category',
@@ -286,8 +301,18 @@ var basic_filters = [{
     placeholder: '____-____-____',
     operators: ['equal', 'not_equal'],
     validation: {
-        format: /^.{4}-.{4}-.{4}$/
+        format: /^.{4}-.{4}-.{4}$/,
+        messages: {
+            format: 'Custom format error message'
+        }
     }
+}, {
+    id: 'age',
+    label: 'Age',
+    type: 'integer',
+    input: 'text',
+    value_separator: '|',
+    default_operator: 'in'
 }];
 
 var basic_rules = {

@@ -1,13 +1,13 @@
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2
  * Locale: Čeština (cs)
  * Author: Megaplan, mborisv <bm@megaplan.ru>
- * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
     if (typeof define == 'function' && define.amd) {
-        define(['jquery', 'query-builder'], factory);
+        define(['jquery'], factory);
     }
     else {
         factory(root.jQuery);
@@ -70,7 +70,7 @@ QueryBuilder.regional['cs'] = {
     "datetime_exceed_min": "Musí být po {0}",
     "datetime_exceed_max": "Musí být do {0}",
     "boolean_not_valid": "Nelogické",
-    "operator_not_multiple": "Operátor {0} nepodporuje mnoho hodnot"
+    "operator_not_multiple": "Operátor \"{1}\" nepodporuje mnoho hodnot"
   },
   "invert": "invertní"
 };

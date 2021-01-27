@@ -1,34 +1,56 @@
 {
   "name": "jquery-query-builder",
-  "version": "2.3.3",
+  "version": "2.5.2",
   "author": {
     "name": "Damien \"Mistic\" Sorel",
     "email": "contact@git.strangeplanet.fr",
-    "url": "http://www.strangeplanet.fr"
+    "url": "https://www.strangeplanet.fr"
   },
-  "main": "index.js",
   "description": "jQuery plugin for user friendly query/filter creator",
+  "main": "dist/js/query-builder.js",
+  "dependencies": {
+    "bootstrap": ">=3.1.0 <4",
+    "dot": ">=1.0.3",
+    "jquery": "^3.3.1",
+    "jquery-extendext": ">=0.1.2",
+    "moment": "^2.21.0",
+    "@spryker/sql-parser-mistic": "~1.2.3"
+  },
   "devDependencies": {
-    "deepmerge": "^0.2.0",
-    "grunt": "^1.0.0",
+    "awesome-bootstrap-checkbox": "^0.3.7",
+    "blanket": "^1.2.3",
+    "bootbox": "^4.4.0",
+    "bootstrap-select": "^1.12.4",
+    "bootstrap-slider": "^10.0.0",
+    "bootswatch-dist": "git+https://github.com/dbtek/bootswatch-dist.git#slate",
+    "chosenjs": "^1.4.3",
+    "deepmerge": "^2.1.0",
+    "foodoc": "^0.0.8",
+    "grunt": "^1.0.2",
+    "grunt-banner": "^0.6.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^1.0.0",
     "grunt-contrib-connect": "^1.0.0",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^1.0.0",
+    "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-jshint": "^1.0.0",
-    "grunt-contrib-qunit": "^0.7.0",
-    "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-uglify": "^1.0.0",
+    "grunt-contrib-qunit": "^2.0.0",
+    "grunt-contrib-uglify": "^3.3.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-coveralls": "^1.0.0",
-    "grunt-jscs": "^2.8.0",
+    "grunt-injector": "^1.1.0",
+    "grunt-jscs": "^3.0.1",
+    "grunt-jsdoc": "^2.2.1",
     "grunt-open": "^0.2.3",
-    "grunt-qunit-blanket-lcov": "^0.3.0",
-    "grunt-scss-lint": "^0.3.8",
-    "grunt-string-replace": "^1.2.0",
+    "grunt-qunit-blanket-lcov": "^1.0.0",
+    "grunt-sass": "^2.1.0",
+    "grunt-sass-injection": "^1.0.3",
+    "grunt-sass-lint": "^0.2.2",
     "grunt-wrap": "^0.3.0",
+    "interactjs": "^1.3.3",
     "jit-grunt": "^0.10.0",
+    "qunit": "^2.5.1",
+    "selectize": "^0.12.4",
     "time-grunt": "^1.3.0"
   },
   "keywords": [
@@ -38,7 +60,7 @@
     "filter"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/mistic100/jQuery-QueryBuilder",
+  "homepage": "https://querybuilder.js.org",
   "repository": {
     "type": "git",
     "url": "git://github.com/mistic100/jQuery-QueryBuilder.git"
@@ -47,9 +69,7 @@
     "url": "https://github.com/mistic100/jQuery-QueryBuilder/issues"
   },
   "scripts": {
+    "serve": "grunt serve",
     "test": "grunt test"
-  },
-  "dependencies": {
-    "dot": "^1.1.3"
   }
 }
