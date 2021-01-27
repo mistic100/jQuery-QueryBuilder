@@ -11,7 +11,7 @@
       "name": "Damien \"Mistic\" Sorel",
       "email": "contact@git.strangeplanet.fr",
       "url": "https://www.strangeplanet.fr"
-    s}
+    }
   ],
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": "dist/js/query-builder.js",
