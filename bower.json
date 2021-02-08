@@ -1,23 +1,30 @@
 {
   "name": "jQuery-QueryBuilder",
-  "authors": [
-    {
-      "name": "Damien \"Mistic\" Sorel",
-      "email": "contact@git.strangeplanet.fr",
-      "homepage": "https://www.strangeplanet.fr"
-    }
-  ],
+  "version": "2.3.3",
+  "authors": [{
+    "name": "Damien \"Mistic\" Sorel",
+    "email": "contact@git.strangeplanet.fr",
+    "homepage": "http://www.strangeplanet.fr"
+  }],
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": [
     "dist/js/query-builder.js",
     "dist/css/query-builder.default.css"
   ],
   "dependencies": {
-    "jquery": ">=1.10.0",
-    "bootstrap": ">=3.1.0 <4",
-    "moment": ">=2.6.0",
-    "jquery-extendext": ">=0.1.2",
-    "doT": ">=1.0.3"
+    "jquery": ">= 1.9.0",
+    "bootstrap": ">= 3.1.0",
+    "moment": ">= 2.6.0",
+    "jquery-extendext": "^0.1.1",
+    "doT": "master"
+  },
+  "devDependencies": {
+    "blanket": "^1.1.0",
+    "qunit": "^1.23.0",
+    "bootstrap-select": "^1.10.0",
+    "bootbox": "^4.4.0",
+    "awesome-bootstrap-checkbox": "^0.3.0",
+    "sql-parser": "^1.0.0"
   },
   "keywords": [
     "jquery",
@@ -26,7 +33,7 @@
     "filter"
   ],
   "license": "MIT",
-  "homepage": "https://querybuilder.js.org",
+  "homepage": "https://github.com/mistic100/jQuery-QueryBuilder",
   "repository": {
     "type": "git",
     "url": "git://github.com/mistic100/jQuery-QueryBuilder.git"
@@ -35,7 +42,6 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "build",
     "src",
     "tests",
     "composer.json",

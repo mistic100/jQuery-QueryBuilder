@@ -1,8 +1,8 @@
 /*!
- * jQuery QueryBuilder 2.5.2
+ * jQuery QueryBuilder 2.3.3
  * Locale: Azerbaijan (az)
  * Author: Megaplan, mborisv <bm@megaplan.ru>
- * Licensed under MIT (https://opensource.org/licenses/MIT)
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
@@ -70,7 +70,7 @@ QueryBuilder.regional['az'] = {
     "datetime_exceed_min": "{0} sonra olmalıdır",
     "datetime_exceed_max": "{0} əvvəl olmalıdır",
     "boolean_not_valid": "Loqik olmayan",
-    "operator_not_multiple": "\"{1}\" operatoru çoxlu məna daşımır"
+    "operator_not_multiple": "{0} operatoru çoxlu məna daşımır"
   },
   "invert": "invert"
 };

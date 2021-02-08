@@ -1,14 +1,22 @@
-/**
- * @class BtCheckbox
- * @memberof module:plugins
- * @description Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.
- * @param {object} [options]
- * @param {string} [options.font='glyphicons']
- * @param {string} [options.color='default']
+/*!
+ * jQuery QueryBuilder Awesome Bootstrap Checkbox
+ * Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.
  */
+
 QueryBuilder.define('bt-checkbox', function(options) {
     if (options.font == 'glyphicons') {
-        this.$el.addClass('bt-checkbox-glyphicons');
+        var injectCSS = document.createElement('style');
+        injectCSS.innerHTML = '\
+.checkbox input[type=checkbox]:checked + label:after { \
+    font-family: "Glyphicons Halflings"; \
+    content: "\\e013"; \
+} \
+.checkbox label:after { \
+    padding-left: 4px; \
+    padding-top: 2px; \
+    font-size: 9px; \
+}';
+        document.body.appendChild(injectCSS);
     }
 
     this.on('getRuleInput.filter', function(h, rule, name) {

@@ -1,8 +1,5 @@
 /**
  * Allowed types and their internal representation
- * @type {object.<string, string>}
- * @readonly
- * @private
  */
 QueryBuilder.types = {
     'string':   'string',
@@ -16,13 +13,9 @@ QueryBuilder.types = {
 
 /**
  * Allowed inputs
- * @type {string[]}
- * @readonly
- * @private
  */
 QueryBuilder.inputs = [
     'text',
-    'number',
     'textarea',
     'radio',
     'checkbox',
@@ -31,9 +24,6 @@ QueryBuilder.inputs = [
 
 /**
  * Runtime modifiable options with `setOptions` method
- * @type {string[]}
- * @readonly
- * @private
  */
 QueryBuilder.modifiable_options = [
     'display_errors',
@@ -45,10 +35,8 @@ QueryBuilder.modifiable_options = [
 
 /**
  * CSS selectors for common components
- * @type {object.<string, string>}
- * @readonly
  */
-QueryBuilder.selectors = {
+var Selectors = QueryBuilder.selectors = {
     group_container:      '.rules-group-container',
     rule_container:       '.rule-container',
     filter_container:     '.rule-filter-container',
@@ -76,23 +64,17 @@ QueryBuilder.selectors = {
 };
 
 /**
- * Template strings (see template.js)
- * @type {object.<string, string>}
- * @readonly
+ * Template strings (see `template.js`)
  */
 QueryBuilder.templates = {};
 
 /**
- * Localized strings (see i18n/)
- * @type {object.<string, object>}
- * @readonly
+ * Localized strings (see `i18n/`)
  */
 QueryBuilder.regional = {};
 
 /**
  * Default operators
- * @type {object.<string, object>}
- * @readonly
  */
 QueryBuilder.OPERATORS = {
     equal:            { type: 'equal',            nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] },
@@ -119,8 +101,6 @@ QueryBuilder.OPERATORS = {
 
 /**
  * Default configuration
- * @type {object}
- * @readonly
  */
 QueryBuilder.DEFAULTS = {
     filters: [],
@@ -147,8 +127,6 @@ QueryBuilder.DEFAULTS = {
 
     default_group_flags: {
         condition_readonly: false,
-        no_add_rule: false,
-        no_add_group: false,
         no_delete: false
     },
 
@@ -156,8 +134,7 @@ QueryBuilder.DEFAULTS = {
         group: null,
         rule: null,
         filterSelect: null,
-        operatorSelect: null,
-        ruleValueSelect: null
+        operatorSelect: null
     },
 
     lang_code: 'en',

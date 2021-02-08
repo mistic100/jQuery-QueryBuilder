@@ -21,8 +21,7 @@
     "less_or_equal": "کمتر یا مساوی با",
     "greater": "بزرگتر از",
     "greater_or_equal": "بزرگتر یا مساوی با",
-    "between": "مابین",
-    "not_between": "مابین نباشد",
+	 "between": "مابین",
     "begins_with": "شروع شود با",
     "not_begins_with": "شروع نشود با",
     "contains": "شامل شود",
@@ -56,6 +55,6 @@
     "datetime_exceed_min": "باید بعد از {0} باشد",
     "datetime_exceed_max": "باید قبل  از {0} باشد",
     "boolean_not_valid": "مقدار دودویی وارد کنید",
-    "operator_not_multiple": "اپراتور \"{1}\" نمی تواند چند مقدار قبول کند"
+    "operator_not_multiple": "اپراتور {0} نمی تواند چند مقدار قبول کند"
   }
 }
