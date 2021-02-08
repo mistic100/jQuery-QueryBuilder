@@ -1,11 +1,18 @@
 {
-  "name": "jquery-query-builder",
+  "name": "@spryker/jquery-query-builder",
   "version": "2.3.3",
   "author": {
-    "name": "Damien \"Mistic\" Sorel",
-    "email": "contact@git.strangeplanet.fr",
-    "url": "http://www.strangeplanet.fr"
+    "name": "Spryker Sytems GmbH",
+    "email": "info@spryker.com",
+    "url": "http://spryker.com"
   },
+  "contributors": [
+    {
+      "name": "Damien \"Mistic\" Sorel",
+      "email": "contact@git.strangeplanet.fr",
+      "url": "https://www.strangeplanet.fr"
+    }
+  ],
   "main": "index.js",
   "description": "jQuery plugin for user friendly query/filter creator",
   "devDependencies": {
@@ -41,10 +48,7 @@
   "homepage": "https://github.com/mistic100/jQuery-QueryBuilder",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mistic100/jQuery-QueryBuilder.git"
-  },
-  "bugs": {
-    "url": "https://github.com/mistic100/jQuery-QueryBuilder/issues"
+    "url": "git://github.com/spryker/jquery-query-builder.git"
   },
   "scripts": {
     "test": "grunt test"
