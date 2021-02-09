@@ -1,9 +1,10 @@
+/*jshint loopfunc:true */
+
 /**
- * Performs value validation
- * @param {Rule} rule
- * @param {string|string[]} value
- * @returns {array|boolean} true or error array
- * @fires QueryBuilder.changer:validateValue
+ * Check if a value is correct for a filter
+ * @param rule {Rule}
+ * @param value {string|string[]|undefined}
+ * @return {array|true}
  */
 QueryBuilder.prototype.validateValue = function(rule, value) {
     var validation = rule.filter.validation || {};
@@ -13,206 +14,180 @@ QueryBuilder.prototype.validateValue = function(rule, value) {
         result = validation.callback.call(this, value, rule);
     }
     else {
-        result = this._validateValue(rule, value);
+        result = this.validateValueInternal(rule, value);
     }
 
-    /**
-     * Modifies the result of the rule validation method
-     * @event changer:validateValue
-     * @memberof QueryBuilder
-     * @param {array|boolean} result - true or an error array
-     * @param {*} value
-     * @param {Rule} rule
-     * @returns {array|boolean}
-     */
     return this.change('validateValue', result, value, rule);
 };
 
 /**
  * Default validation function
- * @param {Rule} rule
- * @param {string|string[]} value
- * @returns {array|boolean} true or error array
  * @throws ConfigError
- * @private
+ * @param rule {Rule}
+ * @param value {string|string[]|undefined}
+ * @return {array|true}
  */
-QueryBuilder.prototype._validateValue = function(rule, value) {
+QueryBuilder.prototype.validateValueInternal = function(rule, value) {
     var filter = rule.filter;
     var operator = rule.operator;
     var validation = filter.validation || {};
     var result = true;
-    var tmp, tempValue;
+    var tmp;
 
     if (rule.operator.nb_inputs === 1) {
         value = [value];
     }
+    else {
+        value = value;
+    }
 
     for (var i = 0; i < operator.nb_inputs; i++) {
-        if (!operator.multiple && $.isArray(value[i]) && value[i].length > 1) {
-            result = ['operator_not_multiple', operator.type, this.translate('operators', operator.type)];
-            break;
-        }
-
         switch (filter.input) {
             case 'radio':
-                if (value[i] === undefined || value[i].length === 0) {
-                    if (!validation.allow_empty_value) {
-                        result = ['radio_empty'];
-                    }
+                if (value[i] === undefined) {
+                    result = ['radio_empty'];
                     break;
                 }
                 break;
 
             case 'checkbox':
                 if (value[i] === undefined || value[i].length === 0) {
-                    if (!validation.allow_empty_value) {
-                        result = ['checkbox_empty'];
-                    }
+                    result = ['checkbox_empty'];
+                    break;
+                }
+                else if (!operator.multiple && value[i].length > 1) {
+                    result = ['operator_not_multiple', operator.type];
                     break;
                 }
                 break;
 
             case 'select':
-                if (value[i] === undefined || value[i].length === 0 || (filter.placeholder && value[i] == filter.placeholder_value)) {
-                    if (!validation.allow_empty_value) {
+                if (filter.multiple) {
+                    if (value[i] === undefined || value[i].length === 0 || (filter.placeholder && value[i] == filter.placeholder_value)) {
                         result = ['select_empty'];
+                        break;
                     }
-                    break;
+                    else if (!operator.multiple && value[i].length > 1) {
+                        result = ['operator_not_multiple', operator.type];
+                        break;
+                    }
+                }
+                else {
+                    if (value[i] === undefined || (filter.placeholder && value[i] == filter.placeholder_value)) {
+                        result = ['select_empty'];
+                        break;
+                    }
                 }
                 break;
 
             default:
-                tempValue = $.isArray(value[i]) ? value[i] : [value[i]];
-
-                for (var j = 0; j < tempValue.length; j++) {
-                    switch (QueryBuilder.types[filter.type]) {
-                        case 'string':
-                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
-                                if (!validation.allow_empty_value) {
-                                    result = ['string_empty'];
-                                }
-                                break;
-                            }
-                            if (validation.min !== undefined) {
-                                if (tempValue[j].length < parseInt(validation.min)) {
-                                    result = [this.getValidationMessage(validation, 'min', 'string_exceed_min_length'), validation.min];
-                                    break;
-                                }
-                            }
-                            if (validation.max !== undefined) {
-                                if (tempValue[j].length > parseInt(validation.max)) {
-                                    result = [this.getValidationMessage(validation, 'max', 'string_exceed_max_length'), validation.max];
-                                    break;
-                                }
-                            }
-                            if (validation.format) {
-                                if (typeof validation.format == 'string') {
-                                    validation.format = new RegExp(validation.format);
-                                }
-                                if (!validation.format.test(tempValue[j])) {
-                                    result = [this.getValidationMessage(validation, 'format', 'string_invalid_format'), validation.format];
-                                    break;
-                                }
-                            }
+                switch (QueryBuilder.types[filter.type]) {
+                    case 'string':
+                        if (value[i] === undefined || value[i].length === 0) {
+                            result = ['string_empty'];
                             break;
+                        }
+                        if (validation.min !== undefined) {
+                            if (value[i].length < parseInt(validation.min)) {
+                                result = ['string_exceed_min_length', validation.min];
+                                break;
+                            }
+                        }
+                        if (validation.max !== undefined) {
+                            if (value[i].length > parseInt(validation.max)) {
+                                result = ['string_exceed_max_length', validation.max];
+                                break;
+                            }
+                        }
+                        if (validation.format) {
+                            if (typeof validation.format == 'string') {
+                                validation.format = new RegExp(validation.format);
+                            }
+                            if (!validation.format.test(value[i])) {
+                                result = ['string_invalid_format', validation.format];
+                                break;
+                            }
+                        }
+                        break;
 
-                        case 'number':
-                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
-                                if (!validation.allow_empty_value) {
-                                    result = ['number_nan'];
-                                }
+                    case 'number':
+                        if (value[i] === undefined || isNaN(value[i])) {
+                            result = ['number_nan'];
+                            break;
+                        }
+                        if (filter.type == 'integer') {
+                            if (parseInt(value[i]) != value[i]) {
+                                result = ['number_not_integer'];
                                 break;
                             }
-                            if (isNaN(tempValue[j])) {
-                                result = ['number_nan'];
+                        }
+                        else {
+                            if (parseFloat(value[i]) != value[i]) {
+                                result = ['number_not_double'];
                                 break;
                             }
-                            if (filter.type == 'integer') {
-                                if (parseInt(tempValue[j]) != tempValue[j]) {
-                                    result = ['number_not_integer'];
-                                    break;
-                                }
+                        }
+                        if (validation.min !== undefined) {
+                            if (value[i] < parseFloat(validation.min)) {
+                                result = ['number_exceed_min', validation.min];
+                                break;
+                            }
+                        }
+                        if (validation.max !== undefined) {
+                            if (value[i] > parseFloat(validation.max)) {
+                                result = ['number_exceed_max', validation.max];
+                                break;
+                            }
+                        }
+                        if (validation.step !== undefined && validation.step !== 'any') {
+                            var v = (value[i] / validation.step).toPrecision(14);
+                            if (parseInt(v) != v) {
+                                result = ['number_wrong_step', validation.step];
+                                break;
+                            }
+                        }
+                        break;
+
+                    case 'datetime':
+                        if (value[i] === undefined || value[i].length === 0) {
+                            result = ['datetime_empty'];
+                            break;
+                        }
+
+                        // we need MomentJS
+                        if (validation.format) {
+                            if (!('moment' in window)) {
+                                Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
+                            }
+
+                            var datetime = moment(value[i], validation.format);
+                            if (!datetime.isValid()) {
+                                result = ['datetime_invalid', validation.format];
+                                break;
                             }
                             else {
-                                if (parseFloat(tempValue[j]) != tempValue[j]) {
-                                    result = ['number_not_double'];
-                                    break;
-                                }
-                            }
-                            if (validation.min !== undefined) {
-                                if (tempValue[j] < parseFloat(validation.min)) {
-                                    result = [this.getValidationMessage(validation, 'min', 'number_exceed_min'), validation.min];
-                                    break;
-                                }
-                            }
-                            if (validation.max !== undefined) {
-                                if (tempValue[j] > parseFloat(validation.max)) {
-                                    result = [this.getValidationMessage(validation, 'max', 'number_exceed_max'), validation.max];
-                                    break;
-                                }
-                            }
-                            if (validation.step !== undefined && validation.step !== 'any') {
-                                var v = (tempValue[j] / validation.step).toPrecision(14);
-                                if (parseInt(v) != v) {
-                                    result = [this.getValidationMessage(validation, 'step', 'number_wrong_step'), validation.step];
-                                    break;
-                                }
-                            }
-                            break;
-
-                        case 'datetime':
-                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
-                                if (!validation.allow_empty_value) {
-                                    result = ['datetime_empty'];
-                                }
-                                break;
-                            }
-
-                            // we need MomentJS
-                            if (validation.format) {
-                                if (!('moment' in window)) {
-                                    Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
-                                }
-
-                                var datetime = moment(tempValue[j], validation.format);
-                                if (!datetime.isValid()) {
-                                    result = [this.getValidationMessage(validation, 'format', 'datetime_invalid'), validation.format];
-                                    break;
-                                }
-                                else {
-                                    if (validation.min) {
-                                        if (datetime < moment(validation.min, validation.format)) {
-                                            result = [this.getValidationMessage(validation, 'min', 'datetime_exceed_min'), validation.min];
-                                            break;
-                                        }
+                                if (validation.min) {
+                                    if (datetime < moment(validation.min, validation.format)) {
+                                        result = ['datetime_exceed_min', validation.min];
+                                        break;
                                     }
-                                    if (validation.max) {
-                                        if (datetime > moment(validation.max, validation.format)) {
-                                            result = [this.getValidationMessage(validation, 'max', 'datetime_exceed_max'), validation.max];
-                                            break;
-                                        }
+                                }
+                                if (validation.max) {
+                                    if (datetime > moment(validation.max, validation.format)) {
+                                        result = ['datetime_exceed_max', validation.max];
+                                        break;
                                     }
                                 }
                             }
-                            break;
-
-                        case 'boolean':
-                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
-                                if (!validation.allow_empty_value) {
-                                    result = ['boolean_not_valid'];
-                                }
-                                break;
-                            }
-                            tmp = ('' + tempValue[j]).trim().toLowerCase();
-                            if (tmp !== 'true' && tmp !== 'false' && tmp !== '1' && tmp !== '0' && tempValue[j] !== 1 && tempValue[j] !== 0) {
-                                result = ['boolean_not_valid'];
-                                break;
-                            }
-                    }
-
-                    if (result !== true) {
+                        }
                         break;
-                    }
+
+                    case 'boolean':
+                        tmp = value[i].trim().toLowerCase();
+                        if (tmp !== 'true' && tmp !== 'false' && tmp !== '1' && tmp !== '0' && value[i] !== 1 && value[i] !== 0) {
+                            result = ['boolean_not_valid'];
+                            break;
+                        }
                 }
         }
 
@@ -221,36 +196,12 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
         }
     }
 
-    if ((rule.operator.type === 'between' || rule.operator.type === 'not_between') && value.length === 2) {
-        switch (QueryBuilder.types[filter.type]) {
-            case 'number':
-                if (value[0] > value[1]) {
-                    result = ['number_between_invalid', value[0], value[1]];
-                }
-                break;
-
-            case 'datetime':
-                // we need MomentJS
-                if (validation.format) {
-                    if (!('moment' in window)) {
-                        Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
-                    }
-
-                    if (moment(value[0], validation.format).isAfter(moment(value[1], validation.format))) {
-                        result = ['datetime_between_invalid', value[0], value[1]];
-                    }
-                }
-                break;
-        }
-    }
-
     return result;
 };
 
 /**
  * Returns an incremented group ID
- * @returns {string}
- * @private
+ * @return {string}
  */
 QueryBuilder.prototype.nextGroupId = function() {
     return this.status.id + '_group_' + (this.status.group_id++);
@@ -258,8 +209,7 @@ QueryBuilder.prototype.nextGroupId = function() {
 
 /**
  * Returns an incremented rule ID
- * @returns {string}
- * @private
+ * @return {string}
  */
 QueryBuilder.prototype.nextRuleId = function() {
     return this.status.id + '_rule_' + (this.status.rule_id++);
@@ -267,10 +217,8 @@ QueryBuilder.prototype.nextRuleId = function() {
 
 /**
  * Returns the operators for a filter
- * @param {string|object} filter - filter id or filter object
- * @returns {object[]}
- * @fires QueryBuilder.changer:getOperators
- * @private
+ * @param filter {string|object} (filter id name or filter object)
+ * @return {object[]}
  */
 QueryBuilder.prototype.getOperators = function(filter) {
     if (typeof filter == 'string') {
@@ -301,26 +249,16 @@ QueryBuilder.prototype.getOperators = function(filter) {
         });
     }
 
-    /**
-     * Modifies the operators available for a filter
-     * @event changer:getOperators
-     * @memberof QueryBuilder
-     * @param {QueryBuilder.Operator[]} operators
-     * @param {QueryBuilder.Filter} filter
-     * @returns {QueryBuilder.Operator[]}
-     */
     return this.change('getOperators', result, filter);
 };
 
 /**
  * Returns a particular filter by its id
- * @param {string} id
- * @param {boolean} [doThrow=true]
- * @returns {object|null}
  * @throws UndefinedFilterError
- * @private
+ * @param filterId {string}
+ * @return {object|null}
  */
-QueryBuilder.prototype.getFilterById = function(id, doThrow) {
+QueryBuilder.prototype.getFilterById = function(id) {
     if (id == '-1') {
         return null;
     }
@@ -331,20 +269,16 @@ QueryBuilder.prototype.getFilterById = function(id, doThrow) {
         }
     }
 
-    Utils.error(doThrow !== false, 'UndefinedFilter', 'Undefined filter "{0}"', id);
-
-    return null;
+    Utils.error('UndefinedFilter', 'Undefined filter "{0}"', id);
 };
 
 /**
- * Returns a particular operator by its type
- * @param {string} type
- * @param {boolean} [doThrow=true]
- * @returns {object|null}
+ * Return a particular operator by its type
  * @throws UndefinedOperatorError
- * @private
+ * @param type {string}
+ * @return {object|null}
  */
-QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
+QueryBuilder.prototype.getOperatorByType = function(type) {
     if (type == '-1') {
         return null;
     }
@@ -355,19 +289,15 @@ QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
         }
     }
 
-    Utils.error(doThrow !== false, 'UndefinedOperator', 'Undefined operator "{0}"', type);
-
-    return null;
+    Utils.error('UndefinedOperator', 'Undefined operator "{0}"', type);
 };
 
 /**
- * Returns rule's current input value
- * @param {Rule} rule
- * @returns {*}
- * @fires QueryBuilder.changer:getRuleValue
- * @private
+ * Returns rule value
+ * @param rule {Rule}
+ * @return {mixed}
  */
-QueryBuilder.prototype.getRuleInputValue = function(rule) {
+QueryBuilder.prototype.getRuleValue = function(rule) {
     var filter = rule.filter;
     var operator = rule.operator;
     var value = [];
@@ -376,7 +306,7 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
         value = filter.valueGetter.call(this, rule);
     }
     else {
-        var $value = rule.$el.find(QueryBuilder.selectors.value_container);
+        var $value = rule.$el.find(Selectors.value_container);
 
         for (var i = 0; i < operator.nb_inputs; i++) {
             var name = Utils.escapeElementId(rule.id + '_value_' + i);
@@ -389,22 +319,18 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
 
                 case 'checkbox':
                     tmp = [];
-                    // jshint loopfunc:true
                     $value.find('[name=' + name + ']:checked').each(function() {
                         tmp.push($(this).val());
                     });
-                    // jshint loopfunc:false
                     value.push(tmp);
                     break;
 
                 case 'select':
                     if (filter.multiple) {
                         tmp = [];
-                        // jshint loopfunc:true
                         $value.find('[name=' + name + '] option:selected').each(function() {
                             tmp.push($(this).val());
                         });
-                        // jshint loopfunc:false
                         value.push(tmp);
                     }
                     else {
@@ -417,21 +343,6 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
             }
         }
 
-        value = value.map(function(val) {
-            if (operator.multiple && filter.value_separator && typeof val == 'string') {
-                val = val.split(filter.value_separator);
-            }
-
-            if ($.isArray(val)) {
-                return val.map(function(subval) {
-                    return Utils.changeType(subval, filter.type);
-                });
-            }
-            else {
-                return Utils.changeType(val, filter.type);
-            }
-        });
-
         if (operator.nb_inputs === 1) {
             value = value[0];
         }
@@ -442,41 +353,29 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
         }
     }
 
-    /**
-     * Modifies the rule's value grabbed from the DOM
-     * @event changer:getRuleValue
-     * @memberof QueryBuilder
-     * @param {*} value
-     * @param {Rule} rule
-     * @returns {*}
-     */
     return this.change('getRuleValue', value, rule);
 };
 
 /**
- * Sets the value of a rule's input
- * @param {Rule} rule
- * @param {*} value
- * @private
+ * Sets the value of a rule.
+ * @param rule {Rule}
+ * @param value {mixed}
  */
-QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
+QueryBuilder.prototype.setRuleValue = function(rule, value) {
     var filter = rule.filter;
     var operator = rule.operator;
-
-    if (!filter || !operator) {
-        return;
-    }
-
-    rule._updating_input = true;
 
     if (filter.valueSetter) {
         filter.valueSetter.call(this, rule, value);
     }
     else {
-        var $value = rule.$el.find(QueryBuilder.selectors.value_container);
+        var $value = rule.$el.find(Selectors.value_container);
 
         if (operator.nb_inputs == 1) {
             value = [value];
+        }
+        else {
+            value = value;
         }
 
         for (var i = 0; i < operator.nb_inputs; i++) {
@@ -491,32 +390,23 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
                     if (!$.isArray(value[i])) {
                         value[i] = [value[i]];
                     }
-                    // jshint loopfunc:true
                     value[i].forEach(function(value) {
                         $value.find('[name=' + name + '][value="' + value + '"]').prop('checked', true).trigger('change');
                     });
-                    // jshint loopfunc:false
                     break;
 
                 default:
-                    if (operator.multiple && filter.value_separator && $.isArray(value[i])) {
-                        value[i] = value[i].join(filter.value_separator);
-                    }
                     $value.find('[name=' + name + ']').val(value[i]).trigger('change');
                     break;
             }
         }
     }
-
-    rule._updating_input = false;
 };
 
 /**
- * Parses rule flags
- * @param {object} rule
- * @returns {object}
- * @fires QueryBuilder.changer:parseRuleFlags
- * @private
+ * Clean rule flags.
+ * @param rule {object}
+ * @return {object}
  */
 QueryBuilder.prototype.parseRuleFlags = function(rule) {
     var flags = $.extend({}, this.settings.default_rule_flags);
@@ -534,23 +424,14 @@ QueryBuilder.prototype.parseRuleFlags = function(rule) {
         $.extend(flags, rule.flags);
     }
 
-    /**
-     * Modifies the consolidated rule's flags
-     * @event changer:parseRuleFlags
-     * @memberof QueryBuilder
-     * @param {object} flags
-     * @param {object} rule - <b>not</b> a Rule object
-     * @returns {object}
-     */
     return this.change('parseRuleFlags', flags, rule);
 };
 
 /**
- * Gets a copy of flags of a rule
+ * Get a copy of flags of a rule.
  * @param {object} flags
- * @param {boolean} [all=false] - return all flags or only changes from default flags
+ * @param {boolean} all - true to return all flags, false to return only changes from default
  * @returns {object}
- * @private
  */
 QueryBuilder.prototype.getRuleFlags = function(flags, all) {
     if (all) {
@@ -568,11 +449,9 @@ QueryBuilder.prototype.getRuleFlags = function(flags, all) {
 };
 
 /**
- * Parses group flags
- * @param {object} group
- * @returns {object}
- * @fires QueryBuilder.changer:parseGroupFlags
- * @private
+ * Clean group flags.
+ * @param group {object}
+ * @return {object}
  */
 QueryBuilder.prototype.parseGroupFlags = function(group) {
     var flags = $.extend({}, this.settings.default_group_flags);
@@ -580,8 +459,6 @@ QueryBuilder.prototype.parseGroupFlags = function(group) {
     if (group.readonly) {
         $.extend(flags, {
             condition_readonly: true,
-            no_add_rule: true,
-            no_add_group: true,
             no_delete: true
         });
     }
@@ -590,23 +467,14 @@ QueryBuilder.prototype.parseGroupFlags = function(group) {
         $.extend(flags, group.flags);
     }
 
-    /**
-     * Modifies the consolidated group's flags
-     * @event changer:parseGroupFlags
-     * @memberof QueryBuilder
-     * @param {object} flags
-     * @param {object} group - <b>not</b> a Group object
-     * @returns {object}
-     */
     return this.change('parseGroupFlags', flags, group);
 };
 
 /**
- * Gets a copy of flags of a group
+ * Get a copy of flags of a group.
  * @param {object} flags
- * @param {boolean} [all=false] - return all flags or only changes from default flags
+ * @param {boolean} all - true to return all flags, false to return only changes from default
  * @returns {object}
- * @private
  */
 QueryBuilder.prototype.getGroupFlags = function(flags, all) {
     if (all) {
@@ -624,46 +492,10 @@ QueryBuilder.prototype.getGroupFlags = function(flags, all) {
 };
 
 /**
- * Translate a label either by looking in the `lang` object or in itself if it's an object where keys are language codes
- * @param {string} [category]
- * @param {string|object} key
- * @returns {string}
- * @fires QueryBuilder.changer:translate
+ * Translate a label
+ * @param label {string|object}
+ * @return string
  */
-QueryBuilder.prototype.translate = function(category, key) {
-    if (!key) {
-        key = category;
-        category = undefined;
-    }
-
-    var translation;
-    if (typeof key === 'object') {
-        translation = key[this.settings.lang_code] || key['en'];
-    }
-    else {
-        translation = (category ? this.lang[category] : this.lang)[key] || key;
-    }
-
-    /**
-     * Modifies the translated label
-     * @event changer:translate
-     * @memberof QueryBuilder
-     * @param {string} translation
-     * @param {string|object} key
-     * @param {string} [category]
-     * @returns {string}
-     */
-    return this.change('translate', translation, key, category);
-};
-
-/**
- * Returns a validation message
- * @param {object} validation
- * @param {string} type
- * @param {string} def
- * @returns {string}
- * @private
- */
-QueryBuilder.prototype.getValidationMessage = function(validation, type, def) {
-    return validation.messages && validation.messages[type] || def;
+QueryBuilder.prototype.translateLabel = function(label) {
+    return typeof label == 'object' ? (label[this.settings.lang_code] || label['en']) : label;
 };

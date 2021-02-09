@@ -7,12 +7,5 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-[*.json]
-indent_size = 2
-insert_final_newline = false
-
 [*.scss]
-indent_size = 2
-
-[*.html]
 indent_size = 2

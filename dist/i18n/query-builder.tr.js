@@ -1,8 +1,8 @@
 /*!
- * jQuery QueryBuilder 2.5.2
+ * jQuery QueryBuilder 2.3.3
  * Locale: Turkish (tr)
  * Author: Aykut Alpgiray Ateş
- * Licensed under MIT (https://opensource.org/licenses/MIT)
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
 (function(root, factory) {
@@ -53,27 +53,25 @@ QueryBuilder.regional['tr'] = {
   "errors": {
     "no_filter": "Bir filtre seçili değil",
     "empty_group": "Grup bir eleman içermiyor",
-    "radio_empty": "Seçim yapılmalı",
-    "checkbox_empty": "Seçim yapılmalı",
-    "select_empty": "Seçim yapılmalı",
+    "radio_empty": "seçim yapılmalı",
+    "checkbox_empty": "seçim yapılmalı",
+    "select_empty": "seçim yapılmalı",
     "string_empty": "Bir metin girilmeli",
     "string_exceed_min_length": "En az {0} karakter girilmeli",
     "string_exceed_max_length": "En fazla {0} karakter girilebilir",
     "string_invalid_format": "Uyumsuz format ({0})",
     "number_nan": "Sayı değil",
-    "number_not_integer": "Tam sayı değil",
+    "number_not_integer": "Tam sayı değilr",
     "number_not_double": "Ondalıklı sayı değil",
     "number_exceed_min": "Sayı {0}'den/dan daha büyük olmalı",
     "number_exceed_max": "Sayı {0}'den/dan daha küçük olmalı",
-    "number_wrong_step": "{0} veya katı olmalı",
-    "number_between_invalid": "Geçersiz değerler, {0} değeri {1} değerinden büyük",
+    "number_wrong_step": "Must be a multiple of {0}",
     "datetime_empty": "Tarih Seçilmemiş",
     "datetime_invalid": "Uygun olmayan tarih formatı ({0})",
     "datetime_exceed_min": "{0} Tarihinden daha sonrası olmalı.",
     "datetime_exceed_max": "{0} Tarihinden daha öncesi olmalı.",
-    "datetime_between_invalid": "Geçersiz değerler, {0} değeri {1} değerinden büyük",
     "boolean_not_valid": "Değer Doğru/Yanlış(bool) olmalı",
-    "operator_not_multiple": "Operatör \"{1}\" birden fazla değer kabul etmiyor"
+    "operator_not_multiple": "Operatör {0} birden fazla değer kabul etmiyor"
   },
   "invert": "Ters Çevir"
 };

@@ -1,66 +1,156 @@
-var initConfig = require('./build/initConfig');
-var processLang = require('./build/processLang');
-var removeJshint = require('./build/removeJshint');
-var cleanLn = require('./build/cleanLn');
+var deepmerge = require('deepmerge');
 
 module.exports = function(grunt) {
     require('time-grunt')(grunt);
     require('jit-grunt')(grunt, {
-        sasslint: 'grunt-sass-lint',
-        sass_injection: 'grunt-sass-injection',
-        usebanner: 'grunt-banner'
+        scsslint: 'grunt-scss-lint'
     });
 
     grunt.util.linefeed = '\n';
 
-    var config = initConfig(grunt, {
-        js_core_files: [
+    function removeJshint(src) {
+        return src
+            .replace(/\/\*jshint [a-z:]+ \*\/\r?\n\r?\n?/g, '')
+            .replace(/\/\*jshint -[EWI]{1}[0-9]{3} \*\/\r?\n\r?\n?/g, '');
+    }
+
+    function process_lang(file, src, wrapper) {
+        var lang = file.split(/[\/\.]/)[2];
+        var content = JSON.parse(src);
+        wrapper = wrapper || ['', ''];
+
+        grunt.config.set('lang_locale', content.__locale || lang);
+        grunt.config.set('lang_author', content.__author);
+        var header = grunt.template.process('<%= langBanner %>');
+
+        loaded_plugins.forEach(function(p) {
+            var plugin_file = 'src/plugins/' + p + '/i18n/' + lang + '.json';
+
+            if (grunt.file.exists(plugin_file)) {
+                content = deepmerge(content, grunt.file.readJSON(plugin_file));
+            }
+        });
+
+        return header
+            + '\n\n'
+            + wrapper[0]
+            + 'QueryBuilder.regional[\'' + lang + '\'] = '
+            + JSON.stringify(content, null, 2)
+            + ';\n\n'
+            + 'QueryBuilder.defaults({ lang_code: \'' + lang + '\' });'
+            + wrapper[1];
+    }
+
+
+    var all_plugins = {},
+        all_langs = {},
+        loaded_plugins = [],
+        loaded_langs = [],
+        js_core_files = [
             'src/main.js',
             'src/defaults.js',
-            'src/plugins.js',
             'src/core.js',
             'src/public.js',
             'src/data.js',
             'src/template.js',
-            'src/utils.js',
             'src/model.js',
+            'src/utils.js',
             'src/jquery.js'
         ],
-        js_files_for_standalone: [
-            'node_modules/jquery-extendext/jQuery.extendext.js',
-            'node_modules/dot/doT.js',
+        js_files_to_load = js_core_files.slice(),
+        all_js_files = js_core_files.slice(),
+        js_files_for_standalone = [
+            'bower_components/jquery-extendext/jQuery.extendext.js',
+            'bower_components/doT/doT.js',
             'dist/js/query-builder.js'
-        ]
-    });
+        ];
+
+
+    (function() {
+        // list available plugins and languages
+        grunt.file.expand('src/plugins/**/plugin.js')
+            .forEach(function(f) {
+                var n = f.split('/')[2];
+                all_plugins[n] = f;
+            });
+
+        grunt.file.expand('src/i18n/*.json')
+            .forEach(function(f) {
+                var n = f.split(/[\/\.]/)[2];
+                all_langs[n] = f;
+            });
+
+        // fill all js files
+        for (var p in all_plugins) {
+            all_js_files.push(all_plugins[p]);
+        }
+
+        // parse 'plugins' parameter
+        var arg_plugins = grunt.option('plugins');
+        if (typeof arg_plugins === 'string') {
+            arg_plugins.replace(/ /g, '').split(',').forEach(function(p) {
+                if (all_plugins[p]) {
+                    js_files_to_load.push(all_plugins[p]);
+                    loaded_plugins.push(p);
+                }
+                else {
+                    grunt.fail.warn('Plugin ' + p + ' unknown');
+                }
+            });
+        }
+        else if (arg_plugins === undefined) {
+            for (var p in all_plugins) {
+                js_files_to_load.push(all_plugins[p]);
+                loaded_plugins.push(p);
+            }
+        }
+
+        // default language
+        js_files_to_load.push('.temp/i18n/en.js');
+        loaded_langs.push('en');
+
+        // parse 'lang' parameter
+        var arg_langs = grunt.option('languages');
+        if (typeof arg_langs === 'string') {
+            arg_langs.replace(/ /g, '').split(',').forEach(function(l) {
+                if (all_langs[l]) {
+                    if (l !== 'en') {
+                        js_files_to_load.push(all_langs[l].replace(/^src/, '.temp').replace(/json$/, 'js'));
+                        loaded_langs.push(l);
+                    }
+                }
+                else {
+                    grunt.fail.warn('Language ' + l + ' unknown');
+                }
+            });
+        }
+    }());
+
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        banner: '/*!\n' +
+        banner:
+        '/*!\n' +
         ' * jQuery QueryBuilder <%= pkg.version %>\n' +
         ' * Copyright 2014-<%= grunt.template.today("yyyy") %> Damien "Mistic" Sorel (http://www.strangeplanet.fr)\n' +
-        ' * Licensed under MIT (https://opensource.org/licenses/MIT)\n' +
+        ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n' +
         ' */',
 
-        langBanner: '/*!\n' +
+        langBanner:
+        '/*!\n' +
         ' * jQuery QueryBuilder <%= pkg.version %>\n' +
         ' * Locale: <%= lang_locale %>\n' +
         '<% if (lang_author) { %> * Author: <%= lang_author %>\n<% } %>' +
-        ' * Licensed under MIT (https://opensource.org/licenses/MIT)\n' +
+        ' * Licensed under MIT (http://opensource.org/licenses/MIT)\n' +
         ' */',
 
         // serve folder content
         connect: {
             dev: {
                 options: {
-                    host: '0.0.0.0',
                     port: 9000,
                     livereload: true
-                }
-            },
-            test: {
-                options: {
-                    port: 9001
                 }
             }
         },
@@ -72,7 +162,7 @@ module.exports = function(grunt) {
             },
             js: {
                 files: ['src/*.js', 'src/plugins/**/plugin.js'],
-                tasks: ['injector:example']
+                tasks: ['build_js']
             },
             css: {
                 files: ['src/scss/*.scss', 'src/plugins/**/plugin.scss'],
@@ -106,35 +196,31 @@ module.exports = function(grunt) {
                 }]
             },
             sass_plugins: {
-                files: config.loaded_plugins.map(function(name) {
+                files: loaded_plugins.map(function(name) {
                     return {
                         src: 'src/plugins/' + name + '/plugin.scss',
-                        dest: 'dist/scss/plugins/_' + name + '.scss'
+                        dest: 'dist/scss/plugins/' + name + '.scss'
                     };
                 })
-            },
-            doc_script: {
-                src: 'build/jsdoc.js',
-                dest: 'doc/js/custom.js'
             }
         },
 
         concat: {
             // concat all JS
             js: {
-                src: config.js_files_to_load,
+                src: js_files_to_load,
                 dest: 'dist/js/query-builder.js',
                 options: {
                     stripBanners: false,
                     separator: '\n\n',
                     process: function(src) {
-                        return cleanLn(removeJshint(src));
+                        return removeJshint(src).replace(/\r\n/g, '\n');
                     }
                 }
             },
             // create standalone version
             js_standalone: {
-                src: config.js_files_for_standalone,
+                src: js_files_for_standalone,
                 dest: 'dist/js/query-builder.standalone.js',
                 options: {
                     stripBanners: false,
@@ -142,14 +228,15 @@ module.exports = function(grunt) {
                     process: function(src, file) {
                         var name = file.match(/([^\/]+?).js$/)[1];
 
-                        return cleanLn(removeJshint(src))
+                        return removeJshint(src)
+                            .replace(/\r\n/g, '\n')
                             .replace(/define\((.*?)\);/, 'define(\'' + name + '\', $1);');
                     }
                 }
             },
             // compile language files with AMD wrapper
             lang: {
-                files: Object.keys(config.all_langs).map(function(name) {
+                files: Object.keys(all_langs).map(function(name) {
                     return {
                         src: 'src/i18n/' + name + '.json',
                         dest: 'dist/i18n/query-builder.' + name + '.js'
@@ -157,14 +244,14 @@ module.exports = function(grunt) {
                 }),
                 options: {
                     process: function(src, file) {
-                        var wrapper = cleanLn(grunt.file.read('src/i18n/.wrapper.js')).split(/@@js\n/);
-                        return processLang(grunt, config.loaded_plugins)(file, src, wrapper);
+                        var wrapper = grunt.file.read('src/i18n/.wrapper.js').replace(/\r\n/g, '\n').split(/@@js\n/);
+                        return process_lang(file, src, wrapper);
                     }
                 }
             },
-            // compile language files without AMD wrapper
+            // compile language files without wrapper
             lang_temp: {
-                files: Object.keys(config.all_langs).map(function(name) {
+                files: Object.keys(all_langs).map(function(name) {
                     return {
                         src: 'src/i18n/' + name + '.json',
                         dest: '.temp/i18n/' + name + '.js'
@@ -172,58 +259,68 @@ module.exports = function(grunt) {
                 }),
                 options: {
                     process: function(src, file) {
-                        return processLang(grunt, config.loaded_plugins)(file, src);
+                        return process_lang(file, src);
                     }
                 }
+            },
+            // add banner to CSS files
+            css: {
+                options: {
+                    banner: '<%= banner %>\n\n',
+                },
+                files: [{
+                    expand: true,
+                    src: ['dist/css/*.css', 'dist/scss/*.scss'],
+                    dest: ''
+                }]
             }
         },
 
-        // add AMD wrapper
         wrap: {
+            // add AMD wrapper and banner
             js: {
                 src: ['dist/js/query-builder.js'],
-                dest: 'dist/js/query-builder.js',
+                dest: '',
                 options: {
                     separator: '',
                     wrapper: function() {
-                        return cleanLn(grunt.file.read('src/.wrapper.js')).split(/@@js\n/);
+                        var wrapper = grunt.file.read('src/.wrapper.js').replace(/\r\n/g, '\n').split(/@@js\n/);
+
+                        if (loaded_plugins.length) {
+                            wrapper[0] = '// Plugins: ' + loaded_plugins.join(', ') + '\n' + wrapper[0];
+                        }
+                        if (loaded_langs.length) {
+                            wrapper[0] = '// Languages: ' + loaded_langs.join(', ') + '\n' + wrapper[0];
+                        }
+                        wrapper[0] = grunt.template.process('<%= banner %>\n\n') + wrapper[0];
+
+                        return wrapper;
                     }
                 }
-            }
-        },
-
-        // add banners
-        usebanner: {
-            options: {
-                banner: '<%= banner %>'
             },
-            js: {
-                src: ['dist/js/*.js']
-            },
-            css: {
-                src: ['dist/css/*.css', 'dist/scss/*.scss']
-            }
-        },
-
-        // add plugins SASS imports
-        sass_injection: {
-            dist: {
+            // add plugins SASS imports
+            sass: {
+                src: ['dist/scss/default.scss'],
+                dest: '',
                 options: {
-                    replacePath: {
-                        pattern: 'dist/scss/',
-                        replace: ''
+                    separator: '',
+                    wrapper: function() {
+                        return ['', loaded_plugins.reduce(function(wrapper, name) {
+                            if (grunt.file.exists('dist/scss/plugins/' + name + '.scss')) {
+                                wrapper += '\n@import \'plugins/' + name + '\';';
+                            }
+                            return wrapper;
+                        }, '\n')];
                     }
-                },
-                src: ['dist/scss/plugins/*.scss'],
-                target: 'dist/scss/default.scss'
+                }
             }
         },
 
         // parse scss
         sass: {
             options: {
-                sourceMap: false,
-                outputStyle: 'expanded'
+                sourcemap: 'none',
+                style: 'expanded'
             },
             dist: {
                 files: [{
@@ -242,8 +339,8 @@ module.exports = function(grunt) {
         // compress js
         uglify: {
             options: {
-                banner: '<%= banner %>\n',
-                mangle: { reserved: ['$'] }
+                banner: '<%= banner %>\n\n',
+                mangle: { except: ['$'] }
             },
             dist: {
                 files: [{
@@ -273,8 +370,7 @@ module.exports = function(grunt) {
 
         // clean build dir
         clean: {
-            temp: ['.temp'],
-            doc: ['doc']
+            temp: ['.temp']
         },
 
         // jshint tests
@@ -283,7 +379,7 @@ module.exports = function(grunt) {
                 options: {
                     jshintrc: '.jshintrc'
                 },
-                src: ['src/**/*.js', '!src/**/.wrapper.js']
+                src: js_files_to_load
             }
         },
 
@@ -293,57 +389,57 @@ module.exports = function(grunt) {
                 options: {
                     config: '.jscsrc'
                 },
-                src: ['src/**/*.js', '!src/**/.wrapper.js']
+                src: js_files_to_load
             }
         },
 
         // scss tests
-        sasslint: {
+        scsslint: {
             lib: {
                 options: {
-                    configFile: '.sass-lint.yml'
+                    colorizeOutput: true,
+                    config: '.scss-lint.yml'
                 },
                 src: ['src/**/*.scss']
             }
         },
 
-        // jsDoc generation
-        jsdoc: {
-            lib: {
-                src: ['src/**/*.js', '!src/**/.wrapper.js'],
+        // inject all source files and test modules in the test file
+        'string-replace': {
+            test: {
+                src: 'tests/index.html',
+                dest: 'tests/index.html',
                 options: {
-                    destination: 'doc',
-                    config: '.jsdoc.json'
-                }
-            }
-        },
+                    replacements: [{
+                        pattern: /(<!-- qunit:imports -->)(?:[\s\S]*)(<!-- \/qunit:imports -->)/m,
+                        replacement: function(match, m1, m2) {
+                            var scripts = '\n';
 
-        // inject sources files and tests modules in demo and test
-        injector: {
-            options: {
-                relative: true,
-                addRootSlash: false
-            },
-            example: {
-                src: config.all_js_files.concat(['dist/i18n/query-builder.en.js']),
-                dest: 'examples/index.html'
-            },
-            testSrc: {
-                options: {
-                    starttag: '<!-- injector:src -->',
-                    transform: function(filepath) {
-                        return '<script src="' + filepath + '" data-cover></script>';
-                    }
-                },
-                src: config.all_js_files,
-                dest: 'tests/index.html'
-            },
-            testModules: {
-                options: {
-                    starttag: '<!-- injector:modules -->'
-                },
-                src: ['tests/*.module.js'],
-                dest: 'tests/index.html'
+                            js_core_files.forEach(function(file) {
+                                scripts += '<script src="../' + file + '" data-cover></script>\n';
+                            });
+
+                            scripts += '\n';
+
+                            for (var p in all_plugins) {
+                                scripts += '<script src="../' + all_plugins[p] + '" data-cover></script>\n';
+                            }
+
+                            return m1 + scripts + m2;
+                        }
+                    }, {
+                        pattern: /(<!-- qunit:modules -->)(?:[\s\S]*)(<!-- \/qunit:modules -->)/m,
+                        replacement: function(match, m1, m2) {
+                            var scripts = '\n';
+
+                            grunt.file.expand('tests/*.module.js').forEach(function(file) {
+                                scripts += '<script src="../' + file + '"></script>\n';
+                            });
+
+                            return m1 + scripts + m2;
+                        }
+                    }]
+                }
             }
         },
 
@@ -351,7 +447,7 @@ module.exports = function(grunt) {
         qunit: {
             all: {
                 options: {
-                    urls: ['http://localhost:<%= connect.test.options.port %>/tests/index.html?coverage=true'],
+                    urls: ['tests/index.html?coverage=true'],
                     noGlobals: true
                 }
             }
@@ -365,8 +461,7 @@ module.exports = function(grunt) {
                     src: ['src/*.js', 'src/plugins/**/plugin.js']
                 }],
                 options: {
-                    dest: '.coverage-results/all.lcov',
-                    prefix: 'http://localhost:<%= connect.test.options.port %>/'
+                    dest: '.coverage-results/all.lcov'
                 }
             }
         },
@@ -377,7 +472,106 @@ module.exports = function(grunt) {
                 force: true
             },
             all: {
-                src: '.coverage-results/all.lcov'
+                src: '.coverage-results/all.lcov',
+            }
+        }
+    });
+
+
+    // list the triggers and changes
+    grunt.registerTask('describe_triggers', 'List QueryBuilder triggers.', function() {
+        var triggers = {};
+        var total = 0;
+
+        for (var f in all_js_files) {
+            grunt.file.read(all_js_files[f]).split(/\r?\n/).forEach(function(line, i) {
+                var matches = /(e = )?(?:this|that)\.(trigger|change)\('(\w+)'([^)]*)\);/.exec(line);
+                if (matches !== null) {
+                    triggers[matches[3]] = {
+                        name: matches[3],
+                        type: matches[2],
+                        file: all_js_files[f],
+                        line: i,
+                        args: matches[4].slice(2),
+                        prevent: !!matches[1]
+                    };
+
+                    total++;
+                }
+            });
+        }
+
+        grunt.log.write('\n');
+
+        for (var t in triggers) {
+            grunt.log.write(t['cyan'] + ' ' + triggers[t].type['magenta']);
+            if (triggers[t].prevent) grunt.log.write(' (*)'['yellow']);
+            grunt.log.write('\n');
+            grunt.log.writeln('   ' + (triggers[t].file + ':' + triggers[t].line)['red'] + ' ' + triggers[t].args);
+            grunt.log.write('\n');
+        }
+
+        grunt.log.writeln((total + ' Triggers in QueryBuilder.')['cyan']['bold']);
+    });
+
+    // list all possible thrown errors
+    grunt.registerTask('describe_errors', 'List QueryBuilder errors.', function() {
+        var errors = {};
+        var total = 0;
+
+        for (var f in all_js_files) {
+            grunt.file.read(all_js_files[f]).split(/\r?\n/).forEach(function(line, i) {
+                var matches = /Utils\.error\('(\w+)', '([^)]+)'([^)]*)\);/.exec(line);
+                if (matches !== null) {
+                    (errors[matches[1]] = errors[matches[1]] || []).push({
+                        type: matches[1],
+                        message: matches[2],
+                        file: all_js_files[f],
+                        line: i,
+                        args: matches[3].slice(2).split(', ')
+                    });
+
+                    total++;
+                }
+            });
+        }
+
+        grunt.log.write('\n');
+
+        for (var e in errors) {
+            grunt.log.writeln((e + 'Error')['cyan']);
+            errors[e].forEach(function(error) {
+                var message = error.message.replace(/{([0-9]+)}/g, function(m, i) {
+                    return error.args[parseInt(i)]['yellow'];
+                });
+                grunt.log.writeln('   ' + (error.file + ':' + error.line)['red']);
+                grunt.log.writeln('      ' + message);
+            });
+            grunt.log.write('\n');
+        }
+
+        grunt.log.writeln((total + ' Errors in QueryBuilder.')['cyan']['bold']);
+    });
+
+    // display available modules
+    grunt.registerTask('list_modules', 'List QueryBuilder plugins and languages.', function() {
+        grunt.log.writeln('\nAvailable QueryBuilder plugins:\n');
+
+        for (var p in all_plugins) {
+            grunt.log.write(p['cyan']);
+
+            if (grunt.file.exists(all_plugins[p].replace(/js$/, 'scss'))) {
+                grunt.log.write(' + CSS');
+            }
+
+            grunt.log.write('\n');
+        }
+
+        grunt.log.writeln('\nAvailable QueryBuilder languages:\n');
+
+        for (var l in all_langs) {
+            if (l !== 'en') {
+                grunt.log.writeln(l['cyan']);
             }
         }
     });
@@ -387,7 +581,6 @@ module.exports = function(grunt) {
         'concat:lang_temp',
         'concat:js',
         'wrap:js',
-        'usebanner:js',
         'concat:js_standalone',
         'uglify',
         'clean:temp'
@@ -396,10 +589,10 @@ module.exports = function(grunt) {
     grunt.registerTask('build_css', [
         'copy:sass_core',
         'copy:sass_plugins',
-        'sass_injection',
+        'wrap:sass',
         'sass',
         'cssmin',
-        'usebanner:css'
+        'concat:css'
     ]);
 
     grunt.registerTask('build_lang', [
@@ -415,28 +608,17 @@ module.exports = function(grunt) {
     grunt.registerTask('test', [
         'jshint',
         'jscs',
-        'sasslint',
-        'build_lang',
-        'build_css',
-        'injector:testSrc',
-        'injector:testModules',
-        'connect:test',
+        'scsslint',
+        'default',
+        'string-replace:test',
         'qunit_blanket_lcov',
         'qunit'
     ]);
 
     grunt.registerTask('serve', [
-        'build_lang',
-        'build_css',
-        'injector:example',
+        'default',
         'open',
-        'connect:dev',
+        'connect',
         'watch'
-    ]);
-
-    grunt.registerTask('doc', [
-        'clean:doc',
-        'jsdoc',
-        'copy:doc_script'
     ]);
 };

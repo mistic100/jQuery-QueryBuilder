@@ -1,42 +1,36 @@
-/**
- * @class SqlSupport
- * @memberof module:plugins
- * @description Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.
- * @param {object} [options]
- * @param {boolean} [options.boolean_as_integer=true] - `true` to convert boolean values to integer in the SQL output
+/*!
+ * jQuery QueryBuilder SQL Support
+ * Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.
  */
-QueryBuilder.define('sql-support', function(options) {
 
-}, {
-    boolean_as_integer: true
-});
-
+// DEFAULT CONFIG
+// ===============================
 QueryBuilder.defaults({
-    // operators for internal -> SQL conversion
+    /* operators for internal -> SQL conversion */
     sqlOperators: {
-        equal: { op: '= ?' },
-        not_equal: { op: '!= ?' },
-        in: { op: 'IN(?)', sep: ', ' },
-        not_in: { op: 'NOT IN(?)', sep: ', ' },
-        less: { op: '< ?' },
-        less_or_equal: { op: '<= ?' },
-        greater: { op: '> ?' },
+        equal:            { op: '= ?' },
+        not_equal:        { op: '!= ?' },
+        in:               { op: 'IN(?)',          sep: ', ' },
+        not_in:           { op: 'NOT IN(?)',      sep: ', ' },
+        less:             { op: '< ?' },
+        less_or_equal:    { op: '<= ?' },
+        greater:          { op: '> ?' },
         greater_or_equal: { op: '>= ?' },
-        between: { op: 'BETWEEN ?', sep: ' AND ' },
-        not_between: { op: 'NOT BETWEEN ?', sep: ' AND ' },
-        begins_with: { op: 'LIKE(?)', mod: '{0}%' },
-        not_begins_with: { op: 'NOT LIKE(?)', mod: '{0}%' },
-        contains: { op: 'LIKE(?)', mod: '%{0}%' },
-        not_contains: { op: 'NOT LIKE(?)', mod: '%{0}%' },
-        ends_with: { op: 'LIKE(?)', mod: '%{0}' },
-        not_ends_with: { op: 'NOT LIKE(?)', mod: '%{0}' },
-        is_empty: { op: '= \'\'' },
-        is_not_empty: { op: '!= \'\'' },
-        is_null: { op: 'IS NULL' },
-        is_not_null: { op: 'IS NOT NULL' }
+        between:          { op: 'BETWEEN ?',      sep: ' AND ' },
+        not_between:      { op: 'NOT BETWEEN ?',  sep: ' AND ' },
+        begins_with:      { op: 'LIKE(?)',        mod: '{0}%' },
+        not_begins_with:  { op: 'NOT LIKE(?)',    mod: '{0}%' },
+        contains:         { op: 'LIKE(?)',        mod: '%{0}%' },
+        not_contains:     { op: 'NOT LIKE(?)',    mod: '%{0}%' },
+        ends_with:        { op: 'LIKE(?)',        mod: '%{0}' },
+        not_ends_with:    { op: 'NOT LIKE(?)',    mod: '%{0}' },
+        is_empty:         { op: '= \'\'' },
+        is_not_empty:     { op: '!= \'\'' },
+        is_null:          { op: 'IS NULL' },
+        is_not_null:      { op: 'IS NOT NULL' }
     },
 
-    // operators for SQL -> internal conversion
+    /* operators for SQL -> internal conversion */
     sqlRuleOperator: {
         '=': function(v) {
             return {
@@ -73,53 +67,14 @@ QueryBuilder.defaults({
                 Utils.error('SQLParse', 'Invalid value for LIKE operator "{0}"', v);
             }
         },
-        'NOT LIKE': function(v) {
-            if (v.slice(0, 1) == '%' && v.slice(-1) == '%') {
-                return {
-                    val: v.slice(1, -1),
-                    op: 'not_contains'
-                };
-            }
-            else if (v.slice(0, 1) == '%') {
-                return {
-                    val: v.slice(1),
-                    op: 'not_ends_with'
-                };
-            }
-            else if (v.slice(-1) == '%') {
-                return {
-                    val: v.slice(0, -1),
-                    op: 'not_begins_with'
-                };
-            }
-            else {
-                Utils.error('SQLParse', 'Invalid value for NOT LIKE operator "{0}"', v);
-            }
-        },
-        'IN': function(v) {
-            return { val: v, op: 'in' };
-        },
-        'NOT IN': function(v) {
-            return { val: v, op: 'not_in' };
-        },
-        '<': function(v) {
-            return { val: v, op: 'less' };
-        },
-        '<=': function(v) {
-            return { val: v, op: 'less_or_equal' };
-        },
-        '>': function(v) {
-            return { val: v, op: 'greater' };
-        },
-        '>=': function(v) {
-            return { val: v, op: 'greater_or_equal' };
-        },
-        'BETWEEN': function(v) {
-            return { val: v, op: 'between' };
-        },
-        'NOT BETWEEN': function(v) {
-            return { val: v, op: 'not_between' };
-        },
+        'IN':           function(v) { return { val: v, op: 'in' }; },
+        'NOT IN':       function(v) { return { val: v, op: 'not_in' }; },
+        '<':            function(v) { return { val: v, op: 'less' }; },
+        '<=':           function(v) { return { val: v, op: 'less_or_equal' }; },
+        '>':            function(v) { return { val: v, op: 'greater' }; },
+        '>=':           function(v) { return { val: v, op: 'greater_or_equal' }; },
+        'BETWEEN':      function(v) { return { val: v, op: 'between' }; },
+        'NOT BETWEEN':  function(v) { return { val: v, op: 'not_between' }; },
         'IS': function(v) {
             if (v !== null) {
                 Utils.error('SQLParse', 'Invalid value for IS operator');
@@ -134,7 +89,7 @@ QueryBuilder.defaults({
         }
     },
 
-    // statements for internal -> SQL conversion
+    /* statements for internal -> SQL conversion */
     sqlStatements: {
         'question_mark': function() {
             var params = [];
@@ -183,7 +138,7 @@ QueryBuilder.defaults({
         }
     },
 
-    // statements for SQL -> internal conversion
+    /* statements for SQL -> internal conversion */
     sqlRuleStatement: {
         'question_mark': function(values) {
             var index = 0;
@@ -227,38 +182,23 @@ QueryBuilder.defaults({
     }
 });
 
-/**
- * @typedef {object} SqlQuery
- * @memberof module:plugins.SqlSupport
- * @property {string} sql
- * @property {object} params
- */
 
-QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
+// PUBLIC METHODS
+// ===============================
+QueryBuilder.extend({
     /**
-     * Returns rules as a SQL query
-     * @param {boolean|string} [stmt] - use prepared statements: false, 'question_mark', 'numbered', 'numbered(@)', 'named', 'named(@)'
-     * @param {boolean} [nl=false] output with new lines
-     * @param {object} [data] - current rules by default
-     * @returns {module:plugins.SqlSupport.SqlQuery}
-     * @fires module:plugins.SqlSupport.changer:getSQLField
-     * @fires module:plugins.SqlSupport.changer:ruleToSQL
-     * @fires module:plugins.SqlSupport.changer:groupToSQL
+     * Get rules as SQL query
      * @throws UndefinedSQLConditionError, UndefinedSQLOperatorError
+     * @param stmt {boolean|string} use prepared statements - false, 'question_mark', 'numbered', 'numbered(@)', 'named', 'named(@)'
+     * @param nl {bool} output with new lines
+     * @param data {object} (optional) rules
+     * @return {object}
      */
     getSQL: function(stmt, nl, data) {
         data = (data === undefined) ? this.getRules() : data;
+        nl = (nl === true) ? '\n' : ' ';
 
-        if (!data) {
-            return null;
-        }
-
-        nl = !!nl ? '\n' : ' ';
-        var boolean_as_integer = this.getPluginOptions('sql-support', 'boolean_as_integer');
-
-        if (stmt === true) {
-            stmt = 'question_mark';
-        }
+        if (stmt === true) stmt = 'question_mark';
         if (typeof stmt == 'string') {
             var config = getStmtConfig(stmt);
             stmt = this.settings.sqlStatements[config[1]](config[2]);
@@ -266,21 +206,21 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
 
         var self = this;
 
-        var sql = (function parse(group) {
-            if (!group.condition) {
-                group.condition = self.settings.default_condition;
+        var sql = (function parse(data) {
+            if (!data.condition) {
+                data.condition = self.settings.default_condition;
             }
-            if (['AND', 'OR'].indexOf(group.condition.toUpperCase()) === -1) {
-                Utils.error('UndefinedSQLCondition', 'Unable to build SQL query with condition "{0}"', group.condition);
+            if (['AND', 'OR'].indexOf(data.condition.toUpperCase()) === -1) {
+                Utils.error('UndefinedSQLCondition', 'Unable to build SQL query with condition "{0}"', data.condition);
             }
 
-            if (!group.rules) {
+            if (!data.rules) {
                 return '';
             }
 
             var parts = [];
 
-            group.rules.forEach(function(rule) {
+            data.rules.forEach(function(rule) {
                 if (rule.rules && rule.rules.length > 0) {
                     parts.push('(' + nl + parse(rule) + nl + ')' + nl);
                 }
@@ -300,13 +240,13 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
 
                         rule.value.forEach(function(v, i) {
                             if (i > 0) {
-                                value += sql.sep;
+                                value+= sql.sep;
                             }
 
-                            if (rule.type == 'boolean' && boolean_as_integer) {
-                                v = v ? 1 : 0;
+                            if (rule.type == 'integer' || rule.type == 'double' || rule.type == 'boolean') {
+                                v = Utils.changeType(v, rule.type, true);
                             }
-                            else if (!stmt && rule.type !== 'integer' && rule.type !== 'double' && rule.type !== 'boolean') {
+                            else if (!stmt) {
                                 v = Utils.escapeString(v);
                             }
 
@@ -315,61 +255,23 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                             }
 
                             if (stmt) {
-                                value += stmt.add(rule, v);
+                                value+= stmt.add(rule, v);
                             }
                             else {
                                 if (typeof v == 'string') {
                                     v = '\'' + v + '\'';
                                 }
 
-                                value += v;
+                                value+= v;
                             }
                         });
                     }
 
-                    var sqlFn = function(v) {
-                        return sql.op.replace('?', function() {
-                            return v;
-                        });
-                    };
-
-                    /**
-                     * Modifies the SQL field used by a rule
-                     * @event changer:getSQLField
-                     * @memberof module:plugins.SqlSupport
-                     * @param {string} field
-                     * @param {Rule} rule
-                     * @returns {string}
-                     */
-                    var field = self.change('getSQLField', rule.field, rule);
-
-                    var ruleExpression = field + ' ' + sqlFn(value);
-
-                    /**
-                     * Modifies the SQL generated for a rule
-                     * @event changer:ruleToSQL
-                     * @memberof module:plugins.SqlSupport
-                     * @param {string} expression
-                     * @param {Rule} rule
-                     * @param {*} value
-                     * @param {function} valueWrapper - function that takes the value and adds the operator
-                     * @returns {string}
-                     */
-                    parts.push(self.change('ruleToSQL', ruleExpression, rule, value, sqlFn));
+                    parts.push(rule.field + ' ' + sql.op.replace(/\?/, value));
                 }
             });
 
-            var groupExpression = parts.join(' ' + group.condition + nl);
-
-            /**
-             * Modifies the SQL generated for a group
-             * @event changer:groupToSQL
-             * @memberof module:plugins.SqlSupport
-             * @param {string} expression
-             * @param {Group} group
-             * @returns {string}
-             */
-            return self.change('groupToSQL', groupExpression, group);
+            return parts.join(' ' + data.condition + nl);
         }(data));
 
         if (stmt) {
@@ -386,135 +288,60 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
     },
 
     /**
-     * Convert a SQL query to rules
-     * @param {string|module:plugins.SqlSupport.SqlQuery} query
-     * @param {boolean|string} stmt
-     * @returns {object}
-     * @fires module:plugins.SqlSupport.changer:parseSQLNode
-     * @fires module:plugins.SqlSupport.changer:getSQLFieldID
-     * @fires module:plugins.SqlSupport.changer:sqlToRule
-     * @fires module:plugins.SqlSupport.changer:sqlToGroup
-     * @throws MissingLibraryError, SQLParseError, UndefinedSQLOperatorError
+     * Convert SQL to rules
+     * @throws ConfigError, SQLParseError, UndefinedSQLOperatorError
+     * @param data {object} query object
+     * @param stmt {boolean|string} use prepared statements - false, 'question_mark', 'numbered', 'numbered(@)', 'named', 'named(@)'
+     * @return {object}
      */
-    getRulesFromSQL: function(query, stmt) {
+    getRulesFromSQL: function(data, stmt) {
         if (!('SQLParser' in window)) {
             Utils.error('MissingLibrary', 'SQLParser is required to parse SQL queries. Get it here https://github.com/mistic100/sql-parser');
         }
 
         var self = this;
 
-        if (typeof query == 'string') {
-            query = { sql: query };
+        if (typeof data == 'string') {
+            data = { sql: data };
         }
 
         if (stmt === true) stmt = 'question_mark';
         if (typeof stmt == 'string') {
             var config = getStmtConfig(stmt);
-            stmt = this.settings.sqlRuleStatement[config[1]](query.params, config[2]);
+            stmt = this.settings.sqlRuleStatement[config[1]](data.params, config[2]);
         }
 
         if (stmt) {
-            query.sql = stmt.esc(query.sql);
+            data.sql = stmt.esc(data.sql);
         }
 
-        if (query.sql.toUpperCase().indexOf('SELECT') !== 0) {
-            query.sql = 'SELECT * FROM table WHERE ' + query.sql;
+        if (data.sql.toUpperCase().indexOf('SELECT') !== 0) {
+            data.sql = 'SELECT * FROM table WHERE ' + data.sql;
         }
 
-        var parsed = SQLParser.parse(query.sql);
+        var parsed = SQLParser.parse(data.sql);
 
         if (!parsed.where) {
             Utils.error('SQLParse', 'No WHERE clause found');
         }
 
-        /**
-         * Custom parsing of an AST node generated by SQLParser, you can return a sub-part of the tree, or a well formed group or rule JSON
-         * @event changer:parseSQLNode
-         * @memberof module:plugins.SqlSupport
-         * @param {object} AST node
-         * @returns {object} tree, rule or group
-         */
-        var data = self.change('parseSQLNode', parsed.where.conditions);
-
-        // a plugin returned a group
-        if ('rules' in data && 'condition' in data) {
-            return data;
-        }
-
-        // a plugin returned a rule
-        if ('id' in data && 'operator' in data && 'value' in data) {
-            return {
-                condition: this.settings.default_condition,
-                rules: [data]
-            };
-        }
-
-        // create root group
-        var out = self.change('sqlToGroup', {
+        var out = {
             condition: this.settings.default_condition,
             rules: []
-        }, data);
-
-        // keep track of current group
+        };
         var curr = out;
 
         (function flatten(data, i) {
-            if (data === null) {
-                return;
-            }
-
-            // allow plugins to manually parse or handle special cases
-            data = self.change('parseSQLNode', data);
-
-            // a plugin returned a group
-            if ('rules' in data && 'condition' in data) {
-                curr.rules.push(data);
-                return;
-            }
-
-            // a plugin returned a rule
-            if ('id' in data && 'operator' in data && 'value' in data) {
-                curr.rules.push(data);
-                return;
-            }
-
-            // data must be a SQL parser node
-            if (!('left' in data) || !('right' in data) || !('operation' in data)) {
-                Utils.error('SQLParse', 'Unable to parse WHERE clause');
-            }
-
             // it's a node
             if (['AND', 'OR'].indexOf(data.operation.toUpperCase()) !== -1) {
                 // create a sub-group if the condition is not the same and it's not the first level
-
-                /**
-                 * Given an existing group and an AST node, determines if a sub-group must be created
-                 * @event changer:sqlGroupsDistinct
-                 * @memberof module:plugins.SqlSupport
-                 * @param {boolean} create - true by default if the group condition is different
-                 * @param {object} group
-                 * @param {object} AST
-                 * @param {int} current group level
-                 * @returns {boolean}
-                 */
-                var createGroup = self.change('sqlGroupsDistinct', i > 0 && curr.condition != data.operation.toUpperCase(), curr, data, i);
-
-                if (createGroup) {
-                    /**
-                     * Modifies the group generated from the SQL expression (this is called before the group is filled with rules)
-                     * @event changer:sqlToGroup
-                     * @memberof module:plugins.SqlSupport
-                     * @param {object} group
-                     * @param {object} AST
-                     * @returns {object}
-                     */
-                    var group = self.change('sqlToGroup', {
+                if (i > 0 && curr.condition != data.operation.toUpperCase()) {
+                    curr.rules.push({
                         condition: self.settings.default_condition,
                         rules: []
-                    }, data);
+                    });
 
-                    curr.rules.push(group);
-                    curr = group;
+                    curr = curr.rules[curr.rules.length - 1];
                 }
 
                 curr.condition = data.operation.toUpperCase();
@@ -529,6 +356,10 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
             }
             // it's a leaf
             else {
+                if (data.left.value === undefined || data.right.value === undefined) {
+                    Utils.error('SQLParse', 'Missing field and/or value');
+                }
+
                 if ($.isPlainObject(data.right.value)) {
                     Utils.error('SQLParse', 'Value format not supported for {0}.', data.left.value);
                 }
@@ -556,102 +387,46 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
 
                 // convert operator
                 var operator = data.operation.toUpperCase();
-                if (operator == '<>') {
-                    operator = '!=';
+                if (operator == '<>') operator = '!=';
+
+                var sqlrl;
+                if (operator == 'NOT LIKE') {
+                    sqlrl = self.settings.sqlRuleOperator['LIKE'];
+                }
+                else {
+                    sqlrl = self.settings.sqlRuleOperator[operator];
                 }
 
-                var sqlrl = self.settings.sqlRuleOperator[operator];
                 if (sqlrl === undefined) {
                     Utils.error('UndefinedSQLOperator', 'Invalid SQL operation "{0}".', data.operation);
                 }
 
                 var opVal = sqlrl.call(this, value, data.operation);
+                if (operator == 'NOT LIKE') opVal.op = 'not_' + opVal.op;
 
-                // find field name
-                var field;
-                if ('values' in data.left) {
-                    field = data.left.values.join('.');
-                }
-                else if ('value' in data.left) {
-                    field = data.left.value;
-                }
-                else {
-                    Utils.error('SQLParse', 'Cannot find field name in {0}', JSON.stringify(data.left));
-                }
+                var left_value = data.left.values.join('.');
 
-                var id = self.getSQLFieldID(field, value);
-
-                /**
-                 * Modifies the rule generated from the SQL expression
-                 * @event changer:sqlToRule
-                 * @memberof module:plugins.SqlSupport
-                 * @param {object} rule
-                 * @param {object} AST
-                 * @returns {object}
-                 */
-                var rule = self.change('sqlToRule', {
-                    id: id,
-                    field: field,
+                curr.rules.push({
+                    id: self.change('getSQLFieldID', left_value, value),
+                    field: left_value,
                     operator: opVal.op,
                     value: opVal.val
-                }, data);
-
-                curr.rules.push(rule);
+                });
             }
-        }(data, 0));
+        }(parsed.where.conditions, 0));
 
         return out;
     },
 
     /**
-     * Sets the builder's rules from a SQL query
-     * @see module:plugins.SqlSupport.getRulesFromSQL
+     * Set rules from SQL
+     * @param data {object}
      */
-    setRulesFromSQL: function(query, stmt) {
-        this.setRules(this.getRulesFromSQL(query, stmt));
-    },
-
-    /**
-     * Returns a filter identifier from the SQL field.
-     * Automatically use the only one filter with a matching field, fires a changer otherwise.
-     * @param {string} field
-     * @param {*} value
-     * @fires module:plugins.SqlSupport:changer:getSQLFieldID
-     * @returns {string}
-     * @private
-     */
-    getSQLFieldID: function(field, value) {
-        var matchingFilters = this.filters.filter(function(filter) {
-            return filter.field.toLowerCase() === field.toLowerCase();
-        });
-
-        var id;
-        if (matchingFilters.length === 1) {
-            id = matchingFilters[0].id;
-        }
-        else {
-            /**
-             * Returns a filter identifier from the SQL field
-             * @event changer:getSQLFieldID
-             * @memberof module:plugins.SqlSupport
-             * @param {string} field
-             * @param {*} value
-             * @returns {string}
-             */
-            id = this.change('getSQLFieldID', field, value);
-        }
-
-        return id;
+    setRulesFromSQL: function(data, stmt) {
+        this.setRules(this.getRulesFromSQL(data, stmt));
     }
 });
 
-/**
- * Parses the statement configuration
- * @memberof module:plugins.SqlSupport
- * @param {string} stmt
- * @returns {Array} null, mode, option
- * @private
- */
 function getStmtConfig(stmt) {
     var config = stmt.match(/(question_mark|numbered|named)(?:\((.)\))?/);
     if (!config) config = [null, 'question_mark', undefined];

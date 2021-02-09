@@ -1,6 +1,11 @@
 language: node_js
 node_js:
-  - "8"
+  - "5"
 before_install:
+  - gem install sass
+  - gem install scss_lint
   - npm install -g grunt-cli
+  - npm install -g bower
+before_script:
+  - bower install
 after_success: grunt coveralls
