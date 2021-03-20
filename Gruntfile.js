@@ -27,7 +27,7 @@ module.exports = function(grunt) {
             'src/jquery.js'
         ],
         js_files_for_standalone: [
-            'node_modules/jquery-extendext/jQuery.extendext.js',
+            'node_modules/jquery-extendext/jquery-extendext.js',
             'node_modules/dot/doT.js',
             'dist/js/query-builder.js'
         ]
@@ -243,7 +243,8 @@ module.exports = function(grunt) {
         uglify: {
             options: {
                 banner: '<%= banner %>\n',
-                mangle: { reserved: ['$'] }
+                mangle: { reserved: ['$'] },
+                sourceMap: true,
             },
             dist: {
                 files: [{

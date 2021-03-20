@@ -214,7 +214,7 @@ QueryBuilder.defaults({
         'named': function(values, char) {
             if (!char || char.length > 1) char = ':';
             var regex1 = new RegExp('^\\' + char);
-            var regex2 = new RegExp('\\' + char + '(' + Object.keys(values).join('|') + ')', 'g');
+            var regex2 = new RegExp('\\' + char + '(' + Object.keys(values).join('|') + ')\\b', 'g');
             return {
                 parse: function(v) {
                     return regex1.test(v) ? values[v.slice(1)] : v;

@@ -1,7 +1,7 @@
 /*!
- * jQuery QueryBuilder 2.5.2
+ * jQuery QueryBuilder 2.6.0
  * Locale: Italian (it)
- * Author: davegraziosi
+ * Author: davegraziosi, Giuseppe Lodi Rizzini
  * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
@@ -19,7 +19,7 @@ var QueryBuilder = $.fn.queryBuilder;
 
 QueryBuilder.regional['it'] = {
   "__locale": "Italian (it)",
-  "__author": "davegraziosi",
+  "__author": "davegraziosi, Giuseppe Lodi Rizzini",
   "add_rule": "Aggiungi regola",
   "add_group": "Aggiungi gruppo",
   "delete_rule": "Elimina",
@@ -66,10 +66,12 @@ QueryBuilder.regional['it'] = {
     "number_exceed_min": "Deve essere maggiore di {0}",
     "number_exceed_max": "Deve essere minore di {0}",
     "number_wrong_step": "Deve essere multiplo di {0}",
+    "number_between_invalid": "Valori non validi, {0} è maggiore di {1}",
     "datetime_empty": "Valore vuoto",
     "datetime_invalid": "Formato data non valido ({0})",
     "datetime_exceed_min": "Deve essere successivo a {0}",
     "datetime_exceed_max": "Deve essere precedente a {0}",
+    "datetime_between_invalid": "Valori non validi, {0} è maggiore di {1}",
     "boolean_not_valid": "Non è un booleano",
     "operator_not_multiple": "L'Operatore {0} non può accettare valori multipli"
   }

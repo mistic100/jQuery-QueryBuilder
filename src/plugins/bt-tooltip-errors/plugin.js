@@ -15,7 +15,7 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
 
     // add BT Tooltip data
     this.on('getRuleTemplate.filter getGroupTemplate.filter', function(h) {
-        var $h = $(h.value);
+        var $h = $($.parseHTML(h.value));
         $h.find(QueryBuilder.selectors.error_container).attr('data-toggle', 'tooltip');
         h.value = $h.prop('outerHTML');
     });

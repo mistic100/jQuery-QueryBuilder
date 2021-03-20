@@ -1,6 +1,6 @@
 {
   "name": "jQuery-QueryBuilder",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "author": {
     "name": "Damien \"Mistic\" Sorel",
     "email": "contact@git.strangeplanet.fr",
@@ -8,12 +8,17 @@
   },
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": "dist/js/query-builder.js",
+  "files": [
+    "dist/",
+    "src/"
+  ],
   "dependencies": {
-    "bootstrap": ">=3.1.0 <4",
-    "dot": ">=1.0.3",
-    "jquery": "^3.3.1",
-    "jquery-extendext": ">=0.1.2",
-    "moment": "^2.21.0"
+    "bootstrap": "^3.4.1",
+    "dot": "^1.1.3",
+    "jquery": "^3.5.1",
+    "jquery-extendext": "^1.0.0",
+    "moment": "^2.29.1",
+    "sql-parser-mistic": "^1.2.3"
   },
   "devDependencies": {
     "awesome-bootstrap-checkbox": "^0.3.7",
@@ -24,9 +29,10 @@
     "bootswatch-dist": "git+https://github.com/dbtek/bootswatch-dist.git#slate",
     "chosenjs": "^1.4.3",
     "deepmerge": "^2.1.0",
-    "foodoc": "^0.0.8",
+    "foodoc": "^0.0.9",
     "grunt": "^1.0.2",
     "grunt-banner": "^0.6.0",
+    "grunt-cli": "^1.3.2",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^1.0.0",
     "grunt-contrib-connect": "^1.0.0",
@@ -50,7 +56,6 @@
     "jit-grunt": "^0.10.0",
     "qunit": "^2.5.1",
     "selectize": "^0.12.4",
-    "sql-parser-mistic": "^1.2.2",
     "time-grunt": "^1.3.0"
   },
   "keywords": [
@@ -69,6 +74,7 @@
     "url": "https://github.com/mistic100/jQuery-QueryBuilder/issues"
   },
   "scripts": {
+    "build": "grunt",
     "serve": "grunt serve",
     "test": "grunt test"
   }
