@@ -8,6 +8,10 @@
   },
   "description": "jQuery plugin for user friendly query/filter creator",
   "main": "dist/js/query-builder.js",
+  "files": [
+    "dist/",
+    "src/"
+  ],
   "dependencies": {
     "bootstrap": "^3.4.1",
     "dot": "^1.1.3",
