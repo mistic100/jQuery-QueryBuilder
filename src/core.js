@@ -345,7 +345,7 @@ QueryBuilder.prototype.setRoot = function(addRule, data, flags) {
     addRule = (addRule === undefined || addRule === true);
 
     var group_id = this.nextGroupId();
-    var $group = $(this.getGroupTemplate(group_id, 1));
+    var $group = $($.parseHTML(this.getGroupTemplate(group_id, 1)));
 
     this.$el.append($group);
     this.model.root = new Group(null, $group);
@@ -535,7 +535,7 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
     }
 
     var rule_id = this.nextRuleId();
-    var $rule = $(this.getRuleTemplate(rule_id));
+    var $rule = $($.parseHTML(this.getRuleTemplate(rule_id)));
     var model = parent.addRule($rule);
 
     model.data = data;
@@ -625,7 +625,7 @@ QueryBuilder.prototype.createRuleFilters = function(rule) {
      * @returns {QueryBuilder.Filter[]}
      */
     var filters = this.change('getRuleFilters', this.filters, rule);
-    var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
+    var $filterSelect = $($.parseHTML(this.getRuleFilterSelect(rule, filters)));
 
     rule.$el.find(QueryBuilder.selectors.filter_container).html($filterSelect);
 
@@ -654,7 +654,7 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
     }
 
     var operators = this.getOperators(rule.filter);
-    var $operatorSelect = $(this.getRuleOperatorSelect(rule, operators));
+    var $operatorSelect = $($.parseHTML(this.getRuleOperatorSelect(rule, operators)));
 
     $operatorContainer.html($operatorSelect);
 
@@ -700,7 +700,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     var filter = rule.filter;
 
     for (var i = 0; i < rule.operator.nb_inputs; i++) {
-        var $ruleInput = $(this.getRuleInput(rule, i));
+        var $ruleInput = $($.parseHTML(this.getRuleInput(rule, i)));
         if (i > 0) $valueContainer.append(this.settings.inputs_separator);
         $valueContainer.append($ruleInput);
         $inputs = $inputs.add($ruleInput);

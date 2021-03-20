@@ -63,7 +63,7 @@ QueryBuilder.define('sortable', function(options) {
                             .addClass('dragging');
 
                         // create drop placeholder
-                        var ph = $('<div class="rule-placeholder">&nbsp;</div>')
+                        var ph = $($.parseHTML('<div class="rule-placeholder">&nbsp;</div>'))
                             .height(src.$el.outerHeight());
 
                         placeholder = src.parent.addRule(ph, src.getPos());
@@ -162,14 +162,14 @@ QueryBuilder.define('sortable', function(options) {
     if (!options.disable_template) {
         this.on('getGroupTemplate.filter', function(h, level) {
             if (level > 1) {
-                var $h = $(h.value);
+                var $h = $($.parseHTML(h.value));
                 $h.find(QueryBuilder.selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
                 h.value = $h.prop('outerHTML');
             }
         });
 
         this.on('getRuleTemplate.filter', function(h) {
-            var $h = $(h.value);
+            var $h = $($.parseHTML(h.value));
             $h.find(QueryBuilder.selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
             h.value = $h.prop('outerHTML');
         });

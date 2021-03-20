@@ -32,7 +32,7 @@ QueryBuilder.define('not-group', function(options) {
     // Modify templates
     if (!options.disable_template) {
         this.on('getGroupTemplate.filter', function(h) {
-            var $h = $(h.value);
+            var $h = $($.parseHTML(h.value));
             $h.find(QueryBuilder.selectors.condition_container).prepend(
                 '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
                 '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
