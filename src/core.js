@@ -700,7 +700,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     var filter = rule.filter;
 
     for (var i = 0; i < rule.operator.nb_inputs; i++) {
-        var $ruleInput = $($.parseHTML(this.getRuleInput(rule, i)));
+        var $ruleInput = $($.parseHTML($.trim(this.getRuleInput(rule, i))));
         if (i > 0) $valueContainer.append(this.settings.inputs_separator);
         $valueContainer.append($ruleInput);
         $inputs = $inputs.add($ruleInput);
