@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.6.0
+ * jQuery QueryBuilder 2.6.1
  * Locale: Svenska (sv)
  * Author: hekin1
  * Licensed under MIT (https://opensource.org/licenses/MIT)

@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.6.0
+ * jQuery QueryBuilder 2.6.1
  * Copyright 2014-2021 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
@@ -1257,7 +1257,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     var filter = rule.filter;
 
     for (var i = 0; i < rule.operator.nb_inputs; i++) {
-        var $ruleInput = $($.parseHTML(this.getRuleInput(rule, i)));
+        var $ruleInput = $($.parseHTML($.trim(this.getRuleInput(rule, i))));
         if (i > 0) $valueContainer.append(this.settings.inputs_separator);
         $valueContainer.append($ruleInput);
         $inputs = $inputs.add($ruleInput);
@@ -6126,7 +6126,7 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.6.0
+ * jQuery QueryBuilder 2.6.1
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (https://opensource.org/licenses/MIT)

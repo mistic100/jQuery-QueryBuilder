@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.6.0
+ * jQuery QueryBuilder 2.6.1
  * Locale: Hebrew (he)
  * Author: Kfir Stri https://github.com/kfirstri
  * Licensed under MIT (https://opensource.org/licenses/MIT)

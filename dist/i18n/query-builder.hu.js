@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.6.0
+ * jQuery QueryBuilder 2.6.1
  * Locale: Hungarian - Magyar (hu)
  * Author: Szabó Attila "Tailor993", https://www.tailor993.hu
  * Licensed under MIT (https://opensource.org/licenses/MIT)
