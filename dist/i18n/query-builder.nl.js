@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.6.1
+ * jQuery QueryBuilder 2.6.2
  * Locale: Dutch (nl)
  * Author: "Roywcm"
  * Licensed under MIT (https://opensource.org/licenses/MIT)

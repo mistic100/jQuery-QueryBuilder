@@ -1,5 +1,5 @@
 /*!
- * jQuery QueryBuilder 2.6.1
+ * jQuery QueryBuilder 2.6.2
  * Copyright 2014-2021 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
@@ -1812,7 +1812,7 @@ QueryBuilder.prototype.getRules = function(options) {
             };
 
             if (rule.filter && rule.filter.data || rule.data) {
-                ruleData.data = $.extendext(true, 'replace', {}, rule.filter.data, rule.data);
+                ruleData.data = $.extendext(true, 'replace', {}, rule.filter ? rule.filter.data : {}, rule.data);
             }
 
             if (options.get_flags) {
@@ -3154,14 +3154,15 @@ Utils.changeType = function(value, type) {
 /**
  * Escapes a string like PHP's mysql_real_escape_string does
  * @param {string} value
+ * @param {string} [additionalEscape] additionnal chars to escape
  * @returns {string}
  */
-Utils.escapeString = function(value) {
+Utils.escapeString = function(value, additionalEscape) {
     if (typeof value != 'string') {
         return value;
     }
 
-    return value
+    var escaped = value
         .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
             switch (s) {
                 // @formatter:off
@@ -3169,6 +3170,7 @@ Utils.escapeString = function(value) {
                 case '\n': return '\\n';
                 case '\r': return '\\r';
                 case '\b': return '\\b';
+                case '\'': return '\'\'';
                 default:   return '\\' + s;
                 // @formatter:off
             }
@@ -3176,6 +3178,15 @@ Utils.escapeString = function(value) {
         // uglify compliant
         .replace(/\t/g, '\\t')
         .replace(/\x1a/g, '\\Z');
+
+    if (additionalEscape) {
+        escaped = escaped
+            .replace(new RegExp('[' + additionalEscape + ']', 'g'), function(s) {
+                return '\\' + s;
+            });
+    }
+
+    return escaped;
 };
 
 /**
@@ -5374,12 +5385,12 @@ QueryBuilder.defaults({
         greater_or_equal: { op: '>= ?' },
         between: { op: 'BETWEEN ?', sep: ' AND ' },
         not_between: { op: 'NOT BETWEEN ?', sep: ' AND ' },
-        begins_with: { op: 'LIKE(?)', mod: '{0}%' },
-        not_begins_with: { op: 'NOT LIKE(?)', mod: '{0}%' },
-        contains: { op: 'LIKE(?)', mod: '%{0}%' },
-        not_contains: { op: 'NOT LIKE(?)', mod: '%{0}%' },
-        ends_with: { op: 'LIKE(?)', mod: '%{0}' },
-        not_ends_with: { op: 'NOT LIKE(?)', mod: '%{0}' },
+        begins_with: { op: 'LIKE ?', mod: '{0}%', escape: '%_' },
+        not_begins_with: { op: 'NOT LIKE ?', mod: '{0}%', escape: '%_' },
+        contains: { op: 'LIKE ?', mod: '%{0}%', escape: '%_' },
+        not_contains: { op: 'NOT LIKE ?', mod: '%{0}%', escape: '%_' },
+        ends_with: { op: 'LIKE ?', mod: '%{0}', escape: '%_' },
+        not_ends_with: { op: 'NOT LIKE ?', mod: '%{0}', escape: '%_' },
         is_empty: { op: '= \'\'' },
         is_not_empty: { op: '!= \'\'' },
         is_null: { op: 'IS NULL' },
@@ -5657,7 +5668,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                                 v = v ? 1 : 0;
                             }
                             else if (!stmt && rule.type !== 'integer' && rule.type !== 'double' && rule.type !== 'boolean') {
-                                v = Utils.escapeString(v);
+                                v = Utils.escapeString(v, sql.escape);
                             }
 
                             if (sql.mod) {
@@ -5929,6 +5940,19 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                     Utils.error('SQLParse', 'Cannot find field name in {0}', JSON.stringify(data.left));
                 }
 
+                // unescape chars declared by the operator
+                var finalValue = opVal.val;
+                var sql = self.settings.sqlOperators[opVal.op];
+                if (!stmt && sql && sql.escape) {
+                    var searchChars = sql.escape.split('').map(function(c) {
+                        return '\\\\' + c;
+                    }).join('|');
+                    finalValue = finalValue
+                        .replace(new RegExp('(' + searchChars + ')', 'g'), function(s) {
+                            return s[1];
+                        });
+                }
+
                 var id = self.getSQLFieldID(field, value);
 
                 /**
@@ -5943,7 +5967,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                     id: id,
                     field: field,
                     operator: opVal.op,
-                    value: opVal.val
+                    value: finalValue
                 }, data);
 
                 curr.rules.push(rule);
@@ -6126,7 +6150,7 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.6.1
+ * jQuery QueryBuilder 2.6.2
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (https://opensource.org/licenses/MIT)

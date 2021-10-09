@@ -272,7 +272,7 @@ QueryBuilder.prototype.getRules = function(options) {
             };
 
             if (rule.filter && rule.filter.data || rule.data) {
-                ruleData.data = $.extendext(true, 'replace', {}, rule.filter.data, rule.data);
+                ruleData.data = $.extendext(true, 'replace', {}, rule.filter ? rule.filter.data : {}, rule.data);
             }
 
             if (options.get_flags) {
