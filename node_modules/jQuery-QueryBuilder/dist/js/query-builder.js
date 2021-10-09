@@ -1,6 +1,6 @@
 /*!
- * jQuery QueryBuilder 2.5.2
- * Copyright 2014-2018 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * jQuery QueryBuilder 2.6.2
+ * Copyright 2014-2021 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 (function(root, factory) {
@@ -902,7 +902,7 @@ QueryBuilder.prototype.setRoot = function(addRule, data, flags) {
     addRule = (addRule === undefined || addRule === true);
 
     var group_id = this.nextGroupId();
-    var $group = $(this.getGroupTemplate(group_id, 1));
+    var $group = $($.parseHTML(this.getGroupTemplate(group_id, 1)));
 
     this.$el.append($group);
     this.model.root = new Group(null, $group);
@@ -1092,7 +1092,7 @@ QueryBuilder.prototype.addRule = function(parent, data, flags) {
     }
 
     var rule_id = this.nextRuleId();
-    var $rule = $(this.getRuleTemplate(rule_id));
+    var $rule = $($.parseHTML(this.getRuleTemplate(rule_id)));
     var model = parent.addRule($rule);
 
     model.data = data;
@@ -1182,7 +1182,7 @@ QueryBuilder.prototype.createRuleFilters = function(rule) {
      * @returns {QueryBuilder.Filter[]}
      */
     var filters = this.change('getRuleFilters', this.filters, rule);
-    var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
+    var $filterSelect = $($.parseHTML(this.getRuleFilterSelect(rule, filters)));
 
     rule.$el.find(QueryBuilder.selectors.filter_container).html($filterSelect);
 
@@ -1211,7 +1211,7 @@ QueryBuilder.prototype.createRuleOperators = function(rule) {
     }
 
     var operators = this.getOperators(rule.filter);
-    var $operatorSelect = $(this.getRuleOperatorSelect(rule, operators));
+    var $operatorSelect = $($.parseHTML(this.getRuleOperatorSelect(rule, operators)));
 
     $operatorContainer.html($operatorSelect);
 
@@ -1257,7 +1257,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     var filter = rule.filter;
 
     for (var i = 0; i < rule.operator.nb_inputs; i++) {
-        var $ruleInput = $(this.getRuleInput(rule, i));
+        var $ruleInput = $($.parseHTML($.trim(this.getRuleInput(rule, i))));
         if (i > 0) $valueContainer.append(this.settings.inputs_separator);
         $valueContainer.append($ruleInput);
         $inputs = $inputs.add($ruleInput);
@@ -1812,7 +1812,7 @@ QueryBuilder.prototype.getRules = function(options) {
             };
 
             if (rule.filter && rule.filter.data || rule.data) {
-                ruleData.data = $.extendext(true, 'replace', {}, rule.filter.data, rule.data);
+                ruleData.data = $.extendext(true, 'replace', {}, rule.filter ? rule.filter.data : {}, rule.data);
             }
 
             if (options.get_flags) {
@@ -2283,7 +2283,6 @@ QueryBuilder.prototype.nextRuleId = function() {
  * @param {string|object} filter - filter id or filter object
  * @returns {object[]}
  * @fires QueryBuilder.changer:getOperators
- * @private
  */
 QueryBuilder.prototype.getOperators = function(filter) {
     if (typeof filter == 'string') {
@@ -2331,7 +2330,6 @@ QueryBuilder.prototype.getOperators = function(filter) {
  * @param {boolean} [doThrow=true]
  * @returns {object|null}
  * @throws UndefinedFilterError
- * @private
  */
 QueryBuilder.prototype.getFilterById = function(id, doThrow) {
     if (id == '-1') {
@@ -2355,7 +2353,6 @@ QueryBuilder.prototype.getFilterById = function(id, doThrow) {
  * @param {boolean} [doThrow=true]
  * @returns {object|null}
  * @throws UndefinedOperatorError
- * @private
  */
 QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
     if (type == '-1') {
@@ -2949,6 +2946,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
     var name = rule.id + '_value_' + value_id;
     var c = filter.vertical ? ' class=block' : '';
     var h = '';
+    var placeholder = Array.isArray(filter.placeholder) ? filter.placeholder[value_id] : filter.placeholder;
 
     if (typeof filter.input == 'function') {
         h = filter.input.call(this, rule, name);
@@ -2972,7 +2970,7 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 if (filter.rows) h += ' rows="' + filter.rows + '"';
                 if (validation.min !== undefined) h += ' minlength="' + validation.min + '"';
                 if (validation.max !== undefined) h += ' maxlength="' + validation.max + '"';
-                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                if (placeholder) h += ' placeholder="' + placeholder + '"';
                 h += '></textarea>';
                 break;
 
@@ -2981,14 +2979,14 @@ QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
                 if (validation.step !== undefined) h += ' step="' + validation.step + '"';
                 if (validation.min !== undefined) h += ' min="' + validation.min + '"';
                 if (validation.max !== undefined) h += ' max="' + validation.max + '"';
-                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                if (placeholder) h += ' placeholder="' + placeholder + '"';
                 if (filter.size) h += ' size="' + filter.size + '"';
                 h += '>';
                 break;
 
             default:
                 h += '<input class="form-control" type="text" name="' + name + '"';
-                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                if (placeholder) h += ' placeholder="' + placeholder + '"';
                 if (filter.type === 'string' && validation.min !== undefined) h += ' minlength="' + validation.min + '"';
                 if (filter.type === 'string' && validation.max !== undefined) h += ' maxlength="' + validation.max + '"';
                 if (filter.size) h += ' size="' + filter.size + '"';
@@ -3156,14 +3154,15 @@ Utils.changeType = function(value, type) {
 /**
  * Escapes a string like PHP's mysql_real_escape_string does
  * @param {string} value
+ * @param {string} [additionalEscape] additionnal chars to escape
  * @returns {string}
  */
-Utils.escapeString = function(value) {
+Utils.escapeString = function(value, additionalEscape) {
     if (typeof value != 'string') {
         return value;
     }
 
-    return value
+    var escaped = value
         .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
             switch (s) {
                 // @formatter:off
@@ -3171,6 +3170,7 @@ Utils.escapeString = function(value) {
                 case '\n': return '\\n';
                 case '\r': return '\\r';
                 case '\b': return '\\b';
+                case '\'': return '\'\'';
                 default:   return '\\' + s;
                 // @formatter:off
             }
@@ -3178,6 +3178,15 @@ Utils.escapeString = function(value) {
         // uglify compliant
         .replace(/\t/g, '\\t')
         .replace(/\x1a/g, '\\Z');
+
+    if (additionalEscape) {
+        escaped = escaped
+            .replace(new RegExp('[' + additionalEscape + ']', 'g'), function(s) {
+                return '\\' + s;
+            });
+    }
+
+    return escaped;
 };
 
 /**
@@ -4018,7 +4027,7 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
 
     // add BT Tooltip data
     this.on('getRuleTemplate.filter getGroupTemplate.filter', function(h) {
-        var $h = $(h.value);
+        var $h = $($.parseHTML(h.value));
         $h.find(QueryBuilder.selectors.error_container).attr('data-toggle', 'tooltip');
         h.value = $h.prop('outerHTML');
     });
@@ -4235,7 +4244,9 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     });
 
     this.on('afterCreateRuleOperators', function(e, rule) {
-        rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
+        if (e.builder.getOperators(rule.filter).length > 1) {
+            rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
+        }
     });
 
     // update selectpicker on change
@@ -4275,7 +4286,7 @@ QueryBuilder.define('filter-description', function(options) {
             }
             else {
                 if ($p.length === 0) {
-                    $p = $('<p class="filter-description"></p>');
+                    $p = $($.parseHTML('<p class="filter-description"></p>'));
                     $p.appendTo(rule.$el);
                 }
                 else {
@@ -4305,7 +4316,7 @@ QueryBuilder.define('filter-description', function(options) {
             }
             else {
                 if ($b.length === 0) {
-                    $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="popover"><i class="' + options.icon + '"></i></button>');
+                    $b = $($.parseHTML('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="popover"><i class="' + options.icon + '"></i></button>'));
                     $b.prependTo(rule.$el.find(QueryBuilder.selectors.rule_actions));
 
                     $b.popover({
@@ -4345,7 +4356,7 @@ QueryBuilder.define('filter-description', function(options) {
             }
             else {
                 if ($b.length === 0) {
-                    $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="bootbox"><i class="' + options.icon + '"></i></button>');
+                    $b = $($.parseHTML('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="bootbox"><i class="' + options.icon + '"></i></button>'));
                     $b.prependTo(rule.$el.find(QueryBuilder.selectors.rule_actions));
 
                     $b.on('click', function() {
@@ -4420,7 +4431,7 @@ QueryBuilder.define('invert', function(options) {
     // Modify templates
     if (!options.disable_template) {
         this.on('getGroupTemplate.filter', function(h) {
-            var $h = $(h.value);
+            var $h = $($.parseHTML(h.value));
             $h.find(Selectors.condition_container).after(
                 '<button type="button" class="btn btn-xs btn-default" data-invert="group">' +
                 '<i class="' + options.icon + '"></i> ' + self.translate('invert') +
@@ -4431,7 +4442,7 @@ QueryBuilder.define('invert', function(options) {
 
         if (options.display_rules_button && options.invert_rules) {
             this.on('getRuleTemplate.filter', function(h) {
-                var $h = $(h.value);
+                var $h = $($.parseHTML(h.value));
                 $h.find(Selectors.rule_actions).prepend(
                     '<button type="button" class="btn btn-xs btn-default" data-invert="rule">' +
                     '<i class="' + options.icon + '"></i> ' + self.translate('invert') +
@@ -4983,7 +4994,7 @@ QueryBuilder.define('not-group', function(options) {
     // Modify templates
     if (!options.disable_template) {
         this.on('getGroupTemplate.filter', function(h) {
-            var $h = $(h.value);
+            var $h = $($.parseHTML(h.value));
             $h.find(QueryBuilder.selectors.condition_container).prepend(
                 '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
                 '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
@@ -5170,7 +5181,7 @@ QueryBuilder.define('sortable', function(options) {
                             .addClass('dragging');
 
                         // create drop placeholder
-                        var ph = $('<div class="rule-placeholder">&nbsp;</div>')
+                        var ph = $($.parseHTML('<div class="rule-placeholder">&nbsp;</div>'))
                             .height(src.$el.outerHeight());
 
                         placeholder = src.parent.addRule(ph, src.getPos());
@@ -5269,14 +5280,14 @@ QueryBuilder.define('sortable', function(options) {
     if (!options.disable_template) {
         this.on('getGroupTemplate.filter', function(h, level) {
             if (level > 1) {
-                var $h = $(h.value);
+                var $h = $($.parseHTML(h.value));
                 $h.find(QueryBuilder.selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
                 h.value = $h.prop('outerHTML');
             }
         });
 
         this.on('getRuleTemplate.filter', function(h) {
-            var $h = $(h.value);
+            var $h = $($.parseHTML(h.value));
             $h.find(QueryBuilder.selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
             h.value = $h.prop('outerHTML');
         });
@@ -5374,12 +5385,12 @@ QueryBuilder.defaults({
         greater_or_equal: { op: '>= ?' },
         between: { op: 'BETWEEN ?', sep: ' AND ' },
         not_between: { op: 'NOT BETWEEN ?', sep: ' AND ' },
-        begins_with: { op: 'LIKE(?)', mod: '{0}%' },
-        not_begins_with: { op: 'NOT LIKE(?)', mod: '{0}%' },
-        contains: { op: 'LIKE(?)', mod: '%{0}%' },
-        not_contains: { op: 'NOT LIKE(?)', mod: '%{0}%' },
-        ends_with: { op: 'LIKE(?)', mod: '%{0}' },
-        not_ends_with: { op: 'NOT LIKE(?)', mod: '%{0}' },
+        begins_with: { op: 'LIKE ?', mod: '{0}%', escape: '%_' },
+        not_begins_with: { op: 'NOT LIKE ?', mod: '{0}%', escape: '%_' },
+        contains: { op: 'LIKE ?', mod: '%{0}%', escape: '%_' },
+        not_contains: { op: 'NOT LIKE ?', mod: '%{0}%', escape: '%_' },
+        ends_with: { op: 'LIKE ?', mod: '%{0}', escape: '%_' },
+        not_ends_with: { op: 'NOT LIKE ?', mod: '%{0}', escape: '%_' },
         is_empty: { op: '= \'\'' },
         is_not_empty: { op: '!= \'\'' },
         is_null: { op: 'IS NULL' },
@@ -5564,7 +5575,7 @@ QueryBuilder.defaults({
         'named': function(values, char) {
             if (!char || char.length > 1) char = ':';
             var regex1 = new RegExp('^\\' + char);
-            var regex2 = new RegExp('\\' + char + '(' + Object.keys(values).join('|') + ')', 'g');
+            var regex2 = new RegExp('\\' + char + '(' + Object.keys(values).join('|') + ')\\b', 'g');
             return {
                 parse: function(v) {
                     return regex1.test(v) ? values[v.slice(1)] : v;
@@ -5657,7 +5668,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                                 v = v ? 1 : 0;
                             }
                             else if (!stmt && rule.type !== 'integer' && rule.type !== 'double' && rule.type !== 'boolean') {
-                                v = Utils.escapeString(v);
+                                v = Utils.escapeString(v, sql.escape);
                             }
 
                             if (sql.mod) {
@@ -5929,6 +5940,19 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                     Utils.error('SQLParse', 'Cannot find field name in {0}', JSON.stringify(data.left));
                 }
 
+                // unescape chars declared by the operator
+                var finalValue = opVal.val;
+                var sql = self.settings.sqlOperators[opVal.op];
+                if (!stmt && sql && sql.escape) {
+                    var searchChars = sql.escape.split('').map(function(c) {
+                        return '\\\\' + c;
+                    }).join('|');
+                    finalValue = finalValue
+                        .replace(new RegExp('(' + searchChars + ')', 'g'), function(s) {
+                            return s[1];
+                        });
+                }
+
                 var id = self.getSQLFieldID(field, value);
 
                 /**
@@ -5943,7 +5967,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
                     id: id,
                     field: field,
                     operator: opVal.op,
-                    value: opVal.val
+                    value: finalValue
                 }, data);
 
                 curr.rules.push(rule);
@@ -6126,7 +6150,7 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.5.2
+ * jQuery QueryBuilder 2.6.2
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (https://opensource.org/licenses/MIT)
