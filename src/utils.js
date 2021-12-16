@@ -145,14 +145,15 @@ Utils.changeType = function(value, type) {
 /**
  * Escapes a string like PHP's mysql_real_escape_string does
  * @param {string} value
+ * @param {string} [additionalEscape] additionnal chars to escape
  * @returns {string}
  */
-Utils.escapeString = function(value) {
+Utils.escapeString = function(value, additionalEscape) {
     if (typeof value != 'string') {
         return value;
     }
 
-    return value
+    var escaped = value
         .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
             switch (s) {
                 // @formatter:off
@@ -160,6 +161,7 @@ Utils.escapeString = function(value) {
                 case '\n': return '\\n';
                 case '\r': return '\\r';
                 case '\b': return '\\b';
+                case '\'': return '\'\'';
                 default:   return '\\' + s;
                 // @formatter:off
             }
@@ -167,6 +169,15 @@ Utils.escapeString = function(value) {
         // uglify compliant
         .replace(/\t/g, '\\t')
         .replace(/\x1a/g, '\\Z');
+
+    if (additionalEscape) {
+        escaped = escaped
+            .replace(new RegExp('[' + additionalEscape + ']', 'g'), function(s) {
+                return '\\' + s;
+            });
+    }
+
+    return escaped;
 };
 
 /**

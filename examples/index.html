@@ -414,7 +414,7 @@
           max: 100,
           value: 0
         },
-        onAfterSetValue: function(rule, value) {
+        valueSetter: function(rule, value) {
           var input = rule.$el.find('.rule-value-container input');
           input.slider('setValue', value);
           input.val(value); // don't know why I need it
@@ -624,7 +624,7 @@
 
   // set rules from SQL
   $('.set-sql').on('click', function() {
-    $('#builder').queryBuilder('setRulesFromSQL', 'username NOT LIKE "Mistic%" OR price BETWEEN 100 OR 200 OR NOT (category IN(1, 2) AND rate <= 2)');
+    $('#builder').queryBuilder('setRulesFromSQL', 'username NOT LIKE "Mistic%" OR price BETWEEN 100 OR 200 OR NOT (category IN(1, 2) AND rate <= 20)');
   });
 
   // reset builder
