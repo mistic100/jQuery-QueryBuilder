@@ -28,6 +28,7 @@ QueryBuilder.define('sortable', function(options) {
     var ghost;
     var src;
     var moved;
+    var containment = $(options.containment || document.body);
 
     // Init drag and drop
     this.on('afterAddRule afterAddGroup', function(e, node) {
@@ -73,8 +74,8 @@ QueryBuilder.define('sortable', function(options) {
                     },
                     onmove: function(event) {
                         // make the ghost follow the cursor
-                        ghost[0].style.top = event.clientY - 15 + 'px';
-                        ghost[0].style.left = event.clientX - 15 + 'px';
+                        ghost[0].style.top = event.clientY - containment.offset().top - 15 + 'px';
+                        ghost[0].style.left = event.clientX - containment.offset().left - 15 + 'px';
                     },
                     onend: function(event) {
                         // starting from Interact 1.3.3, onend is called before ondrop
