@@ -52,6 +52,12 @@ QueryBuilder.prototype.reset = function() {
 
     this.addRule(this.model.root);
 
+    // if read only, disable interative elements
+    var $el = this.$el;
+    if (this.settings.read_only) {
+        setTimeout(function () { $el.find(':input').prop('disabled', true)});
+    }
+
     /**
      * After the {@link QueryBuilder#reset} method
      * @event afterReset
@@ -105,6 +111,9 @@ QueryBuilder.prototype.setOptions = function(options) {
     $.each(options, function(opt, value) {
         if (QueryBuilder.modifiable_options.indexOf(opt) !== -1) {
             this.settings[opt] = value;
+            if (opt === 'read_only') {
+                this.$el.find(':input').prop('disabled', value);
+            }
         }
     }.bind(this));
 };

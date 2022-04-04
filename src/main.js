@@ -140,6 +140,11 @@ var QueryBuilder = function($el, options) {
     this.operators = this.checkOperators(this.operators);
     this.bindEvents();
     this.initPlugins();
+
+    // if read only, disable interative elements
+    if (this.settings.read_only) {
+        setTimeout(function () { $el.find(':input').prop('disabled', true)});
+    }
 };
 
 $.extend(QueryBuilder.prototype, /** @lends QueryBuilder.prototype */ {
