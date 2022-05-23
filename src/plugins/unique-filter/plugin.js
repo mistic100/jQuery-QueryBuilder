@@ -110,5 +110,8 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
         if (self.settings.plugins && self.settings.plugins['bt-selectpicker']) {
             self.$el.find(QueryBuilder.selectors.rule_filter).selectpicker('render');
         }
+        else if (self.settings.plugins && self.settings.plugins['chosen-selectpicker']) {
+            self.$el.find(QueryBuilder.selectors.rule_filter).trigger('chosen:updated');
+        }
     }
 });
