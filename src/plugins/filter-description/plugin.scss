@@ -16,6 +16,6 @@ $description-border: 1px solid $description-border-color;
   border: $description-border;
   color: $description-text-color;
   border-radius: $item-border-radius;
-  padding: #{$rule-padding / 2} $rule-padding;
+  padding: #{$rule-padding * 0.5} $rule-padding;
   font-size: .8em;
 }
