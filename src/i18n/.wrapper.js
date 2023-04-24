@@ -1,8 +1,9 @@
 (function(root, factory) {
     if (typeof define == 'function' && define.amd) {
-        define(['jquery', 'query-builder'], factory);
-    }
-    else {
+        define(['jquery'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(require('jquery'));
+    } else {
         factory(root.jQuery);
     }
 }(this, function($) {
