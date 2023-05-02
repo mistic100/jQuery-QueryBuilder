@@ -1,6 +1,6 @@
 /*!
- * jQuery QueryBuilder 2.3.3
- * Copyright 2014-2016 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * jQuery QueryBuilder 2.5.2-spryker.1
+ * Copyright 2014-2023 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
  */
 
@@ -4208,7 +4208,7 @@ QueryBuilder.extend({
 
 
 /*!
- * jQuery QueryBuilder 2.3.3
+ * jQuery QueryBuilder 2.5.2-spryker.1
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (http://opensource.org/licenses/MIT)

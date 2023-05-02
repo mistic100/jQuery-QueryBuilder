@@ -280,7 +280,7 @@ module.exports = function(grunt) {
             // add AMD wrapper and banner
             js: {
                 src: ['dist/js/query-builder.js'],
-                dest: '',
+                dest: 'dist/js/query-builder.js',
                 options: {
                     separator: '',
                     wrapper: function() {
@@ -301,7 +301,7 @@ module.exports = function(grunt) {
             // add plugins SASS imports
             sass: {
                 src: ['dist/scss/default.scss'],
-                dest: '',
+                dest: 'dist/scss/default.scss',
                 options: {
                     separator: '',
                     wrapper: function() {
