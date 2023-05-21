@@ -7,8 +7,9 @@
  * @throws MissingLibraryError
  */
 QueryBuilder.define('bt-tooltip-errors', function(options) {
-    if (!$.fn.tooltip || !$.fn.tooltip.Constructor || !$.fn.tooltip.Constructor.prototype.fixTitle) {
-        Utils.error('MissingLibrary', 'Bootstrap Tooltip is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
+    if (! typeof bootstrap.Tooltip === "function") {
+        alert(typeof bootstrap.Tooltip );
+        Utils.error('MissingLibrary', 'Bootstrap Popper is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
     }
 
     var self = this;
@@ -24,9 +25,7 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
     this.model.on('update', function(e, node, field) {
         if (field == 'error' && self.settings.display_errors) {
             node.$el.find(QueryBuilder.selectors.error_container).eq(0)
-                .tooltip(options)
-                .tooltip('hide')
-                .tooltip('fixTitle');
+            .attr('data-bs-original-title',options).attr('data-bs-title',options).tooltip();
         }
     });
 }, {

@@ -123,7 +123,9 @@
 <script src="/dist/js/query-builder.js"></script>
 
 <script>
-  $('[data-bs-toggle="tooltip"]').tooltip();
+  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
+        new bootstrap.Tooltip(element);
+  }); 
 
   var $b = $('#builder');
 
