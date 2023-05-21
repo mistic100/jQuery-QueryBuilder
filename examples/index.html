@@ -28,7 +28,7 @@
 <div class="container">
   <div class="col-md-12 col-lg-10 col-lg-offset-1">
     <div class="page-header">
-      <a class="pull-right" href="https://github.com/mistic100/jQuery-QueryBuilder">
+      <a class="float-end" href="https://github.com/mistic100/jQuery-QueryBuilder">
         <img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" height=48px>
       </a>
       <h1>jQuery QueryBuilder
@@ -80,7 +80,7 @@
 
     <div class="btn-group">
       <button class="btn btn-danger reset">Reset</button>
-      <button class="btn btn-warning set-filters" data-toggle="tooltip" data-container="body" data-placement="bottom"
+      <button class="btn btn-warning set-filters" data-bs-toggle="tooltip" data-container="body" data-placement="bottom"
               title="Adds a filter 'New filter' and removes 'Coordinates', 'State', 'BSON'">Set filters
       </button>
     </div>
@@ -111,6 +111,7 @@
 <script src="/node_modules/@popperjs/core/dist/umd/popper.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
 <script src="/node_modules/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script >$.fn.selectpicker.Constructor.BootstrapVersion = '4';</script>
 <script src="/node_modules/chosenjs/chosen.jquery.js"></script>
 <script src="/node_modules/bootbox/bootbox.js"></script>
 <script src="/node_modules/bootstrap-slider/dist/bootstrap-slider.js"></script>

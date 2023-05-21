@@ -15,7 +15,7 @@ QUnit.begin(function() {
  */
 QUnit.begin(function(){
     $('#qunit-header').append(
-        '<div class="pull-right" style="margin:-5px 10px 0 0">' +
+        '<div class="float-end" style="margin:-5px 10px 0 0">' +
             '<a href="https://github.com/mistic100/jQuery-QueryBuilder">' +
     '<img src="https://assets.github.com/images/icons/emoji/octocat.png" width=32px height=32px>' +
             '</a>' +

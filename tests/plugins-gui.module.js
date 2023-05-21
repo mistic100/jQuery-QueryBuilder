@@ -131,9 +131,9 @@ $(function(){
         $b.queryBuilder('validate');
 
         assert.equal(
-            $('#builder_group_0 .error-container').eq(0).data('toggle'),
+            $('#builder_group_0 .error-container').eq(0).data('bs-toggle'),
             'tooltip',
-            'Should have added data-toggle="tooltip" in the template'
+            'Should have added data-bs-toggle="tooltip" in the template'
         );
 
         assert.equal(
@@ -201,7 +201,7 @@ $(function(){
         });
 
         assert.ok(
-            $('#builder_rule_0 button.filter-description').data('toggle') == 'popover',
+            $('#builder_rule_0 button.filter-description').data('bs-toggle') == 'popover',
             'Rule should contain a new button enabled with Popover'
         );
 
@@ -216,7 +216,7 @@ $(function(){
         });
 
         assert.ok(
-            $('#builder_rule_0 button.filter-description').data('toggle') == 'bootbox',
+            $('#builder_rule_0 button.filter-description').data('bs-toggle') == 'bootbox',
             'Rule should contain a new button enabled with Bootbox'
         );
     });

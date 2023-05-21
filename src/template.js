@@ -2,7 +2,7 @@ QueryBuilder.templates.group = ({ group_id, level, conditions, icons, settings, 
   return `
 <div id="${group_id}" class="rules-group-container">
   <div class="rules-group-header">
-    <div class="btn-group pull-right group-actions">
+    <div class="btn-group float-end group-actions">
       <button type="button" class="btn btn-xs btn-success" data-add="rule">
         <i class="${icons}"></i> ${translate("add_rule")}
       </button>
@@ -38,7 +38,7 @@ QueryBuilder.templates.rule = ({ rule_id, icons, settings, translate, builder })
   return `
 <div id="${rule_id}" class="rule-container">
   <div class="rule-header">
-    <div class="btn-group pull-right rule-actions">
+    <div class="btn-group float-end rule-actions">
       <button type="button" class="btn btn-xs btn-danger" data-delete="rule">
         <i class="${icons.remove_rule}"></i> ${translate("delete_rule")}
       </button>
