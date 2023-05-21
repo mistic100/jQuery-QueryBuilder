@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/node_modules/chosenjs/chosen.css">
   <link rel="stylesheet" href="/node_modules/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
   <link rel="stylesheet" href="/node_modules/bootstrap-slider/dist/css/bootstrap-slider.css">
-  <link rel="stylesheet" href="/node_modules/selectize/dist/css/selectize.bootstrap3.css">
+  <link rel="stylesheet" href="/node_modules/@selectize/selectize/dist/css/selectize.bootstrap5.css">
 
   <link rel="stylesheet" href="/dist/css/query-builder.default.css" id="qb-theme">
   <link rel="stylesheet" href="http://mistic100.github.io/jQuery-QueryBuilder/assets/flags/flags.css">
@@ -106,14 +106,15 @@
     </div>
   </div>
 </div>
-
+<script>var exports = {};</script>
 <script src="/node_modules/jquery/dist/jquery.js"></script>
+<script src="/node_modules/@popperjs/core/dist/umd/popper.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
 <script src="/node_modules/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="/node_modules/chosenjs/chosen.jquery.js"></script>
 <script src="/node_modules/bootbox/bootbox.js"></script>
 <script src="/node_modules/bootstrap-slider/dist/bootstrap-slider.js"></script>
-<script src="/node_modules/selectize/dist/js/standalone/selectize.js"></script>
+<script src="/node_modules/@selectize/selectize/dist/js/selectize.js"></script>
 <script src="/node_modules/jquery-extendext/jquery-extendext.js"></script>
 <script src="/node_modules/sql-parser-mistic/browser/sql-parser.js"></script>
 <script src="/node_modules/interactjs/dist/interact.js"></script>
@@ -121,7 +122,7 @@
 <script src="/dist/js/query-builder.js"></script>
 
 <script>
-  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-bs-toggle="tooltip"]').tooltip();
 
   var $b = $('#builder');
 
@@ -638,7 +639,7 @@
   // set filters
   $('.set-filters').on('click', function() {
     $(this).prop('disabled', true);
-    $(this).tooltip('hide');
+    // $(this).tooltip('hide');
 
     // add a new filter after 'state'
     $('#builder').queryBuilder('addFilter',
