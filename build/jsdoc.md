@@ -1,4 +1,4 @@
-# <i class="glyphicon glyphicon-home"></i> [Main documentation](..)
+# <i class="bi-house-fill"></i> [Main documentation](..)
 
 # Entry point: [$.fn.QueryBuilder](external-_jQuery.fn_.html)
 
