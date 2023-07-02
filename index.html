@@ -47,7 +47,6 @@ isHome: true
     <li><a href="http://jquery.com">jQuery >= 1.10</a></li>
     <li><a href="http://getbootstrap.com">Bootstrap >= 3.1</a> (CSS Buttons and Utilities only)</li>
     <li><a href="https://github.com/mistic100/jQuery.extendext">$.extendext</a></li>
-    <li><a href="http://olado.github.io/doT">doT.js >= 1.0.3</a></li>
     <li><a href="http://momentjs.com">MomentJS</a> (optional, for Date/Time validation)</li>
     <li>Other libraries used by plugins</li>
   </ul>
@@ -90,7 +89,7 @@ require(['jquery', 'query-builder'], function($) {
 <!-- @formatter:on -->
 
   <p>A <a href="{{site.cdnUrl}}/js/query-builder.standalone.min.js" target="_blank"><i
-    class="glyphicon glyphicon-file"></i> standalone version</a> is available with <i>$.extendext</i> and <i>doT.js</i>
+    class="glyphicon glyphicon-file"></i> standalone version</a> is available with <i>$.extendext</i>
     included (you still need to add jQuery and Bootstrap).</p>
 
   <h3 id="backends">Backends</h3>
@@ -1327,9 +1326,8 @@ operators: [
   <h3 id="templates">Templates</h3>
 
   <p>For very specific customizations, QueryBuilder provides a way to completely overwrite the HTML templates used to
-    display rules and groups. It uses the <a href="https://olado.github.io/doT">doT.js</a> template engine by default,
-    but
-    can be used with most JS template engines, like <i>underscore.js</i> one.</p>
+    display rules and groups. It uses the JS template litterals by default,
+    but can be used with most JS template engines, like <i>underscore.js</i> one.</p>
 
   <div class="bs-callout bs-callout-danger">
     <h4>Very advanced feature</h4>
@@ -1338,7 +1336,7 @@ operators: [
       non-Bootstrap CSS classes should not be removed.</p>
   </div>
 
-  <p>Templates can be provided as a <a href="https://olado.github.io/doT/#samples">doT.js template string</a> or as a
+  <p>Templates must be provided as a
     function taking an object of variables and returning an HTML string (<code>_.template</code> for instance). Check
     the default templates <a href="{{site.blobUrl}}/src/template.js"><i class="glyphicon glyphicon-file"></i> in the
       source code</a>.</p>
@@ -1413,7 +1411,7 @@ operators: [
 
 
 <link href="{{ site.github.url | replace: 'http://', '//' }}/node_modules/bootstrap-treeview/dist/bootstrap-treeview.min.css" rel="stylesheet">
-<link href="{{ site.github.url | replace: 'http://', '//' }}/node_modules/jQuery-QueryBuilder/dist/css/query-builder.default.min.css" rel="stylesheet">
+<link href="{{ site.github.url | replace: 'http://', '//' }}/node_modules/jQuery-QueryBuilder/dist/css/query-builder.default.css" rel="stylesheet">
 <link href="{{ site.github.url | replace: 'http://', '//' }}/assets/flags/flags.css" rel="stylesheet">
 
 <style>
@@ -1433,6 +1431,6 @@ operators: [
 </style>
 
 <script src="{{ site.github.url | replace: 'http://', '//' }}/node_modules/bootstrap-treeview/dist/bootstrap-treeview.min.js"></script>
-<script src="{{ site.github.url | replace: 'http://', '//' }}/node_modules/jQuery-QueryBuilder/dist/js/query-builder.standalone.min.js"></script>
+<script src="{{ site.github.url | replace: 'http://', '//' }}/node_modules/jQuery-QueryBuilder/dist/js/query-builder.standalone.js"></script>
 <script src="{{ site.github.url | replace: 'http://', '//' }}/assets/demo-basic.js"></script>
 <script src="{{ site.github.url | replace: 'http://', '//' }}/assets/index.js"></script>

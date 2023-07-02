@@ -3,7 +3,7 @@ id: mistic100/jQuery-QueryBuilder
 # name of the software
 name: jQuery QueryBuilder
 # current version of the software
-version: 2.6.2
+version: 2.7.0
 # links to file/dir viewers
 treeUrl: https://github.com/mistic100/jQuery-QueryBuilder/tree/master
 blobUrl: https://github.com/mistic100/jQuery-QueryBuilder/blob/master
@@ -22,7 +22,6 @@ favicon:
 download:
   popup: true
   url: https://github.com/mistic100/jQuery-QueryBuilder/archive/master.zip
-  bower: jQuery-QueryBuilder
   npm: jQuery-QueryBuilder
   cdn:
     url: https://www.jsdelivr.com/package/npm/jQuery-QueryBuilder
@@ -54,8 +53,8 @@ header:
 
 # google analytics
 analytics:
-  account: UA-28192323-3
-  domain: auto
+  account:
+  domain:
 
 # github button
 githubButton:
@@ -64,14 +63,14 @@ githubButton:
 
 # twitter buttons
 twitter:
-  enabled: true
+  enabled: false
   via: mistic100
   hash: jQuery,QueryBuilder
   account: mistic100
 
 # facebook buttons
 facebook:
-  enabled: true
+  enabled: false
   profileUrl:
 
 
