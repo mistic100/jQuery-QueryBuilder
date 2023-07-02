@@ -386,22 +386,18 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
 
                 case 'checkbox':
                     tmp = [];
-                    // jshint loopfunc:true
                     $value.find('[name=' + name + ']:checked').each(function() {
                         tmp.push($(this).val());
                     });
-                    // jshint loopfunc:false
                     value.push(tmp);
                     break;
 
                 case 'select':
                     if (filter.multiple) {
                         tmp = [];
-                        // jshint loopfunc:true
                         $value.find('[name=' + name + '] option:selected').each(function() {
                             tmp.push($(this).val());
                         });
-                        // jshint loopfunc:false
                         value.push(tmp);
                     }
                     else {
@@ -488,11 +484,9 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
                     if (!$.isArray(value[i])) {
                         value[i] = [value[i]];
                     }
-                    // jshint loopfunc:true
                     value[i].forEach(function(value) {
                         $value.find('[name=' + name + '][value="' + value + '"]').prop('checked', true).trigger('change');
                     });
-                    // jshint loopfunc:false
                     break;
 
                 default:
