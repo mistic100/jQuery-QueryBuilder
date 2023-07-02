@@ -28,7 +28,6 @@ const CORE_SASS = [
 
 const STANDALONE_JS = {
     'jquery-extendext': 'node_modules/jquery-extendext/jquery-extendext.js',
-    'dot/doT': 'node_modules/dot/doT.js',
     'query-builder': `${DIST}js/query-builder.js`,
 };
 
