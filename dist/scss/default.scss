@@ -1,6 +1,6 @@
 /*!
- * jQuery QueryBuilder 2.6.2
- * Copyright 2014-2021 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * jQuery QueryBuilder 2.7.0
+ * Copyright 2014-2023 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 $theme-name: default !default;
@@ -177,10 +177,8 @@ $ticks-position: 5px, 10px !default;
   }
 }
 
-// import
-@import "plugins/_bt-checkbox";
-@import "plugins/_bt-tooltip-errors";
-@import "plugins/_filter-description";
-@import "plugins/_invert";
-@import "plugins/_sortable";
-// endimport
+@import "plugins/bt-checkbox";
+@import "plugins/bt-tooltip-errors";
+@import "plugins/filter-description";
+@import "plugins/invert";
+@import "plugins/sortable";

@@ -121,8 +121,8 @@ var QueryBuilder = function($el, options) {
         if (!this.templates[tpl]) {
             this.templates[tpl] = QueryBuilder.templates[tpl];
         }
-        if (typeof this.templates[tpl] == 'string') {
-            this.templates[tpl] = doT.template(this.templates[tpl]);
+        if (typeof this.templates[tpl] !== 'function') {
+            throw new Error(`Template ${tpl} must be a function`);
         }
     }, this);
 

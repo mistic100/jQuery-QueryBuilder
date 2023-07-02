@@ -3,7 +3,6 @@
 [![npm version](https://img.shields.io/npm/v/jQuery-QueryBuilder.svg?style=flat-square)](https://www.npmjs.com/package/jQuery-QueryBuilder)
 [![jsDelivr CDN](https://data.jsdelivr.com/v1/package/npm/jQuery-QueryBuilder/badge)](https://www.jsdelivr.com/package/npm/jQuery-QueryBuilder)
 [![Build Status](https://github.com/mistic100/jQuery-QueryBuilder/workflows/CI/badge.svg)](https://github.com/mistic100/jQuery-QueryBuilder/actions)
-[![Coverage Status](https://img.shields.io/coveralls/mistic100/jQuery-QueryBuilder/master.svg?style=flat-square)](https://coveralls.io/r/mistic100/jQuery-QueryBuilder)
 [![Dependencies Status](https://david-dm.org/mistic100/jQuery-QueryBuilder/status.svg?style=flat-square)](https://david-dm.org/mistic100/jQuery-QueryBuilder)
 [![gitlocalized](https://gitlocalize.com/repo/5259/whole_project/badge.svg)](https://gitlocalize.com/repo/5259/whole_project?utm_source=badge)
 
@@ -50,40 +49,17 @@ jQuery-QueryBuilder is available on [jsDelivr](https://www.jsdelivr.com/package/
 
 
 
-## Build
+## Developement
 
-#### Prerequisites
+Install Node dependencies with `npm install`.
 
- * NodeJS + NPM: `apt-get install nodejs-legacy npm`
- * Grunt CLI: `npm install -g grunt-cli`
+#### Build
 
-#### Run
+Run `npm run build` in the root directory to generate production files inside `dist`.
 
-Install Node dependencies `npm install` then run `grunt` in the root directory to generate production files inside `dist`.
+#### Serve
 
-#### Options
-
-You can choose which plugins to include with `--plugins` :
-```bash
-# include "sql-support" and "mongodb-support" plugins
-grunt --plugins=sql-support,mongodb-support
-
-# disable all plugins
-grunt --plugins=false
-```
-All plugins are included by default.
-
-You can also include language files with `--languages` :
-```bash
-# include French & Italian translation
-grunt --languages=fr,it
-```
-
-#### Other commands
-
- * `grunt test` to run jshint/jscs/scsslint and the QUnit test suite.
- * `grunt serve` to open the example page with automatic build and livereload.
- * `grunt doc` to generate the documentation.
+Run `npm run serve` to open the example page with automatic build and livereload.
 
 
 ## License

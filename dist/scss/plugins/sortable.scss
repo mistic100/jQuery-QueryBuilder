@@ -14,7 +14,8 @@ $placeholder-border: 1px dashed $placeholder-border-color;
     opacity: .5;
     z-index: 100;
 
-    &::before, &::after {
+    &::before,
+    &::after {
       display: none;
     }
   }
