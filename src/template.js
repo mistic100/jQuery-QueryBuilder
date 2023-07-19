@@ -4,7 +4,7 @@ QueryBuilder.templates.group = ({ group_id, level, conditions, icons, settings, 
   <div class="rules-group-header">
     <div class="btn-group pull-right group-actions">
       <button type="button" class="btn btn-xs btn-success" data-add="rule">
-        <i class="${icons}"></i> ${translate("add_rule")}
+        <i class="${icons.add_rule}"></i> ${translate("add_rule")}
       </button>
       ${settings.allow_groups === -1 || settings.allow_groups >= level ? `
         <button type="button" class="btn btn-xs btn-success" data-add="group">
