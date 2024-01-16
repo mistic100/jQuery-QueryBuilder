@@ -187,10 +187,10 @@ QueryBuilder.DEFAULTS = {
     ],
 
     icons: {
-        add_group:    'glyphicon glyphicon-plus-sign',
-        add_rule:     'glyphicon glyphicon-plus',
-        remove_group: 'glyphicon glyphicon-remove',
-        remove_rule:  'glyphicon glyphicon-remove',
-        error:        'glyphicon glyphicon-warning-sign'
+        add_group:    'bi bi-plus-circle-fill',
+        add_rule:     'bi bi-plus-lg',
+        remove_group: 'bi bi-x-lg',
+        remove_rule:  'bi bi-x-lg',
+        error:        'bi bi-exclamation-triangle'
     }
 };

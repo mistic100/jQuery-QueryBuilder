@@ -14,6 +14,7 @@
   ],
   "dependencies": {
     "bootstrap": "^3.4.1",
+    "bootstrap-icons": "^1.11.3",
     "jquery": "^3.5.1",
     "jquery-extendext": "^1.0.0",
     "moment": "^2.29.1",

@@ -3,7 +3,7 @@
  * @memberof module:plugins
  * @description Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.
  * @param {object} [options]
- * @param {string} [options.icon='glyphicon glyphicon-info-sign']
+ * @param {string} [options.icon='bi bi-info-circle-fill']
  * @param {string} [options.mode='popover'] - inline, popover or bootbox
  * @throws ConfigError
  */
@@ -105,7 +105,7 @@ QueryBuilder.define('filter-description', function(options) {
         });
     }
 }, {
-    icon: 'glyphicon glyphicon-info-sign',
+    icon: 'bi bi-info-circle-fill',
     mode: 'popover'
 });
 

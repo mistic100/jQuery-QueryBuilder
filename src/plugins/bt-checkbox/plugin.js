@@ -3,12 +3,12 @@
  * @memberof module:plugins
  * @description Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.
  * @param {object} [options]
- * @param {string} [options.font='glyphicons']
+ * @param {string} [options.font='bootstrap-icons']
  * @param {string} [options.color='default']
  */
 QueryBuilder.define('bt-checkbox', function(options) {
-    if (options.font == 'glyphicons') {
-        this.$el.addClass('bt-checkbox-glyphicons');
+    if (options.font === 'bootstrap-icons') {
+        this.$el.addClass('bt-checkbox-bootstrap-icons');
     }
 
     this.on('getRuleInput.filter', function(h, rule, name) {
@@ -40,6 +40,6 @@ QueryBuilder.define('bt-checkbox', function(options) {
         }
     });
 }, {
-    font: 'glyphicons',
+    font: 'bootstrap-icons',
     color: 'default'
 });

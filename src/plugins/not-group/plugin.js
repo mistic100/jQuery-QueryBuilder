@@ -3,8 +3,8 @@
  * @memberof module:plugins
  * @description Adds a "Not" checkbox in front of group conditions.
  * @param {object} [options]
- * @param {string} [options.icon_checked='glyphicon glyphicon-checked']
- * @param {string} [options.icon_unchecked='glyphicon glyphicon-unchecked']
+ * @param {string} [options.icon_checked='bi bi-square2']
+ * @param {string} [options.icon_unchecked='bi bi-square']
  */
 QueryBuilder.define('not-group', function(options) {
     var self = this;
@@ -112,8 +112,8 @@ QueryBuilder.define('not-group', function(options) {
         e.value.not = !!data.not;
     });
 }, {
-    icon_unchecked: 'glyphicon glyphicon-unchecked',
-    icon_checked: 'glyphicon glyphicon-check',
+    icon_unchecked: 'bi bi-square',
+    icon_checked: 'bi bi-square2',
     disable_template: false
 });
 

@@ -3,7 +3,7 @@
  * @memberof module:plugins
  * @description Allows to invert a rule operator, a group condition or the entire builder.
  * @param {object} [options]
- * @param {string} [options.icon='glyphicon glyphicon-random']
+ * @param {string} [options.icon='bi bi-shuffle']
  * @param {boolean} [options.recursive=true]
  * @param {boolean} [options.invert_rules=true]
  * @param {boolean} [options.display_rules_button=false]
@@ -53,7 +53,7 @@ QueryBuilder.define('invert', function(options) {
         }
     }
 }, {
-    icon: 'glyphicon glyphicon-random',
+    icon: 'bi bi-shuffle',
     recursive: true,
     invert_rules: true,
     display_rules_button: false,
