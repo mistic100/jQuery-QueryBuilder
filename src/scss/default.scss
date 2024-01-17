@@ -45,15 +45,6 @@ $ticks-position: 5px, 10px !default;
   vertical-align: middle;
 }
 
-// Bootstrap >3 lacks button-xs
-.btn-xs,
-.btn-group-xs > .btn {
-  padding: 1px 5px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
-}
-
 .query-builder {
 
   // GROUPS

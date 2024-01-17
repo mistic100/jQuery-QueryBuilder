@@ -4,7 +4,7 @@
  * @descriptioon Applies Bootstrap Select on filters and operators combo-boxes.
  * @param {object} [options]
  * @param {string} [options.container='body']
- * @param {string} [options.style='btn-inverse btn-xs']
+ * @param {string} [options.style='btn-inverse btn-sm']
  * @param {int|string} [options.width='auto']
  * @param {boolean} [options.showIcon=false]
  * @throws MissingLibraryError
@@ -40,7 +40,7 @@ QueryBuilder.define('bt-selectpicker', function(options) {
     });
 }, {
     container: 'body',
-    style: 'btn-inverse btn-xs',
+    style: 'btn-inverse btn-sm',
     width: 'auto',
     showIcon: false
 });
