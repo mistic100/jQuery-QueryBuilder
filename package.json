@@ -27,7 +27,6 @@
     "bootbox": "^6.0.0",
     "bootstrap-select": "^1.14.0-beta3",
     "bootstrap-slider": "^10.0.0",
-    "bootswatch-dist": "git+https://github.com/dbtek/bootswatch-dist.git#slate",
     "chosenjs": "^1.4.3",
     "concurrently": "^8.2.0",
     "deepmerge": "^2.1.0",
