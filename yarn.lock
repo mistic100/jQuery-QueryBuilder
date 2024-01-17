@@ -400,11 +400,6 @@
   "resolved" "https://registry.npmjs.org/commander/-/commander-2.19.0.tgz"
   "version" "2.19.0"
 
-"common-js@^0.3.8":
-  "integrity" "sha512-83poCK3wlRnYqWdolJiYrMYvaBFzlDO1RwQVti2ZDBR2K5ifBGksu2cw3ZKFioEqB8FVLUmuu3OXxFUlSBk5UQ=="
-  "resolved" "https://registry.npmjs.org/common-js/-/common-js-0.3.8.tgz"
-  "version" "0.3.8"
-
 "concat-map@0.0.1":
   "integrity" "sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg=="
   "resolved" "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
