@@ -40,10 +40,10 @@
       <label>Theme:</label>
       <div class="btn-group">
         <button class="btn btn-primary btn-sm change-theme" data-qb="/dist/css/query-builder.default.css"
-                data-bt="/node_modules/bootstrap/dist/css/bootstrap.css">Default
+                data-bt="default">Default
         </button>
         <button class="btn btn-primary btn-sm change-theme" data-qb="/dist/css/query-builder.dark.css"
-                data-bt="/node_modules/bootswatch-dist/css/bootstrap.css">Dark
+                data-bt="dark">Dark
         </button>
       </div>
 
@@ -520,7 +520,7 @@
   // change theme
   $('.change-theme').on('click', function() {
     $('#qb-theme').replaceWith('<link rel="stylesheet" href="' + $(this).data('qb') + '" id="qb-theme">');
-    $('#bt-theme').replaceWith('<link rel="stylesheet" href="' + $(this).data('bt') + '" id="bt-theme">');
+    $('[data-bs-theme]').attr('data-bs-theme', $(this).data('bt'));
   });
 
   // set rules
