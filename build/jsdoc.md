@@ -1,4 +1,4 @@
-# <i class="bi-house-fill"></i> [Main documentation](..)
+# <i class="bi bi-house-fill"></i> [Main documentation](..)
 
 # Entry point: [$.fn.QueryBuilder](external-_jQuery.fn_.html)
 

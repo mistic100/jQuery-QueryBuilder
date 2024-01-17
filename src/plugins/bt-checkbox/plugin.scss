@@ -1,0 +1,6 @@
+.query-builder.bt-checkbox-bootstrap-icons {
+  .checkbox input[type='checkbox']:checked + label::after {
+    font-family: 'bootstrap-icons';
+    content: '\F633'; // https://icons.getbootstrap.com/icons/check-lg/
+  }
+}
