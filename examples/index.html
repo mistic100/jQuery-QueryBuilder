@@ -642,7 +642,7 @@
   // set filters
   $('.set-filters').on('click', function() {
     $(this).prop('disabled', true);
-    // $(this).tooltip('hide');
+    bootstrap.Tooltip.getInstance($(this)).hide();
 
     // add a new filter after 'state'
     $('#builder').queryBuilder('addFilter',
