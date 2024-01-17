@@ -5,7 +5,7 @@
  * @param {object} [options]
  * @param {boolean} [options.inherit_no_drop=true]
  * @param {boolean} [options.inherit_no_sortable=true]
- * @param {string} [options.icon='bi bi-sort-down']
+ * @param {string} [options.icon='bi-sort-down']
  * @throws MissingLibraryError, ConfigError
  */
 QueryBuilder.define('sortable', function(options) {
@@ -177,7 +177,7 @@ QueryBuilder.define('sortable', function(options) {
 }, {
     inherit_no_sortable: true,
     inherit_no_drop: true,
-    icon: 'bi bi-sort-down',
+    icon: 'bi-sort-down',
     disable_template: false
 });
 
