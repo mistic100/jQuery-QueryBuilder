@@ -15,7 +15,7 @@
   "dependencies": {
     "bootstrap": "^5.3.0",
     "@popperjs/core": "^2.11.8",
-    "bootstrap-icons": "^1.10.5",
+    "bootstrap-icons": "^1.11.3",
     "jquery": "^3.5.1",
     "jquery-extendext": "^1.0.0",
     "moment": "^2.29.1",
