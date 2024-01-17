@@ -188,9 +188,9 @@ QueryBuilder.DEFAULTS = {
 
     icons: {
         add_group:    'bi-plus-circle-fill',
-        add_rule:     'bi-plus',
-        remove_group: 'bi-x',
-        remove_rule:  'bi-x',
+        add_rule:     'bi-plus-lg',
+        remove_group: 'bi-x-lg',
+        remove_rule:  'bi-x-lg',
         error:        'bi-exclamation-triangle'
     }
 };
