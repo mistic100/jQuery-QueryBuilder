@@ -56,7 +56,7 @@ QueryBuilder.templates.rule = ({ rule_id, icons, settings, translate, builder })
 QueryBuilder.templates.filterSelect = ({ rule, filters, icons, settings, translate, builder }) => {
   let optgroup = null;
   return `
-<select class="form-control" name="${rule.id}_filter">
+<select class="form-select" name="${rule.id}_filter">
   ${settings.display_empty_filter ? `
     <option value="-1">${settings.select_placeholder}</option>
   ` : ''}
@@ -81,7 +81,7 @@ ${operators.length === 1 ? `
 ${translate("operators", operators[0].type)}
 </span>
 ` : ''}
-<select class="form-control ${operators.length === 1 ? 'd-none' : ''}" name="${rule.id}_operator">
+<select class="form-select ${operators.length === 1 ? 'd-none' : ''}" name="${rule.id}_operator">
   ${operators.map(operator => `
     ${optgroup !== operator.optgroup ? `
       ${optgroup !== null ? `</optgroup>` : ''}
@@ -98,7 +98,7 @@ ${translate("operators", operators[0].type)}
 QueryBuilder.templates.ruleValueSelect = ({ name, rule, icons, settings, translate, builder }) => {
   let optgroup = null;
   return `
-<select class="form-control" name="${name}" ${rule.filter.multiple ? 'multiple' : ''}>
+<select class="form-select" name="${name}" ${rule.filter.multiple ? 'multiple' : ''}>
   ${rule.filter.placeholder ? `
     <option value="${rule.filter.placeholder_value}" disabled selected>${rule.filter.placeholder}</option>
   ` : ''}
