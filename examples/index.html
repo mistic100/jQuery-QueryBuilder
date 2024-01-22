@@ -607,12 +607,12 @@
   // reset builder
   $('.reset').on('click', function() {
     $('#builder').queryBuilder('reset');
-    $('#result').addClass('hide').find('pre').empty();
+    $('#result').addClass('d-none').find('pre').empty();
   });
 
   // get rules
   $('.parse-json').on('click', function() {
-    $('#result').removeClass('hide')
+    $('#result').removeClass('d-none')
       .find('pre').html(JSON.stringify(
       $('#builder').queryBuilder('getRules', {
         get_flags: true,
@@ -624,14 +624,14 @@
 
   $('.parse-sql').on('click', function() {
     var res = $('#builder').queryBuilder('getSQL', $(this).data('stmt'), false);
-    $('#result').removeClass('hide')
+    $('#result').removeClass('d-none')
       .find('pre').html(
       res.sql + (res.params ? '\n\n' + JSON.stringify(res.params, undefined, 2) : '')
     );
   });
 
   $('.parse-mongo').on('click', function() {
-    $('#result').removeClass('hide')
+    $('#result').removeClass('d-none')
       .find('pre').html(JSON.stringify(
       $('#builder').queryBuilder('getMongo'),
       undefined, 2

@@ -81,7 +81,7 @@ ${operators.length === 1 ? `
 ${translate("operators", operators[0].type)}
 </span>
 ` : ''}
-<select class="form-control ${operators.length === 1 ? 'hide' : ''}" name="${rule.id}_operator">
+<select class="form-control ${operators.length === 1 ? 'd-none' : ''}" name="${rule.id}_operator">
   ${operators.map(operator => `
     ${optgroup !== operator.optgroup ? `
       ${optgroup !== null ? `</optgroup>` : ''}
