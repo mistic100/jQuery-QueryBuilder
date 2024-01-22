@@ -18,11 +18,11 @@ QueryBuilder.define('bt-selectpicker', function(options) {
 
     // init selectpicker
     this.on('afterCreateRuleFilters', function(e, rule) {
-        rule.$el.find(Selectors.rule_filter).removeClass('form-control').selectpicker(options);
+        rule.$el.find(Selectors.rule_filter).removeClass('form-select').selectpicker(options);
     });
 
     this.on('afterCreateRuleOperators', function(e, rule) {
-        rule.$el.find(Selectors.rule_operator).removeClass('form-control').selectpicker(options);
+        rule.$el.find(Selectors.rule_operator).removeClass('form-select').selectpicker(options);
     });
 
     // update selectpicker on change
