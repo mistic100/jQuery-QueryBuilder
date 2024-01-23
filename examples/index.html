@@ -7,14 +7,12 @@
   <title>jQuery QueryBuilder Example</title>
 
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css" id="bt-theme">
-  <link rel="stylesheet" href="/node_modules/bootstrap-select/dist/css/bootstrap-select.css">
   <link rel="stylesheet" href="/node_modules/chosenjs/chosen.css">
   <link rel="stylesheet" href="/node_modules/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
   <link rel="stylesheet" href="/node_modules/bootstrap-slider/dist/css/bootstrap-slider.css">
   <link rel="stylesheet" href="/node_modules/@selectize/selectize/dist/css/selectize.bootstrap5.css">
   <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
   <link rel="stylesheet" href="/dist/css/query-builder.default.css" id="qb-theme">
-  <link rel="stylesheet" href="http://mistic100.github.io/jQuery-QueryBuilder/assets/flags/flags.css">
 
   <style>
     .flag {
@@ -48,31 +46,31 @@
       </div>
 
       <label>Language:</label>
-      <select name="language" class="selectpicker show-tick show-menu-arrow" data-width="auto">
-        <option value="sq" data-icon="flag flag-al">Albanian</option>
-        <option value="ar" data-icon="flag flag-ar">Arabic</option>
-        <option value="az" data-icon="flag flag-az">Azerbaijani</option>
-        <option value="bg" data-icon="flag flag-bg">Bulgarian</option>
-        <option value="zh-CN" data-icon="flag flag-zh-CN">Simplified Chinese</option>
-        <option value="cs" data-icon="flag flag-cs">Czech</option>
-        <option value="de" data-icon="flag flag-de">German</option>
-        <option value="da" data-icon="flag flag-dk">Danish</option>
-        <option value="nl" data-icon="flag flag-nl">Dutch</option>
-        <option value="en" data-icon="flag flag-gb" selected>English</option>
-        <option value="fa-IR" data-icon="flag flag-ir">Farsi</option>
-        <option value="fr" data-icon="flag flag-fr">French</option>
-        <option value="el" data-icon="flag flag-el">Greek</option>
-        <option value="he" data-icon="flag flag-he">Hebrew</option>
-        <option value="it" data-icon="flag flag-it">Italian</option>
-        <option value="no" data-icon="flag flag-no">Norwegian</option>
-        <option value="pl" data-icon="flag flag-pl">Polish</option>
-        <option value="pt-PT" data-icon="flag flag-pt-PT">Portuguese</option>
-        <option value="pt-BR" data-icon="flag flag-pt-BR">Brazilian Portuguese</option>
-        <option value="ro" data-icon="flag flag-ro">Romanian</option>
-        <option value="ru" data-icon="flag flag-ru">Russian</option>
-        <option value="es" data-icon="flag flag-es">Spanish</option>
-        <option value="tr" data-icon="flag flag-tr">Turkish</option>
-        <option value="ua" data-icon="flag flag-ua">Ukrainian</option>
+      <select name="language" class="show-tick show-menu-arrow" data-width="auto">
+        <option value="sq">Albanian</option>
+        <option value="ar">Arabic</option>
+        <option value="az">Azerbaijani</option>
+        <option value="bg">Bulgarian</option>
+        <option value="zh-CN">Simplified Chinese</option>
+        <option value="cs">Czech</option>
+        <option value="de">German</option>
+        <option value="da">Danish</option>
+        <option value="nl">Dutch</option>
+        <option value="en" selected>English</option>
+        <option value="fa-IR">Farsi</option>
+        <option value="fr">French</option>
+        <option value="el">Greek</option>
+        <option value="he">Hebrew</option>
+        <option value="it">Italian</option>
+        <option value="no">Norwegian</option>
+        <option value="pl">Polish</option>
+        <option value="pt-PT">Portuguese</option>
+        <option value="pt-BR">Brazilian Portuguese</option>
+        <option value="ro">Romanian</option>
+        <option value="ru">Russian</option>
+        <option value="es">Spanish</option>
+        <option value="tr">Turkish</option>
+        <option value="ua">Ukrainian</option>
       </select>
     </div>
 
@@ -109,8 +107,6 @@
 <script src="/node_modules/jquery/dist/jquery.js"></script>
 <script src="/node_modules/@popperjs/core/dist/umd/popper.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
-<script src="/node_modules/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<script >$.fn.selectpicker.Constructor.BootstrapVersion = '5';</script>
 <script src="/node_modules/chosenjs/chosen.jquery.js"></script>
 <script src="/node_modules/bootstrap-slider/dist/bootstrap-slider.js"></script>
 <script src="/node_modules/@selectize/selectize/dist/js/selectize.js"></script>
@@ -145,8 +141,7 @@
       'bt-tooltip-errors': { delay: 100 },
       'sortable': null,
       'filter-description': { mode: 'bootbox' },
-      // 'bt-selectpicker': null, // does not work for bootstrap 5
-//      'chosen-selectpicker': null, // works for bootstrap 5
+//      'chosen-selectpicker': null,
       'unique-filter': null,
       'bt-checkbox': { color: 'primary' },
       'invert': null,
@@ -492,7 +487,7 @@
   });
 
   // change language
-  $('[name=language]').selectpicker().on('change', function() {
+  $('[name=language]').on('change', function() {
     var lang = $(this).val();
 
     var done = function() {

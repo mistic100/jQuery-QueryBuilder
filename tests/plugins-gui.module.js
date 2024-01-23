@@ -79,22 +79,6 @@ $(function(){
     });
 
     /**
-     * Test bt-selectpicker
-     */
-    QUnit.test('bt-selectpicker', function(assert) {
-        $b.queryBuilder({
-            plugins: ['bt-selectpicker'],
-            filters: basic_filters,
-            rules: basic_rules
-        });
-
-        assert.ok(
-            $b.find('.bootstrap-select').length == 8,
-            'Should have initialized Bootstrap Select on all filters and operators selectors'
-        );
-    });
-
-    /**
      * Test chosen-selectpicker
      */
     QUnit.test('chosen-selectpicker', function(assert) {

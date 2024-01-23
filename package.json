@@ -25,7 +25,6 @@
     "alive-server": "^1.3.0",
     "awesome-bootstrap-checkbox": "^0.3.7",
     "bootbox": "^6.0.0",
-    "bootstrap-select": "^1.14.0-beta3",
     "bootstrap-slider": "^10.0.0",
     "chosenjs": "^1.4.3",
     "concurrently": "^8.2.0",
