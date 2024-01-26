@@ -2,24 +2,24 @@ QueryBuilder.templates.group = ({ group_id, level, conditions, icons, settings, 
   return `
 <div id="${group_id}" class="rules-group-container">
   <div class="rules-group-header">
-    <div class="btn-group pull-right group-actions">
-      <button type="button" class="btn btn-xs btn-success" data-add="rule">
+    <div class="btn-group float-end group-actions">
+      <button type="button" class="btn btn-sm btn-success" data-add="rule">
         <i class="${icons.add_rule}"></i> ${translate("add_rule")}
       </button>
       ${settings.allow_groups === -1 || settings.allow_groups >= level ? `
-        <button type="button" class="btn btn-xs btn-success" data-add="group">
+        <button type="button" class="btn btn-sm btn-success" data-add="group">
           <i class="${icons.add_group}"></i> ${translate("add_group")}
         </button>
       ` : ''}
       ${level > 1 ? `
-        <button type="button" class="btn btn-xs btn-danger" data-delete="group">
+        <button type="button" class="btn btn-sm btn-danger" data-delete="group">
           <i class="${icons.remove_group}"></i> ${translate("delete_group")}
         </button>
       ` : ''}
     </div>
     <div class="btn-group group-conditions">
       ${conditions.map(condition => `
-        <label class="btn btn-xs btn-primary">
+        <label class="btn btn-sm btn-primary">
           <input type="radio" name="${group_id}_cond" value="${condition}"> ${translate("conditions", condition)}
         </label>
       `).join('\n')}
@@ -38,8 +38,8 @@ QueryBuilder.templates.rule = ({ rule_id, icons, settings, translate, builder })
   return `
 <div id="${rule_id}" class="rule-container">
   <div class="rule-header">
-    <div class="btn-group pull-right rule-actions">
-      <button type="button" class="btn btn-xs btn-danger" data-delete="rule">
+    <div class="btn-group float-end rule-actions">
+      <button type="button" class="btn btn-sm btn-danger" data-delete="rule">
         <i class="${icons.remove_rule}"></i> ${translate("delete_rule")}
       </button>
     </div>
@@ -56,7 +56,7 @@ QueryBuilder.templates.rule = ({ rule_id, icons, settings, translate, builder })
 QueryBuilder.templates.filterSelect = ({ rule, filters, icons, settings, translate, builder }) => {
   let optgroup = null;
   return `
-<select class="form-control" name="${rule.id}_filter">
+<select class="form-select" name="${rule.id}_filter">
   ${settings.display_empty_filter ? `
     <option value="-1">${settings.select_placeholder}</option>
   ` : ''}
@@ -81,7 +81,7 @@ ${operators.length === 1 ? `
 ${translate("operators", operators[0].type)}
 </span>
 ` : ''}
-<select class="form-control ${operators.length === 1 ? 'hide' : ''}" name="${rule.id}_operator">
+<select class="form-select ${operators.length === 1 ? 'd-none' : ''}" name="${rule.id}_operator">
   ${operators.map(operator => `
     ${optgroup !== operator.optgroup ? `
       ${optgroup !== null ? `</optgroup>` : ''}
@@ -98,7 +98,7 @@ ${translate("operators", operators[0].type)}
 QueryBuilder.templates.ruleValueSelect = ({ name, rule, icons, settings, translate, builder }) => {
   let optgroup = null;
   return `
-<select class="form-control" name="${name}" ${rule.filter.multiple ? 'multiple' : ''}>
+<select class="form-select" name="${name}" ${rule.filter.multiple ? 'multiple' : ''}>
   ${rule.filter.placeholder ? `
     <option value="${rule.filter.placeholder_value}" disabled selected>${rule.filter.placeholder}</option>
   ` : ''}
