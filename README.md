@@ -34,7 +34,8 @@ $ npm install jQuery-QueryBuilder
 jQuery-QueryBuilder is available on [jsDelivr](https://www.jsdelivr.com/package/npm/jQuery-QueryBuilder).
 ### Dependencies
  * [jQuery 3](https://jquery.com)
- * [Bootstrap 3](https://getbootstrap.com/docs/3.3) (CSS only)
+ * [Bootstrap 5](https://getbootstrap.com/docs/5.3/) CSS and bundle.js which includes `Popper` for tooltips and popovers
+ * [Bootstrap Icons](https://icons.getbootstrap.com/) 
  * [jQuery.extendext](https://github.com/mistic100/jQuery.extendext)
  * [doT.js](https://olado.github.io/doT)
  * [MomentJS](https://momentjs.com) (optional, for Date/Time validation)
