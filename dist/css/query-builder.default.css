@@ -1,6 +1,6 @@
 /*!
- * jQuery QueryBuilder 2.7.0
- * Copyright 2014-2023 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * jQuery QueryBuilder 3.0.0
+ * Copyright 2014-2024 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 .query-builder .rule-placeholder, .query-builder .rule-container, .query-builder .rules-group-container {
@@ -60,11 +60,6 @@
 .query-builder .rule-value-container label.block {
   display: block;
 }
-.query-builder .rule-value-container select,
-.query-builder .rule-value-container input[type=text],
-.query-builder .rule-value-container input[type=number] {
-  padding: 1px;
-}
 .query-builder .error-container {
   display: none;
   cursor: help;
@@ -105,14 +100,12 @@
   display: none;
 }
 
-.query-builder.bt-checkbox-glyphicons .checkbox input[type=checkbox]:checked + label::after {
-  font-family: "Glyphicons Halflings";
-  content: "\e013";
+.query-builder.bt-checkbox-bootstrap-icons .checkbox input[type=checkbox] + label::before {
+  outline: 0;
 }
-.query-builder.bt-checkbox-glyphicons .checkbox label::after {
-  padding-left: 4px;
-  padding-top: 2px;
-  font-size: 9px;
+.query-builder.bt-checkbox-bootstrap-icons .checkbox input[type=checkbox]:checked + label::after {
+  font-family: "bootstrap-icons";
+  content: "\f633";
 }
 
 .query-builder .error-container + .tooltip .tooltip-inner {
