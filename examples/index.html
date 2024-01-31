@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,29 +7,21 @@
   <title>jQuery QueryBuilder Example</title>
 
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css" id="bt-theme">
-  <link rel="stylesheet" href="/node_modules/bootstrap-select/dist/css/bootstrap-select.css">
   <link rel="stylesheet" href="/node_modules/chosenjs/chosen.css">
   <link rel="stylesheet" href="/node_modules/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
   <link rel="stylesheet" href="/node_modules/bootstrap-slider/dist/css/bootstrap-slider.css">
-  <link rel="stylesheet" href="/node_modules/selectize/dist/css/selectize.bootstrap3.css">
-
+  <link rel="stylesheet" href="/node_modules/@selectize/selectize/dist/css/selectize.bootstrap5.css">
+  <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
   <link rel="stylesheet" href="/dist/css/query-builder.default.css" id="qb-theme">
-  <link rel="stylesheet" href="http://mistic100.github.io/jQuery-QueryBuilder/assets/flags/flags.css">
-
-  <style>
-    .flag {
-      display: inline-block;
-    }
-  </style>
 </head>
 
 <body>
 
 <div class="container">
-  <div class="col-md-12 col-lg-10 col-lg-offset-1">
+  <div class="col-md-12 col-lg-10 offset-lg-1">
     <div class="page-header">
-      <a class="pull-right" href="https://github.com/mistic100/jQuery-QueryBuilder">
-        <img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" height=48px>
+      <a class="float-end" href="https://github.com/mistic100/jQuery-QueryBuilder">
+        <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" style="height:48px;">
       </a>
       <h1>jQuery QueryBuilder
         <small>Example</small>
@@ -40,39 +32,39 @@
       <label>Theme:</label>
       <div class="btn-group">
         <button class="btn btn-primary btn-sm change-theme" data-qb="/dist/css/query-builder.default.css"
-                data-bt="/node_modules/bootstrap/dist/css/bootstrap.css">Default
+                data-bt="default">Default
         </button>
         <button class="btn btn-primary btn-sm change-theme" data-qb="/dist/css/query-builder.dark.css"
-                data-bt="/node_modules/bootswatch-dist/css/bootstrap.css">Dark
+                data-bt="dark">Dark
         </button>
       </div>
 
       <label>Language:</label>
-      <select name="language" class="selectpicker show-tick show-menu-arrow" data-width="auto">
-        <option value="sq" data-icon="flag flag-al">Albanian</option>
-        <option value="ar" data-icon="flag flag-ar">Arabic</option>
-        <option value="az" data-icon="flag flag-az">Azerbaijani</option>
-        <option value="bg" data-icon="flag flag-bg">Bulgarian</option>
-        <option value="zh-CN" data-icon="flag flag-zh-CN">Simplified Chinese</option>
-        <option value="cs" data-icon="flag flag-cs">Czech</option>
-        <option value="de" data-icon="flag flag-de">German</option>
-        <option value="da" data-icon="flag flag-dk">Danish</option>
-        <option value="nl" data-icon="flag flag-nl">Dutch</option>
-        <option value="en" data-icon="flag flag-gb" selected>English</option>
-        <option value="fa-IR" data-icon="flag flag-ir">Farsi</option>
-        <option value="fr" data-icon="flag flag-fr">French</option>
-        <option value="el" data-icon="flag flag-el">Greek</option>
-        <option value="he" data-icon="flag flag-he">Hebrew</option>
-        <option value="it" data-icon="flag flag-it">Italian</option>
-        <option value="no" data-icon="flag flag-no">Norwegian</option>
-        <option value="pl" data-icon="flag flag-pl">Polish</option>
-        <option value="pt-PT" data-icon="flag flag-pt-PT">Portuguese</option>
-        <option value="pt-BR" data-icon="flag flag-pt-BR">Brazilian Portuguese</option>
-        <option value="ro" data-icon="flag flag-ro">Romanian</option>
-        <option value="ru" data-icon="flag flag-ru">Russian</option>
-        <option value="es" data-icon="flag flag-es">Spanish</option>
-        <option value="tr" data-icon="flag flag-tr">Turkish</option>
-        <option value="ua" data-icon="flag flag-ua">Ukrainian</option>
+      <select name="language" class="show-tick show-menu-arrow" data-width="auto">
+        <option value="sq">Albanian</option>
+        <option value="ar">Arabic</option>
+        <option value="az">Azerbaijani</option>
+        <option value="bg">Bulgarian</option>
+        <option value="zh-CN">Simplified Chinese</option>
+        <option value="cs">Czech</option>
+        <option value="de">German</option>
+        <option value="da">Danish</option>
+        <option value="nl">Dutch</option>
+        <option value="en" selected>English</option>
+        <option value="fa-IR">Farsi</option>
+        <option value="fr">French</option>
+        <option value="el">Greek</option>
+        <option value="he">Hebrew</option>
+        <option value="it">Italian</option>
+        <option value="no">Norwegian</option>
+        <option value="pl">Polish</option>
+        <option value="pt-PT">Portuguese</option>
+        <option value="pt-BR">Brazilian Portuguese</option>
+        <option value="ro">Romanian</option>
+        <option value="ru">Russian</option>
+        <option value="es">Spanish</option>
+        <option value="tr">Turkish</option>
+        <option value="ua">Ukrainian</option>
       </select>
     </div>
 
@@ -80,7 +72,7 @@
 
     <div class="btn-group">
       <button class="btn btn-danger reset">Reset</button>
-      <button class="btn btn-warning set-filters" data-toggle="tooltip" data-container="body" data-placement="bottom"
+      <button class="btn btn-warning set-filters" data-bs-toggle="tooltip" data-container="body" data-placement="bottom"
               title="Adds a filter 'New filter' and removes 'Coordinates', 'State', 'BSON'">Set filters
       </button>
     </div>
@@ -106,22 +98,23 @@
     </div>
   </div>
 </div>
-
 <script src="/node_modules/jquery/dist/jquery.js"></script>
+<script src="/node_modules/@popperjs/core/dist/umd/popper.js"></script>
 <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
-<script src="/node_modules/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="/node_modules/chosenjs/chosen.jquery.js"></script>
-<script src="/node_modules/bootbox/bootbox.js"></script>
 <script src="/node_modules/bootstrap-slider/dist/bootstrap-slider.js"></script>
-<script src="/node_modules/selectize/dist/js/standalone/selectize.js"></script>
+<script src="/node_modules/@selectize/selectize/dist/js/selectize.js"></script>
 <script src="/node_modules/jquery-extendext/jquery-extendext.js"></script>
 <script src="/node_modules/sql-parser-mistic/browser/sql-parser.js"></script>
 <script src="/node_modules/interactjs/dist/interact.js"></script>
+ <script src="/node_modules/bootbox/dist/bootbox.all.js"></script>
 
 <script src="/dist/js/query-builder.js"></script>
 
 <script>
-  $('[data-toggle="tooltip"]').tooltip();
+  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
+        new bootstrap.Tooltip(element);
+  });
 
   var $b = $('#builder');
 
@@ -142,7 +135,6 @@
       'bt-tooltip-errors': { delay: 100 },
       'sortable': null,
       'filter-description': { mode: 'bootbox' },
-      'bt-selectpicker': null,
 //      'chosen-selectpicker': null,
       'unique-filter': null,
       'bt-checkbox': { color: 'primary' },
@@ -185,7 +177,7 @@
           en: 'Name',
           fr: 'Nom'
         },
-        icon: 'glyphicon glyphicon-user',
+        icon: 'bi-person-fill',
         value_separator: ',',
         type: 'string',
         optgroup: 'core',
@@ -202,7 +194,7 @@
       {
         id: 'age',
         label: 'Age',
-        icon: 'glyphicon glyphicon-calendar',
+        icon: 'bi-calendar3',
         type: 'integer',
         input: 'text',
         value_separator: '|',
@@ -219,7 +211,7 @@
       {
         id: 'bson',
         label: 'BSON',
-        icon: 'glyphicon glyphicon-qrcode',
+        icon: 'bi-qr-code',
         type: 'string',
         input: 'textarea',
         operators: ['equal'],
@@ -232,7 +224,7 @@
       {
         id: 'category',
         label: 'Category',
-        icon: 'glyphicon glyphicon-th-list',
+        icon: 'bi-list-task',
         type: 'integer',
         input: 'checkbox',
         optgroup: 'core',
@@ -258,7 +250,7 @@
       {
         id: 'continent',
         label: 'Continent',
-        icon: 'glyphicon glyphicon-globe',
+        icon: 'bi-globe-americas',
         type: 'string',
         input: 'select',
         optgroup: 'core',
@@ -307,7 +299,7 @@
       {
         id: 'state',
         label: 'State',
-        icon: 'glyphicon glyphicon-globe',
+        icon: 'bi-globe-americas',
         type: 'string',
         input: 'select',
         multiple: true,
@@ -343,7 +335,7 @@
       {
         id: 'in_stock',
         label: 'In stock',
-        icon: 'glyphicon glyphicon-log-in',
+        icon: 'bi-box-arrow-in-right',
         type: 'integer',
         input: 'radio',
         optgroup: 'plugin',
@@ -359,7 +351,7 @@
       {
         id: 'price',
         label: 'Price',
-        icon: 'glyphicon glyphicon-usd',
+        icon: 'bi-currency-dollar',
         type: 'double',
         size: 5,
         validation: {
@@ -376,7 +368,7 @@
       {
         id: 'rate',
         label: 'Rate',
-        icon: 'glyphicon glyphicon-flash',
+        icon: 'bi-box-arrow-lightning-charge-fill',
         type: 'integer',
         validation: {
           min: 0,
@@ -400,7 +392,7 @@
       {
         id: 'id',
         label: 'Identifier',
-        icon: 'glyphicon glyphicon-sunglasses',
+        icon: 'bi-sunglasses',
         type: 'string',
         optgroup: 'plugin',
         placeholder: '____-____-____',
@@ -419,7 +411,7 @@
       {
         id: 'coord',
         label: 'Coordinates',
-        icon: 'glyphicon glyphicon-star-empty',
+        icon: 'bi-star',
         type: 'string',
         default_value: 'C.5',
         description: 'The letter is the cadran identifier:\
@@ -489,7 +481,7 @@
   });
 
   // change language
-  $('[name=language]').selectpicker().on('change', function() {
+  $('[name=language]').on('change', function() {
     var lang = $(this).val();
 
     var done = function() {
@@ -516,7 +508,7 @@
   // change theme
   $('.change-theme').on('click', function() {
     $('#qb-theme').replaceWith('<link rel="stylesheet" href="' + $(this).data('qb') + '" id="qb-theme">');
-    $('#bt-theme').replaceWith('<link rel="stylesheet" href="' + $(this).data('bt') + '" id="bt-theme">');
+    $('[data-bs-theme]').attr('data-bs-theme', $(this).data('bt'));
   });
 
   // set rules
@@ -604,12 +596,12 @@
   // reset builder
   $('.reset').on('click', function() {
     $('#builder').queryBuilder('reset');
-    $('#result').addClass('hide').find('pre').empty();
+    $('#result').addClass('d-none').find('pre').empty();
   });
 
   // get rules
   $('.parse-json').on('click', function() {
-    $('#result').removeClass('hide')
+    $('#result').removeClass('d-none')
       .find('pre').html(JSON.stringify(
       $('#builder').queryBuilder('getRules', {
         get_flags: true,
@@ -621,14 +613,14 @@
 
   $('.parse-sql').on('click', function() {
     var res = $('#builder').queryBuilder('getSQL', $(this).data('stmt'), false);
-    $('#result').removeClass('hide')
+    $('#result').removeClass('d-none')
       .find('pre').html(
       res.sql + (res.params ? '\n\n' + JSON.stringify(res.params, undefined, 2) : '')
     );
   });
 
   $('.parse-mongo').on('click', function() {
-    $('#result').removeClass('hide')
+    $('#result').removeClass('d-none')
       .find('pre').html(JSON.stringify(
       $('#builder').queryBuilder('getMongo'),
       undefined, 2
@@ -638,7 +630,7 @@
   // set filters
   $('.set-filters').on('click', function() {
     $(this).prop('disabled', true);
-    $(this).tooltip('hide');
+    bootstrap.Tooltip.getInstance($(this)).hide();
 
     // add a new filter after 'state'
     $('#builder').queryBuilder('addFilter',
@@ -658,10 +650,6 @@
 
     // also available : 'setFilters'
   });
-</script>
-
-<script>
-  document.write('<script src="//' + location.host.split(':')[0] + ':35729/livereload.js" async defer><' + '/script>');
 </script>
 </body>
 </html>

@@ -133,8 +133,8 @@
 
 
 /*!
- * jQuery QueryBuilder 2.7.0
- * Copyright 2014-2023 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * jQuery QueryBuilder 3.0.0
+ * Copyright 2014-2024 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (https://opensource.org/licenses/MIT)
  */
 
@@ -287,7 +287,7 @@ var QueryBuilder = function($el, options) {
     this.status.id = this.$el.attr('id');
 
     // INIT
-    this.$el.addClass('query-builder form-inline');
+    this.$el.addClass('query-builder');
 
     this.filters = this.checkFilters(this.filters);
     this.operators = this.checkOperators(this.operators);
@@ -565,11 +565,11 @@ QueryBuilder.DEFAULTS = {
     ],
 
     icons: {
-        add_group:    'glyphicon glyphicon-plus-sign',
-        add_rule:     'glyphicon glyphicon-plus',
-        remove_group: 'glyphicon glyphicon-remove',
-        remove_rule:  'glyphicon glyphicon-remove',
-        error:        'glyphicon glyphicon-warning-sign'
+        add_group:    'bi-plus-circle-fill',
+        add_rule:     'bi-plus-lg',
+        remove_group: 'bi-x-lg',
+        remove_rule:  'bi-x-lg',
+        error:        'bi-exclamation-triangle'
     }
 };
 
@@ -2812,24 +2812,24 @@ QueryBuilder.templates.group = ({ group_id, level, conditions, icons, settings, 
   return `
 <div id="${group_id}" class="rules-group-container">
   <div class="rules-group-header">
-    <div class="btn-group pull-right group-actions">
-      <button type="button" class="btn btn-xs btn-success" data-add="rule">
-        <i class="${icons}"></i> ${translate("add_rule")}
+    <div class="btn-group float-end group-actions">
+      <button type="button" class="btn btn-sm btn-success" data-add="rule">
+        <i class="${icons.add_rule}"></i> ${translate("add_rule")}
       </button>
       ${settings.allow_groups === -1 || settings.allow_groups >= level ? `
-        <button type="button" class="btn btn-xs btn-success" data-add="group">
+        <button type="button" class="btn btn-sm btn-success" data-add="group">
           <i class="${icons.add_group}"></i> ${translate("add_group")}
         </button>
       ` : ''}
       ${level > 1 ? `
-        <button type="button" class="btn btn-xs btn-danger" data-delete="group">
+        <button type="button" class="btn btn-sm btn-danger" data-delete="group">
           <i class="${icons.remove_group}"></i> ${translate("delete_group")}
         </button>
       ` : ''}
     </div>
     <div class="btn-group group-conditions">
       ${conditions.map(condition => `
-        <label class="btn btn-xs btn-primary">
+        <label class="btn btn-sm btn-primary">
           <input type="radio" name="${group_id}_cond" value="${condition}"> ${translate("conditions", condition)}
         </label>
       `).join('\n')}
@@ -2848,8 +2848,8 @@ QueryBuilder.templates.rule = ({ rule_id, icons, settings, translate, builder })
   return `
 <div id="${rule_id}" class="rule-container">
   <div class="rule-header">
-    <div class="btn-group pull-right rule-actions">
-      <button type="button" class="btn btn-xs btn-danger" data-delete="rule">
+    <div class="btn-group float-end rule-actions">
+      <button type="button" class="btn btn-sm btn-danger" data-delete="rule">
         <i class="${icons.remove_rule}"></i> ${translate("delete_rule")}
       </button>
     </div>
@@ -2866,7 +2866,7 @@ QueryBuilder.templates.rule = ({ rule_id, icons, settings, translate, builder })
 QueryBuilder.templates.filterSelect = ({ rule, filters, icons, settings, translate, builder }) => {
   let optgroup = null;
   return `
-<select class="form-control" name="${rule.id}_filter">
+<select class="form-select" name="${rule.id}_filter">
   ${settings.display_empty_filter ? `
     <option value="-1">${settings.select_placeholder}</option>
   ` : ''}
@@ -2891,7 +2891,7 @@ ${operators.length === 1 ? `
 ${translate("operators", operators[0].type)}
 </span>
 ` : ''}
-<select class="form-control ${operators.length === 1 ? 'hide' : ''}" name="${rule.id}_operator">
+<select class="form-select ${operators.length === 1 ? 'd-none' : ''}" name="${rule.id}_operator">
   ${operators.map(operator => `
     ${optgroup !== operator.optgroup ? `
       ${optgroup !== null ? `</optgroup>` : ''}
@@ -2908,7 +2908,7 @@ ${translate("operators", operators[0].type)}
 QueryBuilder.templates.ruleValueSelect = ({ name, rule, icons, settings, translate, builder }) => {
   let optgroup = null;
   return `
-<select class="form-control" name="${name}" ${rule.filter.multiple ? 'multiple' : ''}>
+<select class="form-select" name="${name}" ${rule.filter.multiple ? 'multiple' : ''}>
   ${rule.filter.placeholder ? `
     <option value="${rule.filter.placeholder_value}" disabled selected>${rule.filter.placeholder}</option>
   ` : ''}
@@ -4059,12 +4059,12 @@ $.fn.queryBuilder.regional = QueryBuilder.regional;
  * @memberof module:plugins
  * @description Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.
  * @param {object} [options]
- * @param {string} [options.font='glyphicons']
+ * @param {string} [options.font='bootstrap-icons']
  * @param {string} [options.color='default']
  */
 QueryBuilder.define('bt-checkbox', function(options) {
-    if (options.font == 'glyphicons') {
-        this.$el.addClass('bt-checkbox-glyphicons');
+    if (options.font === 'bootstrap-icons') {
+        this.$el.addClass('bt-checkbox-bootstrap-icons');
     }
 
     this.on('getRuleInput.filter', function(h, rule, name) {
@@ -4087,65 +4087,13 @@ QueryBuilder.define('bt-checkbox', function(options) {
                 var color = filter.colors[key] || filter.colors._def_ || options.color;
                 var id = name + '_' + (i++);
 
-                h.value+= '\
-<div' + style + ' class="' + filter.input + ' ' + filter.input + '-' + color + '"> \
-  <input type="' + filter.input + '" name="' + name + '" id="' + id + '" value="' + key + '"> \
-  <label for="' + id + '">' + val + '</label> \
-</div>';
+                h.value += `<div ${style} class="${filter.input} ${filter.input}-${color} form-check form-check-inline"> <input class="form-check-input" type="${filter.input}" name="${name}" id="${id}" value="${key}"> <label class="form-check-label" for="${id}">${val}</label></div>`;
             });
         }
     });
 }, {
-    font: 'glyphicons',
+    font: 'bootstrap-icons',
     color: 'default'
-});
-
-
-/**
- * @class BtSelectpicker
- * @memberof module:plugins
- * @descriptioon Applies Bootstrap Select on filters and operators combo-boxes.
- * @param {object} [options]
- * @param {string} [options.container='body']
- * @param {string} [options.style='btn-inverse btn-xs']
- * @param {int|string} [options.width='auto']
- * @param {boolean} [options.showIcon=false]
- * @throws MissingLibraryError
- */
-QueryBuilder.define('bt-selectpicker', function(options) {
-    if (!$.fn.selectpicker || !$.fn.selectpicker.Constructor) {
-        Utils.error('MissingLibrary', 'Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');
-    }
-
-    var Selectors = QueryBuilder.selectors;
-
-    // init selectpicker
-    this.on('afterCreateRuleFilters', function(e, rule) {
-        rule.$el.find(Selectors.rule_filter).removeClass('form-control').selectpicker(options);
-    });
-
-    this.on('afterCreateRuleOperators', function(e, rule) {
-        rule.$el.find(Selectors.rule_operator).removeClass('form-control').selectpicker(options);
-    });
-
-    // update selectpicker on change
-    this.on('afterUpdateRuleFilter', function(e, rule) {
-        rule.$el.find(Selectors.rule_filter).selectpicker('render');
-    });
-
-    this.on('afterUpdateRuleOperator', function(e, rule) {
-        rule.$el.find(Selectors.rule_operator).selectpicker('render');
-    });
-
-    this.on('beforeDeleteRule', function(e, rule) {
-        rule.$el.find(Selectors.rule_filter).selectpicker('destroy');
-        rule.$el.find(Selectors.rule_operator).selectpicker('destroy');
-    });
-}, {
-    container: 'body',
-    style: 'btn-inverse btn-xs',
-    width: 'auto',
-    showIcon: false
 });
 
 
@@ -4158,8 +4106,9 @@ QueryBuilder.define('bt-selectpicker', function(options) {
  * @throws MissingLibraryError
  */
 QueryBuilder.define('bt-tooltip-errors', function(options) {
-    if (!$.fn.tooltip || !$.fn.tooltip.Constructor || !$.fn.tooltip.Constructor.prototype.fixTitle) {
-        Utils.error('MissingLibrary', 'Bootstrap Tooltip is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
+    if (! typeof bootstrap.Tooltip === "function") {
+        alert(typeof bootstrap.Tooltip );
+        Utils.error('MissingLibrary', 'Bootstrap Popper is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
     }
 
     var self = this;
@@ -4167,7 +4116,7 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
     // add BT Tooltip data
     this.on('getRuleTemplate.filter getGroupTemplate.filter', function(h) {
         var $h = $($.parseHTML(h.value));
-        $h.find(QueryBuilder.selectors.error_container).attr('data-toggle', 'tooltip');
+        $h.find(QueryBuilder.selectors.error_container).attr('data-bs-toggle', 'tooltip');
         h.value = $h.prop('outerHTML');
     });
 
@@ -4175,9 +4124,7 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
     this.model.on('update', function(e, node, field) {
         if (field == 'error' && self.settings.display_errors) {
             node.$el.find(QueryBuilder.selectors.error_container).eq(0)
-                .tooltip(options)
-                .tooltip('hide')
-                .tooltip('fixTitle');
+            .attr('data-bs-original-title',options).attr('data-bs-title',options).tooltip();
         }
     });
 }, {
@@ -4409,7 +4356,7 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
  * @memberof module:plugins
  * @description Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.
  * @param {object} [options]
- * @param {string} [options.icon='glyphicon glyphicon-info-sign']
+ * @param {string} [options.icon='bi-info-circle-fill']
  * @param {string} [options.mode='popover'] - inline, popover or bootbox
  * @throws ConfigError
  */
@@ -4449,30 +4396,28 @@ QueryBuilder.define('filter-description', function(options) {
             if (!description) {
                 $b.hide();
 
-                if ($b.data('bs.popover')) {
+                if ($b.data('bs-popover')) {
                     $b.popover('hide');
                 }
             }
             else {
                 if ($b.length === 0) {
-                    $b = $($.parseHTML('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="popover"><i class="' + options.icon + '"></i></button>'));
+                    $b = $($.parseHTML('<button type="button" class="btn btn-sm btn-info filter-description" data-bs-toggle="popover"><i class="' + options.icon + '"></i></button>'));
                     $b.prependTo(rule.$el.find(QueryBuilder.selectors.rule_actions));
-
-                    $b.popover({
+                    const popover = new bootstrap.Popover($b.get(0), {
                         placement: 'left',
                         container: 'body',
                         html: true
-                    });
-
+                    })
                     $b.on('mouseout', function() {
-                        $b.popover('hide');
+                        popover('hide');
                     });
                 }
                 else {
                     $b.css('display', '');
                 }
 
-                $b.data('bs.popover').options.content = description;
+                $b.data('bs-popover').options.content = description;
 
                 if ($b.attr('aria-describedby')) {
                     $b.popover('show');
@@ -4495,7 +4440,7 @@ QueryBuilder.define('filter-description', function(options) {
             }
             else {
                 if ($b.length === 0) {
-                    $b = $($.parseHTML('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="bootbox"><i class="' + options.icon + '"></i></button>'));
+                    $b = $($.parseHTML('<button type="button" class="btn btn-sm btn-info filter-description" data-bs-toggle="bootbox"><i class="' + options.icon + '"></i></button>'));
                     $b.prependTo(rule.$el.find(QueryBuilder.selectors.rule_actions));
 
                     $b.on('click', function() {
@@ -4511,7 +4456,7 @@ QueryBuilder.define('filter-description', function(options) {
         });
     }
 }, {
-    icon: 'glyphicon glyphicon-info-sign',
+    icon: 'bi-info-circle-fill',
     mode: 'popover'
 });
 
@@ -4542,7 +4487,7 @@ QueryBuilder.extend(/** @lends module:plugins.FilterDescription.prototype */ {
  * @memberof module:plugins
  * @description Allows to invert a rule operator, a group condition or the entire builder.
  * @param {object} [options]
- * @param {string} [options.icon='glyphicon glyphicon-random']
+ * @param {string} [options.icon='bi-shuffle']
  * @param {boolean} [options.recursive=true]
  * @param {boolean} [options.invert_rules=true]
  * @param {boolean} [options.display_rules_button=false]
@@ -4572,7 +4517,7 @@ QueryBuilder.define('invert', function(options) {
         this.on('getGroupTemplate.filter', function(h) {
             var $h = $($.parseHTML(h.value));
             $h.find(Selectors.condition_container).after(
-                '<button type="button" class="btn btn-xs btn-default" data-invert="group">' +
+                '<button type="button" class="btn btn-sm btn-default" data-invert="group">' +
                 '<i class="' + options.icon + '"></i> ' + self.translate('invert') +
                 '</button>'
             );
@@ -4583,7 +4528,7 @@ QueryBuilder.define('invert', function(options) {
             this.on('getRuleTemplate.filter', function(h) {
                 var $h = $($.parseHTML(h.value));
                 $h.find(Selectors.rule_actions).prepend(
-                    '<button type="button" class="btn btn-xs btn-default" data-invert="rule">' +
+                    '<button type="button" class="btn btn-sm btn-default" data-invert="rule">' +
                     '<i class="' + options.icon + '"></i> ' + self.translate('invert') +
                     '</button>'
                 );
@@ -4592,7 +4537,7 @@ QueryBuilder.define('invert', function(options) {
         }
     }
 }, {
-    icon: 'glyphicon glyphicon-random',
+    icon: 'bi-shuffle',
     recursive: true,
     invert_rules: true,
     display_rules_button: false,
@@ -5104,8 +5049,8 @@ QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
  * @memberof module:plugins
  * @description Adds a "Not" checkbox in front of group conditions.
  * @param {object} [options]
- * @param {string} [options.icon_checked='glyphicon glyphicon-checked']
- * @param {string} [options.icon_unchecked='glyphicon glyphicon-unchecked']
+ * @param {string} [options.icon_checked='bi-check2-square']
+ * @param {string} [options.icon_unchecked='bi-square']
  */
 QueryBuilder.define('not-group', function(options) {
     var self = this;
@@ -5135,7 +5080,7 @@ QueryBuilder.define('not-group', function(options) {
         this.on('getGroupTemplate.filter', function(h) {
             var $h = $($.parseHTML(h.value));
             $h.find(QueryBuilder.selectors.condition_container).prepend(
-                '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
+                '<button type="button" class="btn btn-sm btn-default" data-not="group">' +
                 '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
                 '</button>'
             );
@@ -5213,8 +5158,8 @@ QueryBuilder.define('not-group', function(options) {
         e.value.not = !!data.not;
     });
 }, {
-    icon_unchecked: 'glyphicon glyphicon-unchecked',
-    icon_checked: 'glyphicon glyphicon-check',
+    icon_unchecked: 'bi-square',
+    icon_checked: 'bi-check2-square',
     disable_template: false
 });
 
@@ -5262,7 +5207,7 @@ QueryBuilder.extend(/** @lends module:plugins.NotGroup.prototype */ {
  * @param {object} [options]
  * @param {boolean} [options.inherit_no_drop=true]
  * @param {boolean} [options.inherit_no_sortable=true]
- * @param {string} [options.icon='glyphicon glyphicon-sort']
+ * @param {string} [options.icon='bi-sort-down']
  * @throws MissingLibraryError, ConfigError
  */
 QueryBuilder.define('sortable', function(options) {
@@ -5434,7 +5379,7 @@ QueryBuilder.define('sortable', function(options) {
 }, {
     inherit_no_sortable: true,
     inherit_no_drop: true,
-    icon: 'glyphicon glyphicon-sort',
+    icon: 'bi-sort-down',
     disable_template: false
 });
 
@@ -6289,7 +6234,7 @@ QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
 
 
 /*!
- * jQuery QueryBuilder 2.7.0
+ * jQuery QueryBuilder 3.0.0
  * Locale: English (en)
  * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
  * Licensed under MIT (https://opensource.org/licenses/MIT)

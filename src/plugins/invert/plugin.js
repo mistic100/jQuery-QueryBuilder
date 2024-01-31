@@ -3,7 +3,7 @@
  * @memberof module:plugins
  * @description Allows to invert a rule operator, a group condition or the entire builder.
  * @param {object} [options]
- * @param {string} [options.icon='glyphicon glyphicon-random']
+ * @param {string} [options.icon='bi-shuffle']
  * @param {boolean} [options.recursive=true]
  * @param {boolean} [options.invert_rules=true]
  * @param {boolean} [options.display_rules_button=false]
@@ -33,7 +33,7 @@ QueryBuilder.define('invert', function(options) {
         this.on('getGroupTemplate.filter', function(h) {
             var $h = $($.parseHTML(h.value));
             $h.find(Selectors.condition_container).after(
-                '<button type="button" class="btn btn-xs btn-default" data-invert="group">' +
+                '<button type="button" class="btn btn-sm btn-default" data-invert="group">' +
                 '<i class="' + options.icon + '"></i> ' + self.translate('invert') +
                 '</button>'
             );
@@ -44,7 +44,7 @@ QueryBuilder.define('invert', function(options) {
             this.on('getRuleTemplate.filter', function(h) {
                 var $h = $($.parseHTML(h.value));
                 $h.find(Selectors.rule_actions).prepend(
-                    '<button type="button" class="btn btn-xs btn-default" data-invert="rule">' +
+                    '<button type="button" class="btn btn-sm btn-default" data-invert="rule">' +
                     '<i class="' + options.icon + '"></i> ' + self.translate('invert') +
                     '</button>'
                 );
@@ -53,7 +53,7 @@ QueryBuilder.define('invert', function(options) {
         }
     }
 }, {
-    icon: 'glyphicon glyphicon-random',
+    icon: 'bi-shuffle',
     recursive: true,
     invert_rules: true,
     display_rules_button: false,
