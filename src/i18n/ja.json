@@ -1,0 +1,65 @@
+{
+  "__locale": "Japanese (ja)",
+  "__author": "Masato Kawaguchi, https://github.com/mkawaguchi",
+
+  "add_rule": "ルールを追加",
+  "add_group": "グループを追加",
+  "delete_rule": "削除",
+  "delete_group": "削除",
+  "conditions": {
+    "AND": "AND",
+    "OR": "OR"
+  },
+
+  "operators": {
+    "equal": "等しい",
+    "not_equal": "等しくない",
+    "in": "in",
+    "not_in": "not in",
+    "less": "未満",
+    "less_or_equal": "以下",
+    "greater": "より大きい",
+    "greater_or_equal": "以上",
+    "between": "〜の間",
+    "not_between": "〜の間でない",
+    "begins_with": "から始まる",
+    "not_begins_with": "から始まらない",
+    "contains": "含む",
+    "not_contains": "含まない",
+    "ends_with": "で終わる",
+    "not_ends_with": "で終わらない",
+    "is_empty": "空（から）",
+    "is_not_empty": "空（から）でない",
+    "is_null": "NULL",
+    "is_not_null": "NULLでない"
+  },
+
+  "errors": {
+    "no_filter": "フィルターが選択されていません",
+    "empty_group": "グループが空（から）です",
+    "radio_empty": "値が選択されていません",
+    "checkbox_empty": "チェックボックスが選択されていません",
+    "select_empty": "セレクトボックスが選択されていません",
+    "string_empty": "入力値が空（から）です",
+    "string_exceed_min_length": "少なくても{0}文字が含まれている必要があります",
+    "string_exceed_max_length": "{0}文字未満に設定する必要があります",
+    "string_invalid_format": "無効な形式です ({0})",
+    "number_nan": "数字ではありません",
+    "number_not_integer": "整数ではありません",
+    "number_not_double": "小数ではありません",
+    "number_exceed_min": "入力値を {0} より大きくしてください",
+    "number_exceed_max": "入力値を {0} より小さくしてください",
+    "number_wrong_step": "{0}に続く数を指定する必要があります",
+    "number_between_invalid": "不正な値が含まれています, {0} は{1}より大きい値である必要があります",
+    "datetime_empty": "日付が空です",
+    "datetime_invalid": "無効な日付の形式です ({0})",
+    "datetime_exceed_min": "{0} より後の日付にしてください",
+    "datetime_exceed_max": "{0} より前の日付にしてください",
+    "datetime_between_invalid": "無効な値です。 {0} は{1}より大きな値です",
+    "boolean_not_valid": "真偽値ではありません",
+    "operator_not_multiple": "演算子 \"{1}\" 複数の等式の指定は許可されていません"
+  },
+
+  "invert": "反転",
+  "NOT": "NOT"
+}
