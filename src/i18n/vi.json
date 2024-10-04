@@ -1,0 +1,63 @@
+{
+  "__locale": "Tiếng Việt (vi)",
+  "__author": "Tanmv, https://github.com/mvtcode",
+
+  "add_rule": "Thêm Filter",
+  "add_group": "Thêm nhóm",
+  "delete_rule": "Xóa",
+  "delete_group": "Xóa",
+
+  "conditions": {
+    "AND": "Và",
+    "OR": "Hoặc"
+  },
+
+  "operators": {
+    "equal": "=",
+    "not_equal": "≠",
+    "in": "IN",
+    "not_in": "NOT IN",
+    "less": "<",
+    "less_or_equal": "≤",
+    "greater": ">",
+    "greater_or_equal": "≥",
+    "between": "BETWEEN",
+    "not_between": "NOT BETWEEN",
+    "begins_with": "Bắt đầu",
+    "not_begins_with": "Không bắt đầu",
+    "contains": "Có chứa",
+    "not_contains": "Không chứa",
+    "ends_with": "Kết thúc",
+    "not_ends_with": "Không kết thúc",
+    "is_empty": "IS EMPTY",
+    "is_not_empty": "NOT EMPTY",
+    "is_null": "IS NULL",
+    "is_not_null": "IS NOT NULL"
+  },
+
+  "errors": {
+    "no_filter": "Không filter được chọn",
+    "empty_group": "Nhóm không được rỗng",
+    "radio_empty": "Không có giá trị",
+    "checkbox_empty": "Không có giá trị",
+    "select_empty": "Không có giá trị",
+    "string_empty": "Không có giá trị",
+    "string_exceed_min_length": "Phải chứa ít nhất {0} ký tự",
+    "string_exceed_max_length": "Không được chứa nhiều hơn {0} ký tự",
+    "string_invalid_format": "Định dạng không đúng ({0})",
+    "number_nan": "Không phải là số",
+    "number_not_integer": "Không phải là số nguyên",
+    "number_not_double": "Không phải là số thực",
+    "number_exceed_min": "Phải lớn hơn {0}",
+    "number_exceed_max": "Phải nhỏ hơn {0}",
+    "number_wrong_step": "Phải là bội của {0}",
+    "number_between_invalid": "Không hợp lệ, {0} phải lớn hơn {1}",
+    "datetime_empty": "Giá trị rỗng",
+    "datetime_invalid": "Ngày tháng không hợp lệ ({0})",
+    "datetime_exceed_min": "Phải trước {0}",
+    "datetime_exceed_max": "Phải sau {0}",
+    "datetime_between_invalid": "Không hợp lệ, {0} phải sau {1}",
+    "boolean_not_valid": "Không phải boolean",
+    "operator_not_multiple": "Operator \"{1}\" không cho chọn nhiều giá trị"
+  }
+}
