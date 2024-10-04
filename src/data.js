@@ -170,24 +170,28 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
 
                             // we need MomentJS
                             if (validation.format) {
-                                if (!('moment' in window)) {
-                                    Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
-                                }
-
-                                var datetime = moment(tempValue[j], validation.format);
+                                if (dayjs in window) {
+                                    window.momenty = window.dayjs;
+                                } else if ('moment' in window) {
+                                    window.momenty = window.moment;
+                                } else {
+                                    Utils.error('MissingLibrary', 'DayJS or MomentJS is required for Date/Time validation. Get it here https://day.js.org/ or https://momentjs.com');
+                                } 
+            
+                                var datetime = momenty(tempValue[j], validation.format);
                                 if (!datetime.isValid()) {
                                     result = [this.getValidationMessage(validation, 'format', 'datetime_invalid'), validation.format];
                                     break;
                                 }
                                 else {
                                     if (validation.min) {
-                                        if (datetime < moment(validation.min, validation.format)) {
+                                        if (datetime < momenty(validation.min, validation.format)) {
                                             result = [this.getValidationMessage(validation, 'min', 'datetime_exceed_min'), validation.min];
                                             break;
                                         }
                                     }
                                     if (validation.max) {
-                                        if (datetime > moment(validation.max, validation.format)) {
+                                        if (datetime > momenty(validation.max, validation.format)) {
                                             result = [this.getValidationMessage(validation, 'max', 'datetime_exceed_max'), validation.max];
                                             break;
                                         }
@@ -231,12 +235,17 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
 
             case 'datetime':
                 // we need MomentJS
+                
                 if (validation.format) {
-                    if (!('moment' in window)) {
-                        Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
-                    }
+                    if (dayjs in window) {
+                        window.momenty = window.dayjs;
+                    } else if ('moment' in window) {
+                        window.momenty = window.moment;
+                    } else {
+                        Utils.error('MissingLibrary', 'DayJS or MomentJS is required for Date/Time validation. Get it here https://day.js.org/ or https://momentjs.com');
+                    } 
 
-                    if (moment(value[0], validation.format).isAfter(moment(value[1], validation.format))) {
+                    if (momenty(value[0], validation.format).isAfter(momenty(value[1], validation.format))) {
                         result = ['datetime_between_invalid', value[0], value[1]];
                     }
                 }

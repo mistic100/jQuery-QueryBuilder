@@ -36,7 +36,6 @@ jQuery-QueryBuilder is available on [jsDelivr](https://www.jsdelivr.com/package/
  * [Bootstrap 5](https://getbootstrap.com/docs/5.3/) CSS and bundle.js which includes `Popper` for tooltips and popovers
  * [Bootstrap Icons](https://icons.getbootstrap.com/) 
  * [jQuery.extendext](https://github.com/mistic100/jQuery.extendext)
- * [MomentJS](https://momentjs.com) (optional, for Date/Time validation)
  * [SQL Parser](https://github.com/mistic100/sql-parser) (optional, for SQL methods)
  * Other Bootstrap/jQuery plugins used by plugins
 
