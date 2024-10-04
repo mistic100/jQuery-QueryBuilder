@@ -24,8 +24,8 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
     // init/refresh tooltip when title changes
     this.model.on('update', function(e, node, field) {
         if (field == 'error' && self.settings.display_errors) {
-            node.$el.find(QueryBuilder.selectors.error_container).eq(0)
-            .attr('data-bs-original-title',options).attr('data-bs-title',options).tooltip();
+            var elem = node.$el.find(QueryBuilder.selectors.error_container).eq(0)
+            elem.attr('data-bs-original-title', elem.attr('title')).tooltip(options);
         }
     });
 }, {
