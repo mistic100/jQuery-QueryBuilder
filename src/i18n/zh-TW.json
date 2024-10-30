@@ -1,0 +1,61 @@
+{
+  "__locale": "Traditional Chinese (zh_TW)",
+  "__author": "kuaz, kuaz@kuaz.info",
+
+  "add_rule": "添加規則",
+  "add_group": "添加群組",
+  "delete_rule": "刪除",
+  "delete_group": "刪除群組",
+
+  "conditions": {
+    "AND": "且",
+    "OR": "或"
+  },
+
+  "operators": {
+    "equal": "等於",
+    "not_equal": "不等於",
+    "in": "在...之內",
+    "not_in": "不在...之內",
+    "less": "小於",
+    "less_or_equal": "小於或等於",
+    "greater": "大於",
+    "greater_or_equal": "大於或等於",
+    "between": "在...之間",
+    "not_between": "不在...之間",
+    "begins_with": "以...開頭",
+    "not_begins_with": "不以...開頭",
+    "contains": "包含以下內容",
+    "not_contains": "不包含以下內容",
+    "ends_with": "以...為結尾",
+    "not_ends_with": "不以...為結尾",
+    "is_empty": "為空",
+    "is_not_empty": "不為空",
+    "is_null": "為 null",
+    "is_not_null": "不為 null"
+  },
+
+  "errors": {
+    "no_filter": "沒有選擇過濾器",
+    "empty_group": "該群組為空",
+    "radio_empty": "沒有選擇選項",
+    "checkbox_empty": "沒有勾選選項",
+    "select_empty": "沒有選擇選項",
+    "string_empty": "沒有輸入值",
+    "string_exceed_min_length": "必須至少包含 {0} 個字元",
+    "string_exceed_max_length": "必須不超過 {0} 個字元",
+    "string_invalid_format": "無效格式 ({0})",
+    "number_nan": "輸入值不是數字",
+    "number_not_integer": "不是整數",
+    "number_not_double": "不是浮點數",
+    "number_exceed_min": "必須大於 {0}",
+    "number_exceed_max": "必須小於 {0}",
+    "number_wrong_step": "必須是 {0} 的倍數",
+    "datetime_empty": "值為空",
+    "datetime_invalid": "不是有效日期 ({0})",
+    "datetime_exceed_min": "必須在 {0} 之後",
+    "datetime_exceed_max": "必須在 {0} 之前",
+    "boolean_not_valid": "不是布林值",
+    "operator_not_multiple": "選項 \"{1}\" 無法接受多個值"
+  }
+}
