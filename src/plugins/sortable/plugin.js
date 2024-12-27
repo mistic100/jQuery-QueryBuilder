@@ -233,9 +233,23 @@ function moveSortableToTarget(node, target, builder) {
     if (method) {
         node[method](builder.getModel(parent));
 
-        // refresh radio value
-        if (builder && node instanceof Rule) {
-            builder.setRuleInputValue(node, node.value);
-        }
+        if (builder) refreshRadioValue(builder, node);
+    }
+}
+
+/**
+ * Refreshes the value of radio inputs in all nodes
+ * @memberof module:plugins.Sortable
+ * @param {QueryBuilder} builder
+ * @param {Node} node
+ * @private
+ */
+function refreshRadioValue(builder, node) {
+    if (node instanceof Rule) {
+        builder.setRuleInputValue(node, node.value);
+    } else if (node instanceof Group) {
+        node.rules.forEach(function(node) {
+            refreshRadioValue(builder, node);
+        });
     }
 }
