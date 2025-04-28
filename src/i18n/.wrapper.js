@@ -8,7 +8,7 @@
 }(this, function($) {
 "use strict";
 
-var QueryBuilder = $.fn.queryBuilder;
+var QueryBuilder = window.$.fn.queryBuilder;
 
 @@js
 
