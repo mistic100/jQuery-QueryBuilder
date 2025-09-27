@@ -11,6 +11,18 @@
  */
 
 /**
+ * jQuery 4.0 compatibility polyfill for removed methods
+ */
+if (!$.isArray) {
+    $.isArray = Array.isArray;
+}
+if (!$.trim) {
+    $.trim = function(str) {
+        return str == null ? "" : String(str).trim();
+    };
+}
+
+/**
  * @param {jQuery} $el
  * @param {object} options - see {@link http://querybuilder.js.org/#options}
  * @constructor

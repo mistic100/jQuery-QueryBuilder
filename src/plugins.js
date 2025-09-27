@@ -61,7 +61,7 @@ QueryBuilder.prototype.initPlugins = function() {
         return;
     }
 
-    if ($.isArray(this.plugins)) {
+    if (Array.isArray(this.plugins)) {
         var tmp = {};
         this.plugins.forEach(function(plugin) {
             tmp[plugin] = null;

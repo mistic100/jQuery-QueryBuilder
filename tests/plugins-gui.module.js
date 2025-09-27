@@ -121,7 +121,7 @@ $(function(){
         );
 
         assert.equal(
-            $('#builder_rule_0 .error-container').data('originalTitle'),
+            $('#builder_rule_0 .error-container').data('bsOriginalTitle'),
             'Empty value',
             'Error title should be "Empty value"'
         );

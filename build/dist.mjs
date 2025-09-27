@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { globSync } from 'glob';
 import * as sass from 'sass';
-import pkg from '../package.json' assert { type: 'json' };
+const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url)));
 
 const DEV = process.argv[2] === '--dev';
 

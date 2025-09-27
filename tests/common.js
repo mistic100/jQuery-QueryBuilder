@@ -1,4 +1,16 @@
 /**
+ * jQuery 4.0 compatibility polyfill for removed methods
+ */
+if (!$.isArray) {
+    $.isArray = Array.isArray;
+}
+if (!$.trim) {
+    $.trim = function(str) {
+        return str == null ? "" : String(str).trim();
+    };
+}
+
+/**
  * Sync load of language file once QUnit and Blanket are ready
  * Otherwise the language file is loaded before instrumented files
  */

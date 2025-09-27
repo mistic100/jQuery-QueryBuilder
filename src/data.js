@@ -48,7 +48,7 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
     }
 
     for (var i = 0; i < operator.nb_inputs; i++) {
-        if (!operator.multiple && $.isArray(value[i]) && value[i].length > 1) {
+        if (!operator.multiple && Array.isArray(value[i]) && value[i].length > 1) {
             result = ['operator_not_multiple', operator.type, this.translate('operators', operator.type)];
             break;
         }
@@ -82,7 +82,7 @@ QueryBuilder.prototype._validateValue = function(rule, value) {
                 break;
 
             default:
-                tempValue = $.isArray(value[i]) ? value[i] : [value[i]];
+                tempValue = Array.isArray(value[i]) ? value[i] : [value[i]];
 
                 for (var j = 0; j < tempValue.length; j++) {
                     switch (QueryBuilder.types[filter.type]) {
@@ -415,7 +415,7 @@ QueryBuilder.prototype.getRuleInputValue = function(rule) {
                 val = val.split(filter.value_separator);
             }
 
-            if ($.isArray(val)) {
+            if (Array.isArray(val)) {
                 return val.map(function(subval) {
                     return Utils.changeType(subval, filter.type);
                 });
@@ -481,7 +481,7 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
                     break;
 
                 case 'checkbox':
-                    if (!$.isArray(value[i])) {
+                    if (!Array.isArray(value[i])) {
                         value[i] = [value[i]];
                     }
                     value[i].forEach(function(value) {
@@ -490,7 +490,7 @@ QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
                     break;
 
                 default:
-                    if (operator.multiple && filter.value_separator && $.isArray(value[i])) {
+                    if (operator.multiple && filter.value_separator && Array.isArray(value[i])) {
                         value[i] = value[i].join(filter.value_separator);
                     }
                     $value.find('[name=' + name + ']').val(value[i]).trigger('change');

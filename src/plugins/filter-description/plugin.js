@@ -32,9 +32,22 @@ QueryBuilder.define('filter-description', function(options) {
     }
     // POPOVER
     else if (options.mode === 'popover') {
-        if (!$.fn.popover || !$.fn.popover.Constructor || !$.fn.popover.Constructor.prototype.fixTitle) {
-            Utils.error('MissingLibrary', 'Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
-        }
+        // Helper function to safely access Bootstrap Popover
+        var getBootstrapPopover = function() {
+            var bootstrapObj = null;
+            try {
+                if (typeof window !== 'undefined' && window.bootstrap && typeof window.bootstrap.Popover === 'function') {
+                    return window.bootstrap.Popover;
+                } else if (typeof bootstrap !== 'undefined' && typeof bootstrap.Popover === 'function') {
+                    return bootstrap.Popover;
+                }
+            } catch (e) {
+                // Handle any errors silently
+            }
+
+            // If we get here, Bootstrap Popover is not available
+            throw new Error('Bootstrap Popover is not available. Make sure Bootstrap 5 is loaded.');
+        };
 
         this.on('afterUpdateRuleFilter afterUpdateRuleOperator', function(e, rule) {
             var $b = rule.$el.find('button.filter-description');
@@ -43,31 +56,76 @@ QueryBuilder.define('filter-description', function(options) {
             if (!description) {
                 $b.hide();
 
-                if ($b.data('bs-popover')) {
-                    $b.popover('hide');
+                // Hide existing popover using Bootstrap 5 API
+                try {
+                    var PopoverClass = getBootstrapPopover();
+                    var existingPopover = PopoverClass.getInstance($b.get(0));
+                    if (existingPopover) {
+                        existingPopover.hide();
+                    }
+                } catch (e) {
+                    console.warn('Failed to hide popover:', e.message);
                 }
             }
             else {
                 if ($b.length === 0) {
                     $b = $($.parseHTML('<button type="button" class="btn btn-sm btn-info filter-description" data-bs-toggle="popover"><i class="' + options.icon + '"></i></button>'));
                     $b.prependTo(rule.$el.find(QueryBuilder.selectors.rule_actions));
-                    const popover = new bootstrap.Popover($b.get(0), {
-                        placement: 'left',
-                        container: 'body',
-                        html: true
-                    })
-                    $b.on('mouseout', function() {
-                        popover('hide');
-                    });
+
+                    // Create Bootstrap 5 popover
+                    try {
+                        var PopoverClass = getBootstrapPopover();
+                        var popover = new PopoverClass($b.get(0), {
+                            placement: 'left',
+                            container: 'body',
+                            html: true,
+                            content: description
+                        });
+
+                        $b.on('mouseout', function() {
+                            popover.hide();
+                        });
+                    } catch (e) {
+                        console.warn('Failed to create popover:', e.message);
+                    }
                 }
                 else {
                     $b.css('display', '');
+
+                    // Update existing popover content
+                    try {
+                        var PopoverClass = getBootstrapPopover();
+                        var existingPopover = PopoverClass.getInstance($b.get(0));
+                        if (existingPopover) {
+                            // Dispose and recreate with new content (Bootstrap 5 doesn't have easy content update)
+                            existingPopover.dispose();
+                            var newPopover = new PopoverClass($b.get(0), {
+                                placement: 'left',
+                                container: 'body',
+                                html: true,
+                                content: description
+                            });
+
+                            $b.on('mouseout', function() {
+                                newPopover.hide();
+                            });
+                        }
+                    } catch (e) {
+                        console.warn('Failed to update popover:', e.message);
+                    }
                 }
 
-                $b.data('bs-popover').options.content = description;
-
+                // Show popover if it should be visible
                 if ($b.attr('aria-describedby')) {
-                    $b.popover('show');
+                    try {
+                        var PopoverClass = getBootstrapPopover();
+                        var currentPopover = PopoverClass.getInstance($b.get(0));
+                        if (currentPopover) {
+                            currentPopover.show();
+                        }
+                    } catch (e) {
+                        console.warn('Failed to show popover:', e.message);
+                    }
                 }
             }
         });

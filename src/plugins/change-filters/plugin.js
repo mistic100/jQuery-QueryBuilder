@@ -118,7 +118,7 @@ QueryBuilder.extend(/** @lends module:plugins.ChangeFilters.prototype */ {
             position = 0;
         }
 
-        if (!$.isArray(newFilters)) {
+        if (!Array.isArray(newFilters)) {
             newFilters = [newFilters];
         }
 

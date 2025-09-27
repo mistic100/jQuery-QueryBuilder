@@ -700,7 +700,7 @@ QueryBuilder.prototype.createRuleInput = function(rule) {
     var filter = rule.filter;
 
     for (var i = 0; i < rule.operator.nb_inputs; i++) {
-        var $ruleInput = $($.parseHTML($.trim(this.getRuleInput(rule, i))));
+        var $ruleInput = $($.parseHTML(this.getRuleInput(rule, i).trim()));
         if (i > 0) $valueContainer.append(this.settings.inputs_separator);
         $valueContainer.append($ruleInput);
         $inputs = $inputs.add($ruleInput);
@@ -962,7 +962,7 @@ QueryBuilder.prototype.updateError = function(node) {
  * @private
  */
 QueryBuilder.prototype.triggerValidationError = function(node, error, value) {
-    if (!$.isArray(error)) {
+    if (!Array.isArray(error)) {
         error = [error];
     }
 

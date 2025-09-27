@@ -24,8 +24,34 @@ QueryBuilder.define('bt-tooltip-errors', function(options) {
     // init/refresh tooltip when title changes
     this.model.on('update', function(e, node, field) {
         if (field == 'error' && self.settings.display_errors) {
-            node.$el.find(QueryBuilder.selectors.error_container).eq(0)
-            .attr('data-bs-original-title',options).attr('data-bs-title',options).tooltip();
+            var $errorContainer = node.$el.find(QueryBuilder.selectors.error_container).eq(0);
+
+            // Translate the error message (node.error is an array like ['string_empty'])
+            var errorMessage = '';
+            if (node.error && Array.isArray(node.error) && node.error.length > 0) {
+                errorMessage = self.translate('errors', node.error[0]) || node.error[0] || '';
+            }
+
+            // Only set tooltip if we have a non-empty error message
+            if (errorMessage) {
+                $errorContainer.attr('data-bs-original-title', errorMessage).attr('data-bs-title', errorMessage);
+
+                // Initialize Bootstrap 5 tooltip (dispose existing first to avoid conflicts)
+                var tooltipEl = $errorContainer.get(0);
+                if (tooltipEl) {
+                    // Dispose existing tooltip if any
+                    var existingTooltip = bootstrap.Tooltip.getInstance(tooltipEl);
+                    if (existingTooltip) {
+                        existingTooltip.dispose();
+                    }
+
+                    // Create new tooltip with explicit title
+                    new bootstrap.Tooltip(tooltipEl, {
+                        placement: options.placement || 'right',
+                        title: errorMessage
+                    });
+                }
+            }
         }
     });
 }, {

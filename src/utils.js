@@ -38,7 +38,7 @@ QueryBuilder.utils = Utils;
  */
 Utils.iterateOptions = function(options, tpl) {
     if (options) {
-        if ($.isArray(options)) {
+        if (Array.isArray(options)) {
             options.forEach(function(entry) {
                 if ($.isPlainObject(entry)) {
                     // array of elements
@@ -161,7 +161,7 @@ Utils.escapeString = function(value, additionalEscape) {
                 case '\n': return '\\n';
                 case '\r': return '\\r';
                 case '\b': return '\\b';
-                case '\'': return '\'\'';
+                case '\'': return '\\\'';
                 default:   return '\\' + s;
                 // @formatter:off
             }

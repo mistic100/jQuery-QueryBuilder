@@ -339,7 +339,7 @@ QueryBuilder.prototype.setRules = function(data, options) {
         allow_invalid: false
     }, options);
 
-    if ($.isArray(data)) {
+    if (Array.isArray(data)) {
         data = {
             condition: this.settings.default_condition,
             rules: data

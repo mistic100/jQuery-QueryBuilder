@@ -24,12 +24,12 @@ QueryBuilder.defaults({
         greater_or_equal: { op: '>= ?' },
         between: { op: 'BETWEEN ?', sep: ' AND ' },
         not_between: { op: 'NOT BETWEEN ?', sep: ' AND ' },
-        begins_with: { op: 'LIKE ?', mod: '{0}%', escape: '%_' },
-        not_begins_with: { op: 'NOT LIKE ?', mod: '{0}%', escape: '%_' },
-        contains: { op: 'LIKE ?', mod: '%{0}%', escape: '%_' },
-        not_contains: { op: 'NOT LIKE ?', mod: '%{0}%', escape: '%_' },
-        ends_with: { op: 'LIKE ?', mod: '%{0}', escape: '%_' },
-        not_ends_with: { op: 'NOT LIKE ?', mod: '%{0}', escape: '%_' },
+        begins_with: { op: 'LIKE(?)', mod: '{0}%', escape: '%_' },
+        not_begins_with: { op: 'NOT LIKE(?)', mod: '{0}%', escape: '%_' },
+        contains: { op: 'LIKE(?)', mod: '%{0}%', escape: '%_' },
+        not_contains: { op: 'NOT LIKE(?)', mod: '%{0}%', escape: '%_' },
+        ends_with: { op: 'LIKE(?)', mod: '%{0}', escape: '%_' },
+        not_ends_with: { op: 'NOT LIKE(?)', mod: '%{0}', escape: '%_' },
         is_empty: { op: '= \'\'' },
         is_not_empty: { op: '!= \'\'' },
         is_null: { op: 'IS NULL' },
@@ -535,7 +535,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
 
                 // convert array
                 var value;
-                if ($.isArray(data.right.value)) {
+                if (Array.isArray(data.right.value)) {
                     value = data.right.value.map(function(v) {
                         return v.value;
                     });
@@ -546,7 +546,7 @@ QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
 
                 // get actual values
                 if (stmt) {
-                    if ($.isArray(value)) {
+                    if (Array.isArray(value)) {
                         value = value.map(stmt.parse);
                     }
                     else {
